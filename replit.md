@@ -1,6 +1,6 @@
-# [Project name]
+# Digital Sea — nur
 
-_Replace the heading above with the project's name, and this line with one sentence describing what this app does for users._
+A 3D interactive scroll experience through nuroctane's digital network of social profiles and creative projects.
 
 ## Run & Operate
 
