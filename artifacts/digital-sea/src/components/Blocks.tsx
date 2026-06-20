@@ -47,7 +47,12 @@ function InstanceGroup({ specs, mat }: { specs: BlockSpec[]; mat: THREE.Material
     mesh.instanceMatrix.needsUpdate = true;
   }, [specs, dummy]);
   return (
-    <instancedMesh ref={meshRef} args={[undefined, undefined, specs.length]} material={mat}>
+    <instancedMesh
+      ref={meshRef}
+      args={[undefined, undefined, specs.length]}
+      material={mat}
+      frustumCulled={false}
+    >
       <boxGeometry args={[1, 1, 1]} />
     </instancedMesh>
   );

@@ -1,0 +1,3 @@
+- [InstancedMesh culling](instanced-mesh-culling.md) — always set frustumCulled=false on instancedMesh with many world-scattered instances or they vanish when camera moves.
+- [R3F camera centering](r3f-camera-centering.md) — shifting camera.position toward a card does NOT center it on screen; you must blend camera.lookAt toward the node's world position.
+- [Link opening in iframes](link-opening-iframes.md) — window.open() blocked inside Replit preview iframe; use native <a href target="_blank"> instead.

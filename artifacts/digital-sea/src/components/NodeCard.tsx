@@ -16,34 +16,35 @@ function ImgWithFallback({
 export function NodeCard({ node }: { node: NodeData }) {
   const [exploding, setExploding] = React.useState(false);
   const isComingSoon = COMING_SOON_IDS.includes(node.id);
-  const hasLink = node.url && node.url !== '#';
+  const hasLink = Boolean(node.url && node.url !== '#');
 
   const handleClick = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (!hasLink || exploding) return;
-
-    // Open window IMMEDIATELY (before animation) so popup blockers don't intercept it
-    // setTimeout delays are what browsers flag as "not from user gesture"
-    const win = window.open(node.url, '_blank', 'noopener,noreferrer');
-    if (!win) {
-      // Fallback if popup was blocked — try assigning via anchor
-      const a = document.createElement('a');
-      a.href = node.url;
-      a.target = '_blank';
-      a.rel = 'noopener noreferrer';
-      a.click();
-    }
-
-    // Run explosion animation separately (visual only, link already opened)
+    // Let the native <a> handle navigation — don't prevent default
+    if (!hasLink || exploding) { e.preventDefault(); return; }
     setExploding(true);
     setTimeout(() => setExploding(false), 420);
+    // Default anchor behavior opens the link — no window.open needed
   };
 
+  // Use a real <a> tag when there's a link. Native anchors open reliably
+  // in every browser context (including inside iframes) where window.open
+  // may be blocked as a popup. The href + target="_blank" is the spec-correct way.
+  const Tag = hasLink ? 'a' : 'div';
+  const linkProps = hasLink
+    ? { href: node.url, target: '_blank', rel: 'noopener noreferrer' }
+    : {};
+
   return (
-    <div
+    <Tag
+      {...linkProps}
       className={`node-card${exploding ? ' node-card--exploding' : ''}`}
       onClick={handleClick}
-      style={{ cursor: hasLink ? 'pointer' : 'default' }}
+      style={{
+        cursor: hasLink ? 'pointer' : 'default',
+        display: 'block',
+        textDecoration: 'none',
+        color: 'inherit',
+      }}
     >
       <span className="corner tl" />
       <span className="corner tr" />
@@ -92,6 +93,6 @@ export function NodeCard({ node }: { node: NodeData }) {
         <span className="url-prefix">SYS://</span>
         <span className="url-body">{node.urlDisplay}</span>
       </div>
-    </div>
+    </Tag>
   );
 }
