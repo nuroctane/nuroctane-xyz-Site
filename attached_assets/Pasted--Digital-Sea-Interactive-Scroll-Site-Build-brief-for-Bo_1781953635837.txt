@@ -1,0 +1,224 @@
+# Digital Sea — Interactive Scroll Site
+### Build brief for Bolt.new
+
+Attach `digital_sea.jpg` to this prompt before sending. Tell Bolt explicitly:
+"Use this image for the color palette only: deep teal/petrol background (#0b2730), mid cyan blocks (#1c5f70), bright glow accents (#bdeff2 and #eafcff). Do not infer layout or motion from the image, that is specified below."
+
+---
+
+## 1. Tech stack (pin this, don't let Bolt choose)
+
+- Vite + React
+- `three`, `@react-three/fiber`, `@react-three/drei` for the 3D scene
+- `gsap` with ScrollTrigger to bind scroll position to camera progress
+- `@react-three/postprocessing` for bloom + fog, to get the glow/haze in the reference image
+- Bolt runs in an in-browser WebContainer. Stick to these well-known npm packages so install/build doesn't choke.
+
+## 2. Visual language (from the reference image)
+
+- Palette: deep teal/petrol base, mid cyan geometry, bright cyan-white glow on edges and light shafts
+- Geometry: translucent rectangular blocks of varying width/height, overlapping like stacked server towers, slight fresnel/glass material so edges catch light
+- Volumetric light shafts entering from above/background, soft and diffuse, not hard-edged
+- Particles: thin streaks/dots drifting slowly downward, additive blending so they glow rather than look solid
+- HUD node style: thin white/cyan circles connected by straight lines, small monospace text labels inside circles or boxes, this is the direct template for the floating UI nodes below
+- Faint scanline/noise overlay for a "submerged" feel
+
+## 3. Scene + camera
+
+- Define a Catmull-Rom spline running through the scene representing the path forward through the digital sea
+- Camera position and look-direction are driven by scroll progress (0 to 1), not by free orbit controls
+- Add a small amount of independent vertical/lateral drift on top of the path so it doesn't feel mechanical, like current pushing the camera slightly off-line
+- Block geometry: use `instancedMesh` for performance, scatter blocks along the path with randomized scale/rotation/offset to match the corridor look in the reference image
+- Particle system: a points-based field of a few thousand particles drifting downward and slightly toward camera, recycled when they pass camera Z position (standard infinite-particle-loop pattern)
+
+## 4. Scroll mechanism
+
+- Full-viewport fixed `<Canvas>` behind the content
+- A tall invisible scroll-spacer div defines total scroll length. With 15 nodes, something like `1500vh` to `1800vh` gives each node enough room to approach, face the user, and recede without feeling rushed, tune by feel once it's running
+- Read scroll progress via GSAP ScrollTrigger or a scroll-progress hook, normalize to 0–1
+- Map that 0–1 value to the spline's `t` parameter for camera position, and to `t + small lookahead` for the look-target, so the camera always looks slightly ahead along the path
+
+## 5. Floating UI nodes (the core interactive piece)
+
+Each node is anchored to a fixed point in 3D space along the path. Render it as an HTML overlay anchored to that 3D position (drei's `<Html>` component, with `transform` and `occlude` enabled so it scales/hides correctly with depth) styled to match the circle-and-line HUD look from the reference image.
+
+**Card contents, per node:**
+
+- A small circular avatar image (the platform profile picture)
+- A larger rectangular preview image (a cropped capture of the profile page, header/bio area only, not the full scrollable page, so it stays legible at card scale)
+- Platform label + handle
+- One short stat line (bio, follower count, or similar)
+- All of this wrapped in the thin cyan circuit-line border treatment from the reference image
+
+Both images are static assets shipped with the project (see section 6), not fetched live at runtime. No CORS proxy, no API keys in the client, no broken-image risk if a platform changes its markup later.
+
+**State logic, per node, per frame:**
+
+1. Compute `proximity` = how close the current scroll progress is to that node's defined scroll range (`scrollStart` to `scrollEnd`), normalized 0 to 1.
+2. At `proximity = 0`: node sits in an idle resting rotation (e.g. angled away from camera, as if drifting in the sea), low opacity, smaller scale.
+3. As `proximity` rises toward 1: slerp the node's rotation from its idle rotation toward `lookAt(camera.position)`, and ramp opacity and scale up toward full/legible.
+4. At `proximity ≈ 1`: node is fully facing the camera, fully opaque, fully sized, and clickable. Clicking opens `node.url` in a new tab.
+5. As scroll moves past the node, reverse the interpolation so it fades and turns away again, don't just snap.
+
+This is a single `useFrame` loop iterating over the node list, each node carrying its own scroll range and idle rotation, no per-node custom code needed.
+
+## 6. Image sourcing, what's actually automatable
+
+Tested live against the nine accounts. Five platforms expose a clean profile picture via standard og:image metadata, no login needed. Four block automated access outright (robots.txt or bot detection), the same wall a backend scraper or screenshot service would hit in production.
+
+**Avatar fetchable, no auth:** YouTube, SoundCloud, Substack, Twitch, Kick
+**Blocked at the page level:** Instagram, X, TikTok, AniList
+
+None of the five "working" platforms expose a full page screenshot, only the avatar and some metadata. A real preview image, avatar or page screenshot, is a manual capture for all nine, for two reasons: consistency (nine wildly different native page styles won't read well as a uniform card design) and reliability (no scraping pipeline to maintain, no broken images when a platform redesigns).
+
+**For each of the nine, export two images and drop them into `/public/assets/nodes/`:**
+1. `{platform}-avatar.png`, square, the profile picture
+2. `{platform}-preview.png`, a cropped screenshot of just the header/bio area of the profile page
+
+These are captures of your own accounts, so there's no rights issue. A quick screenshot in a normal logged-in browser tab works fine, even for Instagram, X, and TikTok where automated fetching is blocked.
+
+AniList does have a public GraphQL API (`https://graphql.anilist.co`) that returns avatar, banner, and stats with no auth required, if you ever want that one node to refresh itself automatically later. Not needed for the first build.
+
+## 7. Node content data, one continuous sequence
+
+15 nodes now. The resume/LinkedIn node is gone, no point exposing that directly on a public site. Social nodes stay first in the order you sent them, dev/creative project nodes still pushed toward the end, now six of them: WeatherGuru, SIS, ATX Tunerz Society, AstroSleep, the geometric CS2 skin project, and Miyamaker.
+
+The three new ones (AstroSleep, the skin project, Miyamaker) are marked TBD across the board on purpose. You said you'll handle the links and assets for those directly in Bolt, so there's no fetched data to put here, just clean slots ready for you to drop a URL and two images into.
+
+```js
+const nodes = [
+  // --- social, in the order you sent them ---
+  {
+    id: "instagram", label: "Instagram", handle: "@nuroctane",
+    url: "https://www.instagram.com/nuroctane/",
+    subtitle: "NEEDS MANUAL CAPTURE, blocked to automated fetch",
+    avatar: "/assets/nodes/instagram-avatar.png",
+    preview: "/assets/nodes/instagram-preview.png",
+    scrollStart: 0.059, scrollEnd: 0.103, position: [-x, y, z]
+  },
+  {
+    id: "tiktok", label: "TikTok", handle: "@nuroctane",
+    url: "https://www.tiktok.com/@nuroctane",
+    subtitle: "NEEDS MANUAL CAPTURE, blocked to automated fetch",
+    avatar: "/assets/nodes/tiktok-avatar.png",
+    preview: "/assets/nodes/tiktok-preview.png",
+    scrollStart: 0.120, scrollEnd: 0.164, position: [x, y, z]
+  },
+  {
+    id: "x", label: "X", handle: "@nuroctane",
+    url: "https://x.com/nuroctane",
+    subtitle: "NEEDS MANUAL CAPTURE, blocked to automated fetch",
+    avatar: "/assets/nodes/x-avatar.png",
+    preview: "/assets/nodes/x-preview.png",
+    scrollStart: 0.181, scrollEnd: 0.225, position: [-x, y, z]
+  },
+  {
+    id: "substack", label: "Substack", handle: "Civeta Dei",
+    url: "https://substack.com/@nuroctane",
+    subtitle: "“there is” — 17 subscribers",
+    avatar: "/assets/nodes/substack-avatar.png",
+    preview: "/assets/nodes/substack-preview.png",
+    scrollStart: 0.243, scrollEnd: 0.287, position: [x, y, z]
+  },
+  {
+    id: "soundcloud", label: "SoundCloud", handle: "nuroctane",
+    url: "https://soundcloud.com/nuroctane",
+    subtitle: "i like making moody shit — 23 followers, 2 tracks",
+    avatar: "/assets/nodes/soundcloud-avatar.png",
+    preview: "/assets/nodes/soundcloud-preview.png",
+    scrollStart: 0.304, scrollEnd: 0.348, position: [-x, y, z]
+  },
+  {
+    id: "twitch", label: "Twitch", handle: "nuroctane",
+    url: "https://www.twitch.tv/nuroctane",
+    subtitle: "ars motus",
+    avatar: "/assets/nodes/twitch-avatar.png",
+    preview: "/assets/nodes/twitch-preview.png",
+    scrollStart: 0.365, scrollEnd: 0.409, position: [x, y, z]
+  },
+  {
+    id: "youtube", label: "YouTube", handle: "@nuroctane",
+    url: "https://www.youtube.com/@nuroctane",
+    subtitle: "nur! — ars motus",
+    avatar: "/assets/nodes/youtube-avatar.png",
+    preview: "/assets/nodes/youtube-preview.png",
+    scrollStart: 0.427, scrollEnd: 0.471, position: [-x, y, z]
+  },
+  {
+    id: "kick", label: "Kick", handle: "nuroctane",
+    url: "https://kick.com/nuroctane",
+    subtitle: "7 followers",
+    avatar: "/assets/nodes/kick-avatar.png",
+    preview: "/assets/nodes/kick-preview.png",
+    scrollStart: 0.488, scrollEnd: 0.532, position: [x, y, z]
+  },
+  {
+    id: "anilist", label: "AniList", handle: "nuroctane",
+    url: "https://anilist.co/user/nuroctane/",
+    subtitle: "NEEDS MANUAL CAPTURE, blocked to automated fetch",
+    avatar: "/assets/nodes/anilist-avatar.png",
+    preview: "/assets/nodes/anilist-preview.png",
+    scrollStart: 0.549, scrollEnd: 0.593, position: [-x, y, z]
+  },
+
+  // --- dev/creative projects, back third of the sea ---
+  {
+    id: "weatherguru", label: "WeatherGuru", handle: "project",
+    url: "TBD, send the live URL once it has one",
+    subtitle: "TBD",
+    avatar: "/assets/nodes/weatherguru-avatar.png",
+    preview: "/assets/nodes/weatherguru-preview.png",
+    scrollStart: 0.611, scrollEnd: 0.655, position: [x, y, z]
+  },
+  {
+    id: "sis", label: "Sovereign Intelligence Systems", handle: "SIS",
+    url: "TBD",
+    subtitle: "TBD",
+    avatar: "/assets/nodes/sis-avatar.png",
+    preview: "/assets/nodes/sis-preview.png",
+    scrollStart: 0.672, scrollEnd: 0.716, position: [-x, y, z]
+  },
+  {
+    id: "atxtunerz", label: "ATX Tunerz Society", handle: "community",
+    url: "TBD",
+    subtitle: "TBD",
+    avatar: "/assets/nodes/atxtunerz-avatar.png",
+    preview: "/assets/nodes/atxtunerz-preview.png",
+    scrollStart: 0.733, scrollEnd: 0.777, position: [x, y, z]
+  },
+  {
+    id: "astrosleep", label: "AstroSleep", handle: "project",
+    url: "TBD, you're uploading this one directly in Bolt",
+    subtitle: "TBD",
+    avatar: "/assets/nodes/astrosleep-avatar.png",
+    preview: "/assets/nodes/astrosleep-preview.png",
+    scrollStart: 0.795, scrollEnd: 0.839, position: [-x, y, z]
+  },
+  {
+    id: "geoskin", label: "Geometric CS2 Skin Project", handle: "project",
+    url: "TBD, you're uploading this one directly in Bolt",
+    subtitle: "TBD",
+    avatar: "/assets/nodes/geoskin-avatar.png",
+    preview: "/assets/nodes/geoskin-preview.png",
+    scrollStart: 0.856, scrollEnd: 0.900, position: [x, y, z]
+  },
+  {
+    id: "miyamaker", label: "Miyamaker", handle: "project",
+    url: "TBD, you're uploading this one directly in Bolt",
+    subtitle: "TBD",
+    avatar: "/assets/nodes/miyamaker-avatar.png",
+    preview: "/assets/nodes/miyamaker-preview.png",
+    scrollStart: 0.917, scrollEnd: 0.961, position: [-x, y, z]
+  },
+];
+```
+
+Note on the six project nodes: none of their images get scraped from anywhere, they're whatever you want shown, a product screenshot for WeatherGuru, a logo/brand mark for SIS, a community photo or car meet flyer for ATX Tunerz Society, a UI mock or app icon for AstroSleep, a render of the skin design for the CS2 project, whatever Miyamaker's visual identity is. Those are art-direction choices, not a data-fetching problem, and Bolt can take the asset upload directly from you for all six.
+
+## 8. Performance note for Bolt
+
+Flag explicitly: on lower-end devices, drop particle count and disable postprocessing bloom, falling back to a simpler gradient + static blocks. A full bloom/postprocessing R3F scene can choke on mobile GPUs if left unconstrained.
+
+## 9. Optional: real video as fallback/poster
+
+If a Higgsfield loop gets generated, it can sit as a `<video>` poster/background layer that's visible before the 3D scene finishes loading, or as a fallback for devices that can't run WebGL well. It is not a reference for the 3D logic above, that logic is fully specified in this document.
