@@ -1,8 +1,6 @@
 import { useMemo } from 'react';
 import * as THREE from 'three';
 
-const SHAFT_COUNT = 10;
-
 export function LightShafts() {
   const shafts = useMemo(() => {
     const rand = (s: number) => {
@@ -10,20 +8,21 @@ export function LightShafts() {
       return () => { n = (n * 1664525 + 1013904223) & 0xffffffff; return (n >>> 0) / 0xffffffff; };
     };
     const r = rand(42);
-    return Array.from({ length: SHAFT_COUNT }, (_, i) => ({
-      x: (r() - 0.5) * 20,
-      y: 9 + r() * 7,
-      z: -18 - i * 18,
-      height: 16 + r() * 12,
-      radius: 0.06 + r() * 0.18,
+    // Many more shafts, scattered widely across the full world volume
+    return Array.from({ length: 28 }, (_, i) => ({
+      x: (r() - 0.5) * 70,
+      y: 9 + r() * 9,
+      z: 20 - i * 8,
+      height: 18 + r() * 16,
+      radius: 0.05 + r() * 0.22,
       rotY: r() * Math.PI,
     }));
   }, []);
 
   const material = useMemo(() => new THREE.MeshBasicMaterial({
-    color: new THREE.Color('#3a90e0'),
+    color: new THREE.Color('#2ad0c8'),
     transparent: true,
-    opacity: 0.035,
+    opacity: 0.032,
     side: THREE.DoubleSide,
     depthWrite: false,
     blending: THREE.AdditiveBlending,
@@ -38,7 +37,7 @@ export function LightShafts() {
           rotation={[0, s.rotY, 0]}
           material={material}
         >
-          <cylinderGeometry args={[s.radius * 0.2, s.radius * 3, s.height, 6, 1, true]} />
+          <cylinderGeometry args={[s.radius * 0.15, s.radius * 3.5, s.height, 6, 1, true]} />
         </mesh>
       ))}
     </>

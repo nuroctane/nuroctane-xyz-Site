@@ -4,15 +4,9 @@ import { NodeData } from '../data/nodes';
 const COMING_SOON_IDS = ['weatherguru', 'sis', 'astrosleep', 'geoskin'];
 
 function ImgWithFallback({
-  src,
-  alt,
-  className,
-  fallback,
+  src, alt, className, fallback,
 }: {
-  src: string;
-  alt: string;
-  className: string;
-  fallback: React.ReactNode;
+  src: string; alt: string; className: string; fallback: React.ReactNode;
 }) {
   const [failed, setFailed] = React.useState(false);
   if (!src || failed) return <>{fallback}</>;
@@ -27,11 +21,22 @@ export function NodeCard({ node }: { node: NodeData }) {
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (!hasLink || exploding) return;
+
+    // Open window IMMEDIATELY (before animation) so popup blockers don't intercept it
+    // setTimeout delays are what browsers flag as "not from user gesture"
+    const win = window.open(node.url, '_blank', 'noopener,noreferrer');
+    if (!win) {
+      // Fallback if popup was blocked — try assigning via anchor
+      const a = document.createElement('a');
+      a.href = node.url;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.click();
+    }
+
+    // Run explosion animation separately (visual only, link already opened)
     setExploding(true);
-    setTimeout(() => {
-      window.open(node.url, '_blank', 'noopener,noreferrer');
-      setExploding(false);
-    }, 380);
+    setTimeout(() => setExploding(false), 420);
   };
 
   return (
@@ -40,13 +45,11 @@ export function NodeCard({ node }: { node: NodeData }) {
       onClick={handleClick}
       style={{ cursor: hasLink ? 'pointer' : 'default' }}
     >
-      {/* Corner HUD accents */}
       <span className="corner tl" />
       <span className="corner tr" />
       <span className="corner bl" />
       <span className="corner br" />
 
-      {/* Avatar + platform logo stack */}
       <div className="card-avatar-section">
         <div className="avatar-ring">
           <ImgWithFallback
@@ -60,7 +63,6 @@ export function NodeCard({ node }: { node: NodeData }) {
             }
           />
         </div>
-
         {node.logo && (
           <div className="logo-badge">
             <ImgWithFallback
@@ -73,13 +75,11 @@ export function NodeCard({ node }: { node: NodeData }) {
         )}
       </div>
 
-      {/* Platform identity */}
       <div className="card-identity">
         <span className="platform-label">{node.label}</span>
         <span className="platform-handle">{node.handle}</span>
       </div>
 
-      {/* Subtitle or COMING SOON */}
       {isComingSoon ? (
         <div className="coming-soon-badge">COMING SOON</div>
       ) : (
@@ -88,7 +88,6 @@ export function NodeCard({ node }: { node: NodeData }) {
 
       <div className="card-divider" />
 
-      {/* URL — clearly visible */}
       <div className="card-url">
         <span className="url-prefix">SYS://</span>
         <span className="url-body">{node.urlDisplay}</span>

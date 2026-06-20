@@ -12,12 +12,12 @@ export function Particles({ count = 3000 }: Props) {
   const { positions, velocities } = useMemo(() => {
     const positions = new Float32Array(count * 3);
     const velocities = new Float32Array(count);
-    const initZ = 25;
     for (let i = 0; i < count; i++) {
-      positions[i * 3 + 0] = (Math.random() - 0.5) * 26;
-      positions[i * 3 + 1] = (Math.random() - 0.5) * 18 + 4;
-      positions[i * 3 + 2] = initZ - Math.random() * 200;
-      velocities[i] = 0.004 + Math.random() * 0.010;
+      // Wider scatter across the full world volume
+      positions[i * 3 + 0] = (Math.random() - 0.5) * 60;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 22 + 4;
+      positions[i * 3 + 2] = 28 - Math.random() * 220;
+      velocities[i] = 0.003 + Math.random() * 0.009;
     }
     return { positions, velocities };
   }, [count]);
@@ -29,11 +29,11 @@ export function Particles({ count = 3000 }: Props) {
   }, [positions]);
 
   const mat = useMemo(() => new THREE.PointsMaterial({
-    color: new THREE.Color('#7ec8ff'),
-    size: 0.06,
+    color: new THREE.Color('#bdeff2'),
+    size: 0.055,
     sizeAttenuation: true,
     transparent: true,
-    opacity: 0.55,
+    opacity: 0.50,
     blending: THREE.AdditiveBlending,
     depthWrite: false,
   }), []);
@@ -45,12 +45,12 @@ export function Particles({ count = 3000 }: Props) {
 
     for (let i = 0; i < count; i++) {
       arr[i * 3 + 1] -= velocities[i];
-      arr[i * 3 + 2] += velocities[i] * 0.35;
+      arr[i * 3 + 2] += velocities[i] * 0.30;
 
-      if (arr[i * 3 + 1] < -12 || arr[i * 3 + 2] > camZ + 6) {
-        arr[i * 3 + 0] = (Math.random() - 0.5) * 26;
-        arr[i * 3 + 1] = 12 + Math.random() * 6;
-        arr[i * 3 + 2] = camZ - Math.random() * 185;
+      if (arr[i * 3 + 1] < -14 || arr[i * 3 + 2] > camZ + 8) {
+        arr[i * 3 + 0] = (Math.random() - 0.5) * 60;
+        arr[i * 3 + 1] = 14 + Math.random() * 8;
+        arr[i * 3 + 2] = camZ - Math.random() * 200;
       }
     }
     pos.needsUpdate = true;

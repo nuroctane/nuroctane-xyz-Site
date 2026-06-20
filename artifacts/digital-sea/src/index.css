@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ─── Reset & base ─────────────────────────────────────────────────────── */
+/* ─── Reset & base ──────────────────────────────────────────────────────── */
 
 *, *::before, *::after {
   box-sizing: border-box;
@@ -12,14 +12,15 @@
 
 html, body {
   overflow-x: hidden;
-  background: #04091a;
-  color: #c0e4ff;
+  /* Ocean teal/petrol — from the build brief */
+  background: #0b2730;
+  color: #c8ecf0;
   font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
   scroll-behavior: auto;
   overscroll-behavior: none;
 }
 
-/* ─── Scanline overlay ──────────────────────────────────────────────────── */
+/* ─── Scanline overlay ───────────────────────────────────────────────────── */
 
 .scanline-overlay {
   position: fixed;
@@ -30,13 +31,13 @@ html, body {
     to bottom,
     transparent 0px,
     transparent 3px,
-    rgba(0, 8, 30, 0.055) 3px,
-    rgba(0, 8, 30, 0.055) 4px
+    rgba(0, 20, 26, 0.048) 3px,
+    rgba(0, 20, 26, 0.048) 4px
   );
   mix-blend-mode: multiply;
 }
 
-/* ─── Sticky section label ──────────────────────────────────────────────── */
+/* ─── Sticky section label ───────────────────────────────────────────────── */
 
 .sticky-section-label {
   position: fixed;
@@ -50,16 +51,16 @@ html, body {
 .sticky-section-label .label-text {
   font-size: 0.58rem;
   letter-spacing: 0.28em;
-  color: #7ec8ff;
+  color: #bdeff2;
   opacity: 0.6;
   text-transform: uppercase;
-  border-left: 1px solid rgba(126, 200, 255, 0.35);
+  border-left: 1px solid rgba(189, 239, 242, 0.32);
   padding-left: 0.6rem;
   display: block;
   white-space: nowrap;
 }
 
-/* ─── Hero block ────────────────────────────────────────────────────────── */
+/* ─── Hero block ─────────────────────────────────────────────────────────── */
 
 .hero-block {
   position: absolute;
@@ -80,11 +81,11 @@ html, body {
 .hero-label {
   font-size: 0.58rem;
   letter-spacing: 0.28em;
-  color: #7ec8ff;
-  opacity: 0.48;
+  color: #bdeff2;
+  opacity: 0.46;
   margin-bottom: 1.4rem;
   text-transform: uppercase;
-  border-left: 1px solid rgba(126, 200, 255, 0.3);
+  border-left: 1px solid rgba(189, 239, 242, 0.28);
   padding-left: 0.6rem;
 }
 
@@ -92,10 +93,10 @@ html, body {
   font-size: clamp(2.8rem, 11vw, 8rem);
   font-weight: 700;
   letter-spacing: 0.22em;
-  color: #dff4ff;
+  color: #eafcff;
   text-shadow:
-    0 0 40px rgba(74, 176, 255, 0.5),
-    0 0 100px rgba(74, 176, 255, 0.2);
+    0 0 40px rgba(93, 232, 240, 0.55),
+    0 0 100px rgba(93, 232, 240, 0.22);
   line-height: 1;
   margin-bottom: 1.1rem;
 }
@@ -103,8 +104,8 @@ html, body {
 .hero-sub {
   font-size: 0.58rem;
   letter-spacing: 0.44em;
-  color: #7ec8ff;
-  opacity: 0.38;
+  color: #bdeff2;
+  opacity: 0.36;
   margin-bottom: 3.5rem;
   text-transform: uppercase;
 }
@@ -112,17 +113,17 @@ html, body {
 .scroll-indicator {
   width: 1px;
   height: 52px;
-  background: linear-gradient(to bottom, rgba(126, 200, 255, 0.55), transparent);
+  background: linear-gradient(to bottom, rgba(189, 239, 242, 0.52), transparent);
   margin: 0 auto;
   animation: scrollPulse 2.2s ease-in-out infinite;
 }
 
 @keyframes scrollPulse {
   0%, 100% { opacity: 0.25; transform: scaleY(0.7); }
-  50% { opacity: 1; transform: scaleY(1); }
+  50%       { opacity: 1;    transform: scaleY(1); }
 }
 
-/* ─── Summary panel ─────────────────────────────────────────────────────── */
+/* ─── Summary panel ──────────────────────────────────────────────────────── */
 
 .summary-panel {
   position: fixed;
@@ -133,98 +134,119 @@ html, body {
   pointer-events: none;
   text-align: center;
   width: min(480px, 90vw);
-  transition: opacity 0.3s ease;
+  transition: opacity 0.35s ease;
 }
 
 .summary-avatar {
-  width: 88px;
-  height: 88px;
+  width: 92px;
+  height: 92px;
   border-radius: 50%;
-  border: 2px solid rgba(74, 176, 255, 0.4);
+  border: 2px solid rgba(93, 232, 240, 0.38);
   display: block;
   margin: 0 auto 1rem;
-  box-shadow: 0 0 24px rgba(74, 176, 255, 0.25);
+  box-shadow: 0 0 28px rgba(93, 232, 240, 0.22);
   object-fit: cover;
 }
 
 .summary-label {
   font-size: 0.52rem;
   letter-spacing: 0.28em;
-  color: #4ab0ff;
+  color: #5de8f0;
   opacity: 0.55;
   margin-bottom: 1rem;
-  border-left: 1px solid rgba(74, 176, 255, 0.3);
+  border-left: 1px solid rgba(93, 232, 240, 0.28);
   padding-left: 0.5rem;
   display: inline-block;
 }
 
 .summary-text {
-  font-size: 0.72rem;
-  line-height: 1.9;
-  color: #a8d8ff;
+  font-size: 0.73rem;
+  line-height: 1.95;
+  color: #a8dce0;
   letter-spacing: 0.04em;
   margin-bottom: 0.9rem;
 }
 
 .summary-text strong {
-  color: #dff4ff;
+  color: #eafcff;
   font-weight: 700;
 }
 
 .summary-text em {
-  color: #7ec8ff;
+  color: #bdeff2;
   font-style: normal;
 }
 
 .summary-text--secondary {
   font-size: 0.62rem;
-  color: #5a9acc;
-  opacity: 0.75;
+  color: #4a9aaa;
+  opacity: 0.78;
 }
 
-/* ─── Node card ─────────────────────────────────────────────────────────── */
+/* ─── End-of-sea panel extras ────────────────────────────────────────────── */
+
+.end-panel {
+  pointer-events: none;
+}
+
+.end-thankyou {
+  margin-top: 1.4rem;
+  font-size: 0.82rem;
+  letter-spacing: 0.24em;
+  color: #eafcff;
+  text-transform: uppercase;
+  text-shadow: 0 0 30px rgba(93, 232, 240, 0.5);
+  animation: thankyouGlow 3s ease-in-out infinite;
+}
+
+@keyframes thankyouGlow {
+  0%, 100% { opacity: 0.7; text-shadow: 0 0 20px rgba(93, 232, 240, 0.3); }
+  50%       { opacity: 1;   text-shadow: 0 0 50px rgba(93, 232, 240, 0.7), 0 0 100px rgba(93, 232, 240, 0.2); }
+}
+
+/* ─── Node card ──────────────────────────────────────────────────────────── */
 
 .node-card {
   position: relative;
   width: 200px;
-  background: rgba(4, 12, 32, 0.94);
+  background: rgba(7, 22, 30, 0.93);
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(74, 176, 255, 0.22);
+  border: 1px solid rgba(93, 232, 240, 0.20);
   padding: 16px 14px 12px;
   font-family: 'JetBrains Mono', 'Fira Code', 'Courier New', monospace;
-  color: #c0e4ff;
+  color: #c8ecf0;
   box-shadow:
-    0 0 30px rgba(4, 9, 26, 0.85),
-    inset 0 0 1px rgba(74, 176, 255, 0.06);
+    0 0 30px rgba(7, 22, 30, 0.88),
+    inset 0 0 1px rgba(93, 232, 240, 0.06);
   transition: border-color 0.25s ease, box-shadow 0.25s ease;
 }
 
 .node-card:hover {
-  border-color: rgba(74, 176, 255, 0.5);
+  border-color: rgba(93, 232, 240, 0.48);
   box-shadow:
-    0 0 40px rgba(4, 9, 26, 0.9),
-    0 0 24px rgba(74, 176, 255, 0.12);
+    0 0 40px rgba(7, 22, 30, 0.92),
+    0 0 24px rgba(93, 232, 240, 0.14);
 }
 
 /* Click explosion animation */
 .node-card--exploding {
-  animation: nodeExplode 0.4s ease-out forwards;
+  animation: nodeExplode 0.42s ease-out forwards;
 }
 
 @keyframes nodeExplode {
-  0%   { transform: scale(1);    box-shadow: 0 0 30px rgba(4,9,26,0.85); border-color: rgba(74,176,255,0.22); }
-  30%  { transform: scale(1.10); box-shadow: 0 0 60px rgba(74,176,255,0.7), 0 0 120px rgba(74,176,255,0.3); border-color: rgba(74,176,255,0.9); }
-  65%  { transform: scale(0.96); box-shadow: 0 0 20px rgba(74,176,255,0.3); }
-  100% { transform: scale(1);    box-shadow: 0 0 30px rgba(4,9,26,0.85); }
+  0%   { transform: scale(1);    box-shadow: 0 0 30px rgba(7,22,30,0.88);   border-color: rgba(93,232,240,0.20); }
+  30%  { transform: scale(1.11); box-shadow: 0 0 70px rgba(93,232,240,0.75), 0 0 130px rgba(93,232,240,0.32); border-color: rgba(189,239,242,0.95); }
+  65%  { transform: scale(0.96); box-shadow: 0 0 20px rgba(93,232,240,0.28); }
+  100% { transform: scale(1);    box-shadow: 0 0 30px rgba(7,22,30,0.88); }
 }
 
 /* Corner HUD accents */
 .corner { position: absolute; width: 8px; height: 8px; }
-.corner.tl { top: -1px; left: -1px; border-top: 1.5px solid #4ab0ff; border-left: 1.5px solid #4ab0ff; }
-.corner.tr { top: -1px; right: -1px; border-top: 1.5px solid #4ab0ff; border-right: 1.5px solid #4ab0ff; }
-.corner.bl { bottom: -1px; left: -1px; border-bottom: 1.5px solid #4ab0ff; border-left: 1.5px solid #4ab0ff; }
-.corner.br { bottom: -1px; right: -1px; border-bottom: 1.5px solid #4ab0ff; border-right: 1.5px solid #4ab0ff; }
+.corner.tl { top: -1px; left: -1px;  border-top:    1.5px solid #5de8f0; border-left:  1.5px solid #5de8f0; }
+.corner.tr { top: -1px; right: -1px; border-top:    1.5px solid #5de8f0; border-right: 1.5px solid #5de8f0; }
+.corner.bl { bottom: -1px; left: -1px;  border-bottom: 1.5px solid #5de8f0; border-left:  1.5px solid #5de8f0; }
+.corner.br { bottom: -1px; right: -1px; border-bottom: 1.5px solid #5de8f0; border-right: 1.5px solid #5de8f0; }
 
 /* Avatar + logo stack */
 .card-avatar-section {
@@ -238,13 +260,13 @@ html, body {
   width: 72px;
   height: 72px;
   border-radius: 50%;
-  border: 2px solid rgba(74, 176, 255, 0.4);
+  border: 2px solid rgba(93, 232, 240, 0.38);
   overflow: hidden;
-  background: rgba(10, 30, 60, 0.6);
+  background: rgba(7, 30, 40, 0.7);
   display: flex;
   align-items: center;
   justify-content: center;
-  box-shadow: 0 0 18px rgba(74, 176, 255, 0.15);
+  box-shadow: 0 0 18px rgba(93, 232, 240, 0.15);
 }
 
 .avatar-img {
@@ -257,17 +279,17 @@ html, body {
 .avatar-fallback {
   font-size: 1.5rem;
   font-weight: 700;
-  color: #7ec8ff;
+  color: #bdeff2;
 }
 
 .logo-badge {
   margin-top: 6px;
   width: 22px;
   height: 22px;
-  border: 1px solid rgba(74, 176, 255, 0.28);
+  border: 1px solid rgba(93, 232, 240, 0.25);
   border-radius: 4px;
   overflow: hidden;
-  background: rgba(4, 12, 32, 0.85);
+  background: rgba(7, 22, 30, 0.88);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -284,7 +306,7 @@ html, body {
 .logo-fallback-char {
   font-size: 0.58rem;
   font-weight: 700;
-  color: #7ec8ff;
+  color: #bdeff2;
 }
 
 /* Identity */
@@ -301,7 +323,7 @@ html, body {
   font-size: 0.62rem;
   font-weight: 700;
   letter-spacing: 0.14em;
-  color: #dff4ff;
+  color: #eafcff;
   text-transform: uppercase;
   white-space: nowrap;
   overflow: hidden;
@@ -311,8 +333,8 @@ html, body {
 
 .platform-handle {
   font-size: 0.52rem;
-  color: #7ec8ff;
-  opacity: 0.65;
+  color: #bdeff2;
+  opacity: 0.62;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -322,8 +344,8 @@ html, body {
 /* Subtitle */
 .card-subtitle {
   font-size: 0.5rem;
-  color: #7ec8ff;
-  opacity: 0.52;
+  color: #8accd4;
+  opacity: 0.55;
   letter-spacing: 0.04em;
   line-height: 1.5;
   text-align: center;
@@ -338,8 +360,8 @@ html, body {
 .coming-soon-badge {
   font-size: 0.48rem;
   letter-spacing: 0.24em;
-  color: #2a6aaa;
-  border: 1px solid rgba(42, 106, 170, 0.55);
+  color: #2a7a8a;
+  border: 1px solid rgba(42, 122, 138, 0.52);
   padding: 3px 8px;
   text-align: center;
   margin-bottom: 8px;
@@ -349,11 +371,11 @@ html, body {
 /* Divider */
 .card-divider {
   height: 1px;
-  background: rgba(74, 176, 255, 0.1);
+  background: rgba(93, 232, 240, 0.10);
   margin-bottom: 8px;
 }
 
-/* URL — must be clearly legible */
+/* URL */
 .card-url {
   display: flex;
   align-items: center;
@@ -366,21 +388,21 @@ html, body {
 .url-prefix {
   font-size: 0.52rem;
   letter-spacing: 0.1em;
-  color: #4ab0ff;
-  opacity: 0.75;
+  color: #5de8f0;
+  opacity: 0.72;
   flex-shrink: 0;
 }
 
 .url-body {
   font-size: 0.52rem;
   letter-spacing: 0.04em;
-  color: #c0e4ff;
-  opacity: 0.9;
+  color: #c8ecf0;
+  opacity: 0.88;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 
-/* ─── Mobile responsive ─────────────────────────────────────────────────── */
+/* ─── Mobile responsive ──────────────────────────────────────────────────── */
 
 @media (max-width: 768px) {
   .hero-title { letter-spacing: 0.14em; }
@@ -390,8 +412,8 @@ html, body {
   .sticky-section-label .label-text { font-size: 0.5rem; letter-spacing: 0.18em; }
 
   .summary-panel { width: 90vw; }
-  .summary-avatar { width: 68px; height: 68px; }
-  .summary-text { font-size: 0.64rem; }
+  .summary-avatar { width: 70px; height: 70px; }
+  .summary-text { font-size: 0.65rem; }
 
   .node-card  { width: 162px; padding: 12px 10px 10px; }
   .avatar-ring { width: 56px; height: 56px; }

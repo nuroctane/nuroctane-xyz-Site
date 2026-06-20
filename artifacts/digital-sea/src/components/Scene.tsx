@@ -22,11 +22,7 @@ class WebGLErrorBoundary extends Component<
     super(props);
     this.state = { hasError: false };
   }
-
-  static getDerivedStateFromError() {
-    return { hasError: true };
-  }
-
+  static getDerivedStateFromError() { return { hasError: true }; }
   render() {
     if (this.state.hasError) return this.props.fallback;
     return this.props.children;
@@ -34,25 +30,16 @@ class WebGLErrorBoundary extends Component<
 }
 
 const NoWebGLFallback = () => (
-  <div
-    style={{
-      position: 'fixed',
-      inset: 0,
-      background: '#04091a',
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      flexDirection: 'column',
-      gap: '1rem',
-      fontFamily: "'JetBrains Mono', monospace",
-      color: '#4a7fa8',
-      fontSize: '0.75rem',
-      letterSpacing: '0.1em',
-    }}
-  >
-    <div style={{ color: '#c0e4ff' }}>SYS://DIGITAL_SEA</div>
+  <div style={{
+    position: 'fixed', inset: 0, background: '#0b2730',
+    display: 'flex', alignItems: 'center', justifyContent: 'center',
+    flexDirection: 'column', gap: '1rem',
+    fontFamily: "'JetBrains Mono', monospace", color: '#4a9aaa', fontSize: '0.75rem',
+    letterSpacing: '0.1em',
+  }}>
+    <div style={{ color: '#bdeff2' }}>SYS://DIGITAL_SEA</div>
     <div>WebGL not available in this environment.</div>
-    <div style={{ color: '#4a7fa8' }}>Open in a modern browser to experience the full 3D scene.</div>
+    <div style={{ color: '#4a9aaa' }}>Open in a modern browser to experience the full 3D scene.</div>
   </div>
 );
 
@@ -65,31 +52,27 @@ export function Scene({ scrollProgress, tier }: Props) {
           alpha: false,
           powerPreference: 'high-performance',
           toneMapping: THREE.ACESFilmicToneMapping,
-          toneMappingExposure: 1.2,
+          toneMappingExposure: 1.1,
         }}
-        camera={{ fov: 65, near: 0.1, far: 400, position: [0, 0, 25] }}
+        camera={{ fov: 65, near: 0.1, far: 450, position: [0, 0, 25] }}
         dpr={tier === 'high' ? [1, 1.5] : [1, 1]}
         style={{ position: 'fixed', inset: 0 }}
-        onCreated={({ gl }) => {
-          // Suppress the THREE.Clock deprecation warning
-          gl.setPixelRatio(window.devicePixelRatio);
-        }}
       >
-        {/* Ocean blue deep-sea palette */}
-        <color attach="background" args={['#04091a']} />
-        <fog attach="fog" args={['#050d20', 28, 185]} />
+        {/* Teal/petrol palette — deep ocean, not midnight navy */}
+        <color attach="background" args={['#0b2730']} />
+        <fog attach="fog" args={['#0d2e3a', 30, 190]} />
 
-        {/* Deep ambient — cold ocean blue */}
-        <ambientLight intensity={0.2} color="#1a3a70" />
+        {/* Cold deep-ocean ambient */}
+        <ambientLight intensity={0.22} color="#1a5a60" />
 
-        {/* Key light — bright surface-light shaft from above */}
-        <directionalLight position={[3, 22, 8]} intensity={2.2} color="#6cc8ff" />
+        {/* Key shaft from above — bright cyan-white */}
+        <directionalLight position={[4, 24, 10]} intensity={2.4} color="#7ae8f0" />
 
-        {/* Fill lights scattered through the corridor */}
-        <pointLight position={[0, 12, 0]} intensity={3.0} color="#a0d8ff" distance={90} decay={2} />
-        <pointLight position={[-10, 4, -45]} intensity={1.8} color="#1a6aaa" distance={70} decay={2} />
-        <pointLight position={[10, 6, -90]} intensity={1.8} color="#0e4a88" distance={70} decay={2} />
-        <pointLight position={[-6, 8, -135]} intensity={1.6} color="#1a6aaa" distance={60} decay={2} />
+        {/* Fill lights — teal tones throughout the corridor */}
+        <pointLight position={[0, 14, 0]}    intensity={3.2} color="#5de8f0" distance={100} decay={2} />
+        <pointLight position={[-12, 5, -50]} intensity={1.9} color="#1a8a9a" distance={80}  decay={2} />
+        <pointLight position={[12, 7, -100]} intensity={1.9} color="#0d6a7a" distance={80}  decay={2} />
+        <pointLight position={[-8, 9, -150]} intensity={1.7} color="#1a8a9a" distance={70}  decay={2} />
 
         <Suspense fallback={null}>
           <Blocks />
