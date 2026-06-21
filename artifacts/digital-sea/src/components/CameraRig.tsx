@@ -13,9 +13,10 @@ const _camTarget = new THREE.Vector3();
 
 interface Props {
   scrollProgress: MutableRefObject<number>;
+  mode: 'scroll' | 'camera';
 }
 
-export function CameraRig({ scrollProgress }: Props) {
+export function CameraRig({ scrollProgress, mode }: Props) {
   const { camera } = useThree();
   const clock = useThree((s) => s.clock);
   const smoothT = useRef(0);
@@ -23,9 +24,10 @@ export function CameraRig({ scrollProgress }: Props) {
   const leanX = useRef(0);
 
   useFrame(() => {
-    const rawT = scrollProgress.current;
+    // In camera/explore mode, OrbitControls takes over — skip entirely
+    if (mode === 'camera') return;
 
-    // Detect scroll direction — positive = forward, negative = backward
+    const rawT = scrollProgress.current;
     const scrollDir = rawT - prevRawT.current;
     prevRawT.current = rawT;
 
@@ -45,13 +47,11 @@ export function CameraRig({ scrollProgress }: Props) {
       }
     }
 
-    // Directional magnetic pull: gentle forward snap, minimal backward resistance
-    // so scroll-back feels as free as scroll-forward
+    // Directional magnetic pull
     const isScrollingBackward = scrollDir < -0.0001;
     const pullStrength = isScrollingBackward ? maxProx * 0.04 : maxProx * 0.20;
     const magneticT = rawT + (nearestMid - rawT) * pullStrength;
 
-    // Faster lerp so camera reacts promptly to direction changes
     const lerpSpeed = isScrollingBackward ? 0.10 : (0.06 + (1 - maxProx) * 0.04);
     smoothT.current += (magneticT - smoothT.current) * lerpSpeed;
 
@@ -65,14 +65,12 @@ export function CameraRig({ scrollProgress }: Props) {
     const driftX = Math.sin(elapsed * 0.15) * 0.13;
     const driftY = Math.cos(elapsed * 0.10) * 0.09;
 
-    // Small position lean toward active node side
     const leanTarget = activePos ? activePos.x * 0.15 * maxProx : 0;
     leanX.current += (leanTarget - leanX.current) * 0.05;
 
     _camTarget.set(_pos.x + driftX + leanX.current, _pos.y + driftY, _pos.z);
     camera.position.lerp(_camTarget, 0.07);
 
-    // ── Look-at: blend gaze from path-ahead → active node to center card ───
     if (activePos && maxProx > 0.05) {
       const blend = Math.pow(maxProx, 0.55) * 0.88;
       _nodeLook.set(activePos.x, activePos.y, activePos.z);

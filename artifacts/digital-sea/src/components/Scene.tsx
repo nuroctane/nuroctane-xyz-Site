@@ -1,4 +1,5 @@
 import { Canvas } from '@react-three/fiber';
+import { OrbitControls } from '@react-three/drei';
 import { Component, MutableRefObject, Suspense, ReactNode } from 'react';
 import * as THREE from 'three';
 import { CameraRig } from './CameraRig';
@@ -12,6 +13,7 @@ import { PerformanceTier } from '../hooks/usePerformanceTier';
 interface Props {
   scrollProgress: MutableRefObject<number>;
   tier: PerformanceTier;
+  mode: 'scroll' | 'camera';
 }
 
 class WebGLErrorBoundary extends Component<
@@ -43,7 +45,7 @@ const NoWebGLFallback = () => (
   </div>
 );
 
-export function Scene({ scrollProgress, tier }: Props) {
+export function Scene({ scrollProgress, tier, mode }: Props) {
   return (
     <WebGLErrorBoundary fallback={<NoWebGLFallback />}>
       <Canvas
@@ -58,17 +60,11 @@ export function Scene({ scrollProgress, tier }: Props) {
         dpr={tier === 'high' ? [1, 1.5] : [1, 1]}
         style={{ position: 'fixed', inset: 0 }}
       >
-        {/* Teal/petrol palette — deep ocean, not midnight navy */}
         <color attach="background" args={['#0b2730']} />
         <fog attach="fog" args={['#0d2e3a', 30, 190]} />
 
-        {/* Cold deep-ocean ambient */}
         <ambientLight intensity={0.22} color="#1a5a60" />
-
-        {/* Key shaft from above — bright cyan-white */}
         <directionalLight position={[4, 24, 10]} intensity={2.4} color="#7ae8f0" />
-
-        {/* Fill lights — teal tones throughout the corridor */}
         <pointLight position={[0, 14, 0]}    intensity={3.2} color="#5de8f0" distance={100} decay={2} />
         <pointLight position={[-12, 5, -50]} intensity={1.9} color="#1a8a9a" distance={80}  decay={2} />
         <pointLight position={[12, 7, -100]} intensity={1.9} color="#0d6a7a" distance={80}  decay={2} />
@@ -81,7 +77,24 @@ export function Scene({ scrollProgress, tier }: Props) {
           <Nodes scrollProgress={scrollProgress} />
         </Suspense>
 
-        <CameraRig scrollProgress={scrollProgress} />
+        <CameraRig scrollProgress={scrollProgress} mode={mode} />
+
+        {/* OrbitControls active only in explore/camera mode */}
+        {mode === 'camera' && (
+          <OrbitControls
+            enableDamping={true}
+            dampingFactor={0.07}
+            enableZoom={true}
+            minDistance={2}
+            maxDistance={120}
+            enablePan={true}
+            panSpeed={1.2}
+            rotateSpeed={0.7}
+            zoomSpeed={1.0}
+            makeDefault
+          />
+        )}
+
         <Effects tier={tier} />
       </Canvas>
     </WebGLErrorBoundary>

@@ -1,7 +1,9 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useScrollProgress } from './hooks/useScrollProgress';
 import { usePerformanceTier } from './hooks/usePerformanceTier';
 import { Scene } from './components/Scene';
+import { QuickNav } from './components/QuickNav';
+import { ModeToggle } from './components/ModeToggle';
 
 const PROJECT_THRESHOLD = 0.62;
 
@@ -38,7 +40,6 @@ function SectionLabel({ scrollProgress }: { scrollProgress: React.MutableRefObje
   );
 }
 
-// Summary appears early in the sea, before any nodes, then vanishes
 function SummaryPanel() {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -49,7 +50,6 @@ function SummaryPanel() {
       const scrollY = window.scrollY;
       const total = document.documentElement.scrollHeight - window.innerHeight;
       const t = total > 0 ? scrollY / total : 0;
-      // Fade in from t=0.004, hold, fade out by t=0.048 (before first node at 0.059)
       let op = 0;
       if (t >= 0.004 && t < 0.016) op = (t - 0.004) / 0.012;
       else if (t >= 0.016 && t < 0.040) op = 1;
@@ -63,11 +63,7 @@ function SummaryPanel() {
 
   return (
     <div ref={ref} className="summary-panel" style={{ opacity: 0 }}>
-      <img
-        src="/assets/nodes/nuroctane-animated-avatar.gif"
-        alt="nuroctane"
-        className="summary-avatar"
-      />
+      <img src="/assets/nodes/nuroctane-animated-avatar.gif" alt="nuroctane" className="summary-avatar" />
       <div className="summary-label">SYS://IDENTITY</div>
       <p className="summary-text">
         I am <strong>"nuroctane"</strong> or <em>"nur"</em> for short.
@@ -84,7 +80,6 @@ function SummaryPanel() {
   );
 }
 
-// End-of-sea panel — exclusive to the very end of the journey
 function EndPanel() {
   const ref = useRef<HTMLDivElement>(null);
 
@@ -95,7 +90,6 @@ function EndPanel() {
       const scrollY = window.scrollY;
       const total = document.documentElement.scrollHeight - window.innerHeight;
       const t = total > 0 ? scrollY / total : 0;
-      // Only visible near the very end of the sea
       let op = 0;
       if (t >= 0.963 && t < 0.975) op = (t - 0.963) / 0.012;
       else if (t >= 0.975) op = 1;
@@ -109,11 +103,7 @@ function EndPanel() {
 
   return (
     <div ref={ref} className="summary-panel end-panel" style={{ opacity: 0, pointerEvents: 'none' }}>
-      <img
-        src="/assets/nodes/nuroctane-animated-avatar.gif"
-        alt="nuroctane"
-        className="summary-avatar"
-      />
+      <img src="/assets/nodes/nuroctane-animated-avatar.gif" alt="nuroctane" className="summary-avatar" />
       <div className="summary-label">SYS://END_OF_SEA</div>
       <p className="summary-text">
         I am <strong>"nuroctane"</strong> or <em>"nur"</em> for short.
@@ -134,14 +124,38 @@ function EndPanel() {
 export default function App() {
   const scrollProgress = useScrollProgress();
   const tier = usePerformanceTier();
+  const [mode, setMode] = useState<'scroll' | 'camera'>('scroll');
+
+  // Lock page scroll in explore/camera mode so OrbitControls has full pointer ownership
+  useEffect(() => {
+    if (mode === 'camera') {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+    }
+    return () => { document.body.style.overflow = ''; };
+  }, [mode]);
 
   return (
     <>
-      <Scene scrollProgress={scrollProgress} tier={tier} />
+      <Scene scrollProgress={scrollProgress} tier={tier} mode={mode} />
       <div className="scanline-overlay" />
       <SectionLabel scrollProgress={scrollProgress} />
       <SummaryPanel />
       <EndPanel />
+
+      {/* Top-left: Code Lyoko quick nav */}
+      <QuickNav />
+
+      {/* Bottom-left: sea ↔ explore mode toggle */}
+      <ModeToggle mode={mode} setMode={setMode} />
+
+      {/* Explore mode hint overlay */}
+      {mode === 'camera' && (
+        <div className="explore-hint">
+          drag to look around · scroll to zoom
+        </div>
+      )}
 
       <div style={{ height: '1800vh', position: 'relative', zIndex: 1, pointerEvents: 'none' }}>
         <div className="hero-block">
