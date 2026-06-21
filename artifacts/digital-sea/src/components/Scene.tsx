@@ -79,7 +79,7 @@ export function Scene({ scrollProgress, tier, mode }: Props) {
           <LightShafts />
           <Particles count={tier === 'high' ? 3000 : 1200} />
           <Nodes scrollProgress={scrollProgress} mode={mode} />
-          <FakeNodes mode={mode} count={tier === 'high' ? 14 : 8} shapeCount={tier === 'high' ? 7 : 3} />
+          <FakeNodes mode={mode} count={tier === 'high' ? 28 : 14} shapeCount={tier === 'high' ? 14 : 6} />
         </Suspense>
 
         <CameraRig scrollProgress={scrollProgress} mode={mode} />
