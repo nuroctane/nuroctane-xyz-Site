@@ -1,5 +1,5 @@
-import { useRef, useMemo, MutableRefObject } from 'react';
-import { useFrame } from '@react-three/fiber';
+import { useRef, useMemo, useCallback, MutableRefObject } from 'react';
+import { useFrame, useThree } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { nodes, NodeData } from '../data/nodes';
@@ -12,6 +12,8 @@ const _qFace = new THREE.Quaternion();
 const _qResult = new THREE.Quaternion();
 const _euler = new THREE.Euler();
 const _flipQ = new THREE.Quaternion(0, 1, 0, 0);
+const _right = new THREE.Vector3();
+const _camUp = new THREE.Vector3();
 
 function computeProximity(node: NodeData, t: number): number {
   const mid = (node.scrollStart + node.scrollEnd) / 2;
@@ -19,8 +21,6 @@ function computeProximity(node: NodeData, t: number): number {
   return Math.max(0, Math.min(1, 1 - Math.abs(t - mid) / halfRange));
 }
 
-// Secondary card floats above for even-index nodes, below for odd-index
-// (perpendicular to the card's face — always stays on screen regardless of card X)
 function descOffset(index: number): [number, number, number] {
   return index % 2 === 0 ? [0, 1.65, 0] : [0, -1.65, 0];
 }
@@ -29,15 +29,29 @@ interface SingleNodeProps {
   node: NodeData;
   scrollProgress: MutableRefObject<number>;
   index: number;
+  mode: 'scroll' | 'camera';
 }
 
-function SingleNode({ node, scrollProgress, index }: SingleNodeProps) {
-  const groupRef = useRef<THREE.Group>(null);
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const descWrapperRef = useRef<HTMLDivElement>(null);
-  const hoverRef = useRef(false);
-  const ringRef = useRef<THREE.Mesh>(null);
+function SingleNode({ node, scrollProgress, index, mode }: SingleNodeProps) {
+  const { camera } = useThree();
+  const groupRef        = useRef<THREE.Group>(null);
+  const wrapperRef      = useRef<HTMLDivElement>(null);
+  const descWrapperRef  = useRef<HTMLDivElement>(null);
+  const hoverRef        = useRef(false);
+  const ringRef         = useRef<THREE.Mesh>(null);
   const hoverParticlesRef = useRef<THREE.Points>(null);
+
+  // Keep mode accessible inside useFrame without stale closure
+  const modeRef = useRef(mode);
+  modeRef.current = mode;
+
+  // Card drag state (explore mode only — resets on refresh)
+  const cardOffset    = useRef(new THREE.Vector3());
+  const isDragging    = useRef(false);
+  const holdTimer     = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const lastPointer   = useRef({ x: 0, y: 0 });
+  const didDrag       = useRef(false);
+  const dragWrapRef   = useRef<HTMLDivElement>(null);
 
   const phase = index * 1.374;
   const offset = descOffset(index);
@@ -64,7 +78,48 @@ function SingleNode({ node, scrollProgress, index }: SingleNodeProps) {
     blending: THREE.AdditiveBlending, depthWrite: false,
   }), []);
 
-  useFrame(({ camera, clock }) => {
+  // ── Card drag handlers (explore mode) ──────────────────────────────────────
+  const onDragPointerDown = useCallback((e: React.PointerEvent) => {
+    if (mode !== 'camera') return;
+    e.stopPropagation();
+    didDrag.current = false;
+    lastPointer.current = { x: e.clientX, y: e.clientY };
+    holdTimer.current = setTimeout(() => {
+      isDragging.current = true;
+      didDrag.current = true;
+      // Capture pointer so move/up always fire on this element
+      (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+      // Visual feedback: show grab cursor
+      if (dragWrapRef.current) dragWrapRef.current.style.cursor = 'grabbing';
+    }, 320);
+  }, [mode]);
+
+  const onDragPointerMove = useCallback((e: React.PointerEvent) => {
+    if (!isDragging.current) return;
+    e.stopPropagation();
+    const dx = e.clientX - lastPointer.current.x;
+    const dy = e.clientY - lastPointer.current.y;
+    lastPointer.current = { x: e.clientX, y: e.clientY };
+
+    // Convert screen delta → world space using camera's right & up vectors
+    const sensitivity = 0.009;
+    camera.getWorldDirection(_right);
+    _right.crossVectors(_right, camera.up).normalize();
+    _camUp.copy(camera.up).normalize();
+
+    cardOffset.current.addScaledVector(_right, dx * sensitivity);
+    cardOffset.current.addScaledVector(_camUp, -dy * sensitivity);
+  }, [camera]);
+
+  const onDragPointerUp = useCallback((e: React.PointerEvent) => {
+    if (holdTimer.current) { clearTimeout(holdTimer.current); holdTimer.current = null; }
+    isDragging.current = false;
+    if (dragWrapRef.current) dragWrapRef.current.style.cursor = mode === 'camera' ? 'grab' : '';
+    // Suppress click if we actually dragged
+    if (didDrag.current) e.stopPropagation();
+  }, [mode]);
+
+  useFrame(({ camera: cam, clock }) => {
     const group = groupRef.current;
     if (!group) return;
 
@@ -77,32 +132,42 @@ function SingleNode({ node, scrollProgress, index }: SingleNodeProps) {
     const wobZ = Math.cos(elapsed * 0.38 + phase * 1.21) * 0.12 * wobble;
     const floatY = Math.sin(elapsed * 0.31 + phase * 0.88) * 0.35 * wobble;
 
-    group.position.set(node.position.x, node.position.y + floatY, node.position.z);
+    // In explore mode, apply the dragged offset to card position
+    const ox = cardOffset.current.x;
+    const oy = cardOffset.current.y;
+    const oz = cardOffset.current.z;
+    group.position.set(node.position.x + ox, node.position.y + floatY + oy, node.position.z + oz);
 
     _euler.set(node.idleRotation.x + wobX, node.idleRotation.y, node.idleRotation.z + wobZ);
     _qIdle.setFromEuler(_euler);
 
-    _mat4.lookAt(node.position, camera.position, _up);
+    _mat4.lookAt(group.position, cam.position, _up);
     _qFace.setFromRotationMatrix(_mat4);
 
     _qResult.slerpQuaternions(_qIdle, _qFace, Math.pow(p, 0.55));
     _qResult.multiply(_flipQ);
     group.quaternion.copy(_qResult);
-    group.scale.setScalar(0.5 + p * 0.5);
+    // In explore mode, boost scale slightly so all cards remain faintly visible
+    const effectiveP = modeRef.current === 'camera' ? Math.max(p, 0.06) : p;
+    group.scale.setScalar(0.5 + effectiveP * 0.5);
 
     // Main card wrapper
     const el = wrapperRef.current;
     if (el) {
-      el.style.opacity = String(p);
+      el.style.opacity = String(effectiveP);
       el.style.pointerEvents = p > 0.38 ? 'auto' : 'none';
     }
 
-    // Description card — slightly delayed fade, no pointer events
+    // Description card
     const descEl = descWrapperRef.current;
     if (descEl) {
-      // Starts fading in a little later than main card, disappears a little sooner
       const descP = Math.max(0, Math.min(1, (p - 0.15) / 0.85));
       descEl.style.opacity = String(descP);
+    }
+
+    // Drag wrapper cursor
+    if (dragWrapRef.current && !isDragging.current) {
+      dragWrapRef.current.style.cursor = mode === 'camera' ? 'grab' : '';
     }
 
     // Hover ring
@@ -139,17 +204,28 @@ function SingleNode({ node, scrollProgress, index }: SingleNodeProps) {
 
       {/* ── Main card ── */}
       <Html transform distanceFactor={4.5} zIndexRange={[100, 0]}>
+        {/* Drag wrapper (outer) — handles hold-to-drag in explore mode */}
         <div
-          ref={wrapperRef}
-          style={{ opacity: 0, pointerEvents: 'none' }}
-          onMouseEnter={() => { hoverRef.current = true; }}
-          onMouseLeave={() => { hoverRef.current = false; }}
+          ref={dragWrapRef}
+          onPointerDown={onDragPointerDown}
+          onPointerMove={onDragPointerMove}
+          onPointerUp={onDragPointerUp}
+          onPointerCancel={onDragPointerUp}
+          style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
         >
-          <NodeCard node={node} />
+          {/* Opacity wrapper (inner) — controlled by proximity */}
+          <div
+            ref={wrapperRef}
+            style={{ opacity: 0, pointerEvents: 'none' }}
+            onMouseEnter={() => { hoverRef.current = true; }}
+            onMouseLeave={() => { hoverRef.current = false; }}
+          >
+            <NodeCard node={node} />
+          </div>
         </div>
       </Html>
 
-      {/* ── Description card — floats above or below the main card ── */}
+      {/* ── Description card ── */}
       {node.description && (
         <Html
           transform
@@ -171,11 +247,23 @@ function SingleNode({ node, scrollProgress, index }: SingleNodeProps) {
   );
 }
 
-export function Nodes({ scrollProgress }: { scrollProgress: MutableRefObject<number> }) {
+export function Nodes({
+  scrollProgress,
+  mode,
+}: {
+  scrollProgress: MutableRefObject<number>;
+  mode: 'scroll' | 'camera';
+}) {
   return (
     <>
       {nodes.map((node, i) => (
-        <SingleNode key={node.id} node={node} scrollProgress={scrollProgress} index={i} />
+        <SingleNode
+          key={node.id}
+          node={node}
+          scrollProgress={scrollProgress}
+          index={i}
+          mode={mode}
+        />
       ))}
     </>
   );

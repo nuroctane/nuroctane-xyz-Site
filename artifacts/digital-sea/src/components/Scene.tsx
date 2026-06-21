@@ -1,8 +1,8 @@
 import { Canvas } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
 import { Component, MutableRefObject, Suspense, ReactNode } from 'react';
 import * as THREE from 'three';
 import { CameraRig } from './CameraRig';
+import { OrbitCam } from './OrbitCam';
 import { Blocks } from './Blocks';
 import { Particles } from './Particles';
 import { Nodes } from './Nodes';
@@ -74,26 +74,11 @@ export function Scene({ scrollProgress, tier, mode }: Props) {
           <Blocks />
           <LightShafts />
           <Particles count={tier === 'high' ? 3000 : 1200} />
-          <Nodes scrollProgress={scrollProgress} />
+          <Nodes scrollProgress={scrollProgress} mode={mode} />
         </Suspense>
 
         <CameraRig scrollProgress={scrollProgress} mode={mode} />
-
-        {/* OrbitControls active only in explore/camera mode */}
-        {mode === 'camera' && (
-          <OrbitControls
-            enableDamping={true}
-            dampingFactor={0.07}
-            enableZoom={true}
-            minDistance={2}
-            maxDistance={120}
-            enablePan={true}
-            panSpeed={1.2}
-            rotateSpeed={0.7}
-            zoomSpeed={1.0}
-            makeDefault
-          />
-        )}
+        <OrbitCam enabled={mode === 'camera'} />
 
         <Effects tier={tier} />
       </Canvas>
