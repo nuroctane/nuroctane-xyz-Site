@@ -12,21 +12,28 @@ interface Props {
 export function OrbitCam({ enabled }: Props) {
   const { camera } = useThree();
   const orbitRef = useRef<any>(null);
-  // Flag: set target on the very next frame when camera mode activates
-  const needsSync = useRef(false);
+  // Reinforce the target sync for one extra frame after activation
+  const syncFrames = useRef(0);
 
+  // Anchor the orbit pivot directly ahead of the camera the instant explore
+  // mode activates. OrbitControls defaults its target to world origin (0,0,0);
+  // without this the camera would swing to look at the origin on switch — the
+  // "jump" where you lose the card you were near. Doing it synchronously in the
+  // effect (before the next rAF / OrbitControls.update) keeps the view put.
   useEffect(() => {
-    if (enabled) needsSync.current = true;
-  }, [enabled]);
+    if (enabled && orbitRef.current) {
+      camera.getWorldDirection(_dir);
+      orbitRef.current.target.copy(camera.position).addScaledVector(_dir, 10);
+      orbitRef.current.update();
+      syncFrames.current = 2;
+    }
+  }, [enabled, camera]);
 
   useFrame(() => {
-    if (needsSync.current && orbitRef.current) {
-      needsSync.current = false;
+    if (syncFrames.current > 0 && orbitRef.current) {
+      syncFrames.current -= 1;
       camera.getWorldDirection(_dir);
-      // Orbit around a point 10 units ahead of the camera — preserves current view
-      orbitRef.current.target
-        .copy(camera.position)
-        .addScaledVector(_dir, 10);
+      orbitRef.current.target.copy(camera.position).addScaledVector(_dir, 10);
       orbitRef.current.update();
     }
   });
@@ -36,11 +43,11 @@ export function OrbitCam({ enabled }: Props) {
       ref={orbitRef}
       enabled={enabled}
       enableDamping
-      dampingFactor={0.06}
-      /* Very slow, deliberate movement */
-      rotateSpeed={0.14}
-      panSpeed={0.18}
-      zoomSpeed={0.22}
+      dampingFactor={0.08}
+      /* Responsive but controllable */
+      rotateSpeed={0.5}
+      panSpeed={0.65}
+      zoomSpeed={0.7}
       minDistance={1}
       maxDistance={180}
       enablePan

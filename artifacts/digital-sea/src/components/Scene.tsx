@@ -4,9 +4,12 @@ import * as THREE from 'three';
 import { CameraRig } from './CameraRig';
 import { OrbitCam } from './OrbitCam';
 import { Blocks } from './Blocks';
+import { Structures } from './Structures';
 import { Particles } from './Particles';
 import { Nodes } from './Nodes';
+import { FakeNodes } from './FakeNodes';
 import { Effects } from './Effects';
+import { SeaColorShift } from './SeaColorShift';
 import { LightShafts } from './LightShafts';
 import { PerformanceTier } from '../hooks/usePerformanceTier';
 
@@ -72,13 +75,16 @@ export function Scene({ scrollProgress, tier, mode }: Props) {
 
         <Suspense fallback={null}>
           <Blocks />
+          <Structures tier={tier} />
           <LightShafts />
           <Particles count={tier === 'high' ? 3000 : 1200} />
           <Nodes scrollProgress={scrollProgress} mode={mode} />
+          <FakeNodes mode={mode} count={tier === 'high' ? 12 : 7} />
         </Suspense>
 
         <CameraRig scrollProgress={scrollProgress} mode={mode} />
         <OrbitCam enabled={mode === 'camera'} />
+        <SeaColorShift mode={mode} tier={tier} />
 
         <Effects tier={tier} />
       </Canvas>

@@ -153,7 +153,7 @@ export default function App() {
       {/* Explore mode hint overlay */}
       {mode === 'camera' && (
         <div className="explore-hint">
-          drag to look around · scroll to zoom
+          drag to look around · scroll to zoom · hold + drag a card to move it
         </div>
       )}
 

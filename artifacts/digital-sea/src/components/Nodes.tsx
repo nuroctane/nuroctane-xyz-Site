@@ -1,9 +1,11 @@
-import { useRef, useMemo, useCallback, MutableRefObject } from 'react';
-import { useFrame, useThree } from '@react-three/fiber';
+import { useRef, useMemo, MutableRefObject } from 'react';
+import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { nodes, NodeData } from '../data/nodes';
 import { NodeCard } from './NodeCard';
+import { useCardDrag } from '../hooks/useCardDrag';
+import { DragWake } from './DragWake';
 
 const _mat4 = new THREE.Matrix4();
 const _up = new THREE.Vector3(0, 1, 0);
@@ -12,8 +14,6 @@ const _qFace = new THREE.Quaternion();
 const _qResult = new THREE.Quaternion();
 const _euler = new THREE.Euler();
 const _flipQ = new THREE.Quaternion(0, 1, 0, 0);
-const _right = new THREE.Vector3();
-const _camUp = new THREE.Vector3();
 
 function computeProximity(node: NodeData, t: number): number {
   const mid = (node.scrollStart + node.scrollEnd) / 2;
@@ -33,7 +33,6 @@ interface SingleNodeProps {
 }
 
 function SingleNode({ node, scrollProgress, index, mode }: SingleNodeProps) {
-  const { camera } = useThree();
   const groupRef        = useRef<THREE.Group>(null);
   const wrapperRef      = useRef<HTMLDivElement>(null);
   const descWrapperRef  = useRef<HTMLDivElement>(null);
@@ -45,13 +44,9 @@ function SingleNode({ node, scrollProgress, index, mode }: SingleNodeProps) {
   const modeRef = useRef(mode);
   modeRef.current = mode;
 
-  // Card drag state (explore mode only — resets on refresh)
-  const cardOffset    = useRef(new THREE.Vector3());
-  const isDragging    = useRef(false);
-  const holdTimer     = useRef<ReturnType<typeof setTimeout> | null>(null);
-  const lastPointer   = useRef({ x: 0, y: 0 });
-  const didDrag       = useRef(false);
-  const dragWrapRef   = useRef<HTMLDivElement>(null);
+  // Flowing hold-to-drag in explore mode (shared, smoothed physics)
+  const drag = useCardDrag(mode);
+  const dragWrapRef = useRef<HTMLDivElement>(null);
 
   const phase = index * 1.374;
   const offset = descOffset(index);
@@ -78,50 +73,6 @@ function SingleNode({ node, scrollProgress, index, mode }: SingleNodeProps) {
     blending: THREE.AdditiveBlending, depthWrite: false,
   }), []);
 
-  // ── Card drag handlers (explore mode) ──────────────────────────────────────
-  const onDragPointerDown = useCallback((e: React.PointerEvent) => {
-    if (mode !== 'camera') return;
-    e.stopPropagation();
-    didDrag.current = false;
-    lastPointer.current = { x: e.clientX, y: e.clientY };
-    // Capture refs before the timeout — currentTarget is null after handler returns
-    const target = e.currentTarget as HTMLElement;
-    const pointerId = e.pointerId;
-    holdTimer.current = setTimeout(() => {
-      isDragging.current = true;
-      didDrag.current = true;
-      // Capture pointer so move/up always fire on this element
-      try { target.setPointerCapture(pointerId); } catch (_) { /* element may have unmounted */ }
-      // Visual feedback: show grab cursor
-      if (dragWrapRef.current) dragWrapRef.current.style.cursor = 'grabbing';
-    }, 320);
-  }, [mode]);
-
-  const onDragPointerMove = useCallback((e: React.PointerEvent) => {
-    if (!isDragging.current) return;
-    e.stopPropagation();
-    const dx = e.clientX - lastPointer.current.x;
-    const dy = e.clientY - lastPointer.current.y;
-    lastPointer.current = { x: e.clientX, y: e.clientY };
-
-    // Convert screen delta → world space using camera's right & up vectors
-    const sensitivity = 0.009;
-    camera.getWorldDirection(_right);
-    _right.crossVectors(_right, camera.up).normalize();
-    _camUp.copy(camera.up).normalize();
-
-    cardOffset.current.addScaledVector(_right, dx * sensitivity);
-    cardOffset.current.addScaledVector(_camUp, -dy * sensitivity);
-  }, [camera]);
-
-  const onDragPointerUp = useCallback((e: React.PointerEvent) => {
-    if (holdTimer.current) { clearTimeout(holdTimer.current); holdTimer.current = null; }
-    isDragging.current = false;
-    if (dragWrapRef.current) dragWrapRef.current.style.cursor = mode === 'camera' ? 'grab' : '';
-    // Suppress click if we actually dragged
-    if (didDrag.current) e.stopPropagation();
-  }, [mode]);
-
   useFrame(({ camera: cam, clock }) => {
     const group = groupRef.current;
     if (!group) return;
@@ -135,10 +86,10 @@ function SingleNode({ node, scrollProgress, index, mode }: SingleNodeProps) {
     const wobZ = Math.cos(elapsed * 0.38 + phase * 1.21) * 0.12 * wobble;
     const floatY = Math.sin(elapsed * 0.31 + phase * 0.88) * 0.35 * wobble;
 
-    // In explore mode, apply the dragged offset to card position
-    const ox = cardOffset.current.x;
-    const oy = cardOffset.current.y;
-    const oz = cardOffset.current.z;
+    // In explore mode, apply the smoothed dragged offset to card position
+    const ox = drag.offset.current.x;
+    const oy = drag.offset.current.y;
+    const oz = drag.offset.current.z;
     group.position.set(node.position.x + ox, node.position.y + floatY + oy, node.position.z + oz);
 
     _euler.set(node.idleRotation.x + wobX, node.idleRotation.y, node.idleRotation.z + wobZ);
@@ -147,30 +98,34 @@ function SingleNode({ node, scrollProgress, index, mode }: SingleNodeProps) {
     _mat4.lookAt(group.position, cam.position, _up);
     _qFace.setFromRotationMatrix(_mat4);
 
-    _qResult.slerpQuaternions(_qIdle, _qFace, Math.pow(p, 0.55));
+    // In explore mode, keep every card clearly visible AND facing the camera
+    const isCam = modeRef.current === 'camera';
+    const faceAmt = isCam ? Math.max(Math.pow(p, 0.55), 0.82) : Math.pow(p, 0.55);
+    _qResult.slerpQuaternions(_qIdle, _qFace, faceAmt);
     _qResult.multiply(_flipQ);
     group.quaternion.copy(_qResult);
-    // In explore mode, boost scale slightly so all cards remain faintly visible
-    const effectiveP = modeRef.current === 'camera' ? Math.max(p, 0.06) : p;
+    const effectiveP = isCam ? Math.max(p, 0.62) : p;
     group.scale.setScalar(0.5 + effectiveP * 0.5);
 
     // Main card wrapper
     const el = wrapperRef.current;
     if (el) {
       el.style.opacity = String(effectiveP);
-      el.style.pointerEvents = p > 0.38 ? 'auto' : 'none';
+      // In explore mode every card is interactive (draggable / clickable)
+      el.style.pointerEvents = isCam ? 'auto' : (p > 0.38 ? 'auto' : 'none');
     }
 
     // Description card
     const descEl = descWrapperRef.current;
     if (descEl) {
-      const descP = Math.max(0, Math.min(1, (p - 0.15) / 0.85));
+      let descP = Math.max(0, Math.min(1, (p - 0.15) / 0.85));
+      if (isCam) descP = Math.max(descP, 0.32);
       descEl.style.opacity = String(descP);
     }
 
     // Drag wrapper cursor
-    if (dragWrapRef.current && !isDragging.current) {
-      dragWrapRef.current.style.cursor = mode === 'camera' ? 'grab' : '';
+    if (dragWrapRef.current && !drag.isDragging.current) {
+      dragWrapRef.current.style.cursor = isCam ? 'grab' : '';
     }
 
     // Hover ring
@@ -205,15 +160,15 @@ function SingleNode({ node, scrollProgress, index, mode }: SingleNodeProps) {
       {/* Hover orbit particles */}
       <points ref={hoverParticlesRef} geometry={hoverGeo} material={hoverMat} />
 
+      {/* Directional ocean wake while dragging the card */}
+      <DragWake dirRef={drag.dragDir} activeRef={drag.dragActive} velRef={drag.dragVel} />
+
       {/* ── Main card ── */}
       <Html transform distanceFactor={4.5} zIndexRange={[100, 0]}>
         {/* Drag wrapper (outer) — handles hold-to-drag in explore mode */}
         <div
           ref={dragWrapRef}
-          onPointerDown={onDragPointerDown}
-          onPointerMove={onDragPointerMove}
-          onPointerUp={onDragPointerUp}
-          onPointerCancel={onDragPointerUp}
+          {...drag.handlers}
           style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
         >
           {/* Opacity wrapper (inner) — controlled by proximity */}

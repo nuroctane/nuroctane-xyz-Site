@@ -2,7 +2,7 @@ import { useRef, useMemo, useEffect } from 'react';
 import * as THREE from 'three';
 import { curve } from '../data/path';
 
-function mkRand(seed: number) {
+export function mkRand(seed: number) {
   let s = seed;
   return () => {
     s = (s * 1664525 + 1013904223) & 0xffffffff;
@@ -10,7 +10,7 @@ function mkRand(seed: number) {
   };
 }
 
-function makeMat(color: string, opacity: number, emissive = '#061418') {
+export function makeMat(color: string, opacity: number, emissive = '#061418') {
   return new THREE.MeshPhysicalMaterial({
     color: new THREE.Color(color),
     emissive: new THREE.Color(emissive),
@@ -25,13 +25,13 @@ function makeMat(color: string, opacity: number, emissive = '#061418') {
   });
 }
 
-interface BlockSpec {
+export interface BlockSpec {
   x: number; y: number; z: number;
   w: number; h: number; d: number;
   rotY: number; rotX: number;
 }
 
-function InstanceGroup({ specs, mat }: { specs: BlockSpec[]; mat: THREE.Material }) {
+export function InstanceGroup({ specs, mat }: { specs: BlockSpec[]; mat: THREE.Material }) {
   const meshRef = useRef<THREE.InstancedMesh>(null);
   const dummy = useMemo(() => new THREE.Object3D(), []);
   useEffect(() => {
