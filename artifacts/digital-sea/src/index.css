@@ -884,3 +884,75 @@ html, body {
   .node-desc-card { width: 140px; }
   .avatar-ring { width: 48px; height: 48px; }
 }
+
+/* Bottom-right wallet tag (mirrors SOC://SOCIAL_LINKS corner styling) */
+.wallet-tag {
+  position: fixed;
+  bottom: 1.4rem;
+  right: 1.5rem;
+  z-index: 800;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  transition: opacity 0.35s ease;
+}
+.wallet-venmo {
+  flex: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  opacity: 0.72;
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.wallet-venmo:hover {
+  opacity: 1;
+  transform: translateY(-1px);
+}
+.wallet-venmo img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  filter: drop-shadow(0 0 6px rgba(93, 232, 240, 0.35));
+}
+.wallet-addrs {
+  border-right: 1px solid rgba(189, 239, 242, 0.32);
+  padding-right: 0.6rem;
+  text-align: right;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.wallet-addr {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.5rem;
+  white-space: nowrap;
+  user-select: text;
+}
+.wallet-addr-k {
+  font-size: 0.5rem;
+  letter-spacing: 0.28em;
+  color: #bdeff2;
+  opacity: 0.85;
+  text-transform: uppercase;
+}
+.wallet-addr-v {
+  font-size: 0.5rem;
+  letter-spacing: 0.04em;
+  color: rgba(189, 239, 242, 0.66);
+}
+
+@media (max-width: 768px) {
+  .wallet-tag { bottom: 1rem; right: 1rem; gap: 0.45rem; }
+  .wallet-venmo { width: 18px; height: 18px; }
+  .wallet-addr-k { font-size: 0.44rem; letter-spacing: 0.2em; }
+  .wallet-addr-v { font-size: 0.44rem; }
+}
+@media (max-width: 480px) {
+  .wallet-addr-k { font-size: 0.38rem; letter-spacing: 0.14em; }
+  .wallet-addr-v { font-size: 0.38rem; letter-spacing: 0.02em; }
+}
