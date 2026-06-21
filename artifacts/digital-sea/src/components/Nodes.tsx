@@ -84,11 +84,14 @@ function SingleNode({ node, scrollProgress, index, mode }: SingleNodeProps) {
     e.stopPropagation();
     didDrag.current = false;
     lastPointer.current = { x: e.clientX, y: e.clientY };
+    // Capture refs before the timeout — currentTarget is null after handler returns
+    const target = e.currentTarget as HTMLElement;
+    const pointerId = e.pointerId;
     holdTimer.current = setTimeout(() => {
       isDragging.current = true;
       didDrag.current = true;
       // Capture pointer so move/up always fire on this element
-      (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId);
+      try { target.setPointerCapture(pointerId); } catch (_) { /* element may have unmounted */ }
       // Visual feedback: show grab cursor
       if (dragWrapRef.current) dragWrapRef.current.style.cursor = 'grabbing';
     }, 320);
