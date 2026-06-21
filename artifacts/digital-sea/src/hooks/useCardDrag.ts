@@ -137,6 +137,9 @@ export function useCardDrag(mode: 'scroll' | 'camera') {
       onPointerUp,
       onPointerCancel: onPointerUp,
       onClickCapture,
+      // Kill the browser's native link/image drag-and-drop, which otherwise
+      // "tears off" a ghost of the anchor instead of moving the card.
+      onDragStart: (e: React.DragEvent) => e.preventDefault(),
     },
   };
 }

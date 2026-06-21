@@ -266,7 +266,20 @@ html, body {
 .fake-node-svg {
   display: block;
   width: 100%;
+  height: auto;
   border-radius: 4px;
+}
+
+/* Stop native link/image drag from "tearing off" cards while dragging */
+.fake-node,
+.node-card,
+.node-card img,
+.fake-node img,
+.avatar-img,
+.logo-img {
+  -webkit-user-drag: none;
+  -khtml-user-drag: none;
+  user-select: none;
 }
 
 .fake-node-foot {

@@ -22,6 +22,8 @@ export function CameraRig({ scrollProgress, mode }: Props) {
   const smoothT = useRef(0);
   const prevRawT = useRef(0);
   const leanX = useRef(0);
+  const smoothLook = useRef(new THREE.Vector3());
+  const lookReady = useRef(false);
 
   useFrame(() => {
     // In camera/explore mode, OrbitControls takes over — skip entirely
@@ -47,12 +49,13 @@ export function CameraRig({ scrollProgress, mode }: Props) {
       }
     }
 
-    // Directional magnetic pull
+    // Gentle magnetic dwell: ease toward each card's center as we pass it so
+    // the camera lingers on a card, then glides on to the next — never whipping.
     const isScrollingBackward = scrollDir < -0.0001;
-    const pullStrength = isScrollingBackward ? maxProx * 0.04 : maxProx * 0.20;
+    const pullStrength = isScrollingBackward ? maxProx * 0.04 : maxProx * 0.12;
     const magneticT = rawT + (nearestMid - rawT) * pullStrength;
 
-    const lerpSpeed = isScrollingBackward ? 0.10 : (0.06 + (1 - maxProx) * 0.04);
+    const lerpSpeed = isScrollingBackward ? 0.08 : (0.045 + (1 - maxProx) * 0.03);
     smoothT.current += (magneticT - smoothT.current) * lerpSpeed;
 
     const t = Math.max(0.001, Math.min(0.999, smoothT.current));
@@ -62,17 +65,20 @@ export function CameraRig({ scrollProgress, mode }: Props) {
     curve.getPoint(lookT, _pathLook);
 
     const elapsed = clock.elapsedTime;
-    const driftX = Math.sin(elapsed * 0.15) * 0.13;
-    const driftY = Math.cos(elapsed * 0.10) * 0.09;
+    const driftX = Math.sin(elapsed * 0.13) * 0.09;
+    const driftY = Math.cos(elapsed * 0.09) * 0.06;
 
-    const leanTarget = activePos ? activePos.x * 0.15 * maxProx : 0;
-    leanX.current += (leanTarget - leanX.current) * 0.05;
+    // Subtle bank toward the active card, heavily damped
+    const leanTarget = activePos ? activePos.x * 0.06 * maxProx : 0;
+    leanX.current += (leanTarget - leanX.current) * 0.035;
 
     _camTarget.set(_pos.x + driftX + leanX.current, _pos.y + driftY, _pos.z);
-    camera.position.lerp(_camTarget, 0.07);
+    camera.position.lerp(_camTarget, 0.055);
 
+    // Build the instantaneous look target: blend the path-ahead direction with
+    // the active card so the camera turns to regard each card as we drift by.
     if (activePos && maxProx > 0.05) {
-      const blend = Math.pow(maxProx, 0.55) * 0.88;
+      const blend = Math.pow(maxProx, 0.6) * 0.9;
       _nodeLook.set(activePos.x, activePos.y, activePos.z);
       _pathLook.x += driftX * 0.2;
       _pathLook.y += driftY * 0.2;
@@ -85,7 +91,16 @@ export function CameraRig({ scrollProgress, mode }: Props) {
       );
     }
 
-    camera.lookAt(_blendedLook);
+    // Critically: damp the LOOK target itself so transitions between cards are
+    // graceful pans instead of sudden snaps when the nearest card changes.
+    if (!lookReady.current) {
+      smoothLook.current.copy(_blendedLook);
+      lookReady.current = true;
+    } else {
+      smoothLook.current.lerp(_blendedLook, 0.05);
+    }
+
+    camera.lookAt(smoothLook.current);
   });
 
   return null;

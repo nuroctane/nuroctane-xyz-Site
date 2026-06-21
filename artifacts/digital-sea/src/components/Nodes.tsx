@@ -98,9 +98,10 @@ function SingleNode({ node, scrollProgress, index, mode }: SingleNodeProps) {
     _mat4.lookAt(group.position, cam.position, _up);
     _qFace.setFromRotationMatrix(_mat4);
 
-    // In explore mode, keep every card clearly visible AND facing the camera
+    // Cards always digitally face the camera (in both swim & explore modes),
+    // keeping just a sliver of idle tilt/wobble for life.
     const isCam = modeRef.current === 'camera';
-    const faceAmt = isCam ? Math.max(Math.pow(p, 0.55), 0.82) : Math.pow(p, 0.55);
+    const faceAmt = Math.max(Math.pow(p, 0.55), 0.9);
     _qResult.slerpQuaternions(_qIdle, _qFace, faceAmt);
     _qResult.multiply(_flipQ);
     group.quaternion.copy(_qResult);

@@ -10,7 +10,7 @@ function ImgWithFallback({
 }) {
   const [failed, setFailed] = React.useState(false);
   if (!src || failed) return <>{fallback}</>;
-  return <img src={src} alt={alt} className={className} onError={() => setFailed(true)} />;
+  return <img src={src} alt={alt} className={className} draggable={false} onError={() => setFailed(true)} />;
 }
 
 export function NodeCard({ node }: { node: NodeData }) {
@@ -37,6 +37,7 @@ export function NodeCard({ node }: { node: NodeData }) {
   return (
     <Tag
       {...linkProps}
+      draggable={false}
       className={`node-card${exploding ? ' node-card--exploding' : ''}`}
       onClick={handleClick}
       style={{
