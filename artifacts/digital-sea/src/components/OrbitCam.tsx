@@ -1,6 +1,6 @@
 import { useMemo, useEffect } from 'react';
 import { useThree, useFrame } from '@react-three/fiber';
-import { OrbitControls as ThreeOrbitControls } from 'three-stdlib';
+import { OrbitControls as ThreeOrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import * as THREE from 'three';
 
 const _dir = new THREE.Vector3();
