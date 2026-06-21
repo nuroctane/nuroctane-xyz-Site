@@ -216,8 +216,8 @@ export default function App() {
       <EndPanel />
       <WalletTag />
 
-      {/* Top-left: Code Lyoko quick nav */}
-      <QuickNav />
+      {/* Top-left: Code Lyoko quick nav — exits explore mode on open */}
+      <QuickNav onOpen={() => { if (mode === 'camera') setMode('scroll'); }} />
 
       {/* Bottom-left: mode toggle + return button (camera mode only) */}
       <div className="bottom-left-hud">

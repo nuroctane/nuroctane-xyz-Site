@@ -6,3 +6,5 @@
 - [Vercel deploy of Vite artifact](vercel-deploy-vite-artifact.md) — gate PORT to serve-only + default BASE_PATH "/"; add vercel.json outputDirectory dist/public to fix 404.
 - [R3F Html vs canvas filter](r3f-html-canvas-filter.md) — CSS filter on gl.domElement grades the 3D scene only; drei <Html> cards are DOM siblings so they're untouched.
 - [Hold-to-drag on Html cards](html-card-drag.md) — capture pointer on pointerdown (not after hold timer) + onClickCapture guard, or drag sticks / links open mid-drag.
+- [OrbitControls mode-switch jump fix](orbitcontrols-mode-switch.md) — drei's OrbitControls target defaults to (0,0,0); fix by owning the instance in useMemo and setting target before the first update().
+- [WASD + OrbitControls coexistence](wasd-orbit-coexistence.md) — when adding WASD movement alongside OrbitControls, always move controls.target by the same delta as camera.position or controls snaps back to old pivot next frame.

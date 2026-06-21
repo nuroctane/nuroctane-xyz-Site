@@ -118,7 +118,11 @@ const IconFin = () => (
 );
 
 // ── Main QuickNav ─────────────────────────────────────────────────────────────
-export function QuickNav() {
+interface QuickNavProps {
+  onOpen?: () => void;
+}
+
+export function QuickNav({ onOpen }: QuickNavProps) {
   const [open,     setOpen]     = useState(false);
   const [expanded, setExpanded] = useState<Set<string>>(new Set(['SOCIALS']));
   const panelRef = useRef<HTMLDivElement>(null);
@@ -155,7 +159,7 @@ export function QuickNav() {
       {/* ── Trigger button ── */}
       <button
         className={`qnav-trigger${open ? ' qnav-trigger--open' : ''}`}
-        onClick={() => setOpen(v => !v)}
+        onClick={() => { if (!open && onOpen) onOpen(); setOpen(v => !v); }}
         aria-label={open ? 'Close navigation' : 'Open navigation'}
         aria-expanded={open}
       >
