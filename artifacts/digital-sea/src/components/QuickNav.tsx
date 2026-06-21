@@ -3,7 +3,7 @@ import { nodes, NodeData } from '../data/nodes';
 
 // ── Node groupings ────────────────────────────────────────────────────────────
 const SOCIAL_IDS  = ['instagram','tiktok','x','substack','soundcloud','twitch','youtube','kick','anilist','steam','discord'];
-const PROJECT_IDS = ['atxtunerz','weatherguru','sis','astrosleep','geoskin','miyamaker'];
+const PROJECT_IDS = ['atxtunerz','github','weatherguru','sis','astrosleep','geoskin','miyamaker','webutils'];
 
 const LOGO_MAP: Record<string, string> = {
   instagram:  '/assets/nodes/instagram-logo.png',
@@ -18,7 +18,9 @@ const LOGO_MAP: Record<string, string> = {
   steam:      '/assets/nodes/steam-logo.png',
   discord:    '/assets/nodes/discord-logo.png',
   atxtunerz:  '/assets/nodes/instagram-logo.png',
+  github:     '/assets/nodes/github-logo.png',
   miyamaker:  '/assets/nodes/miyamaker-avatar.png',
+  webutils:   '/assets/nodes/wrench.png',
 };
 
 const ACRONYM_MAP: Record<string, string> = {
