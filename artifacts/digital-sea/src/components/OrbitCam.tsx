@@ -1,4 +1,4 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useLayoutEffect } from 'react';
 import { useThree, useFrame } from '@react-three/fiber';
 import { OrbitControls } from '@react-three/drei';
 import * as THREE from 'three';
@@ -31,10 +31,11 @@ export function OrbitCam({ enabled }: Props) {
 
   // Anchor the orbit pivot directly ahead of the camera the instant explore
   // mode activates. OrbitControls defaults its target to world origin (0,0,0);
-  // without this the camera would swing to look at the origin on switch — the
-  // "jump" where you lose the card you were near. Doing it synchronously in the
-  // effect (before the next rAF / OrbitControls.update) keeps the view put.
-  useEffect(() => {
+  // without this the camera would swing to look at the origin on switch.
+  // useLayoutEffect fires synchronously after mount, before the first rAF,
+  // so the target is set before drei's internal useFrame calls controls.update()
+  // — which is what caused the camera to jump/face toward origin on toggle.
+  useLayoutEffect(() => {
     if (enabled && orbitRef.current) {
       camera.getWorldDirection(_dir);
       orbitRef.current.target.copy(camera.position).addScaledVector(_dir, 10);
