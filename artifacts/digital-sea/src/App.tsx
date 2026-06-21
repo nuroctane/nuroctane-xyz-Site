@@ -4,6 +4,7 @@ import { usePerformanceTier } from './hooks/usePerformanceTier';
 import { Scene } from './components/Scene';
 import { QuickNav } from './components/QuickNav';
 import { ModeToggle } from './components/ModeToggle';
+import { ReturnButton } from './components/ReturnButton';
 
 const PROJECT_THRESHOLD = 0.62;
 
@@ -179,6 +180,22 @@ export default function App() {
   const scrollProgress = useScrollProgress();
   const tier = usePerformanceTier();
   const [mode, setMode] = useState<'scroll' | 'camera'>('scroll');
+  const savedScrollY = useRef(0);
+
+  function handleSetMode(next: 'scroll' | 'camera') {
+    if (next === 'camera') {
+      savedScrollY.current = window.scrollY;
+    }
+    setMode(next);
+  }
+
+  function handleReturn() {
+    setMode('scroll');
+    // Restore scroll position immediately (before overflow is re-enabled)
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: savedScrollY.current, behavior: 'instant' });
+    });
+  }
 
   // Lock page scroll in explore/camera mode so OrbitControls has full pointer ownership
   useEffect(() => {
@@ -202,8 +219,11 @@ export default function App() {
       {/* Top-left: Code Lyoko quick nav */}
       <QuickNav />
 
-      {/* Bottom-left: sea ↔ explore mode toggle */}
-      <ModeToggle mode={mode} setMode={setMode} />
+      {/* Bottom-left: mode toggle + return button (camera mode only) */}
+      <div className="bottom-left-hud">
+        <ModeToggle mode={mode} setMode={handleSetMode} />
+        {mode === 'camera' && <ReturnButton onReturn={handleReturn} />}
+      </div>
 
       {/* Explore mode hint overlay */}
       {mode === 'camera' && (

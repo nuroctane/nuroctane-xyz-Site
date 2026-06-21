@@ -741,11 +741,18 @@ html, body {
    MODE TOGGLE — angular pill, bottom left
    ═══════════════════════════════════════════════════════════════════════════ */
 
-.mode-toggle {
+.bottom-left-hud {
   position: fixed;
   bottom: 1.4rem;
   left: 1.4rem;
   z-index: 1000;
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.mode-toggle {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -851,6 +858,36 @@ html, body {
   transition: color 0.2s;
 }
 
+/* ─── Return button ─────────────────────────────────────────────────────── */
+
+.return-btn-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+  animation: returnFadeIn 0.18s ease;
+}
+
+@keyframes returnFadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.return-btn-row {
+  /* Single-button pill — same shape as mtoggle-row */
+}
+
+.return-btn-active {
+  color: #5de8f0;
+  background: rgba(93, 232, 240, 0.08);
+}
+
+.return-btn-active:hover {
+  color: #eafcff;
+  background: rgba(93, 232, 240, 0.15);
+  box-shadow: inset 0 0 14px rgba(93, 232, 240, 0.10);
+}
+
 /* ─── Mobile responsive ──────────────────────────────────────────────────── */
 
 @media (max-width: 768px) {
@@ -875,8 +912,8 @@ html, body {
   /* QuickNav mobile — wider panel */
   .qnav-panel { width: min(260px, 88vw); }
 
-  /* Mode toggle mobile */
-  .mode-toggle { bottom: 1rem; left: 1rem; }
+  /* Mode toggle / HUD mobile */
+  .bottom-left-hud { bottom: 1rem; left: 1rem; }
 }
 
 @media (max-width: 480px) {
