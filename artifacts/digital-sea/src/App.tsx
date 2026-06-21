@@ -229,6 +229,8 @@ export default function App() {
       {mode === 'camera' && (
         <div className="explore-hint">
           drag to look around · scroll to zoom · hold + drag a card to move it
+          <br />
+          tiles are easier clicked in &ldquo;sea&rdquo; mode&nbsp;:)
         </div>
       )}
 
