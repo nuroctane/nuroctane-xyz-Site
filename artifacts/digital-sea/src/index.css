@@ -406,6 +406,7 @@ html, body {
   opacity: 0.52;
   text-transform: uppercase;
   white-space: nowrap;
+  text-align: center;
   animation: hintFade 3s ease-in-out infinite;
 }
 
