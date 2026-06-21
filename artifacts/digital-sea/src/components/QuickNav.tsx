@@ -30,14 +30,19 @@ const ACRONYM_MAP: Record<string, string> = {
   geoskin:     'CS',
 };
 
-function scrollToNode(node: NodeData, onDone: () => void) {
-  const total = document.documentElement.scrollHeight - window.innerHeight;
-  window.scrollTo({ top: node.scrollStart * total, behavior: 'smooth' });
-  onDone();
+// Navigate to a node: if we're in camera mode onNavigate exits it first,
+// then we scroll after the next frame (so overflow:hidden is cleared).
+function scrollToNode(node: NodeData, onClose: () => void, onNavigate?: () => void) {
+  onNavigate?.();
+  onClose();
+  requestAnimationFrame(() => {
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    window.scrollTo({ top: node.scrollStart * total, behavior: 'smooth' });
+  });
 }
 
 // ── Single nav item ───────────────────────────────────────────────────────────
-function NavItem({ node, onClose }: { node: NodeData; onClose: () => void }) {
+function NavItem({ node, onClose, onNavigate }: { node: NodeData; onClose: () => void; onNavigate?: () => void }) {
   const logo    = LOGO_MAP[node.id];
   const acronym = ACRONYM_MAP[node.id] ?? node.id.slice(0, 2).toUpperCase();
   const isSoon  = node.url === '#';
@@ -45,7 +50,7 @@ function NavItem({ node, onClose }: { node: NodeData; onClose: () => void }) {
   return (
     <button
       className={`qnav-item${isSoon ? ' qnav-item--soon' : ''}`}
-      onClick={() => scrollToNode(node, onClose)}
+      onClick={() => scrollToNode(node, onClose, onNavigate)}
     >
       <span className="qnav-item-badge">
         {logo
@@ -119,10 +124,12 @@ const IconFin = () => (
 
 // ── Main QuickNav ─────────────────────────────────────────────────────────────
 interface QuickNavProps {
-  onOpen?: () => void;
+  // Called when a navigation item is selected (not when the hamburger opens).
+  // App uses this to exit camera mode before the scroll fires.
+  onNavigate?: () => void;
 }
 
-export function QuickNav({ onOpen }: QuickNavProps) {
+export function QuickNav({ onNavigate }: QuickNavProps) {
   const [open,     setOpen]     = useState(false);
   const [expanded, setExpanded] = useState<Set<string>>(new Set(['SOCIALS']));
   const panelRef = useRef<HTMLDivElement>(null);
@@ -156,10 +163,10 @@ export function QuickNav({ onOpen }: QuickNavProps) {
 
   return (
     <div className="qnav" ref={panelRef}>
-      {/* ── Trigger button ── */}
+      {/* ── Trigger button — opening the panel does NOT exit explore mode ── */}
       <button
         className={`qnav-trigger${open ? ' qnav-trigger--open' : ''}`}
-        onClick={() => { if (!open && onOpen) onOpen(); setOpen(v => !v); }}
+        onClick={() => setOpen(v => !v)}
         aria-label={open ? 'Close navigation' : 'Open navigation'}
         aria-expanded={open}
       >
@@ -187,7 +194,11 @@ export function QuickNav({ onOpen }: QuickNavProps) {
             <CatHeader
               icon={<IconHex />}
               label="IDENTITY"
-              onActivate={() => { window.scrollTo({ top: 0, behavior: 'smooth' }); setOpen(false); }}
+              onActivate={() => {
+                onNavigate?.();
+                setOpen(false);
+                requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
+              }}
             />
           </div>
 
@@ -203,7 +214,7 @@ export function QuickNav({ onOpen }: QuickNavProps) {
             {expanded.has('SOCIALS') && (
               <div className="qnav-items">
                 {socialNodes.map(n => (
-                  <NavItem key={n.id} node={n} onClose={() => setOpen(false)} />
+                  <NavItem key={n.id} node={n} onClose={() => setOpen(false)} onNavigate={onNavigate} />
                 ))}
               </div>
             )}
@@ -221,7 +232,7 @@ export function QuickNav({ onOpen }: QuickNavProps) {
             {expanded.has('PROJECTS') && (
               <div className="qnav-items">
                 {projectNodes.map(n => (
-                  <NavItem key={n.id} node={n} onClose={() => setOpen(false)} />
+                  <NavItem key={n.id} node={n} onClose={() => setOpen(false)} onNavigate={onNavigate} />
                 ))}
               </div>
             )}
@@ -233,8 +244,11 @@ export function QuickNav({ onOpen }: QuickNavProps) {
               icon={<IconFin />}
               label="FIN"
               onActivate={() => {
-                window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' });
+                onNavigate?.();
                 setOpen(false);
+                requestAnimationFrame(() =>
+                  window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' })
+                );
               }}
             />
           </div>

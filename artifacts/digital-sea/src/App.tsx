@@ -41,8 +41,16 @@ function SectionLabel({ scrollProgress }: { scrollProgress: React.MutableRefObje
   );
 }
 
-function SummaryPanel() {
+function SummaryPanel({ mode }: { mode: 'scroll' | 'camera' }) {
   const ref = useRef<HTMLDivElement>(null);
+
+  // Hide immediately when entering explore mode; the scroll listener restores
+  // visibility when back in scroll mode.
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (mode === 'camera') el.style.opacity = '0';
+  }, [mode]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -81,8 +89,17 @@ function SummaryPanel() {
   );
 }
 
-function EndPanel() {
+function EndPanel({ mode }: { mode: 'scroll' | 'camera' }) {
   const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (mode === 'camera') {
+      el.style.opacity = '0';
+      el.style.pointerEvents = 'none';
+    }
+  }, [mode]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -125,8 +142,17 @@ function EndPanel() {
 const BTC_ADDR = 'bc1qmsexp4nygxcw0gklw346hds4gxctfley2tvn40';
 const ETH_ADDR = '0xf5386e680d5629a6e1c04bb2bfd1b79a794467f5';
 
-function WalletTag() {
+function WalletTag({ mode }: { mode: 'scroll' | 'camera' }) {
   const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    if (mode === 'camera') {
+      el.style.opacity = '0';
+      el.style.pointerEvents = 'none';
+    }
+  }, [mode]);
 
   useEffect(() => {
     const onScroll = () => {
@@ -134,7 +160,6 @@ function WalletTag() {
       if (!el) return;
       const total = document.documentElement.scrollHeight - window.innerHeight;
       const t = total > 0 ? window.scrollY / total : 0;
-      // Mirror the start (SummaryPanel) and end (EndPanel) fade windows.
       let startOp = 0;
       if (t >= 0.004 && t < 0.016) startOp = (t - 0.004) / 0.012;
       else if (t >= 0.016 && t < 0.040) startOp = 1;
@@ -191,13 +216,12 @@ export default function App() {
 
   function handleReturn() {
     setMode('scroll');
-    // Restore scroll position immediately (before overflow is re-enabled)
     requestAnimationFrame(() => {
       window.scrollTo({ top: savedScrollY.current, behavior: 'instant' });
     });
   }
 
-  // Lock page scroll in explore/camera mode so OrbitControls has full pointer ownership
+  // Lock page scroll in explore mode so OrbitControls has full pointer ownership
   useEffect(() => {
     if (mode === 'camera') {
       document.body.style.overflow = 'hidden';
@@ -212,12 +236,13 @@ export default function App() {
       <Scene scrollProgress={scrollProgress} tier={tier} mode={mode} />
       <div className="scanline-overlay" />
       <SectionLabel scrollProgress={scrollProgress} />
-      <SummaryPanel />
-      <EndPanel />
-      <WalletTag />
+      <SummaryPanel mode={mode} />
+      <EndPanel mode={mode} />
+      <WalletTag mode={mode} />
 
-      {/* Top-left: Code Lyoko quick nav — exits explore mode on open */}
-      <QuickNav onOpen={() => { if (mode === 'camera') setMode('scroll'); }} />
+      {/* QuickNav — opening it does NOT exit explore mode; only selecting
+          a nav item does (so the scroll can happen after overflow is cleared). */}
+      <QuickNav onNavigate={() => { if (mode === 'camera') setMode('scroll'); }} />
 
       {/* Bottom-left: mode toggle + return button (camera mode only) */}
       <div className="bottom-left-hud">
@@ -228,7 +253,7 @@ export default function App() {
       {/* Explore mode hint overlay */}
       {mode === 'camera' && (
         <div className="explore-hint">
-          drag to look around · scroll to zoom · hold + drag a card to move it
+          drag to look · scroll zoom · wasd/arrows fly · space rise · ctrl dive · hold+drag card to move
           <br />
           tiles are easier clicked in &ldquo;sea&rdquo; mode&nbsp;:)
         </div>

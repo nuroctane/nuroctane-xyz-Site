@@ -7,14 +7,23 @@ import * as THREE from 'three';
 const _dir     = new THREE.Vector3();
 const _forward = new THREE.Vector3();
 const _right   = new THREE.Vector3();
-const _up      = new THREE.Vector3(0, 1, 0);
+const _worldUp = new THREE.Vector3(0, 1, 0); // world Y — used for Space/Ctrl vertical
 const _delta   = new THREE.Vector3();
 
-const MOVE_SPEED = 0.28; // units per frame (~17 u/s @ 60 fps)
+// Generous world-space movement bounds so the user can't fly into the void.
+// The path extends from z≈28 down to z≈-210; add headroom on every axis.
+const XMIN = -45, XMAX = 45;
+const YMIN = -22, YMAX = 34;
+const ZMIN = -230, ZMAX = 36;
+
+// Units per second (delta-based → consistent across frame rates)
+const MOVE_SPEED = 14;
 
 const MOVE_KEYS = new Set([
-  'KeyW','KeyA','KeyS','KeyD',
-  'ArrowUp','ArrowDown','ArrowLeft','ArrowRight',
+  'KeyW', 'KeyA', 'KeyS', 'KeyD',
+  'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight',
+  'Space',                        // rise  (world +Y)
+  'ControlLeft', 'ControlRight',  // dive  (world -Y)
 ]);
 
 interface Props {
@@ -25,10 +34,6 @@ export function OrbitCam({ enabled }: Props) {
   const { camera, gl } = useThree();
   const keys = useRef(new Set<string>());
 
-  // Create and fully configure the controls instance during the React render
-  // phase (useMemo runs synchronously). The target is set here — before the
-  // first useFrame ever fires — so there is zero window in which OrbitControls
-  // can update() against the wrong target and swing the camera.
   const controls = useMemo(() => {
     if (!enabled) return null;
 
@@ -48,19 +53,18 @@ export function OrbitCam({ enabled }: Props) {
     oc.enableZoom     = true;
     oc.enableRotate   = true;
 
-    // Sync internal spherical from current camera state — before any frame fires.
     oc.update();
-
     return oc;
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enabled]);
 
-  // Keyboard listener — only active in explore mode.
-  // Arrow keys get preventDefault so they can't accidentally scroll the page.
   useEffect(() => {
     if (!enabled) return;
     const onDown = (e: KeyboardEvent) => {
-      if (e.ctrlKey || e.metaKey || e.altKey) return;
+      // Block Meta+anything and Alt+anything (browser shortcuts).
+      // Allow pure ControlLeft/Right but block Ctrl+other keys (e.g. Ctrl+W).
+      if (e.metaKey || e.altKey) return;
+      if (e.ctrlKey && e.code !== 'ControlLeft' && e.code !== 'ControlRight') return;
       if (MOVE_KEYS.has(e.code)) e.preventDefault();
       keys.current.add(e.code);
     };
@@ -74,9 +78,6 @@ export function OrbitCam({ enabled }: Props) {
     };
   }, [enabled]);
 
-  // Connect the domElement and manage touch-action per mode.
-  // touch-action:none gives OrbitControls full gesture ownership on mobile
-  // (pinch-to-zoom, two-finger pan) in explore mode.
   useEffect(() => {
     if (!controls) {
       gl.domElement.style.touchAction = 'pan-y';
@@ -90,29 +91,50 @@ export function OrbitCam({ enabled }: Props) {
     };
   }, [controls, gl]);
 
-  // Single useFrame at priority -1:
-  //  1. controls.update() applies damping + mouse/touch input
-  //  2. WASD/arrow movement shifts both camera.position AND controls.target
-  //     by the same delta — keeping the orbit pivot in front of the camera
-  //     so OrbitControls doesn't snap back to the old pivot next frame.
-  useFrame(() => {
+  useFrame(({ camera: cam }, delta) => {
     if (!controls) return;
-    controls.update();
 
     const k = keys.current;
-    if (k.size === 0) return;
+    const moving = k.size > 0;
 
-    camera.getWorldDirection(_forward);
-    _right.crossVectors(_forward, _up).normalize();
+    // When WASD/Space/Ctrl is held, spike the damping factor so the residual
+    // angular velocity from a prior drag decays within 2–3 frames instead of
+    // competing with translation and causing visible choppiness.
+    controls.dampingFactor = moving ? 0.5 : 0.08;
+    controls.update();
+
+    if (!moving) return;
+
+    cam.getWorldDirection(_forward);
+    _right.crossVectors(_forward, _worldUp).normalize();
     _delta.set(0, 0, 0);
 
-    if (k.has('KeyW') || k.has('ArrowUp'))    _delta.addScaledVector(_forward,  MOVE_SPEED);
-    if (k.has('KeyS') || k.has('ArrowDown'))  _delta.addScaledVector(_forward, -MOVE_SPEED);
-    if (k.has('KeyA') || k.has('ArrowLeft'))  _delta.addScaledVector(_right,   -MOVE_SPEED);
-    if (k.has('KeyD') || k.has('ArrowRight')) _delta.addScaledVector(_right,    MOVE_SPEED);
+    // Cap delta to 100 ms so a tab-switch can't teleport the camera.
+    const speed = MOVE_SPEED * Math.min(delta, 0.1);
 
-    camera.position.add(_delta);
-    controls.target.add(_delta);
+    if (k.has('KeyW') || k.has('ArrowUp'))                      _delta.addScaledVector(_forward,  speed);
+    if (k.has('KeyS') || k.has('ArrowDown'))                    _delta.addScaledVector(_forward, -speed);
+    if (k.has('KeyA') || k.has('ArrowLeft'))                    _delta.addScaledVector(_right,   -speed);
+    if (k.has('KeyD') || k.has('ArrowRight'))                   _delta.addScaledVector(_right,    speed);
+    if (k.has('Space'))                                          _delta.addScaledVector(_worldUp,  speed);
+    if (k.has('ControlLeft') || k.has('ControlRight'))          _delta.addScaledVector(_worldUp, -speed);
+
+    // Clamp the resulting position to the world bounds.
+    const nx = THREE.MathUtils.clamp(cam.position.x + _delta.x, XMIN, XMAX);
+    const ny = THREE.MathUtils.clamp(cam.position.y + _delta.y, YMIN, YMAX);
+    const nz = THREE.MathUtils.clamp(cam.position.z + _delta.z, ZMIN, ZMAX);
+
+    // Apply the effective (possibly clamped) delta to BOTH camera and controls.target
+    // so OrbitControls' internal orbit pivot stays in front of the camera and
+    // doesn't snap back to the old position on the next update() call.
+    const cx = nx - cam.position.x;
+    const cy = ny - cam.position.y;
+    const cz = nz - cam.position.z;
+
+    cam.position.set(nx, ny, nz);
+    controls.target.x += cx;
+    controls.target.y += cy;
+    controls.target.z += cz;
   }, -1);
 
   if (!controls) return null;

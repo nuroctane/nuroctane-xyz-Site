@@ -506,6 +506,15 @@ function FakeShape({ basePos, seed }: { basePos: THREE.Vector3; seed: number }) 
   useFrame(({ clock }, dt) => {
     const m = ref.current;
     if (!m) return;
+
+    // Fast approximate cull: skip all per-frame work for shapes well outside
+    // the visible falloff range (~dist 38). Uses basePos as cheap approximation.
+    const approxDist = camera.position.distanceTo(basePos);
+    if (approxDist > 65) {
+      if (mat.opacity > 0.001) mat.opacity = 0;
+      return;
+    }
+
     const t = clock.elapsedTime * cfg.speed + cfg.phase;
 
     if (def.creature) {
