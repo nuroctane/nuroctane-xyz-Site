@@ -203,13 +203,19 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
 const yPattern = [1.0, -0.4, 1.3, 0.2, -0.8, 0.9, 0.1, -0.5, 1.1, 0.5, -0.2, 0.8, 0.3, -0.6, 1.0, 0.4, -0.1];
 const FIRST_START = 0.035;
 const CARD_WIDTH = 0.04;
+// Edge cards get a wider scroll envelope so they approach/recede more gently.
+const EDGE_CARD_WIDTH = 0.065;
 const LAST_START = 0.91;
 const STEP = (LAST_START - FIRST_START) / Math.max(1, raw.length - 1);
 
 export const nodes: NodeData[] = raw.map((n, i) => {
+  const isEdge = i === 0 || i === raw.length - 1;
   const scrollStart = FIRST_START + i * STEP;
-  const scrollEnd = scrollStart + CARD_WIDTH;
-  const x = i % 2 === 0 ? -2.2 : 2.2;
+  const cardWidth = isEdge ? EDGE_CARD_WIDTH : CARD_WIDTH;
+  const scrollEnd = scrollStart + cardWidth;
+  // Edge nodes sit closer to center-x: at path extremes the camera is very
+  // close in z, so a full ±2.2 offset creates a steep angle that clips the card.
+  const x = i % 2 === 0 ? (isEdge ? -1.6 : -2.2) : (isEdge ? 1.6 : 2.2);
   return {
     ...n,
     scrollStart,

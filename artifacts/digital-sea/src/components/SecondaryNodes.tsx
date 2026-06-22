@@ -2,7 +2,6 @@ import { useMemo, useRef, useState, type MutableRefObject } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
-import { useIsMobile } from '../hooks/use-mobile';
 import type { SecondaryMedia } from '../data/secondaryNodes';
 
 // Module-level scratch — never allocate inside useFrame.
@@ -38,7 +37,7 @@ function hashStr(s: string) {
 
 const MOUNT_AT = 0.3;
 const UNMOUNT_AT = 0.18;
-const RADIUS = 1.75;
+const BASE_RADIUS = 1.75;
 
 interface Props {
   nodeId: string;
@@ -48,15 +47,16 @@ interface Props {
 }
 
 export function SecondaryOrbit({ nodeId, media, centerRef, proximityRef }: Props) {
-  const isMobile = useIsMobile();
-
-  // A single 90MB gif can decode to far more than its file size, so skip gifs on
-  // mobile/low-power devices and show only the static media there.
-  const items = useMemo(
-    () => (isMobile ? media.filter((m) => !m.isGif) : media),
-    [isMobile, media],
-  );
+  // All media (including gifs) shown on all devices — files are optimized to be lightweight.
+  const items = useMemo(() => media, [media]);
   const count = items.length;
+
+  // Scale orbit radius with tile count so denser orbits don't crowd each other.
+  // For 1-3 tiles: 1.75 (unchanged). For each tile beyond 3, add 0.25 to radius.
+  const orbitRadius = Math.max(BASE_RADIUS, 1.0 + count * 0.25);
+
+  // Per-tile CSS card width: shrink slightly as count grows so tiles fit their orbit.
+  const cardWidth = Math.max(72, 108 - count * 6);
 
   // Deterministic per-node ring orientation + tumble velocities, and per-tile lean.
   const params = useMemo(() => {
@@ -70,11 +70,12 @@ export function SecondaryOrbit({ nodeId, media, centerRef, proximityRef }: Props
       tumbleZ: (0.05 + rnd() * 0.16) * sign(),
       tiles: Array.from({ length: count }, () => ({
         lean: (rnd() * 2 - 1) * (Math.PI / 4), // ±45° roll — never upright
-        radius: RADIUS + (rnd() * 2 - 1) * 0.25,
+        // Tighter radius variance (±0.12 vs old ±0.25) keeps spacing predictable.
+        radius: orbitRadius + (rnd() * 2 - 1) * 0.12,
         phase: rnd() * Math.PI * 2,
       })),
     };
-  }, [nodeId, count]);
+  }, [nodeId, count, orbitRadius]);
 
   const [active, setActive] = useState(false);
   const activeRef = useRef(false);
@@ -83,7 +84,7 @@ export function SecondaryOrbit({ nodeId, media, centerRef, proximityRef }: Props
 
   useFrame(({ camera, clock }) => {
     const p = proximityRef.current;
-    // Hysteresis: mount the (potentially heavy) media only when the card is near,
+    // Hysteresis: mount the media only when the card is near,
     // unmount once it recedes — so distant gifs never get fetched.
     if (!activeRef.current && p > MOUNT_AT) {
       activeRef.current = true;
@@ -147,7 +148,7 @@ export function SecondaryOrbit({ nodeId, media, centerRef, proximityRef }: Props
                   wrapRefs.current[i] = el;
                 }}
                 className="secondary-card"
-                style={{ opacity: 0, pointerEvents: 'none' }}
+                style={{ opacity: 0, pointerEvents: 'none', width: `${cardWidth}px` }}
               >
                 <img
                   src={m.url}
