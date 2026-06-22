@@ -6,6 +6,8 @@ import { nodes, NodeData } from '../data/nodes';
 import { NodeCard } from './NodeCard';
 import { useCardDrag } from '../hooks/useCardDrag';
 import { DragWake } from './DragWake';
+import { secondaryMediaByNode } from '../data/secondaryNodes';
+import { SecondaryOrbit } from './SecondaryNodes';
 
 const _mat4 = new THREE.Matrix4();
 const _up = new THREE.Vector3(0, 1, 0);
@@ -39,6 +41,11 @@ function SingleNode({ node, scrollProgress, index, mode }: SingleNodeProps) {
   const hoverRef        = useRef(false);
   const ringRef         = useRef<THREE.Mesh>(null);
   const hoverParticlesRef = useRef<THREE.Points>(null);
+
+  // Live card position + proximity, read by the secondary media orbit (sibling).
+  const centerRef = useRef(new THREE.Vector3());
+  const proximityRef = useRef(0);
+  const media = secondaryMediaByNode[node.id];
 
   // Keep mode accessible inside useFrame without stale closure
   const modeRef = useRef(mode);
@@ -91,6 +98,7 @@ function SingleNode({ node, scrollProgress, index, mode }: SingleNodeProps) {
     const oy = drag.offset.current.y;
     const oz = drag.offset.current.z;
     group.position.set(node.position.x + ox, node.position.y + floatY + oy, node.position.z + oz);
+    centerRef.current.copy(group.position);
 
     _euler.set(node.idleRotation.x + wobX, node.idleRotation.y, node.idleRotation.z + wobZ);
     _qIdle.setFromEuler(_euler);
@@ -106,6 +114,7 @@ function SingleNode({ node, scrollProgress, index, mode }: SingleNodeProps) {
     _qResult.multiply(_flipQ);
     group.quaternion.copy(_qResult);
     const effectiveP = isCam ? Math.max(p, 0.62) : p;
+    proximityRef.current = effectiveP;
     group.scale.setScalar(0.5 + effectiveP * 0.5);
 
     // Main card wrapper
@@ -148,6 +157,7 @@ function SingleNode({ node, scrollProgress, index, mode }: SingleNodeProps) {
   });
 
   return (
+    <>
     <group ref={groupRef} position={node.position}>
       {/* Hover aura ring */}
       <mesh ref={ringRef} rotation={[Math.PI / 2, 0, 0]}>
@@ -203,6 +213,16 @@ function SingleNode({ node, scrollProgress, index, mode }: SingleNodeProps) {
         </Html>
       )}
     </group>
+
+    {media && media.length > 0 && (
+      <SecondaryOrbit
+        nodeId={node.id}
+        media={media}
+        centerRef={centerRef}
+        proximityRef={proximityRef}
+      />
+    )}
+    </>
   );
 }
 

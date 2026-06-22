@@ -748,6 +748,14 @@ html, body {
   left: 1.4rem;
   z-index: 1000;
   display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+/* Row holding the view-mode toggle + return button, sitting below the audio control */
+.hud-modes-row {
+  display: flex;
   flex-direction: row;
   align-items: flex-end;
   gap: 8px;
@@ -993,4 +1001,151 @@ html, body {
 @media (max-width: 480px) {
   .wallet-addr-k { font-size: 0.38rem; letter-spacing: 0.14em; }
   .wallet-addr-v { font-size: 0.38rem; letter-spacing: 0.02em; }
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   AUDIO CONTROL — octagonal pill, above the mode toggle (bottom left)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.audio-control {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 5px;
+}
+
+.audio-row {
+  display: flex;
+  flex-direction: row;
+  align-items: stretch;
+  clip-path: polygon(8px 0, calc(100% - 8px) 0, 100% 8px, 100% calc(100% - 8px), calc(100% - 8px) 100%, 8px 100%, 0 calc(100% - 8px), 0 8px);
+  background: rgba(4, 14, 22, 0.92);
+  border: 1px solid rgba(93, 232, 240, 0.18);
+  box-shadow: 0 0 18px rgba(0, 0, 0, 0.7), 0 0 8px rgba(93, 232, 240, 0.04);
+  overflow: hidden;
+}
+
+.audio-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 40px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #2a5a6a;
+  transition: color 0.18s ease, background 0.18s ease;
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  flex-shrink: 0;
+}
+
+.audio-btn:hover {
+  color: #7accd4;
+  background: rgba(93, 232, 240, 0.06);
+}
+
+.audio-on {
+  color: #5de8f0;
+  background: rgba(93, 232, 240, 0.10);
+  box-shadow: inset 0 0 12px rgba(93, 232, 240, 0.08);
+}
+
+.audio-on:hover {
+  color: #eafcff;
+}
+
+.audio-icon {
+  width: 22px;
+  height: 18px;
+  display: block;
+}
+
+/* Expandable volume slider — desktop only, slides out on hover */
+.audio-slider-wrap {
+  display: flex;
+  align-items: center;
+  width: 0;
+  opacity: 0;
+  overflow: hidden;
+  border-left: 1px solid rgba(93, 232, 240, 0);
+  transition: width 0.26s ease, opacity 0.2s ease, border-color 0.26s ease;
+}
+
+.audio-slider-wrap.audio-expanded {
+  width: 92px;
+  opacity: 1;
+  border-left: 1px solid rgba(93, 232, 240, 0.16);
+}
+
+.audio-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 76px;
+  height: 3px;
+  margin: 0 8px;
+  background: rgba(93, 232, 240, 0.22);
+  border-radius: 2px;
+  outline: none;
+  cursor: pointer;
+}
+
+.audio-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #5de8f0;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(93, 232, 240, 0.6);
+}
+
+.audio-slider::-moz-range-thumb {
+  width: 11px;
+  height: 11px;
+  border-radius: 50%;
+  background: #5de8f0;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 0 6px rgba(93, 232, 240, 0.6);
+}
+
+.audio-label {
+  font-size: 0.44rem;
+  letter-spacing: 0.22em;
+  color: #3a7a88;
+  text-transform: uppercase;
+  padding: 0 4px;
+  text-align: left;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: color 0.2s;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SECONDARY NODES — orbiting media tiles
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+.secondary-card {
+  width: 104px;
+  padding: 4px;
+  background: rgba(4, 14, 22, 0.66);
+  border: 1px solid rgba(93, 232, 240, 0.30);
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.55), 0 0 10px rgba(93, 232, 240, 0.07);
+  clip-path: polygon(6px 0, calc(100% - 6px) 0, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 0 calc(100% - 6px), 0 6px);
+  user-select: none;
+  -webkit-user-select: none;
+  will-change: opacity;
+}
+
+.secondary-card-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-height: 132px;
+  object-fit: cover;
+  pointer-events: none;
 }

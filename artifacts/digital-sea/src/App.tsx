@@ -5,6 +5,7 @@ import { Scene } from './components/Scene';
 import { QuickNav } from './components/QuickNav';
 import { ModeToggle } from './components/ModeToggle';
 import { ReturnButton } from './components/ReturnButton';
+import { AudioControl } from './components/AudioControl';
 
 const PROJECT_THRESHOLD = 0.62;
 
@@ -246,8 +247,11 @@ export default function App() {
 
       {/* Bottom-left: mode toggle + return button (camera mode only) */}
       <div className="bottom-left-hud">
-        <ModeToggle mode={mode} setMode={handleSetMode} />
-        {mode === 'camera' && <ReturnButton onReturn={handleReturn} />}
+        <AudioControl />
+        <div className="hud-modes-row">
+          <ModeToggle mode={mode} setMode={handleSetMode} />
+          {mode === 'camera' && <ReturnButton onReturn={handleReturn} />}
+        </div>
       </div>
 
       {/* Explore mode hint overlay */}
