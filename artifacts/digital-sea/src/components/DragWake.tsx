@@ -42,10 +42,17 @@ export function DragWake({ dirRef, activeRef, velRef, color = '#bdeff2', count =
   useFrame((_, dt) => {
     const pts = ptsRef.current;
     if (!pts) return;
-    const arr = geo.attributes.position.array as Float32Array;
-    const dir = dirRef.current;
     const active = activeRef.current;
     const vel = velRef.current;
+    const m = pts.material as THREE.PointsMaterial;
+
+    // Dormant fast-path: once opacity fades to zero and dragging has stopped,
+    // skip all particle simulation and GPU buffer uploads entirely.
+    // This fires for all 75 DragWake instances whenever the user isn't dragging.
+    if (!active && m.opacity < 0.002) return;
+
+    const arr = geo.attributes.position.array as Float32Array;
+    const dir = dirRef.current;
     const step = Math.min(dt, 0.05);
     const spd = (0.6 + vel * 2.6) * step;
 
@@ -64,7 +71,6 @@ export function DragWake({ dirRef, activeRef, velRef, color = '#bdeff2', count =
     }
     geo.attributes.position.needsUpdate = true;
 
-    const m = pts.material as THREE.PointsMaterial;
     const tgt = active ? Math.min(0.8, 0.3 + vel) : 0;
     m.opacity += (tgt - m.opacity) * 0.15;
   });

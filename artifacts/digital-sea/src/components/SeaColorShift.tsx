@@ -1,3 +1,4 @@
+import { useRef } from 'react';
 import { useThree, useFrame } from '@react-three/fiber';
 import { PerformanceTier } from '../hooks/usePerformanceTier';
 
@@ -17,6 +18,7 @@ interface Props {
  */
 export function SeaColorShift({ mode, tier }: Props) {
   const gl = useThree((s) => s.gl);
+  const _frame = useRef(0);
 
   useFrame(({ clock }) => {
     const canvas = gl.domElement;
@@ -24,6 +26,11 @@ export function SeaColorShift({ mode, tier }: Props) {
       if (canvas.style.filter) canvas.style.filter = '';
       return;
     }
+    // Throttle to every 4th frame (~15fps). The sine waves that drive hue/sat/
+    // contrast/brightness have periods of 100-165 s; updating at 15fps changes
+    // each value by < 0.25° per update — completely imperceptible to the eye,
+    // but saves 75% of the browser recomposite cost on this canvas element.
+    if (++_frame.current % 4 !== 0) return;
     const t = clock.elapsedTime;
     const hue = Math.sin(t * 0.045) * 16;                  // ±16°
     const sat = 1 + Math.sin(t * 0.061 + 1.1) * 0.20;      // 0.80 .. 1.20

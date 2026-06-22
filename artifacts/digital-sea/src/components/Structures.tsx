@@ -145,6 +145,7 @@ function Snakes() {
   const mat = useMemo(() => makeMat('#1c5f70', 0.86, '#071c24'), []);
   const ref = useRef<THREE.InstancedMesh>(null);
   const dummy = useMemo(() => new THREE.Object3D(), []);
+  const _frame = useRef(0);
   const SEG = 14;
   const snakes = useMemo(() => {
     const rand = mkRand(211);
@@ -163,7 +164,8 @@ function Snakes() {
 
   useFrame(({ clock }) => {
     const mesh = ref.current;
-    if (!mesh) return;
+    // Snakes drift very slowly; 30fps updates are imperceptible.
+    if (!mesh || ++_frame.current % 2 !== 0) return;
     const t = clock.elapsedTime;
     let idx = 0;
     for (const s of snakes) {
@@ -197,6 +199,7 @@ function Fish() {
   const mat = useMemo(() => makeMat('#175870', 0.85, '#060e1c'), []);
   const ref = useRef<THREE.InstancedMesh>(null);
   const dummy = useMemo(() => new THREE.Object3D(), []);
+  const _frame = useRef(0);
   const PARTS = 5; // 4 body (tapering) + 1 tail
   const fish = useMemo(() => {
     const rand = mkRand(307);
@@ -215,8 +218,10 @@ function Fish() {
   useFrame(({ clock }, dt) => {
     const mesh = ref.current;
     if (!mesh) return;
+    // Skip every other frame; double dt to preserve average swim speed.
+    if (++_frame.current % 2 !== 0) return;
     const t = clock.elapsedTime;
-    const step = Math.min(dt, 0.05);
+    const step = Math.min(dt * 2, 0.1);
     let idx = 0;
     for (const f of fish) {
       const dirX = Math.cos(f.heading);
@@ -274,6 +279,7 @@ function Monsters() {
   const dummy = useMemo(() => new THREE.Object3D(), []);
   const parent = useMemo(() => new THREE.Object3D(), []);
   const child = useMemo(() => new THREE.Object3D(), []);
+  const _frame = useRef(0);
   const PARTS = MONSTER_PARTS.length;
   const monsters = useMemo(() => {
     const rand = mkRand(859);
@@ -290,7 +296,8 @@ function Monsters() {
 
   useFrame(({ clock }) => {
     const mesh = ref.current;
-    if (!mesh) return;
+    // Monsters bob slowly; 30fps GPU uploads are invisible against their movement.
+    if (!mesh || ++_frame.current % 2 !== 0) return;
     const t = clock.elapsedTime;
     let idx = 0;
     for (const m of monsters) {
