@@ -3,27 +3,25 @@ import { useThree, useFrame } from '@react-three/fiber';
 import { OrbitControls as ThreeOrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import * as THREE from 'three';
 
-// Scratch vectors — allocated once, reused every frame (no GC pressure)
+// Scratch vectors — allocated once, reused every frame
 const _dir     = new THREE.Vector3();
 const _forward = new THREE.Vector3();
 const _right   = new THREE.Vector3();
-const _worldUp = new THREE.Vector3(0, 1, 0); // world Y — used for Space/Ctrl vertical
+const _worldUp = new THREE.Vector3(0, 1, 0);
 const _delta   = new THREE.Vector3();
 
-// Generous world-space movement bounds so the user can't fly into the void.
-// The path extends from z≈28 down to z≈-210; add headroom on every axis.
+// Generous world-space movement bounds (path goes z≈28 → z≈-182; add headroom)
 const XMIN = -45, XMAX = 45;
 const YMIN = -22, YMAX = 34;
 const ZMIN = -230, ZMAX = 36;
 
-// Units per second (delta-based → consistent across frame rates)
-const MOVE_SPEED = 14;
+const MOVE_SPEED = 14; // units per second
 
 const MOVE_KEYS = new Set([
   'KeyW', 'KeyA', 'KeyS', 'KeyD',
   'ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight',
-  'Space',                        // rise  (world +Y)
-  'ControlLeft', 'ControlRight',  // dive  (world -Y)
+  'Space',
+  'ControlLeft', 'ControlRight',
 ]);
 
 interface Props {
@@ -36,12 +34,9 @@ export function OrbitCam({ enabled }: Props) {
 
   const controls = useMemo(() => {
     if (!enabled) return null;
-
     camera.getWorldDirection(_dir);
-
     const oc = new ThreeOrbitControls(camera);
     oc.target.copy(camera.position).addScaledVector(_dir, 10);
-
     oc.enableDamping  = true;
     oc.dampingFactor  = 0.08;
     oc.rotateSpeed    = 0.5;
@@ -52,17 +47,14 @@ export function OrbitCam({ enabled }: Props) {
     oc.enablePan      = true;
     oc.enableZoom     = true;
     oc.enableRotate   = true;
-
     oc.update();
     return oc;
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [enabled]);
 
   useEffect(() => {
     if (!enabled) return;
     const onDown = (e: KeyboardEvent) => {
-      // Block Meta+anything and Alt+anything (browser shortcuts).
-      // Allow pure ControlLeft/Right but block Ctrl+other keys (e.g. Ctrl+W).
       if (e.metaKey || e.altKey) return;
       if (e.ctrlKey && e.code !== 'ControlLeft' && e.code !== 'ControlRight') return;
       if (MOVE_KEYS.has(e.code)) e.preventDefault();
@@ -94,12 +86,9 @@ export function OrbitCam({ enabled }: Props) {
   useFrame(({ camera: cam }, delta) => {
     if (!controls) return;
 
-    const k = keys.current;
+    const k      = keys.current;
     const moving = k.size > 0;
 
-    // When WASD/Space/Ctrl is held, spike the damping factor so the residual
-    // angular velocity from a prior drag decays within 2–3 frames instead of
-    // competing with translation and causing visible choppiness.
     controls.dampingFactor = moving ? 0.5 : 0.08;
     controls.update();
 
@@ -109,24 +98,19 @@ export function OrbitCam({ enabled }: Props) {
     _right.crossVectors(_forward, _worldUp).normalize();
     _delta.set(0, 0, 0);
 
-    // Cap delta to 100 ms so a tab-switch can't teleport the camera.
     const speed = MOVE_SPEED * Math.min(delta, 0.1);
 
-    if (k.has('KeyW') || k.has('ArrowUp'))                      _delta.addScaledVector(_forward,  speed);
-    if (k.has('KeyS') || k.has('ArrowDown'))                    _delta.addScaledVector(_forward, -speed);
-    if (k.has('KeyA') || k.has('ArrowLeft'))                    _delta.addScaledVector(_right,   -speed);
-    if (k.has('KeyD') || k.has('ArrowRight'))                   _delta.addScaledVector(_right,    speed);
-    if (k.has('Space'))                                          _delta.addScaledVector(_worldUp,  speed);
-    if (k.has('ControlLeft') || k.has('ControlRight'))          _delta.addScaledVector(_worldUp, -speed);
+    if (k.has('KeyW') || k.has('ArrowUp'))                   _delta.addScaledVector(_forward,  speed);
+    if (k.has('KeyS') || k.has('ArrowDown'))                  _delta.addScaledVector(_forward, -speed);
+    if (k.has('KeyA') || k.has('ArrowLeft'))                  _delta.addScaledVector(_right,   -speed);
+    if (k.has('KeyD') || k.has('ArrowRight'))                 _delta.addScaledVector(_right,    speed);
+    if (k.has('Space'))                                        _delta.addScaledVector(_worldUp,  speed);
+    if (k.has('ControlLeft') || k.has('ControlRight'))        _delta.addScaledVector(_worldUp, -speed);
 
-    // Clamp the resulting position to the world bounds.
     const nx = THREE.MathUtils.clamp(cam.position.x + _delta.x, XMIN, XMAX);
     const ny = THREE.MathUtils.clamp(cam.position.y + _delta.y, YMIN, YMAX);
     const nz = THREE.MathUtils.clamp(cam.position.z + _delta.z, ZMIN, ZMAX);
 
-    // Apply the effective (possibly clamped) delta to BOTH camera and controls.target
-    // so OrbitControls' internal orbit pivot stays in front of the camera and
-    // doesn't snap back to the old position on the next update() call.
     const cx = nx - cam.position.x;
     const cy = ny - cam.position.y;
     const cz = nz - cam.position.z;

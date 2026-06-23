@@ -1,7 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
-import { nodes, NodeData } from '../data/nodes';
+import { nodes, NodeData } from '../../data/nodes';
 
-// ── Node groupings ────────────────────────────────────────────────────────────
 const SOCIAL_IDS  = ['instagram','tiktok','x','substack','soundcloud','twitch','youtube','kick','anilist','steam','discord'];
 const PROJECT_IDS = ['atxtunerz','github','weatherguru','sis','astrosleep','geoskin','miyamaker','webutils'];
 
@@ -30,8 +29,6 @@ const ACRONYM_MAP: Record<string, string> = {
   geoskin:     'CS',
 };
 
-// Navigate to a node: if we're in camera mode onNavigate exits it first,
-// then we scroll after the next frame (so overflow:hidden is cleared).
 function scrollToNode(node: NodeData, onClose: () => void, onNavigate?: () => void) {
   onNavigate?.();
   onClose();
@@ -42,7 +39,6 @@ function scrollToNode(node: NodeData, onClose: () => void, onNavigate?: () => vo
   });
 }
 
-// ── Single nav item ───────────────────────────────────────────────────────────
 function NavItem({ node, onClose, onNavigate }: { node: NodeData; onClose: () => void; onNavigate?: () => void }) {
   const logo    = LOGO_MAP[node.id];
   const acronym = ACRONYM_MAP[node.id] ?? node.id.slice(0, 2).toUpperCase();
@@ -65,7 +61,6 @@ function NavItem({ node, onClose, onNavigate }: { node: NodeData; onClose: () =>
   );
 }
 
-// ── Category header ───────────────────────────────────────────────────────────
 function CatHeader({
   icon, label, count, expanded, onToggle, onActivate,
 }: {
@@ -77,10 +72,7 @@ function CatHeader({
   onActivate?: () => void;
 }) {
   return (
-    <button
-      className="qnav-cat-hd"
-      onClick={onToggle ?? onActivate}
-    >
+    <button className="qnav-cat-hd" onClick={onToggle ?? onActivate}>
       <span className="qnav-cat-ico">{icon}</span>
       <span className="qnav-cat-lbl">{label}</span>
       {count != null && <span className="qnav-cat-cnt">{count}</span>}
@@ -91,42 +83,37 @@ function CatHeader({
   );
 }
 
-// ── Icons ─────────────────────────────────────────────────────────────────────
 const IconHex = () => (
   <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-    <polygon points="8,1 14.5,4.5 14.5,11.5 8,15 1.5,11.5 1.5,4.5"
-      stroke="currentColor" strokeWidth="1.3" fill="none"/>
+    <polygon points="8,1 14.5,4.5 14.5,11.5 8,15 1.5,11.5 1.5,4.5" stroke="currentColor" strokeWidth="1.3" fill="none"/>
     <circle cx="8" cy="8" r="1.8" fill="currentColor" opacity="0.7"/>
   </svg>
 );
 const IconNet = () => (
   <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-    <circle cx="3" cy="8"  r="1.8" stroke="currentColor" strokeWidth="1.2"/>
-    <circle cx="13" cy="3" r="1.8" stroke="currentColor" strokeWidth="1.2"/>
+    <circle cx="3"  cy="8"  r="1.8" stroke="currentColor" strokeWidth="1.2"/>
+    <circle cx="13" cy="3"  r="1.8" stroke="currentColor" strokeWidth="1.2"/>
     <circle cx="13" cy="13" r="1.8" stroke="currentColor" strokeWidth="1.2"/>
-    <line x1="4.8" y1="7.1" x2="11.2" y2="4"   stroke="currentColor" strokeWidth="1"/>
-    <line x1="4.8" y1="8.9" x2="11.2" y2="12"  stroke="currentColor" strokeWidth="1"/>
+    <line x1="4.8" y1="7.1" x2="11.2" y2="4"  stroke="currentColor" strokeWidth="1"/>
+    <line x1="4.8" y1="8.9" x2="11.2" y2="12" stroke="currentColor" strokeWidth="1"/>
   </svg>
 );
 const IconGrid = () => (
   <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-    <rect x="1"  y="1"  width="5.5" height="5.5" stroke="currentColor" strokeWidth="1.2"/>
-    <rect x="9.5" y="1"  width="5.5" height="5.5" stroke="currentColor" strokeWidth="1.2"/>
-    <rect x="1"  y="9.5" width="5.5" height="5.5" stroke="currentColor" strokeWidth="1.2"/>
+    <rect x="1"   y="1"   width="5.5" height="5.5" stroke="currentColor" strokeWidth="1.2"/>
+    <rect x="9.5" y="1"   width="5.5" height="5.5" stroke="currentColor" strokeWidth="1.2"/>
+    <rect x="1"   y="9.5" width="5.5" height="5.5" stroke="currentColor" strokeWidth="1.2"/>
     <rect x="9.5" y="9.5" width="5.5" height="5.5" stroke="currentColor" strokeWidth="1.2"/>
   </svg>
 );
 const IconFin = () => (
   <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
-    <polyline points="3,5 8,10 13,5"  stroke="currentColor" strokeWidth="1.3" fill="none" strokeLinecap="round"/>
+    <polyline points="3,5 8,10 13,5" stroke="currentColor" strokeWidth="1.3" fill="none" strokeLinecap="round"/>
     <line x1="3" y1="13" x2="13" y2="13" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round"/>
   </svg>
 );
 
-// ── Main QuickNav ─────────────────────────────────────────────────────────────
 interface QuickNavProps {
-  // Called when a navigation item is selected (not when the hamburger opens).
-  // App uses this to exit camera mode before the scroll fires.
   onNavigate?: () => void;
 }
 
@@ -135,7 +122,6 @@ export function QuickNav({ onNavigate }: QuickNavProps) {
   const [expanded, setExpanded] = useState<Set<string>>(new Set(['SOCIALS']));
   const panelRef = useRef<HTMLDivElement>(null);
 
-  // Close on outside click
   useEffect(() => {
     if (!open) return;
     const h = (e: MouseEvent) => {
@@ -145,7 +131,6 @@ export function QuickNav({ onNavigate }: QuickNavProps) {
     return () => document.removeEventListener('mousedown', h);
   }, [open]);
 
-  // Close on Escape
   useEffect(() => {
     const h = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false); };
     document.addEventListener('keydown', h);
@@ -164,7 +149,6 @@ export function QuickNav({ onNavigate }: QuickNavProps) {
 
   return (
     <div className="qnav" ref={panelRef}>
-      {/* ── Trigger button — opening the panel does NOT exit explore mode ── */}
       <button
         className={`qnav-trigger${open ? ' qnav-trigger--open' : ''}`}
         onClick={() => setOpen(v => !v)}
@@ -176,21 +160,16 @@ export function QuickNav({ onNavigate }: QuickNavProps) {
         <span className="qnav-bar qnav-bar--3" />
       </button>
 
-      {/* ── Panel ── */}
       <div className={`qnav-panel${open ? ' qnav-panel--open' : ''}`} role="navigation" aria-label="Site navigation">
         <div className="qnav-scan" />
 
-        {/* Header */}
         <div className="qnav-hd">
           <img src="/assets/nodes/site-logo.png" alt="nuroctane" className="qnav-logo" />
           <span className="qnav-hd-text">// NAV</span>
           <button className="qnav-close" onClick={() => setOpen(false)} aria-label="Close">✕</button>
         </div>
 
-        {/* Scrollable sections */}
         <div className="qnav-body">
-
-          {/* IDENTITY */}
           <div className="qnav-cat">
             <CatHeader
               icon={<IconHex />}
@@ -203,7 +182,6 @@ export function QuickNav({ onNavigate }: QuickNavProps) {
             />
           </div>
 
-          {/* SOCIALS */}
           <div className="qnav-cat">
             <CatHeader
               icon={<IconNet />}
@@ -221,7 +199,6 @@ export function QuickNav({ onNavigate }: QuickNavProps) {
             )}
           </div>
 
-          {/* PROJECTS */}
           <div className="qnav-cat">
             <CatHeader
               icon={<IconGrid />}
@@ -239,7 +216,6 @@ export function QuickNav({ onNavigate }: QuickNavProps) {
             )}
           </div>
 
-          {/* FIN */}
           <div className="qnav-cat">
             <CatHeader
               icon={<IconFin />}
@@ -253,7 +229,6 @@ export function QuickNav({ onNavigate }: QuickNavProps) {
               }}
             />
           </div>
-
         </div>
       </div>
     </div>

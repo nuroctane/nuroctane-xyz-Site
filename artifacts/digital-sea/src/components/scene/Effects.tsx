@@ -1,6 +1,6 @@
 import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
 import { BlendFunction } from 'postprocessing';
-import { PerformanceTier } from '../hooks/usePerformanceTier';
+import type { PerformanceTier } from '../../hooks/usePerformanceTier';
 
 interface Props {
   tier: PerformanceTier;

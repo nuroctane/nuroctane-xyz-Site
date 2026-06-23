@@ -11,12 +11,13 @@ import { FakeNodes } from './FakeNodes';
 import { Effects } from './Effects';
 import { SeaColorShift } from './SeaColorShift';
 import { LightShafts } from './LightShafts';
-import { PerformanceTier } from '../hooks/usePerformanceTier';
+import type { PerformanceTier } from '../../hooks/usePerformanceTier';
+import type { Mode } from '../../types';
 
 interface Props {
   scrollProgress: MutableRefObject<number>;
   tier: PerformanceTier;
-  mode: 'scroll' | 'camera';
+  mode: Mode;
 }
 
 class WebGLErrorBoundary extends Component<
@@ -53,10 +54,10 @@ export function Scene({ scrollProgress, tier, mode }: Props) {
     <WebGLErrorBoundary fallback={<NoWebGLFallback />}>
       <Canvas
         gl={{
-          antialias: tier === 'high',
-          alpha: false,
-          powerPreference: 'high-performance',
-          toneMapping: THREE.ACESFilmicToneMapping,
+          antialias:           tier === 'high',
+          alpha:               false,
+          powerPreference:     'high-performance',
+          toneMapping:         THREE.ACESFilmicToneMapping,
           toneMappingExposure: 1.1,
         }}
         camera={{ fov: 65, near: 0.1, far: 450, position: [0, 0, 25] }}
@@ -64,14 +65,14 @@ export function Scene({ scrollProgress, tier, mode }: Props) {
         style={{ position: 'fixed', inset: 0 }}
       >
         <color attach="background" args={['#0b2730']} />
-        <fog attach="fog" args={['#0d2e3a', 30, 190]} />
+        <fog   attach="fog"        args={['#0d2e3a', 30, 190]} />
 
-        <ambientLight intensity={0.22} color="#1a5a60" />
-        <directionalLight position={[4, 24, 10]} intensity={2.4} color="#7ae8f0" />
-        <pointLight position={[0, 14, 0]}    intensity={3.2} color="#5de8f0" distance={100} decay={2} />
-        <pointLight position={[-12, 5, -50]} intensity={1.9} color="#1a8a9a" distance={80}  decay={2} />
-        <pointLight position={[12, 7, -100]} intensity={1.9} color="#0d6a7a" distance={80}  decay={2} />
-        <pointLight position={[-8, 9, -150]} intensity={1.7} color="#1a8a9a" distance={70}  decay={2} />
+        <ambientLight    intensity={0.22}                         color="#1a5a60" />
+        <directionalLight position={[4, 24, 10]}   intensity={2.4} color="#7ae8f0" />
+        <pointLight position={[0, 14, 0]}     intensity={3.2} color="#5de8f0" distance={100} decay={2} />
+        <pointLight position={[-12, 5, -50]}  intensity={1.9} color="#1a8a9a" distance={80}  decay={2} />
+        <pointLight position={[12, 7, -100]}  intensity={1.9} color="#0d6a7a" distance={80}  decay={2} />
+        <pointLight position={[-8, 9, -150]}  intensity={1.7} color="#1a8a9a" distance={70}  decay={2} />
 
         <Suspense fallback={null}>
           <Blocks />

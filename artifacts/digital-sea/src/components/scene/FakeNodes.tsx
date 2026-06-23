@@ -2,16 +2,13 @@ import { useRef, useMemo, ReactElement } from 'react';
 import { useThree, useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
-import { curve } from '../data/path';
-import { useCardDrag } from '../hooks/useCardDrag';
+import { curve } from '../../data/path';
+import { useCardDrag } from '../../hooks/useCardDrag';
 import { DragWake } from './DragWake';
+import { mkRand } from './Blocks';
+import type { Mode } from '../../types';
 
-function mkRand(seed: number) {
-  let s = seed;
-  return () => { s = (s * 1664525 + 1013904223) & 0xffffffff; return (s >>> 0) / 0xffffffff; };
-}
-
-const HEX = '0123456789ABCDEF';
+const HEX   = '0123456789ABCDEF';
 const GLYPHS = '⟁⏃⌬⎔⏚⟒⌖◊⟐⏧⎓⍙⌇⟜⍉⌗⏛⟇◈⎌⍜⏥⌬⟑⍫';
 
 function hexCode(rand: () => number, n = 4) {
@@ -20,14 +17,13 @@ function hexCode(rand: () => number, n = 4) {
   return s;
 }
 
-// Outline color restrained to the teal / turquoise / greenish-blue spectrum.
 function tealColor(rand: () => number) {
-  const h = 158 + rand() * 40;          // 158 (greenish) → 198 (cyan-blue)
-  const s = 55 + rand() * 33;
-  const l = 56 + rand() * 22;
+  const h = 158 + rand() * 40;
+  const s = 55  + rand() * 33;
+  const l = 56  + rand() * 22;
   return {
-    color: `hsl(${h.toFixed(0)}, ${s.toFixed(0)}%, ${l.toFixed(0)}%)`,
-    glow: `hsla(${h.toFixed(0)}, ${s.toFixed(0)}%, ${l.toFixed(0)}%, 0.35)`,
+    color:    `hsl(${h.toFixed(0)}, ${s.toFixed(0)}%, ${l.toFixed(0)}%)`,
+    glow:     `hsla(${h.toFixed(0)}, ${s.toFixed(0)}%, ${l.toFixed(0)}%, 0.35)`,
     glowSoft: `hsla(${h.toFixed(0)}, ${s.toFixed(0)}%, ${l.toFixed(0)}%, 0.12)`,
   };
 }
@@ -62,9 +58,9 @@ function polyPoints(cx: number, cy: number, r: number, n: number, rot = -Math.PI
 
 function buildGeometric(rand: () => number): ReactElement {
   const shapes = ['cube', 'cylinder', 'pyramid', 'pentagon', 'hexagon', 'octa'];
-  const kind = shapes[(rand() * shapes.length) | 0];
-  const sw = 1.2;
-  const wrap = (children: ReactElement) => (
+  const kind   = shapes[(rand() * shapes.length) | 0];
+  const sw     = 1.2;
+  const wrap   = (children: ReactElement) => (
     <g stroke="currentColor" strokeOpacity={0.85} strokeWidth={sw} fill="none">{children}</g>
   );
   const facet = { fill: 'currentColor', fillOpacity: 0.06 } as const;
@@ -126,7 +122,7 @@ function buildContent(kind: Kind, seed: number): Built {
   switch (kind) {
     case 'graph': {
       const vbW = 116, vbH = 54, baseY = 46;
-      const n = 9;
+      const n   = 9;
       const pts: [number, number][] = [];
       for (let i = 0; i < n; i++) pts.push([6 + (i / (n - 1)) * (vbW - 12), 10 + rand() * (vbH - 20)]);
       const line = pts.map((p) => `${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' ');
@@ -156,8 +152,7 @@ function buildContent(kind: Kind, seed: number): Built {
     case 'document': {
       const vbW = 104, vbH = 134;
       const rows: ReactElement[] = [];
-      let y = 30;
-      let k = 0;
+      let y = 30, k = 0;
       while (y < vbH - 8) {
         if (rand() < 0.12) { y += 10; continue; }
         const w = 14 + rand() * (vbW - 28);
@@ -226,7 +221,7 @@ function buildContent(kind: Kind, seed: number): Built {
       const nPoly = 2 + ((rand() * 2) | 0);
       for (let i = 0; i < nPoly; i++) {
         const cx = 20 + rand() * (vbW - 40), cy = 20 + rand() * (vbH - 40);
-        const r = 14 + rand() * 26;
+        const r  = 14 + rand() * 26;
         els.push(<polygon key={`p${i}`} points={polyPoints(cx, cy, r, 3 + ((rand() * 4) | 0), rand() * 6)} fill="currentColor" fillOpacity={0.05 + rand() * 0.08} stroke="currentColor" strokeOpacity={0.4 + rand() * 0.4} strokeWidth={0.8} />);
       }
       for (let i = 0; i < 3; i++) {
@@ -294,7 +289,7 @@ function buildContent(kind: Kind, seed: number): Built {
 
     default: { // constellation
       const vbW = 116, vbH = 92;
-      const n = 7 + ((rand() * 5) | 0);
+      const n   = 7 + ((rand() * 5) | 0);
       const pts = Array.from({ length: n }, () => ({ x: 8 + rand() * (vbW - 16), y: 8 + rand() * (vbH - 16) }));
       const lines: ReactElement[] = [];
       for (let i = 0; i < n; i++) {
@@ -327,7 +322,10 @@ function FakeCard({ built, color, glow, glowSoft }: { built: Built; color: strin
       }}
     >
       {built.head && (
-        <div className="fake-node-head" style={{ color }}><span className="fake-dot" style={{ background: color, boxShadow: `0 0 6px ${color}` }} /><span>{built.head}</span></div>
+        <div className="fake-node-head" style={{ color }}>
+          <span className="fake-dot" style={{ background: color, boxShadow: `0 0 6px ${color}` }} />
+          <span>{built.head}</span>
+        </div>
       )}
       <svg className="fake-node-svg" viewBox={`0 0 ${built.vbW} ${built.vbH}`} preserveAspectRatio="xMidYMid meet">
         {built.body}
@@ -339,25 +337,25 @@ function FakeCard({ built, color, glow, glowSoft }: { built: Built; color: strin
 
 interface FakeNodeProps {
   basePos: THREE.Vector3;
-  seed: number;
-  kind: Kind;
-  mode: 'scroll' | 'camera';
+  seed:    number;
+  kind:    Kind;
+  mode:    Mode;
 }
 
 function FakeNode({ basePos, seed, kind, mode }: FakeNodeProps) {
   const { camera } = useThree();
-  const groupRef = useRef<THREE.Group>(null);
-  const wrapRef = useRef<HTMLDivElement>(null);
-  const drag = useCardDrag(mode);
-  const built = useMemo(() => buildContent(kind, seed), [kind, seed]);
-  const palette = useMemo(() => tealColor(mkRand(seed * 7 + 91)), [seed]);
+  const groupRef   = useRef<THREE.Group>(null);
+  const wrapRef    = useRef<HTMLDivElement>(null);
+  const drag       = useCardDrag(mode);
+  const built      = useMemo(() => buildContent(kind, seed), [kind, seed]);
+  const palette    = useMemo(() => tealColor(mkRand(seed * 7 + 91)), [seed]);
   const baseOpacity = useMemo(() => 0.5 + mkRand(seed * 3 + 41)() * 0.45, [seed]);
   const phase = (seed % 7) * 0.9 + 0.4;
 
   useFrame(({ clock }) => {
     const g = groupRef.current;
     if (!g) return;
-    const t = clock.elapsedTime;
+    const t  = clock.elapsedTime;
     const fy = Math.sin(t * 0.28 + phase) * 0.28;
     const fx = Math.cos(t * 0.21 + phase) * 0.16;
     g.position.set(
@@ -368,14 +366,14 @@ function FakeNode({ basePos, seed, kind, mode }: FakeNodeProps) {
     g.quaternion.copy(camera.quaternion);
 
     const dist = camera.position.distanceTo(g.position);
-    const op = Math.max(0, Math.min(1, 1 - (dist - 9) / 26));
+    const op   = Math.max(0, Math.min(1, 1 - (dist - 9) / 26));
     g.scale.setScalar(0.7 + op * 0.4);
 
     const el = wrapRef.current;
     if (el) {
-      el.style.opacity = String(op * baseOpacity);
+      el.style.opacity       = String(op * baseOpacity);
       el.style.pointerEvents = mode === 'camera' && op > 0.12 ? 'auto' : 'none';
-      el.style.cursor = mode === 'camera' ? 'grab' : 'default';
+      el.style.cursor        = mode === 'camera' ? 'grab' : 'default';
     }
   });
 
@@ -395,7 +393,7 @@ function FakeNode({ basePos, seed, kind, mode }: FakeNodeProps) {
 
 // ── Floating 3D wireframe shapes & sea creatures ──────────────────────────────
 type SwimStyle = 'fish' | 'jelly' | 'eel' | 'manta';
-interface Part { geom: THREE.BufferGeometry; pos?: [number, number, number]; rot?: [number, number, number]; scale?: [number, number, number]; }
+interface Part     { geom: THREE.BufferGeometry; pos?: [number, number, number]; rot?: [number, number, number]; scale?: [number, number, number]; }
 interface ShapeDef { parts: Part[]; creature: boolean; swim?: SwimStyle; }
 
 function edgesOf(base: THREE.BufferGeometry): THREE.BufferGeometry {
@@ -449,7 +447,7 @@ function mantaDef(): ShapeDef {
     creature: true, swim: 'manta',
     parts: [
       { geom: edgesOf(new THREE.OctahedronGeometry(1)), scale: [1.7, 0.22, 1.3] },
-      { geom: lineGeo([-1.3, 0, 0, -2.5, 0.05, 0]), },
+      { geom: lineGeo([-1.3, 0, 0, -2.5, 0.05, 0]) },
     ],
   };
 }
@@ -468,7 +466,6 @@ function eelDef(rand: () => number): ShapeDef {
 }
 
 const SHAPE_BUILDERS: ((rand: () => number) => ShapeDef)[] = [
-  // abstract polyhedra
   () => ({ creature: false, parts: [{ geom: edgesOf(new THREE.TetrahedronGeometry(1)) }] }),
   () => ({ creature: false, parts: [{ geom: edgesOf(new THREE.OctahedronGeometry(1)) }] }),
   () => ({ creature: false, parts: [{ geom: edgesOf(new THREE.IcosahedronGeometry(1)) }] }),
@@ -477,7 +474,6 @@ const SHAPE_BUILDERS: ((rand: () => number) => ShapeDef)[] = [
   () => ({ creature: false, parts: [{ geom: edgesOf(new THREE.CylinderGeometry(0.7, 0.7, 1.7, 5)) }] }),
   () => ({ creature: false, parts: [{ geom: edgesOf(new THREE.ConeGeometry(0.9, 1.8, 4)) }] }),
   () => ({ creature: false, parts: [{ geom: edgesOf(new THREE.TorusGeometry(0.8, 0.26, 8, 18)) }] }),
-  // sea creatures (weighted heavier — the user loves these)
   fishDef, fishDef, fishDef,
   jellyDef, jellyDef,
   mantaDef,
@@ -486,29 +482,27 @@ const SHAPE_BUILDERS: ((rand: () => number) => ShapeDef)[] = [
 
 function FakeShape({ basePos, seed }: { basePos: THREE.Vector3; seed: number }) {
   const { camera } = useThree();
-  const ref = useRef<THREE.Group>(null);
-  const rand = useMemo(() => mkRand(seed * 53 + 7), [seed]);
-  const def = useMemo(() => SHAPE_BUILDERS[(rand() * SHAPE_BUILDERS.length) | 0](rand), [rand]);
+  const ref   = useRef<THREE.Group>(null);
+  const rand  = useMemo(() => mkRand(seed * 53 + 7), [seed]);
+  const def   = useMemo(() => SHAPE_BUILDERS[(rand() * SHAPE_BUILDERS.length) | 0](rand), [rand]);
   const palette = useMemo(() => tealColor(rand), [rand]);
-  const mat = useMemo(
+  const mat   = useMemo(
     () => new THREE.LineBasicMaterial({ color: new THREE.Color(palette.color), transparent: true, opacity: 0 }),
     [palette.color],
   );
   const cfg = useMemo(() => ({
-    spin: { x: (rand() - 0.5) * 0.2, y: 0.12 + rand() * 0.18, z: (rand() - 0.5) * 0.1 },
-    phase: rand() * 6,
-    speed: 0.5 + rand() * 0.6,
-    yaw: rand() > 0.5 ? 0 : Math.PI,
-    size: 0.8 + rand() * 0.6,
-    maxOp: 0.4 + rand() * 0.35,
+    spin:   { x: (rand() - 0.5) * 0.2, y: 0.12 + rand() * 0.18, z: (rand() - 0.5) * 0.1 },
+    phase:  rand() * 6,
+    speed:  0.5 + rand() * 0.6,
+    yaw:    rand() > 0.5 ? 0 : Math.PI,
+    size:   0.8 + rand() * 0.6,
+    maxOp:  0.4 + rand() * 0.35,
   }), [rand]);
 
   useFrame(({ clock }, dt) => {
     const m = ref.current;
     if (!m) return;
 
-    // Fast approximate cull: skip all per-frame work for shapes well outside
-    // the visible falloff range (~dist 38). Uses basePos as cheap approximation.
     const approxDist = camera.position.distanceTo(basePos);
     if (approxDist > 65) {
       if (mat.opacity > 0.001) mat.opacity = 0;
@@ -548,7 +542,7 @@ function FakeShape({ basePos, seed }: { basePos: THREE.Vector3; seed: number }) 
     }
 
     const dist = camera.position.distanceTo(m.position);
-    const op = Math.max(0, Math.min(cfg.maxOp, (1 - (dist - 8) / 30) * cfg.maxOp));
+    const op   = Math.max(0, Math.min(cfg.maxOp, (1 - (dist - 8) / 30) * cfg.maxOp));
     mat.opacity += (op - mat.opacity) * 0.1;
   });
 
@@ -569,35 +563,37 @@ function FakeShape({ basePos, seed }: { basePos: THREE.Vector3; seed: number }) 
   );
 }
 
-export function FakeNodes({ mode, count = 28, shapeCount = 14 }: { mode: 'scroll' | 'camera'; count?: number; shapeCount?: number }) {
+export function FakeNodes({ mode, count = 28, shapeCount = 14 }: { mode: Mode; count?: number; shapeCount?: number }) {
   const fakes = useMemo(() => {
     const rand = mkRand(1471);
     return Array.from({ length: count }, (_, i) => {
-      const tt = 0.04 + (i / count) * 0.92 + (rand() - 0.5) * 0.02;
-      const pt = curve.getPoint(Math.max(0.01, Math.min(0.99, tt)));
+      const tt   = 0.04 + (i / count) * 0.92 + (rand() - 0.5) * 0.02;
+      const pt   = curve.getPoint(Math.max(0.01, Math.min(0.99, tt)));
       const side = rand() > 0.5 ? 1 : -1;
-      const pos = new THREE.Vector3(
+      const pos  = new THREE.Vector3(
         pt.x + side * (3.4 + rand() * 8),
-        pt.y + (rand() - 0.5) * 9,
-        pt.z + (rand() - 0.5) * 9,
+        pt.y + (rand() - 0.5) * 6,
+        pt.z + (rand() - 0.5) * 3,
       );
+      const seed = Math.floor(rand() * 99991 + i * 37);
       const kind = KIND_BAG[(rand() * KIND_BAG.length) | 0];
-      return { pos, seed: i * 31 + 5, kind };
+      return { pos, seed, kind };
     });
   }, [count]);
 
   const shapes = useMemo(() => {
-    const rand = mkRand(9311);
+    const rand = mkRand(2731);
     return Array.from({ length: shapeCount }, (_, i) => {
-      const tt = 0.05 + (i / shapeCount) * 0.9 + (rand() - 0.5) * 0.04;
-      const pt = curve.getPoint(Math.max(0.01, Math.min(0.99, tt)));
+      const tt   = 0.02 + (i / shapeCount) * 0.96 + (rand() - 0.5) * 0.04;
+      const pt   = curve.getPoint(Math.max(0.01, Math.min(0.99, tt)));
       const side = rand() > 0.5 ? 1 : -1;
-      const pos = new THREE.Vector3(
-        pt.x + side * (4.5 + rand() * 9),
+      const pos  = new THREE.Vector3(
+        pt.x + side * (6 + rand() * 14),
         pt.y + (rand() - 0.5) * 10,
-        pt.z + (rand() - 0.5) * 10,
+        pt.z + (rand() - 0.5) * 5,
       );
-      return { pos, seed: i * 17 + 3 };
+      const seed = Math.floor(rand() * 99991 + i * 53);
+      return { pos, seed };
     });
   }, [shapeCount]);
 
@@ -607,7 +603,7 @@ export function FakeNodes({ mode, count = 28, shapeCount = 14 }: { mode: 'scroll
         <FakeNode key={i} basePos={f.pos} seed={f.seed} kind={f.kind} mode={mode} />
       ))}
       {shapes.map((s, i) => (
-        <FakeShape key={`s${i}`} basePos={s.pos} seed={s.seed} />
+        <FakeShape key={`sh${i}`} basePos={s.pos} seed={s.seed} />
       ))}
     </>
   );

@@ -3,7 +3,7 @@ import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
 
 interface Props {
-  dirRef: MutableRefObject<THREE.Vector3>;   // local screen-space pull direction
+  dirRef: MutableRefObject<THREE.Vector3>;
   activeRef: MutableRefObject<boolean>;
   velRef: MutableRefObject<number>;
   color?: string;
@@ -23,7 +23,7 @@ export function DragWake({ dirRef, activeRef, velRef, color = '#bdeff2', count =
   const geo = useMemo(() => {
     const pos = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      pos[i * 3] = (Math.random() - 0.5) * 0.6;
+      pos[i * 3]     = (Math.random() - 0.5) * 0.6;
       pos[i * 3 + 1] = (Math.random() - 0.5) * 0.9;
       pos[i * 3 + 2] = (Math.random() - 0.5) * 0.3;
     }
@@ -43,27 +43,24 @@ export function DragWake({ dirRef, activeRef, velRef, color = '#bdeff2', count =
     const pts = ptsRef.current;
     if (!pts) return;
     const active = activeRef.current;
-    const vel = velRef.current;
-    const m = pts.material as THREE.PointsMaterial;
+    const vel    = velRef.current;
+    const m      = pts.material as THREE.PointsMaterial;
 
-    // Dormant fast-path: once opacity fades to zero and dragging has stopped,
-    // skip all particle simulation and GPU buffer uploads entirely.
-    // This fires for all 75 DragWake instances whenever the user isn't dragging.
+    // Dormant fast-path: skip simulation once opacity hits zero and drag stops.
     if (!active && m.opacity < 0.002) return;
 
     const arr = geo.attributes.position.array as Float32Array;
     const dir = dirRef.current;
     const step = Math.min(dt, 0.05);
-    const spd = (0.6 + vel * 2.6) * step;
+    const spd  = (0.6 + vel * 2.6) * step;
 
     for (let i = 0; i < count; i++) {
-      arr[i * 3] += dir.x * spd;
+      arr[i * 3]     += dir.x * spd;
       arr[i * 3 + 1] += dir.y * spd;
       arr[i * 3 + 2] += dir.z * spd;
       life[i] -= step * (0.8 + vel);
       if (active && life[i] <= 0) {
-        // respawn near the card, slightly behind the pull direction
-        arr[i * 3] = (Math.random() - 0.5) * 0.5 - dir.x * 0.4;
+        arr[i * 3]     = (Math.random() - 0.5) * 0.5 - dir.x * 0.4;
         arr[i * 3 + 1] = (Math.random() - 0.5) * 0.7 - dir.y * 0.4;
         arr[i * 3 + 2] = (Math.random() - 0.5) * 0.3;
         life[i] = 0.5 + Math.random() * 0.7;

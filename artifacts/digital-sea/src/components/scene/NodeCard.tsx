@@ -1,5 +1,5 @@
 import React from 'react';
-import { NodeData } from '../data/nodes';
+import { NodeData } from '../../data/nodes';
 
 const COMING_SOON_IDS = ['weatherguru', 'sis', 'astrosleep', 'geoskin'];
 
@@ -16,19 +16,16 @@ function ImgWithFallback({
 export function NodeCard({ node }: { node: NodeData }) {
   const [exploding, setExploding] = React.useState(false);
   const isComingSoon = COMING_SOON_IDS.includes(node.id);
-  const hasLink = Boolean(node.url && node.url !== '#');
+  const hasLink      = Boolean(node.url && node.url !== '#');
 
   const handleClick = (e: React.MouseEvent) => {
-    // Let the native <a> handle navigation — don't prevent default
     if (!hasLink || exploding) { e.preventDefault(); return; }
     setExploding(true);
     setTimeout(() => setExploding(false), 420);
-    // Default anchor behavior opens the link — no window.open needed
   };
 
-  // Use a real <a> tag when there's a link. Native anchors open reliably
-  // in every browser context (including inside iframes) where window.open
-  // may be blocked as a popup. The href + target="_blank" is the spec-correct way.
+  // Native <a> tags open reliably in every context (including iframes)
+  // where window.open may be blocked as a popup.
   const Tag = hasLink ? 'a' : 'div';
   const linkProps = hasLink
     ? { href: node.url, target: '_blank', rel: 'noopener noreferrer' }
@@ -40,12 +37,7 @@ export function NodeCard({ node }: { node: NodeData }) {
       draggable={false}
       className={`node-card${exploding ? ' node-card--exploding' : ''}`}
       onClick={handleClick}
-      style={{
-        cursor: hasLink ? 'pointer' : 'default',
-        display: 'block',
-        textDecoration: 'none',
-        color: 'inherit',
-      }}
+      style={{ cursor: hasLink ? 'pointer' : 'default', display: 'block', textDecoration: 'none', color: 'inherit' }}
     >
       <span className="corner tl" />
       <span className="corner tr" />
@@ -58,11 +50,7 @@ export function NodeCard({ node }: { node: NodeData }) {
             src={node.avatar}
             alt={node.handle}
             className="avatar-img"
-            fallback={
-              <span className="avatar-fallback">
-                {node.label.charAt(0).toUpperCase()}
-              </span>
-            }
+            fallback={<span className="avatar-fallback">{node.label.charAt(0).toUpperCase()}</span>}
           />
         </div>
         {node.logo && (

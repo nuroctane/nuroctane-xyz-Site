@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { useIsMobile } from '../hooks/use-mobile';
+import { useIsMobile } from '../../hooks/useMobile';
 
 const SONG = 'sally shapiro - swimming through the blue lagoon.mp3';
 const SRC = `${import.meta.env.BASE_URL}assets/nodes/${encodeURIComponent(SONG)}`;
@@ -15,9 +15,6 @@ export function AudioControl() {
   enabledRef.current = enabled;
   const isMobile = useIsMobile();
 
-  // On mount: play from the start of the track. Browsers block audible autoplay,
-  // so we also arm one-shot listeners and start on the first real user gesture.
-  // (scroll does not reliably count as user activation, so it's intentionally omitted.)
   useEffect(() => {
     const a = audioRef.current;
     if (!a) return;
@@ -26,24 +23,15 @@ export function AudioControl() {
     a.currentTime = 0;
     let started = false;
 
-    const cleanup = () => {
-      GESTURES.forEach((e) => window.removeEventListener(e, onGesture));
-    };
+    const cleanup = () => GESTURES.forEach((e) => window.removeEventListener(e, onGesture));
     const tryStart = () => {
       if (started || !enabledRef.current) return;
       const pr = a.play();
       if (pr) {
-        pr.then(() => {
-          started = true;
-          cleanup();
-        }).catch(() => {
-          /* still blocked — wait for the next gesture */
-        });
+        pr.then(() => { started = true; cleanup(); }).catch(() => {});
       }
     };
-    function onGesture() {
-      tryStart();
-    }
+    function onGesture() { tryStart(); }
 
     tryStart();
     GESTURES.forEach((e) => window.addEventListener(e, onGesture, { passive: true }));
@@ -51,7 +39,6 @@ export function AudioControl() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Master toggle = "undercover pause": off pauses AND mutes, on resumes AND unmutes.
   useEffect(() => {
     const a = audioRef.current;
     if (!a) return;
@@ -90,20 +77,8 @@ export function AudioControl() {
             <path d="M4 9 H7 L11.5 5 V19 L7 15 H4 Z" fill="currentColor" />
             {enabled ? (
               <>
-                <path
-                  d="M14.6 8.6 a5 5 0 0 1 0 6.8"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  fill="none"
-                  strokeLinecap="round"
-                />
-                <path
-                  d="M16.9 6.2 a8.6 8.6 0 0 1 0 11.6"
-                  stroke="currentColor"
-                  strokeWidth="1.6"
-                  fill="none"
-                  strokeLinecap="round"
-                />
+                <path d="M14.6 8.6 a5 5 0 0 1 0 6.8" stroke="currentColor" strokeWidth="1.6" fill="none" strokeLinecap="round" />
+                <path d="M16.9 6.2 a8.6 8.6 0 0 1 0 11.6" stroke="currentColor" strokeWidth="1.6" fill="none" strokeLinecap="round" />
               </>
             ) : (
               <>

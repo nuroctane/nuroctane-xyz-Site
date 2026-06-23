@@ -1,6 +1,7 @@
 import { useRef, useMemo, useEffect } from 'react';
 import * as THREE from 'three';
-import { curve } from '../data/path';
+import { curve } from '../../data/path';
+import { WORLD_Z_MIN, WORLD_Z_MAX, WORLD_X_HALF } from '../../constants';
 
 export function mkRand(seed: number) {
   let s = seed;
@@ -12,14 +13,14 @@ export function mkRand(seed: number) {
 
 export function makeMat(color: string, opacity: number, emissive = '#061418') {
   return new THREE.MeshPhysicalMaterial({
-    color: new THREE.Color(color),
-    emissive: new THREE.Color(emissive),
+    color:             new THREE.Color(color),
+    emissive:          new THREE.Color(emissive),
     emissiveIntensity: 0.28,
-    metalness: 0.06,
-    roughness: 0.12,
-    transmission: 0.42,
-    thickness: 1.2,
-    transparent: true,
+    metalness:         0.06,
+    roughness:         0.12,
+    transmission:      0.42,
+    thickness:         1.2,
+    transparent:       true,
     opacity,
     side: THREE.FrontSide,
   });
@@ -33,7 +34,7 @@ export interface BlockSpec {
 
 export function InstanceGroup({ specs, mat }: { specs: BlockSpec[]; mat: THREE.Material }) {
   const meshRef = useRef<THREE.InstancedMesh>(null);
-  const dummy = useMemo(() => new THREE.Object3D(), []);
+  const dummy   = useMemo(() => new THREE.Object3D(), []);
   useEffect(() => {
     const mesh = meshRef.current;
     if (!mesh) return;
@@ -58,19 +59,13 @@ export function InstanceGroup({ specs, mat }: { specs: BlockSpec[]; mat: THREE.M
   );
 }
 
-// World bounds for scatter
-const WORLD_Z_MIN = -190;
-const WORLD_Z_MAX = 28;
-const WORLD_X_HALF = 40;
-
 // ── Tall thin pillars ─────────────────────────────────────────────────────────
 function Pillars() {
-  const mat = useMemo(() => makeMat('#1c5f70', 0.80, '#071c24'), []);
+  const mat   = useMemo(() => makeMat('#1c5f70', 0.80, '#071c24'), []);
   const specs = useMemo<BlockSpec[]>(() => {
     const rand = mkRand(7);
-    // Path-corridor pillars — close to path, visible as user passes
     const pathPillars = Array.from({ length: 90 }, (_, i) => {
-      const t = 0.005 + (i / 90) * 0.99;
+      const t  = 0.005 + (i / 90) * 0.99;
       const pt = curve.getPoint(t);
       const side = rand() > 0.5 ? 1 : -1;
       const h = 5 + rand() * 20;
@@ -83,7 +78,6 @@ function Pillars() {
         rotY: (rand() - 0.5) * 0.5, rotX: (rand() - 0.5) * 0.05,
       };
     });
-    // World-scattered pillars — spread far and wide for openness
     const worldPillars = Array.from({ length: 160 }, () => {
       const h = 6 + rand() * 28;
       const w = 0.12 + rand() * 0.85;
@@ -102,11 +96,11 @@ function Pillars() {
 
 // ── Wide flat platforms ───────────────────────────────────────────────────────
 function Platforms() {
-  const mat = useMemo(() => makeMat('#0d4a5a', 0.72, '#050f14'), []);
+  const mat   = useMemo(() => makeMat('#0d4a5a', 0.72, '#050f14'), []);
   const specs = useMemo<BlockSpec[]>(() => {
     const rand = mkRand(13);
     const pathPlatforms = Array.from({ length: 60 }, (_, i) => {
-      const t = 0.005 + (i / 60) * 0.99;
+      const t  = 0.005 + (i / 60) * 0.99;
       const pt = curve.getPoint(t);
       const side = rand() > 0.5 ? 1 : -1;
       return {
@@ -135,11 +129,11 @@ function Platforms() {
 
 // ── Medium cubic blocks ───────────────────────────────────────────────────────
 function MediumBlocks() {
-  const mat = useMemo(() => makeMat('#175870', 0.84, '#060e1c'), []);
+  const mat   = useMemo(() => makeMat('#175870', 0.84, '#060e1c'), []);
   const specs = useMemo<BlockSpec[]>(() => {
     const rand = mkRand(29);
     const pathBlocks = Array.from({ length: 80 }, (_, i) => {
-      const t = 0.005 + (i / 80) * 0.99;
+      const t  = 0.005 + (i / 80) * 0.99;
       const pt = curve.getPoint(t);
       const side = rand() > 0.5 ? 1 : -1;
       return {
@@ -168,14 +162,14 @@ function MediumBlocks() {
 
 // ── Massive background monoliths ──────────────────────────────────────────────
 function Monoliths() {
-  const mat = useMemo(() => makeMat('#0b3040', 0.60, '#030a10'), []);
+  const mat   = useMemo(() => makeMat('#0b3040', 0.60, '#030a10'), []);
   const specs = useMemo<BlockSpec[]>(() => {
     const rand = mkRand(61);
     const pathMonoliths = Array.from({ length: 30 }, (_, i) => {
-      const t = 0.01 + (i / 30) * 0.98;
+      const t  = 0.01 + (i / 30) * 0.98;
       const pt = curve.getPoint(t);
       const side = rand() > 0.5 ? 1 : -1;
-      const h = 12 + rand() * 28;
+      const h  = 12 + rand() * 28;
       return {
         x: pt.x + side * (8 + rand() * 16),
         y: pt.y - h * 0.3 + (rand() - 0.5) * 6,
@@ -203,9 +197,9 @@ function Monoliths() {
   return <InstanceGroup specs={specs} mat={mat} />;
 }
 
-// ── Far background tower spires — deepest visual layer ────────────────────────
+// ── Far background tower spires ───────────────────────────────────────────────
 function TowerSpires() {
-  const mat = useMemo(() => makeMat('#082030', 0.45, '#020810'), []);
+  const mat   = useMemo(() => makeMat('#082030', 0.45, '#020810'), []);
   const specs = useMemo<BlockSpec[]>(() => {
     const rand = mkRand(97);
     return Array.from({ length: 80 }, () => {
@@ -223,9 +217,9 @@ function TowerSpires() {
   return <InstanceGroup specs={specs} mat={mat} />;
 }
 
-// ── Floating horizontal slabs — Code Lyoko style platforms ───────────────────
+// ── Floating horizontal slabs ─────────────────────────────────────────────────
 function FloatingSlabs() {
-  const mat = useMemo(() => makeMat('#104858', 0.55, '#040e14'), []);
+  const mat   = useMemo(() => makeMat('#104858', 0.55, '#040e14'), []);
   const specs = useMemo<BlockSpec[]>(() => {
     const rand = mkRand(43);
     return Array.from({ length: 70 }, () => ({
