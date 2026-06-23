@@ -208,14 +208,33 @@ const EDGE_CARD_WIDTH = 0.065;
 const LAST_START = 0.91;
 const STEP = (LAST_START - FIRST_START) / Math.max(1, raw.length - 1);
 
+// At their default alternating x-side, these nodes land on the *same* side as
+// the camera path at their t value (< 1 unit apart in X) — flip them across
+// so the camera looks across the sea at the card instead of being nose-to-it.
+const FLIP_X = new Set(['steam', 'discord']);
+
+// These late-path nodes have a slightly wider proximity window so the camera
+// has more time (scroll distance) to rotate toward and fully frame them —
+// especially important on narrow mobile viewports.
+const WIDE_CARD: Record<string, number> = {
+  weatherguru: 0.055,
+  astrosleep:  0.055,
+  geoskin:     0.055,
+  miyamaker:   0.055,
+};
+
 export const nodes: NodeData[] = raw.map((n, i) => {
   const isEdge = i === 0 || i === raw.length - 1;
   const scrollStart = FIRST_START + i * STEP;
-  const cardWidth = isEdge ? EDGE_CARD_WIDTH : CARD_WIDTH;
+  const cardWidth = WIDE_CARD[n.id] ?? (isEdge ? EDGE_CARD_WIDTH : CARD_WIDTH);
   const scrollEnd = scrollStart + cardWidth;
-  // Edge nodes sit closer to center-x: at path extremes the camera is very
-  // close in z, so a full ±2.0 offset creates a steep angle that clips the card.
-  const x = i % 2 === 0 ? (isEdge ? -1.4 : -2.0) : (isEdge ? 1.4 : 2.0);
+
+  // Determine which side to place the card.
+  // Default alternates per node; FLIP_X nodes get the opposite side.
+  const defaultSide = i % 2 === 0 ? -1 : 1;
+  const side = FLIP_X.has(n.id) ? -defaultSide : defaultSide;
+  const x = side * (isEdge ? 1.4 : 2.0);
+
   return {
     ...n,
     scrollStart,

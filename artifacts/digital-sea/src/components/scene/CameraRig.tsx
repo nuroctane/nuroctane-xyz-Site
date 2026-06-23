@@ -71,7 +71,9 @@ export function CameraRig({ scrollProgress, mode }: Props) {
     camera.position.lerp(_camTarget, 0.055);
 
     if (activePos && maxProx > 0.05) {
-      const blend = Math.pow(maxProx, 0.6) * 0.9;
+      // Lower exponent (0.4 vs 0.6) + higher ceiling (0.95) → camera turns
+      // toward each card earlier and more decisively as proximity rises.
+      const blend = Math.pow(maxProx, 0.4) * 0.95;
       _nodeLook.set(activePos.x, activePos.y, activePos.z);
       _pathLook.x += driftX * 0.2;
       _pathLook.y += driftY * 0.2;
@@ -88,7 +90,10 @@ export function CameraRig({ scrollProgress, mode }: Props) {
       smoothLook.current.copy(_blendedLook);
       lookReady.current = true;
     } else {
-      smoothLook.current.lerp(_blendedLook, 0.05);
+      // Lerp faster when a card is close so the camera fully centers on it
+      // within the (sometimes narrow) proximity window — key for mobile.
+      const lookLerp = 0.05 + maxProx * 0.045;
+      smoothLook.current.lerp(_blendedLook, lookLerp);
     }
 
     camera.lookAt(smoothLook.current);

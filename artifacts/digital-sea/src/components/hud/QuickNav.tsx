@@ -34,8 +34,11 @@ function scrollToNode(node: NodeData, onClose: () => void, onNavigate?: () => vo
   onClose();
   requestAnimationFrame(() => {
     const total = document.documentElement.scrollHeight - window.innerHeight;
-    const mid = (node.scrollStart + node.scrollEnd) / 2;
-    window.scrollTo({ top: mid * total, behavior: 'smooth' });
+    // Land 35% into the card's scroll window rather than dead-centre.
+    // The card is fully visible here and the camera is still approaching,
+    // giving a natural "swimming up to it" feel instead of arriving nose-first.
+    const approachT = node.scrollStart + (node.scrollEnd - node.scrollStart) * 0.35;
+    window.scrollTo({ top: approachT * total, behavior: 'smooth' });
   });
 }
 
