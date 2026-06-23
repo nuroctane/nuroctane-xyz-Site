@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { Analytics } from '@vercel/analytics/react';
 import { useScrollProgress } from './hooks/useScrollProgress';
 import { usePerformanceTier } from './hooks/usePerformanceTier';
 import type { Mode } from './types';
@@ -64,6 +65,7 @@ export default function App() {
       )}
 
       <HeroBlock />
+      <Analytics />
     </>
   );
 }

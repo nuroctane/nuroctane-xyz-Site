@@ -80,6 +80,7 @@
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.6.1",
     "@react-three/postprocessing": "^3.0.4",
+    "@vercel/analytics": "^2.0.1",
     "postprocessing": "^6.39.1",
     "three": "^0.184.0"
   }
