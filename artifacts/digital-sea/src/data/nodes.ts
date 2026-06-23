@@ -201,7 +201,7 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
 // Cards alternate sides and are spread evenly along the scroll path so the
 // layout self-adjusts as cards are added/removed.
 const yPattern = [1.0, -0.4, 1.3, 0.2, -0.8, 0.9, 0.1, -0.5, 1.1, 0.5, -0.2, 0.8, 0.3, -0.6, 1.0, 0.4, -0.1];
-const FIRST_START = 0.035;
+const FIRST_START = 0.075;
 const CARD_WIDTH = 0.04;
 // Edge cards get a wider scroll envelope so they approach/recede more gently.
 const EDGE_CARD_WIDTH = 0.065;
@@ -214,8 +214,8 @@ export const nodes: NodeData[] = raw.map((n, i) => {
   const cardWidth = isEdge ? EDGE_CARD_WIDTH : CARD_WIDTH;
   const scrollEnd = scrollStart + cardWidth;
   // Edge nodes sit closer to center-x: at path extremes the camera is very
-  // close in z, so a full ±2.2 offset creates a steep angle that clips the card.
-  const x = i % 2 === 0 ? (isEdge ? -1.6 : -2.2) : (isEdge ? 1.6 : 2.2);
+  // close in z, so a full ±2.0 offset creates a steep angle that clips the card.
+  const x = i % 2 === 0 ? (isEdge ? -1.4 : -2.0) : (isEdge ? 1.4 : 2.0);
   return {
     ...n,
     scrollStart,

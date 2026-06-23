@@ -24,7 +24,7 @@ function computeProximity(node: NodeData, t: number): number {
 }
 
 function descOffset(index: number): [number, number, number] {
-  return index % 2 === 0 ? [0, 1.65, 0] : [0, -1.65, 0];
+  return index % 2 === 0 ? [0, 1.4, 0] : [0, -1.4, 0];
 }
 
 interface SingleNodeProps {

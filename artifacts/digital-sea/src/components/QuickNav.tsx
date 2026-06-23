@@ -37,7 +37,8 @@ function scrollToNode(node: NodeData, onClose: () => void, onNavigate?: () => vo
   onClose();
   requestAnimationFrame(() => {
     const total = document.documentElement.scrollHeight - window.innerHeight;
-    window.scrollTo({ top: node.scrollStart * total, behavior: 'smooth' });
+    const mid = (node.scrollStart + node.scrollEnd) / 2;
+    window.scrollTo({ top: mid * total, behavior: 'smooth' });
   });
 }
 
