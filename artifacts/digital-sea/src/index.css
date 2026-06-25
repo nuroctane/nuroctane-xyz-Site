@@ -173,6 +173,22 @@ html, body {
   transition: opacity 0.35s ease;
 }
 
+.summary-cal-link {
+  position: absolute;
+  top: -6px;
+  right: 0;
+  width: 20px;
+  height: 20px;
+  color: #5de8f0;
+  opacity: 0.35;
+  transition: opacity 0.2s;
+  pointer-events: auto;
+}
+
+.summary-cal-link:hover {
+  opacity: 0.85;
+}
+
 .summary-avatar {
   width: 92px;
   height: 92px;

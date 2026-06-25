@@ -49,6 +49,20 @@ export function EndPanel({ mode, finUnlocked }: Props) {
 
   return (
     <div ref={ref} className="summary-panel end-panel" style={{ opacity: 0, pointerEvents: 'none' }}>
+      <a
+        href="https://cal.com/nuroctane/meeting-nuroctane"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="summary-cal-link"
+        aria-label="Book a meeting"
+      >
+        <svg viewBox="0 0 16 16" fill="none">
+          <rect x="1.5" y="3" width="13" height="11.5" rx="1.5" stroke="currentColor" strokeWidth="1.2"/>
+          <line x1="1.5" y1="6.5" x2="14.5" y2="6.5" stroke="currentColor" strokeWidth="1.2"/>
+          <line x1="5" y1="1.5" x2="5" y2="4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+          <line x1="11" y1="1.5" x2="11" y2="4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round"/>
+        </svg>
+      </a>
       <img src="/assets/nodes/nuroctane-animated-avatar.gif" alt="nuroctane" className="summary-avatar" />
       <div className="summary-label">SYS://END_OF_SEA</div>
       <p className="summary-text">
