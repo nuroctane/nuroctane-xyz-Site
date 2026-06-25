@@ -467,16 +467,6 @@ html, body {
   animation: hintFade 3s ease-in-out infinite;
 }
 
-.explore-hint {
-  font-size: 0;
-}
-
-.explore-hint::before {
-  content: "drag look / scroll zoom / wasd move\A space up / ctrl down / hold card to move";
-  white-space: pre-line;
-  font-size: 0.5rem;
-}
-
 @keyframes hintFade {
   0%, 100% { opacity: 0.25; }
   50%       { opacity: 0.60; }
@@ -992,10 +982,6 @@ html, body {
     line-height: 1.7;
   }
 
-  .explore-hint::before {
-    font-size: 0.48rem;
-  }
-
   .blog-card {
     width: min(430px, calc(100vw - 1.5rem));
     padding: 1rem 1.05rem;
@@ -1041,10 +1027,6 @@ html, body {
     bottom: 5.9rem;
     width: calc(100vw - 1rem);
     letter-spacing: 0.07em;
-  }
-
-  .explore-hint::before {
-    font-size: 0.44rem;
   }
 
   .blog-card {

@@ -185,7 +185,7 @@ export default function App() {
       />
 
       <div className="bottom-left-hud">
-        <AudioControl />
+        <AudioControl activeTrack={activeTrack} scrollProgress={scrollProgress} />
         <div className="hud-modes-row">
           <ModeToggle mode={mode} setMode={handleSetMode} />
           {(mode === 'camera' || mode === 'blog') && (

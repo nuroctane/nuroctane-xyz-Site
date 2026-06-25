@@ -22,7 +22,7 @@ const zFromMid = (s: number, e: number) => curve.getPoint((s + e) / 2).z;
 const AVATAR = '/assets/nodes/nuroctane-avatar.png';
 
 const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollEnd'>[] = [
-  // ─── SOCIAL (12) ──────────────────────────────────────────────────────────
+  // ─── SOCIAL (13) ──────────────────────────────────────────────────────────
   {
     id: 'instagram', label: 'Instagram', handle: '@nuroctane',
     url: 'https://www.instagram.com/nuroctane/',
@@ -49,6 +49,15 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     description: 'rants and musings.',
     avatar: AVATAR,
     logo: '/assets/nodes/x-logo.png',
+  },
+  {
+    id: 'remilia', label: 'Remilia', handle: '~nuroctane',
+    url: 'https://www.remilia.net/~nuroctane',
+    urlDisplay: 'remilia.net/~nuroctane',
+    subtitle: '',
+    description: '',
+    avatar: '/assets/nodes/nuroctane-remilia-cover.png',
+    logo: '',
   },
   {
     id: 'substack', label: 'Substack', handle: 'Civeta Dei',
@@ -224,7 +233,7 @@ const STEP = (LAST_START - FIRST_START) / Math.max(1, raw.length - 1);
 // At their default alternating x-side, these nodes land on the *same* side as
 // the camera path at their t value (< 1 unit apart in X) — flip them across
 // so the camera looks across the sea at the card instead of being nose-to-it.
-const FLIP_X = new Set(['letterboxd', 'steam', 'discord']);
+const FLIP_X = new Set(['letterboxd', 'remilia', 'steam', 'discord']);
 
 // These late-path nodes have a slightly wider proximity window so the camera
 // has more time (scroll distance) to rotate toward and fully frame them —

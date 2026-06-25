@@ -3,7 +3,7 @@ import { nodes, NodeData } from '../../data/nodes';
 import { blogPosts, BlogPost } from '../../data/blogPosts';
 import type { Mode } from '../../types';
 
-const SOCIAL_IDS  = ['instagram','tiktok','x','substack','soundcloud','twitch','youtube','kick','anilist','letterboxd','steam','discord'];
+const SOCIAL_IDS  = ['instagram','tiktok','x','remilia','substack','soundcloud','twitch','youtube','kick','anilist','letterboxd','steam','discord'];
 const PROJECT_IDS = ['atxtunerz','github','weatherguru','sis','astrosleep','geoskin','miyamaker','webutils'];
 
 const LOGO_MAP: Record<string, string> = {
