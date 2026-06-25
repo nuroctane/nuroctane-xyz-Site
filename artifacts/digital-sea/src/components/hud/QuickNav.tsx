@@ -186,7 +186,7 @@ interface QuickNavProps {
 
 export function QuickNav({ mode, onNavigate, onBlogNavigate, onFinNavigate }: QuickNavProps) {
   const [open,     setOpen]     = useState(false);
-  const [expanded, setExpanded] = useState<Set<string>>(new Set(['SOCIALS']));
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const panelRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
