@@ -89,7 +89,21 @@ function SingleBlogNode({ post, scrollProgress, index, mode, activeTrack }: Sing
     _qResult.multiply(_flipQ);
     group.quaternion.copy(_qResult);
     const effectiveP = isCam ? Math.max(p, 0.62) : p;
-    group.scale.setScalar(0.5 + effectiveP * 0.5);
+    let cardScale = 0.5 + effectiveP * 0.5;
+
+    // On mobile in swim/sea (camera) mode, normalise card size by camera
+    // distance so the card stays at a consistent readable on-screen size
+    // whether the user zooms in or out.  This prevents both viewport
+    // overflow when close and illegible shrinkage when far.
+    if (isCam && window.innerWidth < 768) {
+      const dist = cam.position.distanceTo(group.position);
+      const TARGET_DIST = 6;
+      const MIN_FACTOR  = 0.25;
+      const MAX_FACTOR  = 3.0;
+      cardScale *= Math.max(MIN_FACTOR, Math.min(MAX_FACTOR, dist / TARGET_DIST));
+    }
+
+    group.scale.setScalar(cardScale);
 
     const el = wrapperRef.current;
     if (el) {
