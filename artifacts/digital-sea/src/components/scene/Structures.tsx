@@ -150,7 +150,7 @@ function Snakes() {
 
   useFrame(({ clock }) => {
     const mesh = ref.current;
-    if (!mesh || ++_frame.current % 2 !== 0) return;
+    if (!mesh || ++_frame.current % 4 !== 0) return;
     const t   = clock.elapsedTime;
     let   idx = 0;
     for (const s of snakes) {
@@ -201,7 +201,7 @@ function Fish() {
   useFrame(({ clock }, dt) => {
     const mesh = ref.current;
     if (!mesh) return;
-    if (++_frame.current % 2 !== 0) return;
+    if (++_frame.current % 4 !== 0) return;
     const t    = clock.elapsedTime;
     const step = Math.min(dt * 2, 0.1);
     let   idx  = 0;
@@ -272,7 +272,7 @@ function Monsters() {
 
   useFrame(({ clock }) => {
     const mesh = ref.current;
-    if (!mesh || ++_frame.current % 2 !== 0) return;
+    if (!mesh || ++_frame.current % 4 !== 0) return;
     const t   = clock.elapsedTime;
     let   idx = 0;
     for (const m of monsters) {

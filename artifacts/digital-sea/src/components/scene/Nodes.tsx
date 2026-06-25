@@ -122,6 +122,9 @@ function SingleNode({ node, scrollProgress, index, mode, activeTrack }: SingleNo
 
     const rawT    = scrollProgress.current;
     const p       = computeProximity(node, rawT);
+
+    if (modeRef.current !== 'camera' && p < 0.001 && proximityRef.current < 0.001) return;
+
     const elapsed = clock.elapsedTime;
 
     const wobble = 1 - p * 0.80;

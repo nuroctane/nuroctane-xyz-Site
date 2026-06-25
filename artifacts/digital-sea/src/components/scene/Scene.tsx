@@ -120,7 +120,7 @@ export function Scene({ scrollProgress, tier, mode, activeTrack, finUnlocked, po
           <Particles count={tier === 'high' ? 3000 : 1200} />
           <Nodes scrollProgress={scrollProgress} mode={mode} activeTrack={activeTrack} />
           <BlogNodes scrollProgress={scrollProgress} mode={mode} activeTrack={activeTrack} />
-          <FakeNodes mode={mode} count={tier === 'high' ? 96 : 48} shapeCount={tier === 'high' ? 48 : 20} />
+          <FakeNodes mode={mode} count={tier === 'high' ? 60 : 48} shapeCount={tier === 'high' ? 30 : 20} />
           <PortalGates
             onFinClick={onFinClick}
             onBlogClick={onBlogClick}

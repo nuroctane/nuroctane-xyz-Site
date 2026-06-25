@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState, type MutableRefObject } from 'react';
+import { useMemo, useRef, type MutableRefObject } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import * as THREE from 'three';
@@ -35,8 +35,6 @@ function hashStr(s: string) {
   return h >>> 0;
 }
 
-const MOUNT_AT   = 0.3;
-const UNMOUNT_AT = 0.18;
 const BASE_RADIUS = 1.75;
 
 interface Props {
@@ -73,22 +71,11 @@ export function SecondaryOrbit({ nodeId, media, centerRef, proximityRef }: Props
 
   const items = media;
 
-  const [active, setActive] = useState(false);
-  const activeRef  = useRef(false);
-  const tileRefs   = useRef<(THREE.Group | null)[]>([]);
-  const wrapRefs   = useRef<(HTMLDivElement | null)[]>([]);
+  const tileRefs = useRef<(THREE.Group | null)[]>([]);
+  const wrapRefs = useRef<(HTMLDivElement | null)[]>([]);
 
   useFrame(({ camera, clock }) => {
     const p = proximityRef.current;
-    if (!activeRef.current && p > MOUNT_AT) {
-      activeRef.current = true;
-      setActive(true);
-    } else if (activeRef.current && p < UNMOUNT_AT) {
-      activeRef.current = false;
-      setActive(false);
-    }
-    if (!activeRef.current) return;
-
     const t = clock.elapsedTime;
     _euler.set(
       params.baseTilt.x + t * params.tumbleX,
@@ -126,8 +113,7 @@ export function SecondaryOrbit({ nodeId, media, centerRef, proximityRef }: Props
 
   return (
     <group>
-      {active &&
-        items.map((m, i) => (
+      {items.map((m, i) => (
           <group
             key={m.file}
             ref={(el) => { tileRefs.current[i] = el; }}
