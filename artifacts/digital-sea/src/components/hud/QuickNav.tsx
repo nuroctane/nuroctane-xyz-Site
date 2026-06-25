@@ -17,6 +17,7 @@ const LOGO_MAP: Record<string, string> = {
   kick:       '/assets/nodes/kick-logo.png',
   anilist:    '/assets/nodes/anilist-logo.png',
   letterboxd: '/assets/nodes/letterboxd-logo.png',
+  remilia:    '/assets/nodes/remilia-quicklaunch-logo.png',
   steam:      '/assets/nodes/steam-logo.png',
   discord:    '/assets/nodes/discord-logo.png',
   atxtunerz:  '/assets/nodes/instagram-logo.png',
