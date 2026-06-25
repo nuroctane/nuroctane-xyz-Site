@@ -22,7 +22,7 @@ const zFromMid = (s: number, e: number) => curve.getPoint((s + e) / 2).z;
 const AVATAR = '/assets/nodes/nuroctane-avatar.png';
 
 const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollEnd'>[] = [
-  // ─── SOCIAL (11) ──────────────────────────────────────────────────────────
+  // ─── SOCIAL (12) ──────────────────────────────────────────────────────────
   {
     id: 'instagram', label: 'Instagram', handle: '@nuroctane',
     url: 'https://www.instagram.com/nuroctane/',
@@ -103,6 +103,15 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     description: "i update this whenever i'm actively watching an anime.",
     avatar: AVATAR,
     logo: '/assets/nodes/anilist-logo.png',
+  },
+  {
+    id: 'letterboxd', label: 'Letterboxd', handle: 'nuroctane',
+    url: 'https://letterboxd.com/nuroctane/',
+    urlDisplay: 'letterboxd.com/nuroctane',
+    subtitle: 'movie list mhm',
+    description: 'movie list mhm',
+    avatar: '/assets/nodes/nuroctane-letterboxd-avatar.png',
+    logo: '/assets/nodes/letterboxd-logo.png',
   },
   {
     id: 'steam', label: 'Steam', handle: 'nuroctane',
@@ -215,7 +224,7 @@ const STEP = (LAST_START - FIRST_START) / Math.max(1, raw.length - 1);
 // At their default alternating x-side, these nodes land on the *same* side as
 // the camera path at their t value (< 1 unit apart in X) — flip them across
 // so the camera looks across the sea at the card instead of being nose-to-it.
-const FLIP_X = new Set(['steam', 'discord']);
+const FLIP_X = new Set(['letterboxd', 'steam', 'discord']);
 
 // These late-path nodes have a slightly wider proximity window so the camera
 // has more time (scroll distance) to rotate toward and fully frame them —

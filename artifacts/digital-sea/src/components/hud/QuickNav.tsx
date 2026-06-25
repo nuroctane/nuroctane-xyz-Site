@@ -3,7 +3,7 @@ import { nodes, NodeData } from '../../data/nodes';
 import { blogPosts, BlogPost } from '../../data/blogPosts';
 import type { Mode } from '../../types';
 
-const SOCIAL_IDS  = ['instagram','tiktok','x','substack','soundcloud','twitch','youtube','kick','anilist','steam','discord'];
+const SOCIAL_IDS  = ['instagram','tiktok','x','substack','soundcloud','twitch','youtube','kick','anilist','letterboxd','steam','discord'];
 const PROJECT_IDS = ['atxtunerz','github','weatherguru','sis','astrosleep','geoskin','miyamaker','webutils'];
 
 const LOGO_MAP: Record<string, string> = {
@@ -16,6 +16,7 @@ const LOGO_MAP: Record<string, string> = {
   youtube:    '/assets/nodes/youtube-logo.png',
   kick:       '/assets/nodes/kick-logo.png',
   anilist:    '/assets/nodes/anilist-logo.png',
+  letterboxd: '/assets/nodes/letterboxd-logo.png',
   steam:      '/assets/nodes/steam-logo.png',
   discord:    '/assets/nodes/discord-logo.png',
   atxtunerz:  '/assets/nodes/instagram-logo.png',
