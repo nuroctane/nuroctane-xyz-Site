@@ -19,19 +19,8 @@ const _flipQ   = new THREE.Quaternion(0, 1, 0, 0);
 const _worldPos = new THREE.Vector3();
 const _ndc      = new THREE.Vector3();
 
-/** Default CSS width of a blog card matching the CSS media-query breakpoints. */
-function baseCardCssWidth(): number {
-  const vw = window.innerWidth;
-  const r  = 16; // 1rem in px
-  if (vw < 480) return vw - 1.1 * r;
-  if (vw < 768) return Math.min(430, vw - 1.5 * r);
-  return Math.min(560, vw - 2 * r);
-}
-
 function computeBlogProximity(post: BlogPost, t: number): number {
   const mid       = (post.scrollStart + post.scrollEnd) / 2;
-  // Wider window (+0.044 vs old +0.020) keeps blog cards legible longer when
-  // the user scrolls back and forth trying to read in full.
   const halfRange = (post.scrollEnd - post.scrollStart) / 2 + 0.044;
   return Math.max(0, Math.min(1, 1 - Math.abs(t - mid) / halfRange));
 }
@@ -54,8 +43,8 @@ function SingleBlogNode({ post, scrollProgress, index, mode, activeTrack }: Sing
   const activeTrackRef = useRef(activeTrack);
   activeTrackRef.current = activeTrack;
 
-  const cssWidthRef    = useRef(0); // 0 = use default CSS width
-  const prevRatioRef   = useRef(0); // 0 = uninitialised (skip glitch on first frame)
+  const cssWidthRef    = useRef(0);
+  const prevRatioRef   = useRef(0);
   const glitchTimerRef = useRef(0);
   const glitchOffRef   = useRef(0);
   const glitchYOffRef  = useRef(0);
@@ -64,7 +53,7 @@ function SingleBlogNode({ post, scrollProgress, index, mode, activeTrack }: Sing
 
   const phase = index * 1.374;
 
-  useFrame(({ camera: cam, clock, size }) => {
+  useFrame(({ camera: cam, clock }) => {
     const group = groupRef.current;
     if (!group) return;
 
@@ -79,6 +68,12 @@ function SingleBlogNode({ post, scrollProgress, index, mode, activeTrack }: Sing
       if (el) { el.style.opacity = '0'; el.style.pointerEvents = 'none'; }
       const ring = ringRef.current;
       if (ring) { (ring.material as THREE.MeshBasicMaterial).opacity = 0; }
+      // Reset narrowed width so card re-appears at full default width.
+      if (cssWidthRef.current > 0) {
+        cssWidthRef.current = 0;
+        prevRatioRef.current = 0;
+        try { el?.style.removeProperty('--card-width'); } catch {}
+      }
       return;
     }
 
@@ -96,7 +91,7 @@ function SingleBlogNode({ post, scrollProgress, index, mode, activeTrack }: Sing
     const oz = drag.offset.current.z;
     group.position.set(post.position.x + ox, post.position.y + floatY + oy, post.position.z + oz);
 
-    // ── Glitch offset (brief horizontal/vertical tear when card resizes) ──────
+    // ── Glitch offset ─────────────────────────────────────────────────────
     if (glitchTimerRef.current > 0) {
       const gt = glitchTimerRef.current;
       group.position.x += glitchOffRef.current  * (gt / 8);
@@ -112,7 +107,6 @@ function SingleBlogNode({ post, scrollProgress, index, mode, activeTrack }: Sing
     _mat4.lookAt(group.position, cam.position, _up);
     _qFace.setFromRotationMatrix(_mat4);
 
-    // Face the card strongly toward the camera so text is plainly readable.
     const faceAmt = Math.max(Math.pow(p, 0.55), 0.98);
     _qResult.slerpQuaternions(_qIdle, _qFace, faceAmt);
     _qResult.multiply(_flipQ);
@@ -120,9 +114,6 @@ function SingleBlogNode({ post, scrollProgress, index, mode, activeTrack }: Sing
     const effectiveP = isCam ? Math.max(p, 0.62) : p;
     let cardScale = 0.5 + effectiveP * 0.5;
 
-    // On mobile in swim/sea (camera) mode, normalise card size by camera
-    // distance so the card stays at a consistent readable on-screen size
-    // whether the user zooms in or out.
     if (isCam && window.innerWidth < 768) {
       const dist = cam.position.distanceTo(group.position);
       const TARGET_DIST = 6;
@@ -134,25 +125,26 @@ function SingleBlogNode({ post, scrollProgress, index, mode, activeTrack }: Sing
     group.scale.setScalar(cardScale);
 
     // ── Auto-narrow by screen-space projection ────────────────────────────
-    // Project the card's screen position, compute its on-screen pixel width,
-    // and if it extends beyond the viewport edges, narrow it via a CSS
-    // custom-property so text reflows.  When the card is back in view, the
-    // width gradually restores.  Works in all modes (blog + camera).
-    {
+    try {
+      const vw = window.innerWidth;
+      const vh = window.innerHeight;
       _worldPos.copy(group.position);
       const dist = _worldPos.distanceTo(cam.position);
-      if (dist > 0.5) {
+      if (dist > 0.5 && vw > 0 && vh > 0) {
         _ndc.copy(_worldPos).project(cam);
-        if (_ndc.z > -1 && _ndc.z < 1 && isFinite(_ndc.x)) {
-          const curCssWidth  = cssWidthRef.current || baseCardCssWidth();
+        if (
+          isFinite(_ndc.x) && isFinite(_ndc.z) &&
+          _ndc.z > -1 && _ndc.z < 1
+        ) {
+          const curCssWidth  = cssWidthRef.current || baseCardCssWidth(vw);
           const onScreenW    = curCssWidth * 4.5 * cardScale / dist;
-          const cx           = (_ndc.x + 1) / 2 * size.width;
+          const cx           = (_ndc.x + 1) / 2 * vw;
 
           const overflowLeft  = Math.max(0, -(cx - onScreenW / 2));
-          const overflowRight = Math.max(0, (cx + onScreenW / 2) - size.width);
+          const overflowRight = Math.max(0, (cx + onScreenW / 2) - vw);
 
           if (overflowLeft > 0 || overflowRight > 0) {
-            const maxOnScreen  = Math.min(cx, size.width - cx) * 2;
+            const maxOnScreen  = Math.min(cx, vw - cx) * 2;
             const ratio        = Math.max(0.30, maxOnScreen / onScreenW);
             const newWidth     = Math.round(curCssWidth * ratio);
 
@@ -168,7 +160,7 @@ function SingleBlogNode({ post, scrollProgress, index, mode, activeTrack }: Sing
             const wrap = wrapperRef.current;
             if (wrap) wrap.style.setProperty('--card-width', `${newWidth}px`);
           } else if (cssWidthRef.current > 0) {
-            const base     = baseCardCssWidth();
+            const base     = baseCardCssWidth(vw);
             const restoreW = Math.min(base, cssWidthRef.current * 1.06);
             if (restoreW >= base - 0.5) {
               cssWidthRef.current = 0;
@@ -180,6 +172,11 @@ function SingleBlogNode({ post, scrollProgress, index, mode, activeTrack }: Sing
           }
         }
       }
+    } catch {
+      cssWidthRef.current = 0;
+      prevRatioRef.current = 0;
+      glitchTimerRef.current = 0;
+      try { wrapperRef.current?.style.removeProperty('--card-width'); } catch {}
     }
 
     const el = wrapperRef.current;
@@ -250,4 +247,11 @@ export function BlogNodes({
       ))}
     </>
   );
+}
+
+function baseCardCssWidth(vw: number): number {
+  const r = 16;
+  if (vw < 480) return vw - 1.1 * r;
+  if (vw < 768) return Math.min(430, vw - 1.5 * r);
+  return Math.min(560, vw - 2 * r);
 }
