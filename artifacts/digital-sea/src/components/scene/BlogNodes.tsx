@@ -16,6 +16,18 @@ const _qResult = new THREE.Quaternion();
 const _euler   = new THREE.Euler();
 const _flipQ   = new THREE.Quaternion(0, 1, 0, 0);
 
+const _worldPos = new THREE.Vector3();
+const _ndc      = new THREE.Vector3();
+
+/** Default CSS width of a blog card matching the CSS media-query breakpoints. */
+function baseCardCssWidth(): number {
+  const vw = window.innerWidth;
+  const r  = 16; // 1rem in px
+  if (vw < 480) return vw - 1.1 * r;
+  if (vw < 768) return Math.min(430, vw - 1.5 * r);
+  return Math.min(560, vw - 2 * r);
+}
+
 function computeBlogProximity(post: BlogPost, t: number): number {
   const mid       = (post.scrollStart + post.scrollEnd) / 2;
   // Wider window (+0.044 vs old +0.020) keeps blog cards legible longer when
@@ -33,20 +45,26 @@ interface SingleBlogNodeProps {
 }
 
 function SingleBlogNode({ post, scrollProgress, index, mode, activeTrack }: SingleBlogNodeProps) {
-  const groupRef    = useRef<THREE.Group>(null);
-  const wrapperRef  = useRef<HTMLDivElement>(null);
-  const dragWrapRef = useRef<HTMLDivElement>(null);
-  const ringRef     = useRef<THREE.Mesh>(null);
-  const modeRef     = useRef(mode);
-  modeRef.current   = mode;
+  const groupRef     = useRef<THREE.Group>(null);
+  const wrapperRef   = useRef<HTMLDivElement>(null);
+  const dragWrapRef  = useRef<HTMLDivElement>(null);
+  const ringRef      = useRef<THREE.Mesh>(null);
+  const modeRef      = useRef(mode);
+  modeRef.current    = mode;
   const activeTrackRef = useRef(activeTrack);
   activeTrackRef.current = activeTrack;
+
+  const cssWidthRef    = useRef(0); // 0 = use default CSS width
+  const prevRatioRef   = useRef(0); // 0 = uninitialised (skip glitch on first frame)
+  const glitchTimerRef = useRef(0);
+  const glitchOffRef   = useRef(0);
+  const glitchYOffRef  = useRef(0);
 
   const drag = useCardDrag(mode);
 
   const phase = index * 1.374;
 
-  useFrame(({ camera: cam, clock }) => {
+  useFrame(({ camera: cam, clock, size }) => {
     const group = groupRef.current;
     if (!group) return;
 
@@ -78,13 +96,24 @@ function SingleBlogNode({ post, scrollProgress, index, mode, activeTrack }: Sing
     const oz = drag.offset.current.z;
     group.position.set(post.position.x + ox, post.position.y + floatY + oy, post.position.z + oz);
 
+    // ── Glitch offset (brief horizontal/vertical tear when card resizes) ──────
+    if (glitchTimerRef.current > 0) {
+      const gt = glitchTimerRef.current;
+      group.position.x += glitchOffRef.current  * (gt / 8);
+      group.position.y += glitchYOffRef.current * (gt / 8);
+      glitchTimerRef.current--;
+      glitchOffRef.current  *= 0.72;
+      glitchYOffRef.current *= 0.72;
+    }
+
     _euler.set(post.idleRotation.x + wobX, post.idleRotation.y, post.idleRotation.z + wobZ);
     _qIdle.setFromEuler(_euler);
 
     _mat4.lookAt(group.position, cam.position, _up);
     _qFace.setFromRotationMatrix(_mat4);
 
-    const faceAmt = Math.max(Math.pow(p, 0.55), 0.9);
+    // Face the card strongly toward the camera so text is plainly readable.
+    const faceAmt = Math.max(Math.pow(p, 0.55), 0.98);
     _qResult.slerpQuaternions(_qIdle, _qFace, faceAmt);
     _qResult.multiply(_flipQ);
     group.quaternion.copy(_qResult);
@@ -93,8 +122,7 @@ function SingleBlogNode({ post, scrollProgress, index, mode, activeTrack }: Sing
 
     // On mobile in swim/sea (camera) mode, normalise card size by camera
     // distance so the card stays at a consistent readable on-screen size
-    // whether the user zooms in or out.  This prevents both viewport
-    // overflow when close and illegible shrinkage when far.
+    // whether the user zooms in or out.
     if (isCam && window.innerWidth < 768) {
       const dist = cam.position.distanceTo(group.position);
       const TARGET_DIST = 6;
@@ -104,6 +132,55 @@ function SingleBlogNode({ post, scrollProgress, index, mode, activeTrack }: Sing
     }
 
     group.scale.setScalar(cardScale);
+
+    // ── Auto-narrow by screen-space projection ────────────────────────────
+    // Project the card's screen position, compute its on-screen pixel width,
+    // and if it extends beyond the viewport edges, narrow it via a CSS
+    // custom-property so text reflows.  When the card is back in view, the
+    // width gradually restores.  Works in all modes (blog + camera).
+    {
+      _worldPos.copy(group.position);
+      const dist = _worldPos.distanceTo(cam.position);
+      if (dist > 0.5) {
+        _ndc.copy(_worldPos).project(cam);
+        if (_ndc.z > -1 && _ndc.z < 1 && isFinite(_ndc.x)) {
+          const curCssWidth  = cssWidthRef.current || baseCardCssWidth();
+          const onScreenW    = curCssWidth * 4.5 * cardScale / dist;
+          const cx           = (_ndc.x + 1) / 2 * size.width;
+
+          const overflowLeft  = Math.max(0, -(cx - onScreenW / 2));
+          const overflowRight = Math.max(0, (cx + onScreenW / 2) - size.width);
+
+          if (overflowLeft > 0 || overflowRight > 0) {
+            const maxOnScreen  = Math.min(cx, size.width - cx) * 2;
+            const ratio        = Math.max(0.30, maxOnScreen / onScreenW);
+            const newWidth     = Math.round(curCssWidth * ratio);
+
+            if (prevRatioRef.current > 0 && Math.abs(ratio - prevRatioRef.current) > 0.015) {
+              const jitter = (Math.random() - 0.5) * 12 * (1 - ratio);
+              glitchTimerRef.current = 8;
+              glitchOffRef.current   = jitter;
+              glitchYOffRef.current  = (Math.random() - 0.5) * 2 * (1 - ratio);
+            }
+            prevRatioRef.current = ratio;
+
+            cssWidthRef.current = newWidth;
+            const wrap = wrapperRef.current;
+            if (wrap) wrap.style.setProperty('--card-width', `${newWidth}px`);
+          } else if (cssWidthRef.current > 0) {
+            const base     = baseCardCssWidth();
+            const restoreW = Math.min(base, cssWidthRef.current * 1.06);
+            if (restoreW >= base - 0.5) {
+              cssWidthRef.current = 0;
+              wrapperRef.current?.style.removeProperty('--card-width');
+            } else {
+              cssWidthRef.current = restoreW;
+              wrapperRef.current?.style.setProperty('--card-width', `${restoreW}px`);
+            }
+          }
+        }
+      }
+    }
 
     const el = wrapperRef.current;
     if (el) {
