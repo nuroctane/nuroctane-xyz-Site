@@ -1,0 +1,19 @@
+[plugin:vite:import-analysis] Failed to resolve import "three-stdlib" from "src/components/OrbitCam.tsx". Does the file exist?
+/home/runner/workspace/artifacts/digital-sea/src/components/OrbitCam.tsx:3:52
+4  |  import { useMemo, useEffect } from "react";
+5  |  import { useThree, useFrame } from "@react-three/fiber";
+6  |  import { OrbitControls as ThreeOrbitControls } from "three-stdlib";
+   |                                                       ^
+7  |  import * as THREE from "three";
+8  |  const _dir = new THREE.Vector3();
+    at TransformPluginContext._formatLog (file:///home/runner/workspace/node_modules/.pnpm/vite@7.3.5_@types+node@25.6.2_jiti@2.7.0_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.4/node_modules/vite/dist/node/chunks/config.js:29079:43)
+    at TransformPluginContext.error (file:///home/runner/workspace/node_modules/.pnpm/vite@7.3.5_@types+node@25.6.2_jiti@2.7.0_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.4/node_modules/vite/dist/node/chunks/config.js:29076:14)
+    at normalizeUrl (file:///home/runner/workspace/node_modules/.pnpm/vite@7.3.5_@types+node@25.6.2_jiti@2.7.0_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.4/node_modules/vite/dist/node/chunks/config.js:27199:18)
+    at process.processTicksAndRejections (node:internal/process/task_queues:103:5)
+    at async file:///home/runner/workspace/node_modules/.pnpm/vite@7.3.5_@types+node@25.6.2_jiti@2.7.0_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.4/node_modules/vite/dist/node/chunks/config.js:27257:32
+    at async Promise.all (index 3)
+    at async TransformPluginContext.transform (file:///home/runner/workspace/node_modules/.pnpm/vite@7.3.5_@types+node@25.6.2_jiti@2.7.0_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.4/node_modules/vite/dist/node/chunks/config.js:27225:4)
+    at async EnvironmentPluginContainer.transform (file:///home/runner/workspace/node_modules/.pnpm/vite@7.3.5_@types+node@25.6.2_jiti@2.7.0_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.4/node_modules/vite/dist/node/chunks/config.js:28877:14)
+    at async loadAndTransform (file:///home/runner/workspace/node_modules/.pnpm/vite@7.3.5_@types+node@25.6.2_jiti@2.7.0_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.4/node_modules/vite/dist/node/chunks/config.js:22746:26)
+    at async viteTransformMiddleware (file:///home/runner/workspace/node_modules/.pnpm/vite@7.3.5_@types+node@25.6.2_jiti@2.7.0_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.4/node_modules/vite/dist/node/chunks/config.js:24622:20)
+Click outside, press Esc key, or fix the code to dismiss.

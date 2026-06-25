@@ -1,0 +1,29 @@
+bolt.new
+1. yes, the cards should flip as the user scrolls past, but there should be some sort of light centering/locking on activity as the user gets closer to the card until the scroll some more to officially move past it.  
+  
+2. also, currently, the cards seem to be literally backwards, so the user cant even read the text on it by the time they've scrolled to it's position.  
+  
+3. the cards dont seem to wobble and float in space enough while idle, which is what i'd prefer. when a user hovers over the card, more particles hover around it and glow and when a user clicks on the card, it should have a small exploding animation before opening the page in a new tab  
+  
+4. the structures that arent cards in this digital sea should be more variant, like taller pillars, bigger and smaller pillars, boxes and platforms of various sizes to properly emulate Cody Lyoko's cartoon visual of their digital sea.  
+  
+5. the entire color scheme of the site is a little dark for me. make it a little more blueish ocean toned, less turqoisey.  
+  
+6. there should be a summary section saying "I am "nuroctane" or "nur" for short. I was inspired to create my name from the Arabic word for "light". I love cars, technology and philosophy. Cosmic, multifaceted being yada yada. This is a small digital sea/library of all my profiles and works, from writings to clubs, socials, projects, media and initiatives. Peruse, enjoy and inquire.  
+  
+7. this gif should be above the summary, ill add it to assets nuroctane-animated-avatar.gif
+
+   <br/>
+
+bolt.new
+re-review your work. the only thing that seems to actually be fixed as intended is the asset use and summary text and even with that, you omitted the "yada yada" i had to add that myself. structure randomization is also okay.  
+  
+1. colors still look shit. in fact its worse now. its supposed to be light greenish blue like the ocean. not this dark blue shit. this is garbage. revert to original if you can't do it right.  
+  
+2. cards sometimes populate on the very far edge of the screen making it impossible for a user to click on it. make sure there is some sort of focal/camera CENTERING on the card so that it angles closer to the center of the page as a user scrolls near it through the sea AND  
+  
+3. even if a user is able to click on a card, the some links dont even open?? as far as i tested, only instagram and youtube worked, even though every single link i gave to you is valid.  
+  
+4. the summary should not be instantly visible again at the end of the "sea" with a "Thank you for visiting!" under the summary passage. this addition is exclusive to its position at the end of the sea.  
+  
+5. structure randomization is definitely fine but there should be WAY more structures all around this sea, seems the current ones are all populated in the center as opposed to being all over the place, everywhere, making the space feel more open even though the user follows a predetermined scroll path

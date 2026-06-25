@@ -1,0 +1,29 @@
+You've done great work. This is nearly perfect. Everything works and centers as intended. Few things though:
+
+1. the functionality to backtrack and look over what you scrolled past is a little wonky. literally just a little. im being nitpicky here. Make it so that the card is visible and stable to make it easy for users, but still stylish in its physics.
+
+2. Also, instead of having whatever embed auto-generated description is there for each social card, I want custom ones for each one and there should be another card hovering next to the main card (randomly on the left, right, above or below as space allows) that contains this summary. I'll list them below.
+
+3. also, tunerz's card should be the very first creative project card lol, move its position please
+4. the sovereign intelligence systems card (and all cards) should be wide enough so the full text is visible??? duh lol
+5. geometric cs2 skin card should just be called "CS Skin Creations"
+
+Socials List Separate hovering card summary list, keep text formatting, verbatim
+
+Instagram: "mostly just automotive, irls and life stuff."
+Tiktok: "i really don't post here. i might one day. i tried at one point. idk."
+X: "rants and musings."
+Substack: "rants and musings extended."
+Soundcloud: "i love making music, just don't do it enough."
+Twitch: "i stream sometimes."
+Youtube: "i upload sometimes, commentary mostly."
+Kick: "i stream sometimes part 2."
+Anilist: "i update this whenever i'm actively watching an anime."
+Steam: "leave provocative comments on my profile please."
+Discord: "ugh."
+Weatherguru: "i wanted to make a framework for prediction markets. not a bot. infrastructure. may get inspired to work on this again, or i'll just scrap it and throw the code i have up on Github. who knows."
+SIS: "local ai infrastructure project that probably has no moat but it's fun."
+ATX Tunerz Society: "the Austin, TX car club that im VP of."
+AstroSleep: "fun little astrology app i'm committed to finishing."
+CS Skin Creations: "self-explanatory name, but i have some cool ideas and will put steam workshop & reddit links on this card as they get created and iterated upon."
+Miyamaker: "this was a niche crypto/NFT project i did with some buddies to help distribute liquidity better for derivative NFT collections to their main collections and holders respectively. it had no moat i guess."
