@@ -103,6 +103,15 @@ export default function App() {
     );
   }
 
+  function handleFinNav() {
+    setPortalsArmed(false);
+    setFinUnlocked(true);
+    setMode('scroll');
+    requestAnimationFrame(() =>
+      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' })
+    );
+  }
+
   function handleBlogClick() {
     const alreadyOnBlogTrack =
       mode === 'blog' || (mode === 'camera' && cameraOriginMode.current === 'blog');
@@ -172,7 +181,7 @@ export default function App() {
         mode={mode}
         onNavigate={() => { if (mode !== 'scroll') setMode('scroll'); }}
         onBlogNavigate={handleBlogClick}
-        onFinNavigate={handleFinClick}
+        onFinNavigate={handleFinNav}
       />
 
       <div className="bottom-left-hud">
