@@ -4,7 +4,9 @@ import { Html } from '@react-three/drei';
 import * as THREE from 'three';
 import { blogPosts, BlogPost } from '../../data/blogPosts';
 import { BlogCard } from './BlogCard';
-import type { Mode } from '../../types';
+import { useCardDrag } from '../../hooks/useCardDrag';
+import { DragWake } from './DragWake';
+import type { Mode, Track } from '../../types';
 
 const _mat4    = new THREE.Matrix4();
 const _up      = new THREE.Vector3(0, 1, 0);
@@ -16,9 +18,9 @@ const _flipQ   = new THREE.Quaternion(0, 1, 0, 0);
 
 function computeBlogProximity(post: BlogPost, t: number): number {
   const mid       = (post.scrollStart + post.scrollEnd) / 2;
-  // Wider window (+0.030 vs old +0.020) keeps blog cards legible longer when
+  // Wider window (+0.044 vs old +0.020) keeps blog cards legible longer when
   // the user scrolls back and forth trying to read in full.
-  const halfRange = (post.scrollEnd - post.scrollStart) / 2 + 0.030;
+  const halfRange = (post.scrollEnd - post.scrollStart) / 2 + 0.044;
   return Math.max(0, Math.min(1, 1 - Math.abs(t - mid) / halfRange));
 }
 
@@ -27,14 +29,20 @@ interface SingleBlogNodeProps {
   scrollProgress: MutableRefObject<number>;
   index:          number;
   mode:           Mode;
+  activeTrack:    Track;
 }
 
-function SingleBlogNode({ post, scrollProgress, index, mode }: SingleBlogNodeProps) {
-  const groupRef   = useRef<THREE.Group>(null);
-  const wrapperRef = useRef<HTMLDivElement>(null);
-  const ringRef    = useRef<THREE.Mesh>(null);
-  const modeRef    = useRef(mode);
-  modeRef.current  = mode;
+function SingleBlogNode({ post, scrollProgress, index, mode, activeTrack }: SingleBlogNodeProps) {
+  const groupRef    = useRef<THREE.Group>(null);
+  const wrapperRef  = useRef<HTMLDivElement>(null);
+  const dragWrapRef = useRef<HTMLDivElement>(null);
+  const ringRef     = useRef<THREE.Mesh>(null);
+  const modeRef     = useRef(mode);
+  modeRef.current   = mode;
+  const activeTrackRef = useRef(activeTrack);
+  activeTrackRef.current = activeTrack;
+
+  const drag = useCardDrag(mode);
 
   const phase = index * 1.374;
 
@@ -42,9 +50,12 @@ function SingleBlogNode({ post, scrollProgress, index, mode }: SingleBlogNodePro
     const group = groupRef.current;
     if (!group) return;
 
-    const isBlog = modeRef.current === 'blog';
+    const isBlogTrack =
+      modeRef.current === 'blog' ||
+      (modeRef.current === 'camera' && activeTrackRef.current === 'blog');
+    const isCam = modeRef.current === 'camera' && activeTrackRef.current === 'blog';
 
-    if (!isBlog) {
+    if (!isBlogTrack) {
       group.scale.setScalar(0);
       const el = wrapperRef.current;
       if (el) { el.style.opacity = '0'; el.style.pointerEvents = 'none'; }
@@ -62,7 +73,10 @@ function SingleBlogNode({ post, scrollProgress, index, mode }: SingleBlogNodePro
     const wobZ   = Math.cos(elapsed * 0.38 + phase * 1.21) * 0.10 * wobble;
     const floatY = Math.sin(elapsed * 0.31 + phase * 0.88) * 0.28 * wobble;
 
-    group.position.set(post.position.x, post.position.y + floatY, post.position.z);
+    const ox = drag.offset.current.x;
+    const oy = drag.offset.current.y;
+    const oz = drag.offset.current.z;
+    group.position.set(post.position.x + ox, post.position.y + floatY + oy, post.position.z + oz);
 
     _euler.set(post.idleRotation.x + wobX, post.idleRotation.y, post.idleRotation.z + wobZ);
     _qIdle.setFromEuler(_euler);
@@ -74,18 +88,23 @@ function SingleBlogNode({ post, scrollProgress, index, mode }: SingleBlogNodePro
     _qResult.slerpQuaternions(_qIdle, _qFace, faceAmt);
     _qResult.multiply(_flipQ);
     group.quaternion.copy(_qResult);
-    group.scale.setScalar(0.5 + p * 0.5);
+    const effectiveP = isCam ? Math.max(p, 0.62) : p;
+    group.scale.setScalar(0.5 + effectiveP * 0.5);
 
     const el = wrapperRef.current;
     if (el) {
-      el.style.opacity       = String(p);
-      el.style.pointerEvents = p > 0.38 ? 'auto' : 'none';
+      el.style.opacity       = String(effectiveP);
+      el.style.pointerEvents = isCam ? 'auto' : (p > 0.38 ? 'auto' : 'none');
+    }
+
+    if (dragWrapRef.current && !drag.isDragging.current) {
+      dragWrapRef.current.style.cursor = isCam ? 'grab' : '';
     }
 
     const ring = ringRef.current;
     if (ring) {
       const mat    = ring.material as THREE.MeshBasicMaterial;
-      const target = p > 0.4 ? 0.55 * p : 0;
+      const target = effectiveP > 0.4 ? 0.55 * effectiveP : 0;
       mat.opacity += (target - mat.opacity) * 0.10;
     }
   });
@@ -101,10 +120,18 @@ function SingleBlogNode({ post, scrollProgress, index, mode }: SingleBlogNodePro
       </mesh>
 
       <Html center transform distanceFactor={4.5} zIndexRange={[100, 0]}>
-        <div ref={wrapperRef} style={{ opacity: 0, pointerEvents: 'none' }}>
-          <BlogCard post={post} />
+        <div
+          ref={dragWrapRef}
+          {...drag.handlers}
+          style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
+        >
+          <div ref={wrapperRef} style={{ opacity: 0, pointerEvents: 'none' }}>
+            <BlogCard post={post} />
+          </div>
         </div>
       </Html>
+
+      <DragWake dirRef={drag.dragDir} activeRef={drag.dragActive} velRef={drag.dragVel} />
     </group>
   );
 }
@@ -112,9 +139,11 @@ function SingleBlogNode({ post, scrollProgress, index, mode }: SingleBlogNodePro
 export function BlogNodes({
   scrollProgress,
   mode,
+  activeTrack,
 }: {
   scrollProgress: MutableRefObject<number>;
   mode: Mode;
+  activeTrack: Track;
 }) {
   return (
     <>
@@ -125,6 +154,7 @@ export function BlogNodes({
           scrollProgress={scrollProgress}
           index={i}
           mode={mode}
+          activeTrack={activeTrack}
         />
       ))}
     </>

@@ -8,3 +8,4 @@
 - [Hold-to-drag on Html cards](html-card-drag.md) — capture pointer on pointerdown (not after hold timer) + onClickCapture guard, or drag sticks / links open mid-drag.
 - [OrbitControls mode-switch jump fix](orbitcontrols-mode-switch.md) — drei's OrbitControls target defaults to (0,0,0); fix by owning the instance in useMemo and setting target before the first update().
 - [WASD + OrbitControls coexistence](wasd-orbit-coexistence.md) — when adding WASD movement alongside OrbitControls, always move controls.target by the same delta as camera.position or controls snaps back to old pivot next frame.
+- [Digital Sea visible version counter](digital-sea-versioning.md) - update `BUILD_VER` in `WalletTag.tsx` whenever user-facing Digital Sea changes are made.

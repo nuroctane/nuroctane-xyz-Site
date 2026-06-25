@@ -14,12 +14,13 @@ import { Effects } from './Effects';
 import { SeaColorShift } from './SeaColorShift';
 import { LightShafts } from './LightShafts';
 import type { PerformanceTier } from '../../hooks/usePerformanceTier';
-import type { Mode } from '../../types';
+import type { Mode, Track } from '../../types';
 
 interface Props {
   scrollProgress:   MutableRefObject<number>;
   tier:             PerformanceTier;
   mode:             Mode;
+  activeTrack:      Track;
   finUnlocked:      boolean;
   portalsArmed:     boolean;
   onFinClick:       () => void;
@@ -56,7 +57,7 @@ const NoWebGLFallback = () => (
   </div>
 );
 
-export function Scene({ scrollProgress, tier, mode, finUnlocked, portalsArmed, onFinClick, onBlogClick, onPortalsBlurred }: Props) {
+export function Scene({ scrollProgress, tier, mode, activeTrack, finUnlocked, portalsArmed, onFinClick, onBlogClick, onPortalsBlurred }: Props) {
   return (
     <WebGLErrorBoundary fallback={<NoWebGLFallback />}>
       <Canvas
@@ -88,9 +89,9 @@ export function Scene({ scrollProgress, tier, mode, finUnlocked, portalsArmed, o
           <Structures tier={tier} />
           <LightShafts />
           <Particles count={tier === 'high' ? 3000 : 1200} />
-          <Nodes scrollProgress={scrollProgress} mode={mode} />
-          <BlogNodes scrollProgress={scrollProgress} mode={mode} />
-          <FakeNodes mode={mode} count={tier === 'high' ? 56 : 28} shapeCount={tier === 'high' ? 28 : 12} />
+          <Nodes scrollProgress={scrollProgress} mode={mode} activeTrack={activeTrack} />
+          <BlogNodes scrollProgress={scrollProgress} mode={mode} activeTrack={activeTrack} />
+          <FakeNodes mode={mode} count={tier === 'high' ? 96 : 48} shapeCount={tier === 'high' ? 48 : 20} />
           <PortalGates
             onFinClick={onFinClick}
             onBlogClick={onBlogClick}

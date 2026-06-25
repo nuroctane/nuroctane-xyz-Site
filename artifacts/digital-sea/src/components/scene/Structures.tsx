@@ -135,14 +135,14 @@ function Snakes() {
   const SEG    = 14;
   const snakes = useMemo(() => {
     const rand = mkRand(211);
-    return Array.from({ length: 3 }, () => ({
+    return Array.from({ length: 5 }, () => ({
       cx:     (rand() - 0.5) * 44,
       cy:     (rand() - 0.5) * 16,
       cz:     WORLD_Z_MAX - rand() * (WORLD_Z_MAX - WORLD_Z_MIN),
       radius: 8 + rand() * 6,
       speed:  0.5 + rand() * 0.5,
       phase:  rand() * Math.PI * 2,
-      size:   0.55 + rand() * 0.35,
+      size:   0.42 + rand() * 0.58,
       bob:    1.0 + rand() * 1.0,
     }));
   }, []);
@@ -186,13 +186,13 @@ function Fish() {
   const PARTS  = 5;
   const fish   = useMemo(() => {
     const rand = mkRand(307);
-    return Array.from({ length: 9 }, () => ({
+    return Array.from({ length: 15 }, () => ({
       px:      (rand() - 0.5) * 50,
       py:      (rand() - 0.5) * 18,
       pz:      WORLD_Z_MAX - rand() * (WORLD_Z_MAX - WORLD_Z_MIN),
       heading: rand() * Math.PI * 2,
       speed:   1.2 + rand() * 1.4,
-      size:    0.45 + rand() * 0.45,
+      size:    0.32 + rand() * 0.82,
       phase:   rand() * Math.PI * 2,
     }));
   }, []);
@@ -259,13 +259,13 @@ function Monsters() {
   const PARTS  = MONSTER_PARTS.length;
   const monsters = useMemo(() => {
     const rand = mkRand(859);
-    return Array.from({ length: 4 }, () => ({
+    return Array.from({ length: 7 }, () => ({
       cx:    (rand() - 0.5) * 40,
       cy:    (rand() - 0.5) * 14 + 2,
       cz:    WORLD_Z_MAX - rand() * (WORLD_Z_MAX - WORLD_Z_MIN),
       phase: rand() * Math.PI * 2,
       spin:  (rand() - 0.5) * 0.4,
-      size:  0.8 + rand() * 0.7,
+      size:  0.55 + rand() * 1.15,
     }));
   }, []);
   const COUNT = monsters.length * PARTS;

@@ -8,7 +8,7 @@ import { useCardDrag } from '../../hooks/useCardDrag';
 import { DragWake } from './DragWake';
 import { secondaryMediaByNode } from '../../data/secondaryNodes';
 import { SecondaryOrbit } from './SecondaryNodes';
-import type { Mode } from '../../types';
+import type { Mode, Track } from '../../types';
 
 const _mat4    = new THREE.Matrix4();
 const _up      = new THREE.Vector3(0, 1, 0);
@@ -43,9 +43,10 @@ interface SingleNodeProps {
   scrollProgress: MutableRefObject<number>;
   index:          number;
   mode:           Mode;
+  activeTrack:    Track;
 }
 
-function SingleNode({ node, scrollProgress, index, mode }: SingleNodeProps) {
+function SingleNode({ node, scrollProgress, index, mode, activeTrack }: SingleNodeProps) {
   const groupRef          = useRef<THREE.Group>(null);
   const wrapperRef        = useRef<HTMLDivElement>(null);
   const descWrapperRef    = useRef<HTMLDivElement>(null);
@@ -59,6 +60,8 @@ function SingleNode({ node, scrollProgress, index, mode }: SingleNodeProps) {
 
   const modeRef = useRef(mode);
   modeRef.current = mode;
+  const activeTrackRef = useRef(activeTrack);
+  activeTrackRef.current = activeTrack;
 
   const drag        = useCardDrag(mode);
   const dragWrapRef = useRef<HTMLDivElement>(null);
@@ -93,6 +96,29 @@ function SingleNode({ node, scrollProgress, index, mode }: SingleNodeProps) {
   useFrame(({ camera: cam, clock }) => {
     const group = groupRef.current;
     if (!group) return;
+
+    const onMainTrack =
+      modeRef.current === 'scroll' ||
+      (modeRef.current === 'camera' && activeTrackRef.current === 'main');
+
+    if (!onMainTrack) {
+      group.scale.setScalar(0);
+      proximityRef.current = 0;
+
+      const el = wrapperRef.current;
+      if (el) { el.style.opacity = '0'; el.style.pointerEvents = 'none'; }
+
+      const descEl = descWrapperRef.current;
+      if (descEl) descEl.style.opacity = '0';
+
+      const ring = ringRef.current;
+      if (ring) (ring.material as THREE.MeshBasicMaterial).opacity = 0;
+
+      const hp = hoverParticlesRef.current;
+      if (hp) (hp.material as THREE.PointsMaterial).opacity = 0;
+
+      return;
+    }
 
     const rawT    = scrollProgress.current;
     const p       = computeProximity(node, rawT);
@@ -226,9 +252,11 @@ function SingleNode({ node, scrollProgress, index, mode }: SingleNodeProps) {
 export function Nodes({
   scrollProgress,
   mode,
+  activeTrack,
 }: {
   scrollProgress: MutableRefObject<number>;
   mode: Mode;
+  activeTrack: Track;
 }) {
   return (
     <>
@@ -239,6 +267,7 @@ export function Nodes({
           scrollProgress={scrollProgress}
           index={i}
           mode={mode}
+          activeTrack={activeTrack}
         />
       ))}
     </>

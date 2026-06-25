@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useScrollProgress } from './hooks/useScrollProgress';
 import { usePerformanceTier } from './hooks/usePerformanceTier';
-import type { Mode } from './types';
+import type { Mode, Track } from './types';
 import { Scene } from './components/scene/Scene';
 import { QuickNav } from './components/hud/QuickNav';
 import { ModeToggle } from './components/hud/ModeToggle';
@@ -38,14 +38,37 @@ export default function App() {
   const cameraOriginScrollY = useRef(0);
   const cameraOriginMode    = useRef<Mode>('scroll');
 
+  const activeTrack: Track =
+    mode === 'blog' || (mode === 'camera' && cameraOriginMode.current === 'blog')
+      ? 'blog'
+      : 'main';
+
   // ── Mode transitions ───────────────────────────────────────────────────────
 
   // Called by ModeToggle only.  Saves camera origin before entering explore.
   function handleSetMode(next: Mode) {
+    if (next === mode) return;
+
     if (next === 'camera') {
       cameraOriginScrollY.current = window.scrollY;
       cameraOriginMode.current    = mode;
+      setMode('camera');
+      return;
     }
+
+    if (next === 'scroll') {
+      if (mode === 'blog') return;
+
+      if (mode === 'camera') {
+        const prev = cameraOriginMode.current;
+        setMode(prev === 'blog' ? 'blog' : 'scroll');
+        requestAnimationFrame(() => {
+          window.scrollTo({ top: cameraOriginScrollY.current, behavior: 'instant' });
+        });
+        return;
+      }
+    }
+
     setMode(next);
   }
 
@@ -81,8 +104,14 @@ export default function App() {
   }
 
   function handleBlogClick() {
-    // Save the main-track position so ReturnButton can restore it later.
-    blogOriginScrollY.current = window.scrollY;
+    const alreadyOnBlogTrack =
+      mode === 'blog' || (mode === 'camera' && cameraOriginMode.current === 'blog');
+
+    if (!alreadyOnBlogTrack) {
+      // Save the main-track position so ReturnButton can restore it later.
+      blogOriginScrollY.current = window.scrollY;
+    }
+
     setFinUnlocked(false);
     setPortalsArmed(true);
     setMode('blog');
@@ -126,6 +155,7 @@ export default function App() {
         scrollProgress={scrollProgress}
         tier={tier}
         mode={mode}
+        activeTrack={activeTrack}
         finUnlocked={finUnlocked}
         portalsArmed={portalsArmed}
         onFinClick={handleFinClick}

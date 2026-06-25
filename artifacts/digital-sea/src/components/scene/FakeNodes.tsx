@@ -18,9 +18,9 @@ function hexCode(rand: () => number, n = 4) {
 }
 
 function tealColor(rand: () => number) {
-  const h = 158 + rand() * 40;
-  const s = 55  + rand() * 33;
-  const l = 56  + rand() * 22;
+  const h = 148 + rand() * 68;
+  const s = 48  + rand() * 44;
+  const l = 46  + rand() * 34;
   return {
     color:    `hsl(${h.toFixed(0)}, ${s.toFixed(0)}%, ${l.toFixed(0)}%)`,
     glow:     `hsla(${h.toFixed(0)}, ${s.toFixed(0)}%, ${l.toFixed(0)}%, 0.35)`,
@@ -350,6 +350,7 @@ function FakeNode({ basePos, seed, kind, mode }: FakeNodeProps) {
   const built      = useMemo(() => buildContent(kind, seed), [kind, seed]);
   const palette    = useMemo(() => tealColor(mkRand(seed * 7 + 91)), [seed]);
   const baseOpacity = useMemo(() => 0.5 + mkRand(seed * 3 + 41)() * 0.45, [seed]);
+  const panelScale = useMemo(() => 0.72 + mkRand(seed * 5 + 67)() * 0.78, [seed]);
   const phase = (seed % 7) * 0.9 + 0.4;
 
   useFrame(({ clock }) => {
@@ -367,7 +368,7 @@ function FakeNode({ basePos, seed, kind, mode }: FakeNodeProps) {
 
     const dist = camera.position.distanceTo(g.position);
     const op   = Math.max(0, Math.min(1, 1 - (dist - 9) / 26));
-    g.scale.setScalar(0.7 + op * 0.4);
+    g.scale.setScalar((0.7 + op * 0.4) * panelScale);
 
     const el = wrapRef.current;
     if (el) {
@@ -491,12 +492,12 @@ function FakeShape({ basePos, seed }: { basePos: THREE.Vector3; seed: number }) 
     [palette.color],
   );
   const cfg = useMemo(() => ({
-    spin:   { x: (rand() - 0.5) * 0.2, y: 0.12 + rand() * 0.18, z: (rand() - 0.5) * 0.1 },
+    spin:   { x: (rand() - 0.5) * 0.28, y: 0.08 + rand() * 0.28, z: (rand() - 0.5) * 0.18 },
     phase:  rand() * 6,
     speed:  0.5 + rand() * 0.6,
     yaw:    rand() > 0.5 ? 0 : Math.PI,
-    size:   0.8 + rand() * 0.6,
-    maxOp:  0.4 + rand() * 0.35,
+    size:   0.52 + rand() * 1.18,
+    maxOp:  0.32 + rand() * 0.5,
   }), [rand]);
 
   useEffect(() => () => {
@@ -572,13 +573,13 @@ export function FakeNodes({ mode, count = 28, shapeCount = 14 }: { mode: Mode; c
   const fakes = useMemo(() => {
     const rand = mkRand(1471);
     return Array.from({ length: count }, (_, i) => {
-      const tt   = 0.04 + (i / count) * 0.92 + (rand() - 0.5) * 0.02;
+      const tt   = 0.04 + (i / count) * 0.92 + (rand() - 0.5) * 0.035;
       const pt   = curve.getPoint(Math.max(0.01, Math.min(0.99, tt)));
       const side = rand() > 0.5 ? 1 : -1;
       const pos  = new THREE.Vector3(
-        pt.x + side * (3.4 + rand() * 8),
-        pt.y + (rand() - 0.5) * 6,
-        pt.z + (rand() - 0.5) * 3,
+        pt.x + side * (2.8 + rand() * 10.5),
+        pt.y + (rand() - 0.5) * 8.5,
+        pt.z + (rand() - 0.5) * 5,
       );
       const seed = Math.floor(rand() * 99991 + i * 37);
       const kind = KIND_BAG[(rand() * KIND_BAG.length) | 0];
@@ -589,13 +590,13 @@ export function FakeNodes({ mode, count = 28, shapeCount = 14 }: { mode: Mode; c
   const shapes = useMemo(() => {
     const rand = mkRand(2731);
     return Array.from({ length: shapeCount }, (_, i) => {
-      const tt   = 0.02 + (i / shapeCount) * 0.96 + (rand() - 0.5) * 0.04;
+      const tt   = 0.02 + (i / shapeCount) * 0.96 + (rand() - 0.5) * 0.055;
       const pt   = curve.getPoint(Math.max(0.01, Math.min(0.99, tt)));
       const side = rand() > 0.5 ? 1 : -1;
       const pos  = new THREE.Vector3(
-        pt.x + side * (6 + rand() * 14),
-        pt.y + (rand() - 0.5) * 10,
-        pt.z + (rand() - 0.5) * 5,
+        pt.x + side * (4.5 + rand() * 18),
+        pt.y + (rand() - 0.5) * 13,
+        pt.z + (rand() - 0.5) * 7,
       );
       const seed = Math.floor(rand() * 99991 + i * 53);
       return { pos, seed };

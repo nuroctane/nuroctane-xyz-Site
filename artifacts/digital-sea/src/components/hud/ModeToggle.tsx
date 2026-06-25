@@ -10,10 +10,10 @@ export function ModeToggle({ mode, setMode }: Props) {
     <div className="mode-toggle" aria-label="Navigation mode toggle">
       <div className="mtoggle-row">
         <button
-          className={`mtoggle-side${mode === 'scroll' ? ' mtoggle-active' : ''}`}
+          className={`mtoggle-side${mode === 'scroll' || mode === 'blog' ? ' mtoggle-active' : ''}`}
           onClick={() => setMode('scroll')}
           title="Sea mode — scroll to navigate"
-          aria-pressed={mode === 'scroll'}
+          aria-pressed={mode === 'scroll' || mode === 'blog'}
         >
           <svg viewBox="0 0 22 18" fill="none" className="mtoggle-icon" aria-hidden="true">
             <path d="M1 8 C5 3 9 3 11 8 C13 13 17 13 21 8" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" fill="none"/>

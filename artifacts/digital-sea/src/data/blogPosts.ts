@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { blogCurve } from './blogPath';
 
 export interface BlogPost {
   id: string;
@@ -10,7 +11,7 @@ export interface BlogPost {
   scrollEnd: number;
 }
 
-const CARD_WIDTH  = 0.05;
+const CARD_WIDTH  = 0.064;
 const FIRST_START = 0.07;
 const LAST_START  = 0.88;
 
@@ -91,7 +92,7 @@ export const blogPosts: BlogPost[] = rawPosts.map((p, i) => {
   const scrollEnd   = scrollStart + CARD_WIDTH;
   const side  = i % 2 === 0 ? -1 : 1;
   const x     = -24 + side * 4;
-  const z     = 15 - i * 22;
+  const z     = blogCurve.getPoint((scrollStart + scrollEnd) / 2).z;
   const y     = yPattern[i % yPattern.length];
 
   return {

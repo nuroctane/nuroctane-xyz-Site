@@ -122,9 +122,12 @@ export function CameraRig({ scrollProgress, mode }: Props) {
     const rawT = scrollProgress.current;
 
     // ── Velocity-sensitive magnetic T pull ─────────────────────────────────
-    const velocity    = Math.abs(rawT - prevRawT.current);
-    prevRawT.current  = rawT;
-    const speedFactor = Math.max(0, 1 - velocity * 110);
+    const velocity      = Math.abs(rawT - prevRawT.current);
+    prevRawT.current    = rawT;
+    const isProjectZone = !isBlog && rawT >= 0.54 && rawT <= 0.94;
+    const isBlogFocus   = isBlog && rawT >= 0.05 && rawT <= 0.94;
+    const speedFloor    = isProjectZone ? 0.38 : isBlogFocus ? 0.32 : 0;
+    const speedFactor   = Math.max(speedFloor, 1 - velocity * (isProjectZone ? 70 : isBlogFocus ? 82 : 110));
 
     let maxProx    = 0;
     let nearestMid = rawT;
@@ -141,10 +144,10 @@ export function CameraRig({ scrollProgress, mode }: Props) {
       }
     }
 
-    const pullStrength = maxProx * 0.10 * speedFactor;
+    const pullStrength = maxProx * (isProjectZone ? 0.34 : isBlogFocus ? 0.22 : 0.10) * speedFactor;
     const magneticT    = rawT + (nearestMid - rawT) * pullStrength;
 
-    const baseLerp = 0.052;
+    const baseLerp = isProjectZone ? 0.078 : isBlogFocus ? 0.066 : 0.052;
     smoothT.current += (magneticT - smoothT.current) * baseLerp;
 
     const t = Math.max(0.001, Math.min(0.999, smoothT.current));
@@ -171,18 +174,19 @@ export function CameraRig({ scrollProgress, mode }: Props) {
     // MAIN_MIN_XY clamps the minimum camera-to-node XY distance so the camera
     // never clips through the card.  Blog nodes rely on fast lookAt centering
     // instead (their blog-path coverage is tight enough).
-    if (!isBlog && activePos && maxProx > 0.08) {
-      const pull  = Math.pow(maxProx, 1.1) * 0.88;
+    if (activePos && maxProx > 0.08) {
+      const pull  = Math.pow(maxProx, isBlogFocus ? 0.86 : isProjectZone ? 0.92 : 1.1) * (isBlogFocus ? 0.90 : isProjectZone ? 0.96 : 0.88);
       const wantX = _pos.x + (activePos.x - _pos.x) * pull;
-      const wantY = _pos.y + (activePos.y - _pos.y) * pull * 0.5;
+      const wantY = _pos.y + (activePos.y - _pos.y) * pull * (isBlogFocus ? 0.58 : isProjectZone ? 0.66 : 0.5);
 
       const ddx = wantX - activePos.x;
       const ddy = wantY - activePos.y;
       const dd  = Math.sqrt(ddx * ddx + ddy * ddy);
 
       if (dd > 0.001) {
-        if (dd < MAIN_MIN_XY) {
-          const s = MAIN_MIN_XY / dd;
+        const minXY = isBlogFocus ? 4.8 : isProjectZone ? 3.1 : MAIN_MIN_XY;
+        if (dd < minXY) {
+          const s = minXY / dd;
           _camTarget.x = activePos.x + ddx * s;
           _camTarget.y = activePos.y + ddy * s;
         } else {
@@ -202,15 +206,15 @@ export function CameraRig({ scrollProgress, mode }: Props) {
     // the lateral approach actually completes within the card's scroll window.
     // Blog track uses uniform lerp (no lateral pull to fight).
     const xyLerp = isBlog
-      ? baseLerp
-      : baseLerp + maxProx * 0.14;   // up to 0.192 at max proximity
+      ? baseLerp + maxProx * (isBlogFocus ? 0.11 : 0)
+      : baseLerp + maxProx * (isProjectZone ? 0.18 : 0.14);
     camera.position.x += (_camTarget.x - camera.position.x) * xyLerp;
     camera.position.y += (_camTarget.y - camera.position.y) * xyLerp;
     camera.position.z += (_camTarget.z - camera.position.z) * baseLerp;
 
     // ── Look target ────────────────────────────────────────────────────────
     if (activePos && maxProx > 0.05) {
-      const blend = Math.pow(maxProx, 0.45) * 0.88;
+      const blend = Math.pow(maxProx, isBlogFocus ? 0.34 : isProjectZone ? 0.36 : 0.45) * (isBlogFocus ? 0.98 : isProjectZone ? 0.96 : 0.88);
       _nodeLook.set(activePos.x, activePos.y, activePos.z);
       _pathLook.x += driftX * 0.2;
       _pathLook.y += driftY * 0.2;
@@ -232,8 +236,10 @@ export function CameraRig({ scrollProgress, mode }: Props) {
       // clearly visible.  Main track cards sit closer to the path and can
       // use a gentler blend.
       const lookLerp = isBlog
-        ? 0.10 + maxProx * 0.20   // max 0.30 for blog
-        : 0.05 + maxProx * 0.10;  // max 0.15 for main
+        ? 0.14 + maxProx * 0.24
+        : isProjectZone
+          ? 0.08 + maxProx * 0.16
+          : 0.05 + maxProx * 0.10;  // max 0.15 for main
       smoothLook.current.lerp(_blendedLook, lookLerp);
     }
 

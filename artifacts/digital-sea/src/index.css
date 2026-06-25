@@ -437,16 +437,28 @@ html, body {
   bottom: 5.2rem;
   left: 50%;
   transform: translateX(-50%);
+  width: min(760px, calc(100vw - 2rem));
   z-index: 950;
   pointer-events: none;
   font-size: 0.5rem;
-  letter-spacing: 0.22em;
+  letter-spacing: 0.14em;
+  line-height: 1.65;
   color: #5de8f0;
   opacity: 0.52;
   text-transform: uppercase;
-  white-space: nowrap;
+  white-space: normal;
   text-align: center;
   animation: hintFade 3s ease-in-out infinite;
+}
+
+.explore-hint {
+  font-size: 0;
+}
+
+.explore-hint::before {
+  content: "drag look / scroll zoom / wasd move\A space up / ctrl down / hold card to move";
+  white-space: pre-line;
+  font-size: 0.5rem;
 }
 
 @keyframes hintFade {
@@ -957,6 +969,46 @@ html, body {
   .url-prefix, .url-body { font-size: 0.46rem; }
   .node-desc-text { font-size: 0.46rem; }
 
+  .explore-hint {
+    bottom: 5.6rem;
+    width: calc(100vw - 1.5rem);
+    letter-spacing: 0.09em;
+    line-height: 1.7;
+  }
+
+  .explore-hint::before {
+    font-size: 0.48rem;
+  }
+
+  .blog-card {
+    width: min(430px, calc(100vw - 1.5rem));
+    padding: 1rem 1.05rem;
+    clip-path: polygon(10px 0, calc(100% - 10px) 0, 100% 10px, 100% calc(100% - 10px), calc(100% - 10px) 100%, 10px 100%, 0 calc(100% - 10px), 0 10px);
+  }
+
+  .blog-card-header {
+    margin-bottom: 0.5rem;
+    font-size: 0.48rem;
+    letter-spacing: 0.14em;
+  }
+
+  .blog-card-title {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    line-height: 1.32;
+    margin: 0.55rem 0;
+  }
+
+  .blog-card-body {
+    gap: 0.62rem;
+  }
+
+  .blog-card-para {
+    font-size: 0.58rem;
+    line-height: 1.62;
+    letter-spacing: 0.015em;
+  }
+
   /* QuickNav mobile — wider panel */
   .qnav-panel { width: min(260px, 88vw); }
 
@@ -968,6 +1020,32 @@ html, body {
   .node-card { width: 165px; padding: 10px 8px 9px; }
   .node-desc-card { width: 140px; }
   .avatar-ring { width: 48px; height: 48px; }
+
+  .explore-hint {
+    bottom: 5.9rem;
+    width: calc(100vw - 1rem);
+    letter-spacing: 0.07em;
+  }
+
+  .explore-hint::before {
+    font-size: 0.44rem;
+  }
+
+  .blog-card {
+    width: calc(100vw - 1.1rem);
+    padding: 0.82rem 0.88rem;
+  }
+
+  .blog-card-title {
+    font-size: 0.64rem;
+    letter-spacing: 0.06em;
+  }
+
+  .blog-card-para {
+    font-size: 0.52rem;
+    line-height: 1.54;
+    letter-spacing: 0.01em;
+  }
 }
 
 /* Bottom-right wallet tag (mirrors SOC://SOCIAL_LINKS corner styling) */
@@ -1195,8 +1273,8 @@ html, body {
 
 .blog-card {
   position: relative;
-  width: 560px;
-  max-width: 90vw;
+  width: min(560px, calc(100vw - 2rem));
+  max-width: none;
   padding: 1.4rem 1.6rem;
   background: rgba(6, 28, 36, 0.88);
   border: 1px solid rgba(93, 232, 240, 0.28);
@@ -1210,6 +1288,7 @@ html, body {
   user-select: none;
   -webkit-user-select: none;
   will-change: opacity;
+  overflow-wrap: anywhere;
 }
 
 .blog-card-header {

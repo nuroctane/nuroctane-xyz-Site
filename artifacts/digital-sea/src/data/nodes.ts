@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { curve } from './path';
 
 export interface NodeData {
   id: string;
@@ -16,8 +17,7 @@ export interface NodeData {
   idleRotation: THREE.Euler;
 }
 
-// path spans z=25 (t=0) to z=-182 (t=1), range=207 units
-const zFromMid = (s: number, e: number) => 25 - ((s + e) / 2) * 207;
+const zFromMid = (s: number, e: number) => curve.getPoint((s + e) / 2).z;
 
 const AVATAR = '/assets/nodes/nuroctane-avatar.png';
 
@@ -221,23 +221,20 @@ const FLIP_X = new Set(['steam', 'discord']);
 // has more time (scroll distance) to rotate toward and fully frame them —
 // especially important on narrow mobile viewports.
 const WIDE_CARD: Record<string, number> = {
-  weatherguru: 0.055,
-  astrosleep:  0.055,
-  geoskin:     0.055,
-  miyamaker:   0.055,
+  atxtunerz:   0.070,
+  github:      0.064,
+  weatherguru: 0.074,
+  sis:         0.070,
+  astrosleep:  0.074,
+  geoskin:     0.074,
+  miyamaker:   0.078,
   // webutils gets a generous window: it's the last card before the portals and
   // needs a smooth entrance + a long tail so the camera has time to pivot
   // toward the portals once the card clears.
   webutils:    0.075,
 };
 
-// webutils sits deeper in z than the zFromMid formula predicts because the
-// CatmullRom spline accelerates in the final 15% of t.  A manual override
-// places it where the camera is actually looking at that scroll position,
-// giving a clean approach from ahead and a clean departure into the portal zone.
-const Z_OVERRIDE: Record<string, number> = {
-  webutils: -179,
-};
+const Z_OVERRIDE: Record<string, number> = {};
 
 export const nodes: NodeData[] = raw.map((n, i) => {
   const isEdge = i === 0 || i === raw.length - 1;

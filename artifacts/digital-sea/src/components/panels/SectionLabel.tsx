@@ -2,7 +2,7 @@ import { useEffect, useRef } from 'react';
 import type { MutableRefObject } from 'react';
 import type { Mode } from '../../types';
 
-const PROJECT_THRESHOLD = 0.62;
+const PROJECT_THRESHOLD = 0.55;
 
 interface Props {
   scrollProgress: MutableRefObject<number>;
