@@ -2,16 +2,16 @@
 
 ## A–G
 
-- [ ] Adami, Christoph — The Evolution of Biological Information
+- [x] Adami, Christoph — The Evolution of Biological Information
 - [ ] Adler, Alfred — Understanding Human Nature
 - [ ] Akiba ben Joseph (attrib.) / Waite, A.E. (ed.) — The Book of Formation (Sefer Yetzirah)
-- [ ] Aristotle — Nicomachean Ethics
+- [x] Aristotle — Nicomachean Ethics
 - [ ] Aristotle — Metaphysics
 - [ ] Aristotle — Politics
 - [ ] Aquinas, Thomas — Summa Theologica
-- [ ] Augustine of Hippo — Confessions
+- [x] Augustine of Hippo — Confessions
 - [ ] Augustine — City of God
-- [ ] Attia, Peter — Outlive
+- [x] Attia, Peter — Outlive
 - [ ] Backman, Fredrik — Beartown
 - [ ] Baid, Gautam — The Joys of Compounding
 - [ ] Barleti, Marin / de Lavardin, Jacques — The History of George Castriot, Surnamed Scanderbeg (trans. Zachary Jones, adapt. David Hosaflook)
@@ -26,11 +26,11 @@
 - [ ] Bevins, Vincent — The Jakarta Method: Washington's Anticommunist Crusade & The Mass Murder Program That Shaped Our World
 - [ ] Bly, Robert — Iron John: A Book About Men
 - [ ] Boethius — Consolation of Philosophy
-- [ ] Bogle, John — Common Sense on Mutual Funds
-- [ ] Bogle, John — John Bogle on Investing
-- [ ] Bogle, John — Stay the Course
-- [ ] Bogle, John — The Battle for the Soul of Capitalism
-- [ ] Bogle, John — The Little Book of Common Sense Investing
+- [x] Bogle, John — Common Sense on Mutual Funds
+- [x] Bogle, John — John Bogle on Investing
+- [x] Bogle, John — Stay the Course
+- [x] Bogle, John — The Battle for the Soul of Capitalism
+- [x] Bogle, John — The Little Book of Common Sense Investing
 - [ ] Bolaño, Roberto — 2666
 - [ ] Borges, Jorge Luis — Ficciones
 - [ ] Borges, Jorge Luis — The Aleph
@@ -41,7 +41,7 @@
 - [ ] Bronson, Po — Bombardiers
 - [ ] Broithuup, Jim / Bell, John — Physics in Context for Cambridge International AS & A Level
 - [ ] Brown, Brandon R. — Planck: Driven by Vision, Broken by War
-- [ ] Brown, E. William — Fimbulwinter (Daniel Black #1)
+- [x] Brown, E. William — Fimbulwinter (Daniel Black #1)
 - [ ] Bulgakov, Mikhail — The Master and Margarita
 - [ ] Burgess, Anthony — A Clockwork Orange
 - [ ] Burner, David — Herbert Hoover: A Public Life
@@ -50,45 +50,45 @@
 - [ ] Byrne, Rhonda — The Magic
 - [ ] Camus, Albert — The Stranger
 - [ ] Castaneda, Carlos — The Fire from Within
-- [ ] Castro, Julio — The Hearth Book
+- [x] Castro, Julio — The Hearth Book
 - [ ] Céline, Louis-Ferdinand — Journey to the End of the Night
 - [ ] Cervantes, Miguel de — Don Quixote
 - [ ] Chambers, Shawn P. — Web 3.0: The Future of Decentralized Technology
-- [ ] Chancellor, Edward — The Price of Time
+- [x] Chancellor, Edward — The Price of Time
 - [ ] Chaucer, Geoffrey — The Canterbury Tales
 - [ ] Cherniak, Christopher — Minimal Rationality
 - [ ] Cialdini, Robert — Influence: The Psychology of Persuasion
 - [ ] Cioran, E.M. — The Trouble with Being Born
 - [ ] Clark, Ronald W. — Einstein: The Life and Times
 - [ ] Cloud, Henry / Townsend, John — Boundaries
-- [ ] Coggins, Colin / Brown, Garrett — The Unsold Mindset
+- [x] Coggins, Colin / Brown, Garrett — The Unsold Mindset
 - [ ] Conrad, Joseph — Heart of Darkness
-- [ ] Corbin, Henry — Spiritual Body & Celestial Earth
+- [x] Corbin, Henry — Spiritual Body & Celestial Earth
 - [ ] Cunningham, Lawrence A. — Quality Shareholders: How the Best Managers Attract and Keep Them
 - [ ] Cunningham, Lawrence A. / Eide, Torkell T. / Hargreaves, Patrick — Quality Investing
 - [ ] Cushing, Harvey — The Life of Sir William Osler (2-vol.)
-- [ ] Danielewski, Mark Z. — House of Leaves
+- [x] Danielewski, Mark Z. — House of Leaves
 - [ ] Dante Alighieri — The Divine Comedy
 - [ ] Davis, Devra — Disconnect: The Truth About Cell Phone Radiation
 - [ ] Dazai, Osamu — No Longer Human
 - [ ] de Charny, Geoffroi — A Knight's Own Book of Chivalry
-- [ ] Deida, David — The Way of the Superior Man
+- [x] Deida, David — The Way of the Superior Man
 - [ ] DeLillo, Don — Mao II
 - [ ] DeWitt, Helen / Gridneff, Ilya — Your Name Here
 - [ ] Diamond, Jared — Guns, Germs & Steel
 - [ ] Dick, Philip K. — Do Androids Dream of Electric Sheep?
 - [ ] Dick, Philip K. — Ubik
 - [ ] Dillian, Jared — Those Bastards
-- [ ] Dispenza, Joe — Becoming Supernatural: How Common People Are Doing the Uncommon
+- [x] Dispenza, Joe — Becoming Supernatural: How Common People Are Doing the Uncommon
 - [ ] Ditlevsen, Tove — Childhood, Youth, Dependency
-- [ ] Dobelli, Rolf — The Art of Thinking Clearly
+- [x] Dobelli, Rolf — The Art of Thinking Clearly
 - [ ] Doe, John Henry — Cracking the Code (3rd Ed.)
 - [ ] Dorsey, Pat — The Five Rules for Successful Stock Investing: Morningstar's Guide to Building Wealth and Winning in the Market
-- [ ] Dostoevsky, Fyodor — The Brothers Karamazov
-- [ ] Dostoevsky, Fyodor — Crime and Punishment
-- [ ] Dostoevsky, Fyodor — Demons
-- [ ] Dostoevsky, Fyodor — Notes from Underground
-- [ ] Dostoevsky, Fyodor — The Idiot
+- [x] Dostoevsky, Fyodor — The Brothers Karamazov _(Complete Works owned)_
+- [x] Dostoevsky, Fyodor — Crime and Punishment _(Complete Works owned)_
+- [x] Dostoevsky, Fyodor — Demons _(Complete Works owned)_
+- [x] Dostoevsky, Fyodor — Notes from Underground _(Complete Works owned)_
+- [x] Dostoevsky, Fyodor — The Idiot _(Complete Works owned)_
 - [ ] Duhigg, Charles — The Power of Habit
 - [ ] Dumas, Alexandre — The Count of Monte Cristo
 - [ ] Easter, Michael — The Comfort Crisis
@@ -99,11 +99,11 @@
 - [ ] Evola, Julius — Eros and the Mysteries of Love: The Metaphysics of Sex
 - [ ] Evola, Julius (and the Ur Group) — Introduction to Magic, Vol. I: Rituals and Practical Techniques for the Magus
 - [ ] Eybl, Björn — The Psychic Roots of Disease (Five Biological Laws of Nature)
-- [ ] Faulkner, William — As I Lay Dying
+- [x] Faulkner, William — As I Lay Dying
 - [ ] Faulkner, William — The Sound and the Fury
-- [ ] Feynman, Richard P. — The Pleasure of Finding Things Out
+- [x] Feynman, Richard P. — The Pleasure of Finding Things Out
 - [ ] Field, Alexander J. — The Economic Consequences of U.S. Mobilization for the Second World War
-- [ ] Fitch, Thomas P. — Dictionary of Banking Terms
+- [x] Fitch, Thomas P. — Dictionary of Banking Terms
 - [ ] Fitzgerald, F. Scott — The Great Gatsby
 - [ ] Fleming, Ian — Casino Royale / Live and Let Die / Moonraker (Penguin omnibus)
 - [ ] Fleming, Thomas — The Man from Monticello: An Intimate Life of Thomas Jefferson
@@ -119,7 +119,7 @@
 - [ ] Gillingham, John — Richard the Lionheart
 - [ ] Gilbert, Daniel — Stumbling on Happiness
 - [ ] The Epic of Gilgamesh (anon.)
-- [ ] Gitomer, Jeffrey — The Little Red Book of Selling
+- [x] Gitomer, Jeffrey — The Little Red Book of Selling
 - [ ] Gitomer, Jeffrey — Little Green Book of Getting Your Way
 - [ ] Gladstein, Alex — Hidden Repression: How the IMF and World Bank Sell Exploitation as Development
 - [ ] Gladstone, Max / El-Mohtar, Amal — This Is How You Lose the Time War
@@ -145,9 +145,9 @@
 - [ ] Hari, Johann — Stolen Focus
 - [ ] Harvey, Campbell R. / Ramachandran, Ashwin / Santoro, Joey — DeFi and the Future of Finance
 - [ ] Hašek, Jaroslav — The Good Soldier Švejk
-- [ ] Hawkins, David R. — Power vs. Force
+- [x] Hawkins, David R. — Power vs. Force
 - [ ] Hawkins, David R. — Letting Go: The Pathway of Surrender
-- [ ] Hawkins, Jeff — A Thousand Brains
+- [x] Hawkins, Jeff — A Thousand Brains
 - [ ] Heaney, Seamus (trans.) — Beowulf
 - [ ] Heckenlively, Kent / Mikovits, Judy / Ruscetti, Frank — Ending Plague
 - [ ] Hegel, G.W.F. — Phenomenology of Spirit
@@ -155,7 +155,7 @@
 - [ ] Heinlein, Robert — The Moon is a Harsh Mistress
 - [ ] Heller, Joseph — Catch-22
 - [ ] Hemingway, Ernest — The Old Man and the Sea
-- [ ] Herbert, Frank — Dune
+- [x] Herbert, Frank — Dune
 - [ ] Herodotus — The Histories
 - [ ] Hersh, Seymour — Chain of Command
 - [ ] Hesse, Hermann — Siddhartha
@@ -170,8 +170,8 @@
 - [ ] Hoffer, Eric — The True Believer: Thoughts on the Nature of Mass Movements
 - [ ] Hollins, Peter — The Science of Rapid Skill Acquisition: Advanced Methods to Learn, Remember, and Master New Skills and Information
 - [ ] The Holy Bible
-- [ ] Homer — The Iliad
-- [ ] Homer — The Odyssey
+- [x] Homer — The Iliad _(multiple trans. owned)_
+- [x] Homer — The Odyssey _(multiple trans. owned)_
 - [ ] Hooker, Brian / Kennedy, Robert F. Jr. — Vax-Unvax
 - [ ] Hopkins, Gerard Manley — Poems and Prose
 - [ ] Hoover, Herbert (see Burner, David — Herbert Hoover: A Public Life)
@@ -183,7 +183,7 @@
 - [ ] Huxley, Aldous — Brave New World
 - [ ] Ibrahim, Raymond — Defenders of the West
 - [ ] Ibrahim, Raymond — Sword and Scimitar
-- [ ] Iceberg Slim — Pimp
+- [x] Iceberg Slim — Pimp
 - [ ] James, C.L.R. — The Black Jacobins: Toussaint L'Ouverture and the San Domingo Revolution
 - [ ] Joyce, James — A Portrait of the Artist as a Young Man
 - [ ] Joyce, James — Dubliners
@@ -222,10 +222,10 @@
 - [ ] Manchester, William / Reid, Paul — The Last Lion: Winston Spencer Churchill, Defender of the Realm 1940–1965
 - [ ] Mann, Charles C. — The Wizard and the Prophet: Two Remarkable Scientists and Their Dueling Visions to Shape Tomorrow's World
 - [ ] Mann, Thomas — The Magic Mountain
-- [ ] Marcus Aurelius — Meditations
+- [x] Marcus Aurelius — Meditations
 - [ ] Marino, Andrew — Going Somewhere: Truth About a Life in Science
 - [ ] Márquez, Gabriel García — One Hundred Years of Solitude
-- [ ] Martin, George R.R. — A Game of Thrones
+- [x] Martin, George R.R. — A Game of Thrones
 - [ ] Mayer, Christopher — 100-Baggers
 - [ ] McCaffrey, Anne — Dragonflight
 - [ ] McCarthy, Cormac — Blood Meridian
@@ -251,15 +251,15 @@
 - [ ] Neufeld, Gordon, Dr. / Maté, Gabor — Hold On to Your Kids
 - [ ] Nevins, Allan — A Study in Power: John D. Rockefeller (2-vol.)
 - [ ] Nicholson, Helen J. — Chronicle of the Third Crusade
-- [ ] Nietzsche, Friedrich — Thus Spoke Zarathustra
+- [x] Nietzsche, Friedrich — Thus Spoke Zarathustra _(Complete Works owned)_
 - [ ] Nitschke, Günter — Japanese Gardens
 - [ ] Norman, Don — The Design of Everyday Things
 - [ ] Norton Anthology of English Literature (ed.) — The Norton Anthology of English Literature
 - [ ] Ogas, Ogi / Gaddam, Sai — A Billion Wicked Thoughts
-- [ ] Orwell, George — 1984
-- [ ] Orwell, George — Animal Farm
+- [x] Orwell, George — 1984
+- [x] Orwell, George — Animal Farm
 - [ ] Ovid — Metamorphoses
-- [ ] Paolini, Christopher — Fractal Noise
+- [x] Paolini, Christopher — Fractal Noise
 - [ ] Pater, Walter — Studies in the History of the Renaissance
 - [ ] Peat, Ray, PhD — Generative Energy: Restoring the Wholeness of Life
 - [ ] Peat, Ray — Nutrition for Women
@@ -282,7 +282,7 @@
 - [ ] Roper / Kramer, Michael / Roberts, Sam — "I Never Wanted To Be Vice-President of Anything": Nelson Rockefeller
 - [ ] Rothfuss, Patrick — The Name of the Wind
 - [ ] Ruocchio, Christopher — Shadows Upon Time
-- [ ] Rubin, Rick — The Creative Act: A Way of Being
+- [x] Rubin, Rick — The Creative Act: A Way of Being
 - [ ] Ruiz, Don Miguel — The Four Agreements
 - [ ] Ruscetti, Frank / Mikovits, Judy / Heckenlively, Kent — Ending Plague
 - [ ] Rutherford, Albert — Mathematical Thinking – For People Who Hate Math
@@ -292,8 +292,8 @@
 - [ ] Salinger, J.D. — The Catcher in the Rye
 - [ ] Sarno, John E. — Healing Back Pain: The Mind-Body Connection
 - [ ] Schopenhauer, Arthur — The World as Will and Representation
-- [ ] Schucman, Helen / Thetford, William T. (Eds.) — A Course in Miracles
-- [ ] Schwartz, David — The Magic of Thinking Big
+- [x] Schucman, Helen / Thetford, William T. (Eds.) — A Course in Miracles
+- [x] Schwartz, David — The Magic of Thinking Big
 - [ ] Seidman, William — Where the Money Is
 - [ ] Seilern, Peter — Only the Best Will Do
 - [ ] Shakespeare, William — The Complete Works of William Shakespeare
@@ -310,7 +310,7 @@
 - [ ] Stephens, L.L. — The Walled City (The Triempery Revelations, Book I)
 - [ ] Stephens, L.L. — The God Spear (The Triempery Revelations, Book IV)
 - [ ] Stroumsa, Guy G. / Shulman, David (eds.) — Dream Cultures: Explorations in the Comparative History of Dreaming
-- [ ] Stross, Charles — Accelerando
+- [x] Stross, Charles — Accelerando
 - [ ] Strunk Jr., William / White, E.B. — The Elements of Style
 - [ ] Tacitus — The Annals of Imperial Rome
 - [ ] Tacey, David — Jung and Spirituality
@@ -361,7 +361,7 @@
 - [ ] Xenophon — Anabasis
 - [ ] Yeats, W.B. — Poems
 - [ ] Zakaria, Anam — 1971: A People's History from Bangladesh, Pakistan and India
-- [ ] Zeland, Vadim — Reality Transurfing
+- [x] Zeland, Vadim — Reality Transurfing
 - [ ] Zozanian — Lotteryland
 
 ## Fantasy/Sci-Fi Cluster
@@ -600,3 +600,86 @@
 - [ ] The Library of Consciousness
 - [ ] The HTML Review
 - [ ] 9 Free Book Download Websites
+
+## The Inheritance Cycle (Christopher Paolini)
+
+- [x] Paolini, Christopher — Eragon
+- [x] Paolini, Christopher — Eldest
+- [x] Paolini, Christopher — Brisingr
+- [x] Paolini, Christopher — Inheritance
+- [x] Paolini, Christopher — Murtagh
+- [x] Paolini, Christopher — The Fork, the Witch, and the Worm
+
+## Little House on the Prairie (Laura Ingalls Wilder)
+
+- [x] Wilder, Laura Ingalls — Little House in the Big Woods
+- [x] Wilder, Laura Ingalls — Farmer Boy
+- [x] Wilder, Laura Ingalls — Little House on the Prairie
+- [x] Wilder, Laura Ingalls — On the Banks of Plum Creek
+- [x] Wilder, Laura Ingalls — By the Shores of Silver Lake
+- [x] Wilder, Laura Ingalls — The Long Winter
+- [x] Wilder, Laura Ingalls — Little Town on the Prairie
+- [x] Wilder, Laura Ingalls — These Happy Golden Years
+- [x] Wilder, Laura Ingalls — The First Four Years
+
+## The Lord of the Rings (J.R.R. Tolkien)
+
+- [x] Tolkien, J.R.R. — The Fellowship of the Ring
+- [x] Tolkien, J.R.R. — The Two Towers
+- [x] Tolkien, J.R.R. — The Return of the King
+- [x] Tolkien, J.R.R. — The Hobbit
+
+## Inkheart Trilogy / Inkworld (Cornelia Funke)
+
+- [x] Funke, Cornelia — Inkheart
+- [x] Funke, Cornelia — Inkspell
+- [x] Funke, Cornelia — Inkdeath
+- [x] Funke, Cornelia — The Color of Revenge
+
+## Percy Jackson & the Olympians (Rick Riordan)
+
+- [x] Riordan, Rick — The Lightning Thief
+- [x] Riordan, Rick — The Sea of Monsters
+- [x] Riordan, Rick — The Titan's Curse
+- [x] Riordan, Rick — The Battle of the Labyrinth
+- [x] Riordan, Rick — The Last Olympian
+- [x] Riordan, Rick — The Chalice of the Gods
+- [x] Riordan, Rick — Wrath of the Triple Goddess
+
+## Maximum Ride (James Patterson)
+
+- [x] Patterson, James — The Angel Experiment
+- [x] Patterson, James — School's Out—Forever
+- [x] Patterson, James — Saving the World and Other Extreme Sports
+- [x] Patterson, James — The Final Warning
+- [x] Patterson, James — MAX: A Maximum Ride Novel
+- [x] Patterson, James — Fang: A Maximum Ride Novel
+- [x] Patterson, James — Angel: A Maximum Ride Novel
+- [x] Patterson, James — Nevermore: The Final Maximum Ride Adventure
+- [x] Patterson, James — Maximum Ride Forever
+- [x] Patterson, James — Hawk
+- [x] Patterson, James — City of the Dead
+
+## A Series of Unfortunate Events (Lemony Snicket)
+
+- [x] Snicket, Lemony — The Bad Beginning
+- [x] Snicket, Lemony — The Reptile Room
+- [x] Snicket, Lemony — The Wide Window
+- [x] Snicket, Lemony — The Miserable Mill
+- [x] Snicket, Lemony — The Austere Academy
+- [x] Snicket, Lemony — The Ersatz Elevator
+- [x] Snicket, Lemony — The Vile Village
+- [x] Snicket, Lemony — The Hostile Hospital
+- [x] Snicket, Lemony — The Carnivorous Carnival
+- [x] Snicket, Lemony — The Slippery Slope
+- [x] Snicket, Lemony — The Grim Grotto
+- [x] Snicket, Lemony — The Penultimate Peril
+- [x] Snicket, Lemony — The End
+
+## His Dark Materials (Philip Pullman)
+
+- [x] Pullman, Philip — The Golden Compass _(Published as "Northern Lights" in the UK)_
+- [x] Pullman, Philip — The Subtle Knife
+- [x] Pullman, Philip — The Amber Spyglass
+- [x] Pullman, Philip — La Belle Sauvage
+- [x] Pullman, Philip — The Secret Commonwealth

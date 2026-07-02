@@ -19,6 +19,18 @@ html, body {
   overscroll-behavior: none;
 }
 
+/* Standalone pages (quotes, books, resume) — override global scroll rules
+   so the page scrolls like a normal webpage. The class is added to <html>
+   by useStandaloneScroll(). Specificity (0,1,1) beats the `html, body` rule
+   (0,0,1) so no !important needed. */
+html.standalone-active,
+html.standalone-active body {
+  overflow: auto;
+  overflow-x: hidden;
+  overscroll-behavior: auto;
+  height: auto;
+}
+
 /* ─── Scanline overlay ───────────────────────────────────────────────────── */
 
 .scanline-overlay {
@@ -1751,6 +1763,560 @@ html, body {
   color: #6aacb5;
   border-top: 1px solid rgba(93, 232, 240, 0.08);
   padding-top: 0.5rem;
+}
+
+.bs-modal-note {
+  font-size: 0.5rem;
+  font-style: italic;
+  color: #4a9aaa;
+  margin-top: 0.4rem;
+}
+
+/* ── Book search + covers ── */
+
+.bs-search-wrap {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.bs-search-row {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 6px;
+}
+
+.bs-note-input {
+  margin-bottom: 0 !important;
+}
+
+.bs-search-status {
+  font-size: 0.5rem;
+  color: #4a9aaa;
+  padding: 0.3rem 0.6rem;
+}
+
+.bs-search-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background: rgba(4, 14, 22, 0.98);
+  border: 1px solid rgba(93, 232, 240, 0.2);
+  border-top: none;
+  max-height: 320px;
+  overflow-y: auto;
+  z-index: 50;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+}
+
+.bs-search-result {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 6px 8px;
+  background: none;
+  border: none;
+  border-bottom: 1px solid rgba(93, 232, 240, 0.06);
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.1s;
+}
+
+.bs-search-result:hover {
+  background: rgba(93, 232, 240, 0.06);
+}
+
+.bs-search-result:last-child {
+  border-bottom: none;
+}
+
+.bs-search-thumb {
+  width: 30px;
+  height: 46px;
+  object-fit: cover;
+  flex-shrink: 0;
+  background: rgba(93, 232, 240, 0.04);
+}
+
+.bs-search-thumb--placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.6rem;
+  color: #4a9aaa;
+  border: 1px solid rgba(93, 232, 240, 0.08);
+}
+
+.bs-search-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.bs-search-title {
+  font-size: 0.55rem;
+  color: #bdeff2;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.bs-search-author {
+  font-size: 0.45rem;
+  color: #6aacb5;
+  margin-top: 1px;
+}
+
+.bs-search-year {
+  font-size: 0.4rem;
+  color: #3a6a72;
+  margin-top: 1px;
+}
+
+.bs-search-add {
+  font-size: 0.45rem;
+  color: #5de8f0;
+  letter-spacing: 0.08em;
+  flex-shrink: 0;
+  opacity: 0.5;
+  transition: opacity 0.1s;
+}
+
+.bs-search-result:hover .bs-search-add {
+  opacity: 1;
+}
+
+.bs-add-manual {
+  width: 100%;
+  background: rgba(93, 232, 240, 0.04);
+  border: 1px dashed rgba(93, 232, 240, 0.15);
+  color: #6aacb5;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem;
+  padding: 0.5rem;
+  cursor: pointer;
+  margin-top: 4px;
+  transition: all 0.15s;
+}
+
+.bs-add-manual:hover {
+  background: rgba(93, 232, 240, 0.08);
+  border-color: rgba(93, 232, 240, 0.3);
+  color: #bdeff2;
+}
+
+/* Cover images in grid cards */
+.bs-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.bs-modal-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.bs-modal-cover-loading {
+  font-size: 0.5rem;
+  color: #4a9aaa;
+  letter-spacing: 0.2em;
+}
+
+.bs-modal-date {
+  font-size: 0.42rem;
+  letter-spacing: 0.08em;
+  color: #3a6a72;
+  margin-top: 0.3rem;
+}
+
+.bs-date {
+  font-size: 0.38rem;
+  color: #3a6a72;
+  margin-top: 2px;
+  letter-spacing: 0.04em;
+}
+
+.bs-admin-badge {
+  display: inline-block;
+  font-size: 0.4rem;
+  letter-spacing: 0.1em;
+  color: #e85d5d;
+  border: 1px solid rgba(232, 93, 93, 0.3);
+  padding: 1px 5px;
+  margin-left: 0.5rem;
+  vertical-align: middle;
+}
+
+.bs-modal-remove {
+  margin-top: 0.8rem;
+  background: rgba(232, 93, 93, 0.06);
+  border: 1px solid rgba(232, 93, 93, 0.2);
+  color: #e85d5d;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.45rem;
+  letter-spacing: 0.08em;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.bs-modal-remove:hover {
+  background: rgba(232, 93, 93, 0.12);
+  border-color: rgba(232, 93, 93, 0.4);
+}
+
+.bs-modal-toggle-read {
+  margin-top: 0.6rem;
+  background: rgba(93, 232, 240, 0.06);
+  border: 1px solid rgba(93, 232, 240, 0.2);
+  color: #5de8f0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.45rem;
+  letter-spacing: 0.08em;
+  padding: 0.4rem 0.8rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.bs-modal-toggle-read:hover {
+  background: rgba(93, 232, 240, 0.12);
+  border-color: rgba(93, 232, 240, 0.4);
+}
+
+.bs-lib-search-wrap {
+  position: relative;
+  margin-bottom: 1.5rem;
+}
+
+.bs-lib-clear {
+  position: absolute;
+  right: 8px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.55rem;
+  color: #4a9aaa;
+  cursor: pointer;
+  opacity: 0.5;
+  transition: opacity 0.15s;
+}
+
+.bs-lib-clear:hover {
+  opacity: 1;
+  color: #bdeff2;
+}
+
+.bs-lib-noresults {
+  text-align: center;
+  padding: 2rem 0;
+  color: #4a9aaa;
+  font-size: 0.55rem;
+  letter-spacing: 0.05em;
+}
+
+.bs-admin-prompt {
+  background: rgba(4, 14, 22, 0.98);
+  border: 1px solid rgba(232, 93, 93, 0.25);
+  padding: 1.5rem 1.5rem 1.2rem;
+  width: 260px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+}
+
+.bs-admin-prompt-label {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.15em;
+  color: #e85d5d;
+  margin-bottom: 0.8rem;
+}
+
+.bs-admin-prompt-input {
+  width: 100%;
+  background: rgba(4, 14, 22, 0.8);
+  border: 1px solid rgba(232, 93, 93, 0.15);
+  color: #bdeff2;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  padding: 0.5rem 0.6rem;
+  outline: none;
+  text-align: center;
+  letter-spacing: 0.1em;
+  transition: border-color 0.15s;
+}
+
+.bs-admin-prompt-input:focus {
+  border-color: rgba(232, 93, 93, 0.4);
+}
+
+.bs-admin-prompt-error {
+  font-size: 0.45rem;
+  color: #e85d5d;
+  margin-top: 0.4rem;
+  letter-spacing: 0.05em;
+}
+
+.bs-admin-prompt-btn {
+  margin-top: 0.8rem;
+  background: rgba(232, 93, 93, 0.06);
+  border: 1px solid rgba(232, 93, 93, 0.2);
+  color: #e85d5d;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.12em;
+  padding: 0.5rem 1.2rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.bs-admin-prompt-btn:hover {
+  background: rgba(232, 93, 93, 0.12);
+  border-color: rgba(232, 93, 93, 0.4);
+}
+
+/* ── Confirmation dialog ── */
+
+.bs-confirm-modal {
+  background: rgba(4, 14, 22, 0.98);
+  border: 1px solid rgba(93, 232, 240, 0.2);
+  padding: 1.5rem;
+  width: 380px;
+  max-width: calc(100vw - 2rem);
+  max-height: 85vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.6);
+}
+
+.bs-confirm-header {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.15em;
+  color: #5de8f0;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.bs-confirm-card {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 1rem;
+}
+
+.bs-confirm-cover {
+  width: 72px;
+  height: 108px;
+  flex-shrink: 0;
+  background: rgba(93, 232, 240, 0.04);
+  border: 1px solid rgba(93, 232, 240, 0.08);
+  overflow: hidden;
+}
+
+.bs-confirm-cover-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.bs-confirm-cover-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-size: 1.4rem;
+  color: #4a9aaa;
+}
+
+.bs-confirm-meta {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
+}
+
+.bs-confirm-title {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.7rem;
+  color: #bdeff2;
+  line-height: 1.35;
+}
+
+.bs-confirm-author {
+  font-size: 0.55rem;
+  color: #6aacb5;
+}
+
+.bs-confirm-year {
+  font-size: 0.45rem;
+  color: #3a6a72;
+}
+
+.bs-confirm-synopsis {
+  font-size: 0.5rem;
+  line-height: 1.5;
+  color: #8ababc;
+  margin-bottom: 1rem;
+  max-height: 120px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.bs-confirm-synopsis p {
+  margin: 0;
+}
+
+.bs-confirm-synopsis-loading {
+  color: #4a9aaa;
+  font-style: italic;
+}
+
+.bs-confirm-synopsis-none {
+  color: #3a6a72;
+  font-style: italic;
+}
+
+.bs-confirm-note {
+  margin-bottom: 0.8rem;
+}
+
+.bs-confirm-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.bs-confirm-cancel {
+  flex: 1;
+  background: rgba(74, 154, 170, 0.06);
+  border: 1px solid rgba(74, 154, 170, 0.15);
+  color: #6aacb5;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.1em;
+  padding: 0.6rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.bs-confirm-cancel:hover {
+  background: rgba(74, 154, 170, 0.12);
+  border-color: rgba(74, 154, 170, 0.3);
+}
+
+.bs-confirm-btn {
+  flex: 1;
+  background: rgba(93, 232, 240, 0.08);
+  border: 1px solid rgba(93, 232, 240, 0.2);
+  color: #5de8f0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.1em;
+  padding: 0.6rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.bs-confirm-btn:hover {
+  background: rgba(93, 232, 240, 0.15);
+  border-color: rgba(93, 232, 240, 0.4);
+}
+
+.bs-confirm-btn:disabled,
+.bs-confirm-cancel:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.bs-api-warning {
+  background: rgba(232, 93, 93, 0.06);
+  border: 1px solid rgba(232, 93, 93, 0.15);
+  color: #e85d5d;
+  font-size: 0.45rem;
+  letter-spacing: 0.05em;
+  padding: 0.4rem 0.6rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* ── Visitor book form (legacy) ── */
+
+.bs-add-form {
+  display: flex;
+  gap: 6px;
+  margin-bottom: 1.5rem;
+}
+
+.bs-add-input {
+  flex: 1;
+  background: rgba(4, 14, 22, 0.8);
+  border: 1px solid rgba(93, 232, 240, 0.15);
+  color: #bdeff2;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.6rem;
+  padding: 0.5rem 0.6rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.bs-add-input::placeholder {
+  color: #3a6a72;
+}
+
+.bs-add-input:focus {
+  border-color: rgba(93, 232, 240, 0.4);
+}
+
+.bs-add-btn {
+  background: rgba(93, 232, 240, 0.08);
+  border: 1px solid rgba(93, 232, 240, 0.2);
+  color: #5de8f0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+  padding: 0 0.9rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.bs-add-btn:hover:not(:disabled) {
+  background: rgba(93, 232, 240, 0.15);
+  border-color: rgba(93, 232, 240, 0.4);
+}
+
+.bs-add-btn:disabled {
+  opacity: 0.3;
+  cursor: default;
+}
+
+.bs-card--visitor {
+  border-color: rgba(93, 232, 240, 0.25);
+}
+
+.bs-card-remove {
+  position: absolute;
+  top: 3px;
+  right: 5px;
+  font-size: 0.5rem;
+  color: #4a9aaa;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 2;
+}
+
+.bs-card:hover .bs-card-remove {
+  opacity: 0.7;
+}
+
+.bs-card-remove:hover {
+  opacity: 1;
+  color: #e85d5d;
 }
 
 /* ── Resume page ── */
