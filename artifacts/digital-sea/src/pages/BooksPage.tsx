@@ -27,6 +27,11 @@ interface OLResult {
   first_publish_year?: number;
 }
 
+interface OLWork {
+  description?: string | { value: string };
+  subjects?: string[];
+}
+
 function parseBooks(src: string): Shelf[] {
   const lines = src.split('\n');
   const shelves: Shelf[] = [];
@@ -75,8 +80,13 @@ function buildQuery(book: Book): string {
     : encodeURIComponent(book.title);
 }
 
+function bookKey(b: Book): string {
+  return `${b.title}|${b.author}`;
+}
+
 const STORAGE_KEY = 'visitor-books';
 const COVER_CACHE_KEY = 'book-cover-cache';
+const READ_OVERRIDE_KEY = 'book-read-overrides';
 const SESSION_KEY = 'book-session-id';
 const ADMIN_KEY = 'book-admin';
 
@@ -119,6 +129,20 @@ function saveCoverCache(cache: Record<string, string | null>) {
   } catch {}
 }
 
+function loadReadOverrides(): Record<string, boolean> {
+  try {
+    return JSON.parse(localStorage.getItem(READ_OVERRIDE_KEY) ?? '{}');
+  } catch {
+    return {};
+  }
+}
+
+function saveReadOverrides(map: Record<string, boolean>) {
+  try {
+    localStorage.setItem(READ_OVERRIDE_KEY, JSON.stringify(map));
+  } catch {}
+}
+
 const BATCH_SIZE = 4;
 const BATCH_DELAY = 120;
 
@@ -132,7 +156,6 @@ export default function BooksPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<OLResult[]>([]);
   const [searching, setSearching] = useState(false);
-  const [noteText, setNoteText] = useState('');
   const [coverCache, setCoverCache] = useState<Record<string, string | null>>({});
   const [detailCover, setDetailCover] = useState<string | null>(null);
   const [loadingCover, setLoadingCover] = useState(false);
@@ -140,6 +163,15 @@ export default function BooksPage() {
   const [adminPrompt, setAdminPrompt] = useState(false);
   const [adminPass, setAdminPass] = useState('');
   const [adminError, setAdminError] = useState(false);
+  const [libraryQuery, setLibraryQuery] = useState('');
+  const [readOverrides, setReadOverrides] = useState<Record<string, boolean>>({});
+
+  // Confirmation dialog state
+  const [pendingBook, setPendingBook] = useState<OLResult | null>(null);
+  const [pendingSynopsis, setPendingSynopsis] = useState<string | null>(null);
+  const [pendingLoading, setPendingLoading] = useState(false);
+  const [pendingNote, setPendingNote] = useState('');
+
   const bgStarted = useRef(false);
   const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const searchAbort = useRef<AbortController | null>(null);
@@ -149,15 +181,14 @@ export default function BooksPage() {
     const initialCache = loadCoverCache();
     setCoverCache(initialCache);
     setVisitorBooks(loadVisitorBooks());
+    setReadOverrides(loadReadOverrides());
     setIsAdmin(sessionStorage.getItem(ADMIN_KEY) === '1');
 
-    // Retroactive cover fetch: progressively fill covers for curated books
-    // that aren't in the cache yet. Runs in small batches to be polite to OL.
     if (bgStarted.current) return;
     bgStarted.current = true;
 
     const missing = allCuratedBooks.filter(b => {
-      const key = `${b.title}|${b.author}`;
+      const key = bookKey(b);
       return !(key in initialCache);
     });
     if (missing.length === 0) return;
@@ -177,9 +208,9 @@ export default function BooksPage() {
             `https://openlibrary.org/search.json?q=${buildQuery(b)}&fields=cover_i&limit=1`,
           );
           const data = await res.json();
-          return { key: `${b.title}|${b.author}`, url: coverUrl(data.docs?.[0]?.cover_i) ?? null };
+          return { key: bookKey(b), url: coverUrl(data.docs?.[0]?.cover_i) ?? null };
         } catch {
-          return { key: `${b.title}|${b.author}`, url: null };
+          return { key: bookKey(b), url: null };
         }
       }));
 
@@ -263,9 +294,8 @@ export default function BooksPage() {
     };
   }, [searchQuery]);
 
-  // Modal cover load (uses cache or fetches single)
   const fetchCover = useCallback(async (book: Book): Promise<string | null> => {
-    const cacheKey = `${book.title}|${book.author}`;
+    const cacheKey = bookKey(book);
     if (cacheKey in coverCache) return coverCache[cacheKey];
     try {
       const res = await fetch(
@@ -290,15 +320,56 @@ export default function BooksPage() {
     fetchCover(detail).then(url => { setDetailCover(url); setLoadingCover(false); });
   }, [detail, fetchCover]);
 
-  const addVisitorBook = (result?: OLResult) => {
-    const title = result?.title ?? searchQuery.trim();
-    if (!title) return;
-    const author = result?.author_name?.[0] ?? '';
-    const cover = coverUrl(result?.cover_i);
+  // When a search result is clicked, open confirmation dialog and fetch synopsis
+  const openConfirmation = (result: OLResult) => {
+    setPendingBook(result);
+    setPendingSynopsis(null);
+    setPendingLoading(true);
+    setPendingNote('');
+    setSearchQuery('');
+    setSearchResults([]);
+
+    fetch(`https://openlibrary.org${result.key}.json`)
+      .then(res => res.json())
+      .then((work: OLWork) => {
+        const desc = typeof work.description === 'string'
+          ? work.description
+          : work.description?.value ?? null;
+        setPendingSynopsis(desc);
+      })
+      .catch(() => setPendingSynopsis(null))
+      .finally(() => setPendingLoading(false));
+  };
+
+  const confirmAddBook = () => {
+    if (!pendingBook) return;
     const book: Book = {
-      title, author, read: false, visitor: true,
-      coverUrl: cover, dateAdded: new Date().toISOString(),
-      note: noteText.trim() || undefined,
+      title: pendingBook.title,
+      author: pendingBook.author_name?.[0] ?? '',
+      read: false,
+      visitor: true,
+      coverUrl: coverUrl(pendingBook.cover_i),
+      dateAdded: new Date().toISOString(),
+      note: pendingNote.trim() || undefined,
+      sessionId: sessionId.current,
+    };
+    const next = [...visitorBooks, book];
+    setVisitorBooks(next);
+    saveVisitorBooks(next);
+    setPendingBook(null);
+    setPendingNote('');
+    setPendingSynopsis(null);
+  };
+
+  const addManualBook = () => {
+    const title = searchQuery.trim();
+    if (!title) return;
+    const book: Book = {
+      title,
+      author: '',
+      read: false,
+      visitor: true,
+      dateAdded: new Date().toISOString(),
       sessionId: sessionId.current,
     };
     const next = [...visitorBooks, book];
@@ -306,23 +377,66 @@ export default function BooksPage() {
     saveVisitorBooks(next);
     setSearchQuery('');
     setSearchResults([]);
-    setNoteText('');
   };
 
-  const removeVisitorBook = (idx: number) => {
-    const next = visitorBooks.filter((_, i) => i !== idx);
+  const removeVisitorBook = (book: Book) => {
+    const next = visitorBooks.filter(b =>
+      !(b.title === book.title && b.author === book.author && b.dateAdded === book.dateAdded),
+    );
     setVisitorBooks(next);
     saveVisitorBooks(next);
   };
 
   const canRemove = (b: Book) => isAdmin || b.sessionId === sessionId.current;
 
-  const allShelves: Shelf[] = useMemo(() => {
-    if (visitorBooks.length > 0) {
-      return [{ name: 'Your Library', books: visitorBooks }, ...shelves];
+  const toggleRead = (book: Book) => {
+    if (book.visitor) {
+      const next = visitorBooks.map(b =>
+        b.title === book.title && b.author === book.author && b.dateAdded === book.dateAdded
+          ? { ...b, read: !b.read }
+          : b,
+      );
+      setVisitorBooks(next);
+      saveVisitorBooks(next);
+      setDetail(d => d && d.title === book.title && d.author === book.author && d.dateAdded === book.dateAdded
+        ? { ...d, read: !d.read }
+        : d,
+      );
+    } else {
+      const key = bookKey(book);
+      const currentOverride = readOverrides[key];
+      const newRead = currentOverride !== undefined ? !currentOverride : !book.read;
+      const next = { ...readOverrides, [key]: newRead };
+      setReadOverrides(next);
+      saveReadOverrides(next);
+      setDetail(d => d ? { ...d, read: newRead } : null);
     }
-    return shelves;
-  }, [shelves, visitorBooks]);
+  };
+
+  function getEffectiveRead(b: Book): boolean {
+    if (b.visitor) return b.read;
+    const override = readOverrides[bookKey(b)];
+    return override !== undefined ? override : b.read;
+  }
+
+  const libQ = libraryQuery.trim().toLowerCase();
+  const filteredShelves: Shelf[] = useMemo(() => {
+    const base: Shelf[] = visitorBooks.length > 0
+      ? [{ name: 'Your Library', books: visitorBooks }, ...shelves]
+      : shelves;
+
+    if (!libQ) return base;
+
+    return base
+      .map(s => ({
+        ...s,
+        books: s.books.filter(b =>
+          b.title.toLowerCase().includes(libQ) ||
+          b.author.toLowerCase().includes(libQ),
+        ),
+      }))
+      .filter(s => s.books.length > 0);
+  }, [shelves, visitorBooks, libQ]);
 
   function formatDate(iso: string): string {
     try {
@@ -338,6 +452,7 @@ export default function BooksPage() {
         {isAdmin && <span className="bs-admin-badge">ADMIN</span>}
       </div>
 
+      {/* Open Library search */}
       <div className="bs-search-wrap">
         <div className="bs-search-row">
           <input
@@ -346,24 +461,16 @@ export default function BooksPage() {
             placeholder="Search Open Library to add a book..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={(e) => { if (e.key === 'Enter' && searchResults.length === 0) addVisitorBook(); }}
+            onKeyDown={(e) => { if (e.key === 'Enter' && searchResults.length === 0) addManualBook(); }}
           />
         </div>
-        <input
-          className="bs-add-input bs-note-input"
-          type="text"
-          placeholder="Leave a note (optional)..."
-          value={noteText}
-          onChange={(e) => setNoteText(e.target.value)}
-          onKeyDown={(e) => { if (e.key === 'Enter' && searchResults.length === 0) addVisitorBook(); }}
-        />
 
         {searching && <div className="bs-search-status">Searching...</div>}
 
         {searchResults.length > 0 && (
           <div className="bs-search-dropdown">
             {searchResults.map((r) => (
-              <button key={r.key} className="bs-search-result" onClick={() => addVisitorBook(r)}>
+              <button key={r.key} className="bs-search-result" onClick={() => openConfirmation(r)}>
                 {r.cover_i ? (
                   <img src={`https://covers.openlibrary.org/b/id/${r.cover_i}-S.jpg`} alt="" className="bs-search-thumb" />
                 ) : (
@@ -381,26 +488,41 @@ export default function BooksPage() {
         )}
 
         {searchQuery.trim().length >= 2 && !searching && searchResults.length === 0 && (
-          <button className="bs-add-manual" onClick={() => addVisitorBook()}>
+          <button className="bs-add-manual" onClick={addManualBook}>
             No results — add "{searchQuery.trim()}" manually
           </button>
         )}
       </div>
 
-      {allShelves.map((s, si) => (
+      {/* Sea Library filter */}
+      <div className="bs-lib-search-wrap">
+        <input
+          className="bs-add-input"
+          type="text"
+          placeholder="Search the Sea Library..."
+          value={libraryQuery}
+          onChange={(e) => setLibraryQuery(e.target.value)}
+        />
+        {libQ && (
+          <span className="bs-lib-clear" onClick={() => setLibraryQuery('')}>✕</span>
+        )}
+      </div>
+
+      {filteredShelves.map((s, si) => (
         <div key={si} className="bs-shelf">
           <div className="bs-shelf-title">
             {s.name} <span className="bs-shelf-count">({s.books.length})</span>
           </div>
           <div className="bs-grid">
             {s.books.map((b, i) => {
-              const cacheKey = `${b.title}|${b.author}`;
+              const cacheKey = bookKey(b);
               const cachedCover = b.coverUrl ?? coverCache[cacheKey] ?? undefined;
+              const effectiveRead = getEffectiveRead(b);
               const removable = b.visitor && canRemove(b);
               return (
                 <button
                   key={`${b.title}-${i}`}
-                  className={`bs-card${b.read ? ' bs-card--read' : ''}${b.visitor ? ' bs-card--visitor' : ''}`}
+                  className={`bs-card${effectiveRead ? ' bs-card--read' : ''}${b.visitor ? ' bs-card--visitor' : ''}`}
                   onClick={() => setDetail(b)}
                   title={`${b.title}${b.author ? ' — ' + b.author : ''}`}
                 >
@@ -419,7 +541,7 @@ export default function BooksPage() {
                   {removable && (
                     <span
                       className="bs-card-remove"
-                      onClick={(e) => { e.stopPropagation(); removeVisitorBook(i); }}
+                      onClick={(e) => { e.stopPropagation(); removeVisitorBook(b); }}
                       title={isAdmin ? 'Remove (admin)' : 'Remove'}
                     >✕</span>
                   )}
@@ -430,6 +552,11 @@ export default function BooksPage() {
         </div>
       ))}
 
+      {libQ && filteredShelves.length === 0 && (
+        <div className="bs-lib-noresults">No books match "{libraryQuery}"</div>
+      )}
+
+      {/* Book detail modal */}
       {detail && (
         <div className="bs-overlay" onClick={() => setDetail(null)}>
           <div className="bs-modal" onClick={(e) => e.stopPropagation()}>
@@ -445,17 +572,22 @@ export default function BooksPage() {
             </div>
             <div className="bs-modal-title">{detail.title}</div>
             {detail.author && <div className="bs-modal-author">{detail.author}</div>}
-            <div className="bs-modal-status">{detail.read ? '✓ READ' : '○ UNREAD'}</div>
+            <div className="bs-modal-status">{getEffectiveRead(detail) ? '✓ READ' : '○ UNREAD'}</div>
             {detail.note && <div className="bs-modal-note">{detail.note}</div>}
             {detail.dateAdded && <div className="bs-modal-date">Added {formatDate(detail.dateAdded)}</div>}
+            {isAdmin && (
+              <button
+                className="bs-modal-toggle-read"
+                onClick={() => toggleRead(detail)}
+              >
+                {getEffectiveRead(detail) ? 'MARK AS UNREAD' : 'MARK AS READ'}
+              </button>
+            )}
             {detail.visitor && isAdmin && (
               <button
                 className="bs-modal-remove"
                 onClick={() => {
-                  const idx = visitorBooks.findIndex(b =>
-                    b.title === detail.title && b.author === detail.author && b.dateAdded === detail.dateAdded,
-                  );
-                  if (idx >= 0) removeVisitorBook(idx);
+                  removeVisitorBook(detail);
                   setDetail(null);
                 }}
               >DELETE (admin)</button>
@@ -464,6 +596,57 @@ export default function BooksPage() {
         </div>
       )}
 
+      {/* Confirmation dialog — add book with note + synopsis preview */}
+      {pendingBook && (
+        <div className="bs-overlay" onClick={() => setPendingBook(null)}>
+          <div className="bs-confirm-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="bs-modal-close" onClick={() => setPendingBook(null)}>✕</button>
+            <div className="bs-confirm-header">RECOMMEND THIS BOOK</div>
+            <div className="bs-confirm-card">
+              <div className="bs-confirm-cover">
+                {pendingBook.cover_i ? (
+                  <img src={coverUrl(pendingBook.cover_i)} alt="" className="bs-confirm-cover-img" />
+                ) : (
+                  <div className="bs-confirm-cover-placeholder">{initial(pendingBook.title)}</div>
+                )}
+              </div>
+              <div className="bs-confirm-meta">
+                <div className="bs-confirm-title">{pendingBook.title}</div>
+                {pendingBook.author_name && (
+                  <div className="bs-confirm-author">{pendingBook.author_name[0]}</div>
+                )}
+                {pendingBook.first_publish_year && (
+                  <div className="bs-confirm-year">{pendingBook.first_publish_year}</div>
+                )}
+              </div>
+            </div>
+            <div className="bs-confirm-synopsis">
+              {pendingLoading ? (
+                <div className="bs-confirm-synopsis-loading">Loading synopsis...</div>
+              ) : pendingSynopsis ? (
+                <p>{pendingSynopsis.length > 600 ? pendingSynopsis.slice(0, 600) + '...' : pendingSynopsis}</p>
+              ) : (
+                <div className="bs-confirm-synopsis-none">No synopsis available.</div>
+              )}
+            </div>
+            <input
+              className="bs-add-input bs-confirm-note"
+              type="text"
+              placeholder="Add a note (optional)..."
+              value={pendingNote}
+              onChange={(e) => setPendingNote(e.target.value)}
+              onKeyDown={(e) => { if (e.key === 'Enter') confirmAddBook(); }}
+              autoFocus
+            />
+            <div className="bs-confirm-actions">
+              <button className="bs-confirm-cancel" onClick={() => setPendingBook(null)}>CANCEL</button>
+              <button className="bs-confirm-btn" onClick={confirmAddBook}>CONFIRM & ADD</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Admin password prompt */}
       {adminPrompt && (
         <div className="bs-overlay" onClick={() => setAdminPrompt(false)}>
           <div className="bs-admin-prompt" onClick={(e) => e.stopPropagation()}>

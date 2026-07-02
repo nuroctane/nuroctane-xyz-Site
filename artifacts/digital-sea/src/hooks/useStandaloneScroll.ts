@@ -2,23 +2,29 @@ import { useEffect } from 'react';
 
 /**
  * Forces normal webpage scrolling on standalone pages (quotes, books, resume).
- * Resets any overflow/height manipulations left by the 3D environment and
- * restores them on unmount so the 3D experience still works when navigated back.
+ * Adds a class to <html> that overrides the global overflow/overscroll rules
+ * designed for the 3D experience. Removes it on unmount so the 3D scene
+ * still works when navigated back.
  */
 export function useStandaloneScroll() {
   useEffect(() => {
-    const prevHtmlOverflow = document.documentElement.style.overflow;
-    const prevBodyOverflow = document.body.style.overflow;
-    const prevBodyHeight = document.body.style.height;
+    const html = document.documentElement;
+    const body = document.body;
 
-    document.documentElement.style.overflow = '';
-    document.body.style.overflow = 'auto';
-    document.body.style.height = '';
+    const prevHtmlOverflow = html.style.overflow;
+    const prevBodyOverflow = body.style.overflow;
+    const prevBodyHeight = body.style.height;
+
+    html.classList.add('standalone-active');
+    html.style.overflow = '';
+    body.style.overflow = '';
+    body.style.height = '';
 
     return () => {
-      document.documentElement.style.overflow = prevHtmlOverflow;
-      document.body.style.overflow = prevBodyOverflow;
-      document.body.style.height = prevBodyHeight;
+      html.classList.remove('standalone-active');
+      html.style.overflow = prevHtmlOverflow;
+      body.style.overflow = prevBodyOverflow;
+      body.style.height = prevBodyHeight;
     };
   }, []);
 }
