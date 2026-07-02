@@ -1,5 +1,4 @@
 import { Redis } from '@upstash/redis';
-import type { VercelRequest, VercelResponse } from '@vercel/node';
 
 interface Book {
   title: string;
@@ -21,7 +20,7 @@ const redis = new Redis({
   token: process.env.nuroctanesitestorage_KV_REST_API_TOKEN!,
 });
 
-export default async function handler(req: VercelRequest, res: VercelResponse) {
+export default async function handler(req: any, res: any) {
   res.setHeader('Content-Type', 'application/json');
 
   try {
