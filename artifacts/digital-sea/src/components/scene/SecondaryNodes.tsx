@@ -1,6 +1,7 @@
 import { useMemo, useRef, type MutableRefObject } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
+import { useLocation } from 'wouter';
 import * as THREE from 'three';
 import type { SecondaryMedia } from '../../data/secondaryNodes';
 
@@ -46,6 +47,7 @@ interface Props {
 
 export function SecondaryOrbit({ nodeId, media, centerRef, proximityRef }: Props) {
   const count  = media.length;
+  const [, setLocation] = useLocation();
 
   // Scale orbit radius so denser orbits don't crowd each other
   const orbitRadius = Math.max(BASE_RADIUS, 1.0 + count * 0.25);
@@ -105,7 +107,12 @@ export function SecondaryOrbit({ nodeId, media, centerRef, proximityRef }: Props
       g.quaternion.copy(_qFace);
 
       const w = wrapRefs.current[i];
-      if (w) w.style.opacity = String(opacity);
+      if (w) {
+        w.style.opacity = String(opacity);
+        if (items[i].link) {
+          w.style.pointerEvents = opacity > 0.4 ? 'auto' : 'none';
+        }
+      }
     }
   });
 
@@ -124,7 +131,17 @@ export function SecondaryOrbit({ nodeId, media, centerRef, proximityRef }: Props
                 className="secondary-card"
                 style={{ opacity: 0, pointerEvents: 'none', width: `${cardWidth}px` }}
               >
-                <img src={m.url} alt="" className="secondary-card-img" draggable={false} />
+                {m.link ? (
+                  <button
+                    className="secondary-card-link"
+                    onClick={(e) => { e.preventDefault(); setLocation(m.link!); }}
+                  >
+                    <span className="secondary-card-link-prefix">SYS://</span>
+                    <span className="secondary-card-link-label">{m.linkLabel}</span>
+                  </button>
+                ) : (
+                  <img src={m.url} alt="" className="secondary-card-img" draggable={false} />
+                )}
               </div>
             </Html>
           </group>

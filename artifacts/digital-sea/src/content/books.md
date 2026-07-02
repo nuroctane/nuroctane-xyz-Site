@@ -1,0 +1,602 @@
+# 📚 Kindle Wishlist (Author – Title)
+
+## A–G
+
+- [x] Adami, Christoph — The Evolution of Biological Information
+- [ ] Adler, Alfred — Understanding Human Nature
+- [ ] Akiba ben Joseph (attrib.) / Waite, A.E. (ed.) — The Book of Formation (Sefer Yetzirah)
+- [x] Aristotle — Nicomachean Ethics
+- [ ] Aristotle — Metaphysics
+- [ ] Aristotle — Politics
+- [ ] Aquinas, Thomas — Summa Theologica
+- [x] Augustine of Hippo — Confessions
+- [ ] Augustine — City of God
+- [x] Attia, Peter — Outlive
+- [ ] Backman, Fredrik — Beartown
+- [ ] Baid, Gautam — The Joys of Compounding
+- [ ] Barleti, Marin / de Lavardin, Jacques — The History of George Castriot, Surnamed Scanderbeg (trans. Zachary Jones, adapt. David Hosaflook)
+- [ ] Bastiat, Frédéric — The Law
+- [ ] Becker, Ernest — The Denial of Death
+- [ ] Becker, Robert O. — Cross Currents: The Perils of Electropollution, The Promise of Electromedicine
+- [ ] Becker, Robert O. / Selden, Gary — The Body Electric: Electromagnetism and the Foundation of Life
+- [ ] Berne, Eric, MD — A Layman's Guide to Psychiatry and Psychoanalysis
+- [ ] Berne, Eric, MD — Games People Play
+- [ ] Bernhard, Thomas — The Loser
+- [ ] Bevelin, Peter — Seeking Wisdom: From Darwin to Munger
+- [ ] Bevins, Vincent — The Jakarta Method: Washington's Anticommunist Crusade & The Mass Murder Program That Shaped Our World
+- [ ] Bly, Robert — Iron John: A Book About Men
+- [ ] Boethius — Consolation of Philosophy
+- [x] Bogle, John — Common Sense on Mutual Funds
+- [x] Bogle, John — John Bogle on Investing
+- [x] Bogle, John — Stay the Course
+- [x] Bogle, John — The Battle for the Soul of Capitalism
+- [x] Bogle, John — The Little Book of Common Sense Investing
+- [ ] Bolaño, Roberto — 2666
+- [ ] Borges, Jorge Luis — Ficciones
+- [ ] Borges, Jorge Luis — The Aleph
+- [ ] Bostrom, Nick — Superintelligence: Paths, Dangers, Strategies
+- [ ] Brands, H.W. — Woodrow Wilson
+- [ ] Breggin, Peter / Breggin, Ginger — COVID-19 and the Global Predators
+- [ ] Brontë, Emily — Wuthering Heights
+- [ ] Bronson, Po — Bombardiers
+- [ ] Broithuup, Jim / Bell, John — Physics in Context for Cambridge International AS & A Level
+- [ ] Brown, Brandon R. — Planck: Driven by Vision, Broken by War
+- [x] Brown, E. William — Fimbulwinter (Daniel Black #1)
+- [ ] Bulgakov, Mikhail — The Master and Margarita
+- [ ] Burgess, Anthony — A Clockwork Orange
+- [ ] Burner, David — Herbert Hoover: A Public Life
+- [ ] Butcher, Jim — Furies of Calderon
+- [ ] Butterfield, L.H. / Garrett, Wendell D. (eds.) — The Adams Papers: Diary and Autobiography of John Adams
+- [ ] Byrne, Rhonda — The Magic
+- [ ] Camus, Albert — The Stranger
+- [ ] Castaneda, Carlos — The Fire from Within
+- [x] Castro, Julio — The Hearth Book
+- [ ] Céline, Louis-Ferdinand — Journey to the End of the Night
+- [ ] Cervantes, Miguel de — Don Quixote
+- [ ] Chambers, Shawn P. — Web 3.0: The Future of Decentralized Technology
+- [x] Chancellor, Edward — The Price of Time
+- [ ] Chaucer, Geoffrey — The Canterbury Tales
+- [ ] Cherniak, Christopher — Minimal Rationality
+- [ ] Cialdini, Robert — Influence: The Psychology of Persuasion
+- [ ] Cioran, E.M. — The Trouble with Being Born
+- [ ] Clark, Ronald W. — Einstein: The Life and Times
+- [ ] Cloud, Henry / Townsend, John — Boundaries
+- [x] Coggins, Colin / Brown, Garrett — The Unsold Mindset
+- [ ] Conrad, Joseph — Heart of Darkness
+- [x] Corbin, Henry — Spiritual Body & Celestial Earth
+- [ ] Cunningham, Lawrence A. — Quality Shareholders: How the Best Managers Attract and Keep Them
+- [ ] Cunningham, Lawrence A. / Eide, Torkell T. / Hargreaves, Patrick — Quality Investing
+- [ ] Cushing, Harvey — The Life of Sir William Osler (2-vol.)
+- [x] Danielewski, Mark Z. — House of Leaves
+- [ ] Dante Alighieri — The Divine Comedy
+- [ ] Davis, Devra — Disconnect: The Truth About Cell Phone Radiation
+- [ ] Dazai, Osamu — No Longer Human
+- [ ] de Charny, Geoffroi — A Knight's Own Book of Chivalry
+- [x] Deida, David — The Way of the Superior Man
+- [ ] DeLillo, Don — Mao II
+- [ ] DeWitt, Helen / Gridneff, Ilya — Your Name Here
+- [ ] Diamond, Jared — Guns, Germs & Steel
+- [ ] Dick, Philip K. — Do Androids Dream of Electric Sheep?
+- [ ] Dick, Philip K. — Ubik
+- [ ] Dillian, Jared — Those Bastards
+- [x] Dispenza, Joe — Becoming Supernatural: How Common People Are Doing the Uncommon
+- [ ] Ditlevsen, Tove — Childhood, Youth, Dependency
+- [x] Dobelli, Rolf — The Art of Thinking Clearly
+- [ ] Doe, John Henry — Cracking the Code (3rd Ed.)
+- [ ] Dorsey, Pat — The Five Rules for Successful Stock Investing: Morningstar's Guide to Building Wealth and Winning in the Market
+- [x] Dostoevsky, Fyodor — The Brothers Karamazov _(Complete Works owned)_
+- [x] Dostoevsky, Fyodor — Crime and Punishment _(Complete Works owned)_
+- [x] Dostoevsky, Fyodor — Demons _(Complete Works owned)_
+- [x] Dostoevsky, Fyodor — Notes from Underground _(Complete Works owned)_
+- [x] Dostoevsky, Fyodor — The Idiot _(Complete Works owned)_
+- [ ] Duhigg, Charles — The Power of Habit
+- [ ] Dumas, Alexandre — The Count of Monte Cristo
+- [ ] Easter, Michael — The Comfort Crisis
+- [ ] Eco, Umberto — The Name of the Rose
+- [ ] Ellis, Bret Easton — American Psycho
+- [ ] Estés, Clarissa Pinkola, Ph.D. — Women Who Run With the Wolves: Myths and Stories of the Wild Woman Archetype
+- [ ] Evans, Richard J. — The Coming of the Third Reich
+- [ ] Evola, Julius — Eros and the Mysteries of Love: The Metaphysics of Sex
+- [ ] Evola, Julius (and the Ur Group) — Introduction to Magic, Vol. I: Rituals and Practical Techniques for the Magus
+- [ ] Eybl, Björn — The Psychic Roots of Disease (Five Biological Laws of Nature)
+- [x] Faulkner, William — As I Lay Dying
+- [ ] Faulkner, William — The Sound and the Fury
+- [x] Feynman, Richard P. — The Pleasure of Finding Things Out
+- [ ] Field, Alexander J. — The Economic Consequences of U.S. Mobilization for the Second World War
+- [x] Fitch, Thomas P. — Dictionary of Banking Terms
+- [ ] Fitzgerald, F. Scott — The Great Gatsby
+- [ ] Fleming, Ian — Casino Royale / Live and Let Die / Moonraker (Penguin omnibus)
+- [ ] Fleming, Thomas — The Man from Monticello: An Intimate Life of Thomas Jefferson
+- [ ] Foster, Mark S. — Henry J. Kaiser: Builder in the Modern American West
+- [ ] Frankl, Viktor E. — Man's Search for Meaning
+- [ ] Freeman-Shor, Lee — The Art of Execution
+- [ ] Fromm, Erich — Escape from Freedom
+- [ ] Fromm, Erich — The Art of Loving
+- [ ] Fuller, J.F.C. — The Generalship of Alexander the Great
+- [ ] Gaddam, Sai / Ogas, Ogi — A Billion Wicked Thoughts
+- [ ] Gall, John — Systemantics: How Systems Work and Especially How They Fail
+- [ ] Gillette, Douglas / Moore, Robert — King, Warrior, Magician, Lover
+- [ ] Gillingham, John — Richard the Lionheart
+- [ ] Gilbert, Daniel — Stumbling on Happiness
+- [ ] The Epic of Gilgamesh (anon.)
+- [x] Gitomer, Jeffrey — The Little Red Book of Selling
+- [ ] Gitomer, Jeffrey — Little Green Book of Getting Your Way
+- [ ] Gladstein, Alex — Hidden Repression: How the IMF and World Bank Sell Exploitation as Development
+- [ ] Gladstone, Max / El-Mohtar, Amal — This Is How You Lose the Time War
+- [ ] Gladwell, Malcolm — David & Goliath
+- [ ] Goddard, Neville — The Game of Life
+- [ ] Goethe, Johann Wolfgang von — Faust
+- [ ] Goethe, Johann Wolfgang von — The Sorrows of Young Werther
+- [ ] Gogol, Nikolai — Dead Souls
+- [ ] Goleman, Daniel — Emotional Intelligence
+- [ ] Gombrich, E.H. — The Story of Art
+- [ ] Gracián, Baltasar — The Art of Worldly Wisdom (trans. Joseph Jacobs)
+- [ ] Gautier, Léon — Chivalry: The Everyday Life of the Medieval Knight
+- [ ] Greenblatt, Joel — The Big Secret for the Small Investor
+- [ ] Greene, Morgan / Housel — (see Housel, Morgan — The Psychology of Money)
+- [ ] Greene, Robert — The Laws of Human Nature
+- [ ] Green, William — Richer, Wiser, Happier
+
+## H–R
+
+- [ ] Hamming, Richard W. — The Art of Doing Science and Engineering: Learning to Learn
+- [ ] Hamsun, Knut — Hunger
+- [ ] Hari, Johann — Lost Connections
+- [ ] Hari, Johann — Stolen Focus
+- [ ] Harvey, Campbell R. / Ramachandran, Ashwin / Santoro, Joey — DeFi and the Future of Finance
+- [ ] Hašek, Jaroslav — The Good Soldier Švejk
+- [x] Hawkins, David R. — Power vs. Force
+- [ ] Hawkins, David R. — Letting Go: The Pathway of Surrender
+- [x] Hawkins, Jeff — A Thousand Brains
+- [ ] Heaney, Seamus (trans.) — Beowulf
+- [ ] Heckenlively, Kent / Mikovits, Judy / Ruscetti, Frank — Ending Plague
+- [ ] Hegel, G.W.F. — Phenomenology of Spirit
+- [ ] Heidegger, Martin — Being and Time
+- [ ] Heinlein, Robert — The Moon is a Harsh Mistress
+- [ ] Heller, Joseph — Catch-22
+- [ ] Hemingway, Ernest — The Old Man and the Sea
+- [x] Herbert, Frank — Dune
+- [ ] Herodotus — The Histories
+- [ ] Hersh, Seymour — Chain of Command
+- [ ] Hesse, Hermann — Siddhartha
+- [ ] Heuer, Richards J. — Psychology of Intelligence Analysis
+- [ ] Hill, Napoleon — Outwitting the Devil
+- [ ] Hill, Napoleon — Think and Grow Rich
+- [ ] Hobart, Byrne / Huber, Tobias — Boom: Bubbles and the End of Stagnation
+- [ ] Hobb, Robin — The Assassin's Apprentice
+- [ ] Hobsbawm, Eric — The Age of Revolution: 1789–1848
+- [ ] Hodgson, Antonia — The Raven Scholar
+- [ ] Hoff, Benjamin — The Tao of Pooh
+- [ ] Hoffer, Eric — The True Believer: Thoughts on the Nature of Mass Movements
+- [ ] Hollins, Peter — The Science of Rapid Skill Acquisition: Advanced Methods to Learn, Remember, and Master New Skills and Information
+- [ ] The Holy Bible
+- [x] Homer — The Iliad _(multiple trans. owned)_
+- [x] Homer — The Odyssey _(multiple trans. owned)_
+- [ ] Hooker, Brian / Kennedy, Robert F. Jr. — Vax-Unvax
+- [ ] Hopkins, Gerard Manley — Poems and Prose
+- [ ] Hoover, Herbert (see Burner, David — Herbert Hoover: A Public Life)
+- [ ] Housel, Morgan — The Psychology of Money
+- [ ] Howe, Elisabeth A. — Close Reading: An Introduction to Literature
+- [ ] Hugo, Victor — Les Misérables
+- [ ] Humphries, Suzanne / Bystrianyk, Roman — Dissolving Illusions
+- [ ] Hutchen — A Course of Instruction in Personal Magnetism
+- [ ] Huxley, Aldous — Brave New World
+- [ ] Ibrahim, Raymond — Defenders of the West
+- [ ] Ibrahim, Raymond — Sword and Scimitar
+- [x] Iceberg Slim — Pimp
+- [ ] James, C.L.R. — The Black Jacobins: Toussaint L'Ouverture and the San Domingo Revolution
+- [ ] Joyce, James — A Portrait of the Artist as a Young Man
+- [ ] Joyce, James — Dubliners
+- [ ] Joyce, James — Finnegans Wake
+- [ ] Joyce, James — Ulysses
+- [ ] Jünger, Ernst — Storm of Steel
+- [ ] Kafka, Franz — The Metamorphosis
+- [ ] Kafka, Franz — The Castle
+- [ ] Kafka, Franz — The Trial
+- [ ] Kang, Han — Human Acts
+- [ ] Kang, Han — We Do Not Part
+- [ ] Kant, Immanuel — Critique of Pure Reason
+- [ ] Karp, Alexander C. / Zamiska, Nicholas W. — The Technological Republic
+- [ ] Kaufman, Scott Barry, Ph.D. — Transcend: The New Science of Self-Actualization
+- [ ] Kaczynski, Theodore — Industrial Society and Its Future
+- [ ] Keen, Sam — Fire in the Belly
+- [ ] Kennedy, Robert F. Jr. — The Real Anthony Fauci
+- [ ] Kirkwood, Jesse (trans.) — Sympathy Tower Tokyo (Rie Qudan)
+- [ ] Kishimi, Ichiro / Koga, Fumitake — The Courage to Be Disliked
+- [ ] Kishtainy, Niall — A Little History of Economics
+- [ ] Krass, Peter — Carnegie
+- [ ] Krasznahorkai, László — War and War
+- [ ] Laozi — Dao De Jing
+- [ ] Leader, Zachary — Ellmann's Joyce: The Biography of a Masterpiece and Its Maker
+- [ ] Leake, Jonathan / McCullough, Peter — The Courage to Face Covid-19
+- [ ] Lee, Kai-Fu — AI Superpowers: China, Silicon Valley, and the New World Order
+- [ ] Lefèvre, Edwin — Reminiscences of a Stock Operator
+- [ ] Lewis, C.S. — Present Concerns
+- [ ] LeGuin, Ursula K. — The Left Hand of Darkness
+- [ ] Long, Frank Belknap — The Love Slave and the Scientists (aka The Body-Masters)
+- [ ] Lowell, Nathan — Quarter Share
+- [ ] Luo Guanzhong — Romance of the Three Kingdoms
+- [ ] Lyons, Eugene — David Sarnoff
+- [ ] Machiavelli, Niccolò — The Prince
+- [ ] Malm, Andreas — Fossil Capital: The Rise of Steam Power and the Roots of Global Warming
+- [ ] Manchester, William / Reid, Paul — The Last Lion: Winston Spencer Churchill, Defender of the Realm 1940–1965
+- [ ] Mann, Charles C. — The Wizard and the Prophet: Two Remarkable Scientists and Their Dueling Visions to Shape Tomorrow's World
+- [ ] Mann, Thomas — The Magic Mountain
+- [x] Marcus Aurelius — Meditations
+- [ ] Marino, Andrew — Going Somewhere: Truth About a Life in Science
+- [ ] Márquez, Gabriel García — One Hundred Years of Solitude
+- [x] Martin, George R.R. — A Game of Thrones
+- [ ] Mayer, Christopher — 100-Baggers
+- [ ] McCaffrey, Anne — Dragonflight
+- [ ] McCarthy, Cormac — Blood Meridian
+- [ ] McCarthy, Cormac — The Border Trilogy
+- [ ] McCormack, Mark H. — What They Don't Teach You at Harvard Business School
+- [ ] McCormack, Mark H. — What They Don't Teach You at Leverage Research: Advanced Sociopathy for Autistic Go-Getters _(parody/meme cover)_
+- [ ] McTaggart, Lynne — The Field
+- [ ] Melville, Herman — Moby-Dick
+- [ ] Mercola, Joseph — EMF*D: 5G, Wi-Fi & Cell Phones
+- [ ] Milham, Samuel — Dirty Electricity: Electrification and the Diseases of Civilization
+- [ ] Miller, Chris — Chip War: The Fight for the World's Most Critical Technology
+- [ ] Miller Jr., Walter M. — A Canticle for Leibowitz
+- [ ] Milton, John — Paradise Lost
+- [ ] Mishima, Yukio — The Sailor Who Fell from Grace with the Sea
+- [ ] Mishima, Yukio — Spring Snow
+- [ ] Montaigne, Michel de — Essays
+- [ ] Moore, Robert / Gillette, Douglas — King Warrior Magician Lover
+- [ ] Morgan, Edmund S. — Benjamin Franklin
+- [ ] Morgan, Edmund S. (ed.) — Not Your Usual Founding Father: Selected Readings from Benjamin Franklin
+- [ ] Moskowitz, Richard — Vaccines: A Reappraisal
+- [ ] Nabokov, Vladimir — Lolita
+- [ ] Nesse, Randolph M. — Good Reasons for Bad Feelings
+- [ ] Neufeld, Gordon, Dr. / Maté, Gabor — Hold On to Your Kids
+- [ ] Nevins, Allan — A Study in Power: John D. Rockefeller (2-vol.)
+- [ ] Nicholson, Helen J. — Chronicle of the Third Crusade
+- [x] Nietzsche, Friedrich — Thus Spoke Zarathustra _(Complete Works owned)_
+- [ ] Nitschke, Günter — Japanese Gardens
+- [ ] Norman, Don — The Design of Everyday Things
+- [ ] Norton Anthology of English Literature (ed.) — The Norton Anthology of English Literature
+- [ ] Ogas, Ogi / Gaddam, Sai — A Billion Wicked Thoughts
+- [x] Orwell, George — 1984
+- [x] Orwell, George — Animal Farm
+- [ ] Ovid — Metamorphoses
+- [x] Paolini, Christopher — Fractal Noise
+- [ ] Pater, Walter — Studies in the History of the Renaissance
+- [ ] Peat, Ray, PhD — Generative Energy: Restoring the Wholeness of Life
+- [ ] Peat, Ray — Nutrition for Women
+- [ ] Pelson, Jonathan — Wireless Wars
+- [ ] Peters, Tom / Waterman Jr., Robert H. — In Search of Excellence
+- [ ] Pieper, Josef — faith hope love
+- [ ] Pieper, Josef — On the Virtues of the Human Heart
+- [ ] Pieper, Josef — The Four Cardinal Virtues
+- [ ] Pirsig, Robert M. — Zen and the Art of Motorcycle Maintenance
+- [ ] Plato — The Apology
+- [ ] Plato — The Republic
+- [ ] Plato — Parmenides
+- [ ] Plato — Dialogues
+- [ ] Plutarch — Lives, Vols. I–XI (Loeb Classical Library, trans. Bernadotte Perrin)
+- [ ] Proust, Marcel — In Search of Lost Time
+- [ ] Pusey, Merlo J. — Eugene Meyer
+- [ ] Pynchon, Thomas — Gravity's Rainbow
+- [ ] Rajaniemi, Hannu — The Quantum Thief
+- [ ] Regardie, I. / Wilson, R.A. — Prometheus Rising
+- [ ] Roper / Kramer, Michael / Roberts, Sam — "I Never Wanted To Be Vice-President of Anything": Nelson Rockefeller
+- [ ] Rothfuss, Patrick — The Name of the Wind
+- [ ] Ruocchio, Christopher — Shadows Upon Time
+- [x] Rubin, Rick — The Creative Act: A Way of Being
+- [ ] Ruiz, Don Miguel — The Four Agreements
+- [ ] Ruscetti, Frank / Mikovits, Judy / Heckenlively, Kent — Ending Plague
+- [ ] Rutherford, Albert — Mathematical Thinking – For People Who Hate Math
+
+## S–Z
+
+- [ ] Salinger, J.D. — The Catcher in the Rye
+- [ ] Sarno, John E. — Healing Back Pain: The Mind-Body Connection
+- [ ] Schopenhauer, Arthur — The World as Will and Representation
+- [x] Schucman, Helen / Thetford, William T. (Eds.) — A Course in Miracles
+- [x] Schwartz, David — The Magic of Thinking Big
+- [ ] Seidman, William — Where the Money Is
+- [ ] Seilern, Peter — Only the Best Will Do
+- [ ] Shakespeare, William — The Complete Works of William Shakespeare
+- [ ] Shakespeare, William — The First Folio
+- [ ] Shannon, Claude E. / Weaver, Warren — The Mathematical Theory of Communication
+- [ ] Shelley, Mary — Frankenstein
+- [ ] Shlaes, Amity — Coolidge
+- [ ] Singer, Michael — The Surrender Experiment
+- [ ] Smith, Terry — Investing for Growth
+- [ ] Sophocles — Tragedies
+- [ ] Spier, Guy — The Education of a Value Investor
+- [ ] Stark, Rodney — God's Battalions
+- [ ] Steinbeck, John — East of Eden
+- [ ] Stephens, L.L. — The Walled City (The Triempery Revelations, Book I)
+- [ ] Stephens, L.L. — The God Spear (The Triempery Revelations, Book IV)
+- [ ] Stroumsa, Guy G. / Shulman, David (eds.) — Dream Cultures: Explorations in the Comparative History of Dreaming
+- [x] Stross, Charles — Accelerando
+- [ ] Strunk Jr., William / White, E.B. — The Elements of Style
+- [ ] Tacitus — The Annals of Imperial Rome
+- [ ] Tacey, David — Jung and Spirituality
+- [ ] Tamer, Tamryn — Herald of Shalia
+- [ ] Tan, Lisa JY — Economics and Math of Token Engineering and DeFi
+- [ ] Tennant, Jerry — Healing is Voltage
+- [ ] Thiel, Peter — Zero to One
+- [ ] Thompson, J.E. — Calculus for the Practical Man
+- [ ] Todes, Daniel P. — Ivan Pavlov: A Russian Life in Science
+- [ ] Tolkien, J.R.R. — The Fellowship of the Ring
+- [ ] Tolkien, J.R.R. — The Two Towers
+- [ ] Tolkien, J.R.R. — The Return of the King
+- [ ] Tolkien, J.R.R. — The Hobbit
+- [ ] Tolkien, J.R.R. (trans.) — Sir Gawain and the Green Knight
+- [ ] Tolstoy, Leo — Anna Karenina
+- [ ] Tolstoy, Leo — The Death of Ivan Ilyich
+- [ ] Tolstoy, Leo — War and Peace
+- [ ] Toole, John Kennedy — A Confederacy of Dunces
+- [ ] Trueman, Richard E. — An Introduction to Quantitative Methods for Decision Making
+- [ ] Turtles All the Way Down (anon.) — Vaccine Science and Myth
+- [ ] Versluis, Arthur — Alchemical Lightwork: A Guide to Creating Cultures of Light and Spiritual Awakening
+- [ ] Virgil — The Aeneid
+- [ ] Von Mises, Ludwig — Economic Policy: Thoughts for Today and Tomorrow
+- [ ] Von Neumann, John / Morgenstern, Oskar — Theory of Games and Economic Behavior
+- [ ] Vonderplanitz, Aajonus — We Want to Live
+- [ ] Vonnegut, Kurt — Breakfast of Champions
+- [ ] Vonnegut, Kurt — Cat's Cradle
+- [ ] Vonnegut, Kurt — Player Piano
+- [ ] Vonnegut, Kurt — Slaughterhouse-Five
+- [ ] Wagner, Richard — The Ring of the Nibelung
+- [ ] Wahhab, Muhammad ibn Abd al- — Kitab At-Tauhid: The Book of Monotheism
+- [ ] Wallace, David Foster — Infinite Jest
+- [ ] Warlick, M.E. — The Alchemical Feminine: Women, Gender, and Sexuality in Alchemical Images
+- [ ] Washington, Lawrence C. — Elliptic Curves: Number Theory and Cryptography
+- [ ] Weber, Isabella M. — How China Escaped Shock Therapy: The Market Reform Debate
+- [ ] Weir, Andy — Project Hail Mary
+- [ ] Weston, Anthony — A Rulebook for Arguments
+- [ ] Wiener, Norbert — The Human Use of Human Beings: Cybernetics and Society
+- [ ] Wilde, Oscar — The Picture of Dorian Gray
+- [ ] Williams, John — Stoner
+- [ ] Williams, Larry R. — How I Made One Million Dollars Last Year Trading Commodities
+- [ ] Wolfe, Gene — The Book of the New Sun
+- [ ] Wolfe, Gene — The Shadow of the Torturer
+- [ ] Wright, Esmond — Franklin of Philadelphia
+- [ ] Wright, Robert — The Moral Animal
+- [ ] Wurts, Janny — The Curse of the Mistwraith
+- [ ] Wurts, Janny — Song of the Mysteries
+- [ ] Xenophon — Anabasis
+- [ ] Yeats, W.B. — Poems
+- [ ] Zakaria, Anam — 1971: A People's History from Bangladesh, Pakistan and India
+- [x] Zeland, Vadim — Reality Transurfing
+- [ ] Zozanian — Lotteryland
+
+## Fantasy/Sci-Fi Cluster
+
+- [ ] Stephens, L.L. — Sordaneon (The Tapestry Revelations Book 1)
+- [ ] Bayen, L.N. — The Wingspan of Treason (The Stormsinger Chain)
+- [ ] West, Michelle — The Hidden City (The House War)
+- [ ] Wolf, Deborah A. — The Dragon's Legacy
+- [ ] Elliot, Livia J. — The Genesis of Change (Records of the Orders prequel novella)
+
+## Foreign/Literary Fiction
+
+- [ ] Cărtărescu, Mircea — Blinding (trans. Sean Cotter)
+- [ ] Tanizaki, Jun'ichirō — The Makioka Sisters
+
+## Esoteric / Hermetic / Occult Reading List
+
+- [ ] Trismegistus, Hermes — Corpus Hermeticum
+- [ ] Norton, David (ed.) — The New Cambridge Paragraph Bible
+- [ ] Plato — Complete Works
+- [ ] Plotinus — The Enneads
+- [ ] Meyer, Marvin (ed.) — Nag Hammadi Scriptures
+- [ ] Majercik, Ruth — The Chaldean Oracles
+- [ ] (anon.) — Holy Qur'an
+- [ ] Lingpa, Karma — Tibetan Book of the Dead
+- [ ] Shankara, Adi (trans.) — Upanishads
+- [ ] Horne, Charles F. — Avesta (Zend-Avesta or Persian Holy Scripture)
+- [ ] (Ghayat al-Hakim) — Picatrix
+- [ ] Mathers, S.L. MacGregor (trans.) — The Key of Solomon the King
+- [ ] (anon.) — The Zohar
+- [ ] Pico della Mirandola, Giovanni — Oration on the Dignity of Man
+- [ ] Rosenkreutz, Christian — The Chymical Wedding of Christian Rosenkreutz
+- [ ] Agrippa, Heinrich Cornelius — Three Books of Occult Philosophy
+- [ ] Rumi — Selected Poems
+- [ ] Attar, Farid Ud-Din — The Conference of the Birds
+- [ ] Jung, C.G. — Psychology and Alchemy
+- [ ] Hall, Manly Palmer — The Secret Teachings of All Ages
+- [ ] Hall, Manly Palmer — Lectures on Ancient Philosophy
+- [ ] Roob, Alexander — Alchemy and Mysticism
+- [ ] Yates, Frances — Giordano Bruno and the Hermetic Tradition
+- [ ] Yates, Frances — The Rosicrucian Enlightenment
+- [ ] French, Peter — John Dee: The World of an Elizabethan Magus
+- [ ] McKenna, Terence — Food of the Gods
+- [ ] McKenna, Terence — True Hallucinations
+- [ ] Ashmole, Elias — Theatrum Chemicum Brittannicum
+- [ ] Cicero, Chic / Cicero, Sandra Tabatha — Self-Initiation into the Golden Dawn Tradition
+
+## Lifestyle / Misc / Lists
+
+- [ ] d'Avila-Latourrette, Brother Victor-Antoine — Twelve Months of Monastery Soups: International Favorites
+- [ ] Updegraff, Robert R. — Obvious Adams
+- [ ] (vintageofantasy / anon.) — How to Fit into Society When You're an Alien from an Alternate Universe: A Guide for Aquarius
+- [ ] Lang, Andrew — The Pink Fairy Book
+- [ ] Lang, Andrew — The Crimson Fairy Book
+- [ ] Lang, Andrew — The Red Fairy Book
+- [ ] Lang, Andrew — The Orange Fairy Book
+- [ ] Lang, Andrew — The Yellow Fairy Book
+- [ ] Lang, Andrew — The Olive Fairy Book
+- [ ] Lang, Andrew — The Green Fairy Book
+- [ ] Lang, Andrew — The Blue Fairy Book
+- [ ] Lang, Andrew — The Violet Fairy Book
+- [ ] Lang, Andrew — The Lilac Fairy Book
+- [ ] Lang, Andrew — The Grey Fairy Book
+- [ ] Lang, Andrew — The Brown Fairy Book
+- [ ] Schwartz, Susan E. — The Absent Father Effect on Daughters: Father Desire, Father Wounds
+- [ ] Ng, G. — The 38 Letters from J.D. Rockefeller to His Son
+- [ ] Tolkien, J.R.R. — Beowulf: A Translation and Commentary (together with Sellic Spell; ed. Christopher Tolkien)
+- [ ] Hollins, Peter — The Science of Rapid Skill Acquisition
+
+## Money/Business/Self-Help Stack (background photo)
+
+- [ ] Housel, Morgan — The Psychology of Money _(spine: "The Money")_
+- [ ] Clarey, Christopher — The Master
+- [ ] Collins, Jim — The Simple Path _(partial)_
+- [ ] Kiyosaki, Robert T. — Rich Dad Poor Dad
+- [ ] Elker, T. Harv — Secrets of the Millionaire Mind
+- [ ] Carnegie, Dale — How to Win Friends & Influence People
+- [ ] Lewis, Reginald F. / Walker, Blair S. — "Why Should White Guys Have All the Fun?" How Reginald Lewis Created a Billion-Dollar Business Empire
+- [ ] Ellis, Bret Easton — American Psycho _(spine visible, duplicate)_
+- [ ] Fanon, Frantz — The Wretched of the Earth
+- [ ] Coll, Steve — Private Empire
+- [ ] Clear, James — Atomic Habits _(spine: "Tomic Habits" visible)_
+- [ ] (anon.) — The New Jim Crow
+- [ ] (Matthew) — The Dream Manager _(partial)_
+- [ ] Ross, Rick — The Perfect Day _(partial spine)_
+
+## Psychology / Self-Development Stack (photo)
+
+- [ ] Estés, Clarissa Pinkola — Women Who Run With the Wolves
+- [ ] Camus, Albert — The Myth of Sisyphus
+- [ ] Frankl, Viktor E. — Man's Search for Meaning
+- [ ] Hoffer, Eric — The True Believer: Thoughts on the Nature of Mass Movements
+- [ ] Maté, Gabor — In the Realm of Hungry Ghosts
+- [ ] Hari, Johann — Lost Connections
+- [ ] Kishimi, Ichiro / Koga, Fumitake — The Courage to Be Disliked
+- [ ] Berne, Eric, M.D. — Games People Play
+- [ ] Nesse, Randolph M. — Good Reasons for Bad Feelings
+- [ ] Bly, Robert — Iron John
+- [ ] Maté, Gabor — Scattered Minds
+- [ ] Maté, Gabor — When the Body Says No
+- [ ] Neufeld, Gordon, Dr. / Maté, Gabor — Hold On to Your Kids
+- [ ] Ogas, Ogi / Gaddam, Sai — A Billion Wicked Thoughts
+- [ ] Gilbert, Daniel — Stumbling on Happiness
+- [ ] Csikszentmihalyi, Mihaly — Flow: The Psychology of Optimal Experience
+- [ ] Cialdini, Robert B., Ph.D. — Influence: The Psychology of Persuasion
+- [ ] Wright, Robert — The Moral Animal
+- [ ] Fromm, Erich — Escape from Freedom
+- [ ] Carr, Nicholas — The Shallows
+- [ ] Kaufman, Scott Barry, Ph.D. — Transcend: The New Science of Self-Actualization
+- [ ] Cloud, Henry / Townsend, John — Boundaries
+- [ ] Becker, Ernest — The Denial of Death
+- [ ] Adler, Alfred — Understanding Human Nature
+- [ ] Peterson, Jordan B. — 12 Rules for Life
+- [ ] Keen, Sam — Fire in the Belly
+- [ ] Fromm, Erich — The Art of Loving
+- [ ] Peterson, Jordan B. — Maps of Meaning: The Architecture of Belief
+- [ ] Blanton, Brad, Ph.D. — Radical Honesty
+- [ ] Heuer, Richards J. — Psychology of Intelligence Analysis
+- [ ] Moore, Robert / Gillette, Douglas — King Warrior Magician Lover
+- [ ] Hari, Johann — Stolen Focus
+- [ ] Greene, Robert — The Laws of Human Nature
+- [ ] (unnamed author) — Reading People
+
+## Medieval / Chivalry Stack (photo)
+
+- [ ] Pieper, Josef — On the Virtues of the Human Heart
+- [ ] (anon., trans.) — The Song of the Cid: A Dual-Language Edition with Parallel Text
+- [ ] Pieper, Josef — The Four Cardinal Virtues
+- [ ] Pieper, Josef — faith hope love
+- [ ] Llull, Ramon — Ramon Lull's Book of Knighthood & Chivalry
+- [ ] Gillingham, John — Richard the Lionheart
+- [ ] Gautier, Léon — Chivalry: The Everyday Life of the Medieval Knight
+- [ ] (anon.) — The History of William Marshal
+- [ ] Nicholson, Helen J. — Chronicle of the Third Crusade
+- [ ] Barleti, Marin / de Lavardin, Jacques — The History of George Castriot, Surnamed Scanderbeg
+
+## Investing Stack (photo)
+
+- [ ] Dorsey, Pat — The Five Rules for Successful Stock Investing: Morningstar's Guide to Building Wealth and Winning in the Market
+- [ ] Mayer, Christopher — 100-Baggers
+- [ ] Freeman-Shor, Lee — The Art of Execution
+- [ ] Cunningham, Lawrence A. — Quality Shareholders: How the Best Managers Attract and Keep Them
+- [ ] Greenblatt, Joel — The Big Secret for the Small Investor
+- [ ] Oakley, Phil — How to Pick Quality Shares
+- [ ] Seilern, Peter — Only the Best Will Do
+- [ ] Green, William — Richer, Wiser, Happier
+- [ ] Cunningham, Lawrence A. / Eide, Torkell T. / Hargreaves, Patrick — Quality Investing
+- [ ] Baid, Gautam — The Joys of Compounding
+- [ ] Smith, Terry — Investing for Growth
+- [ ] Housel, Morgan — The Psychology of Money
+- [ ] Spier, Guy — The Education of a Value Investor
+- [ ] Peters, Tom / Waterman Jr., Robert H. — In Search of Excellence
+
+## Historical Figures / Biography Collage
+
+- [ ] Burner, David — Herbert Hoover: A Public Life
+- [ ] Brown, Brandon R. — Planck: Driven by Vision, Broken by War
+- [ ] Kramer, Michael / Roberts, Sam — "I Never Wanted To Be Vice-President of Anything": Nelson Rockefeller
+- [ ] Clark, Ronald W. — Einstein: The Life and Times
+- [ ] Lyons, Eugene — David Sarnoff
+- [ ] Cushing, Harvey — The Life of Sir William Osler (2-vol.)
+- [ ] Butterfield, L.H. / Garrett, Wendell D. (eds.) — The Adams Papers: Diary and Autobiography of John Adams
+- [ ] Wright, Esmond — Franklin of Philadelphia
+- [ ] Pusey, Merlo J. — Eugene Meyer
+- [ ] Manchester, William / Reid, Paul — The Last Lion: Winston Spencer Churchill, Defender of the Realm 1940–1965
+- [ ] Van Doren, Carl — Benjamin Franklin, Volume 1
+- [ ] Brands, H.W. — Woodrow Wilson
+- [ ] Fleming, Thomas — The Man from Monticello: An Intimate Life of Thomas Jefferson
+- [ ] Bevelin, Peter — Seeking Wisdom: From Darwin to Munger
+- [ ] Morgan, Edmund S. — Benjamin Franklin
+- [ ] Shlaes, Amity — Coolidge
+- [ ] Todes, Daniel P. — Ivan Pavlov: A Russian Life in Science
+- [ ] Scholar Select (ed.) — The Story-Life of Lincoln
+- [ ] Mann, Charles C. — The Wizard and the Prophet: Two Remarkable Scientists and Their Dueling Visions to Shape Tomorrow's World
+- [ ] Plate, Tom — Giants of Asia: Conversations with Lee Kuan Yew — Citizen Singapore: How to Build a Nation
+- [ ] Morgan, Edmund S. (ed.) — Not Your Usual Founding Father: Selected Readings from Benjamin Franklin
+- [ ] Foster, Mark S. — Henry J. Kaiser: Builder in the Modern American West
+- [ ] Krass, Peter — Carnegie
+- [ ] Basler, Roy P. (ed.) — The Collected Works of Abraham Lincoln (multi-volume set)
+
+## History/Politics Collage
+
+- [ ] Evans, Richard J. — The Coming of the Third Reich
+- [ ] Nguyen, Lien-Hang T. — Hanoi's War: An International History of the War for Peace in Vietnam
+- [ ] James, C.L.R. — The Black Jacobins: Toussaint L'Ouverture and the San Domingo Revolution
+- [ ] Field, Alexander J. — The Economic Consequences of U.S. Mobilization for the Second World War
+- [ ] Zakaria, Anam — 1971: A People's History from Bangladesh, Pakistan and India
+- [ ] Bevins, Vincent — The Jakarta Method: Washington's Anticommunist Crusade & The Mass Murder Program That Shaped Our World
+- [ ] Hobsbawm, Eric — The Age of Revolution: 1789–1848
+- [ ] Malm, Andreas — Fossil Capital: The Rise of Steam Power and the Roots of Global Warming
+- [ ] Weber, Isabella M. — How China Escaped Shock Therapy: The Market Reform Debate
+
+## Sci-Fi/Fantasy Rating Grid
+
+- [ ] Stephens, L.L. — The Walled City (The Triempery Revelations, Book I)
+- [ ] Wurts, Janny — The Curse of the Mistwraith
+- [ ] Stephens, L.L. — The God Spear (The Triempery Revelations, Book IV)
+- [ ] Dostoevsky, Fyodor — The Brothers Karamazov (Penguin Classics ed.)
+- [ ] Ruocchio, Christopher — Shadows Upon Time
+- [ ] LeGuin, Ursula K. — The Left Hand of Darkness
+- [ ] Rajaniemi, Hannu — The Quantum Thief
+- [ ] Dick, Philip K. — Ubik
+- [ ] McCaffrey, Anne — Dragonflight
+
+## StoryGraph "2024 5★ Reads" Screenshot
+
+- [ ] Huang, Ana — Twisted Games (Twisted Book Two)
+- [ ] Huang, Ana — Twisted Lies (Twisted Book Four)
+- [ ] Score, Lucy — Things We Never Got Over
+- [ ] Score, Lucy — Things We Hide From the Light
+- [ ] Score, Lucy — Things We Left Behind
+- [ ] Huang, Ana — King of Pride
+- [ ] Huang, Ana — King of Sloth
+- [ ] Sheridan, Mia — Archer's Voice: A Love Story
+- [ ] Silver, Elsie — Heartless (Chestnut Springs)
+- [ ] Sands, Gabrielle — When She Falls: A Dark Mafia Romance
+- [ ] Tomforde, Liz — Mile High
+- [ ] Tomforde, Liz — The Right Move
+- [ ] Tomforde, Liz — Caught Up
+- [ ] Tomforde, Liz — Play Along
+
+## /lit/'s Top 100 Books 2024 (Poster — new/unlisted titles only)
+
+- [ ] Aeschylus — Tragedies
+- [ ] Márquez, Gabriel García — One Hundred Years of Solitude
+- [ ] Wagner, Richard — The Ring of the Nibelung
+- [ ] Hegel, G.W.F. — The Phenomenology of Spirit
+- [ ] Schopenhauer, Arthur — The World as Will and Representation
+
+## Extra Resources
+
+- [ ] 12 Unique Design Books (Medium article)
+- [ ] Awesome Math Books (GitHub repo — ~200+ math titles)
+- [ ] John Bogle Reading List (Investopedia)
+- [ ] NEA Banned Books List
+- [ ] The Library of Consciousness
+- [ ] The HTML Review
+- [ ] 9 Free Book Download Websites

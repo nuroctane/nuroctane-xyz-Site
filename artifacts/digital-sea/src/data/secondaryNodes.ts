@@ -12,6 +12,8 @@ export interface SecondaryMedia {
   url: string;
   file: string;
   isGif: boolean;
+  link?: string;
+  linkLabel?: string;
 }
 
 const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -57,6 +59,16 @@ function buildMap(): Record<string, SecondaryMedia[]> {
 }
 
 export const secondaryMediaByNode: Record<string, SecondaryMedia[]> = buildMap();
+
+// Synthetic "Recommendations" link card that orbits the Goodreads card and
+// navigates to the /books page. Not an image — rendered as a clickable card.
+(secondaryMediaByNode['goodreads'] ??= []).push({
+  url: '',
+  file: 'goodreads-recommendations-link',
+  isGif: false,
+  link: '/books',
+  linkLabel: 'RECOMMENDATIONS',
+});
 
 if (import.meta.env.DEV) {
   const summary = Object.fromEntries(

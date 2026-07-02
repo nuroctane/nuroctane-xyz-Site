@@ -12,14 +12,12 @@ export function mkRand(seed: number) {
 }
 
 export function makeMat(color: string, opacity: number, emissive = '#061418') {
-  return new THREE.MeshPhysicalMaterial({
+  return new THREE.MeshStandardMaterial({
     color:             new THREE.Color(color),
     emissive:          new THREE.Color(emissive),
     emissiveIntensity: 0.28,
     metalness:         0.06,
-    roughness:         0.12,
-    transmission:      0.42,
-    thickness:         1.2,
+    roughness:         0.35,
     transparent:       true,
     opacity,
     side: THREE.FrontSide,

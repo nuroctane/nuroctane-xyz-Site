@@ -62,6 +62,7 @@ function SingleNode({ node, scrollProgress, index, mode, activeTrack }: SingleNo
   modeRef.current = mode;
   const activeTrackRef = useRef(activeTrack);
   activeTrackRef.current = activeTrack;
+  const hiddenRef = useRef(false);
 
   const drag        = useCardDrag(mode);
   const dragWrapRef = useRef<HTMLDivElement>(null);
@@ -102,6 +103,8 @@ function SingleNode({ node, scrollProgress, index, mode, activeTrack }: SingleNo
       (modeRef.current === 'camera' && activeTrackRef.current === 'main');
 
     if (!onMainTrack) {
+      if (hiddenRef.current) return; // already hidden — skip all work
+      hiddenRef.current = true;
       group.scale.setScalar(0);
       proximityRef.current = 0;
 
@@ -125,6 +128,7 @@ function SingleNode({ node, scrollProgress, index, mode, activeTrack }: SingleNo
 
     if (modeRef.current !== 'camera' && p < 0.001 && proximityRef.current < 0.001) return;
 
+    hiddenRef.current = false;
     const elapsed = clock.elapsedTime;
 
     const wobble = 1 - p * 0.80;

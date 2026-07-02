@@ -14,6 +14,7 @@ import { Effects } from './Effects';
 import { SeaColorShift } from './SeaColorShift';
 import { LightShafts } from './LightShafts';
 import type { PerformanceTier } from '../../hooks/usePerformanceTier';
+import { FrameMonitor } from '../../hooks/usePerformanceTier';
 import type { Mode, Track } from '../../types';
 
 interface Props {
@@ -98,7 +99,7 @@ export function Scene({ scrollProgress, tier, mode, activeTrack, finUnlocked, po
           toneMappingExposure: 1.1,
         }}
         camera={{ fov: 65, near: 0.1, far: 450, position: [0, 0, 25] }}
-        dpr={tier === 'high' ? [1, 1.5] : [1, 1]}
+        dpr={tier === 'high' ? [1, 1.25] : [1, 1]}
         style={{ position: 'fixed', inset: 0 }}
       >
         <color attach="background" args={['#0b2730']} />
@@ -109,9 +110,13 @@ export function Scene({ scrollProgress, tier, mode, activeTrack, finUnlocked, po
         <pointLight position={[0, 14, 0]}     intensity={3.2} color="#5de8f0" distance={100} decay={2} />
         <pointLight position={[-12, 5, -50]}  intensity={1.9} color="#1a8a9a" distance={80}  decay={2} />
         <pointLight position={[12, 7, -100]}  intensity={1.9} color="#0d6a7a" distance={80}  decay={2} />
-        <pointLight position={[-8, 9, -150]}  intensity={1.7} color="#1a8a9a" distance={70}  decay={2} />
-        <pointLight position={[-24, 5, -50]}  intensity={1.6} color="#1a8a9a" distance={70}  decay={2} />
-        <pointLight position={[-24, 5, -120]} intensity={1.6} color="#0d6a7a" distance={70}  decay={2} />
+        {tier === 'high' && (
+          <>
+            <pointLight position={[-8, 9, -150]}  intensity={1.7} color="#1a8a9a" distance={70}  decay={2} />
+            <pointLight position={[-24, 5, -50]}  intensity={1.6} color="#1a8a9a" distance={70}  decay={2} />
+            <pointLight position={[-24, 5, -120]} intensity={1.6} color="#0d6a7a" distance={70}  decay={2} />
+          </>
+        )}
 
         <Suspense fallback={null}>
           <Blocks />
@@ -138,6 +143,7 @@ export function Scene({ scrollProgress, tier, mode, activeTrack, finUnlocked, po
         <SeaColorShift mode={mode} tier={tier} />
 
         <Effects tier={tier} />
+        <FrameMonitor />
       </Canvas>
     </WebGLErrorBoundary>
   );

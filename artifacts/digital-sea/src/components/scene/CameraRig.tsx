@@ -61,6 +61,9 @@ export function CameraRig({ scrollProgress, mode }: Props) {
   // Used when blog→scroll so the snap fires AFTER the rAF scroll-restore.
   const pendingSnap = useRef(0);
 
+  // Cache mobile check once — avoids window.innerWidth lookup every frame
+  const isMobileViewport = useMemo(() => window.innerWidth < 768, []);
+
   // ── Attractor arrays — built once, not on every frame ─────────────────────
   const mainAttractors = useMemo<AttractorNode[]>(() => [
     ...nodes.map(n => ({
@@ -178,9 +181,9 @@ export function CameraRig({ scrollProgress, mode }: Props) {
     // viewports.  The wider FOV (see ResponsiveCamera) compensates so the user
     // still sees plenty of the scene.
     if (activePos && maxProx > 0.08) {
-      const mobileFactor = window.innerWidth < 768 ? 1.3 : 1;
+      const mobileFactor = isMobileViewport ? 1.3 : 1;
 
-      const pull  = Math.pow(maxProx, isBlogFocus ? 0.86 : isProjectZone ? 0.92 : 1.1) * (isBlogFocus ? 0.90 : isProjectZone ? 0.96 : 0.88) * (window.innerWidth < 768 ? 1.2 : 1);
+      const pull  = Math.pow(maxProx, isBlogFocus ? 0.86 : isProjectZone ? 0.92 : 1.1) * (isBlogFocus ? 0.90 : isProjectZone ? 0.96 : 0.88) * (isMobileViewport ? 1.2 : 1);
       const wantX = _pos.x + (activePos.x - _pos.x) * pull;
       const wantY = _pos.y + (activePos.y - _pos.y) * pull * (isBlogFocus ? 0.58 : isProjectZone ? 0.66 : 0.5);
 
@@ -212,7 +215,7 @@ export function CameraRig({ scrollProgress, mode }: Props) {
     // Blog track uses uniform lerp (no lateral pull to fight).
     // On mobile the lerp is boosted so the camera snaps into framing position
     // before the card's scroll window passes.
-    const mobileLerpBoost = window.innerWidth < 768 ? 1.4 : 1;
+    const mobileLerpBoost = isMobileViewport ? 1.4 : 1;
     const xyLerp = (isBlog
       ? baseLerp + maxProx * (isBlogFocus ? 0.11 : 0)
       : baseLerp + maxProx * (isProjectZone ? 0.18 : 0.14)) * mobileLerpBoost;
@@ -247,7 +250,7 @@ export function CameraRig({ scrollProgress, mode }: Props) {
         ? 0.14 + maxProx * 0.24
         : isProjectZone
           ? 0.08 + maxProx * 0.16
-          : 0.05 + maxProx * 0.10) * (window.innerWidth < 768 ? 1.5 : 1);
+          : 0.05 + maxProx * 0.10) * (isMobileViewport ? 1.5 : 1);
       smoothLook.current.lerp(_blendedLook, lookLerp);
     }
 

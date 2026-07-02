@@ -28,6 +28,40 @@ export function AudioControl({ activeTrack, scrollProgress }: Props) {
   const enabledRef = useRef(enabled);
   enabledRef.current = enabled;
   const isMobile = useIsMobile();
+  const unlockedRef = useRef(false);
+  const audioCtxRef = useRef<AudioContext | null>(null);
+
+  // Pre-unlock audio context on first user gesture, so play() succeeds
+  // even if the gesture happened before the playlist was active.
+  useEffect(() => {
+    const unlock = () => {
+      if (unlockedRef.current) return;
+      unlockedRef.current = true;
+      try {
+        const ctx = new (window.AudioContext ?? (window as any).webkitAudioContext)();
+        audioCtxRef.current = ctx;
+        ctx.resume();
+      } catch {}
+    };
+    const events = ['pointerdown', 'touchstart', 'keydown', 'click'];
+    events.forEach(e => window.addEventListener(e, unlock, { once: true, passive: true }));
+    return () => {
+      events.forEach(e => window.removeEventListener(e, unlock));
+      if (audioCtxRef.current) { audioCtxRef.current.close().catch(() => {}); audioCtxRef.current = null; }
+    };
+  }, []);
+
+  // bfcache: re-start audio when page is restored from back/forward cache
+  useEffect(() => {
+    const onShow = (e: PageTransitionEvent) => {
+      if (e.persisted) {
+        const a = audioRef.current;
+        if (a && enabled) { a.play()?.catch(() => {}); }
+      }
+    };
+    window.addEventListener('pageshow', onShow);
+    return () => window.removeEventListener('pageshow', onShow);
+  }, [enabled]);
 
   const prevTrackRef = useRef(activeTrack);
   const prevDirectionRef = useRef<'main' | 'blog'>(activeTrack === 'blog' ? 'blog' : 'main');
@@ -147,15 +181,13 @@ export function AudioControl({ activeTrack, scrollProgress }: Props) {
       onMouseEnter={() => setExpanded(true)}
       onMouseLeave={() => setExpanded(false)}
     >
-      {playlist && (
-        <audio
-          ref={audioRef}
-          src={toSrc(playlist[trackIdx])}
-          preload="auto"
-          onEnded={handleEnded}
-          loop={playlist.length === 1}
-        />
-      )}
+      <audio
+        ref={audioRef}
+        src={playlist ? toSrc(playlist[trackIdx]) : undefined}
+        preload={playlist ? 'auto' : 'none'}
+        onEnded={handleEnded}
+        loop={Boolean(playlist && playlist.length === 1)}
+      />
       <div className="audio-row">
         <button
           type="button"

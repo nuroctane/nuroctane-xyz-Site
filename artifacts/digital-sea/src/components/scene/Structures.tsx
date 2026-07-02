@@ -127,7 +127,7 @@ function Ships() {
 }
 
 // ── Animated snakes ───────────────────────────────────────────────────────────
-function Snakes() {
+function Snakes({ throttle = 4 }: { throttle?: number }) {
   const mat    = useMemo(() => makeMat('#1c5f70', 0.86, '#071c24'), []);
   const ref    = useRef<THREE.InstancedMesh>(null);
   const dummy  = useMemo(() => new THREE.Object3D(), []);
@@ -150,7 +150,7 @@ function Snakes() {
 
   useFrame(({ clock }) => {
     const mesh = ref.current;
-    if (!mesh || ++_frame.current % 4 !== 0) return;
+    if (!mesh || ++_frame.current % throttle !== 0) return;
     const t   = clock.elapsedTime;
     let   idx = 0;
     for (const s of snakes) {
@@ -178,7 +178,7 @@ function Snakes() {
 }
 
 // ── Animated fish ─────────────────────────────────────────────────────────────
-function Fish() {
+function Fish({ throttle = 4 }: { throttle?: number }) {
   const mat    = useMemo(() => makeMat('#175870', 0.85, '#060e1c'), []);
   const ref    = useRef<THREE.InstancedMesh>(null);
   const dummy  = useMemo(() => new THREE.Object3D(), []);
@@ -201,7 +201,7 @@ function Fish() {
   useFrame(({ clock }, dt) => {
     const mesh = ref.current;
     if (!mesh) return;
-    if (++_frame.current % 4 !== 0) return;
+    if (++_frame.current % throttle !== 0) return;
     const t    = clock.elapsedTime;
     const step = Math.min(dt * 2, 0.1);
     let   idx  = 0;
@@ -249,7 +249,7 @@ const MONSTER_PARTS: [number, number, number, number, number, number][] = [
   [0,     1.5,  0.7, 0.4, 0.4, 0.4],
 ];
 
-function Monsters() {
+function Monsters({ throttle = 4 }: { throttle?: number }) {
   const mat    = useMemo(() => makeMat('#0d4a5a', 0.82, '#050f14'), []);
   const ref    = useRef<THREE.InstancedMesh>(null);
   const dummy  = useMemo(() => new THREE.Object3D(), []);
@@ -272,7 +272,7 @@ function Monsters() {
 
   useFrame(({ clock }) => {
     const mesh = ref.current;
-    if (!mesh || ++_frame.current % 4 !== 0) return;
+    if (!mesh || ++_frame.current % throttle !== 0) return;
     const t   = clock.elapsedTime;
     let   idx = 0;
     for (const m of monsters) {
@@ -304,14 +304,15 @@ function Monsters() {
 }
 
 export function Structures({ tier }: { tier: PerformanceTier }) {
+  const throttle = tier === 'low' ? 6 : 4;
   return (
     <>
       <Bridges />
       <Stairs />
       <Ships />
-      <Snakes />
-      <Fish />
-      {tier !== 'low' && <Monsters />}
+      <Snakes throttle={throttle} />
+      <Fish throttle={throttle} />
+      {tier !== 'low' && <Monsters throttle={throttle} />}
     </>
   );
 }
