@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { StandaloneNav } from './StandaloneNav';
+import { useStandaloneScroll } from '../hooks/useStandaloneScroll';
 import raw from '../content/quotes.md?raw';
 
 interface Quote {
@@ -104,6 +105,7 @@ export default function QuotesPage() {
   const sections = useMemo(() => parseMD(raw), []);
   const [activeSec, setActiveSec] = useState(sections[0]?.name ?? '');
   const [count, setCount] = useState(PAGE_SIZE);
+  useStandaloneScroll();
 
   const active = sections.find(s => s.name === activeSec) ?? sections[0];
   const shown = active?.quotes.slice(0, count) ?? [];

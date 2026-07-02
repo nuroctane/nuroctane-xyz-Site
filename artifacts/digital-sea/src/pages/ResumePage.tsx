@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { StandaloneNav } from './StandaloneNav';
+import { useStandaloneScroll } from '../hooks/useStandaloneScroll';
 import raw from '../content/resume.md?raw';
 
 interface ResumeSection {
@@ -127,6 +128,7 @@ function renderInline(t: string) {
 
 export default function ResumePage() {
   const { title, intro, sections } = useMemo(() => parseResume(raw), []);
+  useStandaloneScroll();
 
   return (
     <div className="standalone-page">
