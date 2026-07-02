@@ -68,8 +68,7 @@ export function EndPanel({ mode, finUnlocked }: Props) {
       <p className="summary-text">
         I am <strong>&ldquo;nuroctane&rdquo;</strong> or <em>&ldquo;nur&rdquo;</em> for short.
         I was inspired to create my name from the Arabic word for <em>light</em>.
-        I love cars, technology and philosophy.
-        Cosmic, multifaceted being yada yada.
+        I love cars, technology, MMA and philosophy.
       </p>
       <p className="summary-text summary-text--secondary">
         This is a small digital sea/library of all my profiles and works,
