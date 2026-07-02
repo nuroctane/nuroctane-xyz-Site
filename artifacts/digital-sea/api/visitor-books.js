@@ -15,13 +15,13 @@ async function kvGet(key) {
 }
 
 async function kvSet(key, value) {
-  const res = await fetch(`${URL}/set/${encodeURIComponent(key)}`, {
+  const res = await fetch(URL, {
     method: 'POST',
     headers: {
       Authorization: `Bearer ${TOKEN}`,
       'Content-Type': 'application/json',
     },
-    body: JSON.stringify(value),
+    body: JSON.stringify(['SET', key, value]),
   });
   if (!res.ok) throw new Error(`KV SET ${key} failed: ${res.status}`);
 }
