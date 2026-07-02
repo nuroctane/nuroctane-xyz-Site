@@ -1,21 +1,44 @@
-const { Redis } = require('@upstash/redis');
+const URL = process.env.nuroctanesitestorage_KV_REST_API_URL;
+const TOKEN = process.env.nuroctanesitestorage_KV_REST_API_TOKEN;
 
 const BOOKS_KEY = 'visitor-books';
 const OVERRIDES_KEY = 'read-overrides';
 const ADMIN_PASSWORD = 'xnegro';
 
-const redis = new Redis({
-  url: process.env.nuroctanesitestorage_KV_REST_API_URL,
-  token: process.env.nuroctanesitestorage_KV_REST_API_TOKEN,
-});
+async function kvGet(key) {
+  const res = await fetch(`${URL}/get/${encodeURIComponent(key)}`, {
+    headers: { Authorization: `Bearer ${TOKEN}` },
+  });
+  if (!res.ok) throw new Error(`KV GET ${key} failed: ${res.status}`);
+  const data = await res.json();
+  return data.result;
+}
+
+async function kvSet(key, value) {
+  const res = await fetch(`${URL}/set/${encodeURIComponent(key)}`, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${TOKEN}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(value),
+  });
+  if (!res.ok) throw new Error(`KV SET ${key} failed: ${res.status}`);
+}
 
 module.exports = async function handler(req, res) {
   res.setHeader('Content-Type', 'application/json');
 
+  if (!URL || !TOKEN) {
+    return res.status(503).json({ error: 'KV_NOT_CONFIGURED', message: 'Missing env vars' });
+  }
+
   try {
     if (req.method === 'GET') {
-      const books = (await redis.get(BOOKS_KEY)) ?? [];
-      const overrides = (await redis.get(OVERRIDES_KEY)) ?? {};
+      const booksRaw = await kvGet(BOOKS_KEY);
+      const overridesRaw = await kvGet(OVERRIDES_KEY);
+      const books = booksRaw ? JSON.parse(booksRaw) : [];
+      const overrides = overridesRaw ? JSON.parse(overridesRaw) : {};
       return res.status(200).json({ books, overrides });
     }
 
@@ -27,9 +50,10 @@ module.exports = async function handler(req, res) {
         if (!book || !book.title) {
           return res.status(400).json({ error: 'Missing book title' });
         }
-        const books = (await redis.get(BOOKS_KEY)) ?? [];
+        const booksRaw = await kvGet(BOOKS_KEY);
+        const books = booksRaw ? JSON.parse(booksRaw) : [];
         books.push(book);
-        await redis.set(BOOKS_KEY, books);
+        await kvSet(BOOKS_KEY, JSON.stringify(books));
         return res.status(200).json({ ok: true });
       }
 
@@ -38,11 +62,12 @@ module.exports = async function handler(req, res) {
         if (password !== ADMIN_PASSWORD) {
           return res.status(403).json({ error: 'Unauthorized' });
         }
-        const books = (await redis.get(BOOKS_KEY)) ?? [];
+        const booksRaw = await kvGet(BOOKS_KEY);
+        const books = booksRaw ? JSON.parse(booksRaw) : [];
         const filtered = books.filter(b =>
           !(b.title === book.title && b.author === book.author && b.dateAdded === book.dateAdded),
         );
-        await redis.set(BOOKS_KEY, filtered);
+        await kvSet(BOOKS_KEY, JSON.stringify(filtered));
         return res.status(200).json({ ok: true });
       }
 
@@ -51,13 +76,14 @@ module.exports = async function handler(req, res) {
         if (password !== ADMIN_PASSWORD) {
           return res.status(403).json({ error: 'Unauthorized' });
         }
-        const books = (await redis.get(BOOKS_KEY)) ?? [];
+        const booksRaw = await kvGet(BOOKS_KEY);
+        const books = booksRaw ? JSON.parse(booksRaw) : [];
         const idx = books.findIndex(b =>
           b.title === book.title && b.author === book.author && b.dateAdded === book.dateAdded,
         );
         if (idx >= 0) {
           books[idx].read = !books[idx].read;
-          await redis.set(BOOKS_KEY, books);
+          await kvSet(BOOKS_KEY, JSON.stringify(books));
         }
         return res.status(200).json({ ok: true });
       }
@@ -67,9 +93,10 @@ module.exports = async function handler(req, res) {
         if (password !== ADMIN_PASSWORD) {
           return res.status(403).json({ error: 'Unauthorized' });
         }
-        const overrides = (await redis.get(OVERRIDES_KEY)) ?? {};
+        const overridesRaw = await kvGet(OVERRIDES_KEY);
+        const overrides = overridesRaw ? JSON.parse(overridesRaw) : {};
         overrides[key] = read;
-        await redis.set(OVERRIDES_KEY, overrides);
+        await kvSet(OVERRIDES_KEY, JSON.stringify(overrides));
         return res.status(200).json({ ok: true });
       }
 
@@ -79,9 +106,6 @@ module.exports = async function handler(req, res) {
     return res.status(405).json({ error: 'Method not allowed' });
   } catch (err) {
     const msg = err instanceof Error ? err.message : 'Unknown error';
-    if (msg.includes('env') || msg.includes('url') || msg.includes('token') || msg.includes('connect')) {
-      return res.status(503).json({ error: 'KV_NOT_CONFIGURED', message: msg });
-    }
     return res.status(500).json({ error: 'Internal server error', message: msg });
   }
 };
