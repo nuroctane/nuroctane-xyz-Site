@@ -600,3 +600,86 @@
 - [ ] The Library of Consciousness
 - [ ] The HTML Review
 - [ ] 9 Free Book Download Websites
+
+## The Inheritance Cycle (Christopher Paolini)
+
+- [x] Paolini, Christopher — Eragon
+- [x] Paolini, Christopher — Eldest
+- [x] Paolini, Christopher — Brisingr
+- [x] Paolini, Christopher — Inheritance
+- [x] Paolini, Christopher — Murtagh
+- [x] Paolini, Christopher — The Fork, the Witch, and the Worm
+
+## Little House on the Prairie (Laura Ingalls Wilder)
+
+- [x] Wilder, Laura Ingalls — Little House in the Big Woods
+- [x] Wilder, Laura Ingalls — Farmer Boy
+- [x] Wilder, Laura Ingalls — Little House on the Prairie
+- [x] Wilder, Laura Ingalls — On the Banks of Plum Creek
+- [x] Wilder, Laura Ingalls — By the Shores of Silver Lake
+- [x] Wilder, Laura Ingalls — The Long Winter
+- [x] Wilder, Laura Ingalls — Little Town on the Prairie
+- [x] Wilder, Laura Ingalls — These Happy Golden Years
+- [x] Wilder, Laura Ingalls — The First Four Years
+
+## The Lord of the Rings (J.R.R. Tolkien)
+
+- [x] Tolkien, J.R.R. — The Fellowship of the Ring
+- [x] Tolkien, J.R.R. — The Two Towers
+- [x] Tolkien, J.R.R. — The Return of the King
+- [x] Tolkien, J.R.R. — The Hobbit
+
+## Inkheart Trilogy / Inkworld (Cornelia Funke)
+
+- [x] Funke, Cornelia — Inkheart
+- [x] Funke, Cornelia — Inkspell
+- [x] Funke, Cornelia — Inkdeath
+- [x] Funke, Cornelia — The Color of Revenge
+
+## Percy Jackson & the Olympians (Rick Riordan)
+
+- [x] Riordan, Rick — The Lightning Thief
+- [x] Riordan, Rick — The Sea of Monsters
+- [x] Riordan, Rick — The Titan's Curse
+- [x] Riordan, Rick — The Battle of the Labyrinth
+- [x] Riordan, Rick — The Last Olympian
+- [x] Riordan, Rick — The Chalice of the Gods
+- [x] Riordan, Rick — Wrath of the Triple Goddess
+
+## Maximum Ride (James Patterson)
+
+- [x] Patterson, James — The Angel Experiment
+- [x] Patterson, James — School's Out—Forever
+- [x] Patterson, James — Saving the World and Other Extreme Sports
+- [x] Patterson, James — The Final Warning
+- [x] Patterson, James — MAX: A Maximum Ride Novel
+- [x] Patterson, James — Fang: A Maximum Ride Novel
+- [x] Patterson, James — Angel: A Maximum Ride Novel
+- [x] Patterson, James — Nevermore: The Final Maximum Ride Adventure
+- [x] Patterson, James — Maximum Ride Forever
+- [x] Patterson, James — Hawk
+- [x] Patterson, James — City of the Dead
+
+## A Series of Unfortunate Events (Lemony Snicket)
+
+- [x] Snicket, Lemony — The Bad Beginning
+- [x] Snicket, Lemony — The Reptile Room
+- [x] Snicket, Lemony — The Wide Window
+- [x] Snicket, Lemony — The Miserable Mill
+- [x] Snicket, Lemony — The Austere Academy
+- [x] Snicket, Lemony — The Ersatz Elevator
+- [x] Snicket, Lemony — The Vile Village
+- [x] Snicket, Lemony — The Hostile Hospital
+- [x] Snicket, Lemony — The Carnivorous Carnival
+- [x] Snicket, Lemony — The Slippery Slope
+- [x] Snicket, Lemony — The Grim Grotto
+- [x] Snicket, Lemony — The Penultimate Peril
+- [x] Snicket, Lemony — The End
+
+## His Dark Materials (Philip Pullman)
+
+- [x] Pullman, Philip — The Golden Compass _(Published as "Northern Lights" in the UK)_
+- [x] Pullman, Philip — The Subtle Knife
+- [x] Pullman, Philip — The Amber Spyglass
+- [x] Pullman, Philip — La Belle Sauvage
+- [x] Pullman, Philip — The Secret Commonwealth
