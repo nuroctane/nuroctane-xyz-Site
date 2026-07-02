@@ -2227,6 +2227,23 @@ html.standalone-active body {
   border-color: rgba(93, 232, 240, 0.4);
 }
 
+.bs-confirm-btn:disabled,
+.bs-confirm-cancel:disabled {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.bs-api-warning {
+  background: rgba(232, 93, 93, 0.06);
+  border: 1px solid rgba(232, 93, 93, 0.15);
+  color: #e85d5d;
+  font-size: 0.45rem;
+  letter-spacing: 0.05em;
+  padding: 0.4rem 0.6rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
 /* ── Visitor book form (legacy) ── */
 
 .bs-add-form {

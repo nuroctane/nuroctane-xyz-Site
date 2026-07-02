@@ -29,7 +29,11 @@ interface OLResult {
 
 interface OLWork {
   description?: string | { value: string };
-  subjects?: string[];
+}
+
+interface APIResponse {
+  books: Book[];
+  overrides: Record<string, boolean>;
 }
 
 function parseBooks(src: string): Shelf[] {
@@ -84,9 +88,7 @@ function bookKey(b: Book): string {
   return `${b.title}|${b.author}`;
 }
 
-const STORAGE_KEY = 'visitor-books';
 const COVER_CACHE_KEY = 'book-cover-cache';
-const READ_OVERRIDE_KEY = 'book-read-overrides';
 const SESSION_KEY = 'book-session-id';
 const ADMIN_KEY = 'book-admin';
 
@@ -97,22 +99,6 @@ function getSessionId(): string {
     sessionStorage.setItem(SESSION_KEY, id);
   }
   return id;
-}
-
-function loadVisitorBooks(): Book[] {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return [];
-    return JSON.parse(raw) as Book[];
-  } catch {
-    return [];
-  }
-}
-
-function saveVisitorBooks(books: Book[]) {
-  try {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(books));
-  } catch {}
 }
 
 function loadCoverCache(): Record<string, string | null> {
@@ -129,20 +115,6 @@ function saveCoverCache(cache: Record<string, string | null>) {
   } catch {}
 }
 
-function loadReadOverrides(): Record<string, boolean> {
-  try {
-    return JSON.parse(localStorage.getItem(READ_OVERRIDE_KEY) ?? '{}');
-  } catch {
-    return {};
-  }
-}
-
-function saveReadOverrides(map: Record<string, boolean>) {
-  try {
-    localStorage.setItem(READ_OVERRIDE_KEY, JSON.stringify(map));
-  } catch {}
-}
-
 const BATCH_SIZE = 4;
 const BATCH_DELAY = 120;
 
@@ -153,6 +125,7 @@ export default function BooksPage() {
   const sessionId = useRef(getSessionId());
   const [detail, setDetail] = useState<Book | null>(null);
   const [visitorBooks, setVisitorBooks] = useState<Book[]>([]);
+  const [readOverrides, setReadOverrides] = useState<Record<string, boolean>>({});
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<OLResult[]>([]);
   const [searching, setSearching] = useState(false);
@@ -164,9 +137,9 @@ export default function BooksPage() {
   const [adminPass, setAdminPass] = useState('');
   const [adminError, setAdminError] = useState(false);
   const [libraryQuery, setLibraryQuery] = useState('');
-  const [readOverrides, setReadOverrides] = useState<Record<string, boolean>>({});
+  const [apiOnline, setApiOnline] = useState(true);
+  const [submitting, setSubmitting] = useState(false);
 
-  // Confirmation dialog state
   const [pendingBook, setPendingBook] = useState<OLResult | null>(null);
   const [pendingSynopsis, setPendingSynopsis] = useState<string | null>(null);
   const [pendingLoading, setPendingLoading] = useState(false);
@@ -176,13 +149,20 @@ export default function BooksPage() {
   const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const searchAbort = useRef<AbortController | null>(null);
 
-  // Mount: load persisted data, start retroactive cover fetch
+  // Mount: fetch visitor books from API, start retroactive cover fetch
   useEffect(() => {
     const initialCache = loadCoverCache();
     setCoverCache(initialCache);
-    setVisitorBooks(loadVisitorBooks());
-    setReadOverrides(loadReadOverrides());
     setIsAdmin(sessionStorage.getItem(ADMIN_KEY) === '1');
+
+    fetch('/api/visitor-books')
+      .then(res => res.json())
+      .then((data: APIResponse) => {
+        setVisitorBooks(data.books ?? []);
+        setReadOverrides(data.overrides ?? {});
+        setApiOnline(true);
+      })
+      .catch(() => setApiOnline(false));
 
     if (bgStarted.current) return;
     bgStarted.current = true;
@@ -228,7 +208,7 @@ export default function BooksPage() {
     return () => { cancelled = true; clearTimeout(t); };
   }, [allCuratedBooks]);
 
-  // Admin toggle: Ctrl+Shift+A opens password prompt
+  // Admin toggle: Ctrl+Shift+A
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.ctrlKey && e.shiftKey && (e.code === 'KeyA' || e.key === 'A' || e.key === 'a')) {
@@ -320,7 +300,6 @@ export default function BooksPage() {
     fetchCover(detail).then(url => { setDetailCover(url); setLoadingCover(false); });
   }, [detail, fetchCover]);
 
-  // When a search result is clicked, open confirmation dialog and fetch synopsis
   const openConfirmation = (result: OLResult) => {
     setPendingBook(result);
     setPendingSynopsis(null);
@@ -341,8 +320,9 @@ export default function BooksPage() {
       .finally(() => setPendingLoading(false));
   };
 
-  const confirmAddBook = () => {
+  const confirmAddBook = async () => {
     if (!pendingBook) return;
+    setSubmitting(true);
     const book: Book = {
       title: pendingBook.title,
       author: pendingBook.author_name?.[0] ?? '',
@@ -353,17 +333,30 @@ export default function BooksPage() {
       note: pendingNote.trim() || undefined,
       sessionId: sessionId.current,
     };
-    const next = [...visitorBooks, book];
-    setVisitorBooks(next);
-    saveVisitorBooks(next);
-    setPendingBook(null);
-    setPendingNote('');
-    setPendingSynopsis(null);
+
+    try {
+      const res = await fetch('/api/visitor-books', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'add', book }),
+      });
+      if (!res.ok) throw new Error('API error');
+      setVisitorBooks(prev => [...prev, book]);
+    } catch {
+      // Fallback: store locally only
+      setVisitorBooks(prev => [...prev, book]);
+    } finally {
+      setSubmitting(false);
+      setPendingBook(null);
+      setPendingNote('');
+      setPendingSynopsis(null);
+    }
   };
 
-  const addManualBook = () => {
+  const addManualBook = async () => {
     const title = searchQuery.trim();
     if (!title) return;
+    setSubmitting(true);
     const book: Book = {
       title,
       author: '',
@@ -372,44 +365,74 @@ export default function BooksPage() {
       dateAdded: new Date().toISOString(),
       sessionId: sessionId.current,
     };
-    const next = [...visitorBooks, book];
-    setVisitorBooks(next);
-    saveVisitorBooks(next);
-    setSearchQuery('');
-    setSearchResults([]);
+
+    try {
+      const res = await fetch('/api/visitor-books', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'add', book }),
+      });
+      if (!res.ok) throw new Error('API error');
+    } catch {
+      // Fallback
+    } finally {
+      setSubmitting(false);
+      setVisitorBooks(prev => [...prev, book]);
+      setSearchQuery('');
+      setSearchResults([]);
+    }
   };
 
-  const removeVisitorBook = (book: Book) => {
-    const next = visitorBooks.filter(b =>
+  const removeVisitorBook = async (book: Book) => {
+    try {
+      await fetch('/api/visitor-books', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete', password: 'xnegro', book }),
+      });
+    } catch {
+      // Fallback
+    }
+    setVisitorBooks(prev => prev.filter(b =>
       !(b.title === book.title && b.author === book.author && b.dateAdded === book.dateAdded),
-    );
-    setVisitorBooks(next);
-    saveVisitorBooks(next);
+    ));
+    setDetail(null);
   };
 
   const canRemove = (b: Book) => isAdmin || b.sessionId === sessionId.current;
 
-  const toggleRead = (book: Book) => {
+  const toggleRead = async (book: Book) => {
     if (book.visitor) {
-      const next = visitorBooks.map(b =>
+      const newRead = !getEffectiveRead(book);
+      setVisitorBooks(prev => prev.map(b =>
         b.title === book.title && b.author === book.author && b.dateAdded === book.dateAdded
-          ? { ...b, read: !b.read }
+          ? { ...b, read: newRead }
           : b,
-      );
-      setVisitorBooks(next);
-      saveVisitorBooks(next);
+      ));
       setDetail(d => d && d.title === book.title && d.author === book.author && d.dateAdded === book.dateAdded
-        ? { ...d, read: !d.read }
+        ? { ...d, read: newRead }
         : d,
       );
+      try {
+        await fetch('/api/visitor-books', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'toggleVisitorRead', password: 'xnegro', book }),
+        });
+      } catch {}
     } else {
       const key = bookKey(book);
       const currentOverride = readOverrides[key];
       const newRead = currentOverride !== undefined ? !currentOverride : !book.read;
-      const next = { ...readOverrides, [key]: newRead };
-      setReadOverrides(next);
-      saveReadOverrides(next);
+      setReadOverrides(prev => ({ ...prev, [key]: newRead }));
       setDetail(d => d ? { ...d, read: newRead } : null);
+      try {
+        await fetch('/api/visitor-books', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'toggleCuratedRead', password: 'xnegro', key, read: newRead }),
+        });
+      } catch {}
     }
   };
 
@@ -422,7 +445,7 @@ export default function BooksPage() {
   const libQ = libraryQuery.trim().toLowerCase();
   const filteredShelves: Shelf[] = useMemo(() => {
     const base: Shelf[] = visitorBooks.length > 0
-      ? [{ name: 'Your Library', books: visitorBooks }, ...shelves]
+      ? [{ name: 'Community Recommendations', books: visitorBooks }, ...shelves]
       : shelves;
 
     if (!libQ) return base;
@@ -452,7 +475,12 @@ export default function BooksPage() {
         {isAdmin && <span className="bs-admin-badge">ADMIN</span>}
       </div>
 
-      {/* Open Library search */}
+      {!apiOnline && (
+        <div className="bs-api-warning">
+          Live sync unavailable — visitor books may not persist.
+        </div>
+      )}
+
       <div className="bs-search-wrap">
         <div className="bs-search-row">
           <input
@@ -488,13 +516,12 @@ export default function BooksPage() {
         )}
 
         {searchQuery.trim().length >= 2 && !searching && searchResults.length === 0 && (
-          <button className="bs-add-manual" onClick={addManualBook}>
+          <button className="bs-add-manual" onClick={addManualBook} disabled={submitting}>
             No results — add "{searchQuery.trim()}" manually
           </button>
         )}
       </div>
 
-      {/* Sea Library filter */}
       <div className="bs-lib-search-wrap">
         <input
           className="bs-add-input"
@@ -556,7 +583,6 @@ export default function BooksPage() {
         <div className="bs-lib-noresults">No books match "{libraryQuery}"</div>
       )}
 
-      {/* Book detail modal */}
       {detail && (
         <div className="bs-overlay" onClick={() => setDetail(null)}>
           <div className="bs-modal" onClick={(e) => e.stopPropagation()}>
@@ -586,21 +612,17 @@ export default function BooksPage() {
             {detail.visitor && isAdmin && (
               <button
                 className="bs-modal-remove"
-                onClick={() => {
-                  removeVisitorBook(detail);
-                  setDetail(null);
-                }}
+                onClick={() => removeVisitorBook(detail)}
               >DELETE (admin)</button>
             )}
           </div>
         </div>
       )}
 
-      {/* Confirmation dialog — add book with note + synopsis preview */}
       {pendingBook && (
-        <div className="bs-overlay" onClick={() => setPendingBook(null)}>
+        <div className="bs-overlay" onClick={() => !submitting && setPendingBook(null)}>
           <div className="bs-confirm-modal" onClick={(e) => e.stopPropagation()}>
-            <button className="bs-modal-close" onClick={() => setPendingBook(null)}>✕</button>
+            <button className="bs-modal-close" onClick={() => !submitting && setPendingBook(null)}>✕</button>
             <div className="bs-confirm-header">RECOMMEND THIS BOOK</div>
             <div className="bs-confirm-card">
               <div className="bs-confirm-cover">
@@ -635,18 +657,22 @@ export default function BooksPage() {
               placeholder="Add a note (optional)..."
               value={pendingNote}
               onChange={(e) => setPendingNote(e.target.value)}
-              onKeyDown={(e) => { if (e.key === 'Enter') confirmAddBook(); }}
+              onKeyDown={(e) => { if (e.key === 'Enter' && !submitting) confirmAddBook(); }}
               autoFocus
+              disabled={submitting}
             />
             <div className="bs-confirm-actions">
-              <button className="bs-confirm-cancel" onClick={() => setPendingBook(null)}>CANCEL</button>
-              <button className="bs-confirm-btn" onClick={confirmAddBook}>CONFIRM & ADD</button>
+              <button className="bs-confirm-cancel" onClick={() => setPendingBook(null)} disabled={submitting}>
+                CANCEL
+              </button>
+              <button className="bs-confirm-btn" onClick={confirmAddBook} disabled={submitting}>
+                {submitting ? 'SAVING...' : 'CONFIRM & ADD'}
+              </button>
             </div>
           </div>
         </div>
       )}
 
-      {/* Admin password prompt */}
       {adminPrompt && (
         <div className="bs-overlay" onClick={() => setAdminPrompt(false)}>
           <div className="bs-admin-prompt" onClick={(e) => e.stopPropagation()}>
