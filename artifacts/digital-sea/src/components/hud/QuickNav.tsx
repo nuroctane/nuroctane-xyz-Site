@@ -1,9 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'wouter';
 import { nodes, NodeData } from '../../data/nodes';
 import { blogPosts, BlogPost } from '../../data/blogPosts';
 import type { Mode } from '../../types';
 
-const SOCIAL_IDS  = ['instagram','tiktok','x','substack','soundcloud','twitch','youtube','kick','anilist','steam','discord'];
+const SOCIAL_IDS  = ['instagram','tiktok','x','remilia','substack','soundcloud','twitch','youtube','kick','anilist','letterboxd','goodreads','steam','discord'];
 const PROJECT_IDS = ['atxtunerz','github','weatherguru','sis','astrosleep','geoskin','miyamaker','webutils'];
 
 const LOGO_MAP: Record<string, string> = {
@@ -16,6 +17,9 @@ const LOGO_MAP: Record<string, string> = {
   youtube:    '/assets/nodes/youtube-logo.png',
   kick:       '/assets/nodes/kick-logo.png',
   anilist:    '/assets/nodes/anilist-logo.png',
+  letterboxd: '/assets/nodes/letterboxd-logo.png',
+  goodreads:  '/assets/nodes/goodreads-logo.png',
+  remilia:    '/assets/nodes/remilia-quicklaunch-logo.png',
   steam:      '/assets/nodes/steam-logo.png',
   discord:    '/assets/nodes/discord-logo.png',
   atxtunerz:  '/assets/nodes/instagram-logo.png',
@@ -175,6 +179,22 @@ const IconBlog = () => (
   </svg>
 );
 
+const IconBook = () => (
+  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+    <rect x="2" y="1" width="12" height="14" rx="1" stroke="currentColor" strokeWidth="1.2"/>
+    <line x1="8" y1="1" x2="8" y2="15" stroke="currentColor" strokeWidth="1"/>
+    <line x1="4" y1="4" x2="6" y2="4" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/>
+    <line x1="4" y1="7" x2="6" y2="7" stroke="currentColor" strokeWidth="1" strokeLinecap="round"/>
+  </svg>
+);
+const IconStack = () => (
+  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+    <rect x="2" y="2" width="12" height="5" rx="1" stroke="currentColor" strokeWidth="1.2"/>
+    <rect x="2" y="9" width="12" height="5" rx="1" stroke="currentColor" strokeWidth="1.2"/>
+    <line x1="2" y1="8" x2="14" y2="8" stroke="currentColor" strokeWidth="0.8" strokeDasharray="1 2"/>
+  </svg>
+);
+
 interface QuickNavProps {
   mode:           Mode;
   onNavigate?:    () => void;
@@ -184,8 +204,9 @@ interface QuickNavProps {
 
 export function QuickNav({ mode, onNavigate, onBlogNavigate, onFinNavigate }: QuickNavProps) {
   const [open,     setOpen]     = useState(false);
-  const [expanded, setExpanded] = useState<Set<string>>(new Set(['SOCIALS']));
+  const [expanded, setExpanded] = useState<Set<string>>(new Set());
   const panelRef = useRef<HTMLDivElement>(null);
+  const [, setLocation] = useLocation();
 
   useEffect(() => {
     if (!open) return;
@@ -299,6 +320,22 @@ export function QuickNav({ mode, onNavigate, onBlogNavigate, onFinNavigate }: Qu
                 ))}
               </div>
             )}
+          </div>
+
+          <div className="qnav-cat">
+            <CatHeader
+              icon={<IconBook />}
+              label="QUOTES"
+              onActivate={() => { setOpen(false); setLocation('/quotes'); }}
+            />
+          </div>
+
+          <div className="qnav-cat">
+            <CatHeader
+              icon={<IconStack />}
+              label="BOOKS"
+              onActivate={() => { setOpen(false); setLocation('/books'); }}
+            />
           </div>
 
           <div className="qnav-cat">

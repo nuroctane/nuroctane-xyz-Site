@@ -43,7 +43,7 @@ export function OrbitCam({ enabled }: Props) {
     oc.panSpeed       = 0.65;
     oc.zoomSpeed      = 0.7;
     oc.minDistance    = 1;
-    oc.maxDistance    = 180;
+    oc.maxDistance    = window.innerWidth < 768 ? 60 : 180;
     oc.enablePan      = true;
     oc.enableZoom     = true;
     oc.enableRotate   = true;

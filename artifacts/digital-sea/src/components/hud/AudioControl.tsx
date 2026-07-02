@@ -1,8 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, type MutableRefObject } from 'react';
 import { useIsMobile } from '../../hooks/useMobile';
+import type { Track } from '../../types';
 
-const PLAYLIST = [
+const MAIN_PLAYLIST = ['2814 - 終わりと始まり.mp3'];
+const BLOG_PLAYLIST = [
   'sally shapiro - swimming through the blue lagoon.mp3',
+  'willow - then (interlude).mp3',
   'Compendium - Introduction Development and Development.mp3',
 ];
 
@@ -11,7 +14,12 @@ const toSrc = (name: string) =>
 
 const GESTURES = ['pointerdown', 'touchstart', 'keydown', 'click'] as const;
 
-export function AudioControl() {
+interface Props {
+  activeTrack: Track;
+  scrollProgress: MutableRefObject<number>;
+}
+
+export function AudioControl({ activeTrack, scrollProgress }: Props) {
   const audioRef    = useRef<HTMLAudioElement>(null);
   const [enabled, setEnabled] = useState(true);
   const [volume,  setVolume]  = useState(0.5);
@@ -20,7 +28,108 @@ export function AudioControl() {
   const enabledRef = useRef(enabled);
   enabledRef.current = enabled;
   const isMobile = useIsMobile();
+  const unlockedRef = useRef(false);
+  const audioCtxRef = useRef<AudioContext | null>(null);
 
+  // Pre-unlock audio context on first user gesture, so play() succeeds
+  // even if the gesture happened before the playlist was active.
+  useEffect(() => {
+    const unlock = () => {
+      if (unlockedRef.current) return;
+      unlockedRef.current = true;
+      try {
+        const ctx = new (window.AudioContext ?? (window as any).webkitAudioContext)();
+        audioCtxRef.current = ctx;
+        ctx.resume();
+      } catch {}
+    };
+    const events = ['pointerdown', 'touchstart', 'keydown', 'click'];
+    events.forEach(e => window.addEventListener(e, unlock, { once: true, passive: true }));
+    return () => {
+      events.forEach(e => window.removeEventListener(e, unlock));
+      if (audioCtxRef.current) { audioCtxRef.current.close().catch(() => {}); audioCtxRef.current = null; }
+    };
+  }, []);
+
+  // bfcache: re-start audio when page is restored from back/forward cache
+  useEffect(() => {
+    const onShow = (e: PageTransitionEvent) => {
+      if (e.persisted) {
+        const a = audioRef.current;
+        if (a && enabled) { a.play()?.catch(() => {}); }
+      }
+    };
+    window.addEventListener('pageshow', onShow);
+    return () => window.removeEventListener('pageshow', onShow);
+  }, [enabled]);
+
+  const prevTrackRef = useRef(activeTrack);
+  const prevDirectionRef = useRef<'main' | 'blog'>(activeTrack === 'blog' ? 'blog' : 'main');
+  const mainStartedRef = useRef(false);
+  const [mainStarted, setMainStarted] = useState(false);
+  const blogStartedRef = useRef(false);
+  const [blogStarted, setBlogStarted] = useState(false);
+
+  const isBlogTrack = activeTrack === 'blog';
+  const playlist    = isBlogTrack ? (blogStarted ? BLOG_PLAYLIST : null) : (mainStarted ? MAIN_PLAYLIST : null);
+
+  // When switching between main and blog tracks: reset trackIdx during render
+  // so the <audio> element never renders with a stale out-of-bounds index.
+  const currentDirection = isBlogTrack ? 'blog' : 'main';
+  if (prevDirectionRef.current !== currentDirection) {
+    prevDirectionRef.current = currentDirection;
+    if (trackIdx !== 0) setTrackIdx(0);
+  }
+
+  // When switching between main and blog tracks: cut current track.
+  useEffect(() => {
+    const prev = prevTrackRef.current;
+    prevTrackRef.current = activeTrack;
+
+    if (prev !== activeTrack) {
+      setTrackIdx(0);
+      if (activeTrack !== 'blog') {
+        blogStartedRef.current = false;
+        setBlogStarted(false);
+      }
+    }
+  }, [activeTrack]);
+
+  // Scroll listener: start main playlist once past the summary screen.
+  useEffect(() => {
+    if (activeTrack === 'blog' || mainStartedRef.current) return;
+
+    const check = () => {
+      if (scrollProgress.current >= 0.055 && !mainStartedRef.current) {
+        mainStartedRef.current = true;
+        setMainStarted(true);
+        setTrackIdx(0);
+      }
+    };
+
+    check();
+    window.addEventListener('scroll', check, { passive: true });
+    return () => window.removeEventListener('scroll', check);
+  }, [activeTrack, scrollProgress]);
+
+  // Scroll listener: start blog playlist once past the title screen.
+  useEffect(() => {
+    if (activeTrack !== 'blog' || blogStartedRef.current) return;
+
+    const check = () => {
+      if (scrollProgress.current >= 0.07 && !blogStartedRef.current) {
+        blogStartedRef.current = true;
+        setBlogStarted(true);
+        setTrackIdx(0);
+      }
+    };
+
+    check();
+    window.addEventListener('scroll', check, { passive: true });
+    return () => window.removeEventListener('scroll', check);
+  }, [activeTrack, scrollProgress]);
+
+  // Track change → try to play
   useEffect(() => {
     const a = audioRef.current;
     if (!a) return;
@@ -41,10 +150,11 @@ export function AudioControl() {
     tryStart();
     GESTURES.forEach((e) => window.addEventListener(e, onGesture, { passive: true }));
     return cleanup;
-  }, [trackIdx]);
+  }, [trackIdx, playlist]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleEnded = () => {
-    setTrackIdx((i) => (i + 1) % PLAYLIST.length);
+    if (!playlist) return;
+    setTrackIdx((i) => (i + 1) % playlist.length);
   };
 
   useEffect(() => {
@@ -73,9 +183,10 @@ export function AudioControl() {
     >
       <audio
         ref={audioRef}
-        src={toSrc(PLAYLIST[trackIdx])}
-        preload="auto"
+        src={playlist ? toSrc(playlist[trackIdx]) : undefined}
+        preload={playlist ? 'auto' : 'none'}
         onEnded={handleEnded}
+        loop={Boolean(playlist && playlist.length === 1)}
       />
       <div className="audio-row">
         <button

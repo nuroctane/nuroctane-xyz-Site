@@ -1,5 +1,5 @@
-import { Canvas } from '@react-three/fiber';
-import { Component, MutableRefObject, Suspense, ReactNode } from 'react';
+import { Canvas, useThree } from '@react-three/fiber';
+import { Component, MutableRefObject, Suspense, ReactNode, useEffect } from 'react';
 import * as THREE from 'three';
 import { CameraRig } from './CameraRig';
 import { OrbitCam } from './OrbitCam';
@@ -14,6 +14,7 @@ import { Effects } from './Effects';
 import { SeaColorShift } from './SeaColorShift';
 import { LightShafts } from './LightShafts';
 import type { PerformanceTier } from '../../hooks/usePerformanceTier';
+import { FrameMonitor } from '../../hooks/usePerformanceTier';
 import type { Mode, Track } from '../../types';
 
 interface Props {
@@ -57,6 +58,35 @@ const NoWebGLFallback = () => (
   </div>
 );
 
+// ── Responsive FOV ─────────────────────────────────────────────────────────
+// Three.js fov is vertical.  On a 375×667 phone the horizontal FOV is only
+// ~39° vs ~97° on desktop — cards at the edge get clipped.  We widen the
+// vertical FOV on portrait screens so horizontal coverage stays reasonable
+// (~55° on phone, ~60° on iPad portrait).  Combined with the CameraRig push-
+// back (mobileFactor=1.3) cards appear smaller on screen and fit comfortably.
+function ResponsiveCamera() {
+  const cam = useThree((s) => s.camera) as THREE.PerspectiveCamera;
+  useEffect(() => {
+    const update = () => {
+      const aspect = window.innerWidth / window.innerHeight;
+      let fov = 65;
+      if (aspect < 1) {
+        // 65/sqrt(aspect): on 375×667 gives 85° (hFOV~55°), on iPad 768×1024
+        // gives 75° (hFOV~60°), on narrow iPhone 414×896 gives 85° (hFOV~46°).
+        fov = Math.min(85, 65 / Math.sqrt(aspect));
+      }
+      if (Math.abs(cam.fov - fov) > 0.5) {
+        cam.fov = fov;
+        cam.updateProjectionMatrix();
+      }
+    };
+    update();
+    window.addEventListener('resize', update);
+    return () => window.removeEventListener('resize', update);
+  }, [cam]);
+  return null;
+}
+
 export function Scene({ scrollProgress, tier, mode, activeTrack, finUnlocked, portalsArmed, onFinClick, onBlogClick, onPortalsBlurred }: Props) {
   return (
     <WebGLErrorBoundary fallback={<NoWebGLFallback />}>
@@ -69,7 +99,7 @@ export function Scene({ scrollProgress, tier, mode, activeTrack, finUnlocked, po
           toneMappingExposure: 1.1,
         }}
         camera={{ fov: 65, near: 0.1, far: 450, position: [0, 0, 25] }}
-        dpr={tier === 'high' ? [1, 1.5] : [1, 1]}
+        dpr={tier === 'high' ? [1, 1.25] : [1, 1]}
         style={{ position: 'fixed', inset: 0 }}
       >
         <color attach="background" args={['#0b2730']} />
@@ -80,9 +110,13 @@ export function Scene({ scrollProgress, tier, mode, activeTrack, finUnlocked, po
         <pointLight position={[0, 14, 0]}     intensity={3.2} color="#5de8f0" distance={100} decay={2} />
         <pointLight position={[-12, 5, -50]}  intensity={1.9} color="#1a8a9a" distance={80}  decay={2} />
         <pointLight position={[12, 7, -100]}  intensity={1.9} color="#0d6a7a" distance={80}  decay={2} />
-        <pointLight position={[-8, 9, -150]}  intensity={1.7} color="#1a8a9a" distance={70}  decay={2} />
-        <pointLight position={[-24, 5, -50]}  intensity={1.6} color="#1a8a9a" distance={70}  decay={2} />
-        <pointLight position={[-24, 5, -120]} intensity={1.6} color="#0d6a7a" distance={70}  decay={2} />
+        {tier === 'high' && (
+          <>
+            <pointLight position={[-8, 9, -150]}  intensity={1.7} color="#1a8a9a" distance={70}  decay={2} />
+            <pointLight position={[-24, 5, -50]}  intensity={1.6} color="#1a8a9a" distance={70}  decay={2} />
+            <pointLight position={[-24, 5, -120]} intensity={1.6} color="#0d6a7a" distance={70}  decay={2} />
+          </>
+        )}
 
         <Suspense fallback={null}>
           <Blocks />
@@ -91,7 +125,7 @@ export function Scene({ scrollProgress, tier, mode, activeTrack, finUnlocked, po
           <Particles count={tier === 'high' ? 3000 : 1200} />
           <Nodes scrollProgress={scrollProgress} mode={mode} activeTrack={activeTrack} />
           <BlogNodes scrollProgress={scrollProgress} mode={mode} activeTrack={activeTrack} />
-          <FakeNodes mode={mode} count={tier === 'high' ? 96 : 48} shapeCount={tier === 'high' ? 48 : 20} />
+          <FakeNodes mode={mode} count={tier === 'high' ? 60 : 48} shapeCount={tier === 'high' ? 30 : 20} />
           <PortalGates
             onFinClick={onFinClick}
             onBlogClick={onBlogClick}
@@ -104,10 +138,12 @@ export function Scene({ scrollProgress, tier, mode, activeTrack, finUnlocked, po
         </Suspense>
 
         <CameraRig scrollProgress={scrollProgress} mode={mode} />
+        <ResponsiveCamera />
         <OrbitCam enabled={mode === 'camera'} />
         <SeaColorShift mode={mode} tier={tier} />
 
         <Effects tier={tier} />
+        <FrameMonitor />
       </Canvas>
     </WebGLErrorBoundary>
   );

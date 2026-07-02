@@ -352,10 +352,17 @@ function FakeNode({ basePos, seed, kind, mode }: FakeNodeProps) {
   const baseOpacity = useMemo(() => 0.5 + mkRand(seed * 3 + 41)() * 0.45, [seed]);
   const panelScale = useMemo(() => 0.72 + mkRand(seed * 5 + 67)() * 0.78, [seed]);
   const phase = (seed % 7) * 0.9 + 0.4;
+  const prevOp = useRef(0);
 
   useFrame(({ clock }) => {
     const g = groupRef.current;
     if (!g) return;
+
+    // Distance-based early exit: if the card is far from camera and already
+    // fully faded out, skip all per-frame math. This saves ~40 cards per frame.
+    const approxDist = camera.position.distanceTo(basePos);
+    if (approxDist > 40 && prevOp.current < 0.01) return;
+
     const t  = clock.elapsedTime;
     const fy = Math.sin(t * 0.28 + phase) * 0.28;
     const fx = Math.cos(t * 0.21 + phase) * 0.16;
@@ -366,8 +373,9 @@ function FakeNode({ basePos, seed, kind, mode }: FakeNodeProps) {
     );
     g.quaternion.copy(camera.quaternion);
 
-    const dist = camera.position.distanceTo(g.position);
+    const dist = approxDist;
     const op   = Math.max(0, Math.min(1, 1 - (dist - 9) / 26));
+    prevOp.current = op;
     g.scale.setScalar((0.7 + op * 0.4) * panelScale);
 
     const el = wrapRef.current;
@@ -547,7 +555,9 @@ function FakeShape({ basePos, seed }: { basePos: THREE.Vector3; seed: number }) 
       m.scale.setScalar(cfg.size);
     }
 
-    const dist = camera.position.distanceTo(m.position);
+    // Reuse the distance computed at the top for the opacity calc — but only
+    // if the shape hasn't moved (non-creature). Creatures move, so re-measure.
+    const dist = def.creature ? camera.position.distanceTo(m.position) : approxDist;
     const op   = Math.max(0, Math.min(cfg.maxOp, (1 - (dist - 8) / 30) * cfg.maxOp));
     mat.opacity += (op - mat.opacity) * 0.1;
   });

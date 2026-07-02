@@ -22,12 +22,12 @@ const zFromMid = (s: number, e: number) => curve.getPoint((s + e) / 2).z;
 const AVATAR = '/assets/nodes/nuroctane-avatar.png';
 
 const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollEnd'>[] = [
-  // ─── SOCIAL (11) ──────────────────────────────────────────────────────────
+  // ─── SOCIAL (13) ──────────────────────────────────────────────────────────
   {
     id: 'instagram', label: 'Instagram', handle: '@nuroctane',
     url: 'https://www.instagram.com/nuroctane/',
     urlDisplay: 'instagram.com/nuroctane',
-    subtitle: 'Photos & Reels',
+    subtitle: '"the huzz"',
     description: 'mostly just automotive, irls and life stuff.',
     avatar: AVATAR,
     logo: '/assets/nodes/instagram-logo.png',
@@ -36,7 +36,7 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     id: 'tiktok', label: 'TikTok', handle: '@nuroctane',
     url: 'https://www.tiktok.com/@nuroctane',
     urlDisplay: 'tiktok.com/@nuroctane',
-    subtitle: 'Short form video',
+    subtitle: 'Goyslop central',
     description: "i really don't post here. i might one day. i tried at one point. idk.",
     avatar: AVATAR,
     logo: '/assets/nodes/tiktok-logo.png',
@@ -45,16 +45,25 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     id: 'x', label: 'X', handle: '@nuroctane',
     url: 'https://x.com/nuroctane',
     urlDisplay: 'x.com/nuroctane',
-    subtitle: 'Thoughts & threads',
+    subtitle: "fka twitter, Elon's gooncave",
     description: 'rants and musings.',
     avatar: AVATAR,
     logo: '/assets/nodes/x-logo.png',
   },
   {
+    id: 'remilia', label: 'Remilia', handle: '~nuroctane',
+    url: 'https://www.remilia.net/~nuroctane',
+    urlDisplay: 'remilia.net/~nuroctane',
+    subtitle: 'milady',
+    description: '',
+    avatar: '/assets/nodes/nuroctane-remilia-cover.png',
+    logo: '',
+  },
+  {
     id: 'substack', label: 'Substack', handle: 'Civeta Dei',
     url: 'https://substack.com/@nuroctane',
     urlDisplay: 'substack.com/@nuroctane',
-    subtitle: '"there is" — 17 subscribers',
+    subtitle: 'yapperrrrr',
     description: 'rants and musings extended.',
     avatar: AVATAR,
     logo: '/assets/nodes/substack-logo.png',
@@ -63,7 +72,7 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     id: 'soundcloud', label: 'SoundCloud', handle: 'nuroctane',
     url: 'https://soundcloud.com/nuroctane',
     urlDisplay: 'soundcloud.com/nuroctane',
-    subtitle: 'i like making moody shit — 23 followers',
+    subtitle: 'mixes and tunes',
     description: "i love making music, just don't do it enough.",
     avatar: AVATAR,
     logo: '/assets/nodes/soundcloud-logo.png',
@@ -72,7 +81,7 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     id: 'twitch', label: 'Twitch', handle: 'nuroctane',
     url: 'https://www.twitch.tv/nuroctane',
     urlDisplay: 'twitch.tv/nuroctane',
-    subtitle: 'ars motus',
+    subtitle: 'iwnl',
     description: 'i stream sometimes.',
     avatar: AVATAR,
     logo: '/assets/nodes/twitch-logo.png',
@@ -81,7 +90,7 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     id: 'youtube', label: 'YouTube', handle: '@nuroctane',
     url: 'https://www.youtube.com/@nuroctane',
     urlDisplay: 'youtube.com/@nuroctane',
-    subtitle: 'nur! — ars motus',
+    subtitle: 'nur!',
     description: 'i upload sometimes, commentary mostly.',
     avatar: AVATAR,
     logo: '/assets/nodes/youtube-logo.png',
@@ -90,7 +99,7 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     id: 'kick', label: 'Kick', handle: 'nuroctane',
     url: 'https://kick.com/nuroctane',
     urlDisplay: 'kick.com/nuroctane',
-    subtitle: '7 followers',
+    subtitle: 'iwnl',
     description: 'i stream sometimes part 2.',
     avatar: AVATAR,
     logo: '/assets/nodes/kick-logo.png',
@@ -99,16 +108,34 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     id: 'anilist', label: 'AniList', handle: 'nuroctane',
     url: 'https://anilist.co/user/nuroctane/',
     urlDisplay: 'anilist.co/user/nuroctane',
-    subtitle: 'Anime & manga tracker',
+    subtitle: 'anime and manga list mhm',
     description: "i update this whenever i'm actively watching an anime.",
     avatar: AVATAR,
     logo: '/assets/nodes/anilist-logo.png',
   },
   {
+    id: 'letterboxd', label: 'Letterboxd', handle: 'nuroctane',
+    url: 'https://letterboxd.com/nuroctane/',
+    urlDisplay: 'letterboxd.com/nuroctane',
+    subtitle: 'movie list mhm',
+    description: 'movie list mhm',
+    avatar: '/assets/nodes/nuroctane-letterboxd-avatar.png',
+    logo: '/assets/nodes/letterboxd-logo.png',
+  },
+  {
+    id: 'goodreads', label: 'Goodreads', handle: 'nuroctane',
+    url: 'https://goodreads.com/nuroctane',
+    urlDisplay: 'goodreads.com/nuroctane',
+    subtitle: 'Book recommendations & reviews',
+    description: 'what im reading, what ive read, what i want to read.',
+    avatar: '/assets/nodes/goodreads-nuroctane-avatar.png',
+    logo: '/assets/nodes/goodreads-logo.png',
+  },
+  {
     id: 'steam', label: 'Steam', handle: 'nuroctane',
     url: 'https://steamcommunity.com/id/nuroctane',
     urlDisplay: 'steamcommunity.com/id/nuroctane',
-    subtitle: 'Austin, TX · Level 9 · 473 hrs on CS2',
+    subtitle: 'gaben never loses',
     description: 'leave provocative comments on my profile please.',
     avatar: AVATAR,
     logo: '/assets/nodes/steam-logo.png',
@@ -215,7 +242,11 @@ const STEP = (LAST_START - FIRST_START) / Math.max(1, raw.length - 1);
 // At their default alternating x-side, these nodes land on the *same* side as
 // the camera path at their t value (< 1 unit apart in X) — flip them across
 // so the camera looks across the sea at the card instead of being nose-to-it.
-const FLIP_X = new Set(['steam', 'discord']);
+const FLIP_X = new Set([
+  'letterboxd', 'remilia',
+  'atxtunerz', 'github', 'weatherguru', 'sis',
+  'astrosleep', 'geoskin', 'miyamaker', 'webutils',
+]);
 
 // These late-path nodes have a slightly wider proximity window so the camera
 // has more time (scroll distance) to rotate toward and fully frame them —

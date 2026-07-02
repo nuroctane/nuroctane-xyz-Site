@@ -1,7 +1,9 @@
 import { useEffect, useRef, useState } from 'react';
+import { useLocation } from 'wouter';
 import { useScrollProgress } from './hooks/useScrollProgress';
 import { usePerformanceTier } from './hooks/usePerformanceTier';
 import type { Mode, Track } from './types';
+import { nodes } from './data/nodes';
 import { Scene } from './components/scene/Scene';
 import { QuickNav } from './components/hud/QuickNav';
 import { ModeToggle } from './components/hud/ModeToggle';
@@ -13,11 +15,11 @@ import { EndPanel } from './components/panels/EndPanel';
 import { WalletTag } from './components/panels/WalletTag';
 import { HeroBlock } from './components/panels/HeroBlock';
 
-// The moment scroll drops below these thresholds the fin summary hides and
-// portals immediately re-arm.  Values match the start of each EndPanel fade-in
-// window so even a slight backward scroll dismisses the overlay.
 const FIN_DISMISS_MAIN = 0.963;
 const FIN_DISMISS_BLOG = 0.940;
+
+const socialsStart  = nodes[0].scrollStart;
+const projectsStart = nodes.find(n => n.id === 'atxtunerz')?.scrollStart ?? nodes[0].scrollStart;
 
 export default function App() {
   const scrollProgress = useScrollProgress();
@@ -25,27 +27,52 @@ export default function App() {
   const [mode,         setMode]         = useState<Mode>('scroll');
   const [finUnlocked,  setFinUnlocked]  = useState(false);
   const [portalsArmed, setPortalsArmed] = useState(true);
+  const [location] = useLocation();
 
-  // ── Separate origin refs prevent one mode path from clobbering the other ──
-  //
-  // blogOriginScrollY: the main-track scrollY saved when the blog portal was
-  //   clicked.  ReturnButton in blog mode always restores this.
-  //
-  // cameraOriginScrollY / cameraOriginMode: the scrollY and mode saved when
-  //   the explore toggle was activated.  ReturnButton in camera mode restores
-  //   both so the user lands exactly where they left off in the right mode.
   const blogOriginScrollY   = useRef(0);
   const cameraOriginScrollY = useRef(0);
   const cameraOriginMode    = useRef<Mode>('scroll');
+  const modeRef             = useRef<Mode>(mode);
+  modeRef.current           = mode;
 
   const activeTrack: Track =
     mode === 'blog' || (mode === 'camera' && cameraOriginMode.current === 'blog')
       ? 'blog'
       : 'main';
 
-  // ── Mode transitions ───────────────────────────────────────────────────────
+  function scrollToT(t: number) {
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    if (total > 0) {
+      window.scrollTo({ top: t * total, behavior: 'instant' });
+      return true;
+    }
+    return false;
+  }
 
-  // Called by ModeToggle only.  Saves camera origin before entering explore.
+  // Section-based routing: auto-scroll or switch mode on initial load / nav
+  useEffect(() => {
+    const path = location.replace(/^\//, '').toLowerCase();
+    if (path === 'blog') {
+      if (modeRef.current !== 'blog') {
+        setMode('blog');
+        scrollToT(0);
+      }
+      return;
+    }
+    if (modeRef.current !== 'scroll') {
+      setMode('scroll');
+    }
+    if (path === 'socials' || path === 'projects') {
+      const t = path === 'socials' ? socialsStart : projectsStart;
+      if (!scrollToT(t)) {
+        let cancelled = false;
+        const retry = () => { if (!cancelled && !scrollToT(t)) requestAnimationFrame(retry); };
+        const id = requestAnimationFrame(retry);
+        return () => { cancelled = true; cancelAnimationFrame(id); };
+      }
+    }
+  }, [location]);
+
   function handleSetMode(next: Mode) {
     if (next === mode) return;
 
@@ -72,18 +99,14 @@ export default function App() {
     setMode(next);
   }
 
-  // ReturnButton handler — restores context based on which mode we're leaving.
   function handleReturn() {
     if (mode === 'camera') {
-      // Return from explore: go back to whatever mode and scroll we left.
       const prev = cameraOriginMode.current;
       setMode(prev);
       requestAnimationFrame(() => {
         window.scrollTo({ top: cameraOriginScrollY.current, behavior: 'instant' });
       });
     } else if (mode === 'blog') {
-      // Return from blog: always go back to the main scroll at the position
-      // the user was at when they clicked the blog portal.
       setMode('scroll');
       requestAnimationFrame(() => {
         window.scrollTo({ top: blogOriginScrollY.current, behavior: 'instant' });
@@ -103,12 +126,20 @@ export default function App() {
     );
   }
 
+  function handleFinNav() {
+    setPortalsArmed(false);
+    setFinUnlocked(true);
+    setMode('scroll');
+    requestAnimationFrame(() =>
+      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' })
+    );
+  }
+
   function handleBlogClick() {
     const alreadyOnBlogTrack =
       mode === 'blog' || (mode === 'camera' && cameraOriginMode.current === 'blog');
 
     if (!alreadyOnBlogTrack) {
-      // Save the main-track position so ReturnButton can restore it later.
       blogOriginScrollY.current = window.scrollY;
     }
 
@@ -122,11 +153,6 @@ export default function App() {
     setPortalsArmed(true);
   }
 
-  // ── FIN summary auto-dismiss ──────────────────────────────────────────────
-  // Resets finUnlocked (and re-arms portals) the moment the user scrolls back
-  // past the EndPanel fade-in boundary.  This means even a tiny backward scroll
-  // hides the overlay, and portals are immediately clickable again without
-  // needing to retreat all the way to MAIN_ZONE_THRESHOLD.
   useEffect(() => {
     if (!finUnlocked) return;
 
@@ -143,7 +169,6 @@ export default function App() {
     return () => window.removeEventListener('scroll', check);
   }, [finUnlocked, mode, scrollProgress]);
 
-  // ── Body overflow ─────────────────────────────────────────────────────────
   useEffect(() => {
     document.body.style.overflow = mode === 'camera' ? 'hidden' : '';
     return () => { document.body.style.overflow = ''; };
@@ -172,11 +197,11 @@ export default function App() {
         mode={mode}
         onNavigate={() => { if (mode !== 'scroll') setMode('scroll'); }}
         onBlogNavigate={handleBlogClick}
-        onFinNavigate={handleFinClick}
+        onFinNavigate={handleFinNav}
       />
 
       <div className="bottom-left-hud">
-        <AudioControl />
+        <AudioControl activeTrack={activeTrack} scrollProgress={scrollProgress} />
         <div className="hud-modes-row">
           <ModeToggle mode={mode} setMode={handleSetMode} />
           {(mode === 'camera' || mode === 'blog') && (

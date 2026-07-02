@@ -41,6 +41,7 @@ function SingleBlogNode({ post, scrollProgress, index, mode, activeTrack }: Sing
   modeRef.current   = mode;
   const activeTrackRef = useRef(activeTrack);
   activeTrackRef.current = activeTrack;
+  const hiddenRef   = useRef(true);
 
   const drag = useCardDrag(mode);
 
@@ -56,6 +57,8 @@ function SingleBlogNode({ post, scrollProgress, index, mode, activeTrack }: Sing
     const isCam = modeRef.current === 'camera' && activeTrackRef.current === 'blog';
 
     if (!isBlogTrack) {
+      if (hiddenRef.current) return; // already hidden — skip all work
+      hiddenRef.current = true;
       group.scale.setScalar(0);
       const el = wrapperRef.current;
       if (el) { el.style.opacity = '0'; el.style.pointerEvents = 'none'; }
@@ -67,6 +70,7 @@ function SingleBlogNode({ post, scrollProgress, index, mode, activeTrack }: Sing
     const t       = scrollProgress.current;
     const p       = computeBlogProximity(post, t);
     const elapsed = clock.elapsedTime;
+    hiddenRef.current = false;
 
     const wobble = 1 - p * 0.80;
     const wobX   = Math.sin(elapsed * 0.52 + phase) * 0.14 * wobble;

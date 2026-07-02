@@ -61,6 +61,9 @@ export function CameraRig({ scrollProgress, mode }: Props) {
   // Used when blog→scroll so the snap fires AFTER the rAF scroll-restore.
   const pendingSnap = useRef(0);
 
+  // Cache mobile check once — avoids window.innerWidth lookup every frame
+  const isMobileViewport = useMemo(() => window.innerWidth < 768, []);
+
   // ── Attractor arrays — built once, not on every frame ─────────────────────
   const mainAttractors = useMemo<AttractorNode[]>(() => [
     ...nodes.map(n => ({
@@ -168,14 +171,19 @@ export function CameraRig({ scrollProgress, mode }: Props) {
     // ── Camera target: start from path position ────────────────────────────
     _camTarget.set(_pos.x + driftX + leanX.current, _pos.y + driftY, _pos.z);
 
-    // ── Lateral approach (MAIN TRACK ONLY) ────────────────────────────────
+    // ── Lateral approach ───────────────────────────────────────────────────
     // Pull the camera toward the nearest node's XY position so cards fill the
     // viewport even when the path curves far away (worst case: 4.8 world-units).
-    // MAIN_MIN_XY clamps the minimum camera-to-node XY distance so the camera
-    // never clips through the card.  Blog nodes rely on fast lookAt centering
-    // instead (their blog-path coverage is tight enough).
+    // minXY clamps the minimum camera-to-node XY distance so the camera never
+    // clips through the card.
+    // On mobile (<768px) we *increase* minXY (push camera back) so cards appear
+    // smaller on screen via Html distanceFactor, preventing overflow on narrow
+    // viewports.  The wider FOV (see ResponsiveCamera) compensates so the user
+    // still sees plenty of the scene.
     if (activePos && maxProx > 0.08) {
-      const pull  = Math.pow(maxProx, isBlogFocus ? 0.86 : isProjectZone ? 0.92 : 1.1) * (isBlogFocus ? 0.90 : isProjectZone ? 0.96 : 0.88);
+      const mobileFactor = isMobileViewport ? 1.3 : 1;
+
+      const pull  = Math.pow(maxProx, isBlogFocus ? 0.86 : isProjectZone ? 0.92 : 1.1) * (isBlogFocus ? 0.90 : isProjectZone ? 0.96 : 0.88) * (isMobileViewport ? 1.2 : 1);
       const wantX = _pos.x + (activePos.x - _pos.x) * pull;
       const wantY = _pos.y + (activePos.y - _pos.y) * pull * (isBlogFocus ? 0.58 : isProjectZone ? 0.66 : 0.5);
 
@@ -184,7 +192,7 @@ export function CameraRig({ scrollProgress, mode }: Props) {
       const dd  = Math.sqrt(ddx * ddx + ddy * ddy);
 
       if (dd > 0.001) {
-        const minXY = isBlogFocus ? 4.8 : isProjectZone ? 3.1 : MAIN_MIN_XY;
+        const minXY = (isBlogFocus ? 4.8 : isProjectZone ? 3.1 : MAIN_MIN_XY) * mobileFactor;
         if (dd < minXY) {
           const s = minXY / dd;
           _camTarget.x = activePos.x + ddx * s;
@@ -205,9 +213,12 @@ export function CameraRig({ scrollProgress, mode }: Props) {
     // XY lerp is faster than Z on the main track when proximity is high so
     // the lateral approach actually completes within the card's scroll window.
     // Blog track uses uniform lerp (no lateral pull to fight).
-    const xyLerp = isBlog
+    // On mobile the lerp is boosted so the camera snaps into framing position
+    // before the card's scroll window passes.
+    const mobileLerpBoost = isMobileViewport ? 1.4 : 1;
+    const xyLerp = (isBlog
       ? baseLerp + maxProx * (isBlogFocus ? 0.11 : 0)
-      : baseLerp + maxProx * (isProjectZone ? 0.18 : 0.14);
+      : baseLerp + maxProx * (isProjectZone ? 0.18 : 0.14)) * mobileLerpBoost;
     camera.position.x += (_camTarget.x - camera.position.x) * xyLerp;
     camera.position.y += (_camTarget.y - camera.position.y) * xyLerp;
     camera.position.z += (_camTarget.z - camera.position.z) * baseLerp;
@@ -235,11 +246,11 @@ export function CameraRig({ scrollProgress, mode }: Props) {
       // faster lookAt so the card is centered on screen before it becomes
       // clearly visible.  Main track cards sit closer to the path and can
       // use a gentler blend.
-      const lookLerp = isBlog
+      const lookLerp = (isBlog
         ? 0.14 + maxProx * 0.24
         : isProjectZone
           ? 0.08 + maxProx * 0.16
-          : 0.05 + maxProx * 0.10;  // max 0.15 for main
+          : 0.05 + maxProx * 0.10) * (isMobileViewport ? 1.5 : 1);
       smoothLook.current.lerp(_blendedLook, lookLerp);
     }
 
