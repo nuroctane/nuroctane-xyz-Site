@@ -5,6 +5,7 @@ import raw from '../content/books.md?raw';
 
 const GB_KEY = 'AIzaSyAxgOroemPIK-hwEU7OLnW4m3g3ExRd3CM';
 const GB_BASE = 'https://www.googleapis.com/books/v1/volumes';
+const OL_SEARCH = 'https://openlibrary.org/search.json';
 
 interface Book {
   title: string;
@@ -31,6 +32,28 @@ interface GBResult {
     description?: string;
     publishedDate?: string;
   };
+}
+
+interface OLResult {
+  key: string;
+  title: string;
+  author_name?: string[];
+  cover_i?: number;
+  first_publish_year?: number;
+}
+
+interface OLWork {
+  description?: string | { value: string };
+}
+
+// Unified search result used by the dropdown + confirmation dialog
+interface SearchResult {
+  id: string;
+  title: string;
+  author: string;
+  coverUrl: string | undefined;
+  description: string | undefined;
+  year: string | undefined;
 }
 
 interface APIResponse {
@@ -91,6 +114,7 @@ function bookKey(b: Book): string {
 }
 
 const COVER_CACHE_KEY = 'book-cover-cache';
+const DESC_CACHE_KEY = 'book-desc-cache';
 const SESSION_KEY = 'book-session-id';
 const ADMIN_KEY = 'book-admin';
 
@@ -117,6 +141,20 @@ function saveCoverCache(cache: Record<string, string | null>) {
   } catch {}
 }
 
+function loadDescCache(): Record<string, string | null> {
+  try {
+    return JSON.parse(localStorage.getItem(DESC_CACHE_KEY) ?? '{}');
+  } catch {
+    return {};
+  }
+}
+
+function saveDescCache(cache: Record<string, string | null>) {
+  try {
+    localStorage.setItem(DESC_CACHE_KEY, JSON.stringify(cache));
+  } catch {}
+}
+
 const BATCH_SIZE = 2;
 const BATCH_DELAY = 250;
 
@@ -129,11 +167,14 @@ export default function BooksPage() {
   const [visitorBooks, setVisitorBooks] = useState<Book[]>([]);
   const [readOverrides, setReadOverrides] = useState<Record<string, boolean>>({});
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<GBResult[]>([]);
+  const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [searching, setSearching] = useState(false);
   const [coverCache, setCoverCache] = useState<Record<string, string | null>>({});
   const [detailCover, setDetailCover] = useState<string | null>(null);
   const [loadingCover, setLoadingCover] = useState(false);
+  const [descriptionCache, setDescriptionCache] = useState<Record<string, string | null>>({});
+  const [detailDescription, setDetailDescription] = useState<string | null>(null);
+  const [loadingDescription, setLoadingDescription] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
   const [adminPrompt, setAdminPrompt] = useState(false);
   const [adminPass, setAdminPass] = useState('');
@@ -142,17 +183,19 @@ export default function BooksPage() {
   const [apiOnline, setApiOnline] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
-  const [pendingBook, setPendingBook] = useState<GBResult | null>(null);
+  const [pendingBook, setPendingBook] = useState<SearchResult | null>(null);
   const [pendingNote, setPendingNote] = useState('');
 
   const bgStarted = useRef(false);
   const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const searchAbort = useRef<AbortController | null>(null);
 
-  // Mount: fetch visitor books from API, start retroactive cover fetch
+  // Mount: fetch visitor books from API, start retroactive cover + description fetch
   useEffect(() => {
-    const initialCache = loadCoverCache();
-    setCoverCache(initialCache);
+    const initialCoverCache = loadCoverCache();
+    setCoverCache(initialCoverCache);
+    const initialDescCache = loadDescCache();
+    setDescriptionCache(initialDescCache);
     setIsAdmin(sessionStorage.getItem(ADMIN_KEY) === '1');
 
     fetch('/api/visitor-books')
@@ -169,13 +212,14 @@ export default function BooksPage() {
 
     const missing = allCuratedBooks.filter(b => {
       const key = bookKey(b);
-      return !(key in initialCache);
+      return !(key in initialCoverCache) || !(key in initialDescCache);
     });
     if (missing.length === 0) return;
 
     let cancelled = false;
     let batchIdx = 0;
-    const cache = { ...initialCache };
+    const coverCacheTemp = { ...initialCoverCache };
+    const descCacheTemp = { ...initialDescCache };
 
     const processBatch = async () => {
       if (cancelled || batchIdx >= missing.length) return;
@@ -183,22 +227,41 @@ export default function BooksPage() {
       batchIdx += BATCH_SIZE;
 
       const results = await Promise.all(batch.map(async (b) => {
+        const key = bookKey(b);
         try {
           const res = await fetch(
-            `${GB_BASE}?q=${buildQuery(b)}&maxResults=1&fields=items(volumeInfo/imageLinks/thumbnail)&key=${GB_KEY}`,
+            `${GB_BASE}?q=${buildQuery(b)}&maxResults=1&fields=items(volumeInfo/imageLinks/thumbnail,volumeInfo/description)&key=${GB_KEY}`,
           );
           const data = await res.json();
-          const url = fixCoverUrl(data.items?.[0]?.volumeInfo?.imageLinks?.thumbnail) ?? null;
-          return { key: bookKey(b), url };
+          const item = data.items?.[0]?.volumeInfo;
+          const url = fixCoverUrl(item?.imageLinks?.thumbnail) ?? null;
+          const desc = item?.description ?? null;
+          return { key, url, desc };
         } catch {
-          return { key: bookKey(b), url: null };
+          // GB failed — try OL for cover only
+          try {
+            const olRes = await fetch(
+              `${OL_SEARCH}?q=${buildQuery(b)}&fields=cover_i&limit=1`,
+            );
+            const olData = await olRes.json();
+            const coverId = olData.docs?.[0]?.cover_i;
+            const url = coverId ? `https://covers.openlibrary.org/b/id/${coverId}-S.jpg` : null;
+            return { key, url, desc: null };
+          } catch {
+            return { key, url: null, desc: null };
+          }
         }
       }));
 
       if (cancelled) return;
-      for (const { key, url } of results) cache[key] = url;
-      setCoverCache({ ...cache });
-      saveCoverCache(cache);
+      let coverChanged = false;
+      let descChanged = false;
+      for (const { key, url, desc } of results) {
+        if (url !== undefined) { coverCacheTemp[key] = url; coverChanged = true; }
+        if (desc !== undefined) { descCacheTemp[key] = desc; descChanged = true; }
+      }
+      if (coverChanged) { setCoverCache({ ...coverCacheTemp }); saveCoverCache(coverCacheTemp); }
+      if (descChanged) { setDescriptionCache({ ...descCacheTemp }); saveDescCache(descCacheTemp); }
 
       if (batchIdx < missing.length) {
         setTimeout(processBatch, BATCH_DELAY);
@@ -240,7 +303,7 @@ export default function BooksPage() {
     }
   };
 
-  // Debounced Google Books search
+  // Debounced search — tries Google Books first, falls back to Open Library
   useEffect(() => {
     if (searchTimer.current) clearTimeout(searchTimer.current);
     if (searchAbort.current) searchAbort.current.abort();
@@ -254,15 +317,51 @@ export default function BooksPage() {
 
     setSearching(true);
     searchTimer.current = setTimeout(async () => {
+      const ac = new AbortController();
+      searchAbort.current = ac;
+
+      // Try Google Books first
       try {
-        const ac = new AbortController();
-        searchAbort.current = ac;
-        const res = await fetch(
+        const gbRes = await fetch(
           `${GB_BASE}?q=${encodeURIComponent(q)}&maxResults=8&printType=books&key=${GB_KEY}`,
           { signal: ac.signal },
         );
-        const data = await res.json();
-        setSearchResults((data.items ?? []) as GBResult[]);
+        if (gbRes.ok) {
+          const gbData = await gbRes.json();
+          if (gbData.items && gbData.items.length > 0) {
+            const results: SearchResult[] = gbData.items.map((item: GBResult) => ({
+              id: item.id,
+              title: item.volumeInfo.title,
+              author: item.volumeInfo.authors?.[0] ?? '',
+              coverUrl: fixCoverUrl(item.volumeInfo.imageLinks?.smallThumbnail),
+              description: item.volumeInfo.description,
+              year: item.volumeInfo.publishedDate,
+            }));
+            setSearchResults(results);
+            setSearching(false);
+            return;
+          }
+        }
+      } catch {
+        // Google Books failed, fall through to Open Library
+      }
+
+      // Fallback: Open Library
+      try {
+        const olRes = await fetch(
+          `${OL_SEARCH}?q=${encodeURIComponent(q)}&fields=key,title,author_name,cover_i,first_publish_year&limit=8`,
+          { signal: ac.signal },
+        );
+        const olData = await olRes.json();
+        const results: SearchResult[] = (olData.docs ?? []).map((d: OLResult) => ({
+          id: d.key,
+          title: d.title,
+          author: d.author_name?.[0] ?? '',
+          coverUrl: d.cover_i ? `https://covers.openlibrary.org/b/id/${d.cover_i}-S.jpg` : undefined,
+          description: undefined,
+          year: d.first_publish_year?.toString(),
+        }));
+        setSearchResults(results);
       } catch {
       } finally {
         setSearching(false);
@@ -275,16 +374,36 @@ export default function BooksPage() {
     };
   }, [searchQuery]);
 
-  // Cover fetch for modal (Google Books with key)
+  // Cover fetch for modal — Google Books first, Open Library fallback
   const fetchCover = useCallback(async (book: Book): Promise<string | null> => {
     const cacheKey = bookKey(book);
     if (cacheKey in coverCache) return coverCache[cacheKey];
+
+    // Try Google Books
     try {
       const res = await fetch(
         `${GB_BASE}?q=${buildQuery(book)}&maxResults=1&fields=items(volumeInfo/imageLinks/thumbnail)&key=${GB_KEY}`,
       );
+      if (res.ok) {
+        const data = await res.json();
+        const url = fixCoverUrl(data.items?.[0]?.volumeInfo?.imageLinks?.thumbnail) ?? null;
+        if (url) {
+          const next = { ...coverCache, [cacheKey]: url };
+          setCoverCache(next);
+          saveCoverCache(next);
+          return url;
+        }
+      }
+    } catch {}
+
+    // Fallback: Open Library
+    try {
+      const res = await fetch(
+        `${OL_SEARCH}?q=${buildQuery(book)}&fields=cover_i&limit=1`,
+      );
       const data = await res.json();
-      const url = fixCoverUrl(data.items?.[0]?.volumeInfo?.imageLinks?.thumbnail) ?? null;
+      const coverId = data.docs?.[0]?.cover_i;
+      const url = coverId ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg` : null;
       const next = { ...coverCache, [cacheKey]: url };
       setCoverCache(next);
       saveCoverCache(next);
@@ -294,16 +413,56 @@ export default function BooksPage() {
     }
   }, [coverCache]);
 
-  useEffect(() => {
-    if (!detail) { setDetailCover(null); setLoadingCover(false); return; }
-    if (detail.coverUrl) { setDetailCover(detail.coverUrl); return; }
-    setDetailCover(null);
-    setLoadingCover(true);
-    fetchCover(detail).then(url => { setDetailCover(url); setLoadingCover(false); });
-  }, [detail, fetchCover]);
+  // On-demand description fetch (GB only, no OL fallback for descriptions)
+  const fetchDescription = useCallback(async (book: Book): Promise<string | null> => {
+    const cacheKey = bookKey(book);
+    if (cacheKey in descriptionCache) return descriptionCache[cacheKey];
+    try {
+      const res = await fetch(
+        `${GB_BASE}?q=${buildQuery(book)}&maxResults=1&fields=items(volumeInfo/description)&key=${GB_KEY}`,
+      );
+      if (res.ok) {
+        const data = await res.json();
+        const desc = data.items?.[0]?.volumeInfo?.description ?? null;
+        if (desc) {
+          const next = { ...descriptionCache, [cacheKey]: desc };
+          setDescriptionCache(next);
+          saveDescCache(next);
+          return desc;
+        }
+      }
+    } catch {}
+    const next = { ...descriptionCache, [cacheKey]: null };
+    setDescriptionCache(next);
+    saveDescCache(next);
+    return null;
+  }, [descriptionCache]);
 
-  // Confirmation dialog — synopsis comes directly from Google Books search result
-  const openConfirmation = (result: GBResult) => {
+  useEffect(() => {
+    if (!detail) { setDetailCover(null); setLoadingCover(false); setDetailDescription(null); setLoadingDescription(false); return; }
+
+    // Cover
+    if (detail.coverUrl) {
+      setDetailCover(detail.coverUrl);
+    } else {
+      setDetailCover(null);
+      setLoadingCover(true);
+      fetchCover(detail).then(url => { setDetailCover(url); setLoadingCover(false); });
+    }
+
+    // Description
+    const cacheKey = bookKey(detail);
+    if (cacheKey in descriptionCache) {
+      setDetailDescription(descriptionCache[cacheKey]);
+    } else {
+      setDetailDescription(null);
+      setLoadingDescription(true);
+      fetchDescription(detail).then(desc => { setDetailDescription(desc); setLoadingDescription(false); });
+    }
+  }, [detail, fetchCover, fetchDescription, descriptionCache]);
+
+  // Confirmation dialog
+  const openConfirmation = (result: SearchResult) => {
     setPendingBook(result);
     setPendingNote('');
     setSearchQuery('');
@@ -313,13 +472,12 @@ export default function BooksPage() {
   const confirmAddBook = async () => {
     if (!pendingBook) return;
     setSubmitting(true);
-    const vi = pendingBook.volumeInfo;
     const book: Book = {
-      title: vi.title,
-      author: vi.authors?.[0] ?? '',
+      title: pendingBook.title,
+      author: pendingBook.author,
       read: false,
       visitor: true,
-      coverUrl: fixCoverUrl(vi.imageLinks?.thumbnail),
+      coverUrl: pendingBook.coverUrl,
       dateAdded: new Date().toISOString(),
       note: pendingNote.trim() || undefined,
       sessionId: sessionId.current,
@@ -484,19 +642,17 @@ export default function BooksPage() {
         {searchResults.length > 0 && (
           <div className="bs-search-dropdown">
             {searchResults.map((r) => {
-              const vi = r.volumeInfo;
-              const thumb = fixCoverUrl(vi.imageLinks?.smallThumbnail);
               return (
                 <button key={r.id} className="bs-search-result" onClick={() => openConfirmation(r)}>
-                  {thumb ? (
-                    <img src={thumb} alt="" className="bs-search-thumb" />
+                  {r.coverUrl ? (
+                    <img src={r.coverUrl} alt="" className="bs-search-thumb" />
                   ) : (
-                    <div className="bs-search-thumb bs-search-thumb--placeholder">{initial(vi.title)}</div>
+                    <div className="bs-search-thumb bs-search-thumb--placeholder">{initial(r.title)}</div>
                   )}
                   <div className="bs-search-info">
-                    <div className="bs-search-title">{vi.title}</div>
-                    {vi.authors && <div className="bs-search-author">{vi.authors[0]}</div>}
-                    {vi.publishedDate && <div className="bs-search-year">{vi.publishedDate}</div>}
+                    <div className="bs-search-title">{r.title}</div>
+                    {r.author && <div className="bs-search-author">{r.author}</div>}
+                    {r.year && <div className="bs-search-year">{r.year}</div>}
                   </div>
                   <span className="bs-search-add">+ ADD</span>
                 </button>
@@ -586,6 +742,12 @@ export default function BooksPage() {
                 initial(detail.title)
               )}
             </div>
+            {detailDescription && (
+              <div className="bs-modal-synopsis">{detailDescription.length > 400 ? detailDescription.slice(0, 400) + '...' : detailDescription}</div>
+            )}
+            {loadingDescription && !detailDescription && (
+              <div className="bs-modal-synopsis-loading">Loading synopsis...</div>
+            )}
             <div className="bs-modal-title">{detail.title}</div>
             {detail.author && <div className="bs-modal-author">{detail.author}</div>}
             <div className="bs-modal-status">{getEffectiveRead(detail) ? '✓ READ' : '○ UNREAD'}</div>
@@ -616,25 +778,25 @@ export default function BooksPage() {
             <div className="bs-confirm-header">RECOMMEND THIS BOOK</div>
             <div className="bs-confirm-card">
               <div className="bs-confirm-cover">
-                {fixCoverUrl(pendingBook.volumeInfo.imageLinks?.thumbnail) ? (
-                  <img src={fixCoverUrl(pendingBook.volumeInfo.imageLinks.thumbnail)} alt="" className="bs-confirm-cover-img" />
+                {pendingBook.coverUrl ? (
+                  <img src={pendingBook.coverUrl} alt="" className="bs-confirm-cover-img" />
                 ) : (
-                  <div className="bs-confirm-cover-placeholder">{initial(pendingBook.volumeInfo.title)}</div>
+                  <div className="bs-confirm-cover-placeholder">{initial(pendingBook.title)}</div>
                 )}
               </div>
               <div className="bs-confirm-meta">
-                <div className="bs-confirm-title">{pendingBook.volumeInfo.title}</div>
-                {pendingBook.volumeInfo.authors && (
-                  <div className="bs-confirm-author">{pendingBook.volumeInfo.authors[0]}</div>
+                <div className="bs-confirm-title">{pendingBook.title}</div>
+                {pendingBook.author && (
+                  <div className="bs-confirm-author">{pendingBook.author}</div>
                 )}
-                {pendingBook.volumeInfo.publishedDate && (
-                  <div className="bs-confirm-year">{pendingBook.volumeInfo.publishedDate}</div>
+                {pendingBook.year && (
+                  <div className="bs-confirm-year">{pendingBook.year}</div>
                 )}
               </div>
             </div>
             <div className="bs-confirm-synopsis">
-              {pendingBook.volumeInfo.description ? (
-                <p>{pendingBook.volumeInfo.description.length > 600 ? pendingBook.volumeInfo.description.slice(0, 600) + '...' : pendingBook.volumeInfo.description}</p>
+              {pendingBook.description ? (
+                <p>{pendingBook.description.length > 600 ? pendingBook.description.slice(0, 600) + '...' : pendingBook.description}</p>
               ) : (
                 <div className="bs-confirm-synopsis-none">No synopsis available.</div>
               )}
