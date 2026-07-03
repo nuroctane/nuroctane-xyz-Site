@@ -114,8 +114,8 @@ function saveCoverCache(cache: Record<string, string | null>) {
   } catch {}
 }
 
-const BATCH_SIZE = 4;
-const BATCH_DELAY = 120;
+const BATCH_SIZE = 2;
+const BATCH_DELAY = 250;
 
 export default function BooksPage() {
   const shelves = useMemo(() => parseBooks(raw), []);
@@ -182,10 +182,11 @@ export default function BooksPage() {
       const results = await Promise.all(batch.map(async (b) => {
         try {
           const res = await fetch(
-            `https://www.googleapis.com/books/v1/volumes?q=${buildQuery(b)}&maxResults=1&fields=items(volumeInfo/imageLinks/thumbnail)`,
+            `https://openlibrary.org/search.json?q=${buildQuery(b)}&fields=cover_i&limit=1`,
           );
           const data = await res.json();
-          const url = fixCoverUrl(data.items?.[0]?.volumeInfo?.imageLinks?.thumbnail) ?? null;
+          const coverId = data.docs?.[0]?.cover_i;
+          const url = coverId ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg` : null;
           return { key: bookKey(b), url };
         } catch {
           return { key: bookKey(b), url: null };
@@ -278,10 +279,11 @@ export default function BooksPage() {
     if (cacheKey in coverCache) return coverCache[cacheKey];
     try {
       const res = await fetch(
-        `https://www.googleapis.com/books/v1/volumes?q=${buildQuery(book)}&maxResults=1&fields=items(volumeInfo/imageLinks/thumbnail)`,
+        `https://openlibrary.org/search.json?q=${buildQuery(book)}&fields=cover_i&limit=1`,
       );
       const data = await res.json();
-      const url = fixCoverUrl(data.items?.[0]?.volumeInfo?.imageLinks?.thumbnail) ?? null;
+      const coverId = data.docs?.[0]?.cover_i;
+      const url = coverId ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg` : null;
       const next = { ...coverCache, [cacheKey]: url };
       setCoverCache(next);
       saveCoverCache(next);
