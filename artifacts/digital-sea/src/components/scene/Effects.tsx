@@ -7,7 +7,7 @@ interface Props {
 }
 
 export function Effects({ tier }: Props) {
-  if (tier === 'low') return null;
+  if (tier === 'low' || tier === 'minimal') return null;
 
   return (
     <EffectComposer>

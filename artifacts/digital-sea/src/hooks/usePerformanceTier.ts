@@ -1,53 +1,97 @@
 import { useRef, useEffect, useState } from 'react';
 import { useFrame } from '@react-three/fiber';
 
-export type PerformanceTier = 'high' | 'low';
+export type PerformanceTier = 'high' | 'medium' | 'low' | 'minimal';
 
-/**
- * Initial tier guess based on hardware signals.
- * Conservative: mobile → low, desktop → high.
- */
 function detectInitialTier(): PerformanceTier {
   const nav = navigator as Navigator & { deviceMemory?: number; hardwareConcurrency?: number };
-  if (nav.deviceMemory !== undefined && nav.deviceMemory < 4) return 'low';
-  if (nav.hardwareConcurrency !== undefined && nav.hardwareConcurrency <= 2) return 'low';
+  const navC = navigator as Navigator & { connection?: { effectiveType?: string } };
   const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-  return isMobile ? 'low' : 'high';
+  const mem = nav.deviceMemory ?? (isMobile ? 2 : 8);
+  const cores = nav.hardwareConcurrency ?? (isMobile ? 4 : 8);
+  const conn = navC.connection?.effectiveType;
+
+  let score = 0;
+  if (mem >= 8) score += 2; else if (mem >= 4) score += 1;
+  if (cores >= 8) score += 2; else if (cores >= 4) score += 1;
+  if (!isMobile) score += 1;
+  if (conn === '4g') score += 1; else if (conn === 'slow-2g' || conn === '2g') score -= 1;
+
+  if (score >= 5) return 'high';
+  if (score >= 3) return 'medium';
+  if (score >= 1) return 'low';
+  return 'minimal';
 }
 
-/**
- * Performance tier with a runtime frame-time watchdog.
- *
- * Measures actual GPU frame times over a rolling window. If frames consistently
- * exceed the budget (18ms ≈ 55fps target), the tier auto-downgrades from
- * 'high' to 'low'. This catches thermal throttling, weak integrated GPUs,
- * and high-DPI displays that the heuristic missed.
- *
- * The watchdog only DOWNGRADES — it never upgrades back at runtime (upgrading
- * would cause a jank spike as heavier effects re-mount). A page reload is
- * required to re-test.
- *
- * Returns a tuple: [tier, frameMonitor] where frameMonitor is a component
- * that must be rendered inside <Canvas> to feed the watchdog.
- */
+function runGPUBenchmark(): Promise<number> {
+  return new Promise(resolve => {
+    const canvas = document.createElement('canvas');
+    canvas.width = 16; canvas.height = 16;
+    const ctx = canvas.getContext('webgl', { alpha: false });
+    if (!ctx) { resolve(0); return; }
+    const gl = ctx;
+
+    const vs = gl.createShader(gl.VERTEX_SHADER)!;
+    gl.shaderSource(vs, 'attribute vec2 a; void main(){gl_Position=vec4(a,0,1);}');
+    gl.compileShader(vs);
+
+    const fs = gl.createShader(gl.FRAGMENT_SHADER)!;
+    gl.shaderSource(fs, 'precision highp float; void main(){gl_FragColor=vec4(1,1,1,1);}');
+    gl.compileShader(fs);
+
+    const prog = gl.createProgram()!;
+    gl.attachShader(prog, vs);
+    gl.attachShader(prog, fs);
+    gl.linkProgram(prog);
+    gl.useProgram(prog);
+
+    gl.bindBuffer(gl.ARRAY_BUFFER, gl.createBuffer());
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1, -1, 1, -1, -1, 1, 1, 1]), gl.STATIC_DRAW);
+    const loc = gl.getAttribLocation(prog, 'a');
+    gl.enableVertexAttribArray(loc);
+    gl.vertexAttribPointer(loc, 2, gl.FLOAT, false, 0, 0);
+
+    const times: number[] = [];
+    let raf = 0;
+    const start = performance.now();
+    function frame(now: number) {
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+      times.push(now);
+      if (now - start < 200) { raf = requestAnimationFrame(frame); return; }
+      cancelAnimationFrame(raf);
+      gl.getExtension('WEBGL_lose_context')?.loseContext();
+      const deltas = times.slice(1).map((t, i) => t - times[i]);
+      resolve(deltas.reduce((a, b) => a + b, 0) / deltas.length);
+    }
+    raf = requestAnimationFrame(frame);
+  });
+}
+
 export function usePerformanceTier(): PerformanceTier {
   const [tier, setTier] = useState<PerformanceTier>(() => detectInitialTier());
 
-  // Expose the downgrade trigger globally so the FrameMonitor (rendered inside
-  // Canvas) can flip it without causing a React state update from useFrame.
   useEffect(() => {
-    (window as any).__perfDowngrade = () => setTier('low');
+    let cancelled = false;
+    runGPUBenchmark().then(avgMs => {
+      if (cancelled || avgMs === 0) return;
+      if (avgMs > 18) {
+        const downgrade: Record<PerformanceTier, PerformanceTier> = {
+          high: 'medium', medium: 'low', low: 'minimal', minimal: 'minimal',
+        };
+        setTier(downgrade[tier]);
+      }
+    });
+    return () => { cancelled = true; };
+  }, [tier]);
+
+  useEffect(() => {
+    (window as any).__perfDowngrade = () => setTier('minimal');
     return () => { delete (window as any).__perfDowngrade; };
   }, []);
 
   return tier;
 }
 
-/**
- * Render this inside <Canvas> to feed frame-time data to the watchdog.
- * It measures delta time each frame and triggers a downgrade if the rolling
- * average exceeds the budget for a sustained period.
- */
 export function FrameMonitor() {
   const samples = useRef<number[]>([]);
   const degraded = useRef(false);
@@ -58,13 +102,8 @@ export function FrameMonitor() {
     const buf = samples.current;
     buf.push(delta * 1000);
     if (buf.length > 60) buf.shift();
-
-    // Need at least 30 samples (~0.5s at 60fps) before evaluating
     if (buf.length < 30) return;
 
-    // Simple p90: find the value at the 90th percentile index.
-    // Avoid allocating a sorted copy — use a rough max-based approach instead.
-    // Count how many frames exceed 22ms; if >18 of the last 60 do, downgrade.
     let bad = 0;
     for (let i = 0; i < buf.length; i++) {
       if (buf[i] > 22) bad++;

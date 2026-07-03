@@ -502,17 +502,18 @@ html.standalone-active body {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  gap: 5px;
-  width: 36px;
-  height: 36px;
-  padding: 8px 7px;
+  gap: 6px;
+  width: 48px;
+  height: 48px;
+  padding: 10px 9px;
   background: rgba(5, 18, 26, 0.90);
   border: 1px solid rgba(93, 232, 240, 0.22);
   /* Angular cut: top-right corner */
-  clip-path: polygon(0 0, calc(100% - 8px) 0, 100% 8px, 100% 100%, 0 100%);
+  clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
   cursor: pointer;
   transition: border-color 0.2s, background 0.2s;
   outline: none;
+  box-shadow: 0 0 12px rgba(93, 232, 240, 0.15);
 }
 
 .qnav-trigger:hover {
@@ -523,29 +524,29 @@ html.standalone-active body {
 /* The three bars */
 .qnav-bar {
   display: block;
-  height: 1.5px;
-  background: #5de8f0;
+  height: 2.5px;
+  background: #bdeff2;
   border-radius: 0;
   transform-origin: left center;
   transition: transform 0.22s ease, opacity 0.22s ease, width 0.22s ease;
 }
 
-.qnav-bar--1 { width: 20px; }
-.qnav-bar--2 { width: 14px; }
-.qnav-bar--3 { width: 9px;  }
+.qnav-bar--1 { width: 26px; }
+.qnav-bar--2 { width: 18px; }
+.qnav-bar--3 { width: 12px;  }
 
 /* Open state: morphs to X */
 .qnav-trigger--open .qnav-bar--1 {
-  width: 20px;
-  transform: rotate(40deg) translateY(1px);
+  width: 26px;
+  transform: rotate(40deg) translateY(2px);
 }
 .qnav-trigger--open .qnav-bar--2 {
   opacity: 0;
   transform: scaleX(0);
 }
 .qnav-trigger--open .qnav-bar--3 {
-  width: 20px;
-  transform: rotate(-40deg) translateY(-1px);
+  width: 26px;
+  transform: rotate(-40deg) translateY(-2px);
 }
 
 /* ── Panel ── */
@@ -1025,6 +1026,20 @@ html.standalone-active body {
 
   /* QuickNav mobile — wider panel */
   .qnav-panel { width: min(260px, 88vw); }
+
+  /* QuickNav mobile — larger trigger */
+  .qnav-trigger {
+    width: 56px;
+    height: 56px;
+    padding: 12px 10px;
+    gap: 7px;
+  }
+  .qnav-bar { height: 3px; }
+  .qnav-bar--1 { width: 30px; }
+  .qnav-bar--2 { width: 21px; }
+  .qnav-bar--3 { width: 14px; }
+  .qnav-trigger--open .qnav-bar--1 { width: 30px; transform: rotate(40deg) translateY(2px); }
+  .qnav-trigger--open .qnav-bar--3 { width: 30px; transform: rotate(-40deg) translateY(-2px); }
 
   /* Mode toggle / HUD mobile */
   .bottom-left-hud { bottom: 1rem; left: 1rem; }

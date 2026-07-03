@@ -121,11 +121,11 @@ export function Scene({ scrollProgress, tier, mode, activeTrack, finUnlocked, po
         <Suspense fallback={null}>
           <Blocks />
           <Structures tier={tier} />
-          <LightShafts />
-          <Particles count={tier === 'high' ? 3000 : 1200} />
-          <Nodes scrollProgress={scrollProgress} mode={mode} activeTrack={activeTrack} />
-          <BlogNodes scrollProgress={scrollProgress} mode={mode} activeTrack={activeTrack} />
-          <FakeNodes mode={mode} count={tier === 'high' ? 60 : 48} shapeCount={tier === 'high' ? 30 : 20} />
+          {tier !== 'low' && tier !== 'minimal' && <LightShafts />}
+          <Particles count={tier === 'high' ? 3000 : tier === 'medium' ? 1200 : tier === 'low' ? 600 : 200} />
+          <Nodes scrollProgress={scrollProgress} mode={mode} activeTrack={activeTrack} tier={tier} />
+          <BlogNodes scrollProgress={scrollProgress} mode={mode} activeTrack={activeTrack} tier={tier} />
+          <FakeNodes mode={mode} count={tier === 'high' ? 60 : tier === 'medium' ? 48 : tier === 'low' ? 30 : 16} shapeCount={tier === 'high' ? 30 : tier === 'medium' ? 20 : tier === 'low' ? 12 : 6} />
           <PortalGates
             onFinClick={onFinClick}
             onBlogClick={onBlogClick}

@@ -22,7 +22,7 @@ export function SeaColorShift({ mode, tier }: Props) {
 
   useFrame(({ clock }) => {
     const canvas = gl.domElement;
-    if (mode === 'camera' || tier === 'low') {
+    if (mode === 'camera' || tier === 'low' || tier === 'minimal') {
       if (canvas.style.filter) canvas.style.filter = '';
       return;
     }

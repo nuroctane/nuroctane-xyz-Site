@@ -304,7 +304,7 @@ function Monsters({ throttle = 4 }: { throttle?: number }) {
 }
 
 export function Structures({ tier }: { tier: PerformanceTier }) {
-  const throttle = tier === 'low' ? 6 : 4;
+  const throttle = tier === 'high' ? 4 : tier === 'medium' ? 5 : tier === 'low' ? 6 : 8;
   return (
     <>
       <Bridges />
@@ -312,7 +312,7 @@ export function Structures({ tier }: { tier: PerformanceTier }) {
       <Ships />
       <Snakes throttle={throttle} />
       <Fish throttle={throttle} />
-      {tier !== 'low' && <Monsters throttle={throttle} />}
+      {tier !== 'low' && tier !== 'minimal' && <Monsters throttle={throttle} />}
     </>
   );
 }

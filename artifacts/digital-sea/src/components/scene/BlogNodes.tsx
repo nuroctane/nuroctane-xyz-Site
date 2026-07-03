@@ -7,6 +7,7 @@ import { BlogCard } from './BlogCard';
 import { useCardDrag } from '../../hooks/useCardDrag';
 import { DragWake } from './DragWake';
 import type { Mode, Track } from '../../types';
+import type { PerformanceTier } from '../../hooks/usePerformanceTier';
 
 const _mat4    = new THREE.Matrix4();
 const _up      = new THREE.Vector3(0, 1, 0);
@@ -30,13 +31,15 @@ interface SingleBlogNodeProps {
   index:          number;
   mode:           Mode;
   activeTrack:    Track;
+  tier:           PerformanceTier;
 }
 
-function SingleBlogNode({ post, scrollProgress, index, mode, activeTrack }: SingleBlogNodeProps) {
+function SingleBlogNode({ post, scrollProgress, index, mode, activeTrack, tier }: SingleBlogNodeProps) {
   const groupRef    = useRef<THREE.Group>(null);
   const wrapperRef  = useRef<HTMLDivElement>(null);
   const dragWrapRef = useRef<HTMLDivElement>(null);
   const ringRef     = useRef<THREE.Mesh>(null);
+  const _frame      = useRef(0);
   const modeRef     = useRef(mode);
   modeRef.current   = mode;
   const activeTrackRef = useRef(activeTrack);
@@ -50,6 +53,10 @@ function SingleBlogNode({ post, scrollProgress, index, mode, activeTrack }: Sing
   useFrame(({ camera: cam, clock }) => {
     const group = groupRef.current;
     if (!group) return;
+
+    _frame.current++;
+    const step = tier === 'high' || tier === 'medium' ? 1 : tier === 'low' ? 2 : 4;
+    if (_frame.current % step !== 0) return;
 
     const isBlogTrack =
       modeRef.current === 'blog' ||
@@ -72,10 +79,12 @@ function SingleBlogNode({ post, scrollProgress, index, mode, activeTrack }: Sing
     const elapsed = clock.elapsedTime;
     hiddenRef.current = false;
 
-    const wobble = 1 - p * 0.80;
-    const wobX   = Math.sin(elapsed * 0.52 + phase) * 0.14 * wobble;
-    const wobZ   = Math.cos(elapsed * 0.38 + phase * 1.21) * 0.10 * wobble;
-    const floatY = Math.sin(elapsed * 0.31 + phase * 0.88) * 0.28 * wobble;
+    const wobScale = tier === 'low' ? 0.5 : tier === 'minimal' ? 0.25 : 1;
+    const wobFreq  = tier === 'minimal' ? 0.5 : 1;
+    const wobble   = (1 - p * 0.80) * wobScale;
+    const wobX     = Math.sin(elapsed * 0.52 * wobFreq + phase) * 0.14 * wobble;
+    const wobZ     = Math.cos(elapsed * 0.38 * wobFreq + phase * 1.21) * 0.10 * wobble;
+    const floatY   = Math.sin(elapsed * 0.31 * wobFreq + phase * 0.88) * 0.28 * wobble;
 
     const ox = drag.offset.current.x;
     const oy = drag.offset.current.y;
@@ -106,10 +115,12 @@ function SingleBlogNode({ post, scrollProgress, index, mode, activeTrack }: Sing
     }
 
     const ring = ringRef.current;
-    if (ring) {
+    if (ring && (tier === 'high' || tier === 'medium')) {
       const mat    = ring.material as THREE.MeshBasicMaterial;
       const target = effectiveP > 0.4 ? 0.55 * effectiveP : 0;
       mat.opacity += (target - mat.opacity) * 0.10;
+    } else if (ring) {
+      (ring.material as THREE.MeshBasicMaterial).opacity = 0;
     }
   });
 
@@ -144,10 +155,12 @@ export function BlogNodes({
   scrollProgress,
   mode,
   activeTrack,
+  tier,
 }: {
   scrollProgress: MutableRefObject<number>;
   mode: Mode;
   activeTrack: Track;
+  tier: PerformanceTier;
 }) {
   return (
     <>
@@ -159,6 +172,7 @@ export function BlogNodes({
           index={i}
           mode={mode}
           activeTrack={activeTrack}
+          tier={tier}
         />
       ))}
     </>

@@ -9,6 +9,7 @@ import { DragWake } from './DragWake';
 import { secondaryMediaByNode } from '../../data/secondaryNodes';
 import { SecondaryOrbit } from './SecondaryNodes';
 import type { Mode, Track } from '../../types';
+import type { PerformanceTier } from '../../hooks/usePerformanceTier';
 
 const _mat4    = new THREE.Matrix4();
 const _up      = new THREE.Vector3(0, 1, 0);
@@ -44,15 +45,17 @@ interface SingleNodeProps {
   index:          number;
   mode:           Mode;
   activeTrack:    Track;
+  tier:           PerformanceTier;
 }
 
-function SingleNode({ node, scrollProgress, index, mode, activeTrack }: SingleNodeProps) {
+function SingleNode({ node, scrollProgress, index, mode, activeTrack, tier }: SingleNodeProps) {
   const groupRef          = useRef<THREE.Group>(null);
   const wrapperRef        = useRef<HTMLDivElement>(null);
   const descWrapperRef    = useRef<HTMLDivElement>(null);
   const hoverRef          = useRef(false);
   const ringRef           = useRef<THREE.Mesh>(null);
   const hoverParticlesRef = useRef<THREE.Points>(null);
+  const _frame            = useRef(0);
 
   const centerRef    = useRef(new THREE.Vector3());
   const proximityRef = useRef(0);
@@ -98,6 +101,10 @@ function SingleNode({ node, scrollProgress, index, mode, activeTrack }: SingleNo
     const group = groupRef.current;
     if (!group) return;
 
+    _frame.current++;
+    const step = tier === 'high' || tier === 'medium' ? 1 : tier === 'low' ? 2 : 4;
+    if (_frame.current % step !== 0) return;
+
     const onMainTrack =
       modeRef.current === 'scroll' ||
       (modeRef.current === 'camera' && activeTrackRef.current === 'main');
@@ -131,10 +138,12 @@ function SingleNode({ node, scrollProgress, index, mode, activeTrack }: SingleNo
     hiddenRef.current = false;
     const elapsed = clock.elapsedTime;
 
-    const wobble = 1 - p * 0.80;
-    const wobX   = Math.sin(elapsed * 0.52 + phase) * 0.18 * wobble;
-    const wobZ   = Math.cos(elapsed * 0.38 + phase * 1.21) * 0.12 * wobble;
-    const floatY = Math.sin(elapsed * 0.31 + phase * 0.88) * 0.35 * wobble;
+    const wobScale = tier === 'low' ? 0.5 : tier === 'minimal' ? 0.25 : 1;
+    const wobFreq  = tier === 'minimal' ? 0.5 : 1;
+    const wobble   = (1 - p * 0.80) * wobScale;
+    const wobX     = Math.sin(elapsed * 0.52 * wobFreq + phase) * 0.18 * wobble;
+    const wobZ     = Math.cos(elapsed * 0.38 * wobFreq + phase * 1.21) * 0.12 * wobble;
+    const floatY   = Math.sin(elapsed * 0.31 * wobFreq + phase * 0.88) * 0.35 * wobble;
 
     const ox = drag.offset.current.x;
     const oy = drag.offset.current.y;
@@ -181,18 +190,22 @@ function SingleNode({ node, scrollProgress, index, mode, activeTrack }: SingleNo
     }
 
     const ring = ringRef.current;
-    if (ring) {
+    if (ring && (tier === 'high' || tier === 'medium')) {
       const mat    = ring.material as THREE.MeshBasicMaterial;
       const target = hoverRef.current ? 0.75 * effectiveP : 0;
       mat.opacity += (target - mat.opacity) * 0.10;
+    } else if (ring) {
+      (ring.material as THREE.MeshBasicMaterial).opacity = 0;
     }
 
     const hp = hoverParticlesRef.current;
-    if (hp) {
+    if (hp && (tier === 'high' || tier === 'medium')) {
       const mat           = hp.material as THREE.PointsMaterial;
       const targetOpacity = hoverRef.current ? 0.85 * effectiveP : 0;
       mat.opacity        += (targetOpacity - mat.opacity) * 0.12;
       hp.rotation.z      += 0.008;
+    } else if (hp) {
+      (hp.material as THREE.PointsMaterial).opacity = 0;
     }
   });
 
@@ -260,10 +273,12 @@ export function Nodes({
   scrollProgress,
   mode,
   activeTrack,
+  tier,
 }: {
   scrollProgress: MutableRefObject<number>;
   mode: Mode;
   activeTrack: Track;
+  tier: PerformanceTier;
 }) {
   return (
     <>
@@ -275,6 +290,7 @@ export function Nodes({
           index={i}
           mode={mode}
           activeTrack={activeTrack}
+          tier={tier}
         />
       ))}
     </>
