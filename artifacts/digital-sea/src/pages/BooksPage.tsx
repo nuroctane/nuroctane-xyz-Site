@@ -19,15 +19,16 @@ interface Shelf {
   books: Book[];
 }
 
-interface GBResult {
-  id: string;
-  volumeInfo: {
-    title: string;
-    authors?: string[];
-    imageLinks?: { thumbnail?: string; smallThumbnail?: string };
-    description?: string;
-    publishedDate?: string;
-  };
+interface OLResult {
+  key: string;
+  title: string;
+  author_name?: string[];
+  cover_i?: number;
+  first_publish_year?: number;
+}
+
+interface OLWork {
+  description?: string | { value: string };
 }
 
 interface APIResponse {
@@ -72,9 +73,9 @@ function initial(name: string): string {
   return m ? m[0].toUpperCase() : '?';
 }
 
-function fixCoverUrl(url: string | undefined): string | undefined {
-  if (!url) return undefined;
-  return url.replace(/^http:/, 'https:');
+function coverUrl(coverId: number | undefined): string | undefined {
+  if (!coverId) return undefined;
+  return `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`;
 }
 
 function buildQuery(book: Book): string {
@@ -126,7 +127,7 @@ export default function BooksPage() {
   const [visitorBooks, setVisitorBooks] = useState<Book[]>([]);
   const [readOverrides, setReadOverrides] = useState<Record<string, boolean>>({});
   const [searchQuery, setSearchQuery] = useState('');
-  const [searchResults, setSearchResults] = useState<GBResult[]>([]);
+  const [searchResults, setSearchResults] = useState<OLResult[]>([]);
   const [searching, setSearching] = useState(false);
   const [coverCache, setCoverCache] = useState<Record<string, string | null>>({});
   const [detailCover, setDetailCover] = useState<string | null>(null);
@@ -139,7 +140,9 @@ export default function BooksPage() {
   const [apiOnline, setApiOnline] = useState(true);
   const [submitting, setSubmitting] = useState(false);
 
-  const [pendingBook, setPendingBook] = useState<GBResult | null>(null);
+  const [pendingBook, setPendingBook] = useState<OLResult | null>(null);
+  const [pendingSynopsis, setPendingSynopsis] = useState<string | null>(null);
+  const [pendingLoading, setPendingLoading] = useState(false);
   const [pendingNote, setPendingNote] = useState('');
 
   const bgStarted = useRef(false);
@@ -185,9 +188,7 @@ export default function BooksPage() {
             `https://openlibrary.org/search.json?q=${buildQuery(b)}&fields=cover_i&limit=1`,
           );
           const data = await res.json();
-          const coverId = data.docs?.[0]?.cover_i;
-          const url = coverId ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg` : null;
-          return { key: bookKey(b), url };
+          return { key: bookKey(b), url: coverUrl(data.docs?.[0]?.cover_i) ?? null };
         } catch {
           return { key: bookKey(b), url: null };
         }
@@ -238,7 +239,7 @@ export default function BooksPage() {
     }
   };
 
-  // Debounced Google Books search
+  // Debounced Open Library search
   useEffect(() => {
     if (searchTimer.current) clearTimeout(searchTimer.current);
     if (searchAbort.current) searchAbort.current.abort();
@@ -256,11 +257,11 @@ export default function BooksPage() {
         const ac = new AbortController();
         searchAbort.current = ac;
         const res = await fetch(
-          `https://www.googleapis.com/books/v1/volumes?q=${encodeURIComponent(q)}&maxResults=8&fields=items(id,volumeInfo/title,authors,imageLinks,description,publishedDate)`,
+          `https://openlibrary.org/search.json?q=${encodeURIComponent(q)}&fields=key,title,author_name,cover_i,first_publish_year&limit=8`,
           { signal: ac.signal },
         );
         const data = await res.json();
-        setSearchResults((data.items ?? []) as GBResult[]);
+        setSearchResults((data.docs ?? []) as OLResult[]);
       } catch {
       } finally {
         setSearching(false);
@@ -273,7 +274,7 @@ export default function BooksPage() {
     };
   }, [searchQuery]);
 
-  // Cover fetch for modal (uses Google Books)
+  // Cover fetch for modal
   const fetchCover = useCallback(async (book: Book): Promise<string | null> => {
     const cacheKey = bookKey(book);
     if (cacheKey in coverCache) return coverCache[cacheKey];
@@ -282,8 +283,7 @@ export default function BooksPage() {
         `https://openlibrary.org/search.json?q=${buildQuery(book)}&fields=cover_i&limit=1`,
       );
       const data = await res.json();
-      const coverId = data.docs?.[0]?.cover_i;
-      const url = coverId ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg` : null;
+      const url = coverUrl(data.docs?.[0]?.cover_i) ?? null;
       const next = { ...coverCache, [cacheKey]: url };
       setCoverCache(next);
       saveCoverCache(next);
@@ -301,24 +301,36 @@ export default function BooksPage() {
     fetchCover(detail).then(url => { setDetailCover(url); setLoadingCover(false); });
   }, [detail, fetchCover]);
 
-  // Confirmation dialog — synopsis comes directly from Google Books search results
-  const openConfirmation = (result: GBResult) => {
+  // Confirmation dialog — fetch synopsis from Open Library works endpoint
+  const openConfirmation = (result: OLResult) => {
     setPendingBook(result);
+    setPendingSynopsis(null);
+    setPendingLoading(true);
     setPendingNote('');
     setSearchQuery('');
     setSearchResults([]);
+
+    fetch(`https://openlibrary.org${result.key}.json`)
+      .then(res => res.json())
+      .then((work: OLWork) => {
+        const desc = typeof work.description === 'string'
+          ? work.description
+          : work.description?.value ?? null;
+        setPendingSynopsis(desc);
+      })
+      .catch(() => setPendingSynopsis(null))
+      .finally(() => setPendingLoading(false));
   };
 
   const confirmAddBook = async () => {
     if (!pendingBook) return;
     setSubmitting(true);
-    const vi = pendingBook.volumeInfo;
     const book: Book = {
-      title: vi.title,
-      author: vi.authors?.[0] ?? '',
+      title: pendingBook.title,
+      author: pendingBook.author_name?.[0] ?? '',
       read: false,
       visitor: true,
-      coverUrl: fixCoverUrl(vi.imageLinks?.thumbnail),
+      coverUrl: coverUrl(pendingBook.cover_i),
       dateAdded: new Date().toISOString(),
       note: pendingNote.trim() || undefined,
       sessionId: sessionId.current,
@@ -338,6 +350,7 @@ export default function BooksPage() {
       setSubmitting(false);
       setPendingBook(null);
       setPendingNote('');
+      setPendingSynopsis(null);
     }
   };
 
@@ -394,7 +407,7 @@ export default function BooksPage() {
           ? { ...b, read: newRead }
           : b,
       ));
-      setDetail(d => d && d.title === book.title && d.author === book.author && d.dateAdded === book.dateAdded
+      setDetail(d => d && d.title === book.title && d.author === book.author && b.dateAdded === book.dateAdded
         ? { ...d, read: newRead }
         : d,
       );
@@ -471,7 +484,7 @@ export default function BooksPage() {
           <input
             className="bs-add-input"
             type="text"
-            placeholder="Search Google Books to add a book..."
+            placeholder="Search Open Library to add a book..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={(e) => { if (e.key === 'Enter' && searchResults.length === 0) addManualBook(); }}
@@ -482,25 +495,21 @@ export default function BooksPage() {
 
         {searchResults.length > 0 && (
           <div className="bs-search-dropdown">
-            {searchResults.map((r) => {
-              const vi = r.volumeInfo;
-              const thumb = fixCoverUrl(vi.imageLinks?.smallThumbnail);
-              return (
-                <button key={r.id} className="bs-search-result" onClick={() => openConfirmation(r)}>
-                  {thumb ? (
-                    <img src={thumb} alt="" className="bs-search-thumb" />
-                  ) : (
-                    <div className="bs-search-thumb bs-search-thumb--placeholder">{initial(vi.title)}</div>
-                  )}
-                  <div className="bs-search-info">
-                    <div className="bs-search-title">{vi.title}</div>
-                    {vi.authors && <div className="bs-search-author">{vi.authors[0]}</div>}
-                    {vi.publishedDate && <div className="bs-search-year">{vi.publishedDate}</div>}
-                  </div>
-                  <span className="bs-search-add">+ ADD</span>
-                </button>
-              );
-            })}
+            {searchResults.map((r) => (
+              <button key={r.key} className="bs-search-result" onClick={() => openConfirmation(r)}>
+                {r.cover_i ? (
+                  <img src={`https://covers.openlibrary.org/b/id/${r.cover_i}-S.jpg`} alt="" className="bs-search-thumb" />
+                ) : (
+                  <div className="bs-search-thumb bs-search-thumb--placeholder">{initial(r.title)}</div>
+                )}
+                <div className="bs-search-info">
+                  <div className="bs-search-title">{r.title}</div>
+                  {r.author_name && <div className="bs-search-author">{r.author_name[0]}</div>}
+                  {r.first_publish_year && <div className="bs-search-year">{r.first_publish_year}</div>}
+                </div>
+                <span className="bs-search-add">+ ADD</span>
+              </button>
+            ))}
           </div>
         )}
 
@@ -615,25 +624,27 @@ export default function BooksPage() {
             <div className="bs-confirm-header">RECOMMEND THIS BOOK</div>
             <div className="bs-confirm-card">
               <div className="bs-confirm-cover">
-                {fixCoverUrl(pendingBook.volumeInfo.imageLinks?.thumbnail) ? (
-                  <img src={fixCoverUrl(pendingBook.volumeInfo.imageLinks.thumbnail)} alt="" className="bs-confirm-cover-img" />
+                {pendingBook.cover_i ? (
+                  <img src={coverUrl(pendingBook.cover_i)} alt="" className="bs-confirm-cover-img" />
                 ) : (
-                  <div className="bs-confirm-cover-placeholder">{initial(pendingBook.volumeInfo.title)}</div>
+                  <div className="bs-confirm-cover-placeholder">{initial(pendingBook.title)}</div>
                 )}
               </div>
               <div className="bs-confirm-meta">
-                <div className="bs-confirm-title">{pendingBook.volumeInfo.title}</div>
-                {pendingBook.volumeInfo.authors && (
-                  <div className="bs-confirm-author">{pendingBook.volumeInfo.authors[0]}</div>
+                <div className="bs-confirm-title">{pendingBook.title}</div>
+                {pendingBook.author_name && (
+                  <div className="bs-confirm-author">{pendingBook.author_name[0]}</div>
                 )}
-                {pendingBook.volumeInfo.publishedDate && (
-                  <div className="bs-confirm-year">{pendingBook.volumeInfo.publishedDate}</div>
+                {pendingBook.first_publish_year && (
+                  <div className="bs-confirm-year">{pendingBook.first_publish_year}</div>
                 )}
               </div>
             </div>
             <div className="bs-confirm-synopsis">
-              {pendingBook.volumeInfo.description ? (
-                <p>{pendingBook.volumeInfo.description.length > 600 ? pendingBook.volumeInfo.description.slice(0, 600) + '...' : pendingBook.volumeInfo.description}</p>
+              {pendingLoading ? (
+                <div className="bs-confirm-synopsis-loading">Loading synopsis...</div>
+              ) : pendingSynopsis ? (
+                <p>{pendingSynopsis.length > 600 ? pendingSynopsis.slice(0, 600) + '...' : pendingSynopsis}</p>
               ) : (
                 <div className="bs-confirm-synopsis-none">No synopsis available.</div>
               )}
