@@ -1,3 +1,4 @@
+
 # Quotes
 
 > [!note] Maintenance
@@ -1722,3 +1723,4 @@ _Good fragments that still belong here, but do not yet have a perfect home._
 > I get to > I have to.
 
 > I recommend taking pictures and videos of your parents more often.
+
