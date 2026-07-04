@@ -191,6 +191,8 @@ export default function BooksPage() {
   const bgStarted = useRef(false);
   const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const searchAbort = useRef<AbortController | null>(null);
+  const descriptionCacheRef = useRef(descriptionCache);
+  descriptionCacheRef.current = descriptionCache;
 
   // Mount: fetch visitor books from API, start retroactive cover + description fetch
   useEffect(() => {
@@ -455,8 +457,8 @@ export default function BooksPage() {
 
     // Description
     const cacheKey = bookKey(detail);
-    if (cacheKey in descriptionCache) {
-      setDetailDescription(descriptionCache[cacheKey]);
+    if (cacheKey in descriptionCacheRef.current) {
+      setDetailDescription(descriptionCacheRef.current[cacheKey]);
     } else {
       setDetailDescription(null);
       setLoadingDescription(true);
@@ -464,7 +466,7 @@ export default function BooksPage() {
     }
 
     return () => { cancelled = true; };
-  }, [detail, descriptionCache]);
+  }, [detail]);
 
   // Confirmation dialog
   const openConfirmation = (result: SearchResult) => {
