@@ -184,7 +184,7 @@ export function AudioControl({ activeTrack, scrollProgress }: Props) {
       <audio
         ref={audioRef}
         src={playlist ? toSrc(playlist[trackIdx]) : undefined}
-        preload={playlist ? 'auto' : 'none'}
+        preload={playlist ? 'metadata' : 'none'}
         onEnded={handleEnded}
         loop={Boolean(playlist && playlist.length === 1)}
       />

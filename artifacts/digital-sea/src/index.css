@@ -53,7 +53,7 @@ html.standalone-active body {
 .sticky-section-label {
   position: fixed;
   top: 1.4rem;
-  left: 1.5rem;
+  left: 4rem;
   z-index: 800;
   pointer-events: none;
   transition: opacity 0.28s ease;
@@ -502,10 +502,10 @@ html.standalone-active body {
   flex-direction: column;
   justify-content: center;
   align-items: flex-start;
-  gap: 6px;
-  width: 48px;
-  height: 48px;
-  padding: 10px 9px;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 8px 7px;
   background: rgba(5, 18, 26, 0.90);
   border: 1px solid rgba(93, 232, 240, 0.22);
   /* Angular cut: top-right corner */
@@ -531,13 +531,13 @@ html.standalone-active body {
   transition: transform 0.22s ease, opacity 0.22s ease, width 0.22s ease;
 }
 
-.qnav-bar--1 { width: 26px; }
-.qnav-bar--2 { width: 18px; }
-.qnav-bar--3 { width: 12px;  }
+.qnav-bar--1 { width: 22px; }
+.qnav-bar--2 { width: 15px; }
+.qnav-bar--3 { width: 10px;  }
 
 /* Open state: morphs to X */
 .qnav-trigger--open .qnav-bar--1 {
-  width: 26px;
+  width: 22px;
   transform: rotate(40deg) translateY(2px);
 }
 .qnav-trigger--open .qnav-bar--2 {
@@ -545,7 +545,7 @@ html.standalone-active body {
   transform: scaleX(0);
 }
 .qnav-trigger--open .qnav-bar--3 {
-  width: 26px;
+  width: 22px;
   transform: rotate(-40deg) translateY(-2px);
 }
 
@@ -973,7 +973,7 @@ html.standalone-active body {
   .hero-title { letter-spacing: 0.14em; }
   .hero-sub   { letter-spacing: 0.3em; }
 
-  .sticky-section-label { top: 0.9rem; left: 1rem; }
+  .sticky-section-label { top: 0.9rem; left: 4.2rem; }
   .sticky-section-label .label-text { font-size: 0.5rem; letter-spacing: 0.18em; }
 
   .summary-panel { width: 90vw; }
