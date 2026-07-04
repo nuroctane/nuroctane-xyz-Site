@@ -1,5 +1,7 @@
 import { useMemo, useState } from 'react';
 import { StandaloneNav } from './StandaloneNav';
+import { MiniAudio } from '../components/hud/MiniAudio';
+import { ScrollToTop } from '../components/hud/ScrollToTop';
 import { useStandaloneScroll } from '../hooks/useStandaloneScroll';
 import raw from '../content/quotes.md?raw';
 
@@ -114,9 +116,11 @@ export default function QuotesPage() {
 
   return (
     <div className="standalone-page">
+      <ScrollToTop />
       <StandaloneNav />
       <div className="standalone-header">
         <span className="standalone-prefix">SYS://</span>QUOTES
+        <MiniAudio />
       </div>
 
       <div className="qs-tabs">

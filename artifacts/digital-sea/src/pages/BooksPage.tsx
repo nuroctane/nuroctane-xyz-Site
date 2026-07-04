@@ -1,5 +1,7 @@
 import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
 import { StandaloneNav } from './StandaloneNav';
+import { MiniAudio } from '../components/hud/MiniAudio';
+import { ScrollToTop } from '../components/hud/ScrollToTop';
 import { useStandaloneScroll } from '../hooks/useStandaloneScroll';
 import raw from '../content/books.md?raw';
 
@@ -440,6 +442,7 @@ export default function BooksPage() {
 
   useEffect(() => {
     if (!detail) { setDetailCover(null); setLoadingCover(false); setDetailDescription(null); setLoadingDescription(false); return; }
+    let cancelled = false;
 
     // Cover
     if (detail.coverUrl) {
@@ -447,7 +450,7 @@ export default function BooksPage() {
     } else {
       setDetailCover(null);
       setLoadingCover(true);
-      fetchCover(detail).then(url => { setDetailCover(url); setLoadingCover(false); });
+      fetchCover(detail).then(url => { if (!cancelled) { setDetailCover(url); setLoadingCover(false); } });
     }
 
     // Description
@@ -457,9 +460,11 @@ export default function BooksPage() {
     } else {
       setDetailDescription(null);
       setLoadingDescription(true);
-      fetchDescription(detail).then(desc => { setDetailDescription(desc); setLoadingDescription(false); });
+      fetchDescription(detail).then(desc => { if (!cancelled) { setDetailDescription(desc); setLoadingDescription(false); } });
     }
-  }, [detail, fetchCover, fetchDescription, descriptionCache]);
+
+    return () => { cancelled = true; };
+  }, [detail, descriptionCache]);
 
   // Confirmation dialog
   const openConfirmation = (result: SearchResult) => {
@@ -613,10 +618,12 @@ export default function BooksPage() {
 
   return (
     <div className="standalone-page">
+      <ScrollToTop />
       <StandaloneNav />
       <div className="standalone-header">
         <span className="standalone-prefix">SYS://</span>BOOKS
         {isAdmin && <span className="bs-admin-badge">ADMIN</span>}
+        <MiniAudio />
       </div>
 
       {!apiOnline && (
