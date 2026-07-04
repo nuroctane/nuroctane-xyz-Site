@@ -1,3 +1,13 @@
+---
+tags:
+  - metaphysics
+  - philosophy
+  - spirituality
+  - psychology
+type: quote-bank
+status: cleaned
+last_cleaned: 2026-06-23
+---
 
 # Quotes
 
