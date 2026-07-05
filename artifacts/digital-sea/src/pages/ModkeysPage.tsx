@@ -25,14 +25,16 @@ function useModkeysStyles() {
     // .modkeys-page anyway since that's where all modkeys DOM lives.
     const scopedLayout = modkeysLayout
       .replace(/\* \{/g, '.modkeys-page * {')
-      .replace(/^html,/gm, '.modkeys-page,')
+      .replace(/^html,/gm, 'html, .modkeys-page,')
       .replace(/^body \{/gm, '.modkeys-page {')
       .replace(/^body /gm, '.modkeys-page ')
       .replace(/::-webkit-scrollbar/g, '.modkeys-page ::-webkit-scrollbar');
     const scopedComponents = modkeysComponents;
 
     const css = `${scopedVars}\n${scopedLayout}\n${scopedComponents}
+.modkeys-page .app { grid-template-rows: 1fr; }
 .modkeys-page .side { overflow-y: auto; height: 100%; min-height: 0; }
+.modkeys-page .main { overflow: hidden; }
 .modkeys-page .content { overflow: hidden; }`;
 
     const style = document.createElement('style');
