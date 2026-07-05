@@ -12,7 +12,7 @@
       }
     },
     {
-      "src": "artifacts/api-server/api/index.ts",
+      "src": "artifacts/api-server/api/index.js",
       "use": "@vercel/node",
       "config": {
         "memory": 256
@@ -20,7 +20,7 @@
     }
   ],
   "routes": [
-    { "src": "/api/(.*)", "dest": "artifacts/api-server/api/index.ts" },
+    { "src": "/api/(.*)", "dest": "artifacts/api-server/api/index.js" },
     { "src": "/((?!api/).*)", "dest": "artifacts/digital-sea/index.html" }
   ]
 }
