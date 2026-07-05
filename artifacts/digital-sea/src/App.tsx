@@ -71,6 +71,7 @@ export default function App() {
         return () => { cancelled = true; cancelAnimationFrame(id); };
       }
     }
+    return;
   }, [location]);
 
   function handleSetMode(next: Mode) {

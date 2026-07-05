@@ -146,7 +146,7 @@ export default function ResumePage() {
           {s.blocks.map((b, bi) =>
             b.list ? (
               <ul key={bi} className="resume-list">
-                {b.items.map((item, ii) => (
+                {b.items?.map((item, ii) => (
                   <li key={ii}>{renderInline(item)}</li>
                 ))}
               </ul>

@@ -50,6 +50,7 @@ export default function ModkeysPage() {
 
     (async () => {
       try {
+        // @ts-expect-error Vite resolves cross-package imports; modkeys has no tsconfig project reference
         const mod = await import('../../modkeys/src/js/app.js');
         mod.mountModkeys();
       } catch (err) {
@@ -60,6 +61,7 @@ export default function ModkeysPage() {
     return () => {
       (async () => {
         try {
+          // @ts-expect-error Vite resolves cross-package imports; modkeys has no tsconfig project reference
           const mod = await import('../../modkeys/src/js/app.js');
           if (mod.unmountModkeys) mod.unmountModkeys();
         } catch {}
