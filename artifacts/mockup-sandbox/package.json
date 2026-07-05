@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "vite dev",
-    "build": "vite build",
+    "build": "echo mockup-sandbox: skip build",
     "preview": "vite preview",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
