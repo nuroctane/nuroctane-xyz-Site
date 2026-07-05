@@ -1,7 +1,6 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "buildCommand": "pnpm run build",
-  "outputDirectory": "artifacts/digital-sea/dist/public",
   "installCommand": "pnpm install --no-frozen-lockfile",
   "builds": [
     {
@@ -21,6 +20,7 @@
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "artifacts/api-server/api/index.js" },
-    { "src": "/((?!api/).*)", "dest": "artifacts/digital-sea/index.html" }
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
