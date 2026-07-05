@@ -5,7 +5,7 @@ import { ScrollToTop } from '../components/hud/ScrollToTop';
 import { useStandaloneScroll } from '../hooks/useStandaloneScroll';
 import raw from '../content/books.md?raw';
 
-const GB_KEY = 'AIzaSyAxgOroemPIK-hwEU7OLnW4m3g3ExRd3CM';
+const GB_KEY = import.meta.env.VITE_GOOGLE_BOOKS_API_KEY;
 const GB_BASE = 'https://www.googleapis.com/books/v1/volumes';
 const OL_SEARCH = 'https://openlibrary.org/search.json';
 
