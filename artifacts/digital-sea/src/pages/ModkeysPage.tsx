@@ -32,10 +32,85 @@ function useModkeysStyles() {
     const scopedComponents = modkeysComponents;
 
     const css = `${scopedVars}\n${scopedLayout}\n${scopedComponents}
+/* Desktop: constrain grid/flex children to prevent overflow */
 .modkeys-page .app { grid-template-rows: 1fr; }
 .modkeys-page .side { overflow-y: auto; height: 100%; min-height: 0; }
 .modkeys-page .main { overflow: hidden; }
-.modkeys-page .content { overflow: hidden; }`;
+.modkeys-page .content { overflow: hidden; }
+
+/* Keycaps Preview — CSS grid layout (replaces absolute-positioned keys) */
+.modkeys-page .preview {
+  display: grid !important;
+  grid-template-columns: repeat(3, auto);
+  grid-template-rows: 1fr auto;
+  justify-content: center;
+  align-items: center;
+  justify-items: center;
+  align-content: center;
+  gap: 12px 10px;
+  padding: 16px;
+}
+.modkeys-page .preview .kc {
+  position: relative !important;
+  left: auto !important;
+  top: auto !important;
+  width: 52px !important;
+  height: 52px !important;
+}
+.modkeys-page .preview .kc:nth-child(1) { grid-column: 1; grid-row: 1; }
+.modkeys-page .preview .kc:nth-child(2) { grid-column: 2; grid-row: 1; }
+.modkeys-page .preview .kc:nth-child(3) { grid-column: 3; grid-row: 1; }
+.modkeys-page .preview .kc:nth-child(4) {
+  grid-column: 1 / -1;
+  grid-row: 2;
+  width: 130px !important;
+  height: 36px !important;
+}
+@media (max-width: 1024px) {
+  .modkeys-page .preview { gap: 10px 8px; padding: 14px; }
+  .modkeys-page .preview .kc { width: 46px !important; height: 46px !important; }
+  .modkeys-page .preview .kc:nth-child(4) { width: 110px !important; height: 32px !important; }
+}
+@media (max-width: 768px) {
+  .modkeys-page .preview { gap: 8px 6px; padding: 12px; height: auto !important; min-height: 100px; }
+  .modkeys-page .preview .kc { width: 38px !important; height: 38px !important; }
+  .modkeys-page .preview .kc:nth-child(4) { width: 96px !important; height: 28px !important; }
+  .modkeys-page .preview .kc .kctop { font-size: 10px; padding: 4px 0 0 5px; }
+}
+@media (max-width: 420px) {
+  .modkeys-page .preview { gap: 6px 4px; padding: 10px; min-height: 80px; }
+  .modkeys-page .preview .kc { width: 30px !important; height: 30px !important; }
+  .modkeys-page .preview .kc:nth-child(4) { width: 74px !important; height: 22px !important; }
+  .modkeys-page .preview .kc .kctop { font-size: 8px; padding: 3px 0 0 3px; }
+}
+
+/* Mobile layout rework */
+@media (max-width: 768px) {
+  .modkeys-page .stageCol { height: 180px !important; }
+  .modkeys-page .main { overflow: hidden auto !important; }
+  .modkeys-page .content { overflow: visible !important; }
+  .modkeys-page .chip { height: 30px; padding: 0 10px; font-size: 11px; border-radius: 8px; }
+  .modkeys-page .sw { width: 26px; height: 26px; }
+  .modkeys-page .profBtn { width: 42px; height: 34px; }
+  .modkeys-page .libBtn { height: 36px; font-size: 11px; }
+  .modkeys-page .saveRow { font-size: 11px; height: 36px; }
+  .modkeys-page .grp { margin-bottom: 12px; }
+  .modkeys-page .glabel { font-size: 10px; margin-bottom: 5px; }
+  .modkeys-page .snav button { min-width: 48px; height: 52px; }
+}
+@media (max-width: 420px) {
+  .modkeys-page .stageCol { height: 140px !important; }
+  .modkeys-page .chip { height: 26px; padding: 0 8px; font-size: 10px; }
+  .modkeys-page .sw { width: 22px; height: 22px; }
+  .modkeys-page .profBtn { width: 36px; height: 30px; }
+  .modkeys-page .libBtn { height: 32px; font-size: 10px; }
+  .modkeys-page .saveRow { height: 32px; font-size: 10px; }
+  .modkeys-page .snav button { min-width: 44px; height: 44px; }
+  .modkeys-page .snav .ic { width: 14px; height: 14px; }
+  .modkeys-page .rpBody { padding: 8px 10px 12px; }
+  .modkeys-page .rpHead { padding: 10px 10px 8px; }
+  .modkeys-page .rpHead h2 { font-size: 10px; }
+}`;
 
     const style = document.createElement('style');
     style.textContent = css;

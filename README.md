@@ -50,6 +50,47 @@ The site is built as a single-page application with a distinct aesthetic inspire
 - Pagination for large collections
 - Clean, readable typography
 
+### ⌨️ Modkeys Keyboard Configurator
+The Modkeys Keyboard Configurator is a fully integrated mechanical keyboard customization tool that allows users to design and visualize their ideal keyboard layouts in real-time 3D.
+
+#### Features
+- **Complete Customization**: Layout (60%, 65%, 75%), profile, material, switches, keycaps, case, plate, lighting, and extras
+- **Real-time 3D Preview**: Powered by Three.js with realistic materials and lighting
+- **Per-Key Customization**: Double-click any key to customize text, color, font size, add glow effects, or upload images
+- **Theme System**: Light/dark mode with smooth transitions
+- **Export Options**: 
+  - KLE (Keyboard Layout Editor) JSON
+  - SVG layout template
+  - Detailed spec sheet with BOM
+  - Shareable URL with encoded state
+- **Built-in Presets**: 15+ designer-curated presets showcasing different styles
+- **Extensive Library**: 
+  - 20+ colorways (including Noir, Embers, Matcha, Carbon, Vaporwave, Dracula, Blush, Honey)
+  - 16 case options (Porcelain, Clay, Space Gray, Midnight, Silver, Navy, Olive, E-White, Rose Gold, Burgundy, Forest, Lavender, Copper, Coral, Arctic, Sakura)
+  - 8 plate options (Aluminum, Brass, Polycarbonate, Carbon Fiber, Copper, Steel, POM, FR4)
+  - 10 switch types (Boba U4T, Holy Panda, Box Jade, Silent Ink, Cream, Teal, Sunset, Topaz, Emerald, Silver)
+  - 7 keycap profiles (Cherry, OEM, XDA, SA, DSA, MT3, ASA)
+  - 4 extras (Rotary Knob, Coiled Cable, Wrist Rest, Switch Lube Service)
+- **Interactive Controls**: 
+  - Orbit/pan camera controls with inertia
+  - Multiple view presets (3D, Exploded, Top, Side, Front)
+  - Sidebar navigation with instant section switching
+  - Export and save functionality
+
+#### Technical Implementation
+The Modkeys configurator is embedded as a standalone React page (`/modkeys`) within the Next.js application. Key technical aspects:
+- **CSS Scoping**: All Modkeys CSS is scoped under `.modkeys-page` to prevent style conflicts with the main site
+- **Theme Independence**: Uses its own CSS variable system (`--bg`, `--ink`, etc.) that doesn't interfere with the site's Tailwind-based design
+- **Performance**: Lazy-loaded via React Suspense, with all heavy assets (3D models, textures) loaded on demand
+- **State Management**: Centralized state store with undo/redo history (50-step limit)
+- **Sharing**: Configuration can be shared via URL-encoded state or exported as KLE/SVG/spec files
+
+#### Recent Improvements
+- **Keycaps Preview**: Replaced absolute-positioned keycaps with CSS grid layout — properly centers TAB, Q, S keys with even spacing and places the spacebar below them. Keys scale responsively at all breakpoints (52px desktop → 30px small mobile).
+- **Mobile Rework**: Stage height reduced from 340→180px (≤768px) and 260→140px (≤420px) to give configuration controls adequate room. Fixed scrolling model (main area scrolls, tab bar stays fixed). Compact controls (chips, buttons, swatches) sized for touch targets ≥44px. Legibility improved with responsive font sizes.
+
+### 💬 Quotes Page
+
 ### 🎨 Design System
 - Dark, terminal-inspired aesthetic
 - Smooth animations and transitions

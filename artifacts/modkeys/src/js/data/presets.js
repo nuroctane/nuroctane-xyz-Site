@@ -75,4 +75,93 @@ export const PRESETS = [
       light: { mode: "off", color: "#ffffff", bright: 1 },
     },
   },
+  // NEW PRESETS
+  {
+    id: "noir",
+    name: "Noir",
+    s: {
+      colorway: "noir",
+      caseColor: "midnight",
+      plate: "steel",
+      sw: "silver",
+      light: { mode: "static", color: "#ffffff", bright: 0.3 },
+    },
+  },
+  {
+    id: "embers",
+    name: "Embers",
+    s: {
+      colorway: "embers",
+      caseColor: "burgundy",
+      plate: "copper",
+      sw: "cream",
+      light: { mode: "static", color: "#ff6b35", bright: 0.8 },
+    },
+  },
+  {
+    id: "matcha",
+    name: "Matcha",
+    s: {
+      colorway: "matcha",
+      caseColor: "forest",
+      plate: "pom",
+      sw: "teal",
+      light: { mode: "static", color: "#4caf50", bright: 0.7 },
+    },
+  },
+  {
+    id: "carbon",
+    name: "Carbon",
+    s: {
+      colorway: "carbon",
+      caseColor: "spacegray",
+      plate: "carbon",
+      sw: "topaz",
+      light: { mode: "static", color: "#ff6b35", bright: 0.9 },
+    },
+  },
+  {
+    id: "vapor",
+    name: "Vaporwave",
+    s: {
+      colorway: "vapor",
+      caseColor: "arctic",
+      plate: "fr4",
+      sw: "emerald",
+      light: { mode: "static", color: "#ff00ff", bright: 0.6 },
+    },
+  },
+  {
+    id: "dracula",
+    name: "Dracula",
+    s: {
+      colorway: "dracula",
+      caseColor: "midnight",
+      plate: "copper",
+      sw: "emerald",
+      light: { mode: "static", color: "#ff79c6", bright: 0.7 },
+    },
+  },
+  {
+    id: "blush",
+    name: "Blush",
+    s: {
+      colorway: "blush",
+      caseColor: "sakura",
+      plate: "brass",
+      sw: "cream",
+      light: { mode: "static", color: "#ffb6c1", bright: 0.6 },
+    },
+  },
+  {
+    id: "honey",
+    name: "Honey",
+    s: {
+      colorway: "honey",
+      caseColor: "sakura",
+      plate: "brass",
+      sw: "silver",
+      light: { mode: "static", color: "#ffd700", bright: 0.7 },
+    },
+  },
 ];
