@@ -3,11 +3,6 @@
   "buildCommand": "pnpm run build",
   "outputDirectory": "artifacts/digital-sea/dist/public",
   "installCommand": "pnpm install",
-  "functions": {
-    "artifacts/api-server/api/index.ts": {
-      "memory": 256
-    }
-  },
   "builds": [
     {
       "src": "artifacts/digital-sea/package.json",
@@ -18,7 +13,10 @@
     },
     {
       "src": "artifacts/api-server/api/index.ts",
-      "use": "@vercel/node"
+      "use": "@vercel/node",
+      "config": {
+        "memory": 256
+      }
     }
   ],
   "routes": [
