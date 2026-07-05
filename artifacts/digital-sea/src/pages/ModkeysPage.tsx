@@ -10,10 +10,14 @@ function useModkeysStyles() {
   const styleRef = useRef<HTMLStyleElement | null>(null);
 
   useEffect(() => {
-    // Wrap modkeys CSS with .modkeys-page parent selector
-    // We replace `:root` with `.modkeys-page` for variable scoping,
-    // and prepend `.modkeys-page` to bare element selectors
-    const scopedVars = modkeysVars.replace(/:root/g, '.modkeys-page');
+    // Scope modkeys CSS under .modkeys-page to avoid leaking to other pages.
+    // Don't scope :root variables — the theme toggle sets data-theme on
+    // <html>, and scoping :root→.modkeys-page would make elements inside
+    // .modkeys-page inherit light variables instead of the dark ones set on
+    // <html>[data-theme="dark"], breaking theme switching.
+    // The variable names (--bg, --ink, etc.) are modkeys-specific and won't
+    // leak to other pages.
+    const scopedVars = modkeysVars;
     // Only scope bare selectors — never rewrite compound selectors like
     // `.snav button {` (would become `.snav .modkeys-page button {` which
     // is wrong because .modkeys-page wraps the entire app, not vice versa).
@@ -27,7 +31,8 @@ function useModkeysStyles() {
       .replace(/::-webkit-scrollbar/g, '.modkeys-page ::-webkit-scrollbar');
     const scopedComponents = modkeysComponents;
 
-    const css = `${scopedVars}\n${scopedLayout}\n${scopedComponents}`;
+    const css = `${scopedVars}\n${scopedLayout}\n${scopedComponents}
+.modkeys-page .side { overflow-y: auto; }`;
 
     const style = document.createElement('style');
     style.textContent = css;
