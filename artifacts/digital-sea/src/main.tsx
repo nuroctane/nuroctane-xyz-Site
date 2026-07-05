@@ -8,6 +8,7 @@ import './index.css';
 const QuotesPage = lazy(() => import('./pages/QuotesPage'));
 const BooksPage  = lazy(() => import('./pages/BooksPage'));
 const ResumePage = lazy(() => import('./pages/ResumePage'));
+const ModkeysPage = lazy(() => import('./pages/ModkeysPage'));
 
 function Fallback() {
   return <div className="page-loading"><div className="page-loading-dot" /></div>;
@@ -20,6 +21,7 @@ function Root() {
   if (path === 'quotes') return <Suspense fallback={<Fallback />}><QuotesPage /></Suspense>;
   if (path === 'books')  return <Suspense fallback={<Fallback />}><BooksPage /></Suspense>;
   if (path === 'resume') return <Suspense fallback={<Fallback />}><ResumePage /></Suspense>;
+  if (path === 'modkeys') return <Suspense fallback={<Fallback />}><ModkeysPage /></Suspense>;
 
   return <App />;
 }

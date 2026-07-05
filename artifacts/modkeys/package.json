@@ -1,0 +1,18 @@
+{
+  "name": "@workspace/modkeys",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "three": "^0.184.0",
+    "gsap": "^3.12.5"
+  },
+  "devDependencies": {
+    "vite": "^6.3.1"
+  }
+}

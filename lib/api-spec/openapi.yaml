@@ -10,6 +10,10 @@ servers:
 tags:
   - name: health
     description: Health operations
+  - name: auth
+    description: Authentication
+  - name: modkeys
+    description: Keyboard configs
 paths:
   /healthz:
     get:
@@ -24,6 +28,140 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+  /auth/me:
+    get:
+      operationId: getAuthMe
+      tags: [auth]
+      summary: Get current user
+      description: Returns the authenticated user or null
+      responses:
+        "200":
+          description: Current user status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AuthMeResponse"
+  /auth/logout:
+    post:
+      operationId: postAuthLogout
+      tags: [auth]
+      summary: Logout
+      description: Clears the auth cookie
+      responses:
+        "200":
+          description: Logged out
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OkResponse"
+  /modkeys/configs:
+    get:
+      operationId: listModkeysConfigs
+      tags: [modkeys]
+      summary: List user's saved keyboard configs
+      description: Returns a list of saved builds for the authenticated user
+      responses:
+        "200":
+          description: List of configs
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConfigListResponse"
+        "401":
+          description: Unauthorized
+    post:
+      operationId: createModkeysConfig
+      tags: [modkeys]
+      summary: Save a keyboard config
+      description: Saves a new keyboard build
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CreateConfigRequest"
+      responses:
+        "201":
+          description: Config created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConfigResponse"
+        "401":
+          description: Unauthorized
+  /modkeys/configs/{id}:
+    get:
+      operationId: getModkeysConfig
+      tags: [modkeys]
+      summary: Get a specific config
+      description: Returns a saved keyboard build with full state
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Config details
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConfigResponse"
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not found
+    put:
+      operationId: updateModkeysConfig
+      tags: [modkeys]
+      summary: Update a config
+      description: Updates a saved keyboard build
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/UpdateConfigRequest"
+      responses:
+        "200":
+          description: Config updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ConfigResponse"
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not found
+    delete:
+      operationId: deleteModkeysConfig
+      tags: [modkeys]
+      summary: Delete a config
+      description: Deletes a saved keyboard build
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Config deleted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/OkResponse"
+        "401":
+          description: Unauthorized
+        "404":
+          description: Not found
 components:
   schemas:
     HealthStatus:
@@ -33,4 +171,112 @@ components:
           type: string
       required:
         - status
-
+    OkResponse:
+      type: object
+      properties:
+        ok:
+          type: boolean
+      required:
+        - ok
+    User:
+      type: object
+      properties:
+        githubId:
+          type: number
+        username:
+          type: string
+        avatarUrl:
+          type: string
+      required:
+        - githubId
+        - username
+        - avatarUrl
+    AuthMeResponse:
+      type: object
+      properties:
+        user:
+          allOf:
+            - $ref: "#/components/schemas/User"
+            - nullable: true
+      required:
+        - user
+    ConfigSummary:
+      type: object
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        layout:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - name
+        - layout
+        - createdAt
+        - updatedAt
+    Config:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: number
+        name:
+          type: string
+        state:
+          type: object
+        layout:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+        updatedAt:
+          type: string
+          format: date-time
+      required:
+        - id
+        - userId
+        - name
+        - state
+        - layout
+        - createdAt
+        - updatedAt
+    ConfigListResponse:
+      type: object
+      properties:
+        configs:
+          type: array
+          items:
+            $ref: "#/components/schemas/ConfigSummary"
+      required:
+        - configs
+    ConfigResponse:
+      type: object
+      properties:
+        config:
+          $ref: "#/components/schemas/Config"
+      required:
+        - config
+    CreateConfigRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        state:
+          type: object
+      required:
+        - state
+    UpdateConfigRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        state:
+          type: object

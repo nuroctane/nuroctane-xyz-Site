@@ -10,6 +10,7 @@ out-tsc
 
 # dependencies
 node_modules
+package-lock.json
 
 # IDEs and editors
 /.idea
@@ -50,3 +51,5 @@ Thumbs.db
 .env
 .env.local
 .env.*.local
+.vercel
+.sync-state

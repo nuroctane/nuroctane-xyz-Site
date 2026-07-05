@@ -1,0 +1,28 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "buildCommand": "pnpm run build",
+  "outputDirectory": "artifacts/digital-sea/dist/public",
+  "installCommand": "pnpm install",
+  "functions": {
+    "artifacts/api-server/api/index.ts": {
+      "memory": 256
+    }
+  },
+  "builds": [
+    {
+      "src": "artifacts/digital-sea/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist/public"
+      }
+    },
+    {
+      "src": "artifacts/api-server/api/index.ts",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "artifacts/api-server/api/index.ts" },
+    { "src": "/((?!api/).*)", "dest": "artifacts/digital-sea/index.html" }
+  ]
+}
