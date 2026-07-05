@@ -2,9 +2,9 @@ import { useEffect, useRef } from 'react';
 import { useLocation } from 'wouter';
 
 // Import CSS as raw strings for scoped injection
-import modkeysVars from '../../modkeys/src/css/variables.css?raw';
-import modkeysLayout from '../../modkeys/src/css/layout.css?raw';
-import modkeysComponents from '../../modkeys/src/css/components.css?raw';
+import modkeysVars from '../../../modkeys/src/css/variables.css?raw';
+import modkeysLayout from '../../../modkeys/src/css/layout.css?raw';
+import modkeysComponents from '../../../modkeys/src/css/components.css?raw';
 
 function useModkeysStyles() {
   const styleRef = useRef<HTMLStyleElement | null>(null);
@@ -51,7 +51,7 @@ export default function ModkeysPage() {
     (async () => {
       try {
         // @ts-expect-error Vite resolves cross-package imports; modkeys has no tsconfig project reference
-        const mod = await import('../../modkeys/src/js/app.js');
+        const mod = await import('../../../modkeys/src/js/app.js');
         mod.mountModkeys();
       } catch (err) {
         console.error('Failed to load modkeys:', err);
@@ -62,7 +62,7 @@ export default function ModkeysPage() {
       (async () => {
         try {
           // @ts-expect-error Vite resolves cross-package imports; modkeys has no tsconfig project reference
-          const mod = await import('../../modkeys/src/js/app.js');
+          const mod = await import('../../../modkeys/src/js/app.js');
           if (mod.unmountModkeys) mod.unmountModkeys();
         } catch {}
       })();
