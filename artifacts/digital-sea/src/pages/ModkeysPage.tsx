@@ -14,13 +14,16 @@ function useModkeysStyles() {
     // We replace `:root` with `.modkeys-page` for variable scoping,
     // and prepend `.modkeys-page` to bare element selectors
     const scopedVars = modkeysVars.replace(/:root/g, '.modkeys-page');
+    // Only scope bare selectors — never rewrite compound selectors like
+    // `.snav button {` (would become `.snav .modkeys-page button {` which
+    // is wrong because .modkeys-page wraps the entire app, not vice versa).
+    // Bare element rules (button, svg) only match elements inside
+    // .modkeys-page anyway since that's where all modkeys DOM lives.
     const scopedLayout = modkeysLayout
       .replace(/\* \{/g, '.modkeys-page * {')
       .replace(/^html,/gm, '.modkeys-page,')
       .replace(/^body \{/gm, '.modkeys-page {')
       .replace(/^body /gm, '.modkeys-page ')
-      .replace(/button \{/g, '.modkeys-page button {')
-      .replace(/svg \{/g, '.modkeys-page svg {')
       .replace(/::-webkit-scrollbar/g, '.modkeys-page ::-webkit-scrollbar');
     const scopedComponents = modkeysComponents;
 
