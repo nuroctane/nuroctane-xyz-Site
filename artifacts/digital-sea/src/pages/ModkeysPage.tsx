@@ -32,7 +32,8 @@ function useModkeysStyles() {
     const scopedComponents = modkeysComponents;
 
     const css = `${scopedVars}\n${scopedLayout}\n${scopedComponents}
-.modkeys-page .side { overflow-y: auto; }`;
+.modkeys-page .side { overflow-y: auto; height: 100%; min-height: 0; }
+.modkeys-page .content { overflow: hidden; }`;
 
     const style = document.createElement('style');
     style.textContent = css;
