@@ -1,20 +1,3 @@
 {
-  "$schema": "https://openapi.vercel.sh/vercel.json",
-  "buildCommand": "pnpm run build",
-  "outputDirectory": "artifacts/digital-sea/dist/public",
-  "installCommand": "pnpm install --no-frozen-lockfile",
-  "builds": [
-    {
-      "src": "artifacts/api-server/api/index.js",
-      "use": "@vercel/node",
-      "config": {
-        "memory": 256
-      }
-    }
-  ],
-  "routes": [
-    { "src": "/api/(.*)", "dest": "artifacts/api-server/api/index.js" },
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
-  ]
+  "installCommand": "pnpm install --no-frozen-lockfile"
 }
