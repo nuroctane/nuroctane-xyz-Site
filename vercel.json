@@ -1,3 +1,5 @@
 {
+  "buildCommand": "pnpm run build",
+  "outputDirectory": "artifacts/digital-sea/dist/public",
   "installCommand": "pnpm install --no-frozen-lockfile"
 }
