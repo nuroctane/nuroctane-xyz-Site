@@ -10,18 +10,18 @@ A browser-based mechanical keyboard configurator and 3D visualization tool. Buil
 
 - **3D keyboard preview** powered by Three.js — orbit, pan, and zoom around a fully rendered keyboard
 - **Multiple layouts**: 60% Compact, 65% Standard, 75% Pro (with rotary knob)
-- **Keycap profiles**: Cherry, OEM, XDA, SA — each with accurate geometry, dish, and row tilt
-- **Colorways**: 11 curated presets (Claude, Gemini, Sakura, Verdant, Abyssal, Dune, Monochrome, Umbra, Moss, Contrast, Rosette) with full custom color support
+- **Keycap profiles**: Cherry, OEM, XDA, SA, DSA, MT3, ASA — each with accurate geometry, dish, and row tilt
+- **Colorways**: 19 curated presets (Claude, Gemini, Sakura, Verdant, Abyssal, Dune, Monochrome, Umbra, Moss, Contrast, Rosette, Noir, Embers, Matcha, Carbon, Vaporwave, Dracula, Blush, Honey) with full custom color support
 - **Custom colors**: Fine-tune alpha, mod, and accent key colors with live hex preview
 - **Per-key customization**: Custom text, font size, foreground/background colors, glow effect, image upload, and emoji marks on individual keys
-- **Case & plate**: 8 case colors, 3 finishes (anodized/soft-touch/polished), 4 plate materials (aluminum/brass/polycarbonate/carbon fiber)
-- **Switches**: Boba U4T, Holy Panda, Box Jade, Silent Ink — each with distinctive 3D rendering and audible click feedback (Web Audio)
+- **Case & plate**: 16 case colors, 3 finishes (anodized/soft-touch/polished), 8 plate materials (aluminum/brass/polycarbonate/carbon fiber/copper/steel/POM/FR4)
+- **Switches**: 10 switch types (Boba U4T, Holy Panda, Box Jade, Silent Ink, Cream, Teal, Sunset, Topaz, Emerald, Silver) — each with distinctive 3D rendering and audible click feedback (Web Audio)
 - **Lighting**: Wave, Static, Breathe, or Off — with color picker and brightness control; underglow and per-key glow with GLSL shaders
-- **Extras**: Rotary knob, coiled cable, walnut wrist rest, switch lubing service
+- **Extras**: Rotary knob, coiled cable (3D tube geometry), walnut wrist rest (extruded mesh), switch lubing service
 - **Undo/Redo**: Full history stack (up to 50 states) with keyboard shortcuts
 - **Export**: KLE (Keyboard Layout Editor) JSON, SVG template for manufacturing, full spec sheet JSON
 - **Share**: URL-based state sharing (base64-encoded in the hash fragment)
-- **Presets**: 7 featured builds you can load instantly
+- **Presets**: 15 featured builds you can load instantly
 - **Save builds**: Save your creations to the gallery and browse them later
 - **Dark/Light theme**: Toggle between themes with adjusted 3D lighting
 
@@ -84,12 +84,13 @@ src/
       shrinker.js       URL serialization (base64)
       perKey.js         Per-key override store
       imageLoader.js    Image loading, canvas text rendering
+      shrinker.js       URL serialization (base64)
     data/
       layouts.js        Keyboard layout definitions (60%, 65%, 75%)
-      colorways.js      11 colorway presets + panel swatches
+      colorways.js      19 colorway presets + panel swatches
       components.js     Cases, finishes, plates, switches, materials, extras, profiles, light colors
-      presets.js        7 featured build presets
-      art.js            Vector mark drawing functions + emoji definitions
+      presets.js        15 featured build presets (with brand marks)
+      art.js            Vector mark drawing functions + brand mark SVGs + emoji definitions
     ui/
       panels.js         Right panel rendering, key editor popover
       modals.js         Modal/drawer system (Gallery, Library, Switches, Accessories)
@@ -99,7 +100,7 @@ src/
     export/
       kle.js            KLE JSON export
       svg.js            SVG template export
-      spec.js           Spec sheet JSON export
+      spec.js           Spec sheet JSON export (with per-key image data)
 ```
 
 ---
