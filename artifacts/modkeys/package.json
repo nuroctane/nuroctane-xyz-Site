@@ -10,7 +10,9 @@
   },
   "dependencies": {
     "three": "^0.184.0",
-    "gsap": "^3.12.5"
+    "gsap": "^3.12.5",
+    "jspdf": "^2.5.2",
+    "svg2pdf.js": "^2.2.4"
   },
   "devDependencies": {
     "vite": "^6.3.1"

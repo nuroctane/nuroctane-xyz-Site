@@ -1,148 +1,120 @@
 import { Router } from "express";
-import { kvGet, kvSet, kvDelete } from "@workspace/kv";
-import { requireAuth } from "../middlewares/auth";
+import { kvGet, kvSet } from "@workspace/kv";
 import { logger } from "../lib/logger";
 
 const router = Router();
 
-const CONFIG_PREFIX = "modkeys:config:";
+const GALLERY_KEY = "modkeys:gallery";
+const MAX_ENTRIES = 100;
+const ADMIN_PASSWORD = process.env.MODKEYS_ADMIN_PASSWORD ?? "";
 
-function userConfigsKey(githubId: number): string {
-  return `modkeys:user:${githubId}:configs`;
-}
-
-interface ModkeysConfig {
+interface GalleryEntry {
   id: string;
-  userId: number;
   name: string;
-  state: Record<string, unknown>;
+  snap: Record<string, unknown>;
   layout: string;
   createdAt: string;
-  updatedAt: string;
 }
 
-function extractLayout(state: Record<string, unknown>): string {
-  return (state.layout as string) ?? "75";
+function extractLayout(snap: Record<string, unknown>): string {
+  return (snap.layout as string) ?? "75";
 }
 
-router.get("/modkeys/configs", requireAuth, async (req, res) => {
+function stripImageData(obj: unknown): void {
+  if (Array.isArray(obj)) {
+    for (const item of obj) stripImageData(item);
+  } else if (obj && typeof obj === "object") {
+    const o = obj as Record<string, unknown>;
+    for (const key of Object.keys(o)) {
+      if (key === "imageData") {
+        delete o[key];
+      } else {
+        stripImageData(o[key]);
+      }
+    }
+  }
+}
+
+function sanitizeName(name: unknown): string {
+  if (typeof name !== "string") return "Untitled";
+  return name.replace(/<[^>]*>/g, "").slice(0, 40);
+}
+
+const MAX_SNAP_JSON_SIZE = 20 * 1024; // 20KB
+
+router.get("/modkeys/gallery", async (_req, res) => {
   try {
-    const listKey = userConfigsKey(req.user!.githubId);
-    const configIds = (await kvGet<string[]>(listKey)) ?? [];
-
-    const configs = (
-      await Promise.all(
-        configIds.map(async (id) => {
-          const data = await kvGet<ModkeysConfig>(`${CONFIG_PREFIX}${id}`);
-          if (!data) return null;
-          return {
-            id: data.id,
-            name: data.name,
-            layout: data.layout,
-            createdAt: data.createdAt,
-            updatedAt: data.updatedAt,
-          };
-        }),
-      )
-    ).filter(Boolean);
-
-    return res.json({ configs });
+    const gallery = (await kvGet<GalleryEntry[]>(GALLERY_KEY)) ?? [];
+    const templates = gallery.map(({ id, name, snap, layout, createdAt }) => ({
+      id, name, layout, createdAt,
+    }));
+    return res.json({ templates });
   } catch (err) {
-    logger.error({ err }, "Failed to list configs");
-    return res.status(500).json({ error: "Failed to list configs" });
+    logger.error({ err }, "Failed to get gallery");
+    return res.status(500).json({ error: "Failed to get gallery" });
   }
 });
 
-router.post("/modkeys/configs", requireAuth, async (req, res) => {
+router.post("/modkeys/gallery", async (req, res) => {
   try {
-    const { name, state } = req.body;
-    if (!state) return res.status(400).json({ error: "Missing state" });
+    const { name, snap } = req.body;
+    if (!snap || typeof snap !== "object") {
+      return res.status(400).json({ error: "Missing snap" });
+    }
+
+    // Strip imageData to keep KV small
+    const cleanSnap = JSON.parse(JSON.stringify(snap));
+    stripImageData(cleanSnap);
+
+    const snapJson = JSON.stringify(cleanSnap);
+    if (snapJson.length > MAX_SNAP_JSON_SIZE) {
+      return res.status(413).json({ error: "Snap too large" });
+    }
 
     const id = crypto.randomUUID();
     const now = new Date().toISOString();
-    const config: ModkeysConfig = {
+    const entry: GalleryEntry = {
       id,
-      userId: req.user!.githubId,
-      name: name ?? `Build ${now.slice(0, 10)}`,
-      state,
-      layout: extractLayout(state),
+      name: sanitizeName(name),
+      snap: cleanSnap,
+      layout: extractLayout(cleanSnap),
       createdAt: now,
-      updatedAt: now,
     };
 
-    await kvSet(`${CONFIG_PREFIX}${id}`, config);
+    const gallery = (await kvGet<GalleryEntry[]>(GALLERY_KEY)) ?? [];
+    gallery.unshift(entry);
+    if (gallery.length > MAX_ENTRIES) {
+      gallery.length = MAX_ENTRIES;
+    }
+    await kvSet(GALLERY_KEY, gallery);
 
-    const listKey = userConfigsKey(req.user!.githubId);
-    const configIds = (await kvGet<string[]>(listKey)) ?? [];
-    configIds.unshift(id);
-    await kvSet(listKey, configIds);
-
-    return res.status(201).json({ config });
+    return res.status(201).json({ template: { id: entry.id, name: entry.name, layout: entry.layout, createdAt: entry.createdAt } });
   } catch (err) {
-    logger.error({ err }, "Failed to save config");
-    return res.status(500).json({ error: "Failed to save config" });
+    logger.error({ err }, "Failed to save gallery entry");
+    return res.status(500).json({ error: "Failed to save gallery entry" });
   }
 });
 
-router.get("/modkeys/configs/:id", requireAuth, async (req, res) => {
+router.post("/modkeys/gallery/delete", async (req, res) => {
   try {
-    const { id } = req.params;
-    const config = await kvGet<ModkeysConfig>(`${CONFIG_PREFIX}${id}`);
-    if (!config) return res.status(404).json({ error: "Config not found" });
-    if (config.userId !== req.user!.githubId) return res.status(403).json({ error: "Forbidden" });
-    return res.json({ config });
-  } catch (err) {
-    logger.error({ err }, "Failed to get config");
-    return res.status(500).json({ error: "Failed to get config" });
-  }
-});
+    const { password, id } = req.body;
+    if (!ADMIN_PASSWORD || password !== ADMIN_PASSWORD) {
+      return res.status(403).json({ error: "Unauthorized" });
+    }
+    if (!id || typeof id !== "string") {
+      return res.status(400).json({ error: "Missing id" });
+    }
 
-router.put("/modkeys/configs/:id", requireAuth, async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { name, state } = req.body;
-
-    const config = await kvGet<ModkeysConfig>(`${CONFIG_PREFIX}${id}`);
-    if (!config) return res.status(404).json({ error: "Config not found" });
-    if (config.userId !== req.user!.githubId) return res.status(403).json({ error: "Forbidden" });
-
-    const updated: ModkeysConfig = {
-      ...config,
-      name: name ?? config.name,
-      state: state ?? config.state,
-      layout: state ? extractLayout(state) : config.layout,
-      updatedAt: new Date().toISOString(),
-    };
-
-    await kvSet(`${CONFIG_PREFIX}${id}`, updated);
-    return res.json({ config: updated });
-  } catch (err) {
-    logger.error({ err }, "Failed to update config");
-    return res.status(500).json({ error: "Failed to update config" });
-  }
-});
-
-router.delete("/modkeys/configs/:id", requireAuth, async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const config = await kvGet<{ userId: number }>(`${CONFIG_PREFIX}${id}`);
-    if (!config) return res.status(404).json({ error: "Config not found" });
-    if (config.userId !== req.user!.githubId) return res.status(403).json({ error: "Forbidden" });
-
-    await kvDelete(`${CONFIG_PREFIX}${id}`);
-
-    const listKey = userConfigsKey(req.user!.githubId);
-    const configIds = (await kvGet<string[]>(listKey)) ?? [];
-    await kvSet(
-      listKey,
-      configIds.filter((cId) => cId !== id),
-    );
-
+    const gallery = (await kvGet<GalleryEntry[]>(GALLERY_KEY)) ?? [];
+    const filtered = gallery.filter((e) => e.id !== id);
+    if (filtered.length === gallery.length) {
+      return res.status(404).json({ error: "Entry not found" });
+    }
+    await kvSet(GALLERY_KEY, filtered);
     return res.json({ ok: true });
   } catch (err) {
-    logger.error({ err }, "Failed to delete config");
-    return res.status(500).json({ error: "Failed to delete config" });
+    logger.error({ err }, "Failed to delete gallery entry");
+    return res.status(500).json({ error: "Failed to delete" });
   }
 });
 

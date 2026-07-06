@@ -1,5 +1,5 @@
 import { state } from '../core/state.js';
-import { setState } from '../core/update.js';
+import { setState, effectiveColorway } from '../core/update.js';
 import { LAYOUTS } from '../data/layouts.js';
 import { COLORWAYS } from '../data/colorways.js';
 import { CASES, FINISHES, PLATES, SWITCHES, MATERIALS, EXTRAS, PROFILES, LIGHT_COLORS } from '../data/components.js';
@@ -19,6 +19,8 @@ export function openModal(title, html) {
   $('modalBody').innerHTML = html;
   $('modal').classList.add('open');
 }
+
+const cwName = (snap) => snap.customColors ? 'Custom' : (COLORWAYS[snap.colorway]?.name ?? 'Custom');
 
 function syncNav(id) {
   document.querySelectorAll('#tnav button').forEach((b) => b.classList.toggle('on', b.dataset.nav === id));
@@ -51,18 +53,24 @@ export function openLibrary() {
 
 export function openGallery() {
   syncNav('gallery');
-  const { savedBuilds } = window.__MODKEYS__ || { savedBuilds: [] };
-  const { thumbs } = window.__MODKEYS__ || { thumbs: {} };
+  const { savedBuilds, thumbs, galleryCache } = window.__MODKEYS__ || { savedBuilds: [], thumbs: {}, galleryCache: [] };
+  const community = galleryCache || [];
   let html = '<div class="secTitle">FEATURED</div><div class="galGrid">' +
     PRESETS.map((p) =>
       `<button class="galCard" data-gal="${p.id}"><img src="${thumbs[p.id] || ''}" alt="">
-        <div class="cap"><div class="nm">${p.name}</div><div class="tg">${COLORWAYS[p.s.colorway].name}</div></div></button>`,
+        <div class="cap"><div class="nm">${p.name}</div><div class="tg">${cwName(p.s)}</div></div></button>`,
     ).join('') + '</div>';
+  if (community.length) {
+    html += '<div class="secTitle">COMMUNITY</div><div class="galGrid">' +
+      community.map((t) =>
+        `<button class="galCard" data-community="${t.id}"><img src="${(thumbs[t.id] || '')}" alt=""><div class="cap"><div class="nm">${t.name}</div><div class="tg">${t.layout || ''}</div></div></button>`,
+      ).join('') + '</div>';
+  }
   if (savedBuilds.length) {
     html += '<div class="secTitle">YOUR BUILDS</div><div class="galGrid">' +
       savedBuilds.map((b, i) =>
         `<button class="galCard" data-saved="${i}"><img src="${b.img}" alt="">
-          <div class="cap"><div class="nm">${b.name}</div><div class="tg">${COLORWAYS[b.snap.colorway].name}</div></div></button>`,
+          <div class="cap"><div class="nm">${b.name}</div><div class="tg">${cwName(b.snap)}</div></div></button>`,
       ).join('') + '</div>';
   } else {
     html += '<div class="secTitle">YOUR BUILDS</div><div class="hint" style="margin-bottom:16px">No saved builds yet. Use <strong>Save Build</strong> in the sidebar to save your first one.</div>';
@@ -111,6 +119,19 @@ $('modalBody').addEventListener('click', (ev) => {
     setState(presetPatch(p));
     closeModal();
     toast(p.name + ' loaded');
+    return;
+  }
+  const community = ev.target.closest('[data-community]');
+  if (community) {
+    const { galleryCache } = window.__MODKEYS__ || { galleryCache: [] };
+    const t = galleryCache.find((e) => e.id === community.dataset.community);
+    if (t && t.snap) {
+      const s = t.snap;
+      if (s.layout && s.layout !== state.layout) setState({ layout: s.layout });
+      setState(Object.assign({}, s, { selectedPreset: null }));
+      closeModal();
+      toast(t.name + ' loaded');
+    }
     return;
   }
   const sv = ev.target.closest('[data-saved]');

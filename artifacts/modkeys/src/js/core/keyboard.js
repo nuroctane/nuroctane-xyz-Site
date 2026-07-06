@@ -289,12 +289,19 @@ function makeSwitch(x, z) {
 }
 
 function buildOneKey(keyDef, ri, ci, cx, cz, prof, cw, addToGroups) {
-  const mesh = new THREE.Mesh(capGeo(keyDef.w, state.profile), capMats[keyDef.r]);
+  const id = perKeyId(ri, ci);
+  const customBg = (getOverride(id) && getOverride(id).bgColor) || null;
+  const mat = customBg ? capMats[keyDef.r].clone() : capMats[keyDef.r];
+  if (customBg) {
+    mat.color.copy(sRGB(customBg));
+    mat.needsUpdate = true;
+  }
+  const mesh = new THREE.Mesh(capGeo(keyDef.w, state.profile), mat);
+  if (customBg) mesh.userData.ownMat = true;
   mesh.userData.gk = keyDef.w + '|' + state.profile;
   mesh.castShadow = mesh.receiveShadow = true;
   mesh.position.set(cx, CAP_Y, cz);
   mesh.rotation.x = prof.tilt[ri];
-  const id = perKeyId(ri, ci);
   const effectiveLabel = getEffectiveText(id, keyDef.l);
   const effectiveFg = getEffectiveFg(id, cw[keyDef.r].fg);
   const effectiveMark = getEffectiveMark(id, markFor(keyDef.l));
@@ -302,7 +309,6 @@ function buildOneKey(keyDef, ri, ci, cx, cz, prof, cw, addToGroups) {
   const effectiveFs = getEffectiveFontSize(id, 29);
   const glow = hasGlow(id);
   const imgBehind = hasImageBehindText(id);
-  const customBg = (getOverride(id) && getOverride(id).bgColor) || null;
 
   mesh.userData = Object.assign(mesh.userData, {
     isCap: true, baseY: CAP_Y, row: ri, col: ci,
@@ -401,6 +407,7 @@ export function rebuildKey(ri, ci) {
   for (let i = capsGroup.children.length - 1; i >= 0; i--) {
     const c = capsGroup.children[i];
     if (c.userData.perKeyId === id) {
+      if (c.userData.ownMat) c.traverse((n) => n.material?.dispose?.());
       capsGroup.remove(c);
       c.traverse((n) => {
         if (n.geometry && n.userData.gk !== keyDef.w + '|' + state.profile) n.geometry.dispose();
@@ -427,6 +434,11 @@ export function rebuildKey(ri, ci) {
   glow.renderOrder = 1;
   glow.userData.keepGeo = true;
   keyGlowGroup.add(glow);
+}
+
+export function getKeyLabel(id) {
+  const c = capsGroup.children.find(k => k.userData.perKeyId === id);
+  return c ? c.userData.label : '';
 }
 
 export function rebuildBoard() {

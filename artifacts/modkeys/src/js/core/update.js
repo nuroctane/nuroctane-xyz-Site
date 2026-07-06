@@ -52,7 +52,7 @@ function applyColors(cw) {
 
 function applyInstant(s) {
   if (s.brand !== undefined) state.brand = s.brand;
-  if (s.colorway) {
+  if (s.colorway && COLORWAYS[s.colorway]) {
     applyColors(COLORWAYS[s.colorway]);
     state.colorway = s.colorway;
     state.customColors = null;
@@ -142,7 +142,7 @@ function apply3D(patch, animate) {
     if (patch.profile) { state.profile = patch.profile; buildKeys(); }
     return;
   }
-  if (patch.colorway) {
+  if (patch.colorway && COLORWAYS[patch.colorway]) {
     const cw = COLORWAYS[patch.colorway];
     tweenColor(matAlpha, cw.a.bg);
     tweenColor(matMod, cw.m.bg);

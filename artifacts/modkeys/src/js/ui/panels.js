@@ -6,7 +6,7 @@ import { setState, effectiveColorway } from '../core/update.js';
 import { setOverride, clearOverride, getOverride } from '../core/perKey.js';
 import { loadImage } from '../core/imageLoader.js';
 import { MARKS } from '../data/art.js';
-import { rebuildKey } from '../core/keyboard.js';
+import { rebuildKey, getKeyLabel } from '../core/keyboard.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -189,13 +189,14 @@ function updateSidebarKeyImage() {
 export function showKeyEditor(keyData) {
   _currentEditId = keyData.perKeyId;
   const ov = getOverride(_currentEditId) || {};
+  const defaultLabel = keyData.label || getKeyLabel(keyData.perKeyId) || '';
   const html = `
 <div class="keHead">
   <span>Key ${_currentEditId}</span>
   <button id="keClose" class="keBtn">✕</button>
 </div>
 <div class="keBody">
-  <div class="keRow"><label>Text</label><input type="text" id="keText" value="${(ov.customText !== undefined ? ov.customText : (keyData.label || '')).replace(/"/g, '&quot;')}" class="keInput"></div>
+  <div class="keRow"><label>Text</label><input type="text" id="keText" value="${(ov.customText !== undefined ? ov.customText : defaultLabel).replace(/"/g, '&quot;')}" class="keInput"></div>
   <div class="keRow"><label>Font size</label><input type="range" id="keFs" min="12" max="48" value="${ov.fontSize || 29}" class="keSlider"></div>
   <div class="keRow"><label>FG color</label><input type="color" id="keFg" value="${ov.fgColor || '#000000'}" class="keColor"></div>
   <div class="keRow"><label>BG color</label><input type="color" id="keBg" value="${ov.bgColor || '#ffffff'}" class="keColor"></div>
@@ -223,7 +224,7 @@ export function hideKeyEditor() {
   updateSidebarKeyImage();
 }
 
-/* panel + key editor event delegation */
+/* panel event delegation (side-bar only) */
 $('panelBody').addEventListener('click', (ev) => {
   const chip = ev.target.closest('[data-act]');
   if (chip) {
@@ -248,25 +249,11 @@ $('panelBody').addEventListener('click', (ev) => {
       m: { bg: $('hexMbg').value, fg: $('hexMfg').value },
       x: { bg: $('hexXbg').value, fg: $('hexXfg').value },
     };
-    setState({ customColors: cc, colorway: '__custom__' });
+    setState({ customColors: cc });
     return;
   }
   if (ev.target.id === 'clearCustomColors') {
-    setState({ customColors: null, colorway: state.colorway || 'claude' });
-    return;
-  }
-  if (ev.target.id === 'keReset' && _currentEditId) {
-    clearOverride(_currentEditId);
-    rebuildKey(..._currentEditId.split('-').map(Number));
-    hideKeyEditor();
-    return;
-  }
-  if (ev.target.id === 'keRemoveImg' && _currentEditId) {
-    const ov = getOverride(_currentEditId) || {};
-    delete ov.imageData;
-    setOverride(_currentEditId, { imageData: null });
-    rebuildKey(..._currentEditId.split('-').map(Number));
-    showKeyEditor({ perKeyId: _currentEditId, label: state.layout ? '' : '' });
+    setState({ colorway: state.colorway, customColors: null });
     return;
   }
   if (ev.target.id === 'keRemoveImgSidebar' && _currentEditId) {
@@ -279,8 +266,56 @@ $('panelBody').addEventListener('click', (ev) => {
   }
 });
 
-/* key editor input events */
-$('panelBody').addEventListener('input', (ev) => {
+$('panelBody').addEventListener('change', async (ev) => {
+  if (!_currentEditId) return;
+  if (ev.target.id === 'keImageSidebar') {
+    const file = ev.target.files[0];
+    if (!file) return;
+    const dataUrl = await loadImage(file);
+    setOverride(_currentEditId, { imageData: dataUrl });
+    rebuildKey(..._currentEditId.split('-').map(Number));
+    updateSidebarKeyImage();
+  }
+});
+
+/* key editor event delegation */
+const $ke = $('keyEditor');
+
+$ke.addEventListener('click', (ev) => {
+  if (ev.target.closest('#keReset') && _currentEditId) {
+    clearOverride(_currentEditId);
+    rebuildKey(..._currentEditId.split('-').map(Number));
+    hideKeyEditor();
+    return;
+  }
+  if (ev.target.closest('#keRemoveImg') && _currentEditId) {
+    setOverride(_currentEditId, { imageData: null });
+    rebuildKey(..._currentEditId.split('-').map(Number));
+    showKeyEditor({ perKeyId: _currentEditId });
+    return;
+  }
+  if (ev.target.closest('#keGlow') && _currentEditId) {
+    const ov = getOverride(_currentEditId) || {};
+    setOverride(_currentEditId, { glow: !ov.glow });
+    rebuildKey(..._currentEditId.split('-').map(Number));
+    const el = $('keGlow');
+    if (el) el.classList.toggle('on');
+    return;
+  }
+  if (ev.target.closest('#keImgBehind') && _currentEditId) {
+    const ov = getOverride(_currentEditId) || {};
+    setOverride(_currentEditId, { imageBehindText: !ov.imageBehindText });
+    rebuildKey(..._currentEditId.split('-').map(Number));
+    const el = $('keImgBehind');
+    if (el) el.classList.toggle('on');
+    return;
+  }
+  if (ev.target.closest('#keClose')) {
+    hideKeyEditor();
+  }
+});
+
+$ke.addEventListener('input', (ev) => {
   if (!_currentEditId) return;
   const id = ev.target.id;
   if (id === 'keText' || id === 'keFs' || id === 'keFg' || id === 'keBg') {
@@ -294,7 +329,7 @@ $('panelBody').addEventListener('input', (ev) => {
   }
 });
 
-$('panelBody').addEventListener('change', async (ev) => {
+$ke.addEventListener('change', async (ev) => {
   if (!_currentEditId) return;
   if (ev.target.id === 'keImage') {
     const file = ev.target.files[0];
@@ -302,37 +337,7 @@ $('panelBody').addEventListener('change', async (ev) => {
     const dataUrl = await loadImage(file);
     setOverride(_currentEditId, { imageData: dataUrl });
     rebuildKey(..._currentEditId.split('-').map(Number));
-    showKeyEditor({ perKeyId: _currentEditId, label: '' });
+    showKeyEditor({ perKeyId: _currentEditId });
     return;
-  }
-  if (ev.target.id === 'keImageSidebar') {
-    const file = ev.target.files[0];
-    if (!file) return;
-    const dataUrl = await loadImage(file);
-    setOverride(_currentEditId, { imageData: dataUrl });
-    rebuildKey(..._currentEditId.split('-').map(Number));
-    updateSidebarKeyImage();
-  }
-});
-
-$('panelBody').addEventListener('click', (ev) => {
-  if (ev.target.id === 'keGlow') {
-    if (!_currentEditId) return;
-    const ov = getOverride(_currentEditId) || {};
-    setOverride(_currentEditId, { glow: !ov.glow });
-    rebuildKey(..._currentEditId.split('-').map(Number));
-    const el = $('keGlow');
-    if (el) el.classList.toggle('on');
-  }
-  if (ev.target.id === 'keImgBehind') {
-    if (!_currentEditId) return;
-    const ov = getOverride(_currentEditId) || {};
-    setOverride(_currentEditId, { imageBehindText: !ov.imageBehindText });
-    rebuildKey(..._currentEditId.split('-').map(Number));
-    const el = $('keImgBehind');
-    if (el) el.classList.toggle('on');
-  }
-  if (ev.target.id === 'keClose') {
-    hideKeyEditor();
   }
 });

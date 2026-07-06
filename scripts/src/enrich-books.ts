@@ -1,0 +1,232 @@
+import * as fs from 'fs';
+import * as path from 'path';
+import { fileURLToPath } from 'url';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+const BOOKS_MD = path.resolve(__dirname, '../../artifacts/digital-sea/src/content/books.md');
+const OUTPUT_JSON = path.resolve(__dirname, '../../artifacts/digital-sea/src/data/bookMeta.json');
+
+const GB_BASE = 'https://www.googleapis.com/books/v1/volumes';
+const OL_SEARCH = 'https://openlibrary.org/search.json';
+
+const GOOGLE_BOOKS_API_KEY = process.env.GOOGLE_BOOKS_API_KEY ?? '';
+
+interface Book {
+  title: string;
+  author: string;
+  read: boolean;
+  note?: string;
+}
+
+interface Shelf {
+  name: string;
+  books: Book[];
+}
+
+interface GBVolumeInfo {
+  imageLinks?: { thumbnail?: string };
+  description?: string;
+}
+interface GBItems {
+  volumeInfo?: GBVolumeInfo;
+}
+interface GBResponse {
+  items?: GBItems[];
+}
+interface OLDoc {
+  cover_i?: number;
+}
+interface OLResponse {
+  docs?: OLDoc[];
+}
+interface BookMeta {
+  cover: string | null;
+  desc: string | null;
+}
+
+interface OutputJSON {
+  version: number;
+  generatedAt: string;
+  books: Record<string, BookMeta>;
+}
+
+function parseBooks(src: string): Shelf[] {
+  const lines = src.split('\n');
+  const shelves: Shelf[] = [];
+  let current: Shelf | null = null;
+  for (const l of lines) {
+    if (l.startsWith('## ')) {
+      if (current) shelves.push(current);
+      current = { name: l.replace(/^## /, '').trim(), books: [] };
+    } else if (current && l.startsWith('- [') && l.includes('] ')) {
+      const read = l.includes('[x]');
+      const content = l.replace(/^- \[[ x]\] /, '').trim();
+      const sep = content.indexOf(' — ');
+      let author = '';
+      let title = content;
+      if (sep > 0) {
+        author = content.slice(0, sep).trim();
+        title = content.slice(sep + 3).trim();
+      }
+      const noteMatch = title.match(/_\((.+?)\)_/);
+      let note: string | undefined;
+      if (noteMatch) {
+        note = noteMatch[1];
+        title = title.replace(/_\(.+?\)_/, '').trim();
+      }
+      current.books.push({ title, author, read, note });
+    }
+  }
+  if (current) shelves.push(current);
+  return shelves;
+}
+
+function bookKey(title: string, author: string): string {
+  return `${title}|${author}`;
+}
+
+async function fetchGoogleBooks(query: string): Promise<{ cover: string | null; desc: string | null } | null> {
+  if (!GOOGLE_BOOKS_API_KEY) return null;
+  try {
+    const url = `${GB_BASE}?q=${encodeURIComponent(query)}&maxResults=1&fields=items(volumeInfo/imageLinks/thumbnail,volumeInfo/description)&key=${GOOGLE_BOOKS_API_KEY}`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`GB status ${res.status}`);
+    const data = (await res.json()) as GBResponse;
+    const item = data.items?.[0]?.volumeInfo;
+    if (!item) throw new Error('No GB result');
+    const urlRaw = item.imageLinks?.thumbnail ?? null;
+    const cover = urlRaw ? urlRaw.replace(/^http:/, 'https:') : null;
+    const desc = item.description ?? null;
+    return { cover, desc };
+  } catch {
+    return null;
+  }
+}
+
+async function fetchOpenLibraryCover(query: string): Promise<string | null> {
+  try {
+    const url = `${OL_SEARCH}?q=${encodeURIComponent(query)}&fields=cover_i&limit=1`;
+    const res = await fetch(url);
+    if (!res.ok) throw new Error(`OL status ${res.status}`);
+    const data = (await res.json()) as OLResponse;
+    const coverId = data.docs?.[0]?.cover_i;
+    if (coverId) {
+      return `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`;
+    }
+    return null;
+  } catch {
+    return null;
+  }
+}
+
+async function sleep(ms: number) {
+  return new Promise(r => setTimeout(r, ms));
+}
+
+async function main() {
+  console.log('Reading books.md...');
+  const mdContent = fs.readFileSync(BOOKS_MD, 'utf-8');
+  const shelves = parseBooks(mdContent);
+  const allBooks = shelves.flatMap(s => s.books);
+  console.log(`Found ${allBooks.length} books across ${shelves.length} shelves.`);
+
+  let output: OutputJSON = { version: 1, generatedAt: '', books: {} };
+  if (fs.existsSync(OUTPUT_JSON)) {
+    try {
+      output = JSON.parse(fs.readFileSync(OUTPUT_JSON, 'utf-8'));
+      console.log(`Loaded existing output with ${Object.keys(output.books).length} cached entries.`);
+    } catch {
+      console.log('Existing output corrupt, starting fresh.');
+      output = { version: 1, generatedAt: '', books: {} };
+    }
+  }
+
+  const toFetch = allBooks.filter(b => {
+    const key = bookKey(b.title, b.author);
+    return !(key in output.books);
+  });
+
+  if (toFetch.length === 0) {
+    console.log('All books already cached. Nothing to fetch.');
+    output.generatedAt = new Date().toISOString();
+    fs.writeFileSync(OUTPUT_JSON, JSON.stringify(output, null, 2), 'utf-8');
+    console.log(`Output written to ${OUTPUT_JSON}`);
+    return;
+  }
+
+  console.log(`Need to fetch ${toFetch.length} books (${allBooks.length - toFetch.length} already cached).`);
+
+  if (!GOOGLE_BOOKS_API_KEY) {
+    console.warn('WARNING: GOOGLE_BOOKS_API_KEY env var not set. Using Open Library only (no descriptions, lower-quality covers).');
+  }
+
+  let coversFound = 0;
+  let descsFound = 0;
+  const misses: string[] = [];
+
+  const CONCURRENCY = 5;
+  const PAUSE_MS = 150;
+
+  for (let i = 0; i < toFetch.length; i += CONCURRENCY) {
+    const batch = toFetch.slice(i, i + CONCURRENCY);
+    const results = await Promise.all(batch.map(async (b) => {
+      const query = b.author
+        ? `${b.title} ${b.author}`
+        : b.title;
+      const key = bookKey(b.title, b.author);
+
+      // Try Google Books first
+      let cover: string | null = null;
+      let desc: string | null = null;
+      const gbResult = await fetchGoogleBooks(query);
+      if (gbResult) {
+        cover = gbResult.cover;
+        desc = gbResult.desc;
+      }
+
+      // Fallback to Open Library for cover
+      if (!cover) {
+        cover = await fetchOpenLibraryCover(query);
+      }
+
+      if (cover) coversFound++;
+      if (desc) descsFound++;
+      if (!cover && !desc) misses.push(key);
+
+      return { key, cover, desc };
+    }));
+
+    for (const r of results) {
+      output.books[r.key] = { cover: r.cover, desc: r.desc };
+    }
+
+    if (i + CONCURRENCY < toFetch.length) {
+      await sleep(PAUSE_MS);
+    }
+
+    const pct = Math.min(100, Math.round(((i + batch.length) / toFetch.length) * 100));
+    process.stdout.write(`\rProgress: ${pct}% (${i + batch.length}/${toFetch.length})`);
+  }
+
+  console.log('\n');
+
+  output.generatedAt = new Date().toISOString();
+  fs.writeFileSync(OUTPUT_JSON, JSON.stringify(output, null, 2), 'utf-8');
+
+  console.log('=== Summary ===');
+  console.log(`Total curated books: ${allBooks.length}`);
+  console.log(`Covers found: ${coversFound}`);
+  console.log(`Descriptions found: ${descsFound}`);
+  console.log(`Misses (no cover or desc): ${misses.length}`);
+  if (misses.length > 0) {
+    console.log('Missed keys:');
+    misses.forEach(k => console.log(`  ${k}`));
+  }
+  console.log(`Output written to ${OUTPUT_JSON}`);
+}
+
+main().catch(err => {
+  console.error('Fatal:', err);
+  process.exit(1);
+});

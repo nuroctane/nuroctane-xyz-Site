@@ -28,6 +28,7 @@ export function generateSpec() {
   });
 
   const spec = {
+    formatVersion: 2,
     name: `MODKEYS ${L.pct} — ${cwName}`,
     generated: new Date().toISOString(),
     configurator: 'MODKEYS by nur',

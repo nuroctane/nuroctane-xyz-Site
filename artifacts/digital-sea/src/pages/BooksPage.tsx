@@ -4,6 +4,7 @@ import { MiniAudio } from '../components/hud/MiniAudio';
 import { ScrollToTop } from '../components/hud/ScrollToTop';
 import { useStandaloneScroll } from '../hooks/useStandaloneScroll';
 import raw from '../content/books.md?raw';
+import bookMeta from '../data/bookMeta.json';
 
 const GB_KEY = import.meta.env.VITE_GOOGLE_BOOKS_API_KEY;
 const GB_BASE = 'https://www.googleapis.com/books/v1/volumes';
@@ -115,10 +116,6 @@ function bookKey(b: Book): string {
   return `${b.title}|${b.author}`;
 }
 
-const CACHE_VERSION_KEY = 'book-cache-ver';
-const CACHE_VERSION = 2;
-const COVER_CACHE_KEY = 'book-cover-cache';
-const DESC_CACHE_KEY = 'book-desc-cache';
 const SESSION_KEY = 'book-session-id';
 const ADMIN_KEY = 'book-admin';
 
@@ -131,40 +128,10 @@ function getSessionId(): string {
   return id;
 }
 
-function loadCoverCache(): Record<string, string | null> {
-  try {
-    return JSON.parse(localStorage.getItem(COVER_CACHE_KEY) ?? '{}');
-  } catch {
-    return {};
-  }
-}
-
-function saveCoverCache(cache: Record<string, string | null>) {
-  try {
-    localStorage.setItem(COVER_CACHE_KEY, JSON.stringify(cache));
-  } catch {}
-}
-
-function loadDescCache(): Record<string, string | null> {
-  try {
-    return JSON.parse(localStorage.getItem(DESC_CACHE_KEY) ?? '{}');
-  } catch {
-    return {};
-  }
-}
-
-function saveDescCache(cache: Record<string, string | null>) {
-  try {
-    localStorage.setItem(DESC_CACHE_KEY, JSON.stringify(cache));
-  } catch {}
-}
-
-const BATCH_SIZE = 2;
-const BATCH_DELAY = 250;
+const bookMetaMap = bookMeta.books as Record<string, { cover: string | null; desc: string | null }>;
 
 export default function BooksPage() {
   const shelves = useMemo(() => parseBooks(raw), []);
-  const allCuratedBooks = useMemo(() => shelves.flatMap(s => s.books), [shelves]);
   useStandaloneScroll();
   const sessionId = useRef(getSessionId());
   const [detail, setDetail] = useState<Book | null>(null);
@@ -173,10 +140,8 @@ export default function BooksPage() {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [searching, setSearching] = useState(false);
-  const [coverCache, setCoverCache] = useState<Record<string, string | null>>({});
   const [detailCover, setDetailCover] = useState<string | null>(null);
   const [loadingCover, setLoadingCover] = useState(false);
-  const [descriptionCache, setDescriptionCache] = useState<Record<string, string | null>>({});
   const [detailDescription, setDetailDescription] = useState<string | null>(null);
   const [loadingDescription, setLoadingDescription] = useState(false);
   const [isAdmin, setIsAdmin] = useState(false);
@@ -190,23 +155,12 @@ export default function BooksPage() {
   const [pendingBook, setPendingBook] = useState<SearchResult | null>(null);
   const [pendingNote, setPendingNote] = useState('');
 
-  const bgStarted = useRef(false);
   const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const searchAbort = useRef<AbortController | null>(null);
-  const descriptionCacheRef = useRef(descriptionCache);
-  descriptionCacheRef.current = descriptionCache;
+  const adminPasswordRef = useRef('');
 
-  // Mount: fetch visitor books from API, start retroactive cover + description fetch
+  // Mount: fetch visitor books from API
   useEffect(() => {
-    if (localStorage.getItem(CACHE_VERSION_KEY) !== String(CACHE_VERSION)) {
-      localStorage.removeItem(COVER_CACHE_KEY);
-      localStorage.removeItem(DESC_CACHE_KEY);
-      localStorage.setItem(CACHE_VERSION_KEY, String(CACHE_VERSION));
-    }
-    const initialCoverCache = loadCoverCache();
-    setCoverCache(initialCoverCache);
-    const initialDescCache = loadDescCache();
-    setDescriptionCache(initialDescCache);
     setIsAdmin(sessionStorage.getItem(ADMIN_KEY) === '1');
 
     fetch('/api/visitor-books')
@@ -217,74 +171,7 @@ export default function BooksPage() {
         setApiOnline(true);
       })
       .catch(() => setApiOnline(false));
-
-    if (bgStarted.current) return;
-    bgStarted.current = true;
-
-    const missing = allCuratedBooks.filter(b => {
-      const key = bookKey(b);
-      return !(key in initialCoverCache) || !(key in initialDescCache);
-    });
-    if (missing.length === 0) return;
-
-    let cancelled = false;
-    let batchIdx = 0;
-    const coverCacheTemp = { ...initialCoverCache };
-    const descCacheTemp = { ...initialDescCache };
-
-    const processBatch = async () => {
-      if (cancelled || batchIdx >= missing.length) return;
-      const batch = missing.slice(batchIdx, batchIdx + BATCH_SIZE);
-      batchIdx += BATCH_SIZE;
-
-      const results = await Promise.all(batch.map(async (b) => {
-        const key = bookKey(b);
-        try {
-          const res = await fetch(
-            `${GB_BASE}?q=${buildQuery(b)}&maxResults=1&fields=items(volumeInfo/imageLinks/thumbnail,volumeInfo/description)&key=${GB_KEY}`,
-          );
-          if (!res.ok) throw new Error('GB status ' + res.status);
-          const data = await res.json();
-          const item = data.items?.[0]?.volumeInfo;
-          if (!item) throw new Error('No GB result');
-          const url = fixCoverUrl(item.imageLinks?.thumbnail) ?? null;
-          const desc = item.description ?? null;
-          return { key, url, desc };
-        } catch {
-          // GB failed — try OL for cover only
-          try {
-            const olRes = await fetch(
-              `${OL_SEARCH}?q=${buildQuery(b)}&fields=cover_i&limit=1`,
-            );
-            if (!olRes.ok) throw new Error('OL status ' + olRes.status);
-            const olData = await olRes.json();
-            const coverId = olData.docs?.[0]?.cover_i;
-            const url = coverId ? `https://covers.openlibrary.org/b/id/${coverId}-S.jpg` : null;
-            return { key, url, desc: null };
-          } catch {
-            return { key, url: null, desc: null };
-          }
-        }
-      }));
-
-      if (cancelled) return;
-      let coverChanged = false;
-      let descChanged = false;
-      for (const { key, url, desc } of results) {
-        if (url !== undefined) { coverCacheTemp[key] = url; coverChanged = true; }
-        if (desc !== undefined) { descCacheTemp[key] = desc; descChanged = true; }
-      }
-      if (coverChanged) { setCoverCache({ ...coverCacheTemp }); saveCoverCache(coverCacheTemp); }
-      if (descChanged) { setDescriptionCache({ ...descCacheTemp }); saveDescCache(descCacheTemp); }
-
-      if (batchIdx < missing.length) {
-        setTimeout(processBatch, BATCH_DELAY);
-      }
-    };
-
-    const t = setTimeout(processBatch, 400);
-    return () => { cancelled = true; clearTimeout(t); };
-  }, [allCuratedBooks]);
+  }, []);
 
   // Admin toggle: Ctrl+Shift+A
   useEffect(() => {
@@ -305,14 +192,24 @@ export default function BooksPage() {
     return () => window.removeEventListener('keydown', onKey);
   }, [isAdmin]);
 
-  const submitAdminPass = () => {
-    if (adminPass === 'xnegro') {
-      setIsAdmin(true);
-      sessionStorage.setItem(ADMIN_KEY, '1');
-      setAdminPrompt(false);
-      setAdminPass('');
-      setAdminError(false);
-    } else {
+  const submitAdminPass = async () => {
+    try {
+      const res = await fetch('/api/visitor-books', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'verifyAdmin', password: adminPass }),
+      });
+      if (res.ok) {
+        adminPasswordRef.current = adminPass;
+        setIsAdmin(true);
+        sessionStorage.setItem(ADMIN_KEY, '1');
+        setAdminPrompt(false);
+        setAdminPass('');
+        setAdminError(false);
+      } else {
+        setAdminError(true);
+      }
+    } catch {
       setAdminError(true);
     }
   };
@@ -388,10 +285,11 @@ export default function BooksPage() {
     };
   }, [searchQuery]);
 
-  // Cover fetch for modal — Google Books first, Open Library fallback
+  // Cover fetch for visitor books with no cached data (rare path)
   const fetchCover = useCallback(async (book: Book): Promise<string | null> => {
     const cacheKey = bookKey(book);
-    if (cacheKey in coverCache) return coverCache[cacheKey];
+    const meta = bookMetaMap[cacheKey];
+    if (meta?.cover) return meta.cover;
 
     // Try Google Books
     try {
@@ -401,12 +299,7 @@ export default function BooksPage() {
       if (res.ok) {
         const data = await res.json();
         const url = fixCoverUrl(data.items?.[0]?.volumeInfo?.imageLinks?.thumbnail) ?? null;
-        if (url) {
-          const next = { ...coverCache, [cacheKey]: url };
-          setCoverCache(next);
-          saveCoverCache(next);
-          return url;
-        }
+        if (url) return url;
       }
     } catch {}
 
@@ -418,25 +311,17 @@ export default function BooksPage() {
       if (!res.ok) throw new Error('OL status ' + res.status);
       const data = await res.json();
       const coverId = data.docs?.[0]?.cover_i;
-      if (coverId) {
-        const url = `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`;
-        const next = { ...coverCache, [cacheKey]: url };
-        setCoverCache(next);
-        saveCoverCache(next);
-        return url;
-      }
+      if (coverId) return `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`;
     } catch {}
 
-    const next = { ...coverCache, [cacheKey]: null };
-    setCoverCache(next);
-    saveCoverCache(next);
     return null;
-  }, [coverCache]);
+  }, []);
 
-  // On-demand description fetch (GB only, no OL fallback for descriptions)
+  // On-demand description fetch for visitor books (rare path)
   const fetchDescription = useCallback(async (book: Book): Promise<string | null> => {
     const cacheKey = bookKey(book);
-    if (cacheKey in descriptionCache) return descriptionCache[cacheKey];
+    const meta = bookMetaMap[cacheKey];
+    if (meta?.desc) return meta.desc;
     try {
       const res = await fetch(
         `${GB_BASE}?q=${buildQuery(book)}&maxResults=1&fields=items(volumeInfo/description)&key=${GB_KEY}`,
@@ -444,36 +329,31 @@ export default function BooksPage() {
       if (!res.ok) throw new Error('GB status ' + res.status);
       const data = await res.json();
       const item = data.items?.[0]?.volumeInfo;
-      if (item?.description) {
-        const next = { ...descriptionCache, [cacheKey]: item.description };
-        setDescriptionCache(next);
-        saveDescCache(next);
-        return item.description;
-      }
+      if (item?.description) return item.description;
     } catch {}
-    const next = { ...descriptionCache, [cacheKey]: null };
-    setDescriptionCache(next);
-    saveDescCache(next);
     return null;
-  }, [descriptionCache]);
+  }, []);
 
   useEffect(() => {
     if (!detail) { setDetailCover(null); setLoadingCover(false); setDetailDescription(null); setLoadingDescription(false); return; }
     let cancelled = false;
+    const cacheKey = bookKey(detail);
+    const meta = bookMetaMap[cacheKey];
 
-    // Cover
+    // Cover - check coverUrl, then bookMeta, then fetch for visitor books
     if (detail.coverUrl) {
       setDetailCover(detail.coverUrl);
+    } else if (meta?.cover) {
+      setDetailCover(meta.cover);
     } else {
       setDetailCover(null);
       setLoadingCover(true);
       fetchCover(detail).then(url => { if (!cancelled) { setDetailCover(url); setLoadingCover(false); } });
     }
 
-    // Description
-    const cacheKey = bookKey(detail);
-    if (cacheKey in descriptionCacheRef.current) {
-      setDetailDescription(descriptionCacheRef.current[cacheKey]);
+    // Description - check bookMeta first, then fetch for visitor books
+    if (meta?.desc) {
+      setDetailDescription(meta.desc);
     } else {
       setDetailDescription(null);
       setLoadingDescription(true);
@@ -556,7 +436,7 @@ export default function BooksPage() {
       await fetch('/api/visitor-books', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'delete', password: 'xnegro', book }),
+        body: JSON.stringify({ action: 'delete', password: adminPasswordRef.current, book }),
       });
     } catch {}
     setVisitorBooks(prev => prev.filter(b =>
@@ -583,10 +463,15 @@ export default function BooksPage() {
         await fetch('/api/visitor-books', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'toggleVisitorRead', password: 'xnegro', book }),
+          body: JSON.stringify({
+            action: 'toggleVisitorRead',
+            password: adminPasswordRef.current,
+            sessionId: sessionId.current,
+            book,
+          }),
         });
       } catch {}
-    } else {
+    } else if (isAdmin) {
       const key = bookKey(book);
       const currentOverride = readOverrides[key];
       const newRead = currentOverride !== undefined ? !currentOverride : !book.read;
@@ -596,7 +481,7 @@ export default function BooksPage() {
         await fetch('/api/visitor-books', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'toggleCuratedRead', password: 'xnegro', key, read: newRead }),
+          body: JSON.stringify({ action: 'toggleCuratedRead', password: adminPasswordRef.current, key, read: newRead }),
         });
       } catch {}
     }
@@ -713,7 +598,8 @@ export default function BooksPage() {
           <div className="bs-grid">
             {s.books.map((b, i) => {
               const cacheKey = bookKey(b);
-              const cachedCover = b.coverUrl ?? coverCache[cacheKey] ?? undefined;
+              const meta = bookMetaMap[cacheKey] ?? undefined;
+              const cachedCover = b.coverUrl ?? meta?.cover ?? undefined;
               const effectiveRead = getEffectiveRead(b);
               const removable = b.visitor && canRemove(b);
               return (
@@ -777,7 +663,7 @@ export default function BooksPage() {
             <div className="bs-modal-status">{getEffectiveRead(detail) ? '✓ READ' : '○ UNREAD'}</div>
             {detail.note && <div className="bs-modal-note">{detail.note}</div>}
             {detail.dateAdded && <div className="bs-modal-date">Added {formatDate(detail.dateAdded)}</div>}
-            {isAdmin && (
+            {(isAdmin || (detail.visitor && detail.sessionId === sessionId.current)) && (
               <button
                 className="bs-modal-toggle-read"
                 onClick={() => toggleRead(detail)}

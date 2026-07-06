@@ -1,0 +1,2110 @@
+{
+  "version": 1,
+  "generatedAt": "2026-07-06T17:49:07.439Z",
+  "books": {
+    "The Evolution of Biological Information|Adami, Christoph": {
+      "cover": null,
+      "desc": null
+    },
+    "Understanding Human Nature|Adler, Alfred": {
+      "cover": "https://covers.openlibrary.org/b/id/811390-M.jpg",
+      "desc": null
+    },
+    "The Book of Formation (Sefer Yetzirah)|Akiba ben Joseph (attrib.) / Waite, A.E. (ed.)": {
+      "cover": null,
+      "desc": null
+    },
+    "Nicomachean Ethics|Aristotle": {
+      "cover": "https://covers.openlibrary.org/b/id/12593945-M.jpg",
+      "desc": null
+    },
+    "Metaphysics|Aristotle": {
+      "cover": "https://covers.openlibrary.org/b/id/129771-M.jpg",
+      "desc": null
+    },
+    "Politics|Aristotle": {
+      "cover": "https://covers.openlibrary.org/b/id/1277085-M.jpg",
+      "desc": null
+    },
+    "Summa Theologica|Aquinas, Thomas": {
+      "cover": "https://covers.openlibrary.org/b/id/8236222-M.jpg",
+      "desc": null
+    },
+    "Confessions|Augustine of Hippo": {
+      "cover": "https://covers.openlibrary.org/b/id/9022521-M.jpg",
+      "desc": null
+    },
+    "City of God|Augustine": {
+      "cover": "https://covers.openlibrary.org/b/id/9022521-M.jpg",
+      "desc": null
+    },
+    "Outlive|Attia, Peter": {
+      "cover": "https://covers.openlibrary.org/b/id/13191259-M.jpg",
+      "desc": null
+    },
+    "Beartown|Backman, Fredrik": {
+      "cover": "https://covers.openlibrary.org/b/id/11202500-M.jpg",
+      "desc": null
+    },
+    "The Joys of Compounding|Baid, Gautam": {
+      "cover": "https://covers.openlibrary.org/b/id/10170192-M.jpg",
+      "desc": null
+    },
+    "The History of George Castriot, Surnamed Scanderbeg (trans. Zachary Jones, adapt. David Hosaflook)|Barleti, Marin / de Lavardin, Jacques": {
+      "cover": null,
+      "desc": null
+    },
+    "The Law|Bastiat, Frédéric": {
+      "cover": "https://covers.openlibrary.org/b/id/8819903-M.jpg",
+      "desc": null
+    },
+    "The Denial of Death|Becker, Ernest": {
+      "cover": "https://covers.openlibrary.org/b/id/4506134-M.jpg",
+      "desc": null
+    },
+    "Cross Currents: The Perils of Electropollution, The Promise of Electromedicine|Becker, Robert O.": {
+      "cover": "https://covers.openlibrary.org/b/id/4721436-M.jpg",
+      "desc": null
+    },
+    "The Body Electric: Electromagnetism and the Foundation of Life|Becker, Robert O. / Selden, Gary": {
+      "cover": null,
+      "desc": null
+    },
+    "A Layman's Guide to Psychiatry and Psychoanalysis|Berne, Eric, MD": {
+      "cover": "https://covers.openlibrary.org/b/id/8360141-M.jpg",
+      "desc": null
+    },
+    "Games People Play|Berne, Eric, MD": {
+      "cover": "https://covers.openlibrary.org/b/id/8281189-M.jpg",
+      "desc": null
+    },
+    "The Loser|Bernhard, Thomas": {
+      "cover": "https://covers.openlibrary.org/b/id/139735-M.jpg",
+      "desc": null
+    },
+    "Seeking Wisdom: From Darwin to Munger|Bevelin, Peter": {
+      "cover": "https://covers.openlibrary.org/b/id/9671797-M.jpg",
+      "desc": null
+    },
+    "The Jakarta Method: Washington's Anticommunist Crusade & The Mass Murder Program That Shaped Our World|Bevins, Vincent": {
+      "cover": null,
+      "desc": null
+    },
+    "Iron John: A Book About Men|Bly, Robert": {
+      "cover": "https://covers.openlibrary.org/b/id/165352-M.jpg",
+      "desc": null
+    },
+    "Consolation of Philosophy|Boethius": {
+      "cover": "https://covers.openlibrary.org/b/id/8915879-M.jpg",
+      "desc": null
+    },
+    "Common Sense on Mutual Funds|Bogle, John": {
+      "cover": "https://covers.openlibrary.org/b/id/303061-M.jpg",
+      "desc": null
+    },
+    "John Bogle on Investing|Bogle, John": {
+      "cover": "https://covers.openlibrary.org/b/id/1239500-M.jpg",
+      "desc": null
+    },
+    "Stay the Course|Bogle, John": {
+      "cover": "https://covers.openlibrary.org/b/id/10092137-M.jpg",
+      "desc": null
+    },
+    "The Battle for the Soul of Capitalism|Bogle, John": {
+      "cover": "https://covers.openlibrary.org/b/id/162687-M.jpg",
+      "desc": null
+    },
+    "The Little Book of Common Sense Investing|Bogle, John": {
+      "cover": "https://covers.openlibrary.org/b/id/1239500-M.jpg",
+      "desc": null
+    },
+    "2666|Bolaño, Roberto": {
+      "cover": "https://covers.openlibrary.org/b/id/1047310-M.jpg",
+      "desc": null
+    },
+    "Ficciones|Borges, Jorge Luis": {
+      "cover": "https://covers.openlibrary.org/b/id/10832290-M.jpg",
+      "desc": null
+    },
+    "The Aleph|Borges, Jorge Luis": {
+      "cover": "https://covers.openlibrary.org/b/id/14408958-M.jpg",
+      "desc": null
+    },
+    "Superintelligence: Paths, Dangers, Strategies|Bostrom, Nick": {
+      "cover": "https://covers.openlibrary.org/b/id/8039542-M.jpg",
+      "desc": null
+    },
+    "Woodrow Wilson|Brands, H.W.": {
+      "cover": "https://covers.openlibrary.org/b/id/2349350-M.jpg",
+      "desc": null
+    },
+    "COVID-19 and the Global Predators|Breggin, Peter / Breggin, Ginger": {
+      "cover": "https://covers.openlibrary.org/b/id/12065850-M.jpg",
+      "desc": null
+    },
+    "Wuthering Heights|Brontë, Emily": {
+      "cover": "https://covers.openlibrary.org/b/id/12818862-M.jpg",
+      "desc": null
+    },
+    "Bombardiers|Bronson, Po": {
+      "cover": "https://covers.openlibrary.org/b/id/3878317-M.jpg",
+      "desc": null
+    },
+    "Physics in Context for Cambridge International AS & A Level|Broithuup, Jim / Bell, John": {
+      "cover": null,
+      "desc": null
+    },
+    "Planck: Driven by Vision, Broken by War|Brown, Brandon R.": {
+      "cover": "https://covers.openlibrary.org/b/id/13097188-M.jpg",
+      "desc": null
+    },
+    "Fimbulwinter (Daniel Black #1)|Brown, E. William": {
+      "cover": null,
+      "desc": null
+    },
+    "The Master and Margarita|Bulgakov, Mikhail": {
+      "cover": "https://covers.openlibrary.org/b/id/12947486-M.jpg",
+      "desc": null
+    },
+    "A Clockwork Orange|Burgess, Anthony": {
+      "cover": "https://covers.openlibrary.org/b/id/13151224-M.jpg",
+      "desc": null
+    },
+    "Herbert Hoover: A Public Life|Burner, David": {
+      "cover": "https://covers.openlibrary.org/b/id/8032507-M.jpg",
+      "desc": null
+    },
+    "Furies of Calderon|Butcher, Jim": {
+      "cover": "https://covers.openlibrary.org/b/id/284243-M.jpg",
+      "desc": null
+    },
+    "The Adams Papers: Diary and Autobiography of John Adams|Butterfield, L.H. / Garrett, Wendell D. (eds.)": {
+      "cover": null,
+      "desc": null
+    },
+    "The Magic|Byrne, Rhonda": {
+      "cover": "https://covers.openlibrary.org/b/id/7239250-M.jpg",
+      "desc": null
+    },
+    "The Stranger|Camus, Albert": {
+      "cover": "https://covers.openlibrary.org/b/id/13151269-M.jpg",
+      "desc": null
+    },
+    "The Fire from Within|Castaneda, Carlos": {
+      "cover": "https://covers.openlibrary.org/b/id/5476467-M.jpg",
+      "desc": null
+    },
+    "The Hearth Book|Castro, Julio": {
+      "cover": "https://covers.openlibrary.org/b/id/13771919-M.jpg",
+      "desc": null
+    },
+    "Journey to the End of the Night|Céline, Louis-Ferdinand": {
+      "cover": "https://covers.openlibrary.org/b/id/14054027-M.jpg",
+      "desc": null
+    },
+    "Don Quixote|Cervantes, Miguel de": {
+      "cover": "https://covers.openlibrary.org/b/id/14428305-M.jpg",
+      "desc": null
+    },
+    "Web 3.0: The Future of Decentralized Technology|Chambers, Shawn P.": {
+      "cover": null,
+      "desc": null
+    },
+    "The Price of Time|Chancellor, Edward": {
+      "cover": "https://covers.openlibrary.org/b/id/13141027-M.jpg",
+      "desc": null
+    },
+    "The Canterbury Tales|Chaucer, Geoffrey": {
+      "cover": "https://covers.openlibrary.org/b/id/5767180-M.jpg",
+      "desc": null
+    },
+    "Minimal Rationality|Cherniak, Christopher": {
+      "cover": "https://covers.openlibrary.org/b/id/8024638-M.jpg",
+      "desc": null
+    },
+    "Influence: The Psychology of Persuasion|Cialdini, Robert": {
+      "cover": "https://covers.openlibrary.org/b/id/431011-M.jpg",
+      "desc": null
+    },
+    "The Trouble with Being Born|Cioran, E.M.": {
+      "cover": null,
+      "desc": null
+    },
+    "Einstein: The Life and Times|Clark, Ronald W.": {
+      "cover": "https://covers.openlibrary.org/b/id/48032-M.jpg",
+      "desc": null
+    },
+    "Boundaries|Cloud, Henry / Townsend, John": {
+      "cover": "https://covers.openlibrary.org/b/id/169761-M.jpg",
+      "desc": null
+    },
+    "The Unsold Mindset|Coggins, Colin / Brown, Garrett": {
+      "cover": null,
+      "desc": null
+    },
+    "Heart of Darkness|Conrad, Joseph": {
+      "cover": "https://covers.openlibrary.org/b/id/12307847-M.jpg",
+      "desc": null
+    },
+    "Spiritual Body & Celestial Earth|Corbin, Henry": {
+      "cover": null,
+      "desc": null
+    },
+    "Quality Shareholders: How the Best Managers Attract and Keep Them|Cunningham, Lawrence A.": {
+      "cover": null,
+      "desc": null
+    },
+    "Quality Investing|Cunningham, Lawrence A. / Eide, Torkell T. / Hargreaves, Patrick": {
+      "cover": null,
+      "desc": null
+    },
+    "The Life of Sir William Osler (2-vol.)|Cushing, Harvey": {
+      "cover": null,
+      "desc": null
+    },
+    "House of Leaves|Danielewski, Mark Z.": {
+      "cover": "https://covers.openlibrary.org/b/id/6450442-M.jpg",
+      "desc": null
+    },
+    "The Divine Comedy|Dante Alighieri": {
+      "cover": "https://covers.openlibrary.org/b/id/11621024-M.jpg",
+      "desc": null
+    },
+    "Disconnect: The Truth About Cell Phone Radiation|Davis, Devra": {
+      "cover": "https://covers.openlibrary.org/b/id/9789679-M.jpg",
+      "desc": null
+    },
+    "No Longer Human|Dazai, Osamu": {
+      "cover": "https://covers.openlibrary.org/b/id/13190147-M.jpg",
+      "desc": null
+    },
+    "A Knight's Own Book of Chivalry|de Charny, Geoffroi": {
+      "cover": "https://covers.openlibrary.org/b/id/602798-M.jpg",
+      "desc": null
+    },
+    "The Way of the Superior Man|Deida, David": {
+      "cover": "https://covers.openlibrary.org/b/id/865059-M.jpg",
+      "desc": null
+    },
+    "Mao II|DeLillo, Don": {
+      "cover": "https://covers.openlibrary.org/b/id/4037194-M.jpg",
+      "desc": null
+    },
+    "Your Name Here|DeWitt, Helen / Gridneff, Ilya": {
+      "cover": null,
+      "desc": null
+    },
+    "Guns, Germs & Steel|Diamond, Jared": {
+      "cover": null,
+      "desc": null
+    },
+    "Do Androids Dream of Electric Sheep?|Dick, Philip K.": {
+      "cover": "https://covers.openlibrary.org/b/id/207515-M.jpg",
+      "desc": null
+    },
+    "Ubik|Dick, Philip K.": {
+      "cover": "https://covers.openlibrary.org/b/id/5018327-M.jpg",
+      "desc": null
+    },
+    "Those Bastards|Dillian, Jared": {
+      "cover": null,
+      "desc": null
+    },
+    "Becoming Supernatural: How Common People Are Doing the Uncommon|Dispenza, Joe": {
+      "cover": "https://covers.openlibrary.org/b/id/8596356-M.jpg",
+      "desc": null
+    },
+    "Childhood, Youth, Dependency|Ditlevsen, Tove": {
+      "cover": "https://covers.openlibrary.org/b/id/11206327-M.jpg",
+      "desc": null
+    },
+    "The Art of Thinking Clearly|Dobelli, Rolf": {
+      "cover": "https://covers.openlibrary.org/b/id/8270423-M.jpg",
+      "desc": null
+    },
+    "Cracking the Code (3rd Ed.)|Doe, John Henry": {
+      "cover": null,
+      "desc": null
+    },
+    "The Five Rules for Successful Stock Investing: Morningstar's Guide to Building Wealth and Winning in the Market|Dorsey, Pat": {
+      "cover": "https://covers.openlibrary.org/b/id/302783-M.jpg",
+      "desc": null
+    },
+    "The Brothers Karamazov|Dostoevsky, Fyodor": {
+      "cover": "https://covers.openlibrary.org/b/id/8272336-M.jpg",
+      "desc": null
+    },
+    "Crime and Punishment|Dostoevsky, Fyodor": {
+      "cover": "https://covers.openlibrary.org/b/id/9411873-M.jpg",
+      "desc": null
+    },
+    "Demons|Dostoevsky, Fyodor": {
+      "cover": "https://covers.openlibrary.org/b/id/9258937-M.jpg",
+      "desc": null
+    },
+    "Notes from Underground|Dostoevsky, Fyodor": {
+      "cover": "https://covers.openlibrary.org/b/id/10445973-M.jpg",
+      "desc": null
+    },
+    "The Idiot|Dostoevsky, Fyodor": {
+      "cover": "https://covers.openlibrary.org/b/id/11226648-M.jpg",
+      "desc": null
+    },
+    "The Power of Habit|Duhigg, Charles": {
+      "cover": "https://covers.openlibrary.org/b/id/9078085-M.jpg",
+      "desc": null
+    },
+    "The Count of Monte Cristo|Dumas, Alexandre": {
+      "cover": "https://covers.openlibrary.org/b/id/14566393-M.jpg",
+      "desc": null
+    },
+    "The Comfort Crisis|Easter, Michael": {
+      "cover": "https://covers.openlibrary.org/b/id/11101220-M.jpg",
+      "desc": null
+    },
+    "The Name of the Rose|Eco, Umberto": {
+      "cover": "https://covers.openlibrary.org/b/id/8598263-M.jpg",
+      "desc": null
+    },
+    "American Psycho|Ellis, Bret Easton": {
+      "cover": "https://covers.openlibrary.org/b/id/8401686-M.jpg",
+      "desc": null
+    },
+    "Women Who Run With the Wolves: Myths and Stories of the Wild Woman Archetype|Estés, Clarissa Pinkola, Ph.D.": {
+      "cover": null,
+      "desc": null
+    },
+    "The Coming of the Third Reich|Evans, Richard J.": {
+      "cover": "https://covers.openlibrary.org/b/id/452455-M.jpg",
+      "desc": null
+    },
+    "Eros and the Mysteries of Love: The Metaphysics of Sex|Evola, Julius": {
+      "cover": "https://covers.openlibrary.org/b/id/691115-M.jpg",
+      "desc": null
+    },
+    "Introduction to Magic, Vol. I: Rituals and Practical Techniques for the Magus|Evola, Julius (and the Ur Group)": {
+      "cover": null,
+      "desc": null
+    },
+    "The Psychic Roots of Disease (Five Biological Laws of Nature)|Eybl, Björn": {
+      "cover": null,
+      "desc": null
+    },
+    "As I Lay Dying|Faulkner, William": {
+      "cover": "https://covers.openlibrary.org/b/id/9327716-M.jpg",
+      "desc": null
+    },
+    "The Sound and the Fury|Faulkner, William": {
+      "cover": "https://covers.openlibrary.org/b/id/8292212-M.jpg",
+      "desc": null
+    },
+    "The Pleasure of Finding Things Out|Feynman, Richard P.": {
+      "cover": "https://covers.openlibrary.org/b/id/463308-M.jpg",
+      "desc": null
+    },
+    "The Economic Consequences of U.S. Mobilization for the Second World War|Field, Alexander J.": {
+      "cover": null,
+      "desc": null
+    },
+    "Dictionary of Banking Terms|Fitch, Thomas P.": {
+      "cover": "https://covers.openlibrary.org/b/id/517960-M.jpg",
+      "desc": null
+    },
+    "The Great Gatsby|Fitzgerald, F. Scott": {
+      "cover": "https://covers.openlibrary.org/b/id/10590366-M.jpg",
+      "desc": null
+    },
+    "Casino Royale / Live and Let Die / Moonraker (Penguin omnibus)|Fleming, Ian": {
+      "cover": null,
+      "desc": null
+    },
+    "The Man from Monticello: An Intimate Life of Thomas Jefferson|Fleming, Thomas": {
+      "cover": "https://covers.openlibrary.org/b/id/10273549-M.jpg",
+      "desc": null
+    },
+    "Henry J. Kaiser: Builder in the Modern American West|Foster, Mark S.": {
+      "cover": "https://covers.openlibrary.org/b/id/1160551-M.jpg",
+      "desc": null
+    },
+    "Man's Search for Meaning|Frankl, Viktor E.": {
+      "cover": "https://covers.openlibrary.org/b/id/8516506-M.jpg",
+      "desc": null
+    },
+    "The Art of Execution|Freeman-Shor, Lee": {
+      "cover": null,
+      "desc": null
+    },
+    "Escape from Freedom|Fromm, Erich": {
+      "cover": "https://covers.openlibrary.org/b/id/1051932-M.jpg",
+      "desc": null
+    },
+    "The Art of Loving|Fromm, Erich": {
+      "cover": "https://covers.openlibrary.org/b/id/4741809-M.jpg",
+      "desc": null
+    },
+    "The Generalship of Alexander the Great|Fuller, J.F.C.": {
+      "cover": null,
+      "desc": null
+    },
+    "A Billion Wicked Thoughts|Gaddam, Sai / Ogas, Ogi": {
+      "cover": null,
+      "desc": null
+    },
+    "Systemantics: How Systems Work and Especially How They Fail|Gall, John": {
+      "cover": "https://covers.openlibrary.org/b/id/4455952-M.jpg",
+      "desc": null
+    },
+    "King, Warrior, Magician, Lover|Gillette, Douglas / Moore, Robert": {
+      "cover": null,
+      "desc": null
+    },
+    "Richard the Lionheart|Gillingham, John": {
+      "cover": "https://covers.openlibrary.org/b/id/3372975-M.jpg",
+      "desc": null
+    },
+    "Stumbling on Happiness|Gilbert, Daniel": {
+      "cover": "https://covers.openlibrary.org/b/id/6803663-M.jpg",
+      "desc": null
+    },
+    "The Epic of Gilgamesh (anon.)|": {
+      "cover": "https://covers.openlibrary.org/b/id/107543-M.jpg",
+      "desc": null
+    },
+    "The Little Red Book of Selling|Gitomer, Jeffrey": {
+      "cover": "https://covers.openlibrary.org/b/id/931983-M.jpg",
+      "desc": null
+    },
+    "Little Green Book of Getting Your Way|Gitomer, Jeffrey": {
+      "cover": "https://covers.openlibrary.org/b/id/6629104-M.jpg",
+      "desc": null
+    },
+    "Hidden Repression: How the IMF and World Bank Sell Exploitation as Development|Gladstein, Alex": {
+      "cover": null,
+      "desc": null
+    },
+    "This Is How You Lose the Time War|Gladstone, Max / El-Mohtar, Amal": {
+      "cover": "https://covers.openlibrary.org/b/id/8665647-M.jpg",
+      "desc": null
+    },
+    "David & Goliath|Gladwell, Malcolm": {
+      "cover": null,
+      "desc": null
+    },
+    "The Game of Life|Goddard, Neville": {
+      "cover": null,
+      "desc": null
+    },
+    "Faust|Goethe, Johann Wolfgang von": {
+      "cover": "https://covers.openlibrary.org/b/id/6499459-M.jpg",
+      "desc": null
+    },
+    "The Sorrows of Young Werther|Goethe, Johann Wolfgang von": {
+      "cover": "https://covers.openlibrary.org/b/id/7187281-M.jpg",
+      "desc": null
+    },
+    "Dead Souls|Gogol, Nikolai": {
+      "cover": "https://covers.openlibrary.org/b/id/7496125-M.jpg",
+      "desc": null
+    },
+    "Emotional Intelligence|Goleman, Daniel": {
+      "cover": "https://covers.openlibrary.org/b/id/1359485-M.jpg",
+      "desc": null
+    },
+    "The Story of Art|Gombrich, E.H.": {
+      "cover": "https://covers.openlibrary.org/b/id/538390-M.jpg",
+      "desc": null
+    },
+    "The Art of Worldly Wisdom (trans. Joseph Jacobs)|Gracián, Baltasar": {
+      "cover": null,
+      "desc": null
+    },
+    "Chivalry: The Everyday Life of the Medieval Knight|Gautier, Léon": {
+      "cover": null,
+      "desc": null
+    },
+    "The Big Secret for the Small Investor|Greenblatt, Joel": {
+      "cover": "https://covers.openlibrary.org/b/id/7506600-M.jpg",
+      "desc": null
+    },
+    "(see Housel, Morgan — The Psychology of Money)|Greene, Morgan / Housel": {
+      "cover": null,
+      "desc": null
+    },
+    "The Laws of Human Nature|Greene, Robert": {
+      "cover": "https://covers.openlibrary.org/b/id/10170095-M.jpg",
+      "desc": null
+    },
+    "Richer, Wiser, Happier|Green, William": {
+      "cover": "https://covers.openlibrary.org/b/id/10887211-M.jpg",
+      "desc": null
+    },
+    "The Art of Doing Science and Engineering: Learning to Learn|Hamming, Richard W.": {
+      "cover": "https://covers.openlibrary.org/b/id/14153910-M.jpg",
+      "desc": null
+    },
+    "Hunger|Hamsun, Knut": {
+      "cover": "https://covers.openlibrary.org/b/id/10472647-M.jpg",
+      "desc": null
+    },
+    "Lost Connections|Hari, Johann": {
+      "cover": "https://covers.openlibrary.org/b/id/8838533-M.jpg",
+      "desc": null
+    },
+    "Stolen Focus|Hari, Johann": {
+      "cover": "https://covers.openlibrary.org/b/id/12664855-M.jpg",
+      "desc": null
+    },
+    "DeFi and the Future of Finance|Harvey, Campbell R. / Ramachandran, Ashwin / Santoro, Joey": {
+      "cover": null,
+      "desc": null
+    },
+    "The Good Soldier Švejk|Hašek, Jaroslav": {
+      "cover": "https://covers.openlibrary.org/b/id/9314448-M.jpg",
+      "desc": null
+    },
+    "Power vs. Force|Hawkins, David R.": {
+      "cover": "https://covers.openlibrary.org/b/id/794199-M.jpg",
+      "desc": null
+    },
+    "Letting Go: The Pathway of Surrender|Hawkins, David R.": {
+      "cover": "https://covers.openlibrary.org/b/id/12421410-M.jpg",
+      "desc": null
+    },
+    "A Thousand Brains|Hawkins, Jeff": {
+      "cover": "https://covers.openlibrary.org/b/id/10675398-M.jpg",
+      "desc": null
+    },
+    "Beowulf|Heaney, Seamus (trans.)": {
+      "cover": "https://covers.openlibrary.org/b/id/11205132-M.jpg",
+      "desc": null
+    },
+    "Ending Plague|Heckenlively, Kent / Mikovits, Judy / Ruscetti, Frank": {
+      "cover": null,
+      "desc": null
+    },
+    "Phenomenology of Spirit|Hegel, G.W.F.": {
+      "cover": "https://covers.openlibrary.org/b/id/8245249-M.jpg",
+      "desc": null
+    },
+    "Being and Time|Heidegger, Martin": {
+      "cover": "https://covers.openlibrary.org/b/id/2208564-M.jpg",
+      "desc": null
+    },
+    "The Moon is a Harsh Mistress|Heinlein, Robert": {
+      "cover": "https://covers.openlibrary.org/b/id/14631258-M.jpg",
+      "desc": null
+    },
+    "Catch-22|Heller, Joseph": {
+      "cover": "https://covers.openlibrary.org/b/id/6468653-M.jpg",
+      "desc": null
+    },
+    "The Old Man and the Sea|Hemingway, Ernest": {
+      "cover": "https://covers.openlibrary.org/b/id/463307-M.jpg",
+      "desc": null
+    },
+    "Dune|Herbert, Frank": {
+      "cover": "https://covers.openlibrary.org/b/id/11481354-M.jpg",
+      "desc": null
+    },
+    "The Histories|Herodotus": {
+      "cover": "https://covers.openlibrary.org/b/id/9829028-M.jpg",
+      "desc": null
+    },
+    "Chain of Command|Hersh, Seymour": {
+      "cover": "https://covers.openlibrary.org/b/id/23181-M.jpg",
+      "desc": null
+    },
+    "Siddhartha|Hesse, Hermann": {
+      "cover": "https://covers.openlibrary.org/b/id/6562535-M.jpg",
+      "desc": null
+    },
+    "Psychology of Intelligence Analysis|Heuer, Richards J.": {
+      "cover": null,
+      "desc": null
+    },
+    "Outwitting the Devil|Hill, Napoleon": {
+      "cover": "https://covers.openlibrary.org/b/id/8260315-M.jpg",
+      "desc": null
+    },
+    "Think and Grow Rich|Hill, Napoleon": {
+      "cover": "https://covers.openlibrary.org/b/id/14542536-M.jpg",
+      "desc": null
+    },
+    "Boom: Bubbles and the End of Stagnation|Hobart, Byrne / Huber, Tobias": {
+      "cover": null,
+      "desc": null
+    },
+    "The Assassin's Apprentice|Hobb, Robin": {
+      "cover": "https://covers.openlibrary.org/b/id/4915230-M.jpg",
+      "desc": null
+    },
+    "The Age of Revolution: 1789–1848|Hobsbawm, Eric": {
+      "cover": null,
+      "desc": null
+    },
+    "The Raven Scholar|Hodgson, Antonia": {
+      "cover": "https://covers.openlibrary.org/b/id/15067081-M.jpg",
+      "desc": null
+    },
+    "The Tao of Pooh|Hoff, Benjamin": {
+      "cover": "https://covers.openlibrary.org/b/id/8741318-M.jpg",
+      "desc": null
+    },
+    "The True Believer: Thoughts on the Nature of Mass Movements|Hoffer, Eric": {
+      "cover": "https://covers.openlibrary.org/b/id/8284928-M.jpg",
+      "desc": null
+    },
+    "The Science of Rapid Skill Acquisition: Advanced Methods to Learn, Remember, and Master New Skills and Information|Hollins, Peter": {
+      "cover": "https://covers.openlibrary.org/b/id/10302445-M.jpg",
+      "desc": null
+    },
+    "The Holy Bible|": {
+      "cover": "https://covers.openlibrary.org/b/id/12707846-M.jpg",
+      "desc": null
+    },
+    "The Iliad|Homer": {
+      "cover": "https://covers.openlibrary.org/b/id/7083790-M.jpg",
+      "desc": null
+    },
+    "The Odyssey|Homer": {
+      "cover": "https://covers.openlibrary.org/b/id/9045853-M.jpg",
+      "desc": null
+    },
+    "Vax-Unvax|Hooker, Brian / Kennedy, Robert F. Jr.": {
+      "cover": "https://covers.openlibrary.org/b/id/14756039-M.jpg",
+      "desc": null
+    },
+    "Poems and Prose|Hopkins, Gerard Manley": {
+      "cover": "https://covers.openlibrary.org/b/id/6973280-M.jpg",
+      "desc": null
+    },
+    "Herbert Hoover: A Public Life)|Hoover, Herbert (see Burner, David": {
+      "cover": null,
+      "desc": null
+    },
+    "The Psychology of Money|Housel, Morgan": {
+      "cover": "https://covers.openlibrary.org/b/id/10389354-M.jpg",
+      "desc": null
+    },
+    "Close Reading: An Introduction to Literature|Howe, Elisabeth A.": {
+      "cover": null,
+      "desc": null
+    },
+    "Les Misérables|Hugo, Victor": {
+      "cover": "https://covers.openlibrary.org/b/id/12721865-M.jpg",
+      "desc": null
+    },
+    "Dissolving Illusions|Humphries, Suzanne / Bystrianyk, Roman": {
+      "cover": null,
+      "desc": null
+    },
+    "A Course of Instruction in Personal Magnetism|Hutchen": {
+      "cover": "https://covers.openlibrary.org/b/id/15140817-M.jpg",
+      "desc": null
+    },
+    "Brave New World|Huxley, Aldous": {
+      "cover": "https://covers.openlibrary.org/b/id/8231823-M.jpg",
+      "desc": null
+    },
+    "Defenders of the West|Ibrahim, Raymond": {
+      "cover": null,
+      "desc": null
+    },
+    "Sword and Scimitar|Ibrahim, Raymond": {
+      "cover": "https://covers.openlibrary.org/b/id/8233580-M.jpg",
+      "desc": null
+    },
+    "Pimp|Iceberg Slim": {
+      "cover": "https://covers.openlibrary.org/b/id/13539771-M.jpg",
+      "desc": null
+    },
+    "The Black Jacobins: Toussaint L'Ouverture and the San Domingo Revolution|James, C.L.R.": {
+      "cover": "https://covers.openlibrary.org/b/id/14349219-M.jpg",
+      "desc": null
+    },
+    "A Portrait of the Artist as a Young Man|Joyce, James": {
+      "cover": "https://covers.openlibrary.org/b/id/9328410-M.jpg",
+      "desc": null
+    },
+    "Dubliners|Joyce, James": {
+      "cover": "https://covers.openlibrary.org/b/id/8216412-M.jpg",
+      "desc": null
+    },
+    "Finnegans Wake|Joyce, James": {
+      "cover": "https://covers.openlibrary.org/b/id/6609259-M.jpg",
+      "desc": null
+    },
+    "Ulysses|Joyce, James": {
+      "cover": "https://covers.openlibrary.org/b/id/13136548-M.jpg",
+      "desc": null
+    },
+    "Storm of Steel|Jünger, Ernst": {
+      "cover": "https://covers.openlibrary.org/b/id/110616-M.jpg",
+      "desc": null
+    },
+    "The Metamorphosis|Kafka, Franz": {
+      "cover": "https://covers.openlibrary.org/b/id/12820198-M.jpg",
+      "desc": null
+    },
+    "The Castle|Kafka, Franz": {
+      "cover": "https://covers.openlibrary.org/b/id/12605605-M.jpg",
+      "desc": null
+    },
+    "The Trial|Kafka, Franz": {
+      "cover": "https://covers.openlibrary.org/b/id/997423-M.jpg",
+      "desc": null
+    },
+    "Human Acts|Kang, Han": {
+      "cover": "https://covers.openlibrary.org/b/id/8047485-M.jpg",
+      "desc": null
+    },
+    "We Do Not Part|Kang, Han": {
+      "cover": "https://covers.openlibrary.org/b/id/14835467-M.jpg",
+      "desc": null
+    },
+    "Critique of Pure Reason|Kant, Immanuel": {
+      "cover": "https://covers.openlibrary.org/b/id/1994279-M.jpg",
+      "desc": null
+    },
+    "The Technological Republic|Karp, Alexander C. / Zamiska, Nicholas W.": {
+      "cover": null,
+      "desc": null
+    },
+    "Transcend: The New Science of Self-Actualization|Kaufman, Scott Barry, Ph.D.": {
+      "cover": null,
+      "desc": null
+    },
+    "Industrial Society and Its Future|Kaczynski, Theodore": {
+      "cover": "https://covers.openlibrary.org/b/id/9329184-M.jpg",
+      "desc": null
+    },
+    "Fire in the Belly|Keen, Sam": {
+      "cover": "https://covers.openlibrary.org/b/id/7241040-M.jpg",
+      "desc": null
+    },
+    "The Real Anthony Fauci|Kennedy, Robert F. Jr.": {
+      "cover": "https://covers.openlibrary.org/b/id/11177908-M.jpg",
+      "desc": null
+    },
+    "Sympathy Tower Tokyo (Rie Qudan)|Kirkwood, Jesse (trans.)": {
+      "cover": null,
+      "desc": null
+    },
+    "The Courage to Be Disliked|Kishimi, Ichiro / Koga, Fumitake": {
+      "cover": null,
+      "desc": null
+    },
+    "A Little History of Economics|Kishtainy, Niall": {
+      "cover": "https://covers.openlibrary.org/b/id/10455766-M.jpg",
+      "desc": null
+    },
+    "Carnegie|Krass, Peter": {
+      "cover": "https://covers.openlibrary.org/b/id/304090-M.jpg",
+      "desc": null
+    },
+    "War and War|Krasznahorkai, László": {
+      "cover": "https://covers.openlibrary.org/b/id/598471-M.jpg",
+      "desc": null
+    },
+    "Dao De Jing|Laozi": {
+      "cover": "https://covers.openlibrary.org/b/id/662232-M.jpg",
+      "desc": null
+    },
+    "Ellmann's Joyce: The Biography of a Masterpiece and Its Maker|Leader, Zachary": {
+      "cover": null,
+      "desc": null
+    },
+    "The Courage to Face Covid-19|Leake, Jonathan / McCullough, Peter": {
+      "cover": null,
+      "desc": null
+    },
+    "AI Superpowers: China, Silicon Valley, and the New World Order|Lee, Kai-Fu": {
+      "cover": null,
+      "desc": null
+    },
+    "Reminiscences of a Stock Operator|Lefèvre, Edwin": {
+      "cover": "https://covers.openlibrary.org/b/id/300533-M.jpg",
+      "desc": null
+    },
+    "Present Concerns|Lewis, C.S.": {
+      "cover": null,
+      "desc": null
+    },
+    "The Left Hand of Darkness|LeGuin, Ursula K.": {
+      "cover": "https://covers.openlibrary.org/b/id/10618463-M.jpg",
+      "desc": null
+    },
+    "The Love Slave and the Scientists (aka The Body-Masters)|Long, Frank Belknap": {
+      "cover": null,
+      "desc": null
+    },
+    "Quarter Share|Lowell, Nathan": {
+      "cover": "https://covers.openlibrary.org/b/id/7261254-M.jpg",
+      "desc": null
+    },
+    "Romance of the Three Kingdoms|Luo Guanzhong": {
+      "cover": "https://covers.openlibrary.org/b/id/5445126-M.jpg",
+      "desc": null
+    },
+    "David Sarnoff|Lyons, Eugene": {
+      "cover": "https://covers.openlibrary.org/b/id/6799489-M.jpg",
+      "desc": null
+    },
+    "The Prince|Machiavelli, Niccolò": {
+      "cover": "https://covers.openlibrary.org/b/id/12726168-M.jpg",
+      "desc": null
+    },
+    "Fossil Capital: The Rise of Steam Power and the Roots of Global Warming|Malm, Andreas": {
+      "cover": "https://covers.openlibrary.org/b/id/7394401-M.jpg",
+      "desc": null
+    },
+    "The Last Lion: Winston Spencer Churchill, Defender of the Realm 1940–1965|Manchester, William / Reid, Paul": {
+      "cover": "https://covers.openlibrary.org/b/id/9064077-M.jpg",
+      "desc": null
+    },
+    "The Wizard and the Prophet: Two Remarkable Scientists and Their Dueling Visions to Shape Tomorrow's World|Mann, Charles C.": {
+      "cover": "https://covers.openlibrary.org/b/id/8250114-M.jpg",
+      "desc": null
+    },
+    "The Magic Mountain|Mann, Thomas": {
+      "cover": "https://covers.openlibrary.org/b/id/2056242-M.jpg",
+      "desc": null
+    },
+    "Meditations|Marcus Aurelius": {
+      "cover": "https://covers.openlibrary.org/b/id/13202688-M.jpg",
+      "desc": null
+    },
+    "Going Somewhere: Truth About a Life in Science|Marino, Andrew": {
+      "cover": "https://covers.openlibrary.org/b/id/10653238-M.jpg",
+      "desc": null
+    },
+    "One Hundred Years of Solitude|Márquez, Gabriel García": {
+      "cover": "https://covers.openlibrary.org/b/id/12627383-M.jpg",
+      "desc": null
+    },
+    "A Game of Thrones|Martin, George R.R.": {
+      "cover": "https://covers.openlibrary.org/b/id/9269962-M.jpg",
+      "desc": null
+    },
+    "100-Baggers|Mayer, Christopher": {
+      "cover": null,
+      "desc": null
+    },
+    "Dragonflight|McCaffrey, Anne": {
+      "cover": "https://covers.openlibrary.org/b/id/10306696-M.jpg",
+      "desc": null
+    },
+    "Blood Meridian|McCarthy, Cormac": {
+      "cover": "https://covers.openlibrary.org/b/id/419991-M.jpg",
+      "desc": null
+    },
+    "The Border Trilogy|McCarthy, Cormac": {
+      "cover": "https://covers.openlibrary.org/b/id/9296904-M.jpg",
+      "desc": null
+    },
+    "What They Don't Teach You at Harvard Business School|McCormack, Mark H.": {
+      "cover": "https://covers.openlibrary.org/b/id/4086840-M.jpg",
+      "desc": null
+    },
+    "What They Don't Teach You at Leverage Research: Advanced Sociopathy for Autistic Go-Getters|McCormack, Mark H.": {
+      "cover": null,
+      "desc": null
+    },
+    "The Field|McTaggart, Lynne": {
+      "cover": "https://covers.openlibrary.org/b/id/22914-M.jpg",
+      "desc": null
+    },
+    "Moby-Dick|Melville, Herman": {
+      "cover": "https://covers.openlibrary.org/b/id/10544254-M.jpg",
+      "desc": null
+    },
+    "EMF*D: 5G, Wi-Fi & Cell Phones|Mercola, Joseph": {
+      "cover": null,
+      "desc": null
+    },
+    "Dirty Electricity: Electrification and the Diseases of Civilization|Milham, Samuel": {
+      "cover": "https://covers.openlibrary.org/b/id/7567661-M.jpg",
+      "desc": null
+    },
+    "Chip War: The Fight for the World's Most Critical Technology|Miller, Chris": {
+      "cover": "https://covers.openlibrary.org/b/id/12968901-M.jpg",
+      "desc": null
+    },
+    "A Canticle for Leibowitz|Miller Jr., Walter M.": {
+      "cover": "https://covers.openlibrary.org/b/id/10221348-M.jpg",
+      "desc": null
+    },
+    "Paradise Lost|Milton, John": {
+      "cover": "https://covers.openlibrary.org/b/id/5992814-M.jpg",
+      "desc": null
+    },
+    "The Sailor Who Fell from Grace with the Sea|Mishima, Yukio": {
+      "cover": "https://covers.openlibrary.org/b/id/967502-M.jpg",
+      "desc": null
+    },
+    "Spring Snow|Mishima, Yukio": {
+      "cover": "https://covers.openlibrary.org/b/id/6953677-M.jpg",
+      "desc": null
+    },
+    "Essays|Montaigne, Michel de": {
+      "cover": "https://covers.openlibrary.org/b/id/104154-M.jpg",
+      "desc": null
+    },
+    "King Warrior Magician Lover|Moore, Robert / Gillette, Douglas": {
+      "cover": null,
+      "desc": null
+    },
+    "Benjamin Franklin|Morgan, Edmund S.": {
+      "cover": "https://covers.openlibrary.org/b/id/162220-M.jpg",
+      "desc": null
+    },
+    "Not Your Usual Founding Father: Selected Readings from Benjamin Franklin|Morgan, Edmund S. (ed.)": {
+      "cover": null,
+      "desc": null
+    },
+    "Vaccines: A Reappraisal|Moskowitz, Richard": {
+      "cover": null,
+      "desc": null
+    },
+    "Lolita|Nabokov, Vladimir": {
+      "cover": "https://covers.openlibrary.org/b/id/12984540-M.jpg",
+      "desc": null
+    },
+    "Good Reasons for Bad Feelings|Nesse, Randolph M.": {
+      "cover": "https://covers.openlibrary.org/b/id/8800195-M.jpg",
+      "desc": null
+    },
+    "Hold On to Your Kids|Neufeld, Gordon, Dr. / Maté, Gabor": {
+      "cover": null,
+      "desc": null
+    },
+    "A Study in Power: John D. Rockefeller (2-vol.)|Nevins, Allan": {
+      "cover": null,
+      "desc": null
+    },
+    "Chronicle of the Third Crusade|Nicholson, Helen J.": {
+      "cover": null,
+      "desc": null
+    },
+    "Thus Spoke Zarathustra|Nietzsche, Friedrich": {
+      "cover": "https://covers.openlibrary.org/b/id/1017466-M.jpg",
+      "desc": null
+    },
+    "Japanese Gardens|Nitschke, Günter": {
+      "cover": "https://covers.openlibrary.org/b/id/1029611-M.jpg",
+      "desc": null
+    },
+    "The Design of Everyday Things|Norman, Don": {
+      "cover": "https://covers.openlibrary.org/b/id/10007224-M.jpg",
+      "desc": null
+    },
+    "The Norton Anthology of English Literature|Norton Anthology of English Literature (ed.)": {
+      "cover": "https://covers.openlibrary.org/b/id/11107787-M.jpg",
+      "desc": null
+    },
+    "A Billion Wicked Thoughts|Ogas, Ogi / Gaddam, Sai": {
+      "cover": null,
+      "desc": null
+    },
+    "1984|Orwell, George": {
+      "cover": "https://covers.openlibrary.org/b/id/9267242-M.jpg",
+      "desc": null
+    },
+    "Animal Farm|Orwell, George": {
+      "cover": "https://covers.openlibrary.org/b/id/11261770-M.jpg",
+      "desc": null
+    },
+    "Metamorphoses|Ovid": {
+      "cover": "https://covers.openlibrary.org/b/id/7212118-M.jpg",
+      "desc": null
+    },
+    "Fractal Noise|Paolini, Christopher": {
+      "cover": "https://covers.openlibrary.org/b/id/13480559-M.jpg",
+      "desc": null
+    },
+    "Studies in the History of the Renaissance|Pater, Walter": {
+      "cover": "https://covers.openlibrary.org/b/id/1803572-M.jpg",
+      "desc": null
+    },
+    "Generative Energy: Restoring the Wholeness of Life|Peat, Ray, PhD": {
+      "cover": null,
+      "desc": null
+    },
+    "Nutrition for Women|Peat, Ray": {
+      "cover": "https://covers.openlibrary.org/b/id/6630365-M.jpg",
+      "desc": null
+    },
+    "Wireless Wars|Pelson, Jonathan": {
+      "cover": null,
+      "desc": null
+    },
+    "In Search of Excellence|Peters, Tom / Waterman Jr., Robert H.": {
+      "cover": null,
+      "desc": null
+    },
+    "faith hope love|Pieper, Josef": {
+      "cover": "https://covers.openlibrary.org/b/id/698293-M.jpg",
+      "desc": null
+    },
+    "On the Virtues of the Human Heart|Pieper, Josef": {
+      "cover": "https://covers.openlibrary.org/b/id/698123-M.jpg",
+      "desc": null
+    },
+    "The Four Cardinal Virtues|Pieper, Josef": {
+      "cover": "https://covers.openlibrary.org/b/id/153335-M.jpg",
+      "desc": null
+    },
+    "Zen and the Art of Motorcycle Maintenance|Pirsig, Robert M.": {
+      "cover": "https://covers.openlibrary.org/b/id/10673266-M.jpg",
+      "desc": null
+    },
+    "The Apology|Plato": {
+      "cover": "https://covers.openlibrary.org/b/id/14407561-M.jpg",
+      "desc": null
+    },
+    "The Republic|Plato": {
+      "cover": "https://covers.openlibrary.org/b/id/14418448-M.jpg",
+      "desc": null
+    },
+    "Parmenides|Plato": {
+      "cover": "https://covers.openlibrary.org/b/id/14412221-M.jpg",
+      "desc": null
+    },
+    "Dialogues|Plato": {
+      "cover": "https://covers.openlibrary.org/b/id/14418448-M.jpg",
+      "desc": null
+    },
+    "Lives, Vols. I–XI (Loeb Classical Library, trans. Bernadotte Perrin)|Plutarch": {
+      "cover": null,
+      "desc": null
+    },
+    "In Search of Lost Time|Proust, Marcel": {
+      "cover": "https://covers.openlibrary.org/b/id/12332709-M.jpg",
+      "desc": null
+    },
+    "Eugene Meyer|Pusey, Merlo J.": {
+      "cover": "https://covers.openlibrary.org/b/id/4467549-M.jpg",
+      "desc": null
+    },
+    "Gravity's Rainbow|Pynchon, Thomas": {
+      "cover": "https://covers.openlibrary.org/b/id/97894-M.jpg",
+      "desc": null
+    },
+    "The Quantum Thief|Rajaniemi, Hannu": {
+      "cover": "https://covers.openlibrary.org/b/id/8576978-M.jpg",
+      "desc": null
+    },
+    "Prometheus Rising|Regardie, I. / Wilson, R.A.": {
+      "cover": null,
+      "desc": null
+    },
+    "\"I Never Wanted To Be Vice-President of Anything\": Nelson Rockefeller|Roper / Kramer, Michael / Roberts, Sam": {
+      "cover": null,
+      "desc": null
+    },
+    "The Name of the Wind|Rothfuss, Patrick": {
+      "cover": "https://covers.openlibrary.org/b/id/11480483-M.jpg",
+      "desc": null
+    },
+    "Shadows Upon Time|Ruocchio, Christopher": {
+      "cover": "https://covers.openlibrary.org/b/id/15170259-M.jpg",
+      "desc": null
+    },
+    "The Creative Act: A Way of Being|Rubin, Rick": {
+      "cover": "https://covers.openlibrary.org/b/id/13316390-M.jpg",
+      "desc": null
+    },
+    "The Four Agreements|Ruiz, Don Miguel": {
+      "cover": "https://covers.openlibrary.org/b/id/924521-M.jpg",
+      "desc": null
+    },
+    "Ending Plague|Ruscetti, Frank / Mikovits, Judy / Heckenlively, Kent": {
+      "cover": null,
+      "desc": null
+    },
+    "Mathematical Thinking – For People Who Hate Math|Rutherford, Albert": {
+      "cover": null,
+      "desc": null
+    },
+    "The Catcher in the Rye|Salinger, J.D.": {
+      "cover": "https://covers.openlibrary.org/b/id/9273490-M.jpg",
+      "desc": null
+    },
+    "Healing Back Pain: The Mind-Body Connection|Sarno, John E.": {
+      "cover": null,
+      "desc": null
+    },
+    "The World as Will and Representation|Schopenhauer, Arthur": {
+      "cover": "https://covers.openlibrary.org/b/id/308780-M.jpg",
+      "desc": null
+    },
+    "A Course in Miracles|Schucman, Helen / Thetford, William T. (Eds.)": {
+      "cover": null,
+      "desc": null
+    },
+    "The Magic of Thinking Big|Schwartz, David": {
+      "cover": "https://covers.openlibrary.org/b/id/480539-M.jpg",
+      "desc": null
+    },
+    "Where the Money Is|Seidman, William": {
+      "cover": "https://covers.openlibrary.org/b/id/63681-M.jpg",
+      "desc": null
+    },
+    "Only the Best Will Do|Seilern, Peter": {
+      "cover": "https://covers.openlibrary.org/b/id/14760497-M.jpg",
+      "desc": null
+    },
+    "The Complete Works of William Shakespeare|Shakespeare, William": {
+      "cover": "https://covers.openlibrary.org/b/id/8281954-M.jpg",
+      "desc": null
+    },
+    "The First Folio|Shakespeare, William": {
+      "cover": "https://covers.openlibrary.org/b/id/8281954-M.jpg",
+      "desc": null
+    },
+    "The Mathematical Theory of Communication|Shannon, Claude E. / Weaver, Warren": {
+      "cover": "https://covers.openlibrary.org/b/id/147783-M.jpg",
+      "desc": null
+    },
+    "Frankenstein|Shelley, Mary": {
+      "cover": "https://covers.openlibrary.org/b/id/12356249-M.jpg",
+      "desc": null
+    },
+    "Coolidge|Shlaes, Amity": {
+      "cover": "https://covers.openlibrary.org/b/id/8996477-M.jpg",
+      "desc": null
+    },
+    "The Surrender Experiment|Singer, Michael": {
+      "cover": "https://covers.openlibrary.org/b/id/9178933-M.jpg",
+      "desc": null
+    },
+    "Investing for Growth|Smith, Terry": {
+      "cover": "https://covers.openlibrary.org/b/id/10508404-M.jpg",
+      "desc": null
+    },
+    "Tragedies|Sophocles": {
+      "cover": "https://covers.openlibrary.org/b/id/764695-M.jpg",
+      "desc": null
+    },
+    "The Education of a Value Investor|Spier, Guy": {
+      "cover": "https://covers.openlibrary.org/b/id/10210622-M.jpg",
+      "desc": null
+    },
+    "God's Battalions|Stark, Rodney": {
+      "cover": "https://covers.openlibrary.org/b/id/8118297-M.jpg",
+      "desc": null
+    },
+    "East of Eden|Steinbeck, John": {
+      "cover": "https://covers.openlibrary.org/b/id/11386937-M.jpg",
+      "desc": null
+    },
+    "The Walled City (The Triempery Revelations, Book I)|Stephens, L.L.": {
+      "cover": null,
+      "desc": null
+    },
+    "The God Spear (The Triempery Revelations, Book IV)|Stephens, L.L.": {
+      "cover": null,
+      "desc": null
+    },
+    "Dream Cultures: Explorations in the Comparative History of Dreaming|Stroumsa, Guy G. / Shulman, David (eds.)": {
+      "cover": null,
+      "desc": null
+    },
+    "Accelerando|Stross, Charles": {
+      "cover": "https://covers.openlibrary.org/b/id/284259-M.jpg",
+      "desc": null
+    },
+    "The Elements of Style|Strunk Jr., William / White, E.B.": {
+      "cover": "https://covers.openlibrary.org/b/id/10515358-M.jpg",
+      "desc": null
+    },
+    "The Annals of Imperial Rome|Tacitus": {
+      "cover": "https://covers.openlibrary.org/b/id/103646-M.jpg",
+      "desc": null
+    },
+    "Jung and Spirituality|Tacey, David": {
+      "cover": null,
+      "desc": null
+    },
+    "Herald of Shalia|Tamer, Tamryn": {
+      "cover": null,
+      "desc": null
+    },
+    "Economics and Math of Token Engineering and DeFi|Tan, Lisa JY": {
+      "cover": null,
+      "desc": null
+    },
+    "Healing is Voltage|Tennant, Jerry": {
+      "cover": "https://covers.openlibrary.org/b/id/12055731-M.jpg",
+      "desc": null
+    },
+    "Zero to One|Thiel, Peter": {
+      "cover": "https://covers.openlibrary.org/b/id/9002334-M.jpg",
+      "desc": null
+    },
+    "Calculus for the Practical Man|Thompson, J.E.": {
+      "cover": null,
+      "desc": null
+    },
+    "Ivan Pavlov: A Russian Life in Science|Todes, Daniel P.": {
+      "cover": "https://covers.openlibrary.org/b/id/12953584-M.jpg",
+      "desc": null
+    },
+    "The Fellowship of the Ring|Tolkien, J.R.R.": {
+      "cover": "https://covers.openlibrary.org/b/id/14625765-M.jpg",
+      "desc": null
+    },
+    "The Two Towers|Tolkien, J.R.R.": {
+      "cover": "https://covers.openlibrary.org/b/id/14627564-M.jpg",
+      "desc": null
+    },
+    "The Return of the King|Tolkien, J.R.R.": {
+      "cover": "https://covers.openlibrary.org/b/id/14627062-M.jpg",
+      "desc": null
+    },
+    "The Hobbit|Tolkien, J.R.R.": {
+      "cover": "https://covers.openlibrary.org/b/id/8406766-M.jpg",
+      "desc": null
+    },
+    "Sir Gawain and the Green Knight|Tolkien, J.R.R. (trans.)": {
+      "cover": null,
+      "desc": null
+    },
+    "Anna Karenina|Tolstoy, Leo": {
+      "cover": "https://covers.openlibrary.org/b/id/2560652-M.jpg",
+      "desc": null
+    },
+    "The Death of Ivan Ilyich|Tolstoy, Leo": {
+      "cover": "https://covers.openlibrary.org/b/id/419697-M.jpg",
+      "desc": null
+    },
+    "War and Peace|Tolstoy, Leo": {
+      "cover": "https://covers.openlibrary.org/b/id/12621906-M.jpg",
+      "desc": null
+    },
+    "A Confederacy of Dunces|Toole, John Kennedy": {
+      "cover": "https://covers.openlibrary.org/b/id/2195715-M.jpg",
+      "desc": null
+    },
+    "An Introduction to Quantitative Methods for Decision Making|Trueman, Richard E.": {
+      "cover": "https://covers.openlibrary.org/b/id/9691532-M.jpg",
+      "desc": null
+    },
+    "Vaccine Science and Myth|Turtles All the Way Down (anon.)": {
+      "cover": "https://covers.openlibrary.org/b/id/15225569-M.jpg",
+      "desc": null
+    },
+    "Alchemical Lightwork: A Guide to Creating Cultures of Light and Spiritual Awakening|Versluis, Arthur": {
+      "cover": null,
+      "desc": null
+    },
+    "The Aeneid|Virgil": {
+      "cover": "https://covers.openlibrary.org/b/id/5273998-M.jpg",
+      "desc": null
+    },
+    "Economic Policy: Thoughts for Today and Tomorrow|Von Mises, Ludwig": {
+      "cover": "https://covers.openlibrary.org/b/id/12370996-M.jpg",
+      "desc": null
+    },
+    "Theory of Games and Economic Behavior|Von Neumann, John / Morgenstern, Oskar": {
+      "cover": null,
+      "desc": null
+    },
+    "We Want to Live|Vonderplanitz, Aajonus": {
+      "cover": "https://covers.openlibrary.org/b/id/2092074-M.jpg",
+      "desc": null
+    },
+    "Breakfast of Champions|Vonnegut, Kurt": {
+      "cover": "https://covers.openlibrary.org/b/id/280213-M.jpg",
+      "desc": null
+    },
+    "Cat's Cradle|Vonnegut, Kurt": {
+      "cover": "https://covers.openlibrary.org/b/id/12709654-M.jpg",
+      "desc": null
+    },
+    "Player Piano|Vonnegut, Kurt": {
+      "cover": "https://covers.openlibrary.org/b/id/280246-M.jpg",
+      "desc": null
+    },
+    "Slaughterhouse-Five|Vonnegut, Kurt": {
+      "cover": "https://covers.openlibrary.org/b/id/12727001-M.jpg",
+      "desc": null
+    },
+    "The Ring of the Nibelung|Wagner, Richard": {
+      "cover": "https://covers.openlibrary.org/b/id/8243672-M.jpg",
+      "desc": null
+    },
+    "Kitab At-Tauhid: The Book of Monotheism|Wahhab, Muhammad ibn Abd al-": {
+      "cover": null,
+      "desc": null
+    },
+    "Infinite Jest|Wallace, David Foster": {
+      "cover": "https://covers.openlibrary.org/b/id/8237639-M.jpg",
+      "desc": null
+    },
+    "The Alchemical Feminine: Women, Gender, and Sexuality in Alchemical Images|Warlick, M.E.": {
+      "cover": null,
+      "desc": null
+    },
+    "Elliptic Curves: Number Theory and Cryptography|Washington, Lawrence C.": {
+      "cover": "https://covers.openlibrary.org/b/id/849480-M.jpg",
+      "desc": null
+    },
+    "How China Escaped Shock Therapy: The Market Reform Debate|Weber, Isabella M.": {
+      "cover": "https://covers.openlibrary.org/b/id/13506502-M.jpg",
+      "desc": null
+    },
+    "Project Hail Mary|Weir, Andy": {
+      "cover": "https://covers.openlibrary.org/b/id/11200092-M.jpg",
+      "desc": null
+    },
+    "A Rulebook for Arguments|Weston, Anthony": {
+      "cover": "https://covers.openlibrary.org/b/id/662363-M.jpg",
+      "desc": null
+    },
+    "The Human Use of Human Beings: Cybernetics and Society|Wiener, Norbert": {
+      "cover": "https://covers.openlibrary.org/b/id/164463-M.jpg",
+      "desc": null
+    },
+    "The Picture of Dorian Gray|Wilde, Oscar": {
+      "cover": "https://covers.openlibrary.org/b/id/14314858-M.jpg",
+      "desc": null
+    },
+    "Stoner|Williams, John": {
+      "cover": "https://covers.openlibrary.org/b/id/8310729-M.jpg",
+      "desc": null
+    },
+    "How I Made One Million Dollars Last Year Trading Commodities|Williams, Larry R.": {
+      "cover": "https://covers.openlibrary.org/b/id/9331608-M.jpg",
+      "desc": null
+    },
+    "The Book of the New Sun|Wolfe, Gene": {
+      "cover": "https://covers.openlibrary.org/b/id/7029509-M.jpg",
+      "desc": null
+    },
+    "The Shadow of the Torturer|Wolfe, Gene": {
+      "cover": "https://covers.openlibrary.org/b/id/7029509-M.jpg",
+      "desc": null
+    },
+    "Franklin of Philadelphia|Wright, Esmond": {
+      "cover": "https://covers.openlibrary.org/b/id/5647361-M.jpg",
+      "desc": null
+    },
+    "The Moral Animal|Wright, Robert": {
+      "cover": "https://covers.openlibrary.org/b/id/421271-M.jpg",
+      "desc": null
+    },
+    "The Curse of the Mistwraith|Wurts, Janny": {
+      "cover": "https://covers.openlibrary.org/b/id/13281364-M.jpg",
+      "desc": null
+    },
+    "Song of the Mysteries|Wurts, Janny": {
+      "cover": null,
+      "desc": null
+    },
+    "Anabasis|Xenophon": {
+      "cover": "https://covers.openlibrary.org/b/id/6133592-M.jpg",
+      "desc": null
+    },
+    "Poems|Yeats, W.B.": {
+      "cover": "https://covers.openlibrary.org/b/id/6968826-M.jpg",
+      "desc": null
+    },
+    "1971: A People's History from Bangladesh, Pakistan and India|Zakaria, Anam": {
+      "cover": null,
+      "desc": null
+    },
+    "Reality Transurfing|Zeland, Vadim": {
+      "cover": "https://covers.openlibrary.org/b/id/10327355-M.jpg",
+      "desc": null
+    },
+    "Lotteryland|Zozanian": {
+      "cover": null,
+      "desc": null
+    },
+    "Sordaneon (The Tapestry Revelations Book 1)|Stephens, L.L.": {
+      "cover": null,
+      "desc": null
+    },
+    "The Wingspan of Treason (The Stormsinger Chain)|Bayen, L.N.": {
+      "cover": null,
+      "desc": null
+    },
+    "The Hidden City (The House War)|West, Michelle": {
+      "cover": null,
+      "desc": null
+    },
+    "The Dragon's Legacy|Wolf, Deborah A.": {
+      "cover": "https://covers.openlibrary.org/b/id/8498022-M.jpg",
+      "desc": null
+    },
+    "The Genesis of Change (Records of the Orders prequel novella)|Elliot, Livia J.": {
+      "cover": null,
+      "desc": null
+    },
+    "Blinding (trans. Sean Cotter)|Cărtărescu, Mircea": {
+      "cover": null,
+      "desc": null
+    },
+    "The Makioka Sisters|Tanizaki, Jun'ichirō": {
+      "cover": null,
+      "desc": null
+    },
+    "Corpus Hermeticum|Trismegistus, Hermes": {
+      "cover": "https://covers.openlibrary.org/b/id/10977126-M.jpg",
+      "desc": null
+    },
+    "The New Cambridge Paragraph Bible|Norton, David (ed.)": {
+      "cover": "https://covers.openlibrary.org/b/id/12707846-M.jpg",
+      "desc": null
+    },
+    "Complete Works|Plato": {
+      "cover": "https://covers.openlibrary.org/b/id/14418448-M.jpg",
+      "desc": null
+    },
+    "The Enneads|Plotinus": {
+      "cover": "https://covers.openlibrary.org/b/id/6496125-M.jpg",
+      "desc": null
+    },
+    "Nag Hammadi Scriptures|Meyer, Marvin (ed.)": {
+      "cover": null,
+      "desc": null
+    },
+    "The Chaldean Oracles|Majercik, Ruth": {
+      "cover": "https://covers.openlibrary.org/b/id/12209844-M.jpg",
+      "desc": null
+    },
+    "Holy Qur'an|(anon.)": {
+      "cover": null,
+      "desc": null
+    },
+    "Tibetan Book of the Dead|Lingpa, Karma": {
+      "cover": "https://covers.openlibrary.org/b/id/671221-M.jpg",
+      "desc": null
+    },
+    "Upanishads|Shankara, Adi (trans.)": {
+      "cover": null,
+      "desc": null
+    },
+    "Avesta (Zend-Avesta or Persian Holy Scripture)|Horne, Charles F.": {
+      "cover": "https://covers.openlibrary.org/b/id/1828875-M.jpg",
+      "desc": null
+    },
+    "Picatrix|(Ghayat al-Hakim)": {
+      "cover": "https://covers.openlibrary.org/b/id/13867098-M.jpg",
+      "desc": null
+    },
+    "The Key of Solomon the King|Mathers, S.L. MacGregor (trans.)": {
+      "cover": null,
+      "desc": null
+    },
+    "The Zohar|(anon.)": {
+      "cover": "https://covers.openlibrary.org/b/id/630398-M.jpg",
+      "desc": null
+    },
+    "Oration on the Dignity of Man|Pico della Mirandola, Giovanni": {
+      "cover": "https://covers.openlibrary.org/b/id/2239510-M.jpg",
+      "desc": null
+    },
+    "The Chymical Wedding of Christian Rosenkreutz|Rosenkreutz, Christian": {
+      "cover": null,
+      "desc": null
+    },
+    "Three Books of Occult Philosophy|Agrippa, Heinrich Cornelius": {
+      "cover": "https://covers.openlibrary.org/b/id/7438245-M.jpg",
+      "desc": null
+    },
+    "Selected Poems|Rumi": {
+      "cover": "https://covers.openlibrary.org/b/id/13223422-M.jpg",
+      "desc": null
+    },
+    "The Conference of the Birds|Attar, Farid Ud-Din": {
+      "cover": "https://covers.openlibrary.org/b/id/103977-M.jpg",
+      "desc": null
+    },
+    "Psychology and Alchemy|Jung, C.G.": {
+      "cover": "https://covers.openlibrary.org/b/id/6634849-M.jpg",
+      "desc": null
+    },
+    "The Secret Teachings of All Ages|Hall, Manly Palmer": {
+      "cover": "https://covers.openlibrary.org/b/id/4762003-M.jpg",
+      "desc": null
+    },
+    "Lectures on Ancient Philosophy|Hall, Manly Palmer": {
+      "cover": "https://covers.openlibrary.org/b/id/692146-M.jpg",
+      "desc": null
+    },
+    "Alchemy and Mysticism|Roob, Alexander": {
+      "cover": "https://covers.openlibrary.org/b/id/1030563-M.jpg",
+      "desc": null
+    },
+    "Giordano Bruno and the Hermetic Tradition|Yates, Frances": {
+      "cover": "https://covers.openlibrary.org/b/id/4623875-M.jpg",
+      "desc": null
+    },
+    "The Rosicrucian Enlightenment|Yates, Frances": {
+      "cover": "https://covers.openlibrary.org/b/id/14144128-M.jpg",
+      "desc": null
+    },
+    "John Dee: The World of an Elizabethan Magus|French, Peter": {
+      "cover": "https://covers.openlibrary.org/b/id/482441-M.jpg",
+      "desc": null
+    },
+    "Food of the Gods|McKenna, Terence": {
+      "cover": "https://covers.openlibrary.org/b/id/369544-M.jpg",
+      "desc": null
+    },
+    "True Hallucinations|McKenna, Terence": {
+      "cover": "https://covers.openlibrary.org/b/id/3976814-M.jpg",
+      "desc": null
+    },
+    "Theatrum Chemicum Brittannicum|Ashmole, Elias": {
+      "cover": "https://covers.openlibrary.org/b/id/2978353-M.jpg",
+      "desc": null
+    },
+    "Self-Initiation into the Golden Dawn Tradition|Cicero, Chic / Cicero, Sandra Tabatha": {
+      "cover": "https://covers.openlibrary.org/b/id/808906-M.jpg",
+      "desc": null
+    },
+    "Twelve Months of Monastery Soups: International Favorites|d'Avila-Latourrette, Brother Victor-Antoine": {
+      "cover": null,
+      "desc": null
+    },
+    "Obvious Adams|Updegraff, Robert R.": {
+      "cover": "https://covers.openlibrary.org/b/id/5161421-M.jpg",
+      "desc": null
+    },
+    "How to Fit into Society When You're an Alien from an Alternate Universe: A Guide for Aquarius|(vintageofantasy / anon.)": {
+      "cover": null,
+      "desc": null
+    },
+    "The Pink Fairy Book|Lang, Andrew": {
+      "cover": "https://covers.openlibrary.org/b/id/10097664-M.jpg",
+      "desc": null
+    },
+    "The Crimson Fairy Book|Lang, Andrew": {
+      "cover": "https://covers.openlibrary.org/b/id/7113496-M.jpg",
+      "desc": null
+    },
+    "The Red Fairy Book|Lang, Andrew": {
+      "cover": "https://covers.openlibrary.org/b/id/2839236-M.jpg",
+      "desc": null
+    },
+    "The Orange Fairy Book|Lang, Andrew": {
+      "cover": "https://covers.openlibrary.org/b/id/13463493-M.jpg",
+      "desc": null
+    },
+    "The Yellow Fairy Book|Lang, Andrew": {
+      "cover": "https://covers.openlibrary.org/b/id/5275099-M.jpg",
+      "desc": null
+    },
+    "The Olive Fairy Book|Lang, Andrew": {
+      "cover": "https://covers.openlibrary.org/b/id/11213284-M.jpg",
+      "desc": null
+    },
+    "The Green Fairy Book|Lang, Andrew": {
+      "cover": "https://covers.openlibrary.org/b/id/2808709-M.jpg",
+      "desc": null
+    },
+    "The Blue Fairy Book|Lang, Andrew": {
+      "cover": "https://covers.openlibrary.org/b/id/10323665-M.jpg",
+      "desc": null
+    },
+    "The Violet Fairy Book|Lang, Andrew": {
+      "cover": "https://covers.openlibrary.org/b/id/12014563-M.jpg",
+      "desc": null
+    },
+    "The Lilac Fairy Book|Lang, Andrew": {
+      "cover": "https://covers.openlibrary.org/b/id/5709196-M.jpg",
+      "desc": null
+    },
+    "The Grey Fairy Book|Lang, Andrew": {
+      "cover": "https://covers.openlibrary.org/b/id/2808710-M.jpg",
+      "desc": null
+    },
+    "The Brown Fairy Book|Lang, Andrew": {
+      "cover": "https://covers.openlibrary.org/b/id/12025280-M.jpg",
+      "desc": null
+    },
+    "The Absent Father Effect on Daughters: Father Desire, Father Wounds|Schwartz, Susan E.": {
+      "cover": "https://covers.openlibrary.org/b/id/15126967-M.jpg",
+      "desc": null
+    },
+    "The 38 Letters from J.D. Rockefeller to His Son|Ng, G.": {
+      "cover": null,
+      "desc": null
+    },
+    "Beowulf: A Translation and Commentary (together with Sellic Spell; ed. Christopher Tolkien)|Tolkien, J.R.R.": {
+      "cover": null,
+      "desc": null
+    },
+    "The Science of Rapid Skill Acquisition|Hollins, Peter": {
+      "cover": "https://covers.openlibrary.org/b/id/10302445-M.jpg",
+      "desc": null
+    },
+    "The Master|Clarey, Christopher": {
+      "cover": "https://covers.openlibrary.org/b/id/11947376-M.jpg",
+      "desc": null
+    },
+    "The Simple Path|Collins, Jim": {
+      "cover": null,
+      "desc": null
+    },
+    "Rich Dad Poor Dad|Kiyosaki, Robert T.": {
+      "cover": "https://covers.openlibrary.org/b/id/8315603-M.jpg",
+      "desc": null
+    },
+    "Secrets of the Millionaire Mind|Elker, T. Harv": {
+      "cover": null,
+      "desc": null
+    },
+    "How to Win Friends & Influence People|Carnegie, Dale": {
+      "cover": "https://covers.openlibrary.org/b/id/13314878-M.jpg",
+      "desc": null
+    },
+    "\"Why Should White Guys Have All the Fun?\" How Reginald Lewis Created a Billion-Dollar Business Empire|Lewis, Reginald F. / Walker, Blair S.": {
+      "cover": "https://covers.openlibrary.org/b/id/300457-M.jpg",
+      "desc": null
+    },
+    "The Wretched of the Earth|Fanon, Frantz": {
+      "cover": "https://covers.openlibrary.org/b/id/14325884-M.jpg",
+      "desc": null
+    },
+    "Private Empire|Coll, Steve": {
+      "cover": "https://covers.openlibrary.org/b/id/8332025-M.jpg",
+      "desc": null
+    },
+    "Atomic Habits|Clear, James": {
+      "cover": "https://covers.openlibrary.org/b/id/12539702-M.jpg",
+      "desc": null
+    },
+    "The New Jim Crow|(anon.)": {
+      "cover": null,
+      "desc": null
+    },
+    "The Dream Manager|(Matthew)": {
+      "cover": "https://covers.openlibrary.org/b/id/1729575-M.jpg",
+      "desc": null
+    },
+    "The Perfect Day|Ross, Rick": {
+      "cover": "https://covers.openlibrary.org/b/id/11937480-M.jpg",
+      "desc": null
+    },
+    "Women Who Run With the Wolves|Estés, Clarissa Pinkola": {
+      "cover": "https://covers.openlibrary.org/b/id/207915-M.jpg",
+      "desc": null
+    },
+    "The Myth of Sisyphus|Camus, Albert": {
+      "cover": "https://covers.openlibrary.org/b/id/1014395-M.jpg",
+      "desc": null
+    },
+    "In the Realm of Hungry Ghosts|Maté, Gabor": {
+      "cover": "https://covers.openlibrary.org/b/id/4653016-M.jpg",
+      "desc": null
+    },
+    "Games People Play|Berne, Eric, M.D.": {
+      "cover": null,
+      "desc": null
+    },
+    "Iron John|Bly, Robert": {
+      "cover": "https://covers.openlibrary.org/b/id/165352-M.jpg",
+      "desc": null
+    },
+    "Scattered Minds|Maté, Gabor": {
+      "cover": "https://covers.openlibrary.org/b/id/296952-M.jpg",
+      "desc": null
+    },
+    "When the Body Says No|Maté, Gabor": {
+      "cover": "https://covers.openlibrary.org/b/id/415299-M.jpg",
+      "desc": null
+    },
+    "Flow: The Psychology of Optimal Experience|Csikszentmihalyi, Mihaly": {
+      "cover": "https://covers.openlibrary.org/b/id/11041932-M.jpg",
+      "desc": null
+    },
+    "Influence: The Psychology of Persuasion|Cialdini, Robert B., Ph.D.": {
+      "cover": null,
+      "desc": null
+    },
+    "The Shallows|Carr, Nicholas": {
+      "cover": "https://covers.openlibrary.org/b/id/6458532-M.jpg",
+      "desc": null
+    },
+    "12 Rules for Life|Peterson, Jordan B.": {
+      "cover": "https://covers.openlibrary.org/b/id/8131760-M.jpg",
+      "desc": null
+    },
+    "Maps of Meaning: The Architecture of Belief|Peterson, Jordan B.": {
+      "cover": "https://covers.openlibrary.org/b/id/268877-M.jpg",
+      "desc": null
+    },
+    "Radical Honesty|Blanton, Brad, Ph.D.": {
+      "cover": null,
+      "desc": null
+    },
+    "Reading People|(unnamed author)": {
+      "cover": null,
+      "desc": null
+    },
+    "The Song of the Cid: A Dual-Language Edition with Parallel Text|(anon., trans.)": {
+      "cover": null,
+      "desc": null
+    },
+    "Ramon Lull's Book of Knighthood & Chivalry|Llull, Ramon": {
+      "cover": null,
+      "desc": null
+    },
+    "The History of William Marshal|(anon.)": {
+      "cover": null,
+      "desc": null
+    },
+    "The History of George Castriot, Surnamed Scanderbeg|Barleti, Marin / de Lavardin, Jacques": {
+      "cover": null,
+      "desc": null
+    },
+    "How to Pick Quality Shares|Oakley, Phil": {
+      "cover": "https://covers.openlibrary.org/b/id/12443479-M.jpg",
+      "desc": null
+    },
+    "\"I Never Wanted To Be Vice-President of Anything\": Nelson Rockefeller|Kramer, Michael / Roberts, Sam": {
+      "cover": "https://covers.openlibrary.org/b/id/6923118-M.jpg",
+      "desc": null
+    },
+    "Benjamin Franklin, Volume 1|Van Doren, Carl": {
+      "cover": null,
+      "desc": null
+    },
+    "The Story-Life of Lincoln|Scholar Select (ed.)": {
+      "cover": null,
+      "desc": null
+    },
+    "Giants of Asia: Conversations with Lee Kuan Yew — Citizen Singapore: How to Build a Nation|Plate, Tom": {
+      "cover": null,
+      "desc": null
+    },
+    "The Collected Works of Abraham Lincoln (multi-volume set)|Basler, Roy P. (ed.)": {
+      "cover": null,
+      "desc": null
+    },
+    "Hanoi's War: An International History of the War for Peace in Vietnam|Nguyen, Lien-Hang T.": {
+      "cover": null,
+      "desc": null
+    },
+    "The Brothers Karamazov (Penguin Classics ed.)|Dostoevsky, Fyodor": {
+      "cover": "https://covers.openlibrary.org/b/id/8272336-M.jpg",
+      "desc": null
+    },
+    "Twisted Games (Twisted Book Two)|Huang, Ana": {
+      "cover": null,
+      "desc": null
+    },
+    "Twisted Lies (Twisted Book Four)|Huang, Ana": {
+      "cover": "https://covers.openlibrary.org/b/id/14348537-M.jpg",
+      "desc": null
+    },
+    "Things We Never Got Over|Score, Lucy": {
+      "cover": "https://covers.openlibrary.org/b/id/14418599-M.jpg",
+      "desc": null
+    },
+    "Things We Hide From the Light|Score, Lucy": {
+      "cover": "https://covers.openlibrary.org/b/id/13195225-M.jpg",
+      "desc": null
+    },
+    "Things We Left Behind|Score, Lucy": {
+      "cover": "https://covers.openlibrary.org/b/id/13574677-M.jpg",
+      "desc": null
+    },
+    "King of Pride|Huang, Ana": {
+      "cover": "https://covers.openlibrary.org/b/id/13244526-M.jpg",
+      "desc": null
+    },
+    "King of Sloth|Huang, Ana": {
+      "cover": "https://covers.openlibrary.org/b/id/14751192-M.jpg",
+      "desc": null
+    },
+    "Archer's Voice: A Love Story|Sheridan, Mia": {
+      "cover": null,
+      "desc": null
+    },
+    "Heartless (Chestnut Springs)|Silver, Elsie": {
+      "cover": "https://covers.openlibrary.org/b/id/13227155-M.jpg",
+      "desc": null
+    },
+    "When She Falls: A Dark Mafia Romance|Sands, Gabrielle": {
+      "cover": null,
+      "desc": null
+    },
+    "Mile High|Tomforde, Liz": {
+      "cover": "https://covers.openlibrary.org/b/id/14646460-M.jpg",
+      "desc": null
+    },
+    "The Right Move|Tomforde, Liz": {
+      "cover": "https://covers.openlibrary.org/b/id/14646468-M.jpg",
+      "desc": null
+    },
+    "Caught Up|Tomforde, Liz": {
+      "cover": "https://covers.openlibrary.org/b/id/15098697-M.jpg",
+      "desc": null
+    },
+    "Play Along|Tomforde, Liz": {
+      "cover": "https://covers.openlibrary.org/b/id/15148767-M.jpg",
+      "desc": null
+    },
+    "Tragedies|Aeschylus": {
+      "cover": "https://covers.openlibrary.org/b/id/1130982-M.jpg",
+      "desc": null
+    },
+    "The Phenomenology of Spirit|Hegel, G.W.F.": {
+      "cover": "https://covers.openlibrary.org/b/id/8245249-M.jpg",
+      "desc": null
+    },
+    "12 Unique Design Books (Medium article)|": {
+      "cover": "https://covers.openlibrary.org/b/id/12707846-M.jpg",
+      "desc": null
+    },
+    "~200+ math titles)|Awesome Math Books (GitHub repo": {
+      "cover": null,
+      "desc": null
+    },
+    "John Bogle Reading List (Investopedia)|": {
+      "cover": null,
+      "desc": null
+    },
+    "NEA Banned Books List|": {
+      "cover": null,
+      "desc": null
+    },
+    "The Library of Consciousness|": {
+      "cover": "https://covers.openlibrary.org/b/id/5640516-M.jpg",
+      "desc": null
+    },
+    "The HTML Review|": {
+      "cover": "https://covers.openlibrary.org/b/id/7363640-M.jpg",
+      "desc": null
+    },
+    "9 Free Book Download Websites|": {
+      "cover": null,
+      "desc": null
+    },
+    "Eragon|Paolini, Christopher": {
+      "cover": "https://covers.openlibrary.org/b/id/13921600-M.jpg",
+      "desc": null
+    },
+    "Eldest|Paolini, Christopher": {
+      "cover": "https://covers.openlibrary.org/b/id/12848701-M.jpg",
+      "desc": null
+    },
+    "Brisingr|Paolini, Christopher": {
+      "cover": "https://covers.openlibrary.org/b/id/2411585-M.jpg",
+      "desc": null
+    },
+    "Inheritance|Paolini, Christopher": {
+      "cover": "https://covers.openlibrary.org/b/id/13921600-M.jpg",
+      "desc": null
+    },
+    "Murtagh|Paolini, Christopher": {
+      "cover": "https://covers.openlibrary.org/b/id/13841845-M.jpg",
+      "desc": null
+    },
+    "The Fork, the Witch, and the Worm|Paolini, Christopher": {
+      "cover": "https://covers.openlibrary.org/b/id/8784482-M.jpg",
+      "desc": null
+    },
+    "Little House in the Big Woods|Wilder, Laura Ingalls": {
+      "cover": "https://covers.openlibrary.org/b/id/28677-M.jpg",
+      "desc": null
+    },
+    "Farmer Boy|Wilder, Laura Ingalls": {
+      "cover": "https://covers.openlibrary.org/b/id/29745-M.jpg",
+      "desc": null
+    },
+    "Little House on the Prairie|Wilder, Laura Ingalls": {
+      "cover": "https://covers.openlibrary.org/b/id/11277564-M.jpg",
+      "desc": null
+    },
+    "On the Banks of Plum Creek|Wilder, Laura Ingalls": {
+      "cover": "https://covers.openlibrary.org/b/id/30787-M.jpg",
+      "desc": null
+    },
+    "By the Shores of Silver Lake|Wilder, Laura Ingalls": {
+      "cover": "https://covers.openlibrary.org/b/id/30789-M.jpg",
+      "desc": null
+    },
+    "The Long Winter|Wilder, Laura Ingalls": {
+      "cover": "https://covers.openlibrary.org/b/id/4967658-M.jpg",
+      "desc": null
+    },
+    "Little Town on the Prairie|Wilder, Laura Ingalls": {
+      "cover": "https://covers.openlibrary.org/b/id/49861-M.jpg",
+      "desc": null
+    },
+    "These Happy Golden Years|Wilder, Laura Ingalls": {
+      "cover": "https://covers.openlibrary.org/b/id/5082694-M.jpg",
+      "desc": null
+    },
+    "The First Four Years|Wilder, Laura Ingalls": {
+      "cover": "https://covers.openlibrary.org/b/id/30796-M.jpg",
+      "desc": null
+    },
+    "Inkheart|Funke, Cornelia": {
+      "cover": "https://covers.openlibrary.org/b/id/3330314-M.jpg",
+      "desc": null
+    },
+    "Inkspell|Funke, Cornelia": {
+      "cover": "https://covers.openlibrary.org/b/id/4918575-M.jpg",
+      "desc": null
+    },
+    "Inkdeath|Funke, Cornelia": {
+      "cover": "https://covers.openlibrary.org/b/id/9781906-M.jpg",
+      "desc": null
+    },
+    "The Color of Revenge|Funke, Cornelia": {
+      "cover": "https://covers.openlibrary.org/b/id/14668434-M.jpg",
+      "desc": null
+    },
+    "The Lightning Thief|Riordan, Rick": {
+      "cover": "https://covers.openlibrary.org/b/id/7239831-M.jpg",
+      "desc": null
+    },
+    "The Sea of Monsters|Riordan, Rick": {
+      "cover": "https://covers.openlibrary.org/b/id/108909-M.jpg",
+      "desc": null
+    },
+    "The Titan's Curse|Riordan, Rick": {
+      "cover": "https://covers.openlibrary.org/b/id/14601475-M.jpg",
+      "desc": null
+    },
+    "The Battle of the Labyrinth|Riordan, Rick": {
+      "cover": "https://covers.openlibrary.org/b/id/6274739-M.jpg",
+      "desc": null
+    },
+    "The Last Olympian|Riordan, Rick": {
+      "cover": "https://covers.openlibrary.org/b/id/6624107-M.jpg",
+      "desc": null
+    },
+    "The Chalice of the Gods|Riordan, Rick": {
+      "cover": "https://covers.openlibrary.org/b/id/14596529-M.jpg",
+      "desc": null
+    },
+    "Wrath of the Triple Goddess|Riordan, Rick": {
+      "cover": "https://covers.openlibrary.org/b/id/15110536-M.jpg",
+      "desc": null
+    },
+    "The Angel Experiment|Patterson, James": {
+      "cover": "https://covers.openlibrary.org/b/id/287715-M.jpg",
+      "desc": null
+    },
+    "School's Out—Forever|Patterson, James": {
+      "cover": null,
+      "desc": null
+    },
+    "Saving the World and Other Extreme Sports|Patterson, James": {
+      "cover": "https://covers.openlibrary.org/b/id/6450803-M.jpg",
+      "desc": null
+    },
+    "The Final Warning|Patterson, James": {
+      "cover": "https://covers.openlibrary.org/b/id/7713985-M.jpg",
+      "desc": null
+    },
+    "MAX: A Maximum Ride Novel|Patterson, James": {
+      "cover": "https://covers.openlibrary.org/b/id/6424658-M.jpg",
+      "desc": null
+    },
+    "Fang: A Maximum Ride Novel|Patterson, James": {
+      "cover": "https://covers.openlibrary.org/b/id/6296761-M.jpg",
+      "desc": null
+    },
+    "Angel: A Maximum Ride Novel|Patterson, James": {
+      "cover": "https://covers.openlibrary.org/b/id/287715-M.jpg",
+      "desc": null
+    },
+    "Nevermore: The Final Maximum Ride Adventure|Patterson, James": {
+      "cover": "https://covers.openlibrary.org/b/id/7358736-M.jpg",
+      "desc": null
+    },
+    "Maximum Ride Forever|Patterson, James": {
+      "cover": "https://covers.openlibrary.org/b/id/287743-M.jpg",
+      "desc": null
+    },
+    "Hawk|Patterson, James": {
+      "cover": "https://covers.openlibrary.org/b/id/10221670-M.jpg",
+      "desc": null
+    },
+    "City of the Dead|Patterson, James": {
+      "cover": "https://covers.openlibrary.org/b/id/10645620-M.jpg",
+      "desc": null
+    },
+    "The Bad Beginning|Snicket, Lemony": {
+      "cover": "https://covers.openlibrary.org/b/id/7255974-M.jpg",
+      "desc": null
+    },
+    "The Reptile Room|Snicket, Lemony": {
+      "cover": "https://covers.openlibrary.org/b/id/10117325-M.jpg",
+      "desc": null
+    },
+    "The Wide Window|Snicket, Lemony": {
+      "cover": "https://covers.openlibrary.org/b/id/29845-M.jpg",
+      "desc": null
+    },
+    "The Miserable Mill|Snicket, Lemony": {
+      "cover": "https://covers.openlibrary.org/b/id/755266-M.jpg",
+      "desc": null
+    },
+    "The Austere Academy|Snicket, Lemony": {
+      "cover": "https://covers.openlibrary.org/b/id/29853-M.jpg",
+      "desc": null
+    },
+    "The Ersatz Elevator|Snicket, Lemony": {
+      "cover": "https://covers.openlibrary.org/b/id/8109580-M.jpg",
+      "desc": null
+    },
+    "The Vile Village|Snicket, Lemony": {
+      "cover": "https://covers.openlibrary.org/b/id/6797834-M.jpg",
+      "desc": null
+    },
+    "The Hostile Hospital|Snicket, Lemony": {
+      "cover": "https://covers.openlibrary.org/b/id/755202-M.jpg",
+      "desc": null
+    },
+    "The Carnivorous Carnival|Snicket, Lemony": {
+      "cover": "https://covers.openlibrary.org/b/id/6793899-M.jpg",
+      "desc": null
+    },
+    "The Slippery Slope|Snicket, Lemony": {
+      "cover": "https://covers.openlibrary.org/b/id/8266470-M.jpg",
+      "desc": null
+    },
+    "The Grim Grotto|Snicket, Lemony": {
+      "cover": "https://covers.openlibrary.org/b/id/50569-M.jpg",
+      "desc": null
+    },
+    "The Penultimate Peril|Snicket, Lemony": {
+      "cover": "https://covers.openlibrary.org/b/id/30661-M.jpg",
+      "desc": null
+    },
+    "The End|Snicket, Lemony": {
+      "cover": "https://covers.openlibrary.org/b/id/755390-M.jpg",
+      "desc": null
+    },
+    "The Golden Compass|Pullman, Philip": {
+      "cover": "https://covers.openlibrary.org/b/id/8747028-M.jpg",
+      "desc": null
+    },
+    "The Subtle Knife|Pullman, Philip": {
+      "cover": "https://covers.openlibrary.org/b/id/12614549-M.jpg",
+      "desc": null
+    },
+    "The Amber Spyglass|Pullman, Philip": {
+      "cover": "https://covers.openlibrary.org/b/id/12613246-M.jpg",
+      "desc": null
+    },
+    "La Belle Sauvage|Pullman, Philip": {
+      "cover": "https://covers.openlibrary.org/b/id/8597847-M.jpg",
+      "desc": null
+    },
+    "The Secret Commonwealth|Pullman, Philip": {
+      "cover": "https://covers.openlibrary.org/b/id/8743803-M.jpg",
+      "desc": null
+    }
+  }
+}
