@@ -122,6 +122,7 @@ export function validateKLE(json) {
           return false;
         }
       }
+      if (lastWasObj) return false;
     }
     const L = LAYOUTS[state.layout];
     const expectedKeys = L.rows().reduce((sum, r) => sum + r.length, 0);

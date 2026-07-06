@@ -39,7 +39,7 @@ export function generateSVG() {
   const kleJson = exportKLE();
 
   let svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${svgW}mm" height="${svgH}mm" viewBox="0 0 ${svgW} ${svgH}">
-<metadata><![CDATA[${kleJson}]]></metadata>
+<metadata><![CDATA[${kleJson.replaceAll(']]>', ']]]]><![CDATA[>')}]]></metadata>
 <rect width="${svgW}" height="${svgH}" fill="#ffffff"/>
 <style>
   text { font-family: Inter, Arial, sans-serif; font-weight: 600; fill: #000; }

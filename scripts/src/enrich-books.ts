@@ -11,6 +11,7 @@ const GB_BASE = 'https://www.googleapis.com/books/v1/volumes';
 const OL_SEARCH = 'https://openlibrary.org/search.json';
 
 const GOOGLE_BOOKS_API_KEY = process.env.GOOGLE_BOOKS_API_KEY ?? '';
+const COVERS_ONLY = process.argv.includes('--covers-only');
 
 interface Book {
   title: string;
@@ -129,6 +130,14 @@ async function main() {
   const mdContent = fs.readFileSync(BOOKS_MD, 'utf-8');
   const shelves = parseBooks(mdContent);
   const allBooks = shelves.flatMap(s => s.books);
+  const seen = new Set<string>();
+  let dupes = 0;
+  for (const b of allBooks) {
+    const k = bookKey(b.title, b.author);
+    if (seen.has(k)) dupes++;
+    seen.add(k);
+  }
+  if (dupes > 0) console.log(`Note: ${dupes} duplicate title|author keys found in books.md (collapsed to shared entries).`);
   console.log(`Found ${allBooks.length} books across ${shelves.length} shelves.`);
 
   let output: OutputJSON = { version: 1, generatedAt: '', books: {} };
@@ -144,7 +153,11 @@ async function main() {
 
   const toFetch = allBooks.filter(b => {
     const key = bookKey(b.title, b.author);
-    return !(key in output.books);
+    if (!(key in output.books)) return true;
+    const existing = output.books[key];
+    // Re-fetch only complete misses (no cover AND no desc);
+    // entries with cover but no desc already tried GB — skip
+    return existing.cover === null && existing.desc === null;
   });
 
   if (toFetch.length === 0) {
@@ -158,7 +171,12 @@ async function main() {
   console.log(`Need to fetch ${toFetch.length} books (${allBooks.length - toFetch.length} already cached).`);
 
   if (!GOOGLE_BOOKS_API_KEY) {
-    console.warn('WARNING: GOOGLE_BOOKS_API_KEY env var not set. Using Open Library only (no descriptions, lower-quality covers).');
+    if (COVERS_ONLY) {
+      console.warn('WARNING: GOOGLE_BOOKS_API_KEY not set. Running in --covers-only mode (no descriptions, lower-quality covers).');
+    } else {
+      console.error('FATAL: GOOGLE_BOOKS_API_KEY not set. Descriptions cannot be fetched. Pass --covers-only to run anyway.');
+      process.exit(1);
+    }
   }
 
   let coversFound = 0;
@@ -214,15 +232,31 @@ async function main() {
   output.generatedAt = new Date().toISOString();
   fs.writeFileSync(OUTPUT_JSON, JSON.stringify(output, null, 2), 'utf-8');
 
+  const noCover = new Array<string>();
+  const noDesc = new Array<string>();
+  for (const [key, meta] of Object.entries(output.books)) {
+    if (!meta.cover) noCover.push(key);
+    if (!meta.desc) noDesc.push(key);
+  }
+
   console.log('=== Summary ===');
   console.log(`Total curated books: ${allBooks.length}`);
-  console.log(`Covers found: ${coversFound}`);
-  console.log(`Descriptions found: ${descsFound}`);
-  console.log(`Misses (no cover or desc): ${misses.length}`);
-  if (misses.length > 0) {
-    console.log('Missed keys:');
-    misses.forEach(k => console.log(`  ${k}`));
-  }
+  console.log(`Unique entries in JSON: ${Object.keys(output.books).length}`);
+  console.log(`Covers found: ${Object.keys(output.books).length - noCover.length}`);
+  console.log(`Descriptions found: ${Object.keys(output.books).length - noDesc.length}`);
+  const missFile = path.resolve(__dirname, '../../artifacts/digital-sea/src/data/bookMeta.misses.txt');
+  const missLines = [
+    `# Generated ${new Date().toISOString().slice(0, 10)}`,
+    `# Total entries: ${Object.keys(output.books).length}`,
+    `# ---`,
+    `# no cover (${noCover.length})`,
+    ...noCover,
+    `# ---`,
+    `# no description (${noDesc.length})`,
+    ...noDesc,
+  ];
+  fs.writeFileSync(missFile, missLines.join('\n') + '\n', 'utf-8');
+  console.log(`Misses file written to ${missFile}`);
   console.log(`Output written to ${OUTPUT_JSON}`);
 }
 

@@ -16,7 +16,7 @@ export async function exportPDF() {
   const totalH = parseFloat(svgEl.getAttribute('height')) || 100;
 
   const { jsPDF } = await import('jspdf');
-  const { default: svg2pdf } = await import('svg2pdf.js');
+  await import('svg2pdf.js'); // side effect: registers doc.svg on jsPDF
 
   const doc = new jsPDF({ unit: 'mm', format: [maxW + 20, totalH + 30] });
   await doc.svg(svgEl, { x: 10, y: 10, width: maxW, height: totalH });

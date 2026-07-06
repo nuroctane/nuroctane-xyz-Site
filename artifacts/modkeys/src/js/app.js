@@ -46,7 +46,7 @@ export function mountModkeys() {
     if (s.perKeyOverrides) {
       const cleaned = {};
       for (const [k, v] of Object.entries(s.perKeyOverrides)) {
-        const entry = { ...v as any };
+        const entry = { ...v };
         delete entry.imageData;
         cleaned[k] = entry;
       }
@@ -56,10 +56,13 @@ export function mountModkeys() {
   }
 
   document.getElementById('saveBuild').addEventListener('click', async () => {
+    const raw = window.prompt('Name this build:', 'Build ' + String(savedBuilds.length + 1).padStart(2, '0'));
+    if (raw === null) return;
+    const name = (raw || '').trim().slice(0, 40) || 'Build ' + String(savedBuilds.length + 1).padStart(2, '0');
     renderer.render(scene, camera);
     const snap = stateSlice();
     savedBuilds.push({
-      name: 'Build ' + String(savedBuilds.length + 1).padStart(2, '0'),
+      name,
       snap,
       layout: state.layout,
       img: renderer.domElement.toDataURL('image/png'),
@@ -69,7 +72,7 @@ export function mountModkeys() {
       const res = await fetch('/api/modkeys/gallery', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name: 'Build ' + String(savedBuilds.length).padStart(2, '0'), snap: stateSliceWithoutImages() }),
+        body: JSON.stringify({ name, snap: stateSliceWithoutImages() }),
       });
       if (res.ok) toast('Synced to community gallery');
       else toast('Saved locally (gallery offline)');
@@ -146,77 +149,30 @@ export function mountModkeys() {
     toast(p.name + ' loaded');
   });
 
-  /* fetch community gallery */
-  fetch('/api/modkeys/gallery').then(r => r.json()).then(data => {
-    const gc = data.templates || [];
-    window.__MODKEYS__.galleryCache = gc;
-    gc.forEach(t => {
-      if (!t.snap) return;
-      // Generate thumbnails for community templates
-      if (!window.__MODKEYS__.thumbs[t.id]) {
+  /* lazy gallery fetch */
+  window.__MODKEYS__.loadGallery = async function loadGallery() {
+    if (window.__MODKEYS__.galleryCache) return window.__MODKEYS__.galleryCache;
+    try {
+      const res = await fetch('/api/modkeys/gallery');
+      const data = await res.json();
+      const gc = data.templates || [];
+      window.__MODKEYS__.galleryCache = gc;
+      const save = beginThumbRender();
+      gc.forEach(t => {
+        if (!t.snap || window.__MODKEYS__.thumbs[t.id]) return;
         try {
-          const snap = t.snap;
-          const r = document.getElementById('stage').getBoundingClientRect();
-          renderer.setPixelRatio(1);
-          renderer.setSize(460, 272, false);
-          camera.aspect = 460 / 272;
-          camera.updateProjectionMatrix();
-          const sc = { theta: ctrl.theta, phi: ctrl.phi, radius: ctrl.radius, ty: ctrl.target.y };
-          ctrl.theta = -0.58;
-          ctrl.phi = 1.02;
-          ctrl.radius = 11.4;
-          ctrl.target.y = -0.08;
-          ctrl.apply();
-          uni.uTime.value = 2.2;
-          if (snap.colorway) {
-            const cw = COLORWAYS[snap.colorway] || snap.customColors;
-            if (cw) {
-              matAlpha.color.copy(sRGB(cw.a.bg));
-              matMod.color.copy(sRGB(cw.m.bg));
-              matAccent.color.copy(sRGB(cw.x.bg));
-            }
-          } else if (snap.customColors) {
-            matAlpha.color.copy(sRGB(snap.customColors.a.bg));
-            matMod.color.copy(sRGB(snap.customColors.m.bg));
-            matAccent.color.copy(sRGB(snap.customColors.x.bg));
-          }
-          if (snap.caseColor) matCase.color.copy(sRGB(CASES[snap.caseColor].c));
-          if (snap.plate) { matPlate.color.copy(sRGB(PLATES[snap.plate].c)); applyPlateFinish(snap.plate); }
-          if (snap.sw) matStem.color.copy(sRGB(SWITCHES[snap.sw].dot));
-          if (snap.light) {
-            const modes = { wave: 0, static: 1, breathe: 2, off: 3 };
-            Object.assign(state.light, snap.light);
-            uni.uColor.value.set(state.light.color);
-            uni.uMode.value = modes[state.light.mode] || 3;
-            uni.uBright.value = state.light.bright;
-          }
-          renderer.render(scene, camera);
-          window.__MODKEYS__.thumbs[t.id] = renderer.domElement.toDataURL('image/png');
-          Object.assign(state, stateSlice());
-          ctrl.theta = sc.theta;
-          ctrl.phi = sc.phi;
-          ctrl.radius = sc.radius;
-          ctrl.target.y = sc.ty;
-          renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-          renderer.setSize(r.width, r.height, false);
-          camera.aspect = r.width / r.height;
-          camera.updateProjectionMatrix();
-          const curSnap = stateSlice();
-          if (curSnap.colorway) {
-            const cw = COLORWAYS[curSnap.colorway];
-            matAlpha.color.copy(sRGB(cw.a.bg));
-            matMod.color.copy(sRGB(cw.m.bg));
-            matAccent.color.copy(sRGB(cw.x.bg));
-          }
-          if (curSnap.caseColor) matCase.color.copy(sRGB(CASES[curSnap.caseColor].c));
-          if (curSnap.plate) { matPlate.color.copy(sRGB(PLATES[curSnap.plate].c)); applyPlateFinish(curSnap.plate); }
-          if (curSnap.sw) matStem.color.copy(sRGB(SWITCHES[curSnap.sw].dot));
+          window.__MODKEYS__.thumbs[t.id] = renderSnapThumb(t.snap);
         } catch (e) {
-          // thumbnail failed, ignore
+          // thumbnail failed, leave unset
         }
-      }
-    });
-  }).catch(() => {});
+      });
+      endThumbRender(save);
+      return gc;
+    } catch (err) {
+      window.__MODKEYS__.galleryCache = [];
+      return [];
+    }
+  };
 
   /* key editor */
   onKeyEditClick((keyData) => {
@@ -256,9 +212,8 @@ export function mountModkeys() {
   const ro = new ResizeObserver(resize).observe(stage);
   cleanupFns.push(() => ro.disconnect());
 
-  /* thumbnail generation */
-  function genThumbs() {
-    const snap = stateSlice();
+  /* thumbnail generation helpers */
+  function beginThumbRender() {
     const r = stage.getBoundingClientRect();
     renderer.setPixelRatio(1);
     renderer.setSize(460, 272, false);
@@ -271,45 +226,64 @@ export function mountModkeys() {
     ctrl.target.y = -0.08;
     ctrl.apply();
     uni.uTime.value = 2.2;
-    PRESETS.forEach((p) => {
-      const s = p.s;
-      if (s.colorway) {
-        const cw = COLORWAYS[s.colorway];
+    return { r, sc, snap: stateSlice() };
+  }
+  function endThumbRender(save) {
+    Object.assign(state, save.snap);
+    ctrl.theta = save.sc.theta;
+    ctrl.phi = save.sc.phi;
+    ctrl.radius = save.sc.radius;
+    ctrl.target.y = save.sc.ty;
+    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+    renderer.setSize(save.r.width, save.r.height, false);
+    camera.aspect = save.r.width / save.r.height;
+    camera.updateProjectionMatrix();
+    const snap = save.snap;
+    if (snap.colorway) {
+      const cw = COLORWAYS[snap.colorway];
+      if (cw) {
         matAlpha.color.copy(sRGB(cw.a.bg));
         matMod.color.copy(sRGB(cw.m.bg));
         matAccent.color.copy(sRGB(cw.x.bg));
       }
-      if (s.caseColor) matCase.color.copy(sRGB(CASES[s.caseColor].c));
-      if (s.plate) { matPlate.color.copy(sRGB(PLATES[s.plate].c)); applyPlateFinish(s.plate); }
-      if (s.sw) matStem.color.copy(sRGB(SWITCHES[s.sw].dot));
-      if (s.light) {
-        const modes = { wave: 0, static: 1, breathe: 2, off: 3 };
-        Object.assign(state.light, s.light);
-        uni.uColor.value.set(state.light.color);
-        uni.uMode.value = modes[state.light.mode] || 3;
-        uni.uBright.value = state.light.bright;
-      }
-      renderer.render(scene, camera);
-      thumbs[p.id] = renderer.domElement.toDataURL('image/png');
-    });
-    Object.assign(state, snap);
-    ctrl.theta = sc.theta;
-    ctrl.phi = sc.phi;
-    ctrl.radius = sc.radius;
-    ctrl.target.y = sc.ty;
-    renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
-    renderer.setSize(r.width, r.height, false);
-    camera.aspect = r.width / r.height;
-    camera.updateProjectionMatrix();
-    if (snap.colorway) {
-      const cw = COLORWAYS[snap.colorway];
-      matAlpha.color.copy(sRGB(cw.a.bg));
-      matMod.color.copy(sRGB(cw.m.bg));
-      matAccent.color.copy(sRGB(cw.x.bg));
     }
     if (snap.caseColor) matCase.color.copy(sRGB(CASES[snap.caseColor].c));
     if (snap.plate) { matPlate.color.copy(sRGB(PLATES[snap.plate].c)); applyPlateFinish(snap.plate); }
     if (snap.sw) matStem.color.copy(sRGB(SWITCHES[snap.sw].dot));
+  }
+  function renderSnapThumb(s) {
+    if (s.colorway) {
+      const cw = COLORWAYS[s.colorway] || s.customColors;
+      if (cw) {
+        matAlpha.color.copy(sRGB(cw.a.bg));
+        matMod.color.copy(sRGB(cw.m.bg));
+        matAccent.color.copy(sRGB(cw.x.bg));
+      }
+    } else if (s.customColors) {
+      const cc = s.customColors;
+      matAlpha.color.copy(sRGB(cc.a.bg));
+      matMod.color.copy(sRGB(cc.m.bg));
+      if (cc.x && cc.x.bg) matAccent.color.copy(sRGB(cc.x.bg));
+    }
+    if (s.caseColor) matCase.color.copy(sRGB(CASES[s.caseColor].c));
+    if (s.plate) { matPlate.color.copy(sRGB(PLATES[s.plate].c)); applyPlateFinish(s.plate); }
+    if (s.sw) matStem.color.copy(sRGB(SWITCHES[s.sw].dot));
+    if (s.light) {
+      const modes = { wave: 0, static: 1, breathe: 2, off: 3 };
+      Object.assign(state.light, s.light);
+      uni.uColor.value.set(state.light.color);
+      uni.uMode.value = modes[state.light.mode] || 3;
+      uni.uBright.value = state.light.bright;
+    }
+    renderer.render(scene, camera);
+    return renderer.domElement.toDataURL('image/png');
+  }
+  function genThumbs() {
+    const save = beginThumbRender();
+    PRESETS.forEach((p) => {
+      thumbs[p.id] = renderSnapThumb(p.s);
+    });
+    endThumbRender(save);
   }
 
   /* render loop */
