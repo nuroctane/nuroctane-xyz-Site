@@ -2,7 +2,25 @@
   "buildCommand": "pnpm run build",
   "outputDirectory": "artifacts/digital-sea/dist/public",
   "installCommand": "npx -y pnpm@10 install --no-frozen-lockfile",
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
+  "builds": [
+    {
+      "src": "artifacts/digital-sea/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist/public"
+      }
+    },
+    {
+      "src": "artifacts/api-server/api/index.js",
+      "use": "@vercel/node",
+      "config": {
+        "memory": 256
+      }
+    }
+  ],
+  "routes": [
+    { "src": "/api/(.*)", "dest": "artifacts/api-server/api/index.js" },
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "artifacts/digital-sea/index.html" }
   ]
 }
