@@ -245,6 +245,13 @@ export function mountModkeys() {
         resetHistory(stateSlice());
       }
       genThumbs();
+      /* populate featured builds carousel */
+      document.getElementById('builds').innerHTML = PRESETS.map((p) =>
+        `<button class="bcard" data-id="${p.id}">
+           <div class="img" style="background:${COLORWAYS[p.s.colorway].a.bg}"></div>
+           <div class="nm">${p.name}</div>
+         </button>`
+      ).join('');
       renderPanel('keycaps');
       syncUI();
       setView('3d');

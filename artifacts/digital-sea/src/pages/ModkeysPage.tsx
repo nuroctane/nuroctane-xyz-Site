@@ -41,6 +41,7 @@ function useModkeysStyles() {
 /* Keycaps Preview — CSS grid layout (replaces absolute-positioned keys) */
 .modkeys-page .preview {
   display: grid !important;
+  overflow: visible !important;
   grid-template-columns: repeat(3, auto);
   grid-template-rows: 1fr auto;
   justify-content: center;
@@ -66,6 +67,13 @@ function useModkeysStyles() {
   width: 130px !important;
   height: 36px !important;
 }
+/* Center text inside preview keycaps */
+.modkeys-page .preview .kc .kctop {
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  inset: 3px;
+}
 @media (max-width: 1024px) {
   .modkeys-page .preview { gap: 10px 8px; padding: 14px; }
   .modkeys-page .preview .kc { width: 46px !important; height: 46px !important; }
@@ -75,13 +83,13 @@ function useModkeysStyles() {
   .modkeys-page .preview { gap: 8px 6px; padding: 12px; height: auto !important; min-height: 100px; }
   .modkeys-page .preview .kc { width: 38px !important; height: 38px !important; }
   .modkeys-page .preview .kc:nth-child(4) { width: 96px !important; height: 28px !important; }
-  .modkeys-page .preview .kc .kctop { font-size: 10px; padding: 4px 0 0 5px; }
+  .modkeys-page .preview .kc .kctop { font-size: 9px; }
 }
 @media (max-width: 420px) {
   .modkeys-page .preview { gap: 6px 4px; padding: 10px; min-height: 80px; }
   .modkeys-page .preview .kc { width: 30px !important; height: 30px !important; }
   .modkeys-page .preview .kc:nth-child(4) { width: 74px !important; height: 22px !important; }
-  .modkeys-page .preview .kc .kctop { font-size: 8px; padding: 3px 0 0 3px; }
+  .modkeys-page .preview .kc .kctop { font-size: 7px; inset: 2px; }
 }
 
 /* Mobile layout rework */

@@ -39,6 +39,7 @@ export const PRESETS = [
     id: "cream-dream",
     name: "Cream Dream",
     s: {
+      brand: "cream",
       colorway: "desert",
       caseColor: "ewhite",
       sw: "boba",
@@ -49,6 +50,7 @@ export const PRESETS = [
     id: "olive-green",
     name: "Olive Green",
     s: {
+      brand: "olive",
       colorway: "moss",
       caseColor: "olive",
       sw: "panda",
@@ -59,6 +61,7 @@ export const PRESETS = [
     id: "ocean-blue",
     name: "Ocean Blue",
     s: {
+      brand: "ocean",
       colorway: "deepsea",
       caseColor: "navy",
       sw: "jade",
@@ -69,6 +72,7 @@ export const PRESETS = [
     id: "e-white",
     name: "E-White",
     s: {
+      brand: "ewhite",
       colorway: "bowred",
       caseColor: "silver",
       sw: "boba",
@@ -80,6 +84,7 @@ export const PRESETS = [
     id: "noir",
     name: "Noir",
     s: {
+      brand: "noir",
       colorway: "noir",
       caseColor: "midnight",
       plate: "steel",
@@ -91,6 +96,7 @@ export const PRESETS = [
     id: "embers",
     name: "Embers",
     s: {
+      brand: "embers",
       colorway: "embers",
       caseColor: "burgundy",
       plate: "copper",
@@ -102,6 +108,7 @@ export const PRESETS = [
     id: "matcha",
     name: "Matcha",
     s: {
+      brand: "matcha",
       colorway: "matcha",
       caseColor: "forest",
       plate: "pom",
@@ -113,6 +120,7 @@ export const PRESETS = [
     id: "carbon",
     name: "Carbon",
     s: {
+      brand: "carbon",
       colorway: "carbon",
       caseColor: "spacegray",
       plate: "carbon",
@@ -124,6 +132,7 @@ export const PRESETS = [
     id: "vapor",
     name: "Vaporwave",
     s: {
+      brand: "vapor",
       colorway: "vapor",
       caseColor: "arctic",
       plate: "fr4",
@@ -135,6 +144,7 @@ export const PRESETS = [
     id: "dracula",
     name: "Dracula",
     s: {
+      brand: "dracula",
       colorway: "dracula",
       caseColor: "midnight",
       plate: "copper",
@@ -146,6 +156,7 @@ export const PRESETS = [
     id: "blush",
     name: "Blush",
     s: {
+      brand: "blush",
       colorway: "blush",
       caseColor: "sakura",
       plate: "brass",
@@ -157,6 +168,7 @@ export const PRESETS = [
     id: "honey",
     name: "Honey",
     s: {
+      brand: "honey",
       colorway: "honey",
       caseColor: "sakura",
       plate: "brass",

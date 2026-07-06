@@ -3,6 +3,7 @@
   "outputDirectory": "artifacts/digital-sea/dist/public",
   "installCommand": "pnpm install --no-frozen-lockfile",
   "rewrites": [
+    { "source": "/api/(.*)", "destination": "/api/[...slug]" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }

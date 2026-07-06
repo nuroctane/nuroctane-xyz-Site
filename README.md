@@ -13,13 +13,14 @@
 
 ## 🧠 What is this?
 
-This is my personal digital garden — a living portfolio that captures the different facets of my life:
+This is my personal digital sea — a living portfolio that captures the different facets of my life:
 
 - **📚 Books** — A curated library of books I've read, with community recommendations and live search via Google Books & Open Library APIs
 - **💭 Quotes** — A collection of thoughts, ideas, and quotes that have shaped my thinking, organized by theme
-- **📄 Resume** — My professional journey and experience
 
 The site is built as a single-page application with a distinct aesthetic inspired by terminal interfaces and digital landscapes. It's not just a portfolio — it's an extension of my mind.
+
+The visual aesthetic draws inspiration from the French animated series **Code Lyoko** (MoonScoop, 2003–2007, created by Thomas Romain and Tania Palumbo). [Wikipedia](https://en.wikipedia.org/wiki/Code_Lyoko)
 
 ---
 
@@ -89,8 +90,6 @@ The Modkeys configurator is embedded as a standalone React page (`/modkeys`) wit
 - **Keycaps Preview**: Replaced absolute-positioned keycaps with CSS grid layout — properly centers TAB, Q, S keys with even spacing and places the spacebar below them. Keys scale responsively at all breakpoints (52px desktop → 30px small mobile).
 - **Mobile Rework**: Stage height reduced from 340→180px (≤768px) and 260→140px (≤420px) to give configuration controls adequate room. Fixed scrolling model (main area scrolls, tab bar stays fixed). Compact controls (chips, buttons, swatches) sized for touch targets ≥44px. Legibility improved with responsive font sizes.
 
-### 💬 Quotes Page
-
 ### 🎨 Design System
 - Dark, terminal-inspired aesthetic
 - Smooth animations and transitions
@@ -107,7 +106,7 @@ nuroctane-xyz-Site/
 │   └── digital-sea/          # Main React application
 │       ├── src/
 │       │   ├── components/   # Reusable UI components
-│       │   ├── pages/        # Page components (Books, Quotes, Resume)
+│       │   ├── pages/        # Page components (Books, Quotes, Modkeys)
 │       │   ├── content/      # Markdown content files
 │       │   └── hooks/        # Custom React hooks
 │       └── public/           # Static assets
@@ -122,13 +121,13 @@ This site is designed to be:
 - **Minimal yet expressive** — Clean design that lets content shine
 - **Fast and responsive** — Optimized for performance
 - **Personal and authentic** — A true reflection of who I am
-- **Continuously evolving** — Like a digital garden, it grows over time
+- **Continuously evolving** — Like a digital sea, it grows over time
 
 ---
 
 ## 📝 License
 
-MIT License — feel free to use this as inspiration for your own digital garden.
+MIT License — feel free to use this as inspiration for your own digital sea.
 
 ---
 
