@@ -42,27 +42,6 @@ A browser-based mechanical keyboard configurator and 3D visualization tool. Buil
 
 ---
 
-## Getting Started
-
-```bash
-npm install
-npm run dev
-```
-
-Build for production:
-
-```bash
-npm run build
-```
-
-Preview the production build:
-
-```bash
-npm run preview
-```
-
----
-
 ## Project Structure
 
 ```
