@@ -1,15 +1,20 @@
 {
+  "corepack": true,
   "buildCommand": "pnpm run build",
   "outputDirectory": "artifacts/digital-sea/dist/public",
   "installCommand": "pnpm install --no-frozen-lockfile",
   "builds": [
     {
-      "src": "api/[...slug].js",
-      "use": "@vercel/node"
+      "src": "artifacts/api-server/api/index.js",
+      "use": "@vercel/node",
+      "config": {
+        "memory": 256
+      }
     }
   ],
   "routes": [
+    { "src": "/api/(.*)", "dest": "artifacts/api-server/api/index.js" },
     { "handle": "filesystem" },
-    { "source": "/(.*)", "destination": "/index.html" }
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
