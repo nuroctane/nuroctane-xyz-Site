@@ -1,8 +1,5 @@
 {
   "buildCommand": "pnpm run build",
   "outputDirectory": "artifacts/digital-sea/dist/public",
-  "installCommand": "npx -y pnpm@10 install --no-frozen-lockfile",
-  "rewrites": [
-    { "source": "/(.*)", "destination": "/index.html" }
-  ]
+  "installCommand": "npx -y pnpm@10 install --no-frozen-lockfile"
 }
