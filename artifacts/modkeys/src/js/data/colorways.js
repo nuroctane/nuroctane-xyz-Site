@@ -153,4 +153,8 @@ export const COLORWAYS = {
   },
 };
 
-export const PANEL_SWATCHES = ["claude", "gemini", "sakura", "botanical", "noir", "embers", "matcha", "vapor"];
+export const PANEL_SWATCHES = [
+  "claude", "gemini", "sakura", "botanical", "deepsea", "desert", "mono",
+  "shadow", "moss", "bowred", "rosette", "noir", "embers", "matcha",
+  "carbon", "vapor", "dracula", "blush", "honey",
+];

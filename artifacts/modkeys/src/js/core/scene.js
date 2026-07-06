@@ -261,8 +261,10 @@ export const caseGroup = new THREE.Group();
 export const capsGroup = new THREE.Group();
 export const switchGroup = new THREE.Group();
 export const knobGroup = new THREE.Group();
+export const cableGroup = new THREE.Group();
+export const wristGroup = new THREE.Group();
 export const keyGlowGroup = new THREE.Group();
-root.add(caseGroup, capsGroup, switchGroup, knobGroup, keyGlowGroup);
+root.add(caseGroup, capsGroup, switchGroup, knobGroup, cableGroup, wristGroup, keyGlowGroup);
 
 export const keyGlowGeo = new THREE.PlaneGeometry(1, 1);
 export const CAP_Y = 1.1;

@@ -5,7 +5,7 @@ import { LAYOUTS } from '../data/layouts.js';
 import { COLORWAYS } from '../data/colorways.js';
 import { CASES, FINISHES, PLATES, SWITCHES, MATERIALS, PROFILES, GAP } from '../data/components.js';
 import {
-  renderer, scene, camera, root, caseGroup, capsGroup, knobGroup,
+  renderer, scene, camera, root, caseGroup, capsGroup, knobGroup, cableGroup, wristGroup,
   matAlpha, matMod, matAccent, matCase, matPlate, matStem,
   capMats, applyPlateFinish, uni, sRGB,
 } from './scene.js';
@@ -103,6 +103,8 @@ function applyInstant(s) {
   if (s.extras) {
     state.extras = Object.assign({}, state.extras, s.extras);
     knobGroup.visible = LAYOUTS[state.layout].knob && state.extras.knob;
+    cableGroup.visible = state.extras.cable;
+    wristGroup.visible = state.extras.wrist;
   }
   if (s.perKeyOverrides) {
     state.perKeyOverrides = s.perKeyOverrides;
@@ -173,8 +175,11 @@ function apply3D(patch, animate) {
     });
   }
   if (patch.light) applyLight();
-  if (patch.extras !== undefined)
+  if (patch.extras !== undefined) {
     knobGroup.visible = LAYOUTS[state.layout].knob && state.extras.knob;
+    cableGroup.visible = state.extras.cable;
+    wristGroup.visible = state.extras.wrist;
+  }
   if (patch.profile) { buildKeys(); popKeys(); }
   if (patch.layout) {
     if (state.exploded) setView('3d');

@@ -21,6 +21,7 @@ export function generateSpec() {
       bgColor: ov.bgColor || undefined,
       glow: ov.glow || undefined,
       hasImage: !!ov.imageData,
+      imageData: ov.imageData || undefined,
       imageBehindText: ov.imageBehindText || undefined,
       fontSize: ov.fontSize || undefined,
     });

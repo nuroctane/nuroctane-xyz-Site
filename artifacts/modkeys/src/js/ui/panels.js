@@ -56,6 +56,9 @@ const PROFILE_ICONS = {
   oem: 'M6 19 L9 7 Q20 4.6 31 7 L34 19 Z',
   xda: 'M5 19 L8 10.5 Q20 9 32 10.5 L35 19 Z',
   sa: 'M7 19 L10 6 Q20 2.4 30 6 L33 19 Z',
+  dsa: 'M5 19 L9 11 Q20 10 31 11 L35 19 Z',
+  mt3: 'M7 19 L10 5 Q20 1.8 30 5 L33 19 Z',
+  asa: 'M6 19 L10 8 Q20 5.5 30 8 L34 19 Z',
 };
 
 const PANELS = {
@@ -96,6 +99,12 @@ const PANELS = {
 </div>
 <button class="libBtn" id="applyCustomColors" style="margin-top:6px">Apply Custom Colors</button>
 <button class="libBtn" id="clearCustomColors" style="margin-top:4px">Reset to Colorway</button>
+</div>
+<div class="grp" style="margin-top:12px;border-top:1px solid var(--card2);padding-top:12px">
+  <div class="glabel">KEY IMAGE</div>
+  <div class="hint">Double-click a key to select it, then upload an image below.</div>
+  <input type="file" id="keImageSidebar" accept="image/png,image/jpeg,image/svg+xml" class="keFile">
+  <div id="keSidebarPreview"></div>
 </div>`;
   },
 
@@ -164,6 +173,19 @@ export function renderPanel(section) {
 /* key editor popover */
 let _currentEditId = null;
 
+function updateSidebarKeyImage() {
+  const preview = $('keSidebarPreview');
+  if (!preview) return;
+  if (_currentEditId) {
+    const ov = getOverride(_currentEditId);
+    preview.innerHTML = ov?.imageData
+      ? `<img src="${ov.imageData}" class="kePreview" style="margin-top:6px"><button id="keRemoveImgSidebar" class="keBtn" style="margin-top:4px">Remove Image</button>`
+      : '';
+  } else {
+    preview.innerHTML = '';
+  }
+}
+
 export function showKeyEditor(keyData) {
   _currentEditId = keyData.perKeyId;
   const ov = getOverride(_currentEditId) || {};
@@ -189,6 +211,7 @@ export function showKeyEditor(keyData) {
   pop.innerHTML = html;
   pop.classList.add('open');
   $('panelBody').classList.add('keOpen');
+  updateSidebarKeyImage();
 }
 
 export function hideKeyEditor() {
@@ -197,6 +220,7 @@ export function hideKeyEditor() {
   $('panelBody').classList.remove('keOpen');
   _currentEditId = null;
   state.selectedKey = null;
+  updateSidebarKeyImage();
 }
 
 /* panel + key editor event delegation */
@@ -245,6 +269,14 @@ $('panelBody').addEventListener('click', (ev) => {
     showKeyEditor({ perKeyId: _currentEditId, label: state.layout ? '' : '' });
     return;
   }
+  if (ev.target.id === 'keRemoveImgSidebar' && _currentEditId) {
+    const ov = getOverride(_currentEditId) || {};
+    delete ov.imageData;
+    setOverride(_currentEditId, { imageData: null });
+    rebuildKey(..._currentEditId.split('-').map(Number));
+    updateSidebarKeyImage();
+    return;
+  }
 });
 
 /* key editor input events */
@@ -271,6 +303,15 @@ $('panelBody').addEventListener('change', async (ev) => {
     setOverride(_currentEditId, { imageData: dataUrl });
     rebuildKey(..._currentEditId.split('-').map(Number));
     showKeyEditor({ perKeyId: _currentEditId, label: '' });
+    return;
+  }
+  if (ev.target.id === 'keImageSidebar') {
+    const file = ev.target.files[0];
+    if (!file) return;
+    const dataUrl = await loadImage(file);
+    setOverride(_currentEditId, { imageData: dataUrl });
+    rebuildKey(..._currentEditId.split('-').map(Number));
+    updateSidebarKeyImage();
   }
 });
 

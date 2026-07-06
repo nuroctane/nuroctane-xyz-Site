@@ -3,8 +3,9 @@ import { LAYOUTS } from '../data/layouts.js';
 import { COLORWAYS } from '../data/colorways.js';
 import { PROFILES, SWITCHES, GAP } from '../data/components.js';
 import { state } from './state.js';
+import { effectiveColorway } from './update.js';
 import {
-  renderer, scene, camera, root, caseGroup, capsGroup, switchGroup, knobGroup, keyGlowGroup,
+  renderer, scene, camera, root, caseGroup, capsGroup, switchGroup, knobGroup, cableGroup, wristGroup, keyGlowGroup,
   capMats, matCase, matPlate, matSwBody, matStem, matKnob,
   skirtMat, keyGlowMat, keyGlowGeo, createLegendGlowMat,
   CAP_Y, setPlateMesh, setBoardDims, sRGB, uni,
@@ -185,6 +186,8 @@ function disposeGroup(gr) {
 export function buildCase() {
   disposeGroup(caseGroup);
   disposeGroup(knobGroup);
+  disposeGroup(cableGroup);
+  disposeGroup(wristGroup);
   const L = LAYOUTS[state.layout];
   boardW = L.total + 1.0;
   boardD = 6.0;
@@ -242,6 +245,33 @@ export function buildCase() {
     knobGroup.traverse((n) => (n.userData.isKnob = true));
   }
   knobGroup.visible = !!L.knob && state.extras.knob;
+  {
+    const curve = new THREE.CatmullRomCurve3([
+      new THREE.Vector3(0, 0.04, -boardD / 2 - 0.3),
+      new THREE.Vector3(0, 0.1, -boardD / 2 - 0.7),
+      new THREE.Vector3(0, 0.35, -boardD / 2 - 1.3),
+    ]);
+    const tube = new THREE.Mesh(
+      new THREE.TubeGeometry(curve, 14, 0.05, 8, false),
+      new THREE.MeshStandardMaterial({ color: 0x2a2a2a, roughness: 0.6, metalness: 0.15 }),
+    );
+    tube.castShadow = true;
+    cableGroup.add(tube);
+  }
+  cableGroup.visible = state.extras.cable;
+  {
+    const w = boardW * 0.72;
+    const shape = new THREE.Shape();
+    const r = 0.15, hw = w / 2, hd = 0.4;
+    shape.moveTo(-hw + r, -hd).lineTo(hw - r, -hd).quadraticCurveTo(hw, -hd, hw, -hd + r).lineTo(hw, hd - r).quadraticCurveTo(hw, hd, hw - r, hd).lineTo(-hw + r, hd).quadraticCurveTo(-hw, hd, -hw, hd - r).lineTo(-hw, -hd + r).quadraticCurveTo(-hw, -hd, -hw + r, -hd);
+    const geo = new THREE.ExtrudeGeometry(shape, { depth: 0.35, bevelEnabled: true, bevelSize: 0.04, bevelThickness: 0.04, bevelSegments: 4 });
+    const wrist = new THREE.Mesh(geo, matCase);
+    wrist.position.set(0, 0, boardD / 2 + 0.5);
+    wrist.rotation.x = -Math.PI / 2;
+    wrist.castShadow = wrist.receiveShadow = true;
+    wristGroup.add(wrist);
+  }
+  wristGroup.visible = state.extras.wrist;
   aoPlane.scale.set(boardW * 1.3, boardD * 1.7, 1);
   glowPlane.scale.set(boardW * 1.9, boardD * 2.9, 1);
 }
@@ -338,7 +368,7 @@ export function buildKeys() {
   disposeGroup(keyGlowGroup);
   const L = LAYOUTS[state.layout], rows = L.rows(), center = L.total / 2;
   const prof = PROFILES[state.profile];
-  const cw = COLORWAYS[state.colorway];
+  const cw = effectiveColorway();
   rows.forEach((row, ri) => {
     let cur = 0;
     row.forEach((keyDef, ci) => {
@@ -353,7 +383,7 @@ export function buildKeys() {
 export function rebuildKey(ri, ci) {
   const L = LAYOUTS[state.layout], rows = L.rows(), center = L.total / 2;
   const prof = PROFILES[state.profile];
-  const cw = COLORWAYS[state.colorway];
+  const cw = effectiveColorway();
   if (ri >= rows.length) return;
   const row = rows[ri];
   if (ci >= row.length) return;
@@ -405,7 +435,7 @@ export function rebuildBoard() {
 }
 
 export function refreshLegends() {
-  const cw = COLORWAYS[state.colorway];
+  const cw = effectiveColorway();
   capsGroup.children.forEach((c) => {
     if (!c.userData.legend) return;
     const id = c.userData.perKeyId;

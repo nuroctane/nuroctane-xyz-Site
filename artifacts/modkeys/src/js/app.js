@@ -248,7 +248,7 @@ export function mountModkeys() {
       /* populate featured builds carousel */
       document.getElementById('builds').innerHTML = PRESETS.map((p) =>
         `<button class="bcard" data-id="${p.id}">
-           <div class="img" style="background:${COLORWAYS[p.s.colorway].a.bg}"></div>
+           <div class="img" style="background:${COLORWAYS[p.s.colorway].a.bg}"><img src="${thumbs[p.id]}" alt=""></div>
            <div class="nm">${p.name}</div>
          </button>`
       ).join('');
