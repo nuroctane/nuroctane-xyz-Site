@@ -159,10 +159,8 @@ function saveDescCache(cache: Record<string, string | null>) {
   } catch {}
 }
 
-const COVER_BATCH = 8;
-const COVER_DELAY = 50;
-const DESC_BATCH = 3;
-const DESC_DELAY = 300;
+const BATCH_SIZE = 2;
+const BATCH_DELAY = 250;
 
 export default function BooksPage() {
   const shelves = useMemo(() => parseBooks(raw), []);
@@ -223,81 +221,68 @@ export default function BooksPage() {
     if (bgStarted.current) return;
     bgStarted.current = true;
 
-    const needCover = allCuratedBooks.filter(b => !(bookKey(b) in initialCoverCache));
-    const needDesc = allCuratedBooks.filter(b => !(bookKey(b) in initialDescCache));
-    if (needCover.length === 0 && needDesc.length === 0) return;
+    const missing = allCuratedBooks.filter(b => {
+      const key = bookKey(b);
+      return !(key in initialCoverCache) || !(key in initialDescCache);
+    });
+    if (missing.length === 0) return;
 
     let cancelled = false;
-    let coverIdx = 0;
-    let descIdx = 0;
+    let batchIdx = 0;
     const coverCacheTemp = { ...initialCoverCache };
     const descCacheTemp = { ...initialDescCache };
 
-    // Phase 1: fetch covers from Open Library (fast CDN, no key, public domain)
-    const fetchCovers = async () => {
-      if (cancelled || coverIdx >= needCover.length) {
-        if (descIdx === 0 && needDesc.length > 0) {
-          setTimeout(fetchDescs, 200);
-        }
-        return;
-      }
-      const batch = needCover.slice(coverIdx, coverIdx + COVER_BATCH);
-      coverIdx += COVER_BATCH;
-
-      const results = await Promise.all(batch.map(async (b) => {
-        const key = bookKey(b);
-        try {
-          const res = await fetch(`${OL_SEARCH}?q=${buildQuery(b)}&fields=cover_i&limit=1`);
-          const data = await res.json();
-          const coverId = data.docs?.[0]?.cover_i;
-          return { key, url: coverId ? `https://covers.openlibrary.org/b/id/${coverId}-S.jpg` : null };
-        } catch {
-          return { key, url: null };
-        }
-      }));
-
-      if (cancelled) return;
-      let changed = false;
-      for (const { key, url } of results) {
-        coverCacheTemp[key] = url; changed = true;
-      }
-      if (changed) { setCoverCache({ ...coverCacheTemp }); saveCoverCache(coverCacheTemp); }
-
-      setTimeout(fetchCovers, coverIdx < needCover.length ? COVER_DELAY : 200);
-    };
-
-    // Phase 2: fetch descriptions from Google Books (slower, needs key)
-    const fetchDescs = async () => {
-      if (cancelled || descIdx >= needDesc.length) return;
-      const batch = needDesc.slice(descIdx, descIdx + DESC_BATCH);
-      descIdx += DESC_BATCH;
+    const processBatch = async () => {
+      if (cancelled || batchIdx >= missing.length) return;
+      const batch = missing.slice(batchIdx, batchIdx + BATCH_SIZE);
+      batchIdx += BATCH_SIZE;
 
       const results = await Promise.all(batch.map(async (b) => {
         const key = bookKey(b);
         try {
           const res = await fetch(
-            `${GB_BASE}?q=${buildQuery(b)}&maxResults=1&fields=items(volumeInfo/description)&key=${GB_KEY}`,
+            `${GB_BASE}?q=${buildQuery(b)}&maxResults=1&fields=items(volumeInfo/imageLinks/thumbnail,volumeInfo/description)&key=${GB_KEY}`,
           );
+          if (!res.ok) throw new Error('GB status ' + res.status);
           const data = await res.json();
-          return { key, desc: data.items?.[0]?.volumeInfo?.description ?? null };
+          const item = data.items?.[0]?.volumeInfo;
+          if (!item) throw new Error('No GB result');
+          const url = fixCoverUrl(item.imageLinks?.thumbnail) ?? null;
+          const desc = item.description ?? null;
+          return { key, url, desc };
         } catch {
-          return { key, desc: null };
+          // GB failed — try OL for cover only
+          try {
+            const olRes = await fetch(
+              `${OL_SEARCH}?q=${buildQuery(b)}&fields=cover_i&limit=1`,
+            );
+            if (!olRes.ok) throw new Error('OL status ' + olRes.status);
+            const olData = await olRes.json();
+            const coverId = olData.docs?.[0]?.cover_i;
+            const url = coverId ? `https://covers.openlibrary.org/b/id/${coverId}-S.jpg` : null;
+            return { key, url, desc: null };
+          } catch {
+            return { key, url: null, desc: null };
+          }
         }
       }));
 
       if (cancelled) return;
-      let changed = false;
-      for (const { key, desc } of results) {
-        descCacheTemp[key] = desc; changed = true;
+      let coverChanged = false;
+      let descChanged = false;
+      for (const { key, url, desc } of results) {
+        if (url !== undefined) { coverCacheTemp[key] = url; coverChanged = true; }
+        if (desc !== undefined) { descCacheTemp[key] = desc; descChanged = true; }
       }
-      if (changed) { setDescriptionCache({ ...descCacheTemp }); saveDescCache(descCacheTemp); }
+      if (coverChanged) { setCoverCache({ ...coverCacheTemp }); saveCoverCache(coverCacheTemp); }
+      if (descChanged) { setDescriptionCache({ ...descCacheTemp }); saveDescCache(descCacheTemp); }
 
-      if (descIdx < needDesc.length) {
-        setTimeout(fetchDescs, DESC_DELAY);
+      if (batchIdx < missing.length) {
+        setTimeout(processBatch, BATCH_DELAY);
       }
     };
 
-    const t = setTimeout(fetchCovers, 100);
+    const t = setTimeout(processBatch, 400);
     return () => { cancelled = true; clearTimeout(t); };
   }, [allCuratedBooks]);
 
