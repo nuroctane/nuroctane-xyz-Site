@@ -4,6 +4,13 @@
   "installCommand": "npx -y pnpm@10 install --no-frozen-lockfile",
   "builds": [
     {
+      "src": "artifacts/digital-sea/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist/public"
+      }
+    },
+    {
       "src": "artifacts/api-server/api/index.js",
       "use": "@vercel/node",
       "config": {
@@ -13,7 +20,6 @@
   ],
   "routes": [
     { "src": "/api/(.*)", "dest": "artifacts/api-server/api/index.js" },
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
+    { "src": "/((?!api/).*)", "dest": "artifacts/digital-sea/index.html" }
   ]
 }
