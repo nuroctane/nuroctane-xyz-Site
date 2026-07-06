@@ -1,8 +1,7 @@
 {
-  "corepack": true,
   "buildCommand": "pnpm run build",
   "outputDirectory": "artifacts/digital-sea/dist/public",
-  "installCommand": "pnpm install --no-frozen-lockfile",
+  "installCommand": "npx -y pnpm@10 install --no-frozen-lockfile",
   "builds": [
     {
       "src": "artifacts/api-server/api/index.js",
