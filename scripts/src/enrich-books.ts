@@ -87,22 +87,49 @@ function bookKey(title: string, author: string): string {
   return `${title}|${author}`;
 }
 
+/** Last failure status per query, for the misses report ("429", "500", "no-item", "network"). */
+export const gbLastStatus = new Map<string, string>();
+
 async function fetchGoogleBooks(query: string): Promise<{ cover: string | null; desc: string | null } | null> {
   if (!GOOGLE_BOOKS_API_KEY) return null;
-  try {
-    const url = `${GB_BASE}?q=${encodeURIComponent(query)}&maxResults=1&fields=items(volumeInfo/imageLinks/thumbnail,volumeInfo/description)&key=${GOOGLE_BOOKS_API_KEY}`;
-    const res = await fetch(url);
-    if (!res.ok) throw new Error(`GB status ${res.status}`);
-    const data = (await res.json()) as GBResponse;
-    const item = data.items?.[0]?.volumeInfo;
-    if (!item) throw new Error('No GB result');
-    const urlRaw = item.imageLinks?.thumbnail ?? null;
-    const cover = urlRaw ? urlRaw.replace(/^http:/, 'https:') : null;
-    const desc = item.description ?? null;
-    return { cover, desc };
-  } catch {
-    return null;
+  const url = `${GB_BASE}?q=${encodeURIComponent(query)}&maxResults=1&fields=items(volumeInfo/imageLinks/thumbnail,volumeInfo/description)&key=${GOOGLE_BOOKS_API_KEY}`;
+  // 429/5xx are transient (rate limit / server): retry up to 3 times with 2s/4s/8s backoff.
+  for (let attempt = 0; attempt <= 3; attempt++) {
+    try {
+      const res = await fetch(url);
+      if (res.status === 429 || res.status >= 500) {
+        gbLastStatus.set(query, String(res.status));
+        if (attempt < 3) {
+          await sleep(2000 * 2 ** attempt);
+          continue;
+        }
+        return null;
+      }
+      if (!res.ok) {
+        gbLastStatus.set(query, String(res.status));
+        return null;
+      }
+      const data = (await res.json()) as GBResponse;
+      const item = data.items?.[0]?.volumeInfo;
+      if (!item) {
+        gbLastStatus.set(query, 'no-item');
+        return null;
+      }
+      gbLastStatus.delete(query);
+      const urlRaw = item.imageLinks?.thumbnail ?? null;
+      const cover = urlRaw ? urlRaw.replace(/^http:/, 'https:') : null;
+      const desc = item.description ?? null;
+      return { cover, desc };
+    } catch {
+      gbLastStatus.set(query, 'network');
+      if (attempt < 3) {
+        await sleep(2000 * 2 ** attempt);
+        continue;
+      }
+      return null;
+    }
   }
+  return null;
 }
 
 async function fetchOpenLibraryCover(query: string): Promise<string | null> {
@@ -155,9 +182,13 @@ async function main() {
     const key = bookKey(b.title, b.author);
     if (!(key in output.books)) return true;
     const existing = output.books[key];
-    // Re-fetch only complete misses (no cover AND no desc);
-    // entries with cover but no desc already tried GB — skip
-    return existing.cover === null && existing.desc === null;
+    // Complete misses always retry.
+    if (existing.cover === null && existing.desc === null) return true;
+    // desc-null entries: a cover alone does NOT mean Google Books was tried
+    // (the first run may have been Open-Library-only). Re-attempt whenever a
+    // GB key is available and descriptions are wanted this run.
+    if (existing.desc === null && GOOGLE_BOOKS_API_KEY && !COVERS_ONLY) return true;
+    return false;
   });
 
   if (toFetch.length === 0) {
@@ -182,6 +213,7 @@ async function main() {
   let coversFound = 0;
   let descsFound = 0;
   const misses: string[] = [];
+  const gbStatusByKey = new Map<string, string>();
 
   const CONCURRENCY = 5;
   const PAUSE_MS = 150;
@@ -212,11 +244,16 @@ async function main() {
       if (desc) descsFound++;
       if (!cover && !desc) misses.push(key);
 
-      return { key, cover, desc };
+      return { key, cover, desc, gbStatus: gbLastStatus.get(query) ?? null };
     }));
 
     for (const r of results) {
-      output.books[r.key] = { cover: r.cover, desc: r.desc };
+      const prev = output.books[r.key];
+      output.books[r.key] = {
+        cover: r.cover ?? prev?.cover ?? null,
+        desc: r.desc ?? prev?.desc ?? null,
+      };
+      if (r.gbStatus) gbStatusByKey.set(r.key, r.gbStatus);
     }
 
     if (i + CONCURRENCY < toFetch.length) {
@@ -252,8 +289,8 @@ async function main() {
     `# no cover (${noCover.length})`,
     ...noCover,
     `# ---`,
-    `# no description (${noDesc.length})`,
-    ...noDesc,
+    `# no description (${noDesc.length}) — [status] is the last Google Books result for this run`,
+    ...noDesc.map(k => gbStatusByKey.has(k) ? `${k}  [${gbStatusByKey.get(k)}]` : k),
   ];
   fs.writeFileSync(missFile, missLines.join('\n') + '\n', 'utf-8');
   console.log(`Misses file written to ${missFile}`);

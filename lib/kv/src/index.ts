@@ -1,3 +1,14 @@
+/* CONTRACT-GUARDED FILE.
+ * The response shapes and paths depending on this module are asserted by
+ * scripts/src/smoke.ts, which runs inside the Vercel buildCommand. Changing
+ * behavior here without updating the smoke test will fail every deploy.
+ * Do not weaken or bypass the smoke test.
+ *
+ * KV_MEMORY=1 switches to an in-process Map (used by the smoke test only;
+ * never set in production). */
+const memStore = new Map<string, string>();
+const useMemory = () => process.env.KV_MEMORY === "1";
+
 const URL = () => process.env.nuroctanesitestorage_KV_REST_API_URL;
 const TOKEN = () => process.env.nuroctanesitestorage_KV_REST_API_TOKEN;
 
@@ -11,6 +22,10 @@ function requireEnv() {
 }
 
 export async function kvGet<T = unknown>(key: string): Promise<T | null> {
+  if (useMemory()) {
+    const raw = memStore.get(key);
+    return raw ? (JSON.parse(raw) as T) : null;
+  }
   const { url, token } = requireEnv();
   const res = await fetch(`${url}/get/${encodeURIComponent(key)}`, {
     headers: { Authorization: `Bearer ${token}` },
@@ -21,6 +36,10 @@ export async function kvGet<T = unknown>(key: string): Promise<T | null> {
 }
 
 export async function kvSet(key: string, value: unknown): Promise<void> {
+  if (useMemory()) {
+    memStore.set(key, JSON.stringify(value));
+    return;
+  }
   const { url, token } = requireEnv();
   const res = await fetch(url, {
     method: "POST",
@@ -34,6 +53,10 @@ export async function kvSet(key: string, value: unknown): Promise<void> {
 }
 
 export async function kvDelete(key: string): Promise<void> {
+  if (useMemory()) {
+    memStore.delete(key);
+    return;
+  }
   const { url, token } = requireEnv();
   const res = await fetch(url, {
     method: "POST",
@@ -47,6 +70,9 @@ export async function kvDelete(key: string): Promise<void> {
 }
 
 export async function kvList(prefix: string): Promise<string[]> {
+  if (useMemory()) {
+    return [...memStore.keys()].filter((k) => k.startsWith(prefix));
+  }
   const { url, token } = requireEnv();
   const res = await fetch(`${url}/keys/${encodeURIComponent(prefix)}`, {
     headers: { Authorization: `Bearer ${token}` },

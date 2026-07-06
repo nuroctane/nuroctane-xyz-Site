@@ -939,3 +939,19 @@
   .bcard .img { height: 68px; }
   .bcard .nm { font-size: 11px; }
 }
+
+/* v3: arrows edge state + inline retry link */
+.farrows button:disabled {
+  opacity: 0.35;
+  cursor: default;
+  transform: none;
+}
+.linkish {
+  background: transparent;
+  border: none;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}

@@ -13,6 +13,14 @@ import { rebuildBoard, buildKeys, refreshLegends, preloadEmoji } from './keyboar
 import { setView } from './controls.js';
 import { pushState, undo as undoHistory, redo as redoHistory } from './history.js';
 
+/* Panel re-render hook. panels.js statically imports this module, so a static
+   import back would be circular; app.js (which imports both) registers the
+   real renderPanel here at boot. Replaces a mixed dynamic/static import that
+   tripped a Vite chunking warning. */
+let panelRenderHook = null;
+export function onPanelRender(fn) { panelRenderHook = fn; }
+
+
 let _syncUI = null;
 const RM = () => window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -57,7 +65,7 @@ function applyInstant(s) {
     state.colorway = s.colorway;
     state.customColors = null;
     refreshLegends();
-    import('../ui/panels.js').then(m => m.renderPanel(state.section));
+    if (panelRenderHook) panelRenderHook(state.section);
   } else if (s.customColors) {
     applyColors(s.customColors);
     state.customColors = s.customColors;

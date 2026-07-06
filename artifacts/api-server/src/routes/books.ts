@@ -1,3 +1,7 @@
+/* CONTRACT-GUARDED FILE.
+ * The response shapes and paths in this file are asserted by scripts/src/smoke.ts,
+ * which runs inside the Vercel buildCommand. Changing shapes/paths without updating
+ * the smoke test will fail every deploy. Do not weaken or bypass the smoke test. */
 import { Router } from "express";
 import { kvGet, kvSet } from "@workspace/kv";
 import { logger } from "../lib/logger";

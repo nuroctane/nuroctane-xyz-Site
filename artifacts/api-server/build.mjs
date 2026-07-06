@@ -18,6 +18,8 @@ async function buildAll() {
     entryPoints: [
       path.resolve(artifactDir, "src/index.ts"),
       path.resolve(artifactDir, "src/vercel.ts"),
+      path.resolve(artifactDir, "src/vercel-books.ts"),
+      path.resolve(artifactDir, "src/vercel-modkeys.ts"),
     ],
     platform: "node",
     bundle: true,

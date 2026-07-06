@@ -87,8 +87,14 @@ export function openGallery() {
       if (!$('modal').classList.contains('open')) return;
       const grid = document.getElementById('communityGrid');
       if (!grid) return;
-      if (!community || community.length === 0) {
-        grid.innerHTML = '<div class="hint" style="grid-column:1/-1">Community gallery offline.</div>';
+      if (community === null) {
+        grid.innerHTML = '<div class="hint" style="grid-column:1/-1">Community gallery offline. <button class="linkish" id="galleryRetry">Retry</button></div>';
+        const rb = document.getElementById('galleryRetry');
+        if (rb) rb.addEventListener('click', () => { openGallery(); });
+        return;
+      }
+      if (community.length === 0) {
+        grid.innerHTML = '<div class="hint" style="grid-column:1/-1">No community builds yet. Be the first — hit <strong>Save Build</strong>.</div>';
         return;
       }
       const { thumbs } = window.__MODKEYS__ || { thumbs: {} };
@@ -97,7 +103,10 @@ export function openGallery() {
       ).join('');
     }).catch(() => {
       const grid = document.getElementById('communityGrid');
-      if (grid) grid.innerHTML = '<div class="hint" style="grid-column:1/-1">Community gallery offline.</div>';
+      if (!grid) return;
+      grid.innerHTML = '<div class="hint" style="grid-column:1/-1">Community gallery offline. <button class="linkish" id="galleryRetry">Retry</button></div>';
+      const rb = document.getElementById('galleryRetry');
+      if (rb) rb.addEventListener('click', () => { openGallery(); });
     });
   }
 }

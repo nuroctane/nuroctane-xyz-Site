@@ -2499,3 +2499,14 @@ html.standalone-active body {
   border-color: #5de8f0;
   background: rgba(93, 232, 240, 0.08);
 }
+
+/* v3: retry link inside the books degraded-sync warning */
+.bs-retry-link {
+  background: transparent;
+  border: none;
+  color: inherit;
+  text-decoration: underline;
+  cursor: pointer;
+  font: inherit;
+  padding: 0;
+}

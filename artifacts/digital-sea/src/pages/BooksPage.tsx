@@ -159,19 +159,41 @@ export default function BooksPage() {
   const searchAbort = useRef<AbortController | null>(null);
   const adminPasswordRef = useRef('');
 
-  // Mount: fetch visitor books from API
-  useEffect(() => {
-    setIsAdmin(sessionStorage.getItem(ADMIN_KEY) === '1');
-
+  // Fetch visitor books from API; on failure, fall back to the last
+  // successfully-loaded copy so the community section never blanks out.
+  const LASTGOOD_KEY = 'visitor-books-lastgood';
+  const loadVisitorBooks = useCallback(() => {
     fetch('/api/visitor-books')
-      .then(res => res.json())
+      .then(res => {
+        if (!res.ok) throw new Error(`visitor-books ${res.status}`);
+        return res.json();
+      })
       .then((data: APIResponse) => {
         setVisitorBooks(data.books ?? []);
         setReadOverrides(data.overrides ?? {});
         setApiOnline(true);
+        try {
+          localStorage.setItem(LASTGOOD_KEY, JSON.stringify({ books: data.books ?? [], overrides: data.overrides ?? {} }));
+        } catch { /* storage full/blocked: cache is best-effort */ }
       })
-      .catch(() => setApiOnline(false));
+      .catch(() => {
+        setApiOnline(false);
+        try {
+          const cached = JSON.parse(localStorage.getItem(LASTGOOD_KEY) ?? 'null') as
+            { books?: Book[]; overrides?: Record<string, boolean> } | null;
+          if (cached && Array.isArray(cached.books)) {
+            setVisitorBooks(cached.books);
+            setReadOverrides(cached.overrides ?? {});
+          }
+        } catch { /* corrupt cache: leave defaults */ }
+      });
   }, []);
+
+  // Mount: fetch visitor books from API
+  useEffect(() => {
+    setIsAdmin(sessionStorage.getItem(ADMIN_KEY) === '1');
+    loadVisitorBooks();
+  }, [loadVisitorBooks]);
 
   // Admin toggle: Ctrl+Shift+A
   useEffect(() => {
@@ -530,7 +552,8 @@ export default function BooksPage() {
 
       {!apiOnline && (
         <div className="bs-api-warning">
-          Live sync unavailable — visitor books may not persist.
+          Live sync unavailable — showing your last-loaded community list; new changes may not persist.{' '}
+          <button className="bs-retry-link" onClick={loadVisitorBooks}>Retry</button>
         </div>
       )}
 

@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import gsap from 'gsap';
 
 import { state, stateSlice } from './core/state.js';
-import { registerSyncUI, setState, undo, redo } from './core/update.js';
+import { registerSyncUI, setState, undo, redo, onPanelRender } from './core/update.js';
 import { rebuildBoard, preloadEmoji } from './core/keyboard.js';
 import { ctrl, setView, onKeyEditClick } from './core/controls.js';
 import {
@@ -151,9 +151,12 @@ export function mountModkeys() {
 
   /* lazy gallery fetch */
   window.__MODKEYS__.loadGallery = async function loadGallery() {
-    if (window.__MODKEYS__.galleryCache) return window.__MODKEYS__.galleryCache;
+    /* Array (including []) = successful fetch, memoized.
+       null = last fetch failed; not memoized, next call retries. */
+    if (Array.isArray(window.__MODKEYS__.galleryCache)) return window.__MODKEYS__.galleryCache;
     try {
       const res = await fetch('/api/modkeys/gallery');
+      if (!res.ok) throw new Error('gallery ' + res.status);
       const data = await res.json();
       const gc = data.templates || [];
       window.__MODKEYS__.galleryCache = gc;
@@ -169,8 +172,8 @@ export function mountModkeys() {
       endThumbRender(save);
       return gc;
     } catch (err) {
-      window.__MODKEYS__.galleryCache = [];
-      return [];
+      window.__MODKEYS__.galleryCache = null;
+      return null;
     }
   };
 
@@ -328,6 +331,24 @@ export function mountModkeys() {
            <div class="nm">${p.name}</div>
          </button>`
       ).join('');
+      /* featured carousel arrows (were never wired) */
+      const btrack = document.getElementById('builds');
+      const aL = document.getElementById('scrollL');
+      const aR = document.getElementById('scrollR');
+      if (btrack && aL && aR) {
+        const step = () => Math.max(160, Math.round(btrack.clientWidth * 0.8));
+        const syncArrows = () => {
+          const max = btrack.scrollWidth - btrack.clientWidth;
+          aL.disabled = btrack.scrollLeft <= 2;
+          aR.disabled = btrack.scrollLeft >= max - 2;
+        };
+        aL.addEventListener('click', () => btrack.scrollBy({ left: -step(), behavior: 'smooth' }));
+        aR.addEventListener('click', () => btrack.scrollBy({ left: step(), behavior: 'smooth' }));
+        btrack.addEventListener('scroll', syncArrows, { passive: true });
+        window.addEventListener('resize', syncArrows);
+        requestAnimationFrame(syncArrows);
+      }
+      onPanelRender(renderPanel);
       renderPanel('keycaps');
       syncUI();
       setView('3d');

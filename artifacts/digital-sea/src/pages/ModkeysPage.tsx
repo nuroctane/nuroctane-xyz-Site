@@ -335,6 +335,7 @@ export default function ModkeysPage() {
               </div>
             </div>
 
+            {/* NOTE: markup duplicated in artifacts/modkeys/index.html; change both */}
             <div className="featured">
               <div className="fhead">
                 <h3>FEATURED BUILDS</h3>
