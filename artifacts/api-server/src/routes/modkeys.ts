@@ -46,7 +46,7 @@ router.get("/modkeys/gallery", async (_req, res) => {
   try {
     const gallery = (await kvGet<GalleryEntry[]>(GALLERY_KEY)) ?? [];
     const templates = gallery.map(({ id, name, snap, layout, createdAt }) => ({
-      id, name, layout, createdAt,
+      id, name, snap, layout, createdAt,
     }));
     return res.json({ templates });
   } catch (err) {
