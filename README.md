@@ -26,11 +26,12 @@ The visual aesthetic draws inspiration from the French animated series **Code Ly
 
 ## 🛠️ Tech Stack
 
-- **Framework**: React + Vite
-- **Styling**: TailwindCSS
-- **3D Elements**: Three.js + React Three Fiber
+- **Framework**: React + Vite (site), Vanilla JS (modkeys configurator)
+- **Styling**: TailwindCSS (site), Vanilla CSS with custom properties (modkeys)
+- **3D Elements**: Three.js (modkeys configurator)
 - **Routing**: Wouter
-- **Build Tool**: Vite
+- **API**: Express 5 (Vercel serverless function)
+- **Storage**: Upstash Redis KV (visitor books, modkeys configs)
 - **Package Manager**: pnpm (workspace monorepo)
 
 ---
@@ -64,9 +65,9 @@ The Modkeys Keyboard Configurator is a fully integrated mechanical keyboard cust
   - SVG layout template
   - Detailed spec sheet with BOM
   - Shareable URL with encoded state
-- **Built-in Presets**: 15+ designer-curated presets showcasing different styles
+- **Built-in Presets**: 15 designer-curated presets showcasing different styles
 - **Extensive Library**: 
-  - 20+ colorways (including Noir, Embers, Matcha, Carbon, Vaporwave, Dracula, Blush, Honey)
+  - 19 colorways (Claude, Gemini, Sakura, Verdant, Abyssal, Dune, Monochrome, Umbra, Moss, Contrast, Rosette, Noir, Embers, Matcha, Carbon, Vaporwave, Dracula, Blush, Honey)
   - 16 case options (Porcelain, Clay, Space Gray, Midnight, Silver, Navy, Olive, E-White, Rose Gold, Burgundy, Forest, Lavender, Copper, Coral, Arctic, Sakura)
   - 8 plate options (Aluminum, Brass, Polycarbonate, Carbon Fiber, Copper, Steel, POM, FR4)
   - 10 switch types (Boba U4T, Holy Panda, Box Jade, Silent Ink, Cream, Teal, Sunset, Topaz, Emerald, Silver)
@@ -79,11 +80,12 @@ The Modkeys Keyboard Configurator is a fully integrated mechanical keyboard cust
   - Export and save functionality
 
 #### Technical Implementation
-The Modkeys configurator is embedded as a standalone React page (`/modkeys`) within the Next.js application. Key technical aspects:
+The Modkeys configurator is embedded as an imperative Vanilla JS page (`/modkeys`) within the Vite + React SPA. Key technical aspects:
 - **CSS Scoping**: All Modkeys CSS is scoped under `.modkeys-page` to prevent style conflicts with the main site
 - **Theme Independence**: Uses its own CSS variable system (`--bg`, `--ink`, etc.) that doesn't interfere with the site's Tailwind-based design
-- **Performance**: Lazy-loaded via React Suspense, with all heavy assets (3D models, textures) loaded on demand
-- **State Management**: Centralized state store with undo/redo history (50-step limit)
+- **Bootstrapping**: Vanilla JS modules are bootstrapped imperatively on mount and torn down on unmount (no React wrappers, no two-way binding)
+- **Performance**: Lazy-loaded via React.lazy + Suspense, with all heavy Three.js assets loaded on demand
+- **State Management**: Centralized mutable state store with undo/redo history (50-step limit)
 - **Sharing**: Configuration can be shared via URL-encoded state or exported as KLE/SVG/spec files
 
 #### Recent Improvements
@@ -102,15 +104,18 @@ The Modkeys configurator is embedded as a standalone React page (`/modkeys`) wit
 
 ```
 nuroctane-xyz-Site/
+├── api/                      # Vercel serverless functions
 ├── artifacts/
-│   └── digital-sea/          # Main React application
-│       ├── src/
-│       │   ├── components/   # Reusable UI components
-│       │   ├── pages/        # Page components (Books, Quotes, Modkeys)
-│       │   ├── content/      # Markdown content files
-│       │   └── hooks/        # Custom React hooks
-│       └── public/           # Static assets
-├── lib/                      # Shared libraries
+│   ├── digital-sea/          # Main React SPA (Vite + TailwindCSS)
+│   │   ├── src/
+│   │   │   ├── components/   # Reusable UI components
+│   │   │   ├── pages/        # Page components (Books, Quotes, Modkeys)
+│   │   │   ├── content/      # Markdown content files
+│   │   │   └── hooks/        # Custom React hooks
+│   │   └── dist/             # Build output
+│   ├── api-server/           # Express 5 API (Vercel serverless)
+│   └── modkeys/              # Standalone keyboard configurator
+├── lib/                      # Shared libraries (kv, db, api-zod, api-spec)
 └── scripts/                  # Build and utility scripts
 ```
 

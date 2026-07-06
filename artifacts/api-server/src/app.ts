@@ -26,7 +26,14 @@ app.use(
     },
   }),
 );
-app.use(cors({ origin: "https://nuroctane.xyz", credentials: true }));
+app.use(cors({
+  origin: [
+    "https://nuroctane.xyz",
+    /^https:\/\/nuroctane-xyz-site(?:-.*)?\.vercel\.app$/,
+    /^https?:\/\/localhost(?::\d+)?$/,
+  ],
+  credentials: true,
+}));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());

@@ -1,45 +1,25 @@
-# Digital Sea — nur
+# Digital Sea — nuroctane.xyz
 
-A 3D interactive scroll experience through nuroctane's digital network of social profiles and creative projects.
+A personal digital sea — curated book library, quotes collection, and mechanical keyboard configurator.
 
 ## Run & Operate
 
 - `pnpm --filter @workspace/api-server run dev` — run the API server (port 5000)
+- `pnpm --filter @workspace/digital-sea run dev` — run the frontend dev server (Vite)
 - `pnpm run typecheck` — full typecheck across all packages
 - `pnpm run build` — typecheck + build all packages
 - `pnpm --filter @workspace/api-spec run codegen` — regenerate API hooks and Zod schemas from the OpenAPI spec
 - `pnpm --filter @workspace/db run push` — push DB schema changes (dev only)
-- Required env: `DATABASE_URL` — Postgres connection string
+- Required env (api-server): `nuroctanesitestorage_KV_REST_API_URL` + `nuroctanesitestorage_KV_REST_API_TOKEN` — Upstash Redis KV for visitor books and modkeys configs
+- Required env (digital-sea): `VITE_GOOGLE_BOOKS_API_KEY` — for Google Books API integration
 
 ## Stack
 
 - pnpm workspaces, Node.js 24, TypeScript 5.9
-- API: Express 5
-- DB: PostgreSQL + Drizzle ORM
-- Validation: Zod (`zod/v4`), `drizzle-zod`
+- Frontend: React + Vite + TailwindCSS (site), Vanilla JS + Three.js (modkeys)
+- API: Express 5 (Vercel serverless via `api/[...slug].js`)
+- DB: PostgreSQL + Drizzle ORM (auth, modkeys configs)
+- KV: Upstash Redis (visitor books, read overrides)
+- Validation: Zod, `drizzle-zod`
 - API codegen: Orval (from OpenAPI spec)
-- Build: esbuild (CJS bundle)
-
-## Where things live
-
-_Populate as you build — short repo map plus pointers to the source-of-truth file for DB schema, API contracts, theme files, etc._
-
-## Architecture decisions
-
-_Populate as you build — non-obvious choices a reader couldn't infer from the code (3-5 bullets)._
-
-## Product
-
-_Describe the high-level user-facing capabilities of this app once they exist._
-
-## User preferences
-
-_Populate as you build — explicit user instructions worth remembering across sessions._
-
-## Gotchas
-
-_Populate as you build — sharp edges, "always run X before Y" rules._
-
-## Pointers
-
-- See the `pnpm-workspace` skill for workspace structure, TypeScript setup, and package details
+- Build: esbuild (API server), Vite (frontend)

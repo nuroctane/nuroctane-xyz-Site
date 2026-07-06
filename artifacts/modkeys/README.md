@@ -84,7 +84,6 @@ src/
       shrinker.js       URL serialization (base64)
       perKey.js         Per-key override store
       imageLoader.js    Image loading, canvas text rendering
-      shrinker.js       URL serialization (base64)
     data/
       layouts.js        Keyboard layout definitions (60%, 65%, 75%)
       colorways.js      19 colorway presets + panel swatches

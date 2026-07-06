@@ -2,7 +2,14 @@
   "buildCommand": "pnpm run build",
   "outputDirectory": "artifacts/digital-sea/dist/public",
   "installCommand": "pnpm install --no-frozen-lockfile",
-  "rewrites": [
+  "builds": [
+    {
+      "src": "api/[...slug].js",
+      "use": "@vercel/node"
+    }
+  ],
+  "routes": [
+    { "handle": "filesystem" },
     { "source": "/(.*)", "destination": "/index.html" }
   ]
 }
