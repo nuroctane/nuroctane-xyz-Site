@@ -115,6 +115,8 @@ function bookKey(b: Book): string {
   return `${b.title}|${b.author}`;
 }
 
+const CACHE_VERSION_KEY = 'book-cache-ver';
+const CACHE_VERSION = 2;
 const COVER_CACHE_KEY = 'book-cover-cache';
 const DESC_CACHE_KEY = 'book-desc-cache';
 const SESSION_KEY = 'book-session-id';
@@ -196,6 +198,11 @@ export default function BooksPage() {
 
   // Mount: fetch visitor books from API, start retroactive cover + description fetch
   useEffect(() => {
+    if (localStorage.getItem(CACHE_VERSION_KEY) !== String(CACHE_VERSION)) {
+      localStorage.removeItem(COVER_CACHE_KEY);
+      localStorage.removeItem(DESC_CACHE_KEY);
+      localStorage.setItem(CACHE_VERSION_KEY, String(CACHE_VERSION));
+    }
     const initialCoverCache = loadCoverCache();
     setCoverCache(initialCoverCache);
     const initialDescCache = loadDescCache();
@@ -236,10 +243,12 @@ export default function BooksPage() {
           const res = await fetch(
             `${GB_BASE}?q=${buildQuery(b)}&maxResults=1&fields=items(volumeInfo/imageLinks/thumbnail,volumeInfo/description)&key=${GB_KEY}`,
           );
+          if (!res.ok) throw new Error('GB status ' + res.status);
           const data = await res.json();
           const item = data.items?.[0]?.volumeInfo;
-          const url = fixCoverUrl(item?.imageLinks?.thumbnail) ?? null;
-          const desc = item?.description ?? null;
+          if (!item) throw new Error('No GB result');
+          const url = fixCoverUrl(item.imageLinks?.thumbnail) ?? null;
+          const desc = item.description ?? null;
           return { key, url, desc };
         } catch {
           // GB failed — try OL for cover only
@@ -247,6 +256,7 @@ export default function BooksPage() {
             const olRes = await fetch(
               `${OL_SEARCH}?q=${buildQuery(b)}&fields=cover_i&limit=1`,
             );
+            if (!olRes.ok) throw new Error('OL status ' + olRes.status);
             const olData = await olRes.json();
             const coverId = olData.docs?.[0]?.cover_i;
             const url = coverId ? `https://covers.openlibrary.org/b/id/${coverId}-S.jpg` : null;
@@ -405,16 +415,22 @@ export default function BooksPage() {
       const res = await fetch(
         `${OL_SEARCH}?q=${buildQuery(book)}&fields=cover_i&limit=1`,
       );
+      if (!res.ok) throw new Error('OL status ' + res.status);
       const data = await res.json();
       const coverId = data.docs?.[0]?.cover_i;
-      const url = coverId ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg` : null;
-      const next = { ...coverCache, [cacheKey]: url };
-      setCoverCache(next);
-      saveCoverCache(next);
-      return url;
-    } catch {
-      return null;
-    }
+      if (coverId) {
+        const url = `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`;
+        const next = { ...coverCache, [cacheKey]: url };
+        setCoverCache(next);
+        saveCoverCache(next);
+        return url;
+      }
+    } catch {}
+
+    const next = { ...coverCache, [cacheKey]: null };
+    setCoverCache(next);
+    saveCoverCache(next);
+    return null;
   }, [coverCache]);
 
   // On-demand description fetch (GB only, no OL fallback for descriptions)
@@ -425,15 +441,14 @@ export default function BooksPage() {
       const res = await fetch(
         `${GB_BASE}?q=${buildQuery(book)}&maxResults=1&fields=items(volumeInfo/description)&key=${GB_KEY}`,
       );
-      if (res.ok) {
-        const data = await res.json();
-        const desc = data.items?.[0]?.volumeInfo?.description ?? null;
-        if (desc) {
-          const next = { ...descriptionCache, [cacheKey]: desc };
-          setDescriptionCache(next);
-          saveDescCache(next);
-          return desc;
-        }
+      if (!res.ok) throw new Error('GB status ' + res.status);
+      const data = await res.json();
+      const item = data.items?.[0]?.volumeInfo;
+      if (item?.description) {
+        const next = { ...descriptionCache, [cacheKey]: item.description };
+        setDescriptionCache(next);
+        saveDescCache(next);
+        return item.description;
       }
     } catch {}
     const next = { ...descriptionCache, [cacheKey]: null };
