@@ -50,8 +50,15 @@ router.post("/visitor-books", async (req, res) => {
 
     if (action === "delete") {
       const { password, book } = req.body;
-      if (!ADMIN_PASSWORD || password !== ADMIN_PASSWORD) return res.status(403).json({ error: "Unauthorized" });
       const books = (await kvGet<Book[]>(BOOKS_KEY)) ?? [];
+      const idx = books.findIndex(
+        (b) => b.title === book.title && b.author === book.author && b.dateAdded === book.dateAdded,
+      );
+      if (idx >= 0) {
+        const stored = books[idx] as any;
+        const isOwner = stored.sessionId && stored.sessionId === req.body.sessionId;
+        if (!isOwner && (!ADMIN_PASSWORD || password !== ADMIN_PASSWORD)) return res.status(403).json({ error: "Unauthorized" });
+      }
       const filtered = books.filter(
         (b) => !(b.title === book.title && b.author === book.author && b.dateAdded === book.dateAdded),
       );
@@ -68,7 +75,8 @@ router.post("/visitor-books", async (req, res) => {
       if (idx >= 0) {
         const stored = books[idx] as any;
         const isOwner = stored.sessionId && stored.sessionId === req.body.sessionId;
-        if (!isOwner && (!ADMIN_PASSWORD || password !== ADMIN_PASSWORD)) return res.status(403).json({ error: "Unauthorized" });
+        const noOwner = !stored.sessionId;
+        if (!noOwner && !isOwner && (!ADMIN_PASSWORD || password !== ADMIN_PASSWORD)) return res.status(403).json({ error: "Unauthorized" });
         books[idx].read = !books[idx].read;
         await kvSet(BOOKS_KEY, books);
       }

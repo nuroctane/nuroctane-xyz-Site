@@ -436,7 +436,7 @@ export default function BooksPage() {
       await fetch('/api/visitor-books', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'delete', password: adminPasswordRef.current, book }),
+        body: JSON.stringify({ action: 'delete', password: adminPasswordRef.current, sessionId: sessionId.current, book }),
       });
     } catch {}
     setVisitorBooks(prev => prev.filter(b =>
