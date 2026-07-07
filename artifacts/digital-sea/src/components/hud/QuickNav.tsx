@@ -4,8 +4,10 @@ import { nodes, NodeData } from '../../data/nodes';
 import { blogPosts, BlogPost } from '../../data/blogPosts';
 import type { Mode } from '../../types';
 
-const SOCIAL_IDS  = ['instagram','tiktok','x','remilia','substack','soundcloud','twitch','youtube','kick','anilist','letterboxd','goodreads','steam','discord'];
-const PROJECT_IDS = ['atxtunerz','github','weatherguru','sis','astrosleep','geoskin','miyamaker','webutils'];
+// Category boundary: matches PROJECT_THRESHOLD in SectionLabel (single
+// source of truth). A card whose midpoint sits above the threshold is a
+// creative project, below it is social.
+const PROJECT_THRESHOLD = 0.60;
 
 const LOGO_MAP: Record<string, string> = {
   instagram:  '/assets/nodes/instagram-logo.png',
@@ -22,6 +24,8 @@ const LOGO_MAP: Record<string, string> = {
   remilia:    '/assets/nodes/remilia-quicklaunch-logo.png',
   steam:      '/assets/nodes/steam-logo.png',
   discord:    '/assets/nodes/discord-logo.png',
+  reddit:     '/assets/nodes/reddit-logo.png',
+  modkeys:    '/assets/nodes/modkeys-logo.png',
   atxtunerz:  '/assets/nodes/instagram-logo.png',
   github:     '/assets/nodes/github-logo.png',
   miyamaker:  '/assets/nodes/miyamaker-avatar.png',
@@ -35,12 +39,12 @@ const ACRONYM_MAP: Record<string, string> = {
   geoskin:     'CS',
 };
 
-// Computed once at module load — nodes is static data, no need to filter
-// on every component render.
-const SOCIAL_ID_SET  = new Set(SOCIAL_IDS);
-const PROJECT_ID_SET = new Set(PROJECT_IDS);
-const SOCIAL_NODES   = nodes.filter(n => SOCIAL_ID_SET.has(n.id));
-const PROJECT_NODES  = nodes.filter(n => PROJECT_ID_SET.has(n.id));
+// Computed once at module load. Categorization + order derive from
+// nodes.ts (scroll order), so adding/reordering a card there automatically
+// updates the quicknav; no hand-maintained ID list to drift.
+const midT = (n: NodeData) => (n.scrollStart + n.scrollEnd) / 2;
+const SOCIAL_NODES  = nodes.filter(n => midT(n) < PROJECT_THRESHOLD);
+const PROJECT_NODES = nodes.filter(n => midT(n) >= PROJECT_THRESHOLD);
 
 function scrollToNode(node: NodeData, onClose: () => void, onNavigate?: () => void) {
   onNavigate?.();
