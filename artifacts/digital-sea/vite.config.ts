@@ -85,6 +85,21 @@ export default defineConfig(async ({ command }) => {
     build: {
       outDir: path.resolve(import.meta.dirname, "dist/public"),
       emptyOutDir: true,
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            // Split the heavy, rarely-changing stacks out of the main chunk so
+            // they cache independently and fetch in parallel.
+            "vendor-three": [
+              "three",
+              "@react-three/fiber",
+              "@react-three/drei",
+              "@react-three/postprocessing",
+              "postprocessing",
+            ],
+          },
+        },
+      },
     },
     server,
     preview,

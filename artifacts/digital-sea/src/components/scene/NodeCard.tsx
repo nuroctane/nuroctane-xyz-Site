@@ -10,7 +10,7 @@ function ImgWithFallback({
 }) {
   const [failed, setFailed] = React.useState(false);
   if (!src || failed) return <>{fallback}</>;
-  return <img src={src} alt={alt} className={className} draggable={false} onError={() => setFailed(true)} />;
+  return <img src={src} alt={alt} className={className} draggable={false} loading="lazy" decoding="async" onError={() => setFailed(true)} />;
 }
 
 export function NodeCard({ node }: { node: NodeData }) {

@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/modkeys-logo.png" alt="MODKEYS" width="180" />
+</p>
+
 # MODKEYS — Keyboard Configurator
 
 A browser-based mechanical keyboard configurator and 3D visualization tool. Build, customize, and share your dream keyboard — entirely in the browser.

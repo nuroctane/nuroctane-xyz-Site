@@ -18,7 +18,7 @@ export function HeroBlock({ mode }: Props) {
       {/* Blog-mode landing screen — replaces the hero area so users aren't confused */}
       {mode === 'blog' && (
         <div className="hero-block blog-hero-block">
-          <div className="blog-hero-sys">[ NUR://WRITINGS ]</div>
+          <div className="blog-hero-sys">[ SYS://WRITINGS ]</div>
           <h1 className="blog-hero-title">BLOG</h1>
           <p className="blog-hero-sub">↓ SCROLL TO READ PASSAGES</p>
           <div className="scroll-indicator" />

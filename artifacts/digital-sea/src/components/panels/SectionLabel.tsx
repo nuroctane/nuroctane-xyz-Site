@@ -2,7 +2,9 @@ import { useEffect, useRef } from 'react';
 import type { MutableRefObject } from 'react';
 import type { Mode } from '../../types';
 
-const PROJECT_THRESHOLD = 0.55;
+// Boundary between the last social card (reddit) and the first creative
+// card (modkeys) after the 24-node re-spacing; verified computationally.
+const PROJECT_THRESHOLD = 0.60;
 
 interface Props {
   scrollProgress: MutableRefObject<number>;
@@ -25,12 +27,12 @@ export function SectionLabel({ scrollProgress, mode }: Props) {
       const t = scrollProgress.current;
 
       if (modeRef.current === 'blog') {
-        textEl.textContent = 'NUR://WRITINGS';
+        textEl.textContent = 'SYS://WRITINGS';
         el.style.opacity   = t < 0.025 || t > 0.97 ? '0' : '1';
         return;
       }
 
-      const next = t >= PROJECT_THRESHOLD ? 'SYS://CREATIVE_PROJECTS' : 'SOC://SOCIAL_LINKS';
+      const next = t >= PROJECT_THRESHOLD ? 'SYS://CREATIVE_PROJECTS' : 'SYS://SOCIAL_LINKS';
       if (textEl.textContent !== next) {
         el.style.opacity = '0';
         setTimeout(() => {
@@ -56,7 +58,7 @@ export function SectionLabel({ scrollProgress, mode }: Props) {
 
   return (
     <div ref={ref} className="sticky-section-label" style={{ opacity: 0 }}>
-      <span ref={textRef} className="label-text">SOC://SOCIAL_LINKS</span>
+      <span ref={textRef} className="label-text">SYS://SOCIAL_LINKS</span>
     </div>
   );
 }

@@ -22,7 +22,7 @@ const zFromMid = (s: number, e: number) => curve.getPoint((s + e) / 2).z;
 const AVATAR = '/assets/nodes/nuroctane-avatar.png';
 
 const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollEnd'>[] = [
-  // ─── SOCIAL (13) ──────────────────────────────────────────────────────────
+  // ─── SOCIAL (15) ──────────────────────────────────────────────────────────
   {
     id: 'instagram', label: 'Instagram', handle: '@nuroctane',
     url: 'https://www.instagram.com/nuroctane/',
@@ -149,8 +149,26 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     avatar: AVATAR,
     logo: '/assets/nodes/discord-logo.png',
   },
+  {
+    id: 'reddit', label: 'Reddit', handle: 'u/nuroctane',
+    url: 'https://www.reddit.com/user/nuroctane/',
+    urlDisplay: 'reddit.com/user/nuroctane',
+    subtitle: 'posts & lurking',
+    description: '',
+    avatar: '/assets/nodes/nuroctane-reddit-avatar.png',
+    logo: '/assets/nodes/reddit-logo.png',
+  },
 
-  // ─── CREATIVE PROJECTS (8) — ATX Tunerz first ──────────────────────────────
+  // ─── CREATIVE PROJECTS (9) — MODKEYS first ────────────────────────────────
+  {
+    id: 'modkeys', label: 'MODKEYS', handle: 'keyboard configurator',
+    url: 'https://www.nuroctane.xyz/modkeys',
+    urlDisplay: 'nuroctane.xyz/modkeys',
+    subtitle: 'design your endgame board',
+    description: '3D mechanical keyboard configurator. build it, color it, export it.',
+    avatar: '/assets/nodes/github-logo.png',
+    logo: '/assets/nodes/modkeys-logo.png',
+  },
   {
     id: 'atxtunerz', label: 'ATX Tunerz Society', handle: '@atx_tunerz_society',
     url: 'https://www.instagram.com/atx_tunerz_society/',
@@ -242,16 +260,19 @@ const STEP = (LAST_START - FIRST_START) / Math.max(1, raw.length - 1);
 // At their default alternating x-side, these nodes land on the *same* side as
 // the camera path at their t value (< 1 unit apart in X) — flip them across
 // so the camera looks across the sea at the card instead of being nose-to-it.
+// Retuned for the 24-node spacing (reddit + modkeys added); verified
+// computationally: every card now sits >= 1 unit across from the path.
 const FLIP_X = new Set([
-  'letterboxd', 'remilia',
-  'atxtunerz', 'github', 'weatherguru', 'sis',
-  'astrosleep', 'geoskin', 'miyamaker', 'webutils',
+  'tiktok', 'substack', 'kick', 'goodreads', 'remilia',
+  'modkeys', 'atxtunerz', 'weatherguru', 'sis',
+  'astrosleep', 'miyamaker', 'webutils',
 ]);
 
 // These late-path nodes have a slightly wider proximity window so the camera
 // has more time (scroll distance) to rotate toward and fully frame them —
 // especially important on narrow mobile viewports.
 const WIDE_CARD: Record<string, number> = {
+  modkeys:     0.068,
   atxtunerz:   0.070,
   github:      0.064,
   weatherguru: 0.074,
