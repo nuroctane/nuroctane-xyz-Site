@@ -166,8 +166,8 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     urlDisplay: 'nuroctane.xyz/modkeys',
     subtitle: 'design your endgame board',
     description: '3D mechanical keyboard configurator. build it, color it, export it.',
-    avatar: '/assets/nodes/github-logo.png',
-    logo: '/assets/nodes/modkeys-logo.png',
+    avatar: '/assets/nodes/modkeys-logo.png',
+    logo: '/assets/nodes/github-logo.png',
   },
   {
     id: 'atxtunerz', label: 'ATX Tunerz Society', handle: '@atx_tunerz_society',
