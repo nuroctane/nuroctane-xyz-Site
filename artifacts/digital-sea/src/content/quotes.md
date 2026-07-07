@@ -5,12 +5,13 @@
 > One entry per blockquote. Put the source on the last line as `— Author, *Work*` when it is known. Keep clipped social imports out unless the body, author, and date are complete.
 
 ## Index
-- [[#Faith, God & Surrender|Faith, God & Surrender]] (60)
-- [[#Reality, Manifestation & Abundance|Reality, Manifestation & Abundance]] (95)
-- [[#Self, Identity & Awakening|Self, Identity & Awakening]] (109)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (87)
-- [[#Relationships, Boundaries & Love|Relationships, Boundaries & Love]] (53)
-- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (82)
+- [[#Faith, God & Surrender|Faith, God & Surrender]] (63)
+- [[#Reality, Manifestation & Abundance|Reality, Manifestation & Abundance]] (99)
+- [[#Self, Identity & Awakening|Self, Identity & Awakening]] (116)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (94)
+- [[#Relationships, Boundaries & Love|Relationships, Boundaries & Love]] (54)
+- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (21)
+- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (84)
 - [[#Wealth, Work & Value|Wealth, Work & Value]] (29)
 - [[#Unsorted Sparks|Unsorted Sparks]] (53)
 
@@ -204,6 +205,8 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 
 > The great men of the centuries past were never in a hurry, and that is why the world will not forget them in a hurry.
 > — fishybusiness. (@KruseYouri), X, 2025-02-19
+
+> You never know enough to worry. Live life as it comes.
 
 ## Reality, Manifestation & Abundance
 
@@ -515,6 +518,17 @@ _Creation, frequency, imagination, prosperity, magic, timelines, desire, and the
 > Ask anyone you admire: Their lucky breaks happened on a detour from their main goal. So embrace detours. Life is not a straight line for anyone.
 
 > Expect luck and miracles to happen in your life. This is your natural state of mind. Things will work out. Rare opportunities will present themselves. You expect it, believe it, and see it. It is the norm.
+
+> All of reality is programmable. You just have to figure out how. And the way to do that is to model it.
+
+> The universe will make sure you'll win if you just keep going. not because life suddenly becomes easier overnight, but because the moment you truly believe in yourself, you stop moving like someone who's waiting to fail. most people think success belongs to the smart, lucky or talented people. but actually, a huge part of it belongs to the people who refused to stop before the results showed up.
+> every good thing in your life once existed as something uncertain, something invisible. there were moments where nothing made sense yet but you didn't quit just because you couldn't see immediate proof. you kept going anyway, and eventually you got to see it all with your own eyes.
+> so keep showing up. keep visualizing. keep moving like the life you want is already making its way toward you. appreciate that you are constantly evolving and that this position you are in right now is not your final destination.
+> cause the universe responds differently to people who trust themselves deeply. people who continue anyway. people who stay committed to the vision even when they have no evidence yet besides faith.
+> what's meant for you does not always arrive instantly. sometimes life is preparing you mentally before it delivers what you asked for. sometimes the delay is building the version of you capable enough of handling the blessing properly once it arrives. "every version of you that suffered was shaping the version strong enough to receive what you asked for."
+> so stop acting like your dreams are impossible just because they haven't happened yet. keep believing. keep working. keep aligning yourself with the version of you that already has it. your future is responding to the energy you repeat every single day.
+
+> The paradox of life is that we often receive what we aren't obsessed with.
 
 ## Self, Identity & Awakening
 
@@ -846,6 +860,19 @@ _Ego, authenticity, self-concept, inner freedom, awakening, memory, and becoming
 
 > I recommend leaving rooms where you constantly have to prove your worth.
 
+> You can get back at everyone whoever wronged you, wanted you to fail, or held you down by simply being happy.
+> There is nothing that makes an adversary feel more powerless than you just continuing to live your life as though they never affected it, because they never did.
+
+> unlearn shame. all forms of shame: unemployment, illness, vulnerability, longing, desire, errors, failures. you do not need to feel ashamed of what you are experiencing or living. freedom and shame cannot coexist.
+
+> Almost nothing is broken. Zoom out. Still stuck, zoom out more. Eventually all problems fade or are subsumed.
+
+> The best days of your life rarely feel like the best days when you're in them. Often, they're the hardest.
+
+> Almost nothing in your life matters as much as you think it does. But a tiny handful of things matter WAY more than you think they do. The whole point of life is figuring out which is which.
+
+> Your performance in any endeavor depends on what you think it depends on.
+
 ## Action, Discipline & Mastery
 
 _Doing the hard thing, skill, courage, habits, attention, decisions, and embodied momentum._
@@ -1110,6 +1137,18 @@ _Doing the hard thing, skill, courage, habits, attention, decisions, and embodie
 
 > I recommend letting people underestimate you.
 
+> Rig your environment because willpower is a liar. Stop trying to be strong, be smart about being weak instead. You are not going to out-discipline a bad environment. Nobody does. The people who look disciplined mostly just built a world where the easy path and the good path are the same path.
+
+> keep your foot down on the gas until it becomes who you are and then you can't take it off. that's the goal underneath the goal, driving the pressure so long it stops being a choice and starts being your nature, the thing your body does before your mind votes. the greats got there. they pressed past the point of deciding, into the place where relentless is just what they are now, and the outcome had no defense against a person built entirely out of not stopping. become that. keep pressing until stopping stops being possible.
+
+> My will is stronger then my circumstances.
+
+> You don't have to know how to do it, but you have to have the desire to figure it out. So figure it out.
+
+> Marginally better is worse than bad and far worse than the best.
+
+> Dream it, and then do it. The only instruction manual there is.
+
 ## Relationships, Boundaries & Love
 
 _Love, friendship, projection, women and men, rejection, intimacy, standards, and who gets access._
@@ -1246,6 +1285,8 @@ _Love, friendship, projection, women and men, rejection, intimacy, standards, an
 > I recommend not chasing people. Pay attention to who chooses you.
 
 > I recommend being honest from the beginning. Pretending is exhausting.
+
+> The preeminent skill is likability.
 
 ## Shadow, Discernment & Protection
 
@@ -1517,6 +1558,10 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, attention, and
 > Allow it to express itself without judgement.
 
 > Be with the resistance the way you'd sit with a scared child. Patiently, lovingly, without rushing it to change or "not" be resistant.
+
+> Knowing nothing does wonders for the nervous system. Don't check your emails. Don't ask your mom why any of it happened. Mute him on twitter. Ignore the nutrition label. Have notifications off for everything. Remove your eyes, ears, and nerve endings.
+
+> If you're an anxious person, just do everything for fun. Submit documents for fun. Start a blog for fun. Go to a job interview for fun. ANXIETY FEEDS ON IMPORTANCE. Do not make everything a matter of life and deaťh.
 
 ## Wealth, Work & Value
 
