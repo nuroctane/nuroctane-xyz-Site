@@ -28,7 +28,30 @@ import { resetHistory, canUndo, canRedo } from './core/history.js';
 let animationId = null;
 let cleanupFns = [];
 
+const MOBILE_MQ = '(max-width: 768px), ((pointer: coarse) and (max-width: 1024px))';
+
 export function mountModkeys() {
+  /* ---- shell select: exactly one of #dShell / mShell template enters the
+     live DOM. Both use the same element IDs, so the whole app core binds
+     identically on either. Crossing the breakpoint reloads (bindings and
+     the GL canvas are per-shell). ---- */
+  const isMobile = window.matchMedia(MOBILE_MQ).matches;
+  const mTpl = document.getElementById('mShellTpl');
+  const dApp = document.getElementById('dShell');
+  if (isMobile && mTpl) {
+    const frag = mTpl.content.cloneNode(true);
+    if (dApp) dApp.replaceWith(frag);
+    else document.body.prepend(frag);
+  }
+  if (mTpl) mTpl.remove();
+  document.documentElement.classList.toggle('mk-mobile', isMobile);
+  const boundaryQ = window.matchMedia(MOBILE_MQ);
+  const onBoundary = () => { if (boundaryQ.matches !== isMobile) location.reload(); };
+  if (boundaryQ.addEventListener) {
+    boundaryQ.addEventListener('change', onBoundary);
+    cleanupFns.push(() => boundaryQ.removeEventListener('change', onBoundary));
+  }
+
   registerSyncUI(syncUI);
 
   /* sidebar nav */
@@ -132,13 +155,27 @@ export function mountModkeys() {
   /* theme */
   initTheme();
 
+  /* top nav: was decorative markup with no handlers; now routes to the
+     matching modal. Same wiring serves both shells. */
+  document.getElementById('tnav')?.addEventListener('click', (ev) => {
+    const b = ev.target.closest('button[data-nav]');
+    if (!b) return;
+    document.querySelectorAll('#tnav button').forEach((x) => x.classList.toggle('on', x === b));
+    const nav = b.dataset.nav;
+    if (nav === 'builder') closeModal();
+    else if (nav === 'gallery') openGallery();
+    else if (nav === 'keycaps') openLibrary();
+    else if (nav === 'switches') openSwitchesModal();
+    else if (nav === 'accessories') openAccessories();
+  });
+
   /* library open button */
   document.getElementById('panelBody').addEventListener('click', (ev) => {
     if (ev.target.closest('#libOpen')) openLibrary();
   });
 
-  /* featured builds carousel */
-  document.getElementById('builds').addEventListener('click', (ev) => {
+  /* featured builds carousel (desktop shell only) */
+  document.getElementById('builds')?.addEventListener('click', (ev) => {
     const card = ev.target.closest('.bcard');
     if (!card) return;
     const p = PRESETS.find((x) => x.id === card.dataset.id);
@@ -324,8 +361,9 @@ export function mountModkeys() {
         resetHistory(stateSlice());
       }
       genThumbs();
-      /* populate featured builds carousel */
-      document.getElementById('builds').innerHTML = PRESETS.map((p) =>
+      /* populate featured builds carousel (desktop shell only) */
+      const buildsEl = document.getElementById('builds');
+      if (buildsEl) buildsEl.innerHTML = PRESETS.map((p) =>
         `<button class="bcard" data-id="${p.id}">
            <div class="img" style="background:${COLORWAYS[p.s.colorway].a.bg}"><img src="${thumbs[p.id]}" alt=""></div>
            <div class="nm">${p.name}</div>
@@ -354,6 +392,7 @@ export function mountModkeys() {
       const mMenu = document.getElementById('mExportMenu');
       const mToggle = document.getElementById('mExportToggle');
       if (mMenu && mToggle) {
+        mMenu.addEventListener('click', () => mMenu.classList.remove('open'));
         mToggle.addEventListener('click', (ev) => {
           ev.stopPropagation();
           mMenu.classList.toggle('open');
@@ -364,13 +403,6 @@ export function mountModkeys() {
           }
         });
       }
-      document.addEventListener('click', (ev) => {
-        const proxy = ev.target.closest('[data-proxy]');
-        if (!proxy) return;
-        const real = document.getElementById(proxy.dataset.proxy);
-        if (real) real.click();
-        if (mMenu) mMenu.classList.remove('open');
-      });
       onPanelRender(renderPanel);
       renderPanel('keycaps');
       syncUI();

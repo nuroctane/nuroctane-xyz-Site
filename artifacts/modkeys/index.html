@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="/src/css/variables.css" />
     <link rel="stylesheet" href="/src/css/layout.css" />
     <link rel="stylesheet" href="/src/css/components.css" />
+    <link rel="stylesheet" href="/src/css/mobile.css" />
   </head>
   <body>
     <div id="loader">
@@ -20,7 +21,7 @@
       <div class="bar"><i></i></div>
     </div>
 
-    <div class="app">
+    <div class="app" id="dShell">
       <aside class="side">
         <div class="logo">
           <img src="./assets/modkeys-logo.png" alt="" style="height:24px;width:auto" draggable="false" />
@@ -201,18 +202,104 @@
       </div>
     </div>
 
-    <!-- NOTE: markup duplicated in artifacts/digital-sea/src/pages/ModkeysPage.tsx; change both -->
-    <div class="mobileActions" id="mobileActions">
-      <button data-proxy="saveBuild">Save Build</button>
-      <button id="mExportToggle">Export &#9662;</button>
+    <!-- Mobile shell. Same element IDs as #dShell; mountModkeys() swaps
+         exactly one of the two into the live DOM, so IDs never collide.
+         NOTE: markup duplicated in ModkeysPage.tsx (MSHELL_HTML); change both. -->
+    <template id="mShellTpl">
+<div class="mShell">
+      <header class="mHead">
+        <div class="mBrand">
+          <img src="./assets/modkeys-logo.png" alt="" draggable="false" />
+          <b>MODKEYS</b>
+        </div>
+        <nav class="tnav" id="tnav">
+          <button data-nav="builder" class="on">Builder</button>
+          <button data-nav="gallery">Gallery</button>
+        </nav>
+        <button class="iconBtn" id="themeBtn" title="Toggle theme">
+          <svg id="sunIc" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19" stroke-linecap="round" />
+          </svg>
+          <svg id="moonIc" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="display:none">
+            <path d="M20.5 14.5A8.5 8.5 0 119.5 3.5a7 7 0 1011 11z" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </header>
+      <div class="mStageWrap">
+        <div class="stage" id="stage">
+          <canvas id="gl"></canvas>
+          <div class="pills" id="pills">
+            <div id="pillInd"></div>
+            <button data-view="3d" class="on">3D</button>
+            <button data-view="explode">Explode</button>
+            <button data-view="top">Top</button>
+            <button data-view="side">Side</button>
+            <button data-view="front">Front</button>
+          </div>
+          <div class="toolbar mTools">
+            <button id="toolHand" title="Pan" data-tool="pan">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                <path d="M12 2.5l2 3h-4l2-3zM5.5 8l2.5-1.5V11l-2.5-3zM18.5 8L16 6.5V11l2.5-3zM12 12l1.5 4H15v5H9v-5h1.5L12 12z" />
+              </svg>
+            </button>
+            <button id="toolReset" title="Reset view">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                <path d="M21 12a9 9 0 11-3-6.7" stroke-linecap="round" />
+                <path d="M21 3v5h-5" stroke-linejoin="round" />
+              </svg>
+            </button>
+            <span class="toolSep"></span>
+            <button id="toolUndo" title="Undo">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                <path d="M3 10l5-5v3h7a6 6 0 010 12H8v-2" stroke-linejoin="round" />
+              </svg>
+            </button>
+            <button id="toolRedo" title="Redo">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                <path d="M21 10l-5-5v3H9a6 6 0 000 12h7v-2" stroke-linejoin="round" />
+              </svg>
+            </button>
+            <span class="toolSep"></span>
+            <button id="toolShare" title="Copy share link">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" />
+                <path d="M8.6 13.5l6.8 3.7M15.4 6.8l-6.8 3.7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <nav class="snav mTabs" id="snav">
+        <button data-sec="layout">Layout<span class="meta" id="layoutVal">75%</span></button>
+        <button data-sec="keycaps">Keycaps<span class="dot" id="dotKeycaps"></span></button>
+        <button data-sec="switches">Switches<span class="dot" id="dotSwitches"></span></button>
+        <button data-sec="case">Case<span class="dot" id="dotCase"></span></button>
+        <button data-sec="plate">Plate<span class="dot" id="dotPlate"></span></button>
+        <button data-sec="lighting">Lighting<span class="dot" id="dotLight"></span></button>
+        <button data-sec="extras">Extras</button>
+      </nav>
+      <section class="mPanel">
+        <div class="rpHead"><h2 id="panelTitle">KEYCAPS</h2></div>
+        <div class="rpBody" id="panelBody"></div>
+      </section>
+      <div class="mBar">
+        <button class="mBarBtn" id="saveBuild">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M17.5 21l-5.5-4-5.5 4V5a2 2 0 012-2h7a2 2 0 012 2z" stroke-linejoin="round" />
+          </svg>Save Build
+        </button>
+        <button class="mBarBtn" id="mExportToggle">Export &#9662;</button>
+      </div>
+      <div class="mExportMenu" id="mExportMenu">
+        <button id="exportKLE">KLE Layout</button>
+        <button id="exportSVG">SVG Template</button>
+        <button id="exportSpec">Spec Sheet</button>
+        <button id="copyKLE">Copy KLE</button>
+        <button id="exportPDF">PDF</button>
+      </div>
     </div>
-    <div class="mExportMenu" id="mExportMenu">
-      <button data-proxy="exportKLE">KLE Layout</button>
-      <button data-proxy="exportSVG">SVG Template</button>
-      <button data-proxy="exportSpec">Spec Sheet</button>
-      <button data-proxy="copyKLE">Copy KLE</button>
-      <button data-proxy="exportPDF">PDF</button>
-    </div>
+    </template>
 
     <div class="toast" id="toast"></div>
 

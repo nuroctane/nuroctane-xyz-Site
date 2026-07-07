@@ -5,6 +5,7 @@ import { useLocation } from 'wouter';
 import modkeysVars from '../../../modkeys/src/css/variables.css?raw';
 import modkeysLayout from '../../../modkeys/src/css/layout.css?raw';
 import modkeysComponents from '../../../modkeys/src/css/components.css?raw';
+import modkeysMobile from '../../../modkeys/src/css/mobile.css?raw';
 
 function useModkeysStyles() {
   const styleRef = useRef<HTMLStyleElement | null>(null);
@@ -31,7 +32,7 @@ function useModkeysStyles() {
       .replace(/::-webkit-scrollbar/g, '.modkeys-page ::-webkit-scrollbar');
     const scopedComponents = modkeysComponents;
 
-    const css = `${scopedVars}\n${scopedLayout}\n${scopedComponents}
+    const css = `${scopedVars}\n${scopedLayout}\n${scopedComponents}\n${modkeysMobile}
 /* Desktop: constrain grid/flex children to prevent overflow */
 .modkeys-page .app { grid-template-rows: 1fr; }
 .modkeys-page .side { overflow-y: auto; height: 100%; min-height: 0; }
@@ -79,46 +80,7 @@ function useModkeysStyles() {
   .modkeys-page .preview .kc { width: 46px !important; height: 46px !important; }
   .modkeys-page .preview .kc:nth-child(4) { width: 110px !important; height: 32px !important; }
 }
-@media (max-width: 768px) {
-  .modkeys-page .preview { gap: 8px 6px; padding: 12px; height: auto !important; min-height: 100px; }
-  .modkeys-page .preview .kc { width: 38px !important; height: 38px !important; }
-  .modkeys-page .preview .kc:nth-child(4) { width: 96px !important; height: 28px !important; }
-  .modkeys-page .preview .kc .kctop { font-size: 9px; }
-}
-@media (max-width: 420px) {
-  .modkeys-page .preview { gap: 6px 4px; padding: 10px; min-height: 80px; }
-  .modkeys-page .preview .kc { width: 30px !important; height: 30px !important; }
-  .modkeys-page .preview .kc:nth-child(4) { width: 74px !important; height: 22px !important; }
-  .modkeys-page .preview .kc .kctop { font-size: 7px; inset: 2px; }
-}
-
-/* Mobile layout rework */
-@media (max-width: 768px) {
-  .modkeys-page .stageCol { height: 180px !important; }
-  .modkeys-page .main { overflow: hidden auto !important; }
-  .modkeys-page .content { overflow: visible !important; }
-  .modkeys-page .chip { height: 30px; padding: 0 10px; font-size: 11px; border-radius: 8px; }
-  .modkeys-page .sw { width: 26px; height: 26px; }
-  .modkeys-page .profBtn { width: 42px; height: 34px; }
-  .modkeys-page .libBtn { height: 36px; font-size: 11px; }
-  .modkeys-page .saveRow { font-size: 11px; height: 36px; }
-  .modkeys-page .grp { margin-bottom: 12px; }
-  .modkeys-page .glabel { font-size: 10px; margin-bottom: 5px; }
-  .modkeys-page .snav button { min-width: 48px; height: 52px; }
-}
-@media (max-width: 420px) {
-  .modkeys-page .stageCol { height: 140px !important; }
-  .modkeys-page .chip { height: 26px; padding: 0 8px; font-size: 10px; }
-  .modkeys-page .sw { width: 22px; height: 22px; }
-  .modkeys-page .profBtn { width: 36px; height: 30px; }
-  .modkeys-page .libBtn { height: 32px; font-size: 10px; }
-  .modkeys-page .saveRow { height: 32px; font-size: 10px; }
-  .modkeys-page .snav button { min-width: 44px; height: 44px; }
-  .modkeys-page .snav .ic { width: 14px; height: 14px; }
-  .modkeys-page .rpBody { padding: 8px 10px 12px; }
-  .modkeys-page .rpHead { padding: 10px 10px 8px; }
-  .modkeys-page .rpHead h2 { font-size: 10px; }
-}`;
+`;
 
     const style = document.createElement('style');
     style.textContent = css;
@@ -131,6 +93,100 @@ function useModkeysStyles() {
     };
   }, []);
 }
+
+const MSHELL_HTML = `<div class="mShell">
+      <header class="mHead">
+        <div class="mBrand">
+          <img src="./assets/modkeys-logo.png" alt="" draggable="false" />
+          <b>MODKEYS</b>
+        </div>
+        <nav class="tnav" id="tnav">
+          <button data-nav="builder" class="on">Builder</button>
+          <button data-nav="gallery">Gallery</button>
+        </nav>
+        <button class="iconBtn" id="themeBtn" title="Toggle theme">
+          <svg id="sunIc" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <circle cx="12" cy="12" r="4" />
+            <path d="M12 2.5v2M12 19.5v2M2.5 12h2M19.5 12h2M5 5l1.5 1.5M17.5 17.5L19 19M19 5l-1.5 1.5M6.5 17.5L5 19" stroke-linecap="round" />
+          </svg>
+          <svg id="moonIc" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="display:none">
+            <path d="M20.5 14.5A8.5 8.5 0 119.5 3.5a7 7 0 1011 11z" stroke-linejoin="round" />
+          </svg>
+        </button>
+      </header>
+      <div class="mStageWrap">
+        <div class="stage" id="stage">
+          <canvas id="gl"></canvas>
+          <div class="pills" id="pills">
+            <div id="pillInd"></div>
+            <button data-view="3d" class="on">3D</button>
+            <button data-view="explode">Explode</button>
+            <button data-view="top">Top</button>
+            <button data-view="side">Side</button>
+            <button data-view="front">Front</button>
+          </div>
+          <div class="toolbar mTools">
+            <button id="toolHand" title="Pan" data-tool="pan">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                <path d="M12 2.5l2 3h-4l2-3zM5.5 8l2.5-1.5V11l-2.5-3zM18.5 8L16 6.5V11l2.5-3zM12 12l1.5 4H15v5H9v-5h1.5L12 12z" />
+              </svg>
+            </button>
+            <button id="toolReset" title="Reset view">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                <path d="M21 12a9 9 0 11-3-6.7" stroke-linecap="round" />
+                <path d="M21 3v5h-5" stroke-linejoin="round" />
+              </svg>
+            </button>
+            <span class="toolSep"></span>
+            <button id="toolUndo" title="Undo">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                <path d="M3 10l5-5v3h7a6 6 0 010 12H8v-2" stroke-linejoin="round" />
+              </svg>
+            </button>
+            <button id="toolRedo" title="Redo">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                <path d="M21 10l-5-5v3H9a6 6 0 000 12h7v-2" stroke-linejoin="round" />
+              </svg>
+            </button>
+            <span class="toolSep"></span>
+            <button id="toolShare" title="Copy share link">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                <circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" />
+                <path d="M8.6 13.5l6.8 3.7M15.4 6.8l-6.8 3.7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+      <nav class="snav mTabs" id="snav">
+        <button data-sec="layout">Layout<span class="meta" id="layoutVal">75%</span></button>
+        <button data-sec="keycaps">Keycaps<span class="dot" id="dotKeycaps"></span></button>
+        <button data-sec="switches">Switches<span class="dot" id="dotSwitches"></span></button>
+        <button data-sec="case">Case<span class="dot" id="dotCase"></span></button>
+        <button data-sec="plate">Plate<span class="dot" id="dotPlate"></span></button>
+        <button data-sec="lighting">Lighting<span class="dot" id="dotLight"></span></button>
+        <button data-sec="extras">Extras</button>
+      </nav>
+      <section class="mPanel">
+        <div class="rpHead"><h2 id="panelTitle">KEYCAPS</h2></div>
+        <div class="rpBody" id="panelBody"></div>
+      </section>
+      <div class="mBar">
+        <button class="mBarBtn" id="saveBuild">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+            <path d="M17.5 21l-5.5-4-5.5 4V5a2 2 0 012-2h7a2 2 0 012 2z" stroke-linejoin="round" />
+          </svg>Save Build
+        </button>
+        <button class="mBarBtn" id="mExportToggle">Export &#9662;</button>
+      </div>
+      <div class="mExportMenu" id="mExportMenu">
+        <button id="exportKLE">KLE Layout</button>
+        <button id="exportSVG">SVG Template</button>
+        <button id="exportSpec">Spec Sheet</button>
+        <button id="copyKLE">Copy KLE</button>
+        <button id="exportPDF">PDF</button>
+      </div>
+    </div>`;
 
 export default function ModkeysPage() {
   const [, setLocation] = useLocation();
@@ -174,7 +230,7 @@ export default function ModkeysPage() {
         <div className="bar"><i /></div>
       </div>
 
-      <div className="app">
+      <div className="app" id="dShell">
         <aside className="side">
           <div className="logo">
             <img src="/assets/nodes/modkeys-logo.png" alt="" style={{ height: 24, width: "auto" }} draggable={false} />
@@ -349,18 +405,11 @@ export default function ModkeysPage() {
         </div>
       </div>
 
-      {/* NOTE: markup duplicated in artifacts/modkeys/index.html; change both */}
-      <div className="mobileActions" id="mobileActions">
-        <button data-proxy="saveBuild">Save Build</button>
-        <button id="mExportToggle">Export &#9662;</button>
-      </div>
-      <div className="mExportMenu" id="mExportMenu">
-        <button data-proxy="exportKLE">KLE Layout</button>
-        <button data-proxy="exportSVG">SVG Template</button>
-        <button data-proxy="exportSpec">Spec Sheet</button>
-        <button data-proxy="copyKLE">Copy KLE</button>
-        <button data-proxy="exportPDF">PDF</button>
-      </div>
+      {/* Mobile shell template. Same IDs as #dShell; mountModkeys() swaps
+          exactly one into the live DOM. dangerouslySetInnerHTML populates
+          template.content (React children cannot). Markup duplicated in
+          artifacts/modkeys/index.html; change both. */}
+      <template id="mShellTpl" dangerouslySetInnerHTML={{ __html: MSHELL_HTML }} />
 
       <div className="toast" id="toast"></div>
       <div className="kePop" id="keyEditor"></div>

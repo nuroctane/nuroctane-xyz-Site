@@ -23,3 +23,10 @@ History:
   late); modkeys mobile pass (touch-action on canvas, mobile Save/Export
   actions bar with proxy buttons, safe-area + dvh handling, iOS input
   zoom fix, landscape rules, viewport-fit=cover on both pages).
+- v0.70 (2026-07-07): modkeys two-shell architecture. Responsive-CSS mobile
+  approach fully retired (all @media stripped from layout.css/components.css
+  and from ModkeysPage's injected overrides); dedicated mobile shell
+  (template #mShellTpl, portrait-first + landscape MQ in mobile.css) swapped
+  in at boot by matchMedia, same element IDs both shells, boundary crossing
+  reloads. tnav wired for real (was decorative). ID parity enforced by
+  artifacts/modkeys/check-shell-ids.mjs; architecture in MOBILE_SHELL.md.
