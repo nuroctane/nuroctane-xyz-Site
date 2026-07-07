@@ -163,6 +163,17 @@
 }
 .mShell .mExportMenu button:active { background: var(--card); }
 
+/* ---- modal scroll fix: flex column so .mBody scrolls, doesn't overflow screen ---- */
+.modalWrap .modalCard {
+  display: flex;
+  flex-direction: column;
+  max-height: 80vh;
+}
+.modalWrap .mBody {
+  overflow-y: auto;
+  flex: 1;
+}
+
 /* ---- shared overlays, mobile treatment (live outside .mShell) ---- */
 html.mk-mobile .kePop {
   left: 0; right: 0; bottom: calc(58px + env(safe-area-inset-bottom, 0px));

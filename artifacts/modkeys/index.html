@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>MODKEYS — Keyboard Configurator</title>
-    <link rel="icon" type="image/png" href="./assets/modkeys-logo.png" />
+    <link rel="icon" type="image/png" href="/assets/nodes/modkeys-logo.png" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="preconnect" href="https://cdn.jsdelivr.net" />
     <link rel="stylesheet" href="/src/css/variables.css" />
@@ -15,7 +15,7 @@
   <body>
     <div id="loader">
       <div class="lg">
-        <img src="./assets/modkeys-logo.png" alt="" style="height:26px;width:auto" draggable="false" />
+        <img src="/assets/nodes/modkeys-logo.png" alt="" style="height:26px;width:auto" draggable="false" />
         <b>MODKEYS</b>
       </div>
       <div class="bar"><i></i></div>
@@ -24,7 +24,7 @@
     <div class="app" id="dShell">
       <aside class="side">
         <div class="logo">
-          <img src="./assets/modkeys-logo.png" alt="" style="height:24px;width:auto" draggable="false" />
+          <img src="/assets/nodes/modkeys-logo.png" alt="" style="height:24px;width:auto" draggable="false" />
           <b>MODKEYS</b>
         </div>
         <div class="sideLabel">CONFIGURE</div>
@@ -209,7 +209,7 @@
 <div class="mShell">
       <header class="mHead">
         <div class="mBrand">
-          <img src="./assets/modkeys-logo.png" alt="" draggable="false" />
+          <img src="/assets/nodes/modkeys-logo.png" alt="" draggable="false" />
           <b>MODKEYS</b>
         </div>
         <nav class="tnav" id="tnav">
@@ -322,6 +322,10 @@
       </div>
     </div>
 
-    <script type="module" src="/src/js/app.js"></script>
+    <script type="module">
+      import { selectShell } from '/src/js/shell.js';
+      selectShell();
+      import('/src/js/app.js');
+    </script>
   </body>
 </html>

@@ -3,11 +3,12 @@ import { CASES, PLATES, SWITCHES, MATERIALS, PROFILES, GAP, LIGHT_COLORS } from 
 import { COLORWAYS, PANEL_SWATCHES } from '../data/colorways.js';
 import { state } from './state.js';
 
-const stage = document.getElementById('stage');
-const canvas = document.getElementById('gl');
+const getStage = () => document.getElementById('stage');
+const getCanvas = () => document.getElementById('gl');
+
 
 const renderer = new THREE.WebGLRenderer({
-  canvas,
+  canvas: getCanvas(),
   antialias: true,
   alpha: true,
   preserveDrawingBuffer: true,

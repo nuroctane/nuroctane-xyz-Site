@@ -97,7 +97,7 @@ function useModkeysStyles() {
 const MSHELL_HTML = `<div class="mShell">
       <header class="mHead">
         <div class="mBrand">
-          <img src="./assets/modkeys-logo.png" alt="" draggable="false" />
+          <img src="/assets/nodes/modkeys-logo.png" alt="" draggable="false" />
           <b>MODKEYS</b>
         </div>
         <nav class="tnav" id="tnav">
@@ -200,6 +200,11 @@ export default function ModkeysPage() {
 
     (async () => {
       try {
+        // SELECT SHELL BEFORE IMPORTING APP
+        // @ts-expect-error Vite resolves cross-package imports
+        const shell = await import('../../../modkeys/src/js/shell.js');
+        shell.selectShell();
+
         // @ts-expect-error Vite resolves cross-package imports; modkeys has no tsconfig project reference
         const mod = await import('../../../modkeys/src/js/app.js');
         mod.mountModkeys();

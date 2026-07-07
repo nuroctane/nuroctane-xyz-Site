@@ -31,22 +31,12 @@ let cleanupFns = [];
 const MOBILE_MQ = '(max-width: 768px), ((pointer: coarse) and (max-width: 1024px))';
 
 export function mountModkeys() {
-  /* ---- shell select: exactly one of #dShell / mShell template enters the
-     live DOM. Both use the same element IDs, so the whole app core binds
-     identically on either. Crossing the breakpoint reloads (bindings and
-     the GL canvas are per-shell). ---- */
-  const isMobile = window.matchMedia(MOBILE_MQ).matches;
+  /* Shell selection handled by shell.js before this module loads.
+     Clean up the template element and bind the breakpoint reload. */
   const mTpl = document.getElementById('mShellTpl');
-  const dApp = document.getElementById('dShell');
-  if (isMobile && mTpl) {
-    const frag = mTpl.content.cloneNode(true);
-    if (dApp) dApp.replaceWith(frag);
-    else document.body.prepend(frag);
-  }
   if (mTpl) mTpl.remove();
-  document.documentElement.classList.toggle('mk-mobile', isMobile);
   const boundaryQ = window.matchMedia(MOBILE_MQ);
-  const onBoundary = () => { if (boundaryQ.matches !== isMobile) location.reload(); };
+  const onBoundary = () => location.reload();
   if (boundaryQ.addEventListener) {
     boundaryQ.addEventListener('change', onBoundary);
     cleanupFns.push(() => boundaryQ.removeEventListener('change', onBoundary));
