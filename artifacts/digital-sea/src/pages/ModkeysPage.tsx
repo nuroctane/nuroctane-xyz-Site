@@ -349,6 +349,19 @@ export default function ModkeysPage() {
         </div>
       </div>
 
+      {/* NOTE: markup duplicated in artifacts/modkeys/index.html; change both */}
+      <div className="mobileActions" id="mobileActions">
+        <button data-proxy="saveBuild">Save Build</button>
+        <button id="mExportToggle">Export &#9662;</button>
+      </div>
+      <div className="mExportMenu" id="mExportMenu">
+        <button data-proxy="exportKLE">KLE Layout</button>
+        <button data-proxy="exportSVG">SVG Template</button>
+        <button data-proxy="exportSpec">Spec Sheet</button>
+        <button data-proxy="copyKLE">Copy KLE</button>
+        <button data-proxy="exportPDF">PDF</button>
+      </div>
+
       <div className="toast" id="toast"></div>
       <div className="kePop" id="keyEditor"></div>
       <div className="modalWrap" id="modal">

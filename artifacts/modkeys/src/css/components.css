@@ -955,3 +955,116 @@
   font: inherit;
   padding: 0;
 }
+
+/* ============================================================
+   v0.66 mobile pass
+   ============================================================ */
+
+/* Touch input model: without touch-action:none the browser treats canvas
+   drags as page scroll / pinch-zoom and fires pointercancel mid-orbit.
+   UI buttons get `manipulation` to kill the 300ms double-tap-zoom delay
+   (which also broke the double-tap key editor on some browsers). */
+#gl, .stage { touch-action: none; }
+button, .chip, .sw, .profBtn, .snav button, .tnav button, .pills button,
+.toolbar button, .saveRow { touch-action: manipulation; }
+
+/* Mobile actions bar: Save + Export were inside .sideBottom, which the
+   768px breakpoint hides entirely, leaving no way to save or export on
+   phones. This bar sits above the bottom nav; its buttons proxy-click
+   the real (hidden) buttons via data-proxy so all logic stays in one
+   place and IDs stay unique. */
+.mobileActions {
+  display: none;
+  position: fixed;
+  left: 0; right: 0;
+  bottom: calc(52px + env(safe-area-inset-bottom, 0px));
+  z-index: 51;
+  background: var(--side);
+  color: var(--sideTx);
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 6px 10px;
+  gap: 8px;
+}
+.mobileActions button {
+  flex: 1;
+  height: 40px;
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--sideTx);
+  font-size: 13px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.mobileActions button:active { background: rgba(255, 255, 255, 0.16); }
+.mExportMenu {
+  display: none;
+  position: fixed;
+  left: 10px; right: 10px;
+  bottom: calc(104px + env(safe-area-inset-bottom, 0px));
+  z-index: 52;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: 0 12px 40px var(--shadowC);
+  padding: 8px;
+}
+.mExportMenu.open { display: block; }
+.mExportMenu button {
+  width: 100%;
+  height: 44px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--ink);
+  display: flex;
+  align-items: center;
+  padding: 0 12px;
+}
+.mExportMenu button:active { background: var(--card); }
+
+@media (max-width: 768px) {
+  .mobileActions { display: flex; }
+
+  /* Nav + actions bar together need ~104px of clearance. */
+  .main { padding-bottom: calc(104px + env(safe-area-inset-bottom, 0px)); }
+  .side { padding-bottom: env(safe-area-inset-bottom, 0px); }
+
+  /* Key editor bottom sheet must clear the actions bar + nav. */
+  .kePop {
+    bottom: calc(108px + env(safe-area-inset-bottom, 0px));
+    max-height: 46vh;
+    max-height: 46dvh;
+  }
+
+  /* iOS zooms the page when a focused input's font-size is under 16px. */
+  .rpBody input[type="text"], .rpBody input[type="number"],
+  .kePop input[type="text"], .kePop input[type="number"] {
+    font-size: 16px;
+  }
+
+  /* Fatter slider thumbs for fingers. */
+  .slider { height: 26px; }
+  .slider::-webkit-slider-thumb { width: 22px; height: 22px; }
+
+  /* Color wells big enough to hit. */
+  input[type="color"] { min-width: 40px; min-height: 34px; }
+}
+
+@media (max-width: 420px) {
+  .mobileActions { bottom: calc(44px + env(safe-area-inset-bottom, 0px)); }
+  .mobileActions button { height: 36px; font-size: 12px; }
+  .mExportMenu { bottom: calc(90px + env(safe-area-inset-bottom, 0px)); }
+  .main { padding-bottom: calc(90px + env(safe-area-inset-bottom, 0px)); }
+  .kePop { bottom: calc(94px + env(safe-area-inset-bottom, 0px)); }
+}
+
+/* Landscape phones: a fixed 340px stage plus bars leaves no room for the
+   panel; give the stage proportional height and slim the chrome. */
+@media (max-width: 900px) and (orientation: landscape) and (max-height: 500px) {
+  .stageCol { height: 52vh; min-height: 200px; }
+  .snav button { height: 44px; }
+  .main { padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)); }
+}

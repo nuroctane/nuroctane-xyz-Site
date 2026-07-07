@@ -17,3 +17,9 @@ History:
   PROJECT_THRESHOLD 0.55 -> 0.60), SYS:// prefix parity across HUD labels,
   lazy-loaded card/sidecard media, vendor chunk splitting, modkeys logo rollout.
 - v0.61: prior baseline.
+- v0.66 (2026-07-06): reverted v0.65 lazy loading on card/sidecard media
+  (native lazy intersection is computed against the page viewport, not the
+  3D scene, so drei Html card assets never prefetched and popped in 5-10s
+  late); modkeys mobile pass (touch-action on canvas, mobile Save/Export
+  actions bar with proxy buttons, safe-area + dvh handling, iOS input
+  zoom fix, landscape rules, viewport-fit=cover on both pages).

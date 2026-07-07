@@ -48,6 +48,7 @@ svg {
   display: grid;
   grid-template-columns: 264px 1fr;
   height: 100vh;
+  height: 100dvh; /* mobile URL-bar-safe viewport */
   min-width: 820px;
 }
 
@@ -305,7 +306,7 @@ svg {
   .snav button { flex: 1 0 auto; min-width: 48px; height: 52px; padding: 4px 4px; gap: 1px; }
   .snav button .meta { display: none; }
   .snav .ic { display: block; }
-  .main { padding-bottom: 56px; height: 100vh; overflow-y: auto; }
+  .main { padding-bottom: 56px; height: 100vh; height: 100dvh; overflow-y: auto; }
   .topbar { height: 56px; padding: 0 10px; overflow-x: auto; }
   .topbar::-webkit-scrollbar { display: none; }
   .tnav { gap: 0; }

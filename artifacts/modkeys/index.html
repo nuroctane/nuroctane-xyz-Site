@@ -2,7 +2,7 @@
 <html lang="en" data-theme="light">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>MODKEYS — Keyboard Configurator</title>
     <link rel="icon" type="image/png" href="./assets/modkeys-logo.png" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -199,6 +199,19 @@
           </aside>
         </div>
       </div>
+    </div>
+
+    <!-- NOTE: markup duplicated in artifacts/digital-sea/src/pages/ModkeysPage.tsx; change both -->
+    <div class="mobileActions" id="mobileActions">
+      <button data-proxy="saveBuild">Save Build</button>
+      <button id="mExportToggle">Export &#9662;</button>
+    </div>
+    <div class="mExportMenu" id="mExportMenu">
+      <button data-proxy="exportKLE">KLE Layout</button>
+      <button data-proxy="exportSVG">SVG Template</button>
+      <button data-proxy="exportSpec">Spec Sheet</button>
+      <button data-proxy="copyKLE">Copy KLE</button>
+      <button data-proxy="exportPDF">PDF</button>
     </div>
 
     <div class="toast" id="toast"></div>

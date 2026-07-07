@@ -348,6 +348,29 @@ export function mountModkeys() {
         window.addEventListener('resize', syncArrows);
         requestAnimationFrame(syncArrows);
       }
+
+      /* mobile actions bar: proxy taps to the real (hidden on mobile)
+         sidebar buttons so save/export logic stays defined in one place */
+      const mMenu = document.getElementById('mExportMenu');
+      const mToggle = document.getElementById('mExportToggle');
+      if (mMenu && mToggle) {
+        mToggle.addEventListener('click', (ev) => {
+          ev.stopPropagation();
+          mMenu.classList.toggle('open');
+        });
+        document.addEventListener('click', (ev) => {
+          if (mMenu.classList.contains('open') && !mMenu.contains(ev.target) && ev.target !== mToggle) {
+            mMenu.classList.remove('open');
+          }
+        });
+      }
+      document.addEventListener('click', (ev) => {
+        const proxy = ev.target.closest('[data-proxy]');
+        if (!proxy) return;
+        const real = document.getElementById(proxy.dataset.proxy);
+        if (real) real.click();
+        if (mMenu) mMenu.classList.remove('open');
+      });
       onPanelRender(renderPanel);
       renderPanel('keycaps');
       syncUI();

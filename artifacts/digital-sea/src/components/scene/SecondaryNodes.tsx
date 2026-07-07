@@ -140,7 +140,7 @@ export function SecondaryOrbit({ nodeId, media, centerRef, proximityRef }: Props
                     <span className="secondary-card-link-label">{m.linkLabel}</span>
                   </button>
                 ) : (
-                  <img src={m.url} alt="" className="secondary-card-img" draggable={false} loading="lazy" decoding="async" />
+                  <img src={m.url} alt="" className="secondary-card-img" draggable={false} />
                 )}
               </div>
             </Html>
