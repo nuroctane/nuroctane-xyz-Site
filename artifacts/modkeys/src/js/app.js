@@ -10,7 +10,7 @@ import {
   matAlpha, matMod, matAccent, matCase, matPlate, matStem,
   capMat, sRGB, applyPlateFinish, uni,
 } from './core/scene.js';
-import { renderPanel, syncUI, showKeyEditor, hideKeyEditor } from './ui/panels.js';
+import { renderPanel, syncUI, showKeyEditor, hideKeyEditor, setupPanelEvents } from './ui/panels.js';
 import { initTheme } from './ui/theme.js';
 import { toast } from './ui/toast.js';
 import { openLibrary, openGallery, openSwitchesModal, openAccessories, closeModal } from './ui/modals.js';
@@ -43,6 +43,7 @@ export function mountModkeys() {
   }
 
   registerSyncUI(syncUI);
+  setupPanelEvents();
 
   /* sidebar nav */
   document.querySelectorAll('.snav button').forEach((btn) => {

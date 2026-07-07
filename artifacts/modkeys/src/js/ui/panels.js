@@ -224,120 +224,119 @@ export function hideKeyEditor() {
   updateSidebarKeyImage();
 }
 
-/* panel event delegation (side-bar only) */
-$('panelBody').addEventListener('click', (ev) => {
-  const chip = ev.target.closest('[data-act]');
-  if (chip) {
-    const act = chip.dataset.act, v = chip.dataset.v;
-    if (act === 'layout') { setState({ layout: v, selectedPreset: null }); return; }
-    if (act === 'profile') { setState({ profile: v }); return; }
-    if (act === 'material') { setState({ material: v }); return; }
-    if (act === 'colorway') { setState({ colorway: v, selectedPreset: null, customColors: null }); return; }
-    if (act === 'sw') { setState({ sw: v, selectedPreset: null }); return; }
-    if (act === 'caseColor') { setState({ caseColor: v }); return; }
-    if (act === 'finish') { setState({ finish: v }); return; }
-    if (act === 'plate') { setState({ plate: v }); return; }
-    if (act === 'lightMode') { setState({ light: { mode: v } }); return; }
-    if (act === 'lightColor') { setState({ light: { color: v } }); return; }
-    if (act === 'extras') { const e = {}; e[v] = !state.extras[v]; setState({ extras: e }); return; }
-    return;
-  }
+export function setupPanelEvents() {
+  const panelBody = $('panelBody');
+  if (!panelBody) return;
 
-  if (ev.target.id === 'applyCustomColors') {
-    const cc = {
-      a: { bg: $('hexAbg').value, fg: $('hexAfg').value },
-      m: { bg: $('hexMbg').value, fg: $('hexMfg').value },
-      x: { bg: $('hexXbg').value, fg: $('hexXfg').value },
-    };
-    setState({ customColors: cc });
-    return;
-  }
-  if (ev.target.id === 'clearCustomColors') {
-    setState({ colorway: state.colorway, customColors: null });
-    return;
-  }
-  if (ev.target.id === 'keRemoveImgSidebar' && _currentEditId) {
-    const ov = getOverride(_currentEditId) || {};
-    delete ov.imageData;
-    setOverride(_currentEditId, { imageData: null });
-    rebuildKey(..._currentEditId.split('-').map(Number));
-    updateSidebarKeyImage();
-    return;
-  }
-});
+  panelBody.addEventListener('click', (ev) => {
+    const chip = ev.target.closest('[data-act]');
+    if (chip) {
+      const act = chip.dataset.act, v = chip.dataset.v;
+      if (act === 'layout') { setState({ layout: v, selectedPreset: null }); return; }
+      if (act === 'profile') { setState({ profile: v }); return; }
+      if (act === 'material') { setState({ material: v }); return; }
+      if (act === 'colorway') { setState({ colorway: v, selectedPreset: null, customColors: null }); return; }
+      if (act === 'sw') { setState({ sw: v, selectedPreset: null }); return; }
+      if (act === 'caseColor') { setState({ caseColor: v }); return; }
+      if (act === 'finish') { setState({ finish: v }); return; }
+      if (act === 'plate') { setState({ plate: v }); return; }
+      if (act === 'lightMode') { setState({ light: { mode: v } }); return; }
+      if (act === 'lightColor') { setState({ light: { color: v } }); return; }
+      if (act === 'extras') { const e = {}; e[v] = !state.extras[v]; setState({ extras: e }); return; }
+      return;
+    }
+    if (ev.target.id === 'applyCustomColors') {
+      const cc = {
+        a: { bg: $('hexAbg').value, fg: $('hexAfg').value },
+        m: { bg: $('hexMbg').value, fg: $('hexMfg').value },
+        x: { bg: $('hexXbg').value, fg: $('hexXfg').value },
+      };
+      setState({ customColors: cc });
+      return;
+    }
+    if (ev.target.id === 'clearCustomColors') {
+      setState({ colorway: state.colorway, customColors: null });
+      return;
+    }
+    if (ev.target.id === 'keRemoveImgSidebar' && _currentEditId) {
+      const ov = getOverride(_currentEditId) || {};
+      delete ov.imageData;
+      setOverride(_currentEditId, { imageData: null });
+      rebuildKey(..._currentEditId.split('-').map(Number));
+      updateSidebarKeyImage();
+      return;
+    }
+  });
+  panelBody.addEventListener('change', async (ev) => {
+    if (!_currentEditId) return;
+    if (ev.target.id === 'keImageSidebar') {
+      const file = ev.target.files[0];
+      if (!file) return;
+      const dataUrl = await loadImage(file);
+      setOverride(_currentEditId, { imageData: dataUrl });
+      rebuildKey(..._currentEditId.split('-').map(Number));
+      updateSidebarKeyImage();
+    }
+  });
 
-$('panelBody').addEventListener('change', async (ev) => {
-  if (!_currentEditId) return;
-  if (ev.target.id === 'keImageSidebar') {
-    const file = ev.target.files[0];
-    if (!file) return;
-    const dataUrl = await loadImage(file);
-    setOverride(_currentEditId, { imageData: dataUrl });
-    rebuildKey(..._currentEditId.split('-').map(Number));
-    updateSidebarKeyImage();
-  }
-});
+  const ke = $('keyEditor');
+  if (!ke) return;
 
-/* key editor event delegation */
-const $ke = $('keyEditor');
-
-$ke.addEventListener('click', (ev) => {
-  if (ev.target.closest('#keReset') && _currentEditId) {
-    clearOverride(_currentEditId);
-    rebuildKey(..._currentEditId.split('-').map(Number));
-    hideKeyEditor();
-    return;
-  }
-  if (ev.target.closest('#keRemoveImg') && _currentEditId) {
-    setOverride(_currentEditId, { imageData: null });
-    rebuildKey(..._currentEditId.split('-').map(Number));
-    showKeyEditor({ perKeyId: _currentEditId });
-    return;
-  }
-  if (ev.target.closest('#keGlow') && _currentEditId) {
-    const ov = getOverride(_currentEditId) || {};
-    setOverride(_currentEditId, { glow: !ov.glow });
-    rebuildKey(..._currentEditId.split('-').map(Number));
-    const el = $('keGlow');
-    if (el) el.classList.toggle('on');
-    return;
-  }
-  if (ev.target.closest('#keImgBehind') && _currentEditId) {
-    const ov = getOverride(_currentEditId) || {};
-    setOverride(_currentEditId, { imageBehindText: !ov.imageBehindText });
-    rebuildKey(..._currentEditId.split('-').map(Number));
-    const el = $('keImgBehind');
-    if (el) el.classList.toggle('on');
-    return;
-  }
-  if (ev.target.closest('#keClose')) {
-    hideKeyEditor();
-  }
-});
-
-$ke.addEventListener('input', (ev) => {
-  if (!_currentEditId) return;
-  const id = ev.target.id;
-  if (id === 'keText' || id === 'keFs' || id === 'keFg' || id === 'keBg') {
-    const patch = {};
-    if (id === 'keText') patch.customText = ev.target.value || '';
-    if (id === 'keFs') patch.fontSize = parseInt(ev.target.value);
-    if (id === 'keFg') patch.fgColor = ev.target.value;
-    if (id === 'keBg') patch.bgColor = ev.target.value;
-    setOverride(_currentEditId, patch);
-    rebuildKey(..._currentEditId.split('-').map(Number));
-  }
-});
-
-$ke.addEventListener('change', async (ev) => {
-  if (!_currentEditId) return;
-  if (ev.target.id === 'keImage') {
-    const file = ev.target.files[0];
-    if (!file) return;
-    const dataUrl = await loadImage(file);
-    setOverride(_currentEditId, { imageData: dataUrl });
-    rebuildKey(..._currentEditId.split('-').map(Number));
-    showKeyEditor({ perKeyId: _currentEditId });
-    return;
-  }
-});
+  ke.addEventListener('click', (ev) => {
+    if (ev.target.closest('#keReset') && _currentEditId) {
+      clearOverride(_currentEditId);
+      rebuildKey(..._currentEditId.split('-').map(Number));
+      hideKeyEditor();
+      return;
+    }
+    if (ev.target.closest('#keRemoveImg') && _currentEditId) {
+      setOverride(_currentEditId, { imageData: null });
+      rebuildKey(..._currentEditId.split('-').map(Number));
+      showKeyEditor({ perKeyId: _currentEditId });
+      return;
+    }
+    if (ev.target.closest('#keGlow') && _currentEditId) {
+      const ov = getOverride(_currentEditId) || {};
+      setOverride(_currentEditId, { glow: !ov.glow });
+      rebuildKey(..._currentEditId.split('-').map(Number));
+      const el = $('keGlow');
+      if (el) el.classList.toggle('on');
+      return;
+    }
+    if (ev.target.closest('#keImgBehind') && _currentEditId) {
+      const ov = getOverride(_currentEditId) || {};
+      setOverride(_currentEditId, { imageBehindText: !ov.imageBehindText });
+      rebuildKey(..._currentEditId.split('-').map(Number));
+      const el = $('keImgBehind');
+      if (el) el.classList.toggle('on');
+      return;
+    }
+    if (ev.target.closest('#keClose')) {
+      hideKeyEditor();
+    }
+  });
+  ke.addEventListener('input', (ev) => {
+    if (!_currentEditId) return;
+    const id = ev.target.id;
+    if (id === 'keText' || id === 'keFs' || id === 'keFg' || id === 'keBg') {
+      const patch = {};
+      if (id === 'keText') patch.customText = ev.target.value || '';
+      if (id === 'keFs') patch.fontSize = parseInt(ev.target.value);
+      if (id === 'keFg') patch.fgColor = ev.target.value;
+      if (id === 'keBg') patch.bgColor = ev.target.value;
+      setOverride(_currentEditId, patch);
+      rebuildKey(..._currentEditId.split('-').map(Number));
+    }
+  });
+  ke.addEventListener('change', async (ev) => {
+    if (!_currentEditId) return;
+    if (ev.target.id === 'keImage') {
+      const file = ev.target.files[0];
+      if (!file) return;
+      const dataUrl = await loadImage(file);
+      setOverride(_currentEditId, { imageData: dataUrl });
+      rebuildKey(..._currentEditId.split('-').map(Number));
+      showKeyEditor({ perKeyId: _currentEditId });
+    }
+  });
+}

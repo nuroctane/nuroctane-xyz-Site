@@ -5,7 +5,7 @@ import { COLORWAYS } from '../data/colorways.js';
 import { CASES, FINISHES, PLATES, SWITCHES, MATERIALS, EXTRAS, PROFILES, LIGHT_COLORS } from '../data/components.js';
 import { PRESETS } from '../data/presets.js';
 import { toast } from './toast.js';
-import { playSwitch } from './sound.js';
+import { playKeyClick } from './sound.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -180,7 +180,7 @@ $('modalBody').addEventListener('click', (ev) => {
   const swm = ev.target.closest('[data-swm]');
   if (swm) {
     setState({ sw: swm.dataset.swm, selectedPreset: null });
-    playSwitch(SWITCHES[swm.dataset.swm].sound);
+    playKeyClick(SWITCHES[swm.dataset.swm].sound, state.material);
     openSwitchesModal();
     return;
   }

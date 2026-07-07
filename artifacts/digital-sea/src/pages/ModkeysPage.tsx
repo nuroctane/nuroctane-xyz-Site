@@ -326,7 +326,7 @@ export default function ModkeysPage() {
           <header className="topbar">
             <nav className="tnav" id="tnav">
               <button data-nav="builder" className="on">Builder</button>
-              <button data-nav="gallery"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>Gallery</button>
+              <button data-nav="gallery">Gallery</button>
               <button data-nav="keycaps">Keycaps</button>
               <button data-nav="switches">Switches</button>
               <button data-nav="accessories">Accessories</button>

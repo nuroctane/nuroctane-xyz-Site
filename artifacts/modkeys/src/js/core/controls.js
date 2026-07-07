@@ -4,7 +4,7 @@ import { renderer, scene, camera, root, caseGroup, capsGroup, knobGroup, uni } f
 import { plateMesh } from './keyboard.js';
 import { state } from './state.js';
 import { SWITCHES } from '../data/components.js';
-import { playSwitch } from '../ui/sound.js';
+import { playKeyClick } from '../ui/sound.js';
 
 let onKeyEdit = null;
 export function onKeyEditClick(fn) { onKeyEdit = fn; }
@@ -220,7 +220,7 @@ function endPointer(ev) {
       }
       lastClickKey = hit;
       lastClickTime = now;
-      playSwitch(SWITCHES[state.sw].sound);
+      playKeyClick(SWITCHES[state.sw].sound, state.material);
       if (RM()) {
         hit.position.y = hit.userData.baseY + 0.055;
       } else {
