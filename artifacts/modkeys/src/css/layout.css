@@ -89,7 +89,7 @@ svg {
   flex-direction: column;
   gap: 2px;
 }
-.snav button {
+.dShell .snav button {
   display: flex;
   align-items: center;
   gap: 13px;

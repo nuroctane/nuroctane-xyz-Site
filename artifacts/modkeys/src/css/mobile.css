@@ -105,13 +105,12 @@
   border-bottom: 1px solid var(--line);
   background: var(--panel);
 }
-.mShell .mTabs.snav button {
+.mShell .mTabs button {
   flex: none; height: 32px; padding: 0 6px; border-radius: 999px;
   display: flex; align-items: center; gap: 4px;
   font-size: 12px; font-weight: 700; color: var(--ink2);
   background: var(--card2, transparent);
   border: 1px solid var(--line);
-  width: auto !important;
   position: relative; touch-action: manipulation;
 }
 .mShell .mTabs.snav button.on {
