@@ -105,16 +105,16 @@
   border-bottom: 1px solid var(--line);
   background: var(--panel);
 }
-.mShell .mTabs button {
+.mShell .mTabs.snav button {
   flex: none; height: 32px; padding: 0 6px; border-radius: 999px;
   display: flex; align-items: center; gap: 4px;
   font-size: 12px; font-weight: 700; color: var(--ink2);
   background: var(--card2, transparent);
   border: 1px solid var(--line);
-  width: auto; /* override .snav button width:100% so pills are content-sized */
+  width: auto !important;
   position: relative; touch-action: manipulation;
 }
-.mShell .mTabs button.on {
+.mShell .mTabs.snav button.on {
   background: var(--card); color: var(--ink);
   border-color: var(--acc, #6cf); /* fallback */
   border-color: color-mix(in srgb, var(--acc, #6cf) 55%, var(--line));
