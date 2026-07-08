@@ -113,7 +113,7 @@
   border: 1px solid var(--line);
   position: relative; touch-action: manipulation;
 }
-.mShell .mTabs.snav button.on {
+.mShell .mTabs button.on {
   background: var(--card); color: var(--ink);
   border-color: var(--acc, #6cf); /* fallback */
   border-color: color-mix(in srgb, var(--acc, #6cf) 55%, var(--line));
