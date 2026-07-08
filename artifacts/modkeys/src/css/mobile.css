@@ -111,6 +111,7 @@
   font-size: 12px; font-weight: 700; color: var(--ink2);
   background: var(--card2, transparent);
   border: 1px solid var(--line);
+  width: auto; min-width: 0;
   position: relative; touch-action: manipulation;
 }
 .mShell .mTabs button.on {
