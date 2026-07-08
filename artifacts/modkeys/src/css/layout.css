@@ -110,15 +110,6 @@ svg {
 .dShell .snav button.on {
   background: rgba(255, 255, 255, 0.09);
 }
-.dShell .snav .ic {
-  width: 20px;
-  height: 20px;
-  color: #a9a9b0;
-  flex: 0 0 auto;
-}
-.dShell .snav button.on .ic {
-  color: #fff;
-}
 .dShell .snav .meta {
   margin-left: auto;
   font-size: 13px;

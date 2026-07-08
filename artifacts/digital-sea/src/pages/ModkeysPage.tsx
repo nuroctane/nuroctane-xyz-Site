@@ -268,46 +268,25 @@ export default function ModkeysPage() {
           <div className="sideLabel">CONFIGURE</div>
           <nav className="snav" id="snav">
             <button data-sec="layout">
-              <svg className="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
-                <rect x="2.5" y="5" width="19" height="14" rx="3" />
-                <path d="M6.5 9.5h.01M10.5 9.5h.01M14.5 9.5h.01M18 9.5h.01M6.5 12.7h.01M10.5 12.7h.01M14.5 12.7h.01M18 12.7h.01M8 16h8" strokeLinecap="round" />
-              </svg>Layout<span className="meta" id="layoutVal">75%</span>
+              Layout<span className="meta" id="layoutVal">75%</span>
             </button>
             <button data-sec="keycaps">
-              <svg className="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
-                <path d="M5 17l2.2-8.3A2 2 0 019.1 7h5.8a2 2 0 011.9 1.7L19 17" strokeLinejoin="round" />
-                <path d="M4 17.5h16" strokeLinecap="round" />
-              </svg>Keycaps<span className="dot" id="dotKeycaps" />
+              Keycaps<span className="dot" id="dotKeycaps" />
             </button>
             <button data-sec="switches">
-              <svg className="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
-                <rect x="5" y="10" width="14" height="9" rx="2" />
-                <path d="M12 10V6M9.5 8.5h5" strokeLinecap="round" />
-              </svg>Switches<span className="dot" id="dotSwitches" />
+              Switches<span className="dot" id="dotSwitches" />
             </button>
             <button data-sec="case">
-              <svg className="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
-                <rect x="3" y="8" width="18" height="9" rx="2.5" />
-                <path d="M6 17v2M18 17v2" strokeLinecap="round" />
-              </svg>Case<span className="dot" id="dotCase" />
+              Case<span className="dot" id="dotCase" />
             </button>
             <button data-sec="plate">
-              <svg className="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
-                <rect x="3.5" y="5.5" width="17" height="13" rx="2" />
-                <path d="M3.5 10.5h17M3.5 14.5h17M9 5.5v13M15 5.5v13" />
-              </svg>Plate<span className="dot" id="dotPlate" />
+              Plate<span className="dot" id="dotPlate" />
             </button>
             <button data-sec="lighting">
-              <svg className="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
-                <circle cx="12" cy="12" r="3.6" />
-                <path d="M12 3.5v2M12 18.5v2M3.5 12h2M18.5 12h2M6 6l1.4 1.4M16.6 16.6L18 18M18 6l-1.4 1.4M7.4 16.6L6 18" strokeLinecap="round" />
-              </svg>Lighting<span className="dot" id="dotLight" />
+              Lighting<span className="dot" id="dotLight" />
             </button>
             <button data-sec="extras">
-              <svg className="ic" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.7">
-                <circle cx="12" cy="12" r="8.5" />
-                <path d="M12 8.5v7M8.5 12h7" strokeLinecap="round" />
-              </svg>Extras
+              Extras
             </button>
           </nav>
           <div className="sideBottom">

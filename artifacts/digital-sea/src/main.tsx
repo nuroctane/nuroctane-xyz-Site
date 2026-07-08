@@ -3,6 +3,7 @@ import { lazy, Suspense } from 'react';
 import { createRoot } from 'react-dom/client';
 import App from './App';
 import { AudioProvider } from './hooks/AudioContext';
+import { Analytics } from '@vercel/analytics/react';
 import './index.css';
 
 const QuotesPage = lazy(() => import('./pages/QuotesPage'));
@@ -30,6 +31,7 @@ createRoot(document.getElementById('root')!).render(
   <Router>
     <AudioProvider>
       <Root />
+      <Analytics />
     </AudioProvider>
   </Router>,
 );
