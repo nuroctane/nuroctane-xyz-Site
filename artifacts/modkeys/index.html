@@ -202,14 +202,15 @@
       </div>
     </div>
 
-    <!-- Mobile shell. Same element IDs as #dShell; mountModkeys() swaps
-         exactly one of the two into the live DOM, so IDs never collide.
+    <!-- Mobile shell. Same element IDs as #dShell; shell.js selectShell()
+         swaps exactly one of the two into the live DOM BEFORE app.js loads
+         (its import graph captures #gl/#stage at module scope).
          NOTE: markup duplicated in ModkeysPage.tsx (MSHELL_HTML); change both. -->
     <template id="mShellTpl">
 <div class="mShell">
       <header class="mHead">
         <div class="mBrand">
-          <img src="/assets/nodes/modkeys-logo.png" alt="" draggable="false" />
+          <img src="/assets/nodes/modkeys-logo.png" onerror="this.onerror=null;this.src='./assets/modkeys-logo.png'" alt="" draggable="false" />
           <b>MODKEYS</b>
         </div>
         <nav class="tnav" id="tnav">

@@ -14,14 +14,19 @@ MODKEYS has **two complete, independent layouts** in the same page:
   CSS lives in `mobile.css`, scoped under `.mShell` (in-shell) and
   `html.mk-mobile` (shared overlays: key editor, modal, toast).
 
-`mountModkeys()` (top of `src/js/app.js`) picks exactly one at boot:
+`selectShell()` (`src/js/shell.js`) picks exactly one — and it MUST run
+before `app.js` is imported, because app.js's static import graph
+(`scene.js`, `controls.js`) captures `#gl`/`#stage` at module scope. Both
+entry points do this: the standalone boot script in `index.html` and
+ModkeysPage.tsx each call `selectShell()` first, then dynamically import
+`app.js` and call `mountModkeys()`. The breakpoint:
 
 ```
 MOBILE_MQ = '(max-width: 768px), ((pointer: coarse) and (max-width: 1024px))'
 ```
 
-If mobile: the template's content **replaces** `#dShell`. Either way the
-template is removed. Because only one shell ever exists in the live DOM,
+If mobile: the template's content **replaces** `#dShell`
+(`mountModkeys()` removes the template element afterwards). Because only one shell ever exists in the live DOM,
 **both shells use the same element IDs**, and the entire JS core (state,
 panels, exports, gallery, key editor, 3D engine) binds identically with no
 per-shell logic. Crossing the breakpoint (resize/rotation across the

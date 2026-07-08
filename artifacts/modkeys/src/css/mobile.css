@@ -165,15 +165,17 @@
 }
 .mShell .mExportMenu button:active { background: var(--card); }
 
-/* ---- modal scroll fix: flex column so .mBody scrolls, doesn't overflow screen ---- */
-.modalWrap .modalCard {
+/* ---- modal scroll (MOBILE ONLY — mobile.css loads on desktop too, so
+   every overlay rule must be scoped under html.mk-mobile or .mShell) ---- */
+html.mk-mobile .modalCard {
   display: flex;
   flex-direction: column;
-  max-height: 80vh;
 }
-.modalWrap .mBody {
+html.mk-mobile .modalCard .mBody {
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
   flex: 1;
+  min-height: 0;
 }
 
 /* ---- shared overlays, mobile treatment (live outside .mShell) ---- */

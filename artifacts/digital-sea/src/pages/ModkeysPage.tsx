@@ -97,7 +97,7 @@ function useModkeysStyles() {
 const MSHELL_HTML = `<div class="mShell">
       <header class="mHead">
         <div class="mBrand">
-          <img src="/assets/nodes/modkeys-logo.png" alt="" draggable="false" />
+          <img src="/assets/nodes/modkeys-logo.png" onerror="this.onerror=null;this.src='./assets/modkeys-logo.png'" alt="" draggable="false" />
           <b>MODKEYS</b>
         </div>
         <nav class="tnav" id="tnav">
@@ -410,10 +410,10 @@ export default function ModkeysPage() {
         </div>
       </div>
 
-      {/* Mobile shell template. Same IDs as #dShell; mountModkeys() swaps
-          exactly one into the live DOM. dangerouslySetInnerHTML populates
-          template.content (React children cannot). Markup duplicated in
-          artifacts/modkeys/index.html; change both. */}
+      {/* Mobile shell template. Same IDs as #dShell; shell.js selectShell()
+          swaps exactly one into the live DOM before app.js loads.
+          dangerouslySetInnerHTML populates template.content (React children
+          cannot). Markup duplicated in artifacts/modkeys/index.html; change both. */}
       <template id="mShellTpl" dangerouslySetInnerHTML={{ __html: MSHELL_HTML }} />
 
       <div className="toast" id="toast"></div>
