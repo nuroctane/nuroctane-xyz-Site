@@ -75,8 +75,8 @@ The Modkeys Keyboard Configurator is a fully integrated mechanical keyboard cust
   - 4 extras (Rotary Knob, Coiled Cable, Wrist Rest, Switch Lube Service)
 - **Interactive Controls**: 
   - Orbit/pan camera controls with inertia
-  - Multiple view presets (3D, Exploded, Top, Side, Front)
-  - Sidebar navigation with instant section switching
+  - Multiple view presets (3D, Explode, Top, Side, Front)
+  - Navigation: Sidebar (desktop) / section tabs (mobile) with instant section switching across Layout, Keycaps, Switches, Case, Plate, Lighting, Extras
   - Export and save functionality
 
 #### Technical Implementation
@@ -84,13 +84,14 @@ The Modkeys configurator is embedded as an imperative Vanilla JS page (`/modkeys
 - **CSS Scoping**: All Modkeys CSS is scoped under `.modkeys-page` to prevent style conflicts with the main site
 - **Theme Independence**: Uses its own CSS variable system (`--bg`, `--ink`, etc.) that doesn't interfere with the site's Tailwind-based design
 - **Bootstrapping**: Vanilla JS modules are bootstrapped imperatively on mount and torn down on unmount (no React wrappers, no two-way binding)
+- **Dual-shell architecture**: A dedicated mobile shell (`.mShell`) is swapped in at boot via `matchMedia` on phones/tablets, sharing element IDs with the desktop shell so all module code runs unchanged. ID parity is enforced by `check-shell-ids.mjs`; architecture is documented in `MOBILE_SHELL.md`.
 - **Performance**: Lazy-loaded via React.lazy + Suspense, with all heavy Three.js assets loaded on demand
 - **State Management**: Centralized mutable state store with undo/redo history (50-step limit)
 - **Sharing**: Configuration can be shared via URL-encoded state or exported as KLE/SVG/spec files
 
 #### Recent Improvements
 - **Keycaps Preview**: Replaced absolute-positioned keycaps with CSS grid layout — properly centers TAB, Q, S keys with even spacing and places the spacebar below them. Keys scale responsively at all breakpoints (52px desktop → 30px small mobile).
-- **Mobile Rework**: Stage height reduced from 340→180px (≤768px) and 260→140px (≤420px) to give configuration controls adequate room. Fixed scrolling model (main area scrolls, tab bar stays fixed). Compact controls (chips, buttons, swatches) sized for touch targets ≥44px. Legibility improved with responsive font sizes.
+- **Mobile Shell (v0.70+)**: A dedicated mobile shell is swapped in at boot via `matchMedia`, so the mobile page is now fully functional — not just a shrunk desktop. It includes a portrait-first (+ landscape) layout, a 3D preview with an icon view-pill bar (3D / Explode / Top / Side / Front), section tabs for Layout → Keycaps → Switches → Case → Plate → Lighting → Extras, material-specific click sounds (PBT keeps the switch sound; ABS/Ceramic add resonance layers), and safe-area + dvh handling throughout.
 
 ### 🎨 Design System
 - Dark, terminal-inspired aesthetic

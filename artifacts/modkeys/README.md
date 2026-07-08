@@ -97,7 +97,20 @@ The main view shows a 3D keyboard. Use the sidebar to navigate configuration sec
 - **Orbit**: Click and drag (default)
 - **Pan**: Toggle the hand icon or hold Shift + drag
 - **Zoom**: Scroll wheel or pinch (touch)
-- **Views**: 3D, Explode, Top, Side, Front via the pill switcher above the canvas
+- **Views**: 3D, Explode, Top, Side, Front via the pill switcher above the canvas (desktop) or the icon bar pinned to the stage bottom (mobile)
+
+### Mobile
+
+On phones and tablets the configurator swaps in a dedicated mobile shell at boot
+(via `matchMedia`). The experience is purpose-built, not a shrunk desktop:
+- **View pills** render as a bottom icon bar — cube (3D), two offset squares
+  (Explode), square + down-arrow (Top), tall rectangle + right-arrow (Side),
+  rectangle + up-arrow (Front) — so all five fit portrait screens.
+- **Section tabs** along the bottom switch Layout → Keycaps → Switches →
+  Case → Plate → Lighting → Extras.
+- **Material sounds**: tapping a key plays the switch sound; PBT keeps the
+  deep thock, while ABS and Ceramic add a brighter resonance layer.
+- **Safe-area + dvh** handling keeps controls clear of notches and home bars.
 
 ### Per-key Customization
 Double-click any key on the 3D board to open the key editor. Customize text, colors, glow, and images.

@@ -36,3 +36,13 @@ History:
   slider dropped for a solid .on background; tools cluster moved to top-right.
   Section tabs compacted to small scrollable pills (32px) reclaiming panel
   height. color-mix backgrounds given solid fallbacks. CSS-only, mobile.css.
+- v0.72 (2026-07-07): modkeys mobile — view pills now actually visible. Root
+  cause was the desktop `.pills { transform: translateX(-50%) }` leaking into
+  the mobile shell and shifting the full-width bottom bar left by 50% of its
+  own width, hiding 3D/Explode; corrected with `transform: none`. Pills
+  reworked from text to intent-representative SVG icons (cube / two offset
+  squares / top+down-arrow / side+right-arrow / front+up-arrow), rendered as
+  an equal-width flex row centered in the stage-bottom bar so all five fit on
+  portrait mobile. Mobile page now fully working: dedicated shell swapped at
+  boot, section tabs, material-specific click sounds (PBT keeps switch sound;
+  ABS/Ceramic add resonance layers), mobile-only Gallery bookmark icon.
