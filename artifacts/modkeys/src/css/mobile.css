@@ -52,26 +52,39 @@
   border-bottom: 1px solid var(--line);
 }
 .mShell #gl { width: 100%; height: 100%; display: block; }
+/* View pills: a single full-width horizontal bar pinned to the BOTTOM of the
+   stage. The previous top-left flex-wrap pushed "3D"/"Explode" onto a second
+   row that overlapped the scene and fell outside #pillInd's tracking, so they
+   read as missing. One non-wrapping scrollable row shows all five, and the
+   active state is a solid button background (no absolutely-positioned slider
+   to fall out of sync). */
 .mShell .pills {
-  position: absolute; top: 8px; left: 8px;
-  display: flex; flex-wrap: wrap; gap: 2px; padding: 3px;
-  background: var(--panel); border: 1px solid var(--line); border-radius: 11px;
-  max-width: calc(100% - 16px);
+  position: absolute; left: 8px; right: 8px; bottom: 8px; top: auto;
+  display: flex; flex-wrap: nowrap; gap: 3px; padding: 3px;
+  background: var(--panel); /* fallback */
+  background: color-mix(in srgb, var(--panel) 88%, transparent);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  border: 1px solid var(--line); border-radius: 11px;
+  max-width: none;
+  overflow-x: auto; scrollbar-width: none;
 }
+.mShell .pills::-webkit-scrollbar { display: none; }
 .mShell .pills button {
-  height: 28px; padding: 0 9px; border-radius: 7px; flex: none;
-  font-size: 11px; font-weight: 700; color: var(--ink2);
-  position: relative; z-index: 1; touch-action: manipulation;
+  height: 32px; padding: 0 12px; border-radius: 8px; flex: 1 0 auto;
+  font-size: 12px; font-weight: 700; color: var(--ink2);
+  white-space: nowrap; touch-action: manipulation;
 }
-.mShell .pills button.on { color: var(--ink); }
-.mShell #pillInd {
-  position: absolute; top: 3px; bottom: 3px; border-radius: 8px;
-  background: var(--card); transition: left 0.25s ease, width 0.25s ease;
-}
+.mShell .pills button.on { color: var(--ink); background: var(--card); }
+.mShell #pillInd { display: none; } /* replaced by button.on background on mobile */
+/* Tools move to the TOP-right so they no longer share an edge with the
+   bottom pill bar. */
 .mShell .mTools {
-  position: absolute; right: 8px; bottom: 8px;
+  position: absolute; right: 8px; top: 8px; bottom: auto;
   display: flex; align-items: center; gap: 2px; padding: 3px;
-  background: var(--panel); border: 1px solid var(--line); border-radius: 11px;
+  background: var(--panel); /* fallback */
+  background: color-mix(in srgb, var(--panel) 88%, transparent);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  border: 1px solid var(--line); border-radius: 11px;
 }
 .mShell .mTools button {
   width: 40px; height: 40px; border-radius: 8px;
@@ -81,22 +94,31 @@
 .mShell .mTools button.on { background: var(--card); color: var(--ink); }
 .mShell .mTools .toolSep { width: 1px; height: 20px; background: var(--line); margin: 0 2px; }
 
-/* ---- section tabs ---- */
+/* ---- section tabs: compact scrollable pills ----
+   Smaller than before so the config panel below gets more vertical room.
+   Single non-wrapping scrollable row; the meta value + unsaved dot ride
+   inside each pill. */
 .mShell .mTabs {
-  display: flex; gap: 4px;
-  padding: 8px 10px;
+  display: flex; gap: 5px;
+  padding: 7px 10px;
   overflow-x: auto; scrollbar-width: none;
   border-bottom: 1px solid var(--line);
   background: var(--panel);
 }
 .mShell .mTabs::-webkit-scrollbar { display: none; }
 .mShell .mTabs button {
-  flex: none; height: 40px; padding: 0 14px; border-radius: 10px;
-  display: flex; align-items: center; gap: 6px;
-  font-size: 12.5px; font-weight: 700; color: var(--ink2);
+  flex: none; height: 32px; padding: 0 12px; border-radius: 999px;
+  display: flex; align-items: center; gap: 5px;
+  font-size: 12px; font-weight: 700; color: var(--ink2);
+  background: var(--card2, transparent);
+  border: 1px solid var(--line);
   position: relative; touch-action: manipulation;
 }
-.mShell .mTabs button.on { background: var(--card); color: var(--ink); }
+.mShell .mTabs button.on {
+  background: var(--card); color: var(--ink);
+  border-color: var(--acc, #6cf); /* fallback */
+  border-color: color-mix(in srgb, var(--acc, #6cf) 55%, var(--line));
+}
 .mShell .mTabs .meta { font-size: 10px; font-weight: 800; color: var(--acc, var(--ink2)); }
 .mShell .mTabs .dot {
   width: 6px; height: 6px; border-radius: 50%;
@@ -104,14 +126,14 @@
 }
 .mShell .mTabs .dot.on { opacity: 1; }
 
-/* ---- panel ---- */
+/* ---- panel: title inline, more room for controls ---- */
 .mShell .mPanel {
   min-height: 0;
   display: flex; flex-direction: column;
   overflow: hidden;
 }
-.mShell .mPanel .rpHead { padding: 10px 14px 6px; }
-.mShell .mPanel .rpHead h2 { font-size: 11px; letter-spacing: 0.14em; }
+.mShell .mPanel .rpHead { padding: 8px 14px 2px; }
+.mShell .mPanel .rpHead h2 { font-size: 10.5px; letter-spacing: 0.14em; }
 .mShell .mPanel .rpBody {
   flex: 1; min-height: 0;
   overflow-y: auto;
@@ -220,7 +242,7 @@ html.mk-mobile .toast { top: calc(52px + env(safe-area-inset-top, 0px)); }
   }
   /* tabs + panel share the column: stack them */
   .mShell .mPanel {
-    margin-top: 56px; /* tabs height */
+    margin-top: 46px; /* compact tabs height */
     padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px));
   }
   .mShell .mBar {

@@ -30,3 +30,9 @@ History:
   in at boot by matchMedia, same element IDs both shells, boundary crossing
   reloads. tnav wired for real (was decorative). ID parity enforced by
   artifacts/modkeys/check-shell-ids.mjs; architecture in MOBILE_SHELL.md.
+- v0.71 (2026-07-07): modkeys mobile — view pills (3D/Explode/Top/Side/Front)
+  moved from a top-left flex-wrap (which hid 3D/Explode on a clipped 2nd row)
+  to a single no-wrap scrollable bar pinned to the stage bottom; #pillInd
+  slider dropped for a solid .on background; tools cluster moved to top-right.
+  Section tabs compacted to small scrollable pills (32px) reclaiming panel
+  height. color-mix backgrounds given solid fallbacks. CSS-only, mobile.css.
