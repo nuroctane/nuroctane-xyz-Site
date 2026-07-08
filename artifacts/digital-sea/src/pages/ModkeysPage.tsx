@@ -119,11 +119,21 @@ const MSHELL_HTML = `<div class="mShell">
           <canvas id="gl"></canvas>
           <div class="pills" id="pills">
             <div id="pillInd"></div>
-            <button data-view="3d" class="on">3D</button>
-            <button data-view="explode">Explode</button>
-            <button data-view="top">Top</button>
-            <button data-view="side">Side</button>
-            <button data-view="front">Front</button>
+            <button data-view="3d" class="on" title="3D" aria-label="3D">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><path d="M12 2 21 7v10l-9 5-9-5V7z"/><path d="M3 7l9 5 9-5M12 12v10"/></svg>
+            </button>
+            <button data-view="explode" title="Explode" aria-label="Explode">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><rect x="4" y="4" width="10" height="10" rx="1.5"/><rect x="10" y="10" width="10" height="10" rx="1.5"/></svg>
+            </button>
+            <button data-view="top" title="Top" aria-label="Top">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M12 8.5V14M9.5 11.5 12 14l2.5-2.5"/></svg>
+            </button>
+            <button data-view="side" title="Side" aria-label="Side">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><rect x="7" y="5" width="10" height="14" rx="2"/><path d="M10 12h5M12.5 9.5 15 12l-2.5 2.5"/></svg>
+            </button>
+            <button data-view="front" title="Front" aria-label="Front">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" stroke-linecap="round"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M12 15.5V10M9.5 12.5 12 10l2.5 2.5"/></svg>
+            </button>
           </div>
           <div class="toolbar mTools">
             <button id="toolHand" title="Pan" data-tool="pan">
