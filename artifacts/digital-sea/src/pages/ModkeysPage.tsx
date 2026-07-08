@@ -259,7 +259,7 @@ export default function ModkeysPage() {
            grid is the layout root. */
         <div className="mShellHost" dangerouslySetInnerHTML={{ __html: MSHELL_HTML }} />
       ) : (
-      <div className="app" id="dShell">
+      <div className="app dShell" id="dShell">
         <aside className="side">
           <div className="logo">
             <img src="/assets/nodes/modkeys-logo.png" alt="" style={{ height: 24, width: "auto" }} draggable={false} />
