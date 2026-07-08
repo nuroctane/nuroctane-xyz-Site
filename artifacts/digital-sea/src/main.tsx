@@ -1,9 +1,10 @@
 import { Router, useLocation } from 'wouter';
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
+import { Analytics, type BeforeSendEvent } from '@vercel/analytics/react';
+import { SpeedInsights } from '@vercel/speed-insights/react';
 import App from './App';
 import { AudioProvider } from './hooks/AudioContext';
-import { Analytics } from '@vercel/analytics/react';
 import './index.css';
 
 const QuotesPage = lazy(() => import('./pages/QuotesPage'));
@@ -13,6 +14,42 @@ const ModkeysPage = lazy(() => import('./pages/ModkeysPage'));
 
 function Fallback() {
   return <div className="page-loading"><div className="page-loading-dot" /></div>;
+}
+
+/** Normalize wouter location to a pathname Vercel can attribute (SPA routes). */
+function normalizePath(location: string): string {
+  if (!location || location === '/') return '/';
+  const withSlash = location.startsWith('/') ? location : `/${location}`;
+  // Drop trailing slash except root; lowercase for stable grouping
+  const trimmed = withSlash.replace(/\/+$/, '') || '/';
+  return trimmed.toLowerCase();
+}
+
+/**
+ * Strip share-hash noise from pageviews before they leave the browser.
+ * Build state lives in the hash fragment and must not inflate unique URLs.
+ */
+function beforeSend(event: BeforeSendEvent): BeforeSendEvent | null {
+  try {
+    const u = new URL(event.url, typeof window !== 'undefined' ? window.location.origin : 'https://nuroctane.xyz');
+    if (u.hash) u.hash = '';
+    return { ...event, url: u.pathname + u.search };
+  } catch {
+    return event;
+  }
+}
+
+function Telemetry() {
+  const [location] = useLocation();
+  const path = useMemo(() => normalizePath(location), [location]);
+  // path + route keep SPA client navigations attributed (Wouter pushState).
+  // framework hint avoids Next-only assumptions in the collector.
+  return (
+    <>
+      <Analytics path={path} route={path} framework="vite-wouter" beforeSend={beforeSend} />
+      <SpeedInsights route={path} />
+    </>
+  );
 }
 
 function Root() {
@@ -31,7 +68,7 @@ createRoot(document.getElementById('root')!).render(
   <Router>
     <AudioProvider>
       <Root />
-      <Analytics />
+      <Telemetry />
     </AudioProvider>
   </Router>,
 );

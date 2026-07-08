@@ -34,7 +34,20 @@ The visual aesthetic draws inspiration from the French animated series **Code Ly
 | **API** | Express 5 on Vercel serverless (`artifacts/api-server`) |
 | **Storage** | Upstash Redis KV (visitor books, modkeys configs) |
 | **Export (modkeys)** | KLE JSON, SVG, spec JSON, PDF (jsPDF + svg2pdf.js) |
+| **Telemetry** | Vercel Web Analytics + Speed Insights (SPA routes + Modkeys product events) |
 | **Monorepo** | pnpm workspaces |
+
+### Analytics (Vercel)
+
+Code is wired; you still need the project dashboard switches once:
+
+1. Open the Vercel project for this repo → **Analytics** → **Enable** Web Analytics.
+2. Optionally enable **Speed Insights** in the same project.
+3. Redeploy (or wait for the next push). Production traffic on `nuroctane.xyz` then reports page views for `/`, `/books`, `/quotes`, `/resume`, `/modkeys`, plus custom events (`Modkeys Save`, `Modkeys Export`, `Modkeys Share`).
+
+**Standalone** `modkeys.vercel.app` (if deployed from `artifacts/modkeys`) injects analytics on boot — enable Analytics on that Vercel project too if it is a separate project.
+
+**Privacy:** Web Analytics is cookieless / privacy-oriented on Vercel’s side. Share-link hash state is stripped from pageview URLs before send. Local `vite` dev does not feed production dashboards (`mode: auto`).
 
 ---
 

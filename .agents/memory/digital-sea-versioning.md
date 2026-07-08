@@ -62,3 +62,6 @@ History:
   snav icons removed (text-only per owner, both mirrors, dead .ic rules dropped); export parity
   verified complete across shells (KLE/SVG/Spec/copyKLE/exportPDF). Site: @vercel/analytics
   mounted at SPA root.
+- v0.74.1 (2026-07-08): telemetry caveats addressed — Wouter path/route passed into Analytics +
+  Speed Insights; beforeSend strips share-hash from pageviews; Modkeys custom events (Save /
+  Export / Share) via core/analytics.js; standalone modkeys boot injects @vercel/analytics.
