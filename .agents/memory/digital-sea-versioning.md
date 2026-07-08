@@ -55,3 +55,8 @@ History:
   construction). check-spa-shell.mjs now fails on any unscoped .snav
   selector, missing row declaration, or inline-styled tabs. Cascade-proof
   script confirmed winning declarations for tabs and pills.
+- v0.74 (2026-07-08): image upload restrictions (25MB cap, PNG/JPG only, hint text in KEY IMAGE
+  section and per-key editor); exportPDF button added to desktop JSX (parity fix — all 5 export
+  formats now on both shells); ESC key custom text — entering custom text in the key editor now
+  suppresses the theme mark icon and renders user text instead; font-size slider — legend texture
+  cache key now includes fontSize so slider changes actually update the 3D display.

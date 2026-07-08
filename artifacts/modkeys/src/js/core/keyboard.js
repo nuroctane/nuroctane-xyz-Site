@@ -15,7 +15,7 @@ import { BRAND_MARKS, MARKS, EMOJI, emojiUrl } from '../data/art.js';
 import {
   getEffectiveText, getEffectiveFg, getEffectiveMark,
   getEffectiveImage, getEffectiveFontSize, hasGlow, hasImageBehindText,
-  getOverride, keyId as perKeyId, getAllEntries,
+  getOverride, keyId as perKeyId, getAllEntries, hasCustomText,
 } from './perKey.js';
 import { composeLegend, renderText } from './imageLoader.js';
 
@@ -113,7 +113,7 @@ function legendTex(label, wU, fg, mark, opts) {
   const useLabel = (opts.customText !== undefined) ? opts.customText : label;
   const useFg = (opts.customFg !== undefined) ? opts.customFg : fg;
   const useText = useLabel || '';
-  const cacheKey = (useLabel || '') + '|' + wU + '|' + (useFg || 'nofg') + (mark ? '|' + mark : '') + (opts.imageData ? '|img' : '') + (opts.glow ? '|glow' : '');
+  const cacheKey = (useLabel || '') + '|' + wU + '|' + (useFg || 'nofg') + (mark ? '|' + mark : '') + (opts.imageData ? '|img' : '') + (opts.glow ? '|glow' : '') + (opts.imageBehindText ? '|ibt' : '') + '|fs' + (opts.fontSize || '29');
   if (!opts.glow && legendCache.has(cacheKey)) return legendCache.get(cacheKey);
   const W = Math.max(128, Math.round(128 * wU)) * S, H = 128 * S;
   const c = document.createElement('canvas');
@@ -305,6 +305,7 @@ function buildOneKey(keyDef, ri, ci, cx, cz, prof, cw, addToGroups) {
   const effectiveLabel = getEffectiveText(id, keyDef.l);
   const effectiveFg = getEffectiveFg(id, cw[keyDef.r].fg);
   const effectiveMark = getEffectiveMark(id, markFor(keyDef.l));
+  const userMark = hasCustomText(id) ? null : effectiveMark;
   const effectiveImage = getEffectiveImage(id);
   const effectiveFs = getEffectiveFontSize(id, 29);
   const glow = hasGlow(id);
@@ -329,7 +330,7 @@ function buildOneKey(keyDef, ri, ci, cx, cz, prof, cw, addToGroups) {
     const leg = new THREE.Mesh(
       new THREE.PlaneGeometry(topW, topD),
       new THREE.MeshBasicMaterial({
-        map: legendTex(keyDef.l, keyDef.w, cw[keyDef.r].fg, effectiveMark, texOpts),
+        map: legendTex(keyDef.l, keyDef.w, cw[keyDef.r].fg, userMark, texOpts),
         transparent: true,
         depthWrite: false,
       }),
@@ -343,7 +344,7 @@ function buildOneKey(keyDef, ri, ci, cx, cz, prof, cw, addToGroups) {
 
     if (glow) {
       const glowMat = createLegendGlowMat();
-      const maskTex = legendTex(keyDef.l, keyDef.w, '#ffffff', effectiveMark, texOpts);
+      const maskTex = legendTex(keyDef.l, keyDef.w, '#ffffff', userMark, texOpts);
       glowMat.uniforms.uMask.value = maskTex;
       const glowLeg = new THREE.Mesh(new THREE.PlaneGeometry(topW, topD), glowMat);
       glowLeg.rotation.x = -Math.PI / 2;
@@ -454,6 +455,7 @@ export function refreshLegends() {
     const effectiveLabel = getEffectiveText(id, c.userData.label);
     const effectiveFg = getEffectiveFg(id, cw[c.userData.role].fg);
     const effectiveMark = getEffectiveMark(id, markFor(c.userData.label));
+    const userMark = hasCustomText(id) ? null : effectiveMark;
     const effectiveImage = getEffectiveImage(id);
     const effectiveFs = getEffectiveFontSize(id, 29);
     const glow = hasGlow(id);
@@ -467,14 +469,14 @@ export function refreshLegends() {
       fontSize: effectiveFs,
     };
     c.userData.legend.material.map = legendTex(
-      c.userData.label, c.userData.w, cw[c.userData.role].fg, effectiveMark, texOpts,
+      c.userData.label, c.userData.w, cw[c.userData.role].fg, userMark, texOpts,
     );
     c.userData.legend.material.needsUpdate = true;
     if (glow && !c.userData.glowLegend) {
       const topW = (c.userData.w - GAP) * PROFILES[state.profile].taper * 0.92;
       const topD = (1 - GAP) * PROFILES[state.profile].taper * 0.82;
       const glowMat = createLegendGlowMat();
-      const maskTex = legendTex(c.userData.label, c.userData.w, '#ffffff', effectiveMark, texOpts);
+      const maskTex = legendTex(c.userData.label, c.userData.w, '#ffffff', userMark, texOpts);
       glowMat.uniforms.uMask.value = maskTex;
       const glowLeg = new THREE.Mesh(new THREE.PlaneGeometry(topW, topD), glowMat);
       glowLeg.rotation.x = -Math.PI / 2;
@@ -487,7 +489,7 @@ export function refreshLegends() {
       c.userData.glowLegend = null;
     } else if (glow && c.userData.glowLegend) {
       c.userData.glowLegend.material.uniforms.uMask.value = legendTex(
-        c.userData.label, c.userData.w, '#ffffff', effectiveMark, texOpts,
+        c.userData.label, c.userData.w, '#ffffff', userMark, texOpts,
       );
     }
   });

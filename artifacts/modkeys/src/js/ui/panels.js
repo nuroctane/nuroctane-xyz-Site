@@ -4,9 +4,10 @@ import { COLORWAYS, PANEL_SWATCHES } from '../data/colorways.js';
 import { CASES, FINISHES, PLATES, SWITCHES, MATERIALS, EXTRAS, PROFILES, LIGHT_COLORS } from '../data/components.js';
 import { setState, effectiveColorway } from '../core/update.js';
 import { setOverride, clearOverride, getOverride } from '../core/perKey.js';
-import { loadImage } from '../core/imageLoader.js';
+import { loadImage, validateImageFile } from '../core/imageLoader.js';
 import { MARKS } from '../data/art.js';
 import { rebuildKey, getKeyLabel } from '../core/keyboard.js';
+import { toast } from './toast.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -103,7 +104,8 @@ const PANELS = {
 <div class="grp" style="margin-top:12px;border-top:1px solid var(--card2);padding-top:12px">
   <div class="glabel">KEY IMAGE</div>
   <div class="hint">Double-click a key to select it, then upload an image below.</div>
-  <input type="file" id="keImageSidebar" accept="image/png,image/jpeg,image/svg+xml" class="keFile">
+  <input type="file" id="keImageSidebar" accept="image/png,image/jpeg" class="keFile">
+  <div class="hint">Accepted formats: PNG, JPG · Max file size: 25 MB</div>
   <div id="keSidebarPreview"></div>
 </div>`;
   },
@@ -202,7 +204,7 @@ export function showKeyEditor(keyData) {
   <div class="keRow"><label>BG color</label><input type="color" id="keBg" value="${ov.bgColor || '#ffffff'}" class="keColor"></div>
   <div class="keRow"><label>Glow text</label><label class="keToggle ${ov.glow ? 'on' : ''}" id="keGlow"><span></span></label></div>
   <div class="keRow"><label>Image behind text</label><label class="keToggle ${ov.imageBehindText ? 'on' : ''}" id="keImgBehind"><span></span></label></div>
-  <div class="keRow"><label>Image</label><input type="file" id="keImage" accept="image/png,image/jpeg,image/svg+xml" class="keFile"></div>
+  <div class="keRow"><label>Image</label><input type="file" id="keImage" accept="image/png,image/jpeg" class="keFile"><span style="font-size:10.5px;color:var(--ink3);margin-left:6px">PNG/JPG ≤25MB</span></div>
   ${ov.imageData ? `<div class="keRow"><label></label><img src="${ov.imageData}" class="kePreview"><button id="keRemoveImg" class="keBtn">Remove</button></div>` : ''}
   <div class="keRow" style="margin-top:12px"><button id="keReset" class="keBtn">Reset to default</button></div>
 </div>`;
@@ -272,6 +274,8 @@ export function setupPanelEvents() {
     if (ev.target.id === 'keImageSidebar') {
       const file = ev.target.files[0];
       if (!file) return;
+      const err = validateImageFile(file);
+      if (err) { toast(err); ev.target.value = ''; return; }
       const dataUrl = await loadImage(file);
       setOverride(_currentEditId, { imageData: dataUrl });
       rebuildKey(..._currentEditId.split('-').map(Number));
@@ -333,6 +337,8 @@ export function setupPanelEvents() {
     if (ev.target.id === 'keImage') {
       const file = ev.target.files[0];
       if (!file) return;
+      const err = validateImageFile(file);
+      if (err) { toast(err); ev.target.value = ''; return; }
       const dataUrl = await loadImage(file);
       setOverride(_currentEditId, { imageData: dataUrl });
       rebuildKey(..._currentEditId.split('-').map(Number));
