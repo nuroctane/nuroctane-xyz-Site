@@ -102,7 +102,7 @@ const MSHELL_HTML = `<div class="mShell">
         </div>
         <nav class="tnav" id="tnav">
           <button data-nav="builder" class="on">Builder</button>
-          <button data-nav="gallery"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg>Gallery</button>
+          <button data-nav="gallery" aria-label="Gallery"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"><path d="M19 21l-7-5-7 5V5a2 2 0 012-2h10a2 2 0 012 2z"/></svg></button>
         </nav>
         <button class="iconBtn" id="themeBtn" title="Toggle theme">
           <svg id="sunIc" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
