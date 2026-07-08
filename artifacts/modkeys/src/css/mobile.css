@@ -96,21 +96,18 @@
 .mShell .mTools button.on { background: var(--card); color: var(--ink); }
 .mShell .mTools .toolSep { width: 1px; height: 20px; background: var(--line); margin: 0 2px; }
 
-/* ---- section tabs: compact scrollable pills ----
-   Smaller than before so the config panel below gets more vertical room.
-   Single non-wrapping scrollable row; the meta value + unsaved dot ride
-   inside each pill. */
+/* ---- section tabs: compact wrapping pills ----
+   Buttons are content-sized (no wasted right-of-text padding) and
+   wrap into centered rows as needed. */
 .mShell .mTabs {
-  display: flex; gap: 5px;
-  padding: 7px 10px;
-  overflow-x: auto; scrollbar-width: none;
+  display: flex; flex-wrap: wrap; justify-content: center; gap: 4px;
+  padding: 4px 8px;
   border-bottom: 1px solid var(--line);
   background: var(--panel);
 }
-.mShell .mTabs::-webkit-scrollbar { display: none; }
 .mShell .mTabs button {
-  flex: none; height: 32px; padding: 0 12px; border-radius: 999px;
-  display: flex; align-items: center; gap: 5px;
+  flex: none; height: 32px; padding: 0 6px; border-radius: 999px;
+  display: flex; align-items: center; gap: 4px;
   font-size: 12px; font-weight: 700; color: var(--ink2);
   background: var(--card2, transparent);
   border: 1px solid var(--line);
@@ -244,7 +241,7 @@ html.mk-mobile .toast { top: calc(52px + env(safe-area-inset-top, 0px)); }
   }
   /* tabs + panel share the column: stack them */
   .mShell .mPanel {
-    margin-top: 46px; /* compact tabs height */
+    margin-top: 80px; /* wrapping pills height (~2 rows) */
     padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px));
   }
   .mShell .mBar {
