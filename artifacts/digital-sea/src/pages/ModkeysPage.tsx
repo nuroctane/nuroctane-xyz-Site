@@ -1,5 +1,4 @@
-import { useEffect, useRef } from 'react';
-import { useLocation } from 'wouter';
+import { useEffect, useRef, useState } from 'react';
 
 // Import CSS as raw strings for scoped injection
 import modkeysVars from '../../../modkeys/src/css/variables.css?raw';
@@ -94,6 +93,11 @@ function useModkeysStyles() {
   }, []);
 }
 
+/* Keep in sync with MOBILE_MQ in artifacts/modkeys/src/js/shell.js.
+   Duplicated because the shell decision must be made synchronously at
+   first render, before the dynamically-imported modkeys code exists. */
+const MOBILE_MQ = '(max-width: 768px), ((pointer: coarse) and (max-width: 1024px))';
+
 const MSHELL_HTML = `<div class="mShell">
       <header class="mHead">
         <div class="mBrand">
@@ -168,14 +172,14 @@ const MSHELL_HTML = `<div class="mShell">
           </div>
         </div>
       </div>
-      <nav class="snav mTabs" id="snav" style="display:flex;flex-wrap:wrap;justify-content:center;gap:4px;padding:4px 8px;">
-        <button data-sec="layout" style="flex:none;width:auto;height:32px;padding:0 6px;border-radius:999px;display:flex;align-items:center;gap:4px;font-size:12px;font-weight:700;border:1px solid var(--line);background:var(--card2,transparent);touch-action:manipulation">Layout<span class="meta" id="layoutVal">75%</span></button>
-        <button data-sec="keycaps" style="flex:none;width:auto;height:32px;padding:0 6px;border-radius:999px;display:flex;align-items:center;gap:4px;font-size:12px;font-weight:700;border:1px solid var(--line);background:var(--card2,transparent);touch-action:manipulation">Keycaps<span class="dot" id="dotKeycaps"></span></button>
-        <button data-sec="switches" style="flex:none;width:auto;height:32px;padding:0 6px;border-radius:999px;display:flex;align-items:center;gap:4px;font-size:12px;font-weight:700;border:1px solid var(--line);background:var(--card2,transparent);touch-action:manipulation">Switches<span class="dot" id="dotSwitches"></span></button>
-        <button data-sec="case" style="flex:none;width:auto;height:32px;padding:0 6px;border-radius:999px;display:flex;align-items:center;gap:4px;font-size:12px;font-weight:700;border:1px solid var(--line);background:var(--card2,transparent);touch-action:manipulation">Case<span class="dot" id="dotCase"></span></button>
-        <button data-sec="plate" style="flex:none;width:auto;height:32px;padding:0 6px;border-radius:999px;display:flex;align-items:center;gap:4px;font-size:12px;font-weight:700;border:1px solid var(--line);background:var(--card2,transparent);touch-action:manipulation">Plate<span class="dot" id="dotPlate"></span></button>
-        <button data-sec="lighting" style="flex:none;width:auto;height:32px;padding:0 6px;border-radius:999px;display:flex;align-items:center;gap:4px;font-size:12px;font-weight:700;border:1px solid var(--line);background:var(--card2,transparent);touch-action:manipulation">Lighting<span class="dot" id="dotLight"></span></button>
-        <button data-sec="extras" style="flex:none;width:auto;height:32px;padding:0 6px;border-radius:999px;display:flex;align-items:center;gap:4px;font-size:12px;font-weight:700;border:1px solid var(--line);background:var(--card2,transparent);touch-action:manipulation">Extras</button>
+      <nav class="snav mTabs" id="snav">
+        <button data-sec="layout">Layout<span class="meta" id="layoutVal">75%</span></button>
+        <button data-sec="keycaps">Keycaps<span class="dot" id="dotKeycaps"></span></button>
+        <button data-sec="switches">Switches<span class="dot" id="dotSwitches"></span></button>
+        <button data-sec="case">Case<span class="dot" id="dotCase"></span></button>
+        <button data-sec="plate">Plate<span class="dot" id="dotPlate"></span></button>
+        <button data-sec="lighting">Lighting<span class="dot" id="dotLight"></span></button>
+        <button data-sec="extras">Extras</button>
       </nav>
       <section class="mPanel">
         <div class="rpHead"><h2 id="panelTitle">KEYCAPS</h2></div>
@@ -199,8 +203,11 @@ const MSHELL_HTML = `<div class="mShell">
     </div>`;
 
 export default function ModkeysPage() {
-  const [, setLocation] = useLocation();
   const mountedRef = useRef(false);
+  /* Decided ONCE, synchronously, before first paint. React renders the
+     matching shell natively; there is no imperative swap on the SPA for a
+     later reconciliation to undo. Boundary crossings reload (app.js). */
+  const [isMobile] = useState(() => window.matchMedia(MOBILE_MQ).matches);
 
   useModkeysStyles();
 
@@ -245,6 +252,12 @@ export default function ModkeysPage() {
         <div className="bar"><i /></div>
       </div>
 
+      {isMobile ? (
+        /* Mobile shell, rendered by React itself (see MOBILE_SHELL.md:
+           "SPA shell ownership"). display:contents host so .mShell's own
+           grid is the layout root. */
+        <div className="mShellHost" dangerouslySetInnerHTML={{ __html: MSHELL_HTML }} />
+      ) : (
       <div className="app" id="dShell">
         <aside className="side">
           <div className="logo">
@@ -419,12 +432,7 @@ export default function ModkeysPage() {
           </div>
         </div>
       </div>
-
-      {/* Mobile shell template. Same IDs as #dShell; shell.js selectShell()
-          swaps exactly one into the live DOM before app.js loads.
-          dangerouslySetInnerHTML populates template.content (React children
-          cannot). Markup duplicated in artifacts/modkeys/index.html; change both. */}
-      <template id="mShellTpl" dangerouslySetInnerHTML={{ __html: MSHELL_HTML }} />
+      )}
 
       <div className="toast" id="toast"></div>
       <div className="kePop" id="keyEditor"></div>

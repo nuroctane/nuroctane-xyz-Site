@@ -82,3 +82,30 @@ three-panel app through media queries degraded both ends and risked the
 desktop layout on every change. Two shells cost some markup duplication
 (checked by tooling) and buy total independence: desktop can never be
 broken by mobile work again, and vice versa.
+
+## SPA shell ownership (v0.72 invariant — read before touching ModkeysPage)
+
+On the SPA, **React renders the shell**. `ModkeysPage.tsx` computes
+`isMobile` synchronously at first render (`useState(() =>
+matchMedia(MOBILE_MQ).matches)`) and renders either the desktop JSX or a
+`.mShellHost` div carrying `MSHELL_HTML`. There is NO `<template>` and NO
+imperative swap on the SPA.
+
+Why: the v0.70/0.71 approach swapped React-owned DOM from `shell.js`. Any
+re-render (wouter's `useLocation` subscription was enough) made React
+reconcile and resurrect the desktop shell — the phone never showed
+`.mShell`, which is why five rounds of mobile.css edits changed nothing on
+device while standalone (no React) looked "fixed".
+
+Rules:
+1. Never imperatively add/remove/replace nodes that React renders.
+2. `shell.js selectShell()` on the SPA is class-toggle only (it detects the
+   already-rendered `.mShell` / absent template and skips the swap). The
+   template+swap path is STANDALONE-ONLY.
+3. `MSHELL_HTML` in ModkeysPage.tsx must stay byte-identical (whitespace-
+   normalized) to the `#mShellTpl` template in index.html.
+4. `check-spa-shell.mjs` runs inside the root build (and therefore inside
+   the Vercel deploy) and fails unless the BUILT ModkeysPage chunk contains
+   the mobile.css sentinel, the mShellHost marker, and the mk-mobile class.
+   Do not weaken it; it exists because "build green" was claimed five times
+   while the shipped bundle proved otherwise.

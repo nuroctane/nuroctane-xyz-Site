@@ -1,11 +1,14 @@
+/*__MODKEYS_MOBILE_CSS_v072__*/
 /* ============================================================
-   MOBILE SHELL (v0.72-fix3)
+   MOBILE SHELL (v0.70)
    Everything in this file is scoped to .mShell (in-shell layout)
    or html.mk-mobile (shared overlays: key editor, modal, toast).
    Desktop CSS never applies to the mobile shell and vice versa;
    mountModkeys() puts exactly one shell in the DOM.
    Portrait-first; landscape handled at the bottom of this file.
    ============================================================ */
+
+.mShellHost { display: contents; }
 
 .mShell {
   display: grid;
@@ -97,28 +100,22 @@
 .mShell .mTools .toolSep { width: 1px; height: 20px; background: var(--line); margin: 0 2px; }
 
 /* ---- section tabs: compact wrapping pills ----
-   Buttons are content-sized (no wasted right-of-text padding) and
-   wrap into centered rows as needed. */
+   Single non-wrapping scrollable row; the meta value + unsaved dot ride
+   inside each pill. */
 .mShell .mTabs {
-  display: flex; flex-wrap: wrap; justify-content: center; gap: 4px;
-  padding: 4px 8px;
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 5px;
+  padding: 7px 10px;
   border-bottom: 1px solid var(--line);
   background: var(--panel);
 }
 .mShell .mTabs button {
-  flex: none !important; height: 32px; padding: 0 6px; border-radius: 999px;
-  display: flex; align-items: center; gap: 4px;
+  flex: none; height: 32px; padding: 0 12px; border-radius: 999px;
+  display: flex; align-items: center; gap: 5px;
   font-size: 12px; font-weight: 700; color: var(--ink2);
-  background: var(--card2, transparent);
-  border: 1px solid var(--line);
-  width: auto !important; min-width: 0 !important;
-  position: relative; touch-action: manipulation;
+  touch-action: manipulation;
 }
-.mShell .mTabs button.on {
-  background: var(--card); color: var(--ink);
-  border-color: var(--acc, #6cf); /* fallback */
-  border-color: color-mix(in srgb, var(--acc, #6cf) 55%, var(--line));
-}
+.mShell .mTabs button.on { background: var(--card); color: var(--ink); }
 .mShell .mTabs .meta { font-size: 10px; font-weight: 800; color: var(--acc, var(--ink2)); }
 .mShell .mTabs .dot {
   width: 6px; height: 6px; border-radius: 50%;
@@ -224,25 +221,20 @@ html.mk-mobile .toast { top: calc(52px + env(safe-area-inset-top, 0px)); }
    ============================================================ */
 @media (orientation: landscape) and (max-height: 560px) {
   .mShell {
-    grid-template-rows: auto 1fr;
+    grid-template-rows: auto auto 1fr;
     grid-template-columns: 56% 44%;
     grid-template-areas:
       "head head"
-      "stage panelcol";
+      "stage tabs"
+      "stage panel";
     padding-bottom: 0;
   }
   .mShell .mHead { grid-area: head; }
   .mShell .mStageWrap { grid-area: stage; min-height: 0; }
   .mShell .stage { height: 100%; min-height: 0; border-right: 1px solid var(--line); border-bottom: none; }
-  .mShell .mTabs,
-  .mShell .mPanel { grid-area: panelcol; }
-  .mShell .mTabs {
-    align-self: start;
-    position: sticky; top: 0; z-index: 2;
-  }
-  /* tabs + panel share the column: stack them */
+  .mShell .mTabs { grid-area: tabs; }
   .mShell .mPanel {
-    margin-top: 80px; /* wrapping pills height (~2 rows) */
+    grid-area: panel;
     padding-bottom: calc(58px + env(safe-area-inset-bottom, 0px));
   }
   .mShell .mBar {
