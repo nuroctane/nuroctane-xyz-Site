@@ -44,3 +44,14 @@ History:
   SPA); shell.js swap is standalone-only; unused useLocation removed.
   Section tabs now wrap into centered pill rows (owner spec). Post-build
   guard check-spa-shell.mjs greps the BUILT chunk for the mobile sentinel.
+- v0.73 (2026-07-08): the tab-pills visual finally correct on device. With
+  the shell rendering (v0.72), the remaining leak was property-level: bare
+  .snav { flex-direction: column } (+ .snav .meta margin-left:auto) in
+  layout.css cascaded into the mobile tabs (shared class), stacking buttons
+  full-width with the meta shoved right. Entire desktop .snav family now
+  .dShell-scoped; .mShell .mTabs declares flex-direction: row explicitly;
+  pill visuals restored; inline-style band-aid (caeb682) stripped from the
+  standalone template and MSHELL_HTML regenerated from it (parity by
+  construction). check-spa-shell.mjs now fails on any unscoped .snav
+  selector, missing row declaration, or inline-styled tabs. Cascade-proof
+  script confirmed winning declarations for tabs and pills.

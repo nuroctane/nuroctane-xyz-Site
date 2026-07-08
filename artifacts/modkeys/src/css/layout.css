@@ -84,7 +84,7 @@ svg {
   color: var(--sideTx2);
   margin: 26px 6px 10px;
 }
-.snav {
+.dShell .snav {
   display: flex;
   flex-direction: column;
   gap: 2px;
@@ -104,22 +104,22 @@ svg {
   text-align: left;
   width: 100%;
 }
-.snav button:hover {
+.dShell .snav button:hover {
   background: rgba(255, 255, 255, 0.055);
 }
-.snav button.on {
+.dShell .snav button.on {
   background: rgba(255, 255, 255, 0.09);
 }
-.snav .ic {
+.dShell .snav .ic {
   width: 20px;
   height: 20px;
   color: #a9a9b0;
   flex: 0 0 auto;
 }
-.snav button.on .ic {
+.dShell .snav button.on .ic {
   color: #fff;
 }
-.snav .meta {
+.dShell .snav .meta {
   margin-left: auto;
   font-size: 13px;
   color: var(--sideTx2);

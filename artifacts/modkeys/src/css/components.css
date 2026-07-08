@@ -896,7 +896,7 @@
    UI buttons get `manipulation` to kill the 300ms double-tap-zoom delay
    (which also broke the double-tap key editor on some browsers). */
 #gl, .stage { touch-action: none; }
-button, .chip, .sw, .profBtn, .snav button, .tnav button, .pills button,
+button, .chip, .sw, .profBtn, .dShell .snav button, .tnav button, .pills button,
 .toolbar button, .saveRow { touch-action: manipulation; }
 
 

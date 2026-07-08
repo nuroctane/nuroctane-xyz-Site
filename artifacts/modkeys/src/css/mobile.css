@@ -103,16 +103,25 @@
    Single non-wrapping scrollable row; the meta value + unsaved dot ride
    inside each pill. */
 .mShell .mTabs {
-  display: flex; flex-wrap: wrap; justify-content: center;
+  display: flex;
+  /* flex-direction stated explicitly: the desktop sidebar's `.snav
+     { flex-direction: column }` used to leak in here (the tabs share the
+     .snav class) and stacked the pills full-width. The desktop rule is now
+     .dShell-scoped, but this line guarantees row layout regardless. */
+  flex-direction: row;
+  flex-wrap: wrap; justify-content: center; align-items: center;
   gap: 5px;
   padding: 7px 10px;
   border-bottom: 1px solid var(--line);
   background: var(--panel);
 }
 .mShell .mTabs button {
-  flex: none; height: 32px; padding: 0 12px; border-radius: 999px;
-  display: flex; align-items: center; gap: 5px;
+  flex: 0 0 auto; width: auto; height: 32px; padding: 0 12px;
+  border-radius: 999px;
+  display: flex; align-items: center; justify-content: center; gap: 5px;
   font-size: 12px; font-weight: 700; color: var(--ink2);
+  background: var(--card2, transparent);
+  border: 1px solid var(--line);
   touch-action: manipulation;
 }
 .mShell .mTabs button.on { background: var(--card); color: var(--ink); }

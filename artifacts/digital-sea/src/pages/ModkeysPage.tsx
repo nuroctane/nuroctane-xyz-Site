@@ -200,7 +200,8 @@ const MSHELL_HTML = `<div class="mShell">
         <button id="copyKLE">Copy KLE</button>
         <button id="exportPDF">PDF</button>
       </div>
-    </div>`;
+    </div>
+    `;
 
 export default function ModkeysPage() {
   const mountedRef = useRef(false);
