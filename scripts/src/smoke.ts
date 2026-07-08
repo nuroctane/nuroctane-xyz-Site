@@ -111,6 +111,18 @@ async function smokeModkeys(): Promise<void> {
     ok(t.snap?.perKeyOverrides?.k1 && t.snap.perKeyOverrides.k1.imageData === undefined, "imageData stripped from stored snap");
     ok(t.layout === "75", "layout extracted from snap");
 
+    const badAdmin = await jfetch(base, "/api/modkeys/gallery/verify-admin", { password: "wrong" });
+    ok(badAdmin.status === 403, "verify-admin wrong password → 403");
+    const goodAdmin = await jfetch(base, "/api/modkeys/gallery/verify-admin", { password: "smoke-admin" });
+    ok(goodAdmin.status === 200 && goodAdmin.json?.ok === true, "verify-admin correct password → ok");
+
+    const badRename = await jfetch(base, "/api/modkeys/gallery/rename", { password: "wrong", id: t.id, name: "Nope" });
+    ok(badRename.status === 403, "rename wrong password → 403");
+    const rename = await jfetch(base, "/api/modkeys/gallery/rename", { password: "smoke-admin", id: t.id, name: "Renamed <i>build</i>" });
+    ok(rename.status === 200 && rename.json?.template?.name === "Renamed build", "rename as admin sanitizes name");
+    g = await jfetch(base, "/api/modkeys/gallery");
+    ok(g.json.templates[0]?.name === "Renamed build", "renamed name persists in GET");
+
     const badDel = await jfetch(base, "/api/modkeys/gallery/delete", { password: "wrong", id: t.id });
     ok(badDel.status === 403, "delete wrong password → 403");
     const missDel = await jfetch(base, "/api/modkeys/gallery/delete", { password: "smoke-admin", id: "nope" });

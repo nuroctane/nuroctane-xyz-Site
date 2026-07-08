@@ -10,7 +10,10 @@ const router = Router();
 
 const GALLERY_KEY = "modkeys:gallery";
 const MAX_ENTRIES = 100;
-const ADMIN_PASSWORD = process.env.MODKEYS_ADMIN_PASSWORD ?? "";
+/* Same secret as the books page admin mode (BOOKS_ADMIN_PASSWORD).
+   MODKEYS_ADMIN_PASSWORD kept as fallback for older env configs / smoke. */
+const ADMIN_PASSWORD =
+  process.env.BOOKS_ADMIN_PASSWORD || process.env.MODKEYS_ADMIN_PASSWORD || "";
 
 interface GalleryEntry {
   id: string;
@@ -96,6 +99,46 @@ router.post("/modkeys/gallery", async (req, res) => {
   } catch (err) {
     logger.error({ err }, "Failed to save gallery entry");
     return res.status(500).json({ error: "Failed to save gallery entry" });
+  }
+});
+
+router.post("/modkeys/gallery/verify-admin", async (req, res) => {
+  try {
+    if (!ADMIN_PASSWORD) {
+      return res.status(500).json({ error: "Admin password not configured" });
+    }
+    const { password } = req.body ?? {};
+    if (password === ADMIN_PASSWORD) return res.json({ ok: true });
+    return res.status(403).json({ error: "Unauthorized" });
+  } catch (err) {
+    logger.error({ err }, "Failed to verify gallery admin");
+    return res.status(500).json({ error: "Internal server error" });
+  }
+});
+
+router.post("/modkeys/gallery/rename", async (req, res) => {
+  try {
+    const { password, id, name } = req.body ?? {};
+    if (!ADMIN_PASSWORD || password !== ADMIN_PASSWORD) {
+      return res.status(403).json({ error: "Unauthorized" });
+    }
+    if (!id || typeof id !== "string") {
+      return res.status(400).json({ error: "Missing id" });
+    }
+    if (typeof name !== "string" || !name.trim()) {
+      return res.status(400).json({ error: "Missing name" });
+    }
+    const clean = sanitizeName(name);
+
+    const gallery = (await kvGet<GalleryEntry[]>(GALLERY_KEY)) ?? [];
+    const idx = gallery.findIndex((e) => e.id === id);
+    if (idx < 0) return res.status(404).json({ error: "Entry not found" });
+    gallery[idx] = { ...gallery[idx], name: clean };
+    await kvSet(GALLERY_KEY, gallery);
+    return res.json({ ok: true, template: { id: gallery[idx].id, name: gallery[idx].name } });
+  } catch (err) {
+    logger.error({ err }, "Failed to rename gallery entry");
+    return res.status(500).json({ error: "Failed to rename" });
   }
 });
 

@@ -209,6 +209,12 @@ export default function ModkeysPage() {
      matching shell natively; there is no imperative swap on the SPA for a
      later reconciliation to undo. Boundary crossings reload (app.js). */
   const [isMobile] = useState(() => window.matchMedia(MOBILE_MQ).matches);
+  /* Community gallery admin — same Ctrl+Shift+A + BOOKS_ADMIN_PASSWORD as /books.
+     Badge only on desktop; password dialog is the digital-sea bs-admin chrome. */
+  const [isAdmin, setIsAdmin] = useState(() => {
+    try { return !window.matchMedia(MOBILE_MQ).matches && sessionStorage.getItem('book-admin') === '1'; }
+    catch { return false; }
+  });
 
   useModkeysStyles();
 
@@ -242,6 +248,24 @@ export default function ModkeysPage() {
       mountedRef.current = false;
     };
   }, []);
+
+  useEffect(() => {
+    if (isMobile) return;
+    const onUi = (e: Event) => {
+      const detail = (e as CustomEvent<{ isAdmin?: boolean }>).detail;
+      if (detail && typeof detail.isAdmin === 'boolean') setIsAdmin(detail.isAdmin);
+    };
+    const onChange = (e: Event) => {
+      const detail = (e as CustomEvent<{ isAdmin?: boolean }>).detail;
+      if (detail && typeof detail.isAdmin === 'boolean') setIsAdmin(detail.isAdmin);
+    };
+    window.addEventListener('modkeys-admin-ui', onUi);
+    window.addEventListener('modkeys-admin-change', onChange);
+    return () => {
+      window.removeEventListener('modkeys-admin-ui', onUi);
+      window.removeEventListener('modkeys-admin-change', onChange);
+    };
+  }, [isMobile]);
 
   return (
     <div className="modkeys-page">
@@ -341,6 +365,9 @@ export default function ModkeysPage() {
               <button data-nav="accessories">Accessories</button>
             </nav>
             <div className="topIcons">
+              {isAdmin && (
+                <span className="bs-admin-badge" title="Ctrl+Shift+A to exit admin" style={{ alignSelf: 'center' }}>ADMIN</span>
+              )}
               <button className="iconBtn" id="themeBtn" title="Toggle theme">
                 <svg id="sunIc" width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
                   <circle cx="12" cy="12" r="4" />
