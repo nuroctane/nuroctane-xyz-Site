@@ -3,7 +3,8 @@ import type { MutableRefObject } from 'react';
 import type { Mode } from '../../types';
 
 // Boundary between the last social card (reddit) and the first creative
-// card (modkeys) after the 24-node re-spacing; verified computationally.
+// First creative card midpoint sits just above this after even spacing
+// (25 nodes with snipocr after modkeys); verified computationally.
 const PROJECT_THRESHOLD = 0.60;
 
 interface Props {

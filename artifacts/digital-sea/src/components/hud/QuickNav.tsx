@@ -26,6 +26,7 @@ const LOGO_MAP: Record<string, string> = {
   discord:    '/assets/nodes/discord-logo.png',
   reddit:     '/assets/nodes/reddit-logo.png',
   modkeys:    '/assets/nodes/modkeys-logo.png',
+  snipocr:    '/assets/nodes/snipocr-logo.png',
   atxtunerz:  '/assets/nodes/instagram-logo.png',
   github:     '/assets/nodes/github-logo.png',
   miyamaker:  '/assets/nodes/miyamaker-avatar.png',

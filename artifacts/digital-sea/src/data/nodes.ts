@@ -159,7 +159,7 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     logo: '/assets/nodes/reddit-logo.png',
   },
 
-  // ─── CREATIVE PROJECTS (9) — MODKEYS first ────────────────────────────────
+  // ─── CREATIVE PROJECTS (10) — MODKEYS first ───────────────────────────────
   {
     id: 'modkeys', label: 'MODKEYS', handle: 'keyboard configurator',
     url: 'https://www.nuroctane.xyz/modkeys',
@@ -167,6 +167,15 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     subtitle: 'design your endgame board',
     description: '3D mechanical keyboard configurator. build it, color it, export it.',
     avatar: '/assets/nodes/modkeys-logo.png',
+    logo: '/assets/nodes/github-logo.png',
+  },
+  {
+    id: 'snipocr', label: 'SnipOCR', handle: 'snipocr',
+    url: 'https://github.com/nuroctane/snipocr',
+    urlDisplay: 'github.com/nuroctane/snipocr',
+    subtitle: 'Win+Shift+S → text',
+    description: 'Automatic local OCR for Windows Snipping Tool captures',
+    avatar: '/assets/nodes/snipocr-logo.png',
     logo: '/assets/nodes/github-logo.png',
   },
   {
@@ -260,12 +269,17 @@ const STEP = (LAST_START - FIRST_START) / Math.max(1, raw.length - 1);
 // At their default alternating x-side, these nodes land on the *same* side as
 // the camera path at their t value (< 1 unit apart in X) — flip them across
 // so the camera looks across the sea at the card instead of being nose-to-it.
-// Retuned for the 24-node spacing (reddit + modkeys added); verified
-// computationally: every card now sits >= 1 unit across from the path.
+// Side flips so cards sit across the camera path (not nose-on). When inserting
+// a node mid-list, index parity shifts for everything after it — invert FLIP
+// membership for those shifted ids so their world-side stays the same.
+// 25 nodes (snipocr after modkeys); socials unchanged.
 const FLIP_X = new Set([
   'tiktok', 'substack', 'kick', 'goodreads', 'remilia',
-  'modkeys', 'atxtunerz', 'weatherguru', 'sis',
-  'astrosleep', 'miyamaker', 'webutils',
+  'modkeys',
+  // snipocr at even creative index — flip so it faces the path (same side rule as peers)
+  'snipocr',
+  // shifted after insert: inverted vs pre-snipocr set
+  'github', 'geoskin',
 ]);
 
 // These late-path nodes have a slightly wider proximity window so the camera
@@ -273,6 +287,7 @@ const FLIP_X = new Set([
 // especially important on narrow mobile viewports.
 const WIDE_CARD: Record<string, number> = {
   modkeys:     0.068,
+  snipocr:     0.066,
   atxtunerz:   0.070,
   github:      0.064,
   weatherguru: 0.074,

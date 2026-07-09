@@ -125,3 +125,5 @@ History:
   paths could drop intake); mode=production for Vite SPA; standalone inject same.
 - v0.96 (2026-07-08): @vercel/speed-insights → v2.0.0 (latest); SI beforeSend hash
   strip + absolute URLs; framework=react per quickstart.
+- v0.97 (2026-07-09): snipocr creative node after modkeys (repo logo + github badge,
+  description matches GitHub); QuickNav logo; FLIP_X parity preserved for shifted cards.
