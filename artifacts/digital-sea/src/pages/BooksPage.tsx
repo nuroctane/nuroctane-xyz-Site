@@ -118,6 +118,8 @@ function bookKey(b: Book): string {
 
 const SESSION_KEY = 'book-session-id';
 const ADMIN_KEY = 'book-admin';
+/** Shared with modkeys galleryAdmin — same BOOKS_ADMIN_PASSWORD unlock. */
+const ADMIN_PW_KEY = 'book-admin-pw';
 
 function getSessionId(): string {
   let id = sessionStorage.getItem(SESSION_KEY);
@@ -157,7 +159,12 @@ export default function BooksPage() {
 
   const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const searchAbort = useRef<AbortController | null>(null);
-  const adminPasswordRef = useRef('');
+  const adminPasswordRef = useRef(
+    (() => {
+      try { return sessionStorage.getItem(ADMIN_PW_KEY) || ''; }
+      catch { return ''; }
+    })(),
+  );
 
   // Fetch visitor books from API; on failure, fall back to the last
   // successfully-loaded copy so the community section never blanks out.
@@ -203,6 +210,8 @@ export default function BooksPage() {
         if (isAdmin) {
           setIsAdmin(false);
           sessionStorage.removeItem(ADMIN_KEY);
+          sessionStorage.removeItem(ADMIN_PW_KEY);
+          adminPasswordRef.current = '';
         } else {
           setAdminPrompt(true);
           setAdminPass('');
@@ -225,6 +234,7 @@ export default function BooksPage() {
         adminPasswordRef.current = adminPass;
         setIsAdmin(true);
         sessionStorage.setItem(ADMIN_KEY, '1');
+        sessionStorage.setItem(ADMIN_PW_KEY, adminPass);
         setAdminPrompt(false);
         setAdminPass('');
         setAdminError(false);

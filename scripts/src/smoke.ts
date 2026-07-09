@@ -111,23 +111,28 @@ async function smokeModkeys(): Promise<void> {
     ok(t.snap?.perKeyOverrides?.k1 && t.snap.perKeyOverrides.k1.imageData === undefined, "imageData stripped from stored snap");
     ok(t.layout === "75", "layout extracted from snap");
 
-    const badAdmin = await jfetch(base, "/api/modkeys/gallery/verify-admin", { password: "wrong" });
-    ok(badAdmin.status === 403, "verify-admin wrong password → 403");
-    const goodAdmin = await jfetch(base, "/api/modkeys/gallery/verify-admin", { password: "smoke-admin" });
-    ok(goodAdmin.status === 200 && goodAdmin.json?.ok === true, "verify-admin correct password → ok");
+    /* Admin via action: on POST /gallery (Vercel only routes one segment under
+       /api/modkeys/* — multi-segment /gallery/verify-admin is NOT_FOUND there). */
+    const badAdmin = await jfetch(base, "/api/modkeys/gallery", { action: "verifyAdmin", password: "wrong" });
+    ok(badAdmin.status === 403, "verifyAdmin wrong password → 403");
+    const goodAdmin = await jfetch(base, "/api/modkeys/gallery", { action: "verifyAdmin", password: "smoke-admin" });
+    ok(goodAdmin.status === 200 && goodAdmin.json?.ok === true, "verifyAdmin correct password → ok");
+    /* single-segment alias also works */
+    const aliasAdmin = await jfetch(base, "/api/modkeys/verify-admin", { password: "smoke-admin" });
+    ok(aliasAdmin.status === 200 && aliasAdmin.json?.ok === true, "POST /modkeys/verify-admin alias ok");
 
-    const badRename = await jfetch(base, "/api/modkeys/gallery/rename", { password: "wrong", id: t.id, name: "Nope" });
+    const badRename = await jfetch(base, "/api/modkeys/gallery", { action: "rename", password: "wrong", id: t.id, name: "Nope" });
     ok(badRename.status === 403, "rename wrong password → 403");
-    const rename = await jfetch(base, "/api/modkeys/gallery/rename", { password: "smoke-admin", id: t.id, name: "Renamed <i>build</i>" });
+    const rename = await jfetch(base, "/api/modkeys/gallery", { action: "rename", password: "smoke-admin", id: t.id, name: "Renamed <i>build</i>" });
     ok(rename.status === 200 && rename.json?.template?.name === "Renamed build", "rename as admin sanitizes name");
     g = await jfetch(base, "/api/modkeys/gallery");
     ok(g.json.templates[0]?.name === "Renamed build", "renamed name persists in GET");
 
-    const badDel = await jfetch(base, "/api/modkeys/gallery/delete", { password: "wrong", id: t.id });
+    const badDel = await jfetch(base, "/api/modkeys/gallery", { action: "delete", password: "wrong", id: t.id });
     ok(badDel.status === 403, "delete wrong password → 403");
-    const missDel = await jfetch(base, "/api/modkeys/gallery/delete", { password: "smoke-admin", id: "nope" });
+    const missDel = await jfetch(base, "/api/modkeys/gallery", { action: "delete", password: "smoke-admin", id: "nope" });
     ok(missDel.status === 404, "delete unknown id → 404");
-    const del = await jfetch(base, "/api/modkeys/gallery/delete", { password: "smoke-admin", id: t.id });
+    const del = await jfetch(base, "/api/modkeys/gallery", { action: "delete", password: "smoke-admin", id: t.id });
     ok(del.status === 200 && del.json?.ok === true, "delete as admin → ok");
     g = await jfetch(base, "/api/modkeys/gallery");
     ok(g.json.templates.length === 0, "gallery empty after delete");

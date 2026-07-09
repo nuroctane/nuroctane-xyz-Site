@@ -104,3 +104,6 @@ History:
   + switch from accent; re-apply on copy/auto-fit; snav dots stay in sync.
 - v0.88 (2026-07-08): photo-match copy — any photo (not only keyboards); PNG/JPG
   max 25 MB same as key image uploads (validateImageFile + accept).
+- v0.89 (2026-07-08): modkeys gallery admin — BOOKS_ADMIN_PASSWORD works on Vercel
+  (admin ops via action: on POST /api/modkeys/gallery; multi-segment paths were
+  NOT_FOUND); books stores shared book-admin-pw for cross-page unlock.
