@@ -10,6 +10,7 @@ type Payload = {
 };
 
 const LEVEL_COLORS = ['#0d2228', '#0e4429', '#006d32', '#26a641', '#39d353'];
+const LABEL_TOP = 26; /* room for @user + count */
 
 function levelFor(count: number, max: number): number {
   if (count <= 0) return 0;
@@ -62,30 +63,69 @@ export function GithubContribTerrain({ width = 132 }: { width?: number }) {
 
     const days = payload.data;
     const maxWeek = Math.max(...days.map((d) => d.week), 0);
+    const maxDay = Math.max(...days.map((d) => d.day), 6);
     const maxCount = Math.max(...days.map((d) => d.count), 1);
 
-    /* isometric cell size */
-    const cell = Math.min(4.2, (cssW - 16) / (maxWeek + 8));
-    const ox = cssW * 0.12;
-    const oy = cssH * 0.62;
+    const margin = 8;
+    const availW = cssW - margin * 2;
+    const availH = cssH - LABEL_TOP - margin;
+    /* Fit full year grid in isometric projection */
+    const cell = Math.min(
+      4.4,
+      availW / (maxWeek + maxDay + 4) / 0.9,
+      availH / (maxWeek + maxDay + 6) / 0.55,
+    );
 
-    const project = (w: number, d: number, h: number) => {
+    const project = (w: number, d: number, h: number, ox: number, oy: number) => {
       const x = ox + (w - d) * cell * 0.9;
       const y = oy + (w + d) * cell * 0.5 - h;
       return { x, y };
     };
 
-    /* sea base plate */
+    /* Measure bounds with temp origin, then center */
+    let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+    const maxH = cell * 5.5;
+    const sample = (w: number, d: number, h: number) => {
+      const corners = [
+        project(w, d, 0, 0, 0),
+        project(w, d, h, 0, 0),
+        { x: project(w, d, 0, 0, 0).x + cell * 0.9, y: project(w, d, 0, 0, 0).y + cell * 0.5 },
+        { x: project(w, d, 0, 0, 0).x - cell * 0.9, y: project(w, d, 0, 0, 0).y + cell * 0.5 },
+        { x: project(w, d, h, 0, 0).x + cell * 0.9, y: project(w, d, h, 0, 0).y + cell * 0.5 },
+        { x: project(w, d, h, 0, 0).x - cell * 0.9, y: project(w, d, h, 0, 0).y + cell * 0.5 },
+      ];
+      for (const p of corners) {
+        minX = Math.min(minX, p.x);
+        maxX = Math.max(maxX, p.x);
+        minY = Math.min(minY, p.y);
+        maxY = Math.max(maxY, p.y);
+      }
+    };
+    sample(0, 0, maxH);
+    sample(maxWeek, 0, maxH);
+    sample(0, maxDay, maxH);
+    sample(maxWeek, maxDay, maxH);
+    for (const day of days) {
+      const h = Math.max(1.5, (day.count / maxCount) * maxH);
+      sample(day.week, day.day, h);
+    }
+
+    const bw = maxX - minX || 1;
+    const bh = maxY - minY || 1;
+    const ox = (cssW - bw) / 2 - minX;
+    const oy = LABEL_TOP + (availH - bh) / 2 - minY;
+
     ctx.fillStyle = 'rgba(4, 18, 26, 0.9)';
     ctx.fillRect(0, 0, cssW, cssH);
 
-    for (const day of days) {
-      const h = Math.max(1.5, (day.count / maxCount) * cell * 5.5);
-      const { x, y } = project(day.week, day.day, 0);
-      const top = project(day.week, day.day, h);
+    /* Draw back-to-front (week+day ascending) for simple painter order */
+    const sorted = [...days].sort((a, b) => (a.week + a.day) - (b.week + b.day));
+    for (const day of sorted) {
+      const h = Math.max(1.5, (day.count / maxCount) * maxH);
+      const { x, y } = project(day.week, day.day, 0, ox, oy);
+      const top = project(day.week, day.day, h, ox, oy);
       const col = LEVEL_COLORS[levelFor(day.count, maxCount)];
 
-      /* right face */
       ctx.fillStyle = shade(col, -28);
       ctx.beginPath();
       ctx.moveTo(x, y);
@@ -95,7 +135,6 @@ export function GithubContribTerrain({ width = 132 }: { width?: number }) {
       ctx.closePath();
       ctx.fill();
 
-      /* left face */
       ctx.fillStyle = shade(col, -45);
       ctx.beginPath();
       ctx.moveTo(x, y);
@@ -105,7 +144,6 @@ export function GithubContribTerrain({ width = 132 }: { width?: number }) {
       ctx.closePath();
       ctx.fill();
 
-      /* top face */
       ctx.fillStyle = col;
       ctx.beginPath();
       ctx.moveTo(top.x, top.y);
@@ -116,7 +154,6 @@ export function GithubContribTerrain({ width = 132 }: { width?: number }) {
       ctx.fill();
     }
 
-    /* brand caption */
     ctx.font = '600 8px "JetBrains Mono", monospace';
     ctx.fillStyle = 'rgba(93, 232, 240, 0.85)';
     ctx.fillText(`@${payload.username}`, 6, 12);

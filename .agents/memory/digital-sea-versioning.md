@@ -88,3 +88,6 @@ History:
   editing (keep 5px engage + zero inertia on open; stop blocking camera when
   selectedKey). Plate color picker: live tint without setState panel rebuild
   (was freezing UI until wheel); releasePointerCapture on pointerup.
+- v0.84 (2026-07-08): case/switch/light free color pickers (live apply, commit
+  on change); exports reflect custom hexes; GitHub contrib terrain centered in
+  secondary card; README credits thebuggeddev/modkeys.

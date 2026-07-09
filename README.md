@@ -70,6 +70,8 @@ Code is wired; you still need the project dashboard switches once:
 ### ⌨️ Modkeys Keyboard Configurator
 A fully integrated mechanical keyboard customization tool — design and visualize builds in real-time 3D, on desktop and mobile.
 
+**Inspiration:** the original [modkeys](https://github.com/thebuggeddev/modkeys) project by [thebuggeddev](https://github.com/thebuggeddev) — this site’s configurator grew from that idea into a dual-shell (desktop + mobile), export-heavy, nuroctane-branded build.
+
 #### Features
 - **Complete customization**: Layout (60%, 65%, 75%), profile, material, switches, keycaps, case, plate, lighting, and extras
 - **Real-time 3D preview**: Three.js with realistic materials and lighting; orbit / pan / zoom (mouse or touch)
