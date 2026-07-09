@@ -91,3 +91,6 @@ History:
 - v0.84 (2026-07-08): case/switch/light free color pickers (live apply, commit
   on change); exports reflect custom hexes; GitHub contrib terrain centered in
   secondary card; README credits thebuggeddev/modkeys.
+- v0.85 (2026-07-08): Customize section (desktop+mobile) — photo→board colour
+  copy with 4-corner fit, multi-select (shift/multi mode), emoji grid, image
+  fit wrap/fill/sticker, label hide, reset one/all; double-click opens Customize.

@@ -180,6 +180,7 @@ const MSHELL_HTML = `<div class="mShell">
         <button data-sec="plate">Plate<span class="dot" id="dotPlate"></span></button>
         <button data-sec="lighting">Lighting<span class="dot" id="dotLight"></span></button>
         <button data-sec="extras">Extras</button>
+        <button data-sec="customize">Customize</button>
       </nav>
       <section class="mPanel">
         <div class="rpHead"><h2 id="panelTitle">KEYCAPS</h2></div>
@@ -311,6 +312,9 @@ export default function ModkeysPage() {
             </button>
             <button data-sec="extras">
               Extras
+            </button>
+            <button data-sec="customize">
+              Customize
             </button>
           </nav>
           <div className="sideBottom">
