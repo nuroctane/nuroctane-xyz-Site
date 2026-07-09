@@ -1,17 +1,16 @@
-
 # Quotes
 
 > [!note] Maintenance
 > One entry per blockquote. Put the source on the last line as `— Author, *Work*` when it is known. Keep clipped social imports out unless the body, author, and date are complete.
 
 ## Index
-- [[#Faith, God & Surrender|Faith, God & Surrender]] (63)
+- [[#Faith, God & Surrender|Faith, God & Surrender]] (64)
 - [[#Reality, Manifestation & Abundance|Reality, Manifestation & Abundance]] (99)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (116)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (94)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (96)
 - [[#Relationships, Boundaries & Love|Relationships, Boundaries & Love]] (54)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (21)
-- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (84)
+- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (85)
 - [[#Wealth, Work & Value|Wealth, Work & Value]] (29)
 - [[#Unsorted Sparks|Unsorted Sparks]] (53)
 
@@ -207,6 +206,10 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > — fishybusiness. (@KruseYouri), X, 2025-02-19
 
 > You never know enough to worry. Live life as it comes.
+
+> If you talk to any old priest who's actually been in the game forty years they're like yes the devil is real and he prefers intelligent people, don't pray when you're angry it opens the wrong door, some saints were terrifying in person and not in a good way, certain prayers work at certain times of night and we don't know why, and never let a possessed person know you're afraid
+> — @lichthauch
+
 
 ## Reality, Manifestation & Abundance
 
@@ -1149,6 +1152,12 @@ _Doing the hard thing, skill, courage, habits, attention, decisions, and embodie
 
 > Dream it, and then do it. The only instruction manual there is.
 
+> The work of ur entire life, absolutely essential as it is, in and of itself will take u nowhere. It won’t lift u up in some latent fashion.
+>
+> What it will do, is generate a few good opportunities a year for u, and u’ll have anywhere from a few seconds to few days to seize them.
+> — @MrE_mssg
+
+
 ## Relationships, Boundaries & Love
 
 _Love, friendship, projection, women and men, rejection, intimacy, standards, and who gets access._
@@ -1562,6 +1571,15 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, attention, and
 > Knowing nothing does wonders for the nervous system. Don't check your emails. Don't ask your mom why any of it happened. Mute him on twitter. Ignore the nutrition label. Have notifications off for everything. Remove your eyes, ears, and nerve endings.
 
 > If you're an anxious person, just do everything for fun. Submit documents for fun. Start a blog for fun. Go to a job interview for fun. ANXIETY FEEDS ON IMPORTANCE. Do not make everything a matter of life and deaťh.
+
+> i like to think that problems want to be solved. and that they are waiting there for the right person to come along and figure out a solution
+> 
+> it follows that: if a problem seems inaccessible to you, that doesn't mean its unsolvable. it just means the problem doesn't want you to solve it yet. you are probably unworthy of solving it yet, because you haven't acquired the skills you need to do so
+> 
+> but that's not rejection (literally nothing is rejection). it's just homework
+> — @AnikaSomaia
+
+
 
 ## Wealth, Work & Value
 
