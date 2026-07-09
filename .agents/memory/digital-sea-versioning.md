@@ -94,3 +94,8 @@ History:
 - v0.85 (2026-07-08): Customize section (desktop+mobile) — photo→board colour
   copy with 4-corner fit, multi-select (shift/multi mode), emoji grid, image
   fit wrap/fill/sticker, label hide, reset one/all; double-click opens Customize.
+- v0.86 (2026-07-08): photo-match CV upgrade — board detect (largest non-bg
+  component), auto keycap-field corners, median sampling, k-means palette +
+  role assign (alpha/mod/accent/case/glow) with vivid accent rescue; upload
+  auto-applies roles + per-key copy; Auto-fit board re-detect; projective
+  unit→quad map; modular dual-shell Customize.
