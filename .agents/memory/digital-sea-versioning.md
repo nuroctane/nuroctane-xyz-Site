@@ -110,3 +110,6 @@ History:
 - v0.90 (2026-07-08): load photo/custom builds correctly — customColors wins over
   named colorway; perKeyOverrides rebuild key materials (not legends-only);
   loadSnap for gallery/saved/hash; snav configure dots follow restored colours.
+- v0.91 (2026-07-08): after photo-matched builds, colorway / custom Alpha-Mod-Accent
+  edits work again — strip per-key bg/fg on global recolour (overrides were
+  locking faces); loadSnap/presets clear leftover photo overrides when absent.
