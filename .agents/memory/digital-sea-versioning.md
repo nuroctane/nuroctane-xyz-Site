@@ -107,3 +107,6 @@ History:
 - v0.89 (2026-07-08): modkeys gallery admin — BOOKS_ADMIN_PASSWORD works on Vercel
   (admin ops via action: on POST /api/modkeys/gallery; multi-segment paths were
   NOT_FOUND); books stores shared book-admin-pw for cross-page unlock.
+- v0.90 (2026-07-08): load photo/custom builds correctly — customColors wins over
+  named colorway; perKeyOverrides rebuild key materials (not legends-only);
+  loadSnap for gallery/saved/hash; snav configure dots follow restored colours.
