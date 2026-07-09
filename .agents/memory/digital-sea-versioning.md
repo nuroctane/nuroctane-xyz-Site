@@ -118,3 +118,6 @@ History:
 - v0.93 (2026-07-08): key emoji on 3D caps — user markId no longer suppressed by
   labelHidden; unicode fallback while Twemoji loads; None / re-click clears emoji
   and restores legend text.
+- v0.94 (2026-07-08): rotary knob customizable like a key — double-click / multi-
+  select; body colour (accent colorway); dial tick = legend (show + colour);
+  emoji/image + fit replace tick; drag-to-brightness kept (5px engage).
