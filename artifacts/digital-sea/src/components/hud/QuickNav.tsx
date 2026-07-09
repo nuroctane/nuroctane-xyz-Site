@@ -31,12 +31,13 @@ const LOGO_MAP: Record<string, string> = {
   github:     '/assets/nodes/github-logo.png',
   miyamaker:  '/assets/nodes/miyamaker-avatar.png',
   webutils:   '/assets/nodes/wrench.png',
+  // Project marks (same files as card avatars)
+  astrosleep: '/assets/nodes/astrosleep-logo.png',
 };
 
 const ACRONYM_MAP: Record<string, string> = {
   weatherguru: 'WG',
   sis:         'SIS',
-  astrosleep:  'AS',
   geoskin:     'CS',
 };
 
@@ -79,7 +80,8 @@ function scrollToBlogPost(
 }
 
 function NavItem({ node, onClose, onNavigate }: { node: NodeData; onClose: () => void; onNavigate?: () => void }) {
-  const logo    = LOGO_MAP[node.id];
+  // Prefer explicit LOGO_MAP, else project card avatar (so new project art shows without a second map entry)
+  const logo    = LOGO_MAP[node.id] || (node.avatar || undefined);
   const acronym = ACRONYM_MAP[node.id] ?? node.id.slice(0, 2).toUpperCase();
   const isSoon  = node.url === '#';
 

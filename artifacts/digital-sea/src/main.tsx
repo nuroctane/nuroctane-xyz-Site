@@ -1,5 +1,5 @@
 import { Router, useLocation } from 'wouter';
-import { lazy, Suspense, useMemo } from 'react';
+import { lazy, Suspense, useEffect, useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
 import { Analytics, type BeforeSendEvent } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/react';
@@ -80,9 +80,33 @@ function Telemetry() {
   );
 }
 
+/** Route-aware document chrome (title). Favicon swap for modkeys lives in ModkeysPage. */
+function useRouteTitle(path: string) {
+  useEffect(() => {
+    if (path === 'modkeys') {
+      document.title = 'MODKEYS';
+      return;
+    }
+    if (path === 'quotes') {
+      document.title = 'Quotes — NUROCTANE';
+      return;
+    }
+    if (path === 'books') {
+      document.title = 'Books — NUROCTANE';
+      return;
+    }
+    if (path === 'resume') {
+      document.title = 'Resume — NUROCTANE';
+      return;
+    }
+    document.title = 'NUROCTANE';
+  }, [path]);
+}
+
 function Root() {
   const [location] = useLocation();
   const path = location.replace(/^\//, '').toLowerCase();
+  useRouteTitle(path);
 
   if (path === 'quotes') return <Suspense fallback={<Fallback />}><QuotesPage /></Suspense>;
   if (path === 'books')  return <Suspense fallback={<Fallback />}><BooksPage /></Suspense>;

@@ -219,6 +219,38 @@ export default function ModkeysPage() {
 
   useModkeysStyles();
 
+  // Page chrome: tab title + favicon should say MODKEYS, not the host site brand.
+  useEffect(() => {
+    const prevTitle = document.title;
+    document.title = 'MODKEYS';
+
+    const iconLinks = Array.from(
+      document.querySelectorAll<HTMLLinkElement>("link[rel*='icon']"),
+    );
+    const prevHrefs = iconLinks.map((el) => el.href);
+    iconLinks.forEach((el) => {
+      el.href = '/assets/nodes/modkeys-logo.png';
+      el.type = 'image/png';
+    });
+    // Ensure at least one favicon link exists
+    let injected: HTMLLinkElement | null = null;
+    if (iconLinks.length === 0) {
+      injected = document.createElement('link');
+      injected.rel = 'icon';
+      injected.type = 'image/png';
+      injected.href = '/assets/nodes/modkeys-logo.png';
+      document.head.appendChild(injected);
+    }
+
+    return () => {
+      document.title = prevTitle;
+      iconLinks.forEach((el, i) => {
+        el.href = prevHrefs[i] ?? '/assets/nodes/site-logo.png';
+      });
+      injected?.remove();
+    };
+  }, []);
+
   useEffect(() => {
     if (mountedRef.current) return;
     mountedRef.current = true;
