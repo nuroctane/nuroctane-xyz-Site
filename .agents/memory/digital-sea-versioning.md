@@ -84,3 +84,7 @@ History:
 - v0.82 (2026-07-08): GitHub secondary node — live contribution terrain
   (KV cache + daily Vercel cron /api/github-contrib/refresh); Instagram IRL
   polaroid sidecards; Goodreads nuroctane sidecard secondary.
+- v0.83 (2026-07-08): key-editor camera — allow intentional orbit/pan while
+  editing (keep 5px engage + zero inertia on open; stop blocking camera when
+  selectedKey). Plate color picker: live tint without setState panel rebuild
+  (was freezing UI until wheel); releasePointerCapture on pointerup.
