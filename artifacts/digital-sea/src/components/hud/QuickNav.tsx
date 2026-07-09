@@ -6,8 +6,10 @@ import type { Mode } from '../../types';
 
 // Category boundary: matches PROJECT_THRESHOLD in SectionLabel (single
 // source of truth). A card whose midpoint sits above the threshold is a
-// creative project, below it is social.
-const PROJECT_THRESHOLD = 0.60;
+// creative project, below it is social. Keep between last social (reddit)
+// mid and first creative (modkeys) mid after even spacing — 0.57 holds for
+// 25–26 cards (blackjack insert).
+const PROJECT_THRESHOLD = 0.57;
 
 const LOGO_MAP: Record<string, string> = {
   instagram:  '/assets/nodes/instagram-logo.png',
@@ -33,6 +35,7 @@ const LOGO_MAP: Record<string, string> = {
   webutils:   '/assets/nodes/wrench.png',
   // Project marks (same files as card avatars)
   astrosleep: '/assets/nodes/astrosleep-logo.png',
+  blackjack:  '/assets/nodes/blackjack-logo.png',
 };
 
 const ACRONYM_MAP: Record<string, string> = {

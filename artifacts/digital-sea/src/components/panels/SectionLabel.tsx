@@ -3,9 +3,9 @@ import type { MutableRefObject } from 'react';
 import type { Mode } from '../../types';
 
 // Boundary between the last social card (reddit) and the first creative
-// First creative card midpoint sits just above this after even spacing
-// (25 nodes with snipocr after modkeys); verified computationally.
-const PROJECT_THRESHOLD = 0.60;
+// (modkeys). Must sit between reddit mid and modkeys mid after even spacing.
+// 0.57 holds for 25–26 nodes (incl. blackjack after snipocr).
+const PROJECT_THRESHOLD = 0.57;
 
 interface Props {
   scrollProgress: MutableRefObject<number>;

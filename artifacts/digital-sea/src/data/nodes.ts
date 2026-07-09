@@ -179,6 +179,15 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     logo: '/assets/nodes/github-logo.png',
   },
   {
+    id: 'blackjack', label: 'Blackjack', handle: 'project',
+    url: 'https://github.com/nuroctane/blackjack',
+    urlDisplay: 'github.com/nuroctane/blackjack',
+    subtitle: 'Quiet table. Dense engine.',
+    description: 'Blackjack - liquid glass UI, SIWE (RainbowKit + WalletConnect) + GitHub auth, Capacitor iOS/Android. Accurate shoe odds.',
+    avatar: '/assets/nodes/blackjack-logo.png',
+    logo: '/assets/nodes/github-logo.png',
+  },
+  {
     id: 'atxtunerz', label: 'ATX Tunerz Society', handle: '@atx_tunerz_society',
     url: 'https://www.instagram.com/atx_tunerz_society/',
     urlDisplay: 'instagram.com/atx_tunerz_society',
@@ -272,14 +281,18 @@ const STEP = (LAST_START - FIRST_START) / Math.max(1, raw.length - 1);
 // Side flips so cards sit across the camera path (not nose-on). When inserting
 // a node mid-list, index parity shifts for everything after it — invert FLIP
 // membership for those shifted ids so their world-side stays the same.
-// 25 nodes (snipocr after modkeys); socials unchanged.
+// 26 nodes (blackjack after snipocr). When inserting mid-list, index parity
+// shifts for everything after the insert — invert FLIP membership for those
+// shifted ids so their world-side stays the same.
 const FLIP_X = new Set([
   'tiktok', 'substack', 'kick', 'goodreads', 'remilia',
   'modkeys',
-  // snipocr at even creative index — flip so it faces the path (same side rule as peers)
   'snipocr',
-  // shifted after insert: inverted vs pre-snipocr set
-  'github', 'geoskin',
+  // flip blackjack so it faces opposite snipocr at adjacent scroll slots
+  'blackjack',
+  // blackjack inserted after snipocr — nodes after it inverted vs pre-insert set
+  'atxtunerz', 'weatherguru', 'sis', 'astrosleep', 'miyamaker', 'webutils',
+  // github + geoskin were flipped pre-insert; inverted out after shift
 ]);
 
 // These late-path nodes have a slightly wider proximity window so the camera
@@ -288,6 +301,7 @@ const FLIP_X = new Set([
 const WIDE_CARD: Record<string, number> = {
   modkeys:     0.068,
   snipocr:     0.066,
+  blackjack:   0.066,
   atxtunerz:   0.070,
   github:      0.064,
   weatherguru: 0.074,
