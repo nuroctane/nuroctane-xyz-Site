@@ -121,3 +121,5 @@ History:
 - v0.94 (2026-07-08): rotary knob customizable like a key — double-click / multi-
   select; body colour (accent colorway); dial tick = legend (show + colour);
   emoji/image + fit replace tick; drag-to-brightness kept (5px engage).
+- v0.95 (2026-07-08): Vercel Analytics — beforeSend keeps absolute URLs (relative
+  paths could drop intake); mode=production for Vite SPA; standalone inject same.

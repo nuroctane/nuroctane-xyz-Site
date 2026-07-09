@@ -28,12 +28,15 @@ function normalizePath(location: string): string {
 /**
  * Strip share-hash noise from pageviews before they leave the browser.
  * Build state lives in the hash fragment and must not inflate unique URLs.
+ * Keep an absolute URL (origin + path) — relative paths can fail Vercel intake.
  */
 function beforeSend(event: BeforeSendEvent): BeforeSendEvent | null {
   try {
-    const u = new URL(event.url, typeof window !== 'undefined' ? window.location.origin : 'https://nuroctane.xyz');
-    if (u.hash) u.hash = '';
-    return { ...event, url: u.pathname + u.search };
+    const origin =
+      typeof window !== 'undefined' ? window.location.origin : 'https://www.nuroctane.xyz';
+    const u = new URL(event.url, origin);
+    u.hash = '';
+    return { ...event, url: u.href };
   } catch {
     return event;
   }
@@ -43,10 +46,17 @@ function Telemetry() {
   const [location] = useLocation();
   const path = useMemo(() => normalizePath(location), [location]);
   // path + route keep SPA client navigations attributed (Wouter pushState).
-  // framework hint avoids Next-only assumptions in the collector.
+  // When `route` is set, auto-track is off — both path and route must be truthy.
+  // mode=production: Vite does not always expose NODE_ENV the way Next does.
   return (
     <>
-      <Analytics path={path} route={path} framework="vite-wouter" beforeSend={beforeSend} />
+      <Analytics
+        path={path}
+        route={path}
+        framework="react"
+        mode="production"
+        beforeSend={beforeSend}
+      />
       <SpeedInsights route={path} />
     </>
   );

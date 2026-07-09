@@ -39,15 +39,15 @@ The visual aesthetic draws inspiration from the French animated series **Code Ly
 
 ### Analytics (Vercel)
 
-Code is wired; you still need the project dashboard switches once:
+Code is wired (`mode: production` on the Vite SPA). Dashboard:
 
-1. Open the Vercel project for this repo → **Analytics** → **Enable** Web Analytics.
+1. Open the Vercel project for this repo → **Analytics** → **Enable** Web Analytics (script at `/_vercel/insights/script.js` must 200).
 2. Optionally enable **Speed Insights** in the same project.
-3. Redeploy (or wait for the next push). Production traffic on `nuroctane.xyz` then reports page views for `/`, `/books`, `/quotes`, `/resume`, `/modkeys`, plus custom events (`Modkeys Save`, `Modkeys Export`, `Modkeys Share`).
+3. Redeploy after enable or code changes. Views for `/`, `/books`, `/quotes`, `/resume`, `/modkeys`, plus custom events (`Modkeys Save` / `Export` / `Share`).
 
-**Standalone** `modkeys.vercel.app` (if deployed from `artifacts/modkeys`) injects analytics on boot — enable Analytics on that Vercel project too if it is a separate project.
+**Standalone** `modkeys.vercel.app` (if a separate Vercel project) needs Analytics enabled there too — inject runs on boot.
 
-**Privacy:** Web Analytics is cookieless / privacy-oriented on Vercel’s side. Share-link hash state is stripped from pageview URLs before send. Local `vite` dev does not feed production dashboards (`mode: auto`).
+**Privacy / notes:** Cookieless Web Analytics. Share-link `#hash` is stripped; reported URLs stay absolute. Ad blockers can hide traffic. Local dev does not feed production dashboards.
 
 ---
 
