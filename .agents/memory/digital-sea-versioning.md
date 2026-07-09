@@ -113,3 +113,5 @@ History:
 - v0.91 (2026-07-08): after photo-matched builds, colorway / custom Alpha-Mod-Accent
   edits work again — strip per-key bg/fg on global recolour (overrides were
   locking faces); loadSnap/presets clear leftover photo overrides when absent.
+- v0.92 (2026-07-08): light modes Wave + Off fixed — wave is uMode 0 so `|| 3`
+  coerced it to Off; Off now zeros shaders and hides glowPlane/keyGlow.

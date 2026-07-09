@@ -3,7 +3,7 @@ import type { Mode } from '../../types';
 
 const BTC_ADDR  = 'bc1qmsexp4nygxcw0gklw346hds4gxctfley2tvn40';
 const ETH_ADDR  = '0xf5386e680d5629a6e1c04bb2bfd1b79a794467f5';
-const BUILD_VER = 'v0.91';
+const BUILD_VER = 'v0.92';
 
 interface Props {
   mode:        Mode;
