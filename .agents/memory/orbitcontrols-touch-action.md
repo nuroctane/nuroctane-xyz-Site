@@ -1,27 +1,33 @@
 ---
 name: OrbitControls touch-action freezes mobile scroll
-description: Why a mounted-but-disabled drei/three OrbitControls blocks native touch scrolling on a full-screen R3F canvas, and the deterministic fix.
+description: Why a mounted-but-disabled OrbitControls blocks native touch scrolling; unmount + set touch-action explicitly.
 ---
 
 three.js OrbitControls writes `canvas.style.touchAction = 'none'` in `connect()` and
-restores it to `''` (computed `auto`) in `disconnect()`/`dispose()`. `enabled={false}`
-does NOT disconnect — it only gates the handlers — so a still-mounted OrbitControls
-keeps `touch-action: none` on the canvas.
+restores it in `dispose()`. `enabled={false}` does **not** disconnect — it only gates
+handlers — so a still-mounted control keeps `touch-action: none` on a full-screen canvas
+and kills mobile page scroll.
 
-On a full-screen `position:fixed; inset:0` R3F canvas this kills native vertical touch
-scrolling on mobile entirely. Desktop mouse-wheel scroll ignores `touch-action`, so the
-page still scrolls on PC — making it look device-specific.
+## Current pattern (OrbitCam)
+- Controls instance exists only when `enabled` is true (`useMemo` → null when off).
+- On connect: `touchAction = 'none'`.
+- On dispose / disabled: `touchAction = 'pan-y'` so the page can scroll in sea mode.
 
-**Fix:** mount OrbitControls ONLY in the mode that needs it (e.g. explore/camera). In
-the scroll mode it unmounts → `dispose()` restores touch-action so the browser scrolls.
-Optionally also set `gl.domElement.style.touchAction` per mode (`pan-y` scroll / `none`
-camera) in a useEffect for precision.
+```ts
+useEffect(() => {
+  if (!controls) {
+    gl.domElement.style.touchAction = 'pan-y';
+    return;
+  }
+  controls.connect(gl.domElement);
+  gl.domElement.style.touchAction = 'none';
+  return () => {
+    controls.dispose();
+    gl.domElement.style.touchAction = 'pan-y';
+  };
+}, [controls, gl]);
+```
 
-**Why:** a passive useEffect that fights a still-mounted OrbitControls is
-non-deterministic — drei re-runs connect/disconnect on later renders, so the last write
-to touchAction is unpredictable (an e2e probe showed it landing on `auto` in both modes).
-Tying the control's lifecycle to the mode removes the race.
-
-**How to apply:** any R3F scene with a full-screen canvas + camera controls that must
-coexist with page scroll — never keep the controls mounted-but-disabled; unmount them
-whenever the page needs to scroll.
+## How to apply
+Never leave OrbitControls mounted-but-disabled on a scrollable full-screen R3F scene.
+Unmount (or fully disconnect) whenever the document needs vertical scroll.

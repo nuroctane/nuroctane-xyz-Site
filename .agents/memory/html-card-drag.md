@@ -47,7 +47,10 @@ onClickCapture → if didDrag → preventDefault + stopPropagation + reset didDr
 
 ## How to apply
 
-Centralize the logic in a shared hook (`useCardDrag`). Clear the hold timer and
-release capture on unmount and whenever leaving the interactive mode.
+Centralize the logic in `artifacts/digital-sea/src/hooks/useCardDrag.ts`.
+Clear the hold timer and release capture on unmount and when leaving camera mode.
 Always update `last.current` in `onPointerMove` before the `isDragging` guard,
 so the drift threshold in the hold timer stays accurate.
+
+**MEMORY.md mistake to avoid:** do **not** summarize this as “capture on pointerdown” —
+capture is deferred until hold ≥ 280ms without pre-hold cancel.

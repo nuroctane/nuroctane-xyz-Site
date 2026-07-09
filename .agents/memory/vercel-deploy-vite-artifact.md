@@ -1,44 +1,41 @@
 ---
 name: Deploying digital-sea (Vite) to Vercel
-description: How the digital-sea Vite package builds and serves on Vercel (local + GitHub only; no Replit).
+description: Monorepo build and serve contract for nuroctane.xyz (local + GitHub + Vercel).
 ---
 
 # Deploying digital-sea (Vite) to Vercel
 
-The site is a **pnpm monorepo** pushed to GitHub and built on **Vercel**. Replit is not used.
-Root `vercel.json` / workspace `pnpm run build` drive deploys from `main`.
+**pnpm monorepo** → push `origin/main` → Vercel. No cloud-IDE host required.
 
-## 1. Vite config: PORT and BASE_PATH
+## Root contracts
+| Item | Value |
+|------|--------|
+| Install | `npx -y pnpm@10 install --no-frozen-lockfile` (`vercel.json`) |
+| Build | `pnpm run build` → typecheck → package builds → smoke → `check-spa-shell.mjs` |
+| Output | `artifacts/digital-sea/dist/public` |
+| SPA | rewrite all non-`/api/*` to `/index.html` |
+| Crons | `/api/github-contrib/refresh` daily |
 
-`artifacts/digital-sea/vite.config.ts` uses `defineConfig(async ({ command }) => …)`.
+## Vite (`artifacts/digital-sea/vite.config.ts`)
+| Env | Build | Dev / preview |
+|-----|-------|----------------|
+| `PORT` | ignored | default `5173` |
+| `BASE_PATH` | default `/` | default `/` |
 
-| Env | Build (`command === "build"`) | Dev / preview |
-|-----|-------------------------------|---------------|
-| `PORT` | ignored | defaults to `5173` if unset |
-| `BASE_PATH` | defaults to `"/"` | defaults to `"/"` (override only for subpath hosting) |
+`outDir` is `dist/public`. Do not require vendor-injected env for production builds.
 
-**Why:** PORT is a local dev-server concern. Production is static files at the domain root.
-Do not reintroduce hard throws that require vendor-injected env vars for `vite build`.
+## Analytics
+- `@vercel/analytics` + `@vercel/speed-insights` (v2) in `src/main.tsx`
+- `mode="production"` on Analytics; SPA `path`/`route` for wouter
+- `beforeSend`: absolute URL + strip `#hash` only
+- Enable **Web Analytics** and **Speed Insights** on the Vercel project (script
+  `/_vercel/insights/script.js` should 200 when enabled)
 
-## 2. Output directory
-
-Vite `outDir` is `dist/public` (not the default `dist`). Workspace / Vercel config must
-serve that path (repo root `vercel.json` sets `outputDirectory` to
-`artifacts/digital-sea/dist/public` with SPA rewrite to `/index.html`).
-
-## 3. Analytics / Speed Insights
-
-Mounted from `artifacts/digital-sea/src/main.tsx` (`@vercel/analytics` +
-`@vercel/speed-insights`). Enable both in the Vercel project dashboard. `beforeSend`
-keeps absolute URLs and strips share-link `#hash` only.
+## API notes
+- Functions under root `api/` (books, modkeys catch-all, catch-all slug)
+- Modkeys admin: prefer `POST /api/modkeys/gallery` + `action` body (multi-segment
+  paths under `/api/modkeys/` can be NOT_FOUND on Vercel)
 
 ## How to apply
-
-Changes take effect after push to GitHub `origin/main` (Vercel auto-deploy). Agents
-and humans push with git credentials on the local machine — not via a cloud IDE Git UI.
-
-## Historical note
-
-Older notes referred to Replit artifact env (`REPL_ID`, forced `PORT`/`BASE_PATH`,
-`.replit` / `replit.nix`). Those files and `@replit/*` Vite plugins were removed
-(commit `43488b5`). Treat this file as the current deploy contract.
+Ship by `git push origin main`. Validate with Network tab (insights POSTs) and
+dashboard, not only local `vite` (dev does not feed production analytics).

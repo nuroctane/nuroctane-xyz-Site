@@ -6,11 +6,16 @@ description: Keep the bottom-right VER tag in sync with user-facing Digital Sea 
 The Digital Sea app displays its visible version in
 `artifacts/digital-sea/src/components/panels/WalletTag.tsx` as `BUILD_VER`.
 
-Whenever making user-facing changes to `artifacts/digital-sea`, update `BUILD_VER`
-in the same change. Use the existing `v0.xx` style. Increment by at least `0.01`
-for each completed change batch, and by more when a batch contains multiple
-visible UX/content/environment changes. If a formal changelog is later added,
-cross-check it before choosing the next value.
+Whenever making user-facing changes to `artifacts/digital-sea` **or** embedded
+modkeys UX that ships with the site, update `BUILD_VER` in the same change.
+Use the existing `v0.xx` style. Increment by at least `0.01` for each completed
+change batch, and by more when a batch contains multiple visible UX/content/
+environment changes.
+
+**Current:** check `WalletTag.tsx` (was **v0.98** as of snipocr macOS copy).
+
+Also related: scene cards in `data/nodes.ts` (25 nodes), modkeys dual-shell
+under `artifacts/modkeys`, analytics in `main.tsx`. See MEMORY.md index.
 
 History:
 - v0.65 (2026-07-06): reddit + MODKEYS cards added (24 nodes, FLIP_X retuned,

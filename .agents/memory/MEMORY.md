@@ -1,11 +1,29 @@
-- [InstancedMesh culling](instanced-mesh-culling.md) — always set frustumCulled=false on instancedMesh with many world-scattered instances or they vanish when camera moves.
-- [R3F camera centering](r3f-camera-centering.md) — shifting camera.position toward a card does NOT center it on screen; you must blend camera.lookAt toward the node's world position.
-- [Link opening in iframes](link-opening-iframes.md) — window.open() blocked in iframe previews; use native `<a href target="_blank">` instead.
-- [OrbitControls touch-action](orbitcontrols-touch-action.md) — mounted-but-disabled OrbitControls keeps canvas touch-action:none and freezes mobile scroll; mount controls only in the mode that needs them.
-- [R3F no WebGL in test env](r3f-no-webgl-in-test-env.md) — Playwright/screenshot can't create a WebGL context; the Canvas subtree errors before mount so effects never run — don't e2e-validate R3F here.
-- [Vercel deploy of digital-sea Vite package](vercel-deploy-vite-artifact.md) — local + GitHub → Vercel only; PORT/BASE_PATH defaults; outputDirectory dist/public; no Replit.
-- [R3F Html vs canvas filter](r3f-html-canvas-filter.md) — CSS filter on gl.domElement grades the 3D scene only; drei <Html> cards are DOM siblings so they're untouched.
-- [Hold-to-drag on Html cards](html-card-drag.md) — capture pointer on pointerdown (not after hold timer) + onClickCapture guard, or drag sticks / links open mid-drag.
-- [OrbitControls mode-switch jump fix](orbitcontrols-mode-switch.md) — drei's OrbitControls target defaults to (0,0,0); fix by owning the instance in useMemo and setting target before the first update().
-- [WASD + OrbitControls coexistence](wasd-orbit-coexistence.md) — when adding WASD movement alongside OrbitControls, always move controls.target by the same delta as camera.position or controls snaps back to old pivot next frame.
-- [Digital Sea visible version counter](digital-sea-versioning.md) — update `BUILD_VER` in `WalletTag.tsx` whenever user-facing Digital Sea changes are made.
+# Agent memory index (nuroctane.xyz)
+
+Repo is a **pnpm monorepo** → GitHub `main` → **Vercel**. Local Windows + Linux CI only; Replit tooling removed.
+
+## Project map
+- **Site SPA:** `artifacts/digital-sea` (React + Vite + R3F + wouter)
+- **Modkeys:** `artifacts/modkeys` (vanilla ESM + Three.js; dual desktop/mobile shells)
+- **API:** `artifacts/api-server` + root `api/*` Vercel functions (books, modkeys gallery, github-contrib)
+- **Build:** root `pnpm run build` = typecheck → package builds → smoke → modkeys spa-shell check
+- **Deploy:** root `vercel.json` → `outputDirectory: artifacts/digital-sea/dist/public`, SPA rewrite, daily GH contrib cron
+
+## Digital Sea / R3F
+- [InstancedMesh culling](instanced-mesh-culling.md) — `frustumCulled={false}` on scattered instanced batches
+- [R3F camera centering](r3f-camera-centering.md) — blend `lookAt` toward node, not only lean position.x
+- [R3F Html vs canvas filter](r3f-html-canvas-filter.md) — CSS filter on `gl.domElement` does not tint `<Html>` cards
+- [Hold-to-drag on Html cards](html-card-drag.md) — **defer** `setPointerCapture` until hold timer; `didDrag` only on move
+- [OrbitControls touch-action](orbitcontrols-touch-action.md) — unmount controls outside camera mode; set `touch-action`
+- [OrbitControls mode switch / target](orbitcontrols-mode-switch.md) — own OrbitControls instance; seed `target` before first update
+- [WASD + OrbitControls](wasd-orbit-coexistence.md) — move `controls.target` by same delta as camera
+- [R3F no WebGL in test env](r3f-no-webgl-in-test-env.md) — don’t e2e/screenshot-validate inside Canvas
+- [Link opening in iframes](link-opening-iframes.md) — prefer `<a target="_blank">` over `window.open`
+- [Scene nodes + QuickNav](digital-sea-nodes.md) — 25 cards, FLIP_X, PROJECT_THRESHOLD, snipocr after modkeys
+- [BUILD_VER counter](digital-sea-versioning.md) — bump `WalletTag.tsx` on user-facing site changes
+
+## Deploy / platform
+- [Vercel + Vite monorepo](vercel-deploy-vite-artifact.md) — PORT/BASE_PATH defaults, outDir, analytics, push to main
+
+## Modkeys (configurator)
+- [Modkeys architecture](modkeys-architecture.md) — dual shell, Customize/photo-match, knob id, gallery admin API paths
