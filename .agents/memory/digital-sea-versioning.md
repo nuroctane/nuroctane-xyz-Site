@@ -81,3 +81,6 @@ History:
   plate MATERIAL; procedural plate textures (brushed metal, carbon weave,
   FR4 grain, plastic); keycap PBT/ABS/ceramic distinct bump maps; exports
   include plate color + material optical props.
+- v0.82 (2026-07-08): GitHub secondary node — live contribution terrain
+  (KV cache + daily Vercel cron /api/github-contrib/refresh); Instagram IRL
+  polaroid sidecards; Goodreads nuroctane sidecard secondary.

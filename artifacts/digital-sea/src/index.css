@@ -1326,6 +1326,44 @@ html.standalone-active body {
   text-shadow: 0 0 8px rgba(93, 232, 240, 0.6);
 }
 
+.secondary-card--contrib {
+  padding: 3px;
+  background: rgba(4, 14, 22, 0.82);
+  border-color: rgba(38, 166, 65, 0.45);
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.55), 0 0 12px rgba(38, 166, 65, 0.12);
+}
+
+.secondary-card-contrib {
+  display: block;
+  width: 100%;
+  line-height: 0;
+}
+
+.secondary-card-contrib canvas {
+  display: block;
+  width: 100%;
+  height: auto;
+  border-radius: 2px;
+}
+
+.secondary-card-contrib--load,
+.secondary-card-contrib--err {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 72px;
+  padding: 10px 6px;
+  font-family: 'JetBrains Mono', monospace;
+  color: #5de8f0;
+  line-height: 1.2;
+}
+
+.secondary-card-contrib--err {
+  color: #e85d5d;
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
    BLOG CARDS
    ═══════════════════════════════════════════════════════════════════════════ */

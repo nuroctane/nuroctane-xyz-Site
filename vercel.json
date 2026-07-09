@@ -4,5 +4,11 @@
   "outputDirectory": "artifacts/digital-sea/dist/public",
   "rewrites": [
     { "source": "/((?!api/).*)", "destination": "/index.html" }
+  ],
+  "crons": [
+    {
+      "path": "/api/github-contrib/refresh",
+      "schedule": "0 12 * * *"
+    }
   ]
 }

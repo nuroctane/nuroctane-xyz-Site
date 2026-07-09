@@ -4,6 +4,7 @@ import { Html } from '@react-three/drei';
 import { useLocation } from 'wouter';
 import * as THREE from 'three';
 import type { SecondaryMedia } from '../../data/secondaryNodes';
+import { GithubContribTerrain } from './GithubContribTerrain';
 
 // Module-level scratch — never allocate inside useFrame
 const _ringOffset = new THREE.Vector3();
@@ -51,8 +52,9 @@ export function SecondaryOrbit({ nodeId, media, centerRef, proximityRef }: Props
 
   // Scale orbit radius so denser orbits don't crowd each other
   const orbitRadius = Math.max(BASE_RADIUS, 1.0 + count * 0.25);
-  // Per-tile CSS width: shrink slightly as count grows
+  // Per-tile CSS width: shrink slightly as count grows; contrib tile stays wider
   const cardWidth   = Math.max(72, 108 - count * 6);
+  const contribWidth = Math.max(cardWidth + 28, 132);
 
   const params = useMemo(() => {
     const rnd  = mulberry32(hashStr(nodeId));
@@ -128,10 +130,16 @@ export function SecondaryOrbit({ nodeId, media, centerRef, proximityRef }: Props
             <Html transform distanceFactor={4.5} zIndexRange={[30, 0]} prepend>
               <div
                 ref={(el) => { wrapRefs.current[i] = el; }}
-                className="secondary-card"
-                style={{ opacity: 0, pointerEvents: 'none', width: `${cardWidth}px` }}
+                className={`secondary-card${m.kind === 'github-contrib' ? ' secondary-card--contrib' : ''}`}
+                style={{
+                  opacity: 0,
+                  pointerEvents: 'none',
+                  width: `${m.kind === 'github-contrib' ? contribWidth : cardWidth}px`,
+                }}
               >
-                {m.link ? (
+                {m.kind === 'github-contrib' ? (
+                  <GithubContribTerrain width={contribWidth - 8} />
+                ) : m.link ? (
                   <button
                     className="secondary-card-link"
                     onClick={(e) => { e.preventDefault(); setLocation(m.link!); }}

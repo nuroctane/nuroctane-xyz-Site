@@ -14,6 +14,8 @@ export interface SecondaryMedia {
   isGif: boolean;
   link?: string;
   linkLabel?: string;
+  /** Special secondary tile kinds (non-image). */
+  kind?: 'image' | 'link' | 'github-contrib';
 }
 
 const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -66,8 +68,17 @@ export const secondaryMediaByNode: Record<string, SecondaryMedia[]> = buildMap()
   url: '',
   file: 'goodreads-recommendations-link',
   isGif: false,
+  kind: 'link',
   link: '/books',
   linkLabel: 'RECOMMENDATIONS',
+});
+
+// Live contribution terrain (data from /api/github-contrib, KV + daily cron).
+(secondaryMediaByNode['github'] ??= []).unshift({
+  url: '',
+  file: 'github-contrib-terrain',
+  isGif: false,
+  kind: 'github-contrib',
 });
 
 if (import.meta.env.DEV) {
