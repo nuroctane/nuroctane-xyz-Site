@@ -42,14 +42,14 @@ function beforeSend(event: BeforeSendEvent): BeforeSendEvent | null {
   }
 }
 
-/** Speed Insights beforeSend — same hash strip / absolute URL as Analytics. */
-function speedBeforeSend(event: { url: string; type?: string; route?: string }) {
+/** Speed Insights v2 beforeSend — type must stay `vital` (package BeforeSendEvent). */
+function speedBeforeSend(event: { type: 'vital'; url: string; route?: string }) {
   try {
     const origin =
       typeof window !== 'undefined' ? window.location.origin : 'https://www.nuroctane.xyz';
     const u = new URL(event.url, origin);
     u.hash = '';
-    return { ...event, url: u.href };
+    return { ...event, type: 'vital' as const, url: u.href };
   } catch {
     return event;
   }
