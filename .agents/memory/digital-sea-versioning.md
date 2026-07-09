@@ -127,3 +127,4 @@ History:
   strip + absolute URLs; framework=react per quickstart.
 - v0.97 (2026-07-09): snipocr creative node after modkeys (repo logo + github badge,
   description matches GitHub); QuickNav logo; FLIP_X parity preserved for shifted cards.
+- v0.98 (2026-07-09): snipocr summary notes Windows + macOS screenshot OCR.
