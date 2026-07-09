@@ -65,3 +65,19 @@ History:
 - v0.74.1 (2026-07-08): telemetry caveats addressed — Wouter path/route passed into Analytics +
   Speed Insights; beforeSend strips share-hash from pageviews; Modkeys custom events (Save /
   Export / Share) via core/analytics.js; standalone modkeys boot injects @vercel/analytics.
+- v0.75 (2026-07-08): desktop snav text-only column + centered mobile tab
+  labels (class dShell on shell; .dot margin scoped so pills center).
+- v0.76 (2026-07-08): telemetry caveats — SPA path/route Analytics + Speed
+  Insights, custom Modkeys events, standalone inject (already noted as
+  0.74.1; kept for BUILD_VER continuity).
+- v0.77 (2026-07-08): desktop key font-size live legend update.
+- v0.78 (2026-07-08): community gallery admin (books-style dialogs, rename/
+  delete, BOOKS_ADMIN_PASSWORD).
+- v0.79 (2026-07-08): export per-key options parity (SVG/PDF/spec font/image/
+  glow) + cap freeze while editing (partial).
+- v0.80 (2026-07-08): freeze the CAMERA on key edit — 5px engage threshold,
+  no orbit arm while selectedKey, inertia zeroed on editor open (Fable).
+- v0.81 (2026-07-08): plate COLOR picker (tints material) independent of
+  plate MATERIAL; procedural plate textures (brushed metal, carbon weave,
+  FR4 grain, plastic); keycap PBT/ABS/ceramic distinct bump maps; exports
+  include plate color + material optical props.
