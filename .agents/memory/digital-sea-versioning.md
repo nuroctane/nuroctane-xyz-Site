@@ -115,3 +115,6 @@ History:
   locking faces); loadSnap/presets clear leftover photo overrides when absent.
 - v0.92 (2026-07-08): light modes Wave + Off fixed — wave is uMode 0 so `|| 3`
   coerced it to Off; Off now zeros shaders and hides glowPlane/keyGlow.
+- v0.93 (2026-07-08): key emoji on 3D caps — user markId no longer suppressed by
+  labelHidden; unicode fallback while Twemoji loads; None / re-click clears emoji
+  and restores legend text.
