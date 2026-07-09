@@ -128,3 +128,6 @@ History:
 - v0.97 (2026-07-09): snipocr creative node after modkeys (repo logo + github badge,
   description matches GitHub); QuickNav logo; FLIP_X parity preserved for shifted cards.
 - v0.98 (2026-07-09): snipocr summary notes Windows + macOS screenshot OCR.
+- (2026-07-09): repo de-Replit — remove .replit / replit.nix / @replit Vite plugins /
+  linux-only pnpm platform overrides; local Windows + Vercel only. Agent memory
+  notes updated to match (no Replit-required env or Git pane).
