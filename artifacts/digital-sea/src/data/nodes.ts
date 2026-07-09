@@ -220,8 +220,8 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     urlDisplay: 'github.com/nuroctane/ASTROSleep',
     subtitle: 'Sleep cycle optimization',
     description: "fun little astrology app i'm committed to finishing.",
-    avatar: '',
-    logo: '',
+    avatar: '/assets/nodes/astrosleep-logo.png',
+    logo: '/assets/nodes/github-logo.png',
   },
   {
     id: 'geoskin', label: 'CS Skin Creations', handle: 'project',
