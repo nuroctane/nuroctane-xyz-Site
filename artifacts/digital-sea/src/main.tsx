@@ -42,12 +42,26 @@ function beforeSend(event: BeforeSendEvent): BeforeSendEvent | null {
   }
 }
 
+/** Speed Insights beforeSend — same hash strip / absolute URL as Analytics. */
+function speedBeforeSend(event: { url: string; type?: string; route?: string }) {
+  try {
+    const origin =
+      typeof window !== 'undefined' ? window.location.origin : 'https://www.nuroctane.xyz';
+    const u = new URL(event.url, origin);
+    u.hash = '';
+    return { ...event, url: u.href };
+  } catch {
+    return event;
+  }
+}
+
 function Telemetry() {
   const [location] = useLocation();
   const path = useMemo(() => normalizePath(location), [location]);
   // path + route keep SPA client navigations attributed (Wouter pushState).
-  // When `route` is set, auto-track is off — both path and route must be truthy.
+  // When Analytics `route` is set, auto-track is off — both path and route must be truthy.
   // mode=production: Vite does not always expose NODE_ENV the way Next does.
+  // SpeedInsights: @vercel/speed-insights v2 + route for SPA grouping (quickstart).
   return (
     <>
       <Analytics
@@ -57,7 +71,11 @@ function Telemetry() {
         mode="production"
         beforeSend={beforeSend}
       />
-      <SpeedInsights route={path} />
+      <SpeedInsights
+        route={path}
+        framework="react"
+        beforeSend={speedBeforeSend}
+      />
     </>
   );
 }

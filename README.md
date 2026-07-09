@@ -42,7 +42,7 @@ The visual aesthetic draws inspiration from the French animated series **Code Ly
 Code is wired (`mode: production` on the Vite SPA). Dashboard:
 
 1. Open the Vercel project for this repo → **Analytics** → **Enable** Web Analytics (script at `/_vercel/insights/script.js` must 200).
-2. Optionally enable **Speed Insights** in the same project.
+2. Optionally enable **Speed Insights** in the same project (`@vercel/speed-insights` v2 + `<SpeedInsights />` in the SPA root).
 3. Redeploy after enable or code changes. Views for `/`, `/books`, `/quotes`, `/resume`, `/modkeys`, plus custom events (`Modkeys Save` / `Export` / `Share`).
 
 **Standalone** `modkeys.vercel.app` (if a separate Vercel project) needs Analytics enabled there too — inject runs on boot.

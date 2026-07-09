@@ -123,3 +123,5 @@ History:
   emoji/image + fit replace tick; drag-to-brightness kept (5px engage).
 - v0.95 (2026-07-08): Vercel Analytics — beforeSend keeps absolute URLs (relative
   paths could drop intake); mode=production for Vite SPA; standalone inject same.
+- v0.96 (2026-07-08): @vercel/speed-insights → v2.0.0 (latest); SI beforeSend hash
+  strip + absolute URLs; framework=react per quickstart.
