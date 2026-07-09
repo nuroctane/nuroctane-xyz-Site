@@ -99,3 +99,6 @@ History:
   role assign (alpha/mod/accent/case/glow) with vivid accent rescue; upload
   auto-applies roles + per-key copy; Auto-fit board re-detect; projective
   unit→quad map; modular dual-shell Customize.
+- v0.87 (2026-07-08): Customize photo-match board toggles — Case / Plate /
+  Light / Switch (and Keycaps) adopt photo colours when on; plate rim median
+  + switch from accent; re-apply on copy/auto-fit; snav dots stay in sync.
