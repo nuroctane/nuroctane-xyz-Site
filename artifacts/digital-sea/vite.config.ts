@@ -3,18 +3,12 @@ import react from "@vitejs/plugin-react";
 import path from "path";
 
 export default defineConfig(async ({ command }) => {
-  // PORT is only needed to run the dev/preview server. It is irrelevant to a
-  // production build (e.g. Vercel), so only require it when serving.
+  // PORT is only needed to run the dev/preview server (not production builds).
   let server: import("vite").ServerOptions | undefined;
   let preview: import("vite").PreviewOptions | undefined;
 
   if (command !== "build") {
-    const rawPort = process.env.PORT;
-    if (!rawPort) {
-      throw new Error(
-        "PORT environment variable is required but was not provided.",
-      );
-    }
+    const rawPort = process.env.PORT ?? "5173";
     const port = Number(rawPort);
     if (Number.isNaN(port) || port <= 0) {
       throw new Error(`Invalid PORT value: "${rawPort}"`);
@@ -33,34 +27,12 @@ export default defineConfig(async ({ command }) => {
     };
   }
 
-  // BASE_PATH is set by the Replit artifact system for path-based routing. When
-  // building elsewhere (e.g. Vercel, served at the domain root), default to "/".
-  // Still require it explicitly while serving so a misconfigured Replit dev
-  // environment fails loudly instead of silently serving at the wrong path.
-  const basePath =
-    process.env.BASE_PATH ?? (command === "build" ? "/" : undefined);
-  if (!basePath) {
-    throw new Error(
-      "BASE_PATH environment variable is required but was not provided.",
-    );
-  }
+  // Served at domain root on Vercel; override with BASE_PATH if hosting under a subpath.
+  const basePath = process.env.BASE_PATH ?? "/";
 
   return {
     base: basePath,
-    plugins: [
-      react(),
-      ...(process.env.NODE_ENV !== "production" &&
-      process.env.REPL_ID !== undefined
-        ? [
-            // cartographer is intentionally omitted: it injects data-component-name
-            // onto React elements which React Three Fiber's reconciler treats as
-            // Three.js property names, causing a runtime crash.
-            await import("@replit/vite-plugin-dev-banner").then((m) =>
-              m.devBanner(),
-            ),
-          ]
-        : []),
-    ],
+    plugins: [react()],
     css: {
       postcss: {
         plugins: [
