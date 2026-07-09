@@ -102,7 +102,7 @@ Modkeys is embedded as an imperative Vanilla JS page (`/modkeys`) inside the Vit
 - **CSS scoping**: styles under `.modkeys-page` so they don’t fight the main site
 - **Theme independence**: own CSS variables (`--bg`, `--ink`, …) separate from Tailwind
 - **Bootstrapping**: modules mount on enter and tear down on leave (no React wrappers, no two-way binding)
-- **Dual-shell architecture**: dedicated mobile shell (`.mShell`) swaps in at boot via `matchMedia`; shared element IDs so core JS is shell-agnostic. ID parity via `check-shell-ids.mjs`; details in `artifacts/modkeys/MOBILE_SHELL.md`
+- **Dual-shell architecture**: dedicated mobile shell (`.mShell`) swaps in at boot via `matchMedia`; shared element IDs so core JS is shell-agnostic. ID parity via `check-shell-ids.mjs`; details in `artifacts/modkeys/.agents/docs/MOBILE_SHELL.md`
 - **Performance**: lazy-loaded (React.lazy + Suspense); Three.js loaded with the page
 - **State**: centralized mutable store with undo/redo (50 steps)
 - **Sharing / export**: URL-encoded state or KLE / SVG / PDF / spec files
@@ -140,7 +140,7 @@ nuroctane-xyz-Site/
 │   │   └── public/           # Static assets
 │   ├── api-server/           # Express 5 API
 │   └── modkeys/              # Keyboard configurator (Vanilla + Three.js)
-│       ├── MOBILE_SHELL.md
+│       ├── .agents/docs/MOBILE_SHELL.md
 │       ├── check-shell-ids.mjs
 │       └── src/              # css/, js/ (core, data, ui, export)
 ├── lib/                      # Shared packages (kv, db, api-zod, api-spec, …)
