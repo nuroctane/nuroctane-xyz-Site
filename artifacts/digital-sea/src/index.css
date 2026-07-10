@@ -691,6 +691,17 @@ html.standalone-active body {
   color: #eafcff;
 }
 
+/* Non-interactive section label (e.g. IDENTITY) — no nav, no dropdown */
+.qnav-cat-hd--static {
+  cursor: default;
+  pointer-events: none;
+}
+.qnav-cat-hd--static:hover {
+  background: none;
+  border-left-color: transparent;
+  color: #bdeff2;
+}
+
 .qnav-cat-ico {
   width: 16px; height: 16px;
   color: #5de8f0;

@@ -150,14 +150,27 @@ function CatHeader({
   onToggle?: () => void;
   onActivate?: () => void;
 }) {
-  return (
-    <button className="qnav-cat-hd" onClick={onToggle ?? onActivate}>
+  const onClick = onToggle ?? onActivate;
+  const body = (
+    <>
       <span className="qnav-cat-ico">{icon}</span>
       <span className="qnav-cat-lbl">{label}</span>
       {count != null && <span className="qnav-cat-cnt">{count}</span>}
       {expanded != null && (
         <span className={`qnav-cat-chev${expanded ? ' qnav-cat-chev--open' : ''}`}>▸</span>
       )}
+    </>
+  );
+
+  // Expand-only categories (socials/projects/blog) and destinations (fin/quotes)
+  // get a button. Labels with neither handler (e.g. IDENTITY) stay non-interactive.
+  if (!onClick) {
+    return <div className="qnav-cat-hd qnav-cat-hd--static">{body}</div>;
+  }
+
+  return (
+    <button type="button" className="qnav-cat-hd" onClick={onClick}>
+      {body}
     </button>
   );
 }
@@ -274,6 +287,13 @@ export function QuickNav({ mode, onNavigate, onBlogNavigate, onFinNavigate }: Qu
         </div>
 
         <div className="qnav-body">
+          {/*
+            SOCIALS / PROJECTS / BLOG headers only expand dropdowns — no setLocation
+            or scroll. Only leaf items jump to a swim node / blog post. (Headers used
+            to route to /socials|/projects|/blog on open, dumping you at the section
+            threshold — e.g. PROJECTS → near Reddit.)
+            IDENTITY is the exception: it jumps home to the summary panel.
+          */}
           <div className="qnav-cat">
             <CatHeader
               icon={<IconHex />}
@@ -293,14 +313,7 @@ export function QuickNav({ mode, onNavigate, onBlogNavigate, onFinNavigate }: Qu
               label="SOCIALS"
               count={SOCIAL_NODES.length}
               expanded={expanded.has('SOCIALS')}
-              onToggle={() => {
-                const opening = !expanded.has('SOCIALS');
-                toggle('SOCIALS');
-                if (opening) {
-                  onNavigate?.();
-                  setLocation('/socials');
-                }
-              }}
+              onToggle={() => toggle('SOCIALS')}
             />
             {expanded.has('SOCIALS') && (
               <div className="qnav-items">
@@ -323,14 +336,7 @@ export function QuickNav({ mode, onNavigate, onBlogNavigate, onFinNavigate }: Qu
               label="PROJECTS"
               count={PROJECT_NODES.length}
               expanded={expanded.has('PROJECTS')}
-              onToggle={() => {
-                const opening = !expanded.has('PROJECTS');
-                toggle('PROJECTS');
-                if (opening) {
-                  onNavigate?.();
-                  setLocation('/projects');
-                }
-              }}
+              onToggle={() => toggle('PROJECTS')}
             />
             {expanded.has('PROJECTS') && (
               <div className="qnav-items">
@@ -353,14 +359,7 @@ export function QuickNav({ mode, onNavigate, onBlogNavigate, onFinNavigate }: Qu
               label="BLOG"
               count={blogPosts.length}
               expanded={expanded.has('BLOG')}
-              onToggle={() => {
-                const opening = !expanded.has('BLOG');
-                toggle('BLOG');
-                if (opening) {
-                  setLocation('/blog');
-                  onBlogNavigate();
-                }
-              }}
+              onToggle={() => toggle('BLOG')}
             />
             {expanded.has('BLOG') && (
               <div className="qnav-items">
