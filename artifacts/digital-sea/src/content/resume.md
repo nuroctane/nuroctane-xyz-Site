@@ -11,16 +11,17 @@
 ### ░▒▓ SUMMARY ▓▒░
 > **Agentic product engineer & technical operator.** I design, ship, and run full-stack systems—native mobile apps, local multi-model AI routers, 3D product UIs, monorepo web platforms, and institutional node infrastructure—with a bias toward on-device privacy, measurable business impact, and finishing the job.
 >
-> Solvency framework first: define constraints, build the smallest correct system, instrument outcomes, then scale. Operate daily across ADEs and agent CLIs (Orca, Herdr, Ohmypi, Cursor, Hermes, Claude Code, Codex, Grok) while owning production results in customer success, B2B commercial lending, and technical support leadership.
+> Solvency framework first: define constraints, build the smallest correct system, instrument outcomes, then scale. Operate daily across ADEs and agent CLIs (Orca, Herdr, Ohmypi, Cursor, Hermes, Claude Code, Codex, Grok)—optimizing token usage, cutting overall inference spend via local-first routing, and running recursive training loops for specific-utility models—while owning production results in customer success, B2B commercial lending, and technical support leadership.
 
 ***
 
 ## ▄▀▄▀▄▀▄▀▄ P R O J E C T S ▄▀▄▀▄▀▄▀▄
 
 *   **[ hermes-local-models — Local Multi-Model AI Router ]** · [github.com/nuroctane/hermes-local-models](https://github.com/nuroctane/hermes-local-models)
-    *   Designed and shipped a cross-platform bridge that discovers Atomic Chat / Jan GGUF inventories, builds a multi-model llama-server preset, and serves an OpenAI-compatible API on `localhost:8080` so Hermes Agent/Desktop can use local weights as primary with configurable cloud fallback.
+    *   Designed and shipped a cross-platform bridge that discovers Atomic Chat / Jan GGUF inventories, builds a multi-model llama-server preset, and serves an OpenAI-compatible API on `localhost:8080` so Hermes Agent/Desktop can use local weights as primary with configurable cloud fallback—shifting default inference off paid APIs to cut overall spend.
     *   One-install model path for every ADE that launches Hermes (Orca and peers)—no per-tool model stack. Win/macOS installers, on-demand single-model VRAM loading, rescan after downloads, LaunchAgent/desktop launchers.
-    *   Expertise: local inference ops, OpenAI-compatible routing, agent config patching, cross-platform path discovery, ADE integration patterns.
+    *   Paired local routing with token-aware agent workflows (tighter prompts, scoped context, selective cloud fallback only when needed) and recursive training loops for specific-utility local models.
+    *   Expertise: local inference ops, token/cost optimization, OpenAI-compatible routing, agent config patching, cross-platform path discovery, ADE integration patterns.
 
 *   **[ SnipOCR — Offline Screenshot OCR ]** · [github.com/nuroctane/snipocr](https://github.com/nuroctane/snipocr)
     *   Built a tray / menu-bar utility that watches OS screenshot folders and clipboard, runs fully on-device OCR, returns editable text to the clipboard, and surfaces a review popup—no cloud path for capture content.
@@ -76,8 +77,8 @@
 
 | **DOMAIN** | **TECHNOLOGIES / COMPETENCIES** |
 | :--- | :--- |
-| **`Agentic Engineering`** | Orca, Herdr, Ohmypi, Cursor, Windsurf, OpenCode, Devin, Atrium, Synara, Paseo, Blume; CLIs: Hermes, Claude Code, Codex, Grok, OpenHands; skill/routing design; worktree orchestration; human-in-the-loop review |
-| **`Local AI & Inference`** | Ollama; Atomic Chat; GGUF multi-model routing; llama-server; OpenAI-compatible local APIs; AnythingLLM; ONNX Runtime (RapidOCR); specific-utility local model training; cloud fallback patterns |
+| **`Agentic Engineering`** | Orca, Herdr, Ohmypi, Cursor, Windsurf, OpenCode, Devin, Atrium, Synara, Paseo, Blume; CLIs: Hermes, Claude Code, Codex, Grok, OpenHands; skill/routing design; worktree orchestration; human-in-the-loop review; token-usage optimization; cost-aware agent workflows |
+| **`Local AI & Inference`** | Ollama; Atomic Chat; GGUF multi-model routing; llama-server; OpenAI-compatible local APIs; AnythingLLM; ONNX Runtime (RapidOCR); specific-utility local model training; recursive training loops; token optimization & spend reduction; cloud fallback patterns |
 | **`Product & Frontend`** | TypeScript, React, Next.js, Vite, Three.js, GSAP, Tailwind, design systems, dual mobile/desktop shells, accessibility & reduced-motion |
 | **`Mobile`** | SwiftUI, Kotlin, Jetpack Compose, Capacitor, Core Data, Room, Hilt, AVFoundation, Media3 |
 | **`Backend & Delivery`** | Node/Express, Python, pnpm monorepos, Vercel serverless, Firebase Hosting/CI, Upstash Redis, REST, GitHub Actions |
