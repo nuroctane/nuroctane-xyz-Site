@@ -2429,20 +2429,60 @@ html.standalone-active body {
 
 /* ── Resume page ── */
 
-.rp-placeholder {
-  text-align: center;
-  padding: 3rem 0;
-  color: #4a9aaa;
-  font-size: 0.6rem;
-  letter-spacing: 0.1em;
+.resume-page {
+  max-width: 860px;
+}
+
+.resume-hero {
+  margin-bottom: 1.8rem;
+  padding-bottom: 1.2rem;
+  border-bottom: 1px solid rgba(93, 232, 240, 0.1);
 }
 
 .resume-title {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 1.4rem;
+  font-size: 1.35rem;
   color: #bdeff2;
-  margin: 0.5rem 0 1rem;
-  letter-spacing: 0.03em;
+  margin: 0.2rem 0 0.55rem;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+
+.resume-tagline {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  color: #6aacb5;
+  letter-spacing: 0.04em;
+  line-height: 1.5;
+  margin: 0 0 0.9rem;
+}
+
+.resume-contacts {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.75rem;
+}
+
+.resume-contacts li {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.5rem;
+  letter-spacing: 0.04em;
+  color: #4a9aaa;
+}
+
+.resume-contacts a {
+  color: #5de8f0;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(93, 232, 240, 0.2);
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.resume-contacts a:hover {
+  color: #bdeff2;
+  border-bottom-color: rgba(93, 232, 240, 0.55);
 }
 
 .resume-section {
@@ -2451,37 +2491,95 @@ html.standalone-active body {
 
 .resume-heading {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.7rem;
+  font-size: 0.62rem;
   color: #5de8f0;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.14em;
   border-bottom: 1px solid rgba(93, 232, 240, 0.15);
-  padding-bottom: 0.3rem;
-  margin-bottom: 0.8rem;
+  padding-bottom: 0.35rem;
+  margin: 0 0 0.9rem;
+}
+
+.resume-subhead {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.58rem;
+  color: #bdeff2;
+  letter-spacing: 0.08em;
+  margin: 0.8rem 0 0.45rem;
 }
 
 .resume-para {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.68rem;
-  line-height: 1.6;
+  font-size: 0.62rem;
+  line-height: 1.65;
   color: #9ababc;
-  margin-bottom: 0.6rem;
+  margin: 0 0 0.65rem;
+}
+
+.resume-quote {
+  margin: 0 0 1rem;
+  padding: 0.75rem 0.95rem;
+  border-left: 2px solid rgba(93, 232, 240, 0.28);
+  background: rgba(93, 232, 240, 0.03);
+}
+
+.resume-quote-p {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  line-height: 1.65;
+  color: #c8ecf0;
+  margin: 0 0 0.55rem;
+}
+
+.resume-quote-p:last-child {
+  margin-bottom: 0;
+}
+
+.resume-hr {
+  height: 1px;
+  margin: 0.4rem 0 1.2rem;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(93, 232, 240, 0.18) 20%,
+    rgba(93, 232, 240, 0.18) 80%,
+    transparent
+  );
+  border: 0;
 }
 
 .resume-list {
   list-style: none;
   padding: 0;
-  margin: 0 0 0.8rem;
+  margin: 0 0 0.85rem;
 }
 
 .resume-list li {
   font-family: 'JetBrains Mono', monospace;
-  font-size: 0.68rem;
+  font-size: 0.6rem;
   line-height: 1.6;
   color: #9ababc;
   padding-left: 1rem;
   position: relative;
-  margin-bottom: 0.3rem;
+  margin-bottom: 0.4rem;
+}
+
+.resume-list > li > .resume-list-text {
+  color: #bdeff2;
+}
+
+.resume-list--nested {
+  margin: 0.35rem 0 0.15rem;
+}
+
+.resume-list--nested > li > .resume-list-text {
+  color: #9ababc;
+  font-weight: 400;
+}
+
+.resume-list--nested li {
+  font-size: 0.56rem;
+  margin-bottom: 0.28rem;
 }
 
 .resume-list li::before {
@@ -2489,16 +2587,147 @@ html.standalone-active body {
   position: absolute;
   left: 0;
   color: #5de8f0;
-  opacity: 0.6;
+  opacity: 0.55;
 }
 
-.resume-list a, .resume-para a {
+.resume-list--nested li::before {
+  content: '·';
+  opacity: 0.7;
+}
+
+.resume-list--job li {
+  color: #9ababc;
+}
+
+.resume-list a,
+.resume-para a,
+.resume-quote a,
+.resume-table a,
+.resume-job a {
   color: #5de8f0;
   text-decoration: none;
 }
 
-.resume-list a:hover, .resume-para a:hover {
+.resume-list a:hover,
+.resume-para a:hover,
+.resume-quote a:hover,
+.resume-table a:hover,
+.resume-job a:hover {
   text-decoration: underline;
+}
+
+.resume-code {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.92em;
+  color: #bdeff2;
+  background: rgba(93, 232, 240, 0.08);
+  padding: 0.05em 0.28em;
+  border-radius: 2px;
+}
+
+.resume-job {
+  margin-bottom: 1.25rem;
+  padding: 0.75rem 0.9rem;
+  border: 1px solid rgba(93, 232, 240, 0.1);
+  background: rgba(93, 232, 240, 0.02);
+}
+
+.resume-job-company {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.62rem;
+  color: #5de8f0;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin: 0 0 0.3rem;
+}
+
+.resume-job-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem;
+  margin-bottom: 0.55rem;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem;
+}
+
+.resume-job-role {
+  color: #bdeff2;
+  letter-spacing: 0.04em;
+}
+
+.resume-job-sep {
+  color: #4a9aaa;
+  opacity: 0.7;
+}
+
+.resume-job-dates {
+  color: #4a9aaa;
+  letter-spacing: 0.04em;
+  font-style: italic;
+}
+
+.resume-job .resume-list {
+  margin-bottom: 0;
+}
+
+.resume-table-wrap {
+  overflow-x: auto;
+  margin: 0 0 1rem;
+  border: 1px solid rgba(93, 232, 240, 0.1);
+  background: rgba(93, 232, 240, 0.02);
+}
+
+.resume-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.52rem;
+  line-height: 1.5;
+}
+
+.resume-table th {
+  text-align: left;
+  color: #5de8f0;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-weight: 600;
+  padding: 0.55rem 0.7rem;
+  border-bottom: 1px solid rgba(93, 232, 240, 0.15);
+  background: rgba(93, 232, 240, 0.04);
+  white-space: nowrap;
+}
+
+.resume-table td {
+  color: #9ababc;
+  padding: 0.5rem 0.7rem;
+  border-bottom: 1px solid rgba(93, 232, 240, 0.06);
+  vertical-align: top;
+}
+
+.resume-table tr:last-child td {
+  border-bottom: none;
+}
+
+.resume-table td:first-child {
+  color: #bdeff2;
+  white-space: nowrap;
+  width: 1%;
+}
+
+@media (max-width: 768px) {
+  .resume-title {
+    font-size: 1.05rem;
+    letter-spacing: 0.05em;
+  }
+
+  .resume-table td:first-child {
+    white-space: normal;
+  }
+
+  .resume-job {
+    padding: 0.65rem 0.7rem;
+  }
 }
 
 /* ── Responsive: standalone pages ── */
