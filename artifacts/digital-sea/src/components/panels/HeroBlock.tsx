@@ -5,8 +5,10 @@ interface Props {
 }
 
 export function HeroBlock({ mode }: Props) {
+  // 2050vh: a little more travel per card so even mid-spacing feels unhurried
+  // without changing magnetic swim character (was 1800vh).
   return (
-    <div style={{ height: '1800vh', position: 'relative', zIndex: 1, pointerEvents: 'none' }}>
+    <div style={{ height: '2050vh', position: 'relative', zIndex: 1, pointerEvents: 'none' }}>
       {/* Main sea hero — hidden in blog mode */}
       <div className={`hero-block${mode === 'blog' ? ' hero-block--hidden' : ''}`}>
         <div className="hero-label">SYS://DIGITAL_SEA</div>

@@ -261,29 +261,30 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
   },
 ];
 
-// Cards alternate sides and are spread evenly along the scroll path so the
-// layout self-adjusts as cards are added/removed.
+// Cards alternate sides and are spread by *even midpoints* along the scroll
+// path so focus spacing stays uniform as cards are added/removed. Width expands
+// symmetrically around each mid — never "start + width" — so a wider first card
+// (edge envelope) cannot collapse into TikTok/X the way the old layout did.
 const yPattern = [1.0, -0.4, 1.3, 0.2, -0.8, 0.9, 0.1, -0.5, 1.1, 0.5, -0.2, 0.8, 0.3, -0.6, 1.0, 0.4, -0.1];
-const FIRST_START = 0.075;
-const CARD_WIDTH = 0.04;
-// Edge cards get a wider scroll envelope so they approach/recede more gently.
-const EDGE_CARD_WIDTH = 0.065;
 
-// webutils (last creative project) is pulled back so it appears before the
-// portal zone — this ensures the camera can orbit toward the portals cleanly
-// after webutils has cleared the frame.
-const LAST_START = 0.875;
-const STEP = (LAST_START - FIRST_START) / Math.max(1, raw.length - 1);
+// Focus band: after identity panel, before portal attractors (~0.955).
+// Slightly wider than the old 0.075→0.875 start band so mid-to-mid gaps breathe.
+const FIRST_MID = 0.090;
+const LAST_MID  = 0.910;
+const MID_STEP  = (LAST_MID - FIRST_MID) / Math.max(1, raw.length - 1);
+
+// Attractor envelope (full width). Softly overlaps neighbors for magnetic
+// swimming; peak focus points remain MID_STEP apart so cards never stack.
+const CARD_WIDTH = 0.040;
+// Gentle ease-in/out at the ends — still centered on the even mid.
+const EDGE_CARD_WIDTH = 0.048;
 
 // At their default alternating x-side, these nodes land on the *same* side as
 // the camera path at their t value (< 1 unit apart in X) — flip them across
 // so the camera looks across the sea at the card instead of being nose-to-it.
-// Side flips so cards sit across the camera path (not nose-on). When inserting
-// a node mid-list, index parity shifts for everything after it — invert FLIP
-// membership for those shifted ids so their world-side stays the same.
-// 26 nodes (blackjack after snipocr). When inserting mid-list, index parity
-// shifts for everything after the insert — invert FLIP membership for those
-// shifted ids so their world-side stays the same.
+// When inserting a node mid-list, index parity shifts for everything after it —
+// invert FLIP membership for those shifted ids so their world-side stays put.
+// 26 nodes (blackjack after snipocr).
 const FLIP_X = new Set([
   'tiktok', 'substack', 'kick', 'goodreads', 'remilia',
   'modkeys',
@@ -295,33 +296,34 @@ const FLIP_X = new Set([
   // github + geoskin were flipped pre-insert; inverted out after shift
 ]);
 
-// These late-path nodes have a slightly wider proximity window so the camera
-// has more time (scroll distance) to rotate toward and fully frame them —
-// especially important on narrow mobile viewports.
+// Late-path nodes get a slightly wider envelope so the camera has more scroll
+// distance to frame them (esp. mobile). Widths stay well under ~1.6× MID_STEP
+// so neighboring peaks remain distinct; still centered on the even mid.
 const WIDE_CARD: Record<string, number> = {
-  modkeys:     0.068,
-  snipocr:     0.066,
-  blackjack:   0.066,
-  atxtunerz:   0.070,
-  github:      0.064,
-  weatherguru: 0.074,
-  sis:         0.070,
-  astrosleep:  0.074,
-  geoskin:     0.074,
-  miyamaker:   0.078,
-  // webutils gets a generous window: it's the last card before the portals and
-  // needs a smooth entrance + a long tail so the camera has time to pivot
-  // toward the portals once the card clears.
-  webutils:    0.075,
+  modkeys:     0.054,
+  snipocr:     0.052,
+  blackjack:   0.052,
+  atxtunerz:   0.054,
+  github:      0.050,
+  weatherguru: 0.056,
+  sis:         0.054,
+  astrosleep:  0.056,
+  geoskin:     0.056,
+  miyamaker:   0.058,
+  // last card before portals — smooth entrance + room to pivot away
+  webutils:    0.056,
 };
 
 const Z_OVERRIDE: Record<string, number> = {};
 
+const SOCIAL_COUNT = raw.findIndex(n => n.id === 'modkeys');
+
 export const nodes: NodeData[] = raw.map((n, i) => {
   const isEdge = i === 0 || i === raw.length - 1;
-  const scrollStart = FIRST_START + i * STEP;
+  const mid = FIRST_MID + i * MID_STEP;
   const cardWidth = WIDE_CARD[n.id] ?? (isEdge ? EDGE_CARD_WIDTH : CARD_WIDTH);
-  const scrollEnd = scrollStart + cardWidth;
+  const scrollStart = mid - cardWidth / 2;
+  const scrollEnd   = mid + cardWidth / 2;
 
   // Determine which side to place the card.
   // Default alternates per node; FLIP_X nodes get the opposite side.
@@ -344,3 +346,20 @@ export const nodes: NodeData[] = raw.map((n, i) => {
     ),
   };
 });
+
+/** Midpoint of a node's scroll attractor window. */
+export function nodeMid(n: Pick<NodeData, 'scrollStart' | 'scrollEnd'>): number {
+  return (n.scrollStart + n.scrollEnd) / 2;
+}
+
+/**
+ * Boundary between socials and creative projects (scroll t).
+ * Midway between last social and first project focus — stays correct when
+ * spacing constants change.
+ */
+export const PROJECT_THRESHOLD: number = (() => {
+  const lastSocial   = nodes[Math.max(0, SOCIAL_COUNT - 1)];
+  const firstProject = nodes[Math.min(nodes.length - 1, SOCIAL_COUNT)];
+  if (!lastSocial || !firstProject || lastSocial === firstProject) return 0.57;
+  return (nodeMid(lastSocial) + nodeMid(firstProject)) / 2;
+})();

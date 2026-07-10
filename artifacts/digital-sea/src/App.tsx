@@ -3,7 +3,7 @@ import { useLocation } from 'wouter';
 import { useScrollProgress } from './hooks/useScrollProgress';
 import { usePerformanceTier } from './hooks/usePerformanceTier';
 import type { Mode, Track } from './types';
-import { nodes } from './data/nodes';
+import { nodes, PROJECT_THRESHOLD, nodeMid } from './data/nodes';
 import { blogPosts } from './data/blogPosts';
 import { Scene } from './components/scene/Scene';
 import { QuickNav } from './components/hud/QuickNav';
@@ -20,14 +20,8 @@ import { trackEvent } from './lib/analytics';
 const FIN_DISMISS_MAIN = 0.963;
 const FIN_DISMISS_BLOG = 0.940;
 
-// Keep in sync with QuickNav / SectionLabel — boundary between socials & projects.
-const PROJECT_THRESHOLD = 0.57;
-
-const midT = (n: { scrollStart: number; scrollEnd: number }) =>
-  (n.scrollStart + n.scrollEnd) / 2;
-
 const socialsStart = nodes[0]?.scrollStart ?? 0;
-const firstProject = nodes.find(n => midT(n) >= PROJECT_THRESHOLD) ?? nodes[0];
+const firstProject = nodes.find(n => nodeMid(n) >= PROJECT_THRESHOLD) ?? nodes[0];
 const projectsStart = firstProject?.scrollStart ?? socialsStart;
 
 function parseSeaPath(location: string): {

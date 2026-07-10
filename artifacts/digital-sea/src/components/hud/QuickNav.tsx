@@ -1,15 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'wouter';
-import { nodes, NodeData } from '../../data/nodes';
+import { nodes, NodeData, PROJECT_THRESHOLD, nodeMid } from '../../data/nodes';
 import { blogPosts, BlogPost } from '../../data/blogPosts';
 import type { Mode } from '../../types';
-
-// Category boundary: matches PROJECT_THRESHOLD in SectionLabel (single
-// source of truth). A card whose midpoint sits above the threshold is a
-// creative project, below it is social. Keep between last social (reddit)
-// mid and first creative (modkeys) mid after even spacing — 0.57 holds for
-// 25–26 cards (blackjack insert).
-const PROJECT_THRESHOLD = 0.57;
 
 const LOGO_MAP: Record<string, string> = {
   instagram:  '/assets/nodes/instagram-logo.png',
@@ -47,9 +40,8 @@ const ACRONYM_MAP: Record<string, string> = {
 // Computed once at module load. Categorization + order derive from
 // nodes.ts (scroll order), so adding/reordering a card there automatically
 // updates the quicknav; no hand-maintained ID list to drift.
-const midT = (n: NodeData) => (n.scrollStart + n.scrollEnd) / 2;
-const SOCIAL_NODES  = nodes.filter(n => midT(n) < PROJECT_THRESHOLD);
-const PROJECT_NODES = nodes.filter(n => midT(n) >= PROJECT_THRESHOLD);
+const SOCIAL_NODES  = nodes.filter(n => nodeMid(n) < PROJECT_THRESHOLD);
+const PROJECT_NODES = nodes.filter(n => nodeMid(n) >= PROJECT_THRESHOLD);
 
 function scrollToNode(
   node: NodeData,
@@ -59,10 +51,11 @@ function scrollToNode(
 ) {
   onNavigate?.();
   onClose();
-  const section = midT(node) < PROJECT_THRESHOLD ? 'socials' : 'projects';
+  const section = nodeMid(node) < PROJECT_THRESHOLD ? 'socials' : 'projects';
   setLocation?.(`/${section}/${node.id}`);
   requestAnimationFrame(() => {
     const total     = document.documentElement.scrollHeight - window.innerHeight;
+    // Approach slightly before mid so the card blooms into frame while swimming
     const approachT = node.scrollStart + (node.scrollEnd - node.scrollStart) * 0.35;
     window.scrollTo({ top: approachT * total, behavior: 'smooth' });
   });
