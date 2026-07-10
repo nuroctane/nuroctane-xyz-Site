@@ -55,6 +55,8 @@ Sea scroll + QuickNav update the URL (replace/push) so passive browsing still at
 
 **Privacy / notes:** Cookieless Web Analytics. Share-link `#hash` is stripped; reported URLs stay absolute. Ad blockers can hide traffic. Local dev does not feed production dashboards.
 
+**Link embeds (Open Graph):** Edge `middleware.js` serves path-specific `og:*` HTML to crawlers/unfurlers (Discord, Slack, iMessage, X, …). Dynamic cards from `/api/og?page=…`. Humans still get the SPA. Home keeps `/opengraph.jpg`; other routes get branded cards + unique titles/descriptions.
+
 ---
 
 ## ✨ Features

@@ -6,6 +6,7 @@ import { SpeedInsights } from '@vercel/speed-insights/react';
 import App from './App';
 import { AudioProvider } from './hooks/AudioContext';
 import { resolveAnalytics } from './lib/analytics';
+import { applyDocumentMeta, resolvePageMeta } from './lib/pageMeta';
 import './index.css';
 
 const QuotesPage = lazy(() => import('./pages/QuotesPage'));
@@ -82,50 +83,17 @@ function Telemetry() {
   );
 }
 
-/** Route-aware document chrome (title). Favicon swap for modkeys lives in ModkeysPage. */
-function useRouteTitle(path: string) {
+/** Route-aware document chrome (title + OG/meta for SPA navigations). */
+function useRouteMeta(path: string) {
   useEffect(() => {
-    const top = path.replace(/^\//, '').split('/')[0] ?? '';
-    if (top === 'modkeys') {
-      document.title = 'MODKEYS';
-      return;
-    }
-    if (top === 'quotes') {
-      document.title = 'Quotes — NUROCTANE';
-      return;
-    }
-    if (top === 'books') {
-      document.title = 'Books — NUROCTANE';
-      return;
-    }
-    if (top === 'resume') {
-      document.title = 'Resume — NUROCTANE';
-      return;
-    }
-    if (top === 'blog') {
-      document.title = 'Writings — NUROCTANE';
-      return;
-    }
-    if (top === 'socials') {
-      document.title = 'Socials — NUROCTANE';
-      return;
-    }
-    if (top === 'projects') {
-      document.title = 'Projects — NUROCTANE';
-      return;
-    }
-    if (top === 'fin') {
-      document.title = 'Fin — NUROCTANE';
-      return;
-    }
-    document.title = 'NUROCTANE';
+    applyDocumentMeta(resolvePageMeta(path));
   }, [path]);
 }
 
 function Root() {
   const [location] = useLocation();
   const { path } = useMemo(() => resolveAnalytics(location), [location]);
-  useRouteTitle(path);
+  useRouteMeta(path);
 
   const top = path === '/' ? '' : path.slice(1).split('/')[0];
 

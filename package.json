@@ -15,5 +15,9 @@
     "@rollup/rollup-win32-x64-msvc": "^4.62.2",
     "prettier": "^3.8.3",
     "typescript": "~5.9.3"
+  },
+  "dependencies": {
+    "@vercel/og": "^0.11.1",
+    "react": "catalog:"
   }
 }
