@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="docs/media/digital-sea.gif" alt="Digital Sea" width="480" />
+
 # 🌊 nuroctane.xyz
 
 ### _a digital sea of thoughts, books, and experiences_
@@ -13,7 +15,7 @@
 
 ## 🧠 What is this?
 
-This is my personal digital sea — a living portfolio that captures the different facets of my life:
+This is my personal [digital sea](https://codelyoko.fandom.com/wiki/Digital_Sea) — a living portfolio that captures the different facets of my life:
 
 - **📚 Books** — A curated library of books I've read, with community recommendations and live search via Google Books & Open Library APIs
 - **💭 Quotes** — A collection of thoughts, ideas, and quotes that have shaped my thinking, organized by theme
