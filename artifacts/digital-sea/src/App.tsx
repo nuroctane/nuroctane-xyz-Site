@@ -4,6 +4,7 @@ import { useScrollProgress } from './hooks/useScrollProgress';
 import { usePerformanceTier } from './hooks/usePerformanceTier';
 import type { Mode, Track } from './types';
 import { nodes } from './data/nodes';
+import { blogPosts } from './data/blogPosts';
 import { Scene } from './components/scene/Scene';
 import { QuickNav } from './components/hud/QuickNav';
 import { ModeToggle } from './components/hud/ModeToggle';
@@ -14,12 +15,30 @@ import { SummaryPanel } from './components/panels/SummaryPanel';
 import { EndPanel } from './components/panels/EndPanel';
 import { WalletTag } from './components/panels/WalletTag';
 import { HeroBlock } from './components/panels/HeroBlock';
+import { trackEvent } from './lib/analytics';
 
 const FIN_DISMISS_MAIN = 0.963;
 const FIN_DISMISS_BLOG = 0.940;
 
-const socialsStart  = nodes[0].scrollStart;
-const projectsStart = nodes.find(n => n.id === 'atxtunerz')?.scrollStart ?? nodes[0].scrollStart;
+// Keep in sync with QuickNav / SectionLabel — boundary between socials & projects.
+const PROJECT_THRESHOLD = 0.57;
+
+const midT = (n: { scrollStart: number; scrollEnd: number }) =>
+  (n.scrollStart + n.scrollEnd) / 2;
+
+const socialsStart = nodes[0]?.scrollStart ?? 0;
+const firstProject = nodes.find(n => midT(n) >= PROJECT_THRESHOLD) ?? nodes[0];
+const projectsStart = firstProject?.scrollStart ?? socialsStart;
+
+function parseSeaPath(location: string): {
+  section: string;
+  id: string | null;
+} {
+  const raw = location.replace(/^\//, '').toLowerCase();
+  if (!raw) return { section: '', id: null };
+  const [section, id] = raw.split('/');
+  return { section: section ?? '', id: id || null };
+}
 
 export default function App() {
   const scrollProgress = useScrollProgress();
@@ -27,55 +46,152 @@ export default function App() {
   const [mode,         setMode]         = useState<Mode>('scroll');
   const [finUnlocked,  setFinUnlocked]  = useState(false);
   const [portalsArmed, setPortalsArmed] = useState(true);
-  const [location] = useLocation();
+  const [location, setLocation] = useLocation();
 
   const blogOriginScrollY   = useRef(0);
   const cameraOriginScrollY = useRef(0);
   const cameraOriginMode    = useRef<Mode>('scroll');
   const modeRef             = useRef<Mode>(mode);
   modeRef.current           = mode;
+  const finUnlockedRef      = useRef(finUnlocked);
+  finUnlockedRef.current    = finUnlocked;
+  const locationRef         = useRef(location);
+  locationRef.current       = location;
+  const skipScrollSyncUntil = useRef(0);
+  const lastSyncedPath      = useRef('');
 
   const activeTrack: Track =
     mode === 'blog' || (mode === 'camera' && cameraOriginMode.current === 'blog')
       ? 'blog'
       : 'main';
 
-  function scrollToT(t: number) {
+  function scrollToT(t: number, behavior: ScrollBehavior = 'instant') {
     const total = document.documentElement.scrollHeight - window.innerHeight;
     if (total > 0) {
-      window.scrollTo({ top: t * total, behavior: 'instant' });
+      window.scrollTo({ top: t * total, behavior });
       return true;
     }
     return false;
   }
 
-  // Section-based routing: auto-scroll or switch mode on initial load / nav
+  // Section-based routing: deep-link /socials/:id, /projects/:id, /blog/:slug, /fin
   useEffect(() => {
-    const path = location.replace(/^\//, '').toLowerCase();
-    if (path === 'blog') {
+    const { section, id } = parseSeaPath(location);
+    skipScrollSyncUntil.current = performance.now() + 900;
+
+    if (section === 'blog') {
       if (modeRef.current !== 'blog') {
         setMode('blog');
-        scrollToT(0);
+        trackEvent('Mode Change', { mode: 'blog', source: 'route' });
       }
+      if (id) {
+        const post = blogPosts.find(
+          p => p.id === id || p.id === `blog-${id}` || p.id.replace(/^blog-/, '') === id,
+        );
+        if (post) {
+          const t = post.scrollStart + (post.scrollEnd - post.scrollStart) * 0.35;
+          if (!scrollToT(t)) {
+            let cancelled = false;
+            const retry = () => { if (!cancelled && !scrollToT(t)) requestAnimationFrame(retry); };
+            const raf = requestAnimationFrame(retry);
+            return () => { cancelled = true; cancelAnimationFrame(raf); };
+          }
+          return;
+        }
+      }
+      scrollToT(0);
       return;
     }
-    if (modeRef.current !== 'scroll') {
+
+    if (section === 'fin') {
+      if (modeRef.current !== 'scroll') setMode('scroll');
+      setPortalsArmed(false);
+      setFinUnlocked(true);
+      trackEvent('Fin Open', { source: 'route' });
+      requestAnimationFrame(() =>
+        window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' }),
+      );
+      return;
+    }
+
+    if (modeRef.current === 'blog') {
+      // Leaving blog via explicit sea URL
+      setMode('scroll');
+    } else if (modeRef.current !== 'scroll' && modeRef.current !== 'camera') {
       setMode('scroll');
     }
-    if (path === 'socials' || path === 'projects') {
-      const t = path === 'socials' ? socialsStart : projectsStart;
+
+    if (section === 'socials' || section === 'projects') {
+      let t = section === 'socials' ? socialsStart : projectsStart;
+      if (id) {
+        const node = nodes.find(n => n.id === id);
+        if (node) t = node.scrollStart + (node.scrollEnd - node.scrollStart) * 0.35;
+      }
       if (!scrollToT(t)) {
         let cancelled = false;
         const retry = () => { if (!cancelled && !scrollToT(t)) requestAnimationFrame(retry); };
-        const id = requestAnimationFrame(retry);
-        return () => { cancelled = true; cancelAnimationFrame(id); };
+        const raf = requestAnimationFrame(retry);
+        return () => { cancelled = true; cancelAnimationFrame(raf); };
       }
+      return;
+    }
+
+    // `/` or unknown sea root — stay; identity is top of scroll
+    if (!section) {
+      // only snap home when explicitly navigating to root from another section path
+      return;
     }
     return;
   }, [location]);
 
+  // While scrolling the sea, keep the URL on a section route so Vercel Top Pages
+  // records /socials, /projects, /fin (not only `/`).
+  useEffect(() => {
+    if (mode !== 'scroll') return;
+
+    const tick = () => {
+      if (performance.now() < skipScrollSyncUntil.current) return;
+      const { section } = parseSeaPath(locationRef.current);
+      // Don't stomp nested deep-links while user is still near that card
+      if (section === 'blog') return;
+      if (locationRef.current.includes('/') && locationRef.current.split('/').filter(Boolean).length > 1) {
+        // e.g. /socials/instagram — leave until user leaves the card window
+        const id = locationRef.current.replace(/^\//, '').split('/')[1];
+        if (id) {
+          const node = nodes.find(n => n.id === id);
+          if (node) {
+            const t = scrollProgress.current;
+            if (t >= node.scrollStart - 0.02 && t <= node.scrollEnd + 0.02) return;
+          }
+        }
+      }
+
+      const t = scrollProgress.current;
+      let next = '/';
+      if (finUnlockedRef.current && t >= FIN_DISMISS_MAIN) next = '/fin';
+      else if (t >= PROJECT_THRESHOLD) next = '/projects';
+      else if (t >= 0.04) next = '/socials';
+      else next = '/';
+
+      if (next === lastSyncedPath.current) return;
+      // Avoid thrashing replace when already on a matching nested path
+      const cur = locationRef.current.replace(/\/+$/, '') || '/';
+      if (cur === next || cur.startsWith(`${next}/`)) {
+        lastSyncedPath.current = next;
+        return;
+      }
+      lastSyncedPath.current = next;
+      setLocation(next, { replace: true });
+    };
+
+    window.addEventListener('scroll', tick, { passive: true });
+    tick();
+    return () => window.removeEventListener('scroll', tick);
+  }, [mode, setLocation, scrollProgress]);
+
   function handleSetMode(next: Mode) {
     if (next === mode) return;
+    trackEvent('Mode Change', { mode: next, source: 'toggle' });
 
     if (next === 'camera') {
       cameraOriginScrollY.current = window.scrollY;
@@ -109,6 +225,7 @@ export default function App() {
       });
     } else if (mode === 'blog') {
       setMode('scroll');
+      setLocation('/', { replace: true });
       requestAnimationFrame(() => {
         window.scrollTo({ top: blogOriginScrollY.current, behavior: 'instant' });
       });
@@ -118,12 +235,15 @@ export default function App() {
   function handleFinClick() {
     setPortalsArmed(false);
     setFinUnlocked(true);
+    trackEvent('Fin Open', { source: 'portal' });
+    skipScrollSyncUntil.current = performance.now() + 1200;
+    setLocation('/fin', { replace: true });
 
     if (mode === 'blog') return;
 
     setMode('scroll');
     requestAnimationFrame(() =>
-      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' })
+      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' }),
     );
   }
 
@@ -131,8 +251,11 @@ export default function App() {
     setPortalsArmed(false);
     setFinUnlocked(true);
     setMode('scroll');
+    trackEvent('Fin Open', { source: 'nav' });
+    skipScrollSyncUntil.current = performance.now() + 1200;
+    setLocation('/fin');
     requestAnimationFrame(() =>
-      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' })
+      window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' }),
     );
   }
 
@@ -147,6 +270,9 @@ export default function App() {
     setFinUnlocked(false);
     setPortalsArmed(true);
     setMode('blog');
+    trackEvent('Mode Change', { mode: 'blog', source: 'portal' });
+    skipScrollSyncUntil.current = performance.now() + 1200;
+    setLocation('/blog');
     requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
   }
 

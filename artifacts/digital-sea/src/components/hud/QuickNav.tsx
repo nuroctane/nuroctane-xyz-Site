@@ -51,9 +51,16 @@ const midT = (n: NodeData) => (n.scrollStart + n.scrollEnd) / 2;
 const SOCIAL_NODES  = nodes.filter(n => midT(n) < PROJECT_THRESHOLD);
 const PROJECT_NODES = nodes.filter(n => midT(n) >= PROJECT_THRESHOLD);
 
-function scrollToNode(node: NodeData, onClose: () => void, onNavigate?: () => void) {
+function scrollToNode(
+  node: NodeData,
+  onClose: () => void,
+  onNavigate?: () => void,
+  setLocation?: (to: string, opts?: { replace?: boolean }) => void,
+) {
   onNavigate?.();
   onClose();
+  const section = midT(node) < PROJECT_THRESHOLD ? 'socials' : 'projects';
+  setLocation?.(`/${section}/${node.id}`);
   requestAnimationFrame(() => {
     const total     = document.documentElement.scrollHeight - window.innerHeight;
     const approachT = node.scrollStart + (node.scrollEnd - node.scrollStart) * 0.35;
@@ -66,8 +73,11 @@ function scrollToBlogPost(
   mode:           Mode,
   onClose:        () => void,
   onBlogNavigate: () => void,
+  setLocation?:   (to: string, opts?: { replace?: boolean }) => void,
 ) {
   onClose();
+  const slug = post.id.replace(/^blog-/, '');
+  setLocation?.(`/blog/${slug}`);
   const doScroll = () => {
     const total     = document.documentElement.scrollHeight - window.innerHeight;
     const approachT = post.scrollStart + (post.scrollEnd - post.scrollStart) * 0.35;
@@ -82,7 +92,14 @@ function scrollToBlogPost(
   }
 }
 
-function NavItem({ node, onClose, onNavigate }: { node: NodeData; onClose: () => void; onNavigate?: () => void }) {
+function NavItem({
+  node, onClose, onNavigate, setLocation,
+}: {
+  node: NodeData;
+  onClose: () => void;
+  onNavigate?: () => void;
+  setLocation: (to: string, opts?: { replace?: boolean }) => void;
+}) {
   // Prefer explicit LOGO_MAP, else project card avatar (so new project art shows without a second map entry)
   const logo    = LOGO_MAP[node.id] || (node.avatar || undefined);
   const acronym = ACRONYM_MAP[node.id] ?? node.id.slice(0, 2).toUpperCase();
@@ -91,7 +108,7 @@ function NavItem({ node, onClose, onNavigate }: { node: NodeData; onClose: () =>
   return (
     <button
       className={`qnav-item${isSoon ? ' qnav-item--soon' : ''}`}
-      onClick={() => scrollToNode(node, onClose, onNavigate)}
+      onClick={() => scrollToNode(node, onClose, onNavigate, setLocation)}
     >
       <span className="qnav-item-badge">
         {logo
@@ -106,18 +123,19 @@ function NavItem({ node, onClose, onNavigate }: { node: NodeData; onClose: () =>
 }
 
 function BlogNavItem({
-  post, mode, onClose, onBlogNavigate,
+  post, mode, onClose, onBlogNavigate, setLocation,
 }: {
   post:           BlogPost;
   mode:           Mode;
   onClose:        () => void;
   onBlogNavigate: () => void;
+  setLocation:    (to: string, opts?: { replace?: boolean }) => void;
 }) {
   const num = blogPosts.indexOf(post) + 1;
   return (
     <button
       className="qnav-item"
-      onClick={() => scrollToBlogPost(post, mode, onClose, onBlogNavigate)}
+      onClick={() => scrollToBlogPost(post, mode, onClose, onBlogNavigate, setLocation)}
     >
       <span className="qnav-item-badge">
         <span className="qnav-item-acronym" style={{ fontSize: '0.55rem' }}>
@@ -270,6 +288,7 @@ export function QuickNav({ mode, onNavigate, onBlogNavigate, onFinNavigate }: Qu
               onActivate={() => {
                 onNavigate?.();
                 setOpen(false);
+                setLocation('/');
                 requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
               }}
             />
@@ -281,12 +300,25 @@ export function QuickNav({ mode, onNavigate, onBlogNavigate, onFinNavigate }: Qu
               label="SOCIALS"
               count={SOCIAL_NODES.length}
               expanded={expanded.has('SOCIALS')}
-              onToggle={() => toggle('SOCIALS')}
+              onToggle={() => {
+                const opening = !expanded.has('SOCIALS');
+                toggle('SOCIALS');
+                if (opening) {
+                  onNavigate?.();
+                  setLocation('/socials');
+                }
+              }}
             />
             {expanded.has('SOCIALS') && (
               <div className="qnav-items">
                 {SOCIAL_NODES.map(n => (
-                  <NavItem key={n.id} node={n} onClose={() => setOpen(false)} onNavigate={onNavigate} />
+                  <NavItem
+                    key={n.id}
+                    node={n}
+                    onClose={() => setOpen(false)}
+                    onNavigate={onNavigate}
+                    setLocation={setLocation}
+                  />
                 ))}
               </div>
             )}
@@ -298,12 +330,25 @@ export function QuickNav({ mode, onNavigate, onBlogNavigate, onFinNavigate }: Qu
               label="PROJECTS"
               count={PROJECT_NODES.length}
               expanded={expanded.has('PROJECTS')}
-              onToggle={() => toggle('PROJECTS')}
+              onToggle={() => {
+                const opening = !expanded.has('PROJECTS');
+                toggle('PROJECTS');
+                if (opening) {
+                  onNavigate?.();
+                  setLocation('/projects');
+                }
+              }}
             />
             {expanded.has('PROJECTS') && (
               <div className="qnav-items">
                 {PROJECT_NODES.map(n => (
-                  <NavItem key={n.id} node={n} onClose={() => setOpen(false)} onNavigate={onNavigate} />
+                  <NavItem
+                    key={n.id}
+                    node={n}
+                    onClose={() => setOpen(false)}
+                    onNavigate={onNavigate}
+                    setLocation={setLocation}
+                  />
                 ))}
               </div>
             )}
@@ -315,7 +360,14 @@ export function QuickNav({ mode, onNavigate, onBlogNavigate, onFinNavigate }: Qu
               label="BLOG"
               count={blogPosts.length}
               expanded={expanded.has('BLOG')}
-              onToggle={() => toggle('BLOG')}
+              onToggle={() => {
+                const opening = !expanded.has('BLOG');
+                toggle('BLOG');
+                if (opening) {
+                  setLocation('/blog');
+                  onBlogNavigate();
+                }
+              }}
             />
             {expanded.has('BLOG') && (
               <div className="qnav-items">
@@ -326,6 +378,7 @@ export function QuickNav({ mode, onNavigate, onBlogNavigate, onFinNavigate }: Qu
                     mode={mode}
                     onClose={() => setOpen(false)}
                     onBlogNavigate={onBlogNavigate}
+                    setLocation={setLocation}
                   />
                 ))}
               </div>
@@ -354,6 +407,7 @@ export function QuickNav({ mode, onNavigate, onBlogNavigate, onFinNavigate }: Qu
               label="FIN"
               onActivate={() => {
                 setOpen(false);
+                setLocation('/fin');
                 onFinNavigate();
               }}
             />

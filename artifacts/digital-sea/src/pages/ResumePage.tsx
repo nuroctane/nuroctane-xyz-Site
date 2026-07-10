@@ -3,6 +3,7 @@ import { StandaloneNav } from './StandaloneNav';
 import { MiniAudio } from '../components/hud/MiniAudio';
 import { ScrollToTop } from '../components/hud/ScrollToTop';
 import { useStandaloneScroll } from '../hooks/useStandaloneScroll';
+import { trackEvent } from '../lib/analytics';
 import raw from '../content/resume.md?raw';
 
 /* ── Types ─────────────────────────────────────────────────────────────── */
@@ -507,6 +508,7 @@ export default function ResumePage() {
 
   // Hidden page: keep crawlers out; only reachable via direct URL.
   useEffect(() => {
+    trackEvent('Resume View');
     let robots = document.querySelector('meta[name="robots"]') as HTMLMetaElement | null;
     const created = !robots;
     if (!robots) {
@@ -539,7 +541,16 @@ export default function ResumePage() {
             {doc.contacts.map((c, i) => (
               <li key={i}>
                 {c.href ? (
-                  <a href={c.href} target={c.href.startsWith('http') ? '_blank' : undefined} rel="noreferrer">
+                  <a
+                    href={c.href}
+                    target={c.href.startsWith('http') ? '_blank' : undefined}
+                    rel="noreferrer"
+                    onClick={() => trackEvent('Resume Contact', {
+                      label: c.label,
+                      kind: c.href!.startsWith('mailto:') ? 'email'
+                        : c.href!.startsWith('tel:') ? 'phone' : 'link',
+                    })}
+                  >
                     {c.label}
                   </a>
                 ) : (

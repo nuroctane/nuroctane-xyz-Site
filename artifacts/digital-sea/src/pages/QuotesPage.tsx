@@ -3,6 +3,7 @@ import { StandaloneNav } from './StandaloneNav';
 import { MiniAudio } from '../components/hud/MiniAudio';
 import { ScrollToTop } from '../components/hud/ScrollToTop';
 import { useStandaloneScroll } from '../hooks/useStandaloneScroll';
+import { trackEvent } from '../lib/analytics';
 import raw from '../content/quotes.md?raw';
 
 interface Quote {
@@ -128,7 +129,11 @@ export default function QuotesPage() {
           <button
             key={s.name}
             className={`qs-tab${s.name === activeSec ? ' qs-tab--on' : ''}`}
-            onClick={() => { setActiveSec(s.name); setCount(PAGE_SIZE); }}
+            onClick={() => {
+              setActiveSec(s.name);
+              setCount(PAGE_SIZE);
+              trackEvent('Quotes Section', { section: s.name });
+            }}
           >
             {s.name}
           </button>

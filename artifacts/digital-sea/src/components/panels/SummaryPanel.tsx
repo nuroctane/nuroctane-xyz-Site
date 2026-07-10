@@ -1,5 +1,6 @@
 import { useEffect, useRef } from 'react';
 import type { Mode } from '../../types';
+import { trackEvent } from '../../lib/analytics';
 
 interface Props {
   mode: Mode;
@@ -44,6 +45,7 @@ export function SummaryPanel({ mode }: Props) {
         rel="noopener noreferrer"
         className="summary-cal-link"
         aria-label="Book a meeting"
+        onClick={() => trackEvent('Booking Click', { surface: 'identity' })}
       >
         <svg viewBox="0 0 16 16" fill="none">
           <rect x="1.5" y="3" width="13" height="11.5" rx="1.5" stroke="currentColor" strokeWidth="1.2"/>

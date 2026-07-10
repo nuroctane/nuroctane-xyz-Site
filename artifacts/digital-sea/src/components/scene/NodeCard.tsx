@@ -1,7 +1,10 @@
 import React from 'react';
 import { NodeData } from '../../data/nodes';
+import { trackEvent } from '../../lib/analytics';
 
 const COMING_SOON_IDS = ['weatherguru', 'sis', 'astrosleep', 'geoskin'];
+const PROJECT_THRESHOLD = 0.57;
+const midT = (n: NodeData) => (n.scrollStart + n.scrollEnd) / 2;
 
 function ImgWithFallback({
   src, alt, className, fallback,
@@ -20,6 +23,8 @@ export function NodeCard({ node }: { node: NodeData }) {
 
   const handleClick = (e: React.MouseEvent) => {
     if (!hasLink || exploding) { e.preventDefault(); return; }
+    const section = midT(node) < PROJECT_THRESHOLD ? 'socials' : 'projects';
+    trackEvent('Sea Node Open', { id: node.id, section, label: node.label });
     setExploding(true);
     setTimeout(() => setExploding(false), 420);
   };

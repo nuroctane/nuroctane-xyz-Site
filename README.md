@@ -43,7 +43,13 @@ Code is wired (`mode: production` on the Vite SPA). Dashboard:
 
 1. Open the Vercel project for this repo → **Analytics** → **Enable** Web Analytics (script at `/_vercel/insights/script.js` must 200).
 2. Optionally enable **Speed Insights** in the same project (`@vercel/speed-insights` v2 + `<SpeedInsights />` in the SPA root).
-3. Redeploy after enable or code changes. Views for `/`, `/books`, `/quotes`, `/resume`, `/modkeys`, plus custom events (`Modkeys Save` / `Export` / `Share`).
+3. Redeploy after enable or code changes.
+
+**Page routes (Top Pages):** `/`, `/socials`, `/socials/:id`, `/projects`, `/projects/:id`, `/blog`, `/blog/:slug`, `/fin`, `/books`, `/quotes`, `/resume`, `/modkeys`.
+
+Sea scroll + QuickNav update the URL (replace/push) so passive browsing still attributes to section routes. `/resume` is unlinked in nav (direct URL only) but still tracked.
+
+**Custom events:** `Modkeys Save` / `Export` / `Share`, `Sea Node Open`, `Mode Change`, `Fin Open`, `Quotes Section`, `Book Open`, `Resume View`, `Resume Contact`, `Booking Click`.
 
 **Standalone** `modkeys.vercel.app` (if a separate Vercel project) needs Analytics enabled there too — inject runs on boot.
 

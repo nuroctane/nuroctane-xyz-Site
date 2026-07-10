@@ -5,6 +5,7 @@ import { ScrollToTop } from '../components/hud/ScrollToTop';
 import { useStandaloneScroll } from '../hooks/useStandaloneScroll';
 import raw from '../content/books.md?raw';
 import bookMeta from '../data/bookMeta.json';
+import { trackEvent } from '../lib/analytics';
 
 const GB_KEY = import.meta.env.VITE_GOOGLE_BOOKS_API_KEY;
 const GB_BASE = 'https://www.googleapis.com/books/v1/volumes';
@@ -639,7 +640,14 @@ export default function BooksPage() {
                 <button
                   key={`${b.title}-${i}`}
                   className={`bs-card${effectiveRead ? ' bs-card--read' : ''}${b.visitor ? ' bs-card--visitor' : ''}`}
-                  onClick={() => setDetail(b)}
+                  onClick={() => {
+                    setDetail(b);
+                    trackEvent('Book Open', {
+                      title: b.title,
+                      author: b.author || '',
+                      visitor: Boolean(b.visitor),
+                    });
+                  }}
                   title={`${b.title}${b.author ? ' — ' + b.author : ''}`}
                 >
                   <div className="bs-cover">
