@@ -127,7 +127,9 @@ export function CameraRig({ scrollProgress, mode }: Props) {
     // ── Velocity-sensitive magnetic T pull ─────────────────────────────────
     const velocity      = Math.abs(rawT - prevRawT.current);
     prevRawT.current    = rawT;
-    const isProjectZone = !isBlog && rawT >= 0.54 && rawT <= 0.94;
+    // Project-zone camera tuning kicks in near the social→creative boundary
+    // (PROJECT_THRESHOLD ~0.566 with even mid spacing). Soft lead-in at 0.53.
+    const isProjectZone = !isBlog && rawT >= 0.53 && rawT <= 0.94;
     const isBlogFocus   = isBlog && rawT >= 0.05 && rawT <= 0.94;
     const speedFloor    = isProjectZone ? 0.38 : isBlogFocus ? 0.32 : 0;
     const speedFactor   = Math.max(speedFloor, 1 - velocity * (isProjectZone ? 70 : isBlogFocus ? 82 : 110));
