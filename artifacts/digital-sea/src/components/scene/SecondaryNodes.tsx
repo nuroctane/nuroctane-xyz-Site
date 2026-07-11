@@ -2,6 +2,7 @@ import { useMemo, useRef, type MutableRefObject } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import { useLocation } from 'wouter';
+import { markNavigationIntent } from '../../lib/navIntent';
 import * as THREE from 'three';
 import type { SecondaryMedia } from '../../data/secondaryNodes';
 import { GithubContribTerrain } from './GithubContribTerrain';
@@ -142,7 +143,7 @@ export function SecondaryOrbit({ nodeId, media, centerRef, proximityRef }: Props
                 ) : m.link ? (
                   <button
                     className="secondary-card-link"
-                    onClick={(e) => { e.preventDefault(); setLocation(m.link!); }}
+                    onClick={(e) => { e.preventDefault(); markNavigationIntent(); setLocation(m.link!); }}
                   >
                     <span className="secondary-card-link-prefix">SYS://</span>
                     <span className="secondary-card-link-label">{m.linkLabel}</span>

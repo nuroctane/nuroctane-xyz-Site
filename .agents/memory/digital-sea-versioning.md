@@ -136,3 +136,34 @@ History:
 - (2026-07-09): repo de-Replit — remove .replit / replit.nix / @replit Vite plugins /
   linux-only pnpm platform overrides; local Windows + Vercel only. Agent memory
   notes updated to match (no Replit-required env or Git pane).
+- v0.99 (2026-07-09, retro): hidden /resume page ships the full CV (a66ee83).
+- v0.100 (2026-07-09, retro): Blackjack project node added + swim pathing fix (43b48e8).
+- v0.101 (2026-07-09, retro): AstroSleep node logo + GitHub badge (2e95c85).
+- v0.102 (2026-07-09, retro): AstroSleep quicknav logo + MODKEYS page chrome (c6aecf9).
+- v0.103 (2026-07-09, retro): analytics SPA route/event expansion incl. /resume (eda1795).
+- v0.104 (2026-07-09, retro): even node focus spacing along the swim (d274e9a).
+- v0.105 (2026-07-09, retro): project-zone camera band aligned with even mids (7492051).
+- v0.106 (2026-07-09, retro): path-specific OG link embeds for every surface (f28642d).
+- v0.107 (2026-07-09, retro): quicknav categories expand-only, leaves navigate (be6c9bf).
+- v0.108 (2026-07-10, retro): resume content sync DDCV2026 from Drive (098ab91).
+- v0.109 (2026-07-10): snap-back + dive-crash fix (5d87a7c, Grok 4.5) — audited GOOD:
+  intent gate severs the URL-mirror feedback loop, rawScrollT removes lerp-lag
+  misclassification, hysteresis stops boundary thrash, OrbitCam right-vector
+  fallback is the canonical zero-cross NaN fix.
+- v0.110 (2026-07-11): hardening pass on the snap-back/dive-crash fix
+  (5d87a7c, audited GOOD — intent gate severs the URL-mirror feedback loop at
+  the right place, rawScrollT removes the lerp-lag misclassification,
+  hysteresis stops boundary thrash, OrbitCam right-vector fallback is the
+  canonical zero-cross fix). Two gaps closed: (1) navIntent now carries a
+  1500ms TTL — a marked navigation to the path the user is already on never
+  runs the routing effect, so the armed flag lingered and the next passive
+  mirror replace would consume it and snap the swimmer to a section start
+  (the original bug resurrected through the fix's own mechanism); stale
+  intents now expire harmlessly. (2) SecondaryNodes sidecard links mark
+  navigation intent (semantic correctness; today's only link is /books which
+  unmounts App, but future sea-section links would have been silent no-ops).
+
+Retroactive-numbering note (2026-07-11): ten feature/fix commits landed on
+main between v0.98 and the snap-back fix without a BUILD_VER bump; assigned
+v0.99-v0.108 in commit order (docs/chore/quotes-auto-sync commits excluded as
+non-shipping). The snap-back fix is v0.109; this hardening pass is v0.110.
