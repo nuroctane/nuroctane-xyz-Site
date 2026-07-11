@@ -1,4 +1,5 @@
 import { useEffect, useRef } from 'react';
+import { scrollMax } from '../lib/scrollMetrics';
 
 export function useScrollProgress() {
   const progress = useRef(0);
@@ -9,7 +10,7 @@ export function useScrollProgress() {
 
     const onScroll = () => {
       const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const docHeight = scrollMax(); // cached; no per-scroll reflow
       target.value = docHeight > 0 ? Math.min(1, scrollTop / docHeight) : 0;
       if (!isMobile) progress.current = target.value;
     };

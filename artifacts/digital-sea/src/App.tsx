@@ -17,6 +17,7 @@ import { WalletTag } from './components/panels/WalletTag';
 import { HeroBlock } from './components/panels/HeroBlock';
 import { trackEvent } from './lib/analytics';
 import { consumeNavigationIntent, markNavigationIntent } from './lib/navIntent';
+import { scrollT, installScrollMetrics } from './lib/scrollMetrics';
 
 const FIN_DISMISS_MAIN = 0.963;
 const FIN_DISMISS_BLOG = 0.940;
@@ -39,9 +40,8 @@ function parseSeaPath(location: string): {
 
 /** Actual document scroll progress (not the mobile-lerped camera progress). */
 function rawScrollT(): number {
-  const total = document.documentElement.scrollHeight - window.innerHeight;
-  if (total <= 0) return 0;
-  return Math.min(1, Math.max(0, window.scrollY / total));
+  // Reflow-free: reads a cached scroll max (see lib/scrollMetrics).
+  return scrollT();
 }
 
 export default function App() {
@@ -221,9 +221,13 @@ export default function App() {
       setLocation(next, { replace: true });
     };
 
+    const uninstallMetrics = installScrollMetrics();
     window.addEventListener('scroll', tick, { passive: true });
     tick();
-    return () => window.removeEventListener('scroll', tick);
+    return () => {
+      window.removeEventListener('scroll', tick);
+      uninstallMetrics();
+    };
   }, [mode, setLocation]);
 
   function handleSetMode(next: Mode) {

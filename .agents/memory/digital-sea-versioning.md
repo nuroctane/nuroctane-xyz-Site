@@ -167,3 +167,9 @@ Retroactive-numbering note (2026-07-11): ten feature/fix commits landed on
 main between v0.98 and the snap-back fix without a BUILD_VER bump; assigned
 v0.99-v0.108 in commit order (docs/chore/quotes-auto-sync commits excluded as
 non-shipping). The snap-back fix is v0.109; this hardening pass is v0.110.
+- v0.111 (2026-07-11): main-page scroll perf — document.scrollHeight was read
+  on every scroll event by both rawScrollT (up to 3x/event in the section
+  tick) and useScrollProgress, forcing a synchronous layout reflow mid-swim
+  (worst on mobile). New lib/scrollMetrics caches scrollHeight-innerHeight,
+  invalidating only on resize + DOM mutation (rAF-debounced); both hot
+  readers now reflow-free. Behavior identical; jank reduced. Main page only.
