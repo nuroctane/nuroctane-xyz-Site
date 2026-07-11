@@ -3,6 +3,7 @@ import { useLocation } from 'wouter';
 import { nodes, NodeData, PROJECT_THRESHOLD, nodeMid } from '../../data/nodes';
 import { blogPosts, BlogPost } from '../../data/blogPosts';
 import type { Mode } from '../../types';
+import { markNavigationIntent } from '../../lib/navIntent';
 
 const LOGO_MAP: Record<string, string> = {
   instagram:  '/assets/nodes/instagram-logo.png',
@@ -52,6 +53,7 @@ function scrollToNode(
   onNavigate?.();
   onClose();
   const section = nodeMid(node) < PROJECT_THRESHOLD ? 'socials' : 'projects';
+  markNavigationIntent();
   setLocation?.(`/${section}/${node.id}`);
   requestAnimationFrame(() => {
     const total     = document.documentElement.scrollHeight - window.innerHeight;
@@ -70,6 +72,7 @@ function scrollToBlogPost(
 ) {
   onClose();
   const slug = post.id.replace(/^blog-/, '');
+  markNavigationIntent();
   setLocation?.(`/blog/${slug}`);
   const doScroll = () => {
     const total     = document.documentElement.scrollHeight - window.innerHeight;
@@ -301,6 +304,7 @@ export function QuickNav({ mode, onNavigate, onBlogNavigate, onFinNavigate }: Qu
               onActivate={() => {
                 onNavigate?.();
                 setOpen(false);
+                markNavigationIntent();
                 setLocation('/');
                 requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
               }}
@@ -381,7 +385,11 @@ export function QuickNav({ mode, onNavigate, onBlogNavigate, onFinNavigate }: Qu
             <CatHeader
               icon={<IconBook />}
               label="QUOTES"
-              onActivate={() => { setOpen(false); setLocation('/quotes'); }}
+              onActivate={() => {
+                setOpen(false);
+                markNavigationIntent();
+                setLocation('/quotes');
+              }}
             />
           </div>
 
@@ -389,7 +397,11 @@ export function QuickNav({ mode, onNavigate, onBlogNavigate, onFinNavigate }: Qu
             <CatHeader
               icon={<IconStack />}
               label="BOOKS"
-              onActivate={() => { setOpen(false); setLocation('/books'); }}
+              onActivate={() => {
+                setOpen(false);
+                markNavigationIntent();
+                setLocation('/books');
+              }}
             />
           </div>
 

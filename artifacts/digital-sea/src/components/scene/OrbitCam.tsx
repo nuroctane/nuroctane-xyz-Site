@@ -95,7 +95,14 @@ export function OrbitCam({ enabled }: Props) {
     if (!moving) return;
 
     cam.getWorldDirection(_forward);
-    _right.crossVectors(_forward, _worldUp).normalize();
+    // Looking straight up/down makes forward ∥ worldUp → zero cross product.
+    // normalize() then yields NaN and freezes/crashes the WebGL loop (dive/rise).
+    _right.crossVectors(_forward, _worldUp);
+    if (_right.lengthSq() < 1e-8) {
+      _right.setFromMatrixColumn(cam.matrixWorld, 0);
+      if (_right.lengthSq() < 1e-8) _right.set(1, 0, 0);
+    }
+    _right.normalize();
     _delta.set(0, 0, 0);
 
     const speed = MOVE_SPEED * Math.min(delta, 0.1);
@@ -107,9 +114,17 @@ export function OrbitCam({ enabled }: Props) {
     if (k.has('Space'))                                        _delta.addScaledVector(_worldUp,  speed);
     if (k.has('ControlLeft') || k.has('ControlRight'))        _delta.addScaledVector(_worldUp, -speed);
 
+    if (!Number.isFinite(_delta.x) || !Number.isFinite(_delta.y) || !Number.isFinite(_delta.z)) {
+      return;
+    }
+
     const nx = THREE.MathUtils.clamp(cam.position.x + _delta.x, XMIN, XMAX);
     const ny = THREE.MathUtils.clamp(cam.position.y + _delta.y, YMIN, YMAX);
     const nz = THREE.MathUtils.clamp(cam.position.z + _delta.z, ZMIN, ZMAX);
+
+    if (!Number.isFinite(nx) || !Number.isFinite(ny) || !Number.isFinite(nz)) {
+      return;
+    }
 
     const cx = nx - cam.position.x;
     const cy = ny - cam.position.y;

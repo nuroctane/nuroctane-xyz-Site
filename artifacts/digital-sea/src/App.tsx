@@ -16,9 +16,12 @@ import { EndPanel } from './components/panels/EndPanel';
 import { WalletTag } from './components/panels/WalletTag';
 import { HeroBlock } from './components/panels/HeroBlock';
 import { trackEvent } from './lib/analytics';
+import { consumeNavigationIntent, markNavigationIntent } from './lib/navIntent';
 
 const FIN_DISMISS_MAIN = 0.963;
 const FIN_DISMISS_BLOG = 0.940;
+/** Leave projects only after dropping this far below the enter threshold (hysteresis). */
+const PROJECT_EXIT_SLACK = 0.035;
 
 const socialsStart = nodes[0]?.scrollStart ?? 0;
 const firstProject = nodes.find(n => nodeMid(n) >= PROJECT_THRESHOLD) ?? nodes[0];
@@ -32,6 +35,13 @@ function parseSeaPath(location: string): {
   if (!raw) return { section: '', id: null };
   const [section, id] = raw.split('/');
   return { section: section ?? '', id: id || null };
+}
+
+/** Actual document scroll progress (not the mobile-lerped camera progress). */
+function rawScrollT(): number {
+  const total = document.documentElement.scrollHeight - window.innerHeight;
+  if (total <= 0) return 0;
+  return Math.min(1, Math.max(0, window.scrollY / total));
 }
 
 export default function App() {
@@ -53,6 +63,10 @@ export default function App() {
   locationRef.current       = location;
   const skipScrollSyncUntil = useRef(0);
   const lastSyncedPath      = useRef('');
+  /** Sticky section for analytics URL hysteresis (avoids thrashing at boundary). */
+  const sectionBandRef      = useRef<'/' | '/socials' | '/projects' | '/fin'>('/');
+  /** First location effect run = deep-link / cold load — treat as intentional. */
+  const isFirstLocationEffect = useRef(true);
 
   const activeTrack: Track =
     mode === 'blog' || (mode === 'camera' && cameraOriginMode.current === 'blog')
@@ -68,9 +82,25 @@ export default function App() {
     return false;
   }
 
-  // Section-based routing: deep-link /socials/:id, /projects/:id, /blog/:slug, /fin
+  // Section routing: only SCROLL when navigation was intentional (nav / portals /
+  // cold deep-link). Passive analytics URL replaces must never re-drive scroll —
+  // that feedback loop was snapping swimmers from projects back to socials start.
   useEffect(() => {
+    const intentional =
+      consumeNavigationIntent() || isFirstLocationEffect.current;
+    isFirstLocationEffect.current = false;
+
     const { section, id } = parseSeaPath(location);
+
+    if (!intentional) {
+      // Still allow blog mode entry if a passive URL somehow says /blog (rare).
+      // Do not call scrollToT.
+      if (section === 'blog' && modeRef.current !== 'blog') {
+        setMode('blog');
+      }
+      return;
+    }
+
     skipScrollSyncUntil.current = performance.now() + 900;
 
     if (section === 'blog') {
@@ -102,6 +132,7 @@ export default function App() {
       setPortalsArmed(false);
       setFinUnlocked(true);
       trackEvent('Fin Open', { source: 'route' });
+      sectionBandRef.current = '/fin';
       requestAnimationFrame(() =>
         window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'instant' }),
       );
@@ -109,7 +140,6 @@ export default function App() {
     }
 
     if (modeRef.current === 'blog') {
-      // Leaving blog via explicit sea URL
       setMode('scroll');
     } else if (modeRef.current !== 'scroll' && modeRef.current !== 'camera') {
       setMode('scroll');
@@ -121,6 +151,7 @@ export default function App() {
         const node = nodes.find(n => n.id === id);
         if (node) t = node.scrollStart + (node.scrollEnd - node.scrollStart) * 0.35;
       }
+      sectionBandRef.current = section === 'socials' ? '/socials' : '/projects';
       if (!scrollToT(t)) {
         let cancelled = false;
         const retry = () => { if (!cancelled && !scrollToT(t)) requestAnimationFrame(retry); };
@@ -130,58 +161,70 @@ export default function App() {
       return;
     }
 
-    // `/` or unknown sea root — stay; identity is top of scroll
     if (!section) {
-      // only snap home when explicitly navigating to root from another section path
-      return;
+      sectionBandRef.current = '/';
     }
     return;
   }, [location]);
 
-  // While scrolling the sea, keep the URL on a section route so Vercel Top Pages
-  // records /socials, /projects, /fin (not only `/`).
+  // Analytics-only URL mirror. Never scrolls. Uses raw scrollY (not mobile-lerped
+  // progress) + hysteresis so the socials↔projects boundary does not thrash.
   useEffect(() => {
     if (mode !== 'scroll') return;
 
     const tick = () => {
       if (performance.now() < skipScrollSyncUntil.current) return;
       const { section } = parseSeaPath(locationRef.current);
-      // Don't stomp nested deep-links while user is still near that card
       if (section === 'blog') return;
-      if (locationRef.current.includes('/') && locationRef.current.split('/').filter(Boolean).length > 1) {
-        // e.g. /socials/instagram — leave until user leaves the card window
+
+      // Keep nested deep-links while still near that card
+      if (locationRef.current.split('/').filter(Boolean).length > 1) {
         const id = locationRef.current.replace(/^\//, '').split('/')[1];
         if (id) {
           const node = nodes.find(n => n.id === id);
           if (node) {
-            const t = scrollProgress.current;
-            if (t >= node.scrollStart - 0.02 && t <= node.scrollEnd + 0.02) return;
+            const tNear = rawScrollT();
+            if (tNear >= node.scrollStart - 0.02 && tNear <= node.scrollEnd + 0.02) return;
           }
         }
       }
 
-      const t = scrollProgress.current;
-      let next = '/';
-      if (finUnlockedRef.current && t >= FIN_DISMISS_MAIN) next = '/fin';
-      else if (t >= PROJECT_THRESHOLD) next = '/projects';
-      else if (t >= 0.04) next = '/socials';
-      else next = '/';
+      const t = rawScrollT();
+      const prev = sectionBandRef.current;
+      let next: '/' | '/socials' | '/projects' | '/fin' = '/';
+
+      if (finUnlockedRef.current && t >= FIN_DISMISS_MAIN) {
+        next = '/fin';
+      } else if (prev === '/projects') {
+        // Hysteresis: stay in projects until clearly back in socials
+        next = t >= PROJECT_THRESHOLD - PROJECT_EXIT_SLACK ? '/projects' : (t >= 0.04 ? '/socials' : '/');
+      } else if (prev === '/fin' && finUnlockedRef.current && t >= FIN_DISMISS_MAIN - 0.02) {
+        next = '/fin';
+      } else if (t >= PROJECT_THRESHOLD) {
+        next = '/projects';
+      } else if (t >= 0.04) {
+        next = '/socials';
+      } else {
+        next = '/';
+      }
+
+      sectionBandRef.current = next;
 
       if (next === lastSyncedPath.current) return;
-      // Avoid thrashing replace when already on a matching nested path
       const cur = locationRef.current.replace(/\/+$/, '') || '/';
       if (cur === next || cur.startsWith(`${next}/`)) {
         lastSyncedPath.current = next;
         return;
       }
       lastSyncedPath.current = next;
+      // Passive replace — do NOT markNavigationIntent
       setLocation(next, { replace: true });
     };
 
     window.addEventListener('scroll', tick, { passive: true });
     tick();
     return () => window.removeEventListener('scroll', tick);
-  }, [mode, setLocation, scrollProgress]);
+  }, [mode, setLocation]);
 
   function handleSetMode(next: Mode) {
     if (next === mode) return;
@@ -219,6 +262,7 @@ export default function App() {
       });
     } else if (mode === 'blog') {
       setMode('scroll');
+      markNavigationIntent();
       setLocation('/', { replace: true });
       requestAnimationFrame(() => {
         window.scrollTo({ top: blogOriginScrollY.current, behavior: 'instant' });
@@ -231,6 +275,7 @@ export default function App() {
     setFinUnlocked(true);
     trackEvent('Fin Open', { source: 'portal' });
     skipScrollSyncUntil.current = performance.now() + 1200;
+    markNavigationIntent();
     setLocation('/fin', { replace: true });
 
     if (mode === 'blog') return;
@@ -247,6 +292,7 @@ export default function App() {
     setMode('scroll');
     trackEvent('Fin Open', { source: 'nav' });
     skipScrollSyncUntil.current = performance.now() + 1200;
+    markNavigationIntent();
     setLocation('/fin');
     requestAnimationFrame(() =>
       window.scrollTo({ top: document.documentElement.scrollHeight, behavior: 'smooth' }),
@@ -266,6 +312,7 @@ export default function App() {
     setMode('blog');
     trackEvent('Mode Change', { mode: 'blog', source: 'portal' });
     skipScrollSyncUntil.current = performance.now() + 1200;
+    markNavigationIntent();
     setLocation('/blog');
     requestAnimationFrame(() => window.scrollTo({ top: 0, behavior: 'smooth' }));
   }
