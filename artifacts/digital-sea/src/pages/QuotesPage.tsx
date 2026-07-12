@@ -18,12 +18,54 @@ interface Section {
 }
 
 /** Contiguous `>` lines form one quote entry (blank `>` / `> ` keep the block together). */
-function isQuoteLine(l: string): boolean {
-  return l.startsWith('>') && !l.startsWith('> [!');
+function isBlockquoteLine(l: string): boolean {
+  return l.startsWith('>');
+}
+
+/** Obsidian/GFM callout opener: `> [!note]` or `>[!note]` (space optional). */
+function isCalloutOpener(l: string): boolean {
+  return /^>\s*\[!/.test(l);
 }
 
 function stripQuotePrefix(l: string): string {
-  return l.replace(/^>\s?/, '');
+  // CommonMark: `>` plus optional spaces
+  return l.replace(/^>\s*/, '');
+}
+
+/**
+ * Split a contiguous `>` run into separate entries when a mid-block attribution
+ * is followed by more body text (missing blank line between two quotes).
+ * Normal multi-paragraph quotes have only a trailing attribution.
+ */
+function splitQuoteRun(quoteLines: string[]): { text: string; source: string }[] {
+  const out: { text: string; source: string }[] = [];
+  let start = 0;
+  for (let k = 0; k < quoteLines.length; k++) {
+    const attr = quoteLines[k].match(/^(—|--|–)\s*(.+)/);
+    if (!attr) continue;
+    const hasMoreBody = quoteLines.slice(k + 1).some((x) => x.trim() !== '');
+    if (!hasMoreBody) continue; // trailing attribution — end of this entry at loop end
+    // Attribution in the middle: close entry here, continue after
+    const chunk = quoteLines.slice(start, k + 1);
+    while (chunk.length && chunk[chunk.length - 1].trim() === '') chunk.pop();
+    if (chunk.length) {
+      const body = chunk.slice(0, -1).join('\n').replace(/\n{3,}/g, '\n\n').trim();
+      out.push({ text: body || attr[2].trim(), source: attr[2].trim() });
+    }
+    start = k + 1;
+  }
+  const rest = quoteLines.slice(start);
+  while (rest.length && rest[rest.length - 1].trim() === '') rest.pop();
+  if (!rest.length) return out;
+  const last = rest[rest.length - 1];
+  const attrMatch = last.match(/^(—|--|–)\s*(.+)/);
+  if (attrMatch) {
+    const body = rest.slice(0, -1).join('\n').replace(/\n{3,}/g, '\n\n').trim();
+    out.push({ text: body || attrMatch[2].trim(), source: attrMatch[2].trim() });
+  } else {
+    out.push({ text: rest.join('\n').replace(/\n{3,}/g, '\n\n').trim(), source: '' });
+  }
+  return out;
 }
 
 function parseMD(src: string): Section[] {
@@ -55,31 +97,27 @@ function parseMD(src: string): Section[] {
       continue;
     }
 
-    // One entry = one contiguous blockquote run. Multi-paragraph bodies use
-    // `>` blank lines between paragraphs and stay a single card.
-    if (isQuoteLine(l) && currentSection) {
+    if (!isBlockquoteLine(l)) continue;
+
+    // Skip entire Obsidian callout run (opener + continuation `>` lines)
+    if (isCalloutOpener(l)) {
+      let j = i + 1;
+      while (j < lines.length && isBlockquoteLine(lines[j])) j++;
+      i = j - 1;
+      continue;
+    }
+
+    // One entry = one contiguous blockquote run (blank `>` lines keep paragraphs together).
+    if (currentSection) {
       const quoteLines: string[] = [];
       let j = i;
-      while (j < lines.length && isQuoteLine(lines[j])) {
+      while (j < lines.length && isBlockquoteLine(lines[j]) && !isCalloutOpener(lines[j])) {
         quoteLines.push(stripQuotePrefix(lines[j]));
         j++;
       }
       i = j - 1;
-
-      while (quoteLines.length && quoteLines[quoteLines.length - 1].trim() === '') {
-        quoteLines.pop();
-      }
-      if (!quoteLines.length) continue;
-
-      const last = quoteLines[quoteLines.length - 1];
-      const attrMatch = last.match(/^(—|--|–)\s*(.+)/);
-      if (attrMatch) {
-        const source = attrMatch[2].trim();
-        const body = quoteLines.slice(0, -1).join('\n').replace(/\n{3,}/g, '\n\n').trim();
-        currentSection.quotes.push({ text: body || source, source });
-      } else {
-        const text = quoteLines.join('\n').replace(/\n{3,}/g, '\n\n').trim();
-        currentSection.quotes.push({ text, source: '' });
+      for (const q of splitQuoteRun(quoteLines)) {
+        if (q.text || q.source) currentSection.quotes.push(q);
       }
     }
   }
