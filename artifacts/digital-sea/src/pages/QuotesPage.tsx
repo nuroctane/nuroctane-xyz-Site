@@ -32,6 +32,16 @@ function stripQuotePrefix(l: string): string {
   return l.replace(/^>\s*/, '');
 }
 
+/** Attribution: `— Author`, `-- Author`, `– Author`, or `- @handle`. */
+function matchAttr(line: string): string | null {
+  const t = line.trim();
+  let m = t.match(/^(?:—|--|–)\s*(.+)$/);
+  if (m) return m[1].trim();
+  m = t.match(/^-\s+(@\S.+)$/);
+  if (m) return m[1].trim();
+  return null;
+}
+
 /**
  * Split a contiguous `>` run into separate entries when a mid-block attribution
  * is followed by more body text (missing blank line between two quotes).
@@ -41,27 +51,25 @@ function splitQuoteRun(quoteLines: string[]): { text: string; source: string }[]
   const out: { text: string; source: string }[] = [];
   let start = 0;
   for (let k = 0; k < quoteLines.length; k++) {
-    const attr = quoteLines[k].match(/^(—|--|–)\s*(.+)/);
-    if (!attr) continue;
+    const src = matchAttr(quoteLines[k]);
+    if (!src) continue;
     const hasMoreBody = quoteLines.slice(k + 1).some((x) => x.trim() !== '');
     if (!hasMoreBody) continue; // trailing attribution — end of this entry at loop end
-    // Attribution in the middle: close entry here, continue after
     const chunk = quoteLines.slice(start, k + 1);
     while (chunk.length && chunk[chunk.length - 1].trim() === '') chunk.pop();
     if (chunk.length) {
       const body = chunk.slice(0, -1).join('\n').replace(/\n{3,}/g, '\n\n').trim();
-      out.push({ text: body || attr[2].trim(), source: attr[2].trim() });
+      out.push({ text: body || src, source: src });
     }
     start = k + 1;
   }
   const rest = quoteLines.slice(start);
   while (rest.length && rest[rest.length - 1].trim() === '') rest.pop();
   if (!rest.length) return out;
-  const last = rest[rest.length - 1];
-  const attrMatch = last.match(/^(—|--|–)\s*(.+)/);
-  if (attrMatch) {
+  const src = matchAttr(rest[rest.length - 1]);
+  if (src) {
     const body = rest.slice(0, -1).join('\n').replace(/\n{3,}/g, '\n\n').trim();
-    out.push({ text: body || attrMatch[2].trim(), source: attrMatch[2].trim() });
+    out.push({ text: body || src, source: src });
   } else {
     out.push({ text: rest.join('\n').replace(/\n{3,}/g, '\n\n').trim(), source: '' });
   }

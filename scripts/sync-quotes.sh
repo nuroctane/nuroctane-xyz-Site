@@ -106,15 +106,21 @@ for (let i = 0; i < lines.length; i++) {
     cur = { name, quotes: [], leakedCallouts: 0 };
     continue;
   }
-  if (l.startsWith('>') && cur && !l.startsWith('> [!')) {
+  if (l.startsWith('>') && cur) {
+    // Skip Obsidian callout runs entirely
+    if (/^>\s*\[!/.test(l)) {
+      let j = i + 1;
+      while (j < lines.length && lines[j].startsWith('>')) j++;
+      i = j - 1;
+      continue;
+    }
     const ql = [];
     let j = i;
-    while (j < lines.length && lines[j].startsWith('>') && !lines[j].startsWith('> [!')) {
-      ql.push(lines[j].replace(/^>\s?/, ''));
+    while (j < lines.length && lines[j].startsWith('>') && !/^>\s*\[!/.test(lines[j])) {
+      ql.push(lines[j].replace(/^>\s*/, ''));
       j++;
     }
     i = j - 1;
-    if (ql[0]?.startsWith('[!')) { cur.leakedCallouts++; continue; }
     cur.quotes.push(ql.join('\n'));
   }
 }
