@@ -10,7 +10,7 @@
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (96)
 - [[#Relationships, Boundaries & Love|Relationships, Boundaries & Love]] (54)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (21)
-- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (85)
+- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (88)
 - [[#Wealth, Work & Value|Wealth, Work & Value]] (29)
 - [[#Unsorted Sparks|Unsorted Sparks]] (53)
 
@@ -1578,6 +1578,19 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, attention, and
 > 
 > but that's not rejection (literally nothing is rejection). it's just homework
 > — @AnikaSomaia
+
+> the thing that beats any strategy is just being able to stay in the game longer than everyone else
+> and to do that you need to stay motivated every single day and to do that you have to be having fun
+> — @thdxr
+
+> every enlargement of life makes you partially incompetent again, revealing exactly where you have room to grow
+> — @augustusdelano
+
+> don’t shame yourself into a mission. never works. engage with optionality & potentiality as much as you need to. inspire yourself. let coincidences happen & synchronicity carry you. apply meaning to things. give a fuck. care. that’s when you find yourself locking in on a target.
+> — @nuroctane
+
+
+
 
 
 
