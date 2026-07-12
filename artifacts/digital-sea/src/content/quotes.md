@@ -1,13 +1,15 @@
 # Quotes
 
 > [!note] Maintenance
-> One entry per blockquote. Put the source on the last line as `— Author, *Work*` when it is known. Keep clipped social imports out unless the body, author, and date are complete.
+> **One entry = one contiguous blockquote run.** Multi-paragraph quotes stay in the same block:
+> use a blank `> ` line between paragraphs (never a plain empty line). End with `— Author` or `— @handle` on the last line when known.
+> Do not split one Raindrop/X post into multiple `>` blocks — title + description + attribution are one entry.
 
 ## Index
 - [[#Faith, God & Surrender|Faith, God & Surrender]] (64)
 - [[#Reality, Manifestation & Abundance|Reality, Manifestation & Abundance]] (99)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (116)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (96)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (95)
 - [[#Relationships, Boundaries & Love|Relationships, Boundaries & Love]] (54)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (21)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (88)
@@ -1153,7 +1155,7 @@ _Doing the hard thing, skill, courage, habits, attention, decisions, and embodie
 > Dream it, and then do it. The only instruction manual there is.
 
 > The work of ur entire life, absolutely essential as it is, in and of itself will take u nowhere. It won’t lift u up in some latent fashion.
->
+> 
 > What it will do, is generate a few good opportunities a year for u, and u’ll have anywhere from a few seconds to few days to seize them.
 > — @MrE_mssg
 
