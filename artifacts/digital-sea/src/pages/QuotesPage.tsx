@@ -17,6 +17,15 @@ interface Section {
   quotes: Quote[];
 }
 
+/** Contiguous `>` lines form one quote entry (blank `>` / `> ` keep the block together). */
+function isQuoteLine(l: string): boolean {
+  return l.startsWith('>') && !l.startsWith('> [!');
+}
+
+function stripQuotePrefix(l: string): string {
+  return l.replace(/^>\s?/, '');
+}
+
 function parseMD(src: string): Section[] {
   const lines = src.split('\n');
   const sections: Section[] = [];
@@ -46,23 +55,30 @@ function parseMD(src: string): Section[] {
       continue;
     }
 
-    if (l.startsWith('> ') && currentSection) {
+    // One entry = one contiguous blockquote run. Multi-paragraph bodies use
+    // `>` blank lines between paragraphs and stay a single card.
+    if (isQuoteLine(l) && currentSection) {
       const quoteLines: string[] = [];
       let j = i;
-      while (j < lines.length && lines[j].startsWith('> ')) {
-        quoteLines.push(lines[j].replace(/^> /, ''));
+      while (j < lines.length && isQuoteLine(lines[j])) {
+        quoteLines.push(stripQuotePrefix(lines[j]));
         j++;
       }
       i = j - 1;
 
-      const text = quoteLines.join('\n');
+      while (quoteLines.length && quoteLines[quoteLines.length - 1].trim() === '') {
+        quoteLines.pop();
+      }
+      if (!quoteLines.length) continue;
+
       const last = quoteLines[quoteLines.length - 1];
       const attrMatch = last.match(/^(—|--|–)\s*(.+)/);
       if (attrMatch) {
         const source = attrMatch[2].trim();
-        const body = quoteLines.slice(0, -1).join('\n');
+        const body = quoteLines.slice(0, -1).join('\n').replace(/\n{3,}/g, '\n\n').trim();
         currentSection.quotes.push({ text: body || source, source });
       } else {
+        const text = quoteLines.join('\n').replace(/\n{3,}/g, '\n\n').trim();
         currentSection.quotes.push({ text, source: '' });
       }
     }

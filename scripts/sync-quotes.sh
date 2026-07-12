@@ -45,9 +45,9 @@ awk '
       gsub(/^[[:space:]]+|[[:space:]]+$/, "", cur)
       order[++n] = cur; count[cur] = 0; in_quote=0; next
     }
-    if (cur != "" && $0 ~ /^> /) {
-      # A new block starts when we were not already inside one AND the
-      # first line is not an Obsidian callout ("> [!...").
+    if (cur != "" && $0 ~ /^>/) {
+      # Contiguous `>` lines = one entry (bare `>` blank lines keep the block).
+      # Callouts ("> [!...") are excluded to match the client parser.
       if (!in_quote && $0 !~ /^> \[!/) { count[cur]++; in_quote=1 }
       else if (!in_quote) { in_quote=1 }  # callout line: consume, do not count
       next
@@ -106,10 +106,13 @@ for (let i = 0; i < lines.length; i++) {
     cur = { name, quotes: [], leakedCallouts: 0 };
     continue;
   }
-  if (l.startsWith('> ') && cur) {
+  if (l.startsWith('>') && cur && !l.startsWith('> [!')) {
     const ql = [];
     let j = i;
-    while (j < lines.length && lines[j].startsWith('> ')) { ql.push(lines[j].replace(/^> /, '')); j++; }
+    while (j < lines.length && lines[j].startsWith('>') && !lines[j].startsWith('> [!')) {
+      ql.push(lines[j].replace(/^>\s?/, ''));
+      j++;
+    }
     i = j - 1;
     if (ql[0]?.startsWith('[!')) { cur.leakedCallouts++; continue; }
     cur.quotes.push(ql.join('\n'));
