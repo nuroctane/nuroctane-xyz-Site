@@ -4,49 +4,42 @@ import { installScrollMetrics, scrollT } from '../lib/scrollMetrics';
 import type { Mode, Track } from '../types';
 
 /**
- * Where the score comes in: the moment the swimmer leaves NUROCTANE and the
- * identity panel rises. That panel fades in from t=0.004 and is fully lit by
- * t=0.016 — and the first card (instagram) does not begin until t≈0.066, so
- * this is comfortably "past the hero, before instagram", as intended.
+ * Start the score the moment the swimmer leaves the NUROCTANE title.
+ *
+ * Timeline (document scroll t):
+ *   ~0          landing — NUROCTANE title on screen
+ *   0.003       past the title (this threshold)
+ *   0.004–0.054 identity / summary panel
+ *   ~0.055+     first card (instagram) — where the OLD start was (too late)
+ *
+ * Old code used 0.055. We only needed that number moved earlier — not a
+ * gesture / unlock rewrite.
+ *
+ * Uses raw document scroll (not the camera lerp ref) so mobile can't lag past
+ * the threshold and leave the session silent.
  */
-export const MUSIC_START_T = 0.010;
+export const MUSIC_START_T = 0.003;
 
 /**
- * Drives the score from the swim.
- *
- * Arming watches the *raw document scroll*, not the camera's progress ref: on
- * mobile that ref lerps toward its target for many frames after the last
- * scroll event, so a check reading it could miss the crossing and leave the
- * site silent for the whole session. Raw scroll cannot lag.
- *
- * A scroll listener catches every crossing the swimmer makes; the interval is
- * the backstop for the ones that arrive without a scroll event — scroll
- * restoration on reload, deep links, quick-nav jumps — so the score is on with
- * the same certainty however the swimmer got past the hero. (Deliberately not
- * rAF: it is dead in a background tab and can stall behind the render loop.)
- *
- * Arming is sticky for the life of the page: once the music has begun it is
- * only ever paused by the audio button or by closing the page, and only ever
- * *changed* by moving between the sea and the blog.
+ * Drives the score from the swim. Arming is sticky: once past NUROCTANE the
+ * music stays on until the user mutes or leaves the page. Track switches
+ * between sea and blog only.
  */
 export function useMusicDirector(activeTrack: Track, mode: Mode) {
   const { armed, arm, setTrack } = useAudioCtx();
 
-  // Which score. Switching is instant once armed (entering the blog is itself
-  // a click, so the browser lets the new track play immediately).
   useEffect(() => {
     setTrack(activeTrack);
   }, [activeTrack, setTrack]);
 
-  // Camera mode has no document scroll to cross the threshold with, and it can
-  // be entered straight from the hero. Entering it counts as passing the hero.
+  // Camera mode has no document scroll past the title; entering it counts.
   useEffect(() => {
     if (mode === 'camera') arm();
   }, [mode, arm]);
 
   useEffect(() => {
     if (armed) return;
-    const uninstall = installScrollMetrics(); // keeps scrollT() reflow-free
+    const uninstall = installScrollMetrics();
 
     let timer: ReturnType<typeof setInterval> | null = null;
     const stop = () => {
@@ -57,10 +50,11 @@ export function useMusicDirector(activeTrack: Track, mode: Mode) {
     function check() {
       if (scrollT() < MUSIC_START_T) return;
       stop();
-      arm(); // sticky
+      arm();
     }
 
     window.addEventListener('scroll', check, { passive: true });
+    // Backstop: restore / deep-link / jump past the title without a scroll event.
     timer = setInterval(check, 150);
     check();
 

@@ -17,8 +17,7 @@ export function AudioControl({ mini = false }: Props) {
   const [expanded, setExpanded] = useState(false);
   const isMobile = useIsMobile();
 
-  // `blocked` = we want sound and the browser is holding it back until the
-  // visitor interacts. The button pulses and its click releases it.
+  // `blocked` is rare (cold browser refused autoplay). Normal path never hits it.
   const label = blocked ? 'PLAY' : enabled ? 'SOUND' : 'MUTED';
   const title = blocked
     ? 'Start background audio'
