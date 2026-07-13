@@ -159,13 +159,13 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     logo: '/assets/nodes/reddit-logo.png',
   },
 
-  // ─── CREATIVE PROJECTS (11) — Meta CLI + MODKEYS first ─────────────────────
+  // ─── CREATIVE PROJECTS (11)  -  Meta CLI + MODKEYS first ─────────────────────
   {
     id: 'meta-cli', label: 'Meta CLI', handle: 'meta / muse',
     url: 'https://github.com/nuroctane/meta-cli',
     urlDisplay: 'github.com/nuroctane/meta-cli',
     subtitle: 'Muse Spark terminal agent',
-    description: 'Unofficial Rust coding agent for Meta Model API — streaming TUI, native vision, 800+ skills, hardened sandbox. Built to rival Claude Code–class density for Muse.',
+    description: 'Unofficial Rust coding agent for Meta Model API  -  streaming TUI, native vision, 800+ skills, hardened sandbox. Built to rival Claude Code-class density for Muse.',
     avatar: '',
     logo: '/assets/nodes/github-logo.png',
   },
@@ -272,7 +272,7 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
 
 // Cards alternate sides and are spread by *even midpoints* along the scroll
 // path so focus spacing stays uniform as cards are added/removed. Width expands
-// symmetrically around each mid — never "start + width" — so a wider first card
+// symmetrically around each mid  -  never "start + width"  -  so a wider first card
 // (edge envelope) cannot collapse into TikTok/X the way the old layout did.
 const yPattern = [1.0, -0.4, 1.3, 0.2, -0.8, 0.9, 0.1, -0.5, 1.1, 0.5, -0.2, 0.8, 0.3, -0.6, 1.0, 0.4, -0.1];
 
@@ -285,24 +285,24 @@ const MID_STEP  = (LAST_MID - FIRST_MID) / Math.max(1, raw.length - 1);
 // Attractor envelope (full width). Softly overlaps neighbors for magnetic
 // swimming; peak focus points remain MID_STEP apart so cards never stack.
 const CARD_WIDTH = 0.040;
-// Gentle ease-in/out at the ends — still centered on the even mid.
+// Gentle ease-in/out at the ends  -  still centered on the even mid.
 const EDGE_CARD_WIDTH = 0.048;
 
 // At their default alternating x-side, these nodes land on the *same* side as
-// the camera path at their t value (< 1 unit apart in X) — flip them across
+// the camera path at their t value (< 1 unit apart in X)  -  flip them across
 // so the camera looks across the sea at the card instead of being nose-to-it.
-// When inserting a node mid-list, index parity shifts for everything after it —
+// When inserting a node mid-list, index parity shifts for everything after it  - 
 // invert FLIP membership for those shifted ids so their world-side stays put.
 // 27 nodes (meta-cli first creative; blackjack after snipocr).
 const FLIP_X = new Set([
   'tiktok', 'substack', 'kick', 'goodreads', 'remilia',
-  // meta-cli insert shifts creative parity — keep facing readable across the sea
+  // meta-cli insert shifts creative parity  -  keep facing readable across the sea
   'meta-cli',
   'modkeys',
   'snipocr',
   // flip blackjack so it faces opposite snipocr at adjacent scroll slots
   'blackjack',
-  // blackjack inserted after snipocr — nodes after it inverted vs pre-insert set
+  // blackjack inserted after snipocr  -  nodes after it inverted vs pre-insert set
   'atxtunerz', 'weatherguru', 'sis', 'astrosleep', 'miyamaker', 'webutils',
   // github + geoskin were flipped pre-insert; inverted out after shift
 ]);
@@ -322,7 +322,7 @@ const WIDE_CARD: Record<string, number> = {
   astrosleep:  0.056,
   geoskin:     0.056,
   miyamaker:   0.058,
-  // last card before portals — smooth entrance + room to pivot away
+  // last card before portals  -  smooth entrance + room to pivot away
   webutils:    0.056,
 };
 
@@ -366,7 +366,7 @@ export function nodeMid(n: Pick<NodeData, 'scrollStart' | 'scrollEnd'>): number 
 
 /**
  * Boundary between socials and creative projects (scroll t).
- * Midway between last social and first project focus — stays correct when
+ * Midway between last social and first project focus  -  stays correct when
  * spacing constants change.
  */
 export const PROJECT_THRESHOLD: number = (() => {
