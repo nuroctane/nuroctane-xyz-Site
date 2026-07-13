@@ -14,7 +14,7 @@
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (21)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (88)
 - [[#Wealth, Work & Value|Wealth, Work & Value]] (29)
-- [[#Unsorted Sparks|Unsorted Sparks]] (53)
+- [[#Unsorted Sparks|Unsorted Sparks]] (54)
 
 ## Faith, God & Surrender
 
@@ -1801,4 +1801,8 @@ _Good fragments that still belong here, but do not yet have a perfect home._
 > I get to > I have to.
 
 > I recommend taking pictures and videos of your parents more often.
+
+> an idiot in motion goes further than a genius at rest
+> — @MachJustine
+
 
