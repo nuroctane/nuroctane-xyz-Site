@@ -17,8 +17,14 @@ import type { Track } from '../types';
      setTrack('main' | 'blog')  which score should be playing
      arm()                      the swimmer has left the hero — sound may begin
      toggle()                   the user's mute preference
-   and a reconcile pass makes the element match. Everything below exists to
-   make "music starts past NUROCTANE and never stops on its own" true.
+   and a reconcile pass makes the element match.
+
+   Browser policy: unmuted autoplay is blocked until a real user gesture
+   (click / tap / key). Scroll and wheel do NOT count. So we:
+     1. Start the element *muted* as soon as we're armed (muted autoplay is
+        always allowed — the buffer warms and the clock runs).
+     2. On the first real gesture anywhere on the page, unmute + fade in.
+   The audio button is just one such gesture — any click/tap/key works.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 const PLAYLISTS: Record<Track, string[]> = {
@@ -44,15 +50,13 @@ const FADE_OUT_MS    = 420;
 
 /**
  * Events that grant sticky user activation. Wheel/scroll DO NOT — a browser
- * will refuse play() for a visitor who has only scrolled, which is why the
- * score used to need a click on a tile (or on the audio button) before it
- * would start. So we never give up on a rejected play(): we re-attempt on the
- * first real activation, whatever it turns out to be.
+ * will refuse unmuted play() for a visitor who has only scrolled.
  */
 const ACTIVATION_EVENTS = [
   'pointerdown',
   'pointerup',
   'mousedown',
+  'touchstart',
   'touchend',
   'keydown',
   'click',
@@ -61,7 +65,7 @@ const ACTIVATION_EVENTS = [
 interface AudioCtxValue {
   /** User's mute preference. */
   enabled: boolean;
-  /** We want sound but the browser is withholding it until a user gesture. */
+  /** We want sound but still need a gesture to unmute / unlock. */
   blocked: boolean;
   /** The hero has been passed — sound is allowed to begin. */
   armed: boolean;
@@ -98,14 +102,21 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   const fadeTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
   /** A play() promise is in flight — don't stack another. */
   const playingRef   = useRef(false);
-  /** We want sound, the browser said no. Retry on the next gesture. */
+  /**
+   * True once the page has a real user gesture. Until then we may only run
+   * the element muted; after, unmuted playback is allowed by the browser.
+   */
+  const unlockedRef  = useRef(false);
+  /** We want audible sound but haven't unlocked yet (or play was refused). */
   const pendingRef   = useRef(false);
   /** This next `pause` event is ours (mute / src swap), not the browser's. */
   const selfPauseRef = useRef(false);
-  /** First note of the session has sounded — later starts fade in quicker. */
+  /** First audible note of the session has sounded — later starts fade quicker. */
   const soundedRef   = useRef(false);
   /** Consecutive load failures, so a missing playlist cannot spin forever. */
   const failuresRef  = useRef(0);
+  /** Optional Web Audio context — resume() on gesture helps some engines. */
+  const webAudioRef  = useRef<AudioContext | null>(null);
 
   const applyVolume = useCallback((a: HTMLAudioElement) => {
     a.volume = Math.max(0, Math.min(1, volumeRef.current * gainRef.current));
@@ -156,9 +167,32 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     [applyVolume],
   );
 
+  /**
+   * Kick the element. If we don't have a gesture yet, start muted (always
+   * allowed) and mark blocked so the UI asks for a tap. Once unlocked, play
+   * unmuted and fade the envelope in.
+   */
   const attemptPlay = useCallback(
     (a: HTMLAudioElement, fadeMs: number) => {
       if (playingRef.current) return;
+
+      const audible = unlockedRef.current;
+      a.muted = !audible;
+
+      // Already running (e.g. muted pre-roll) — just promote to audible.
+      if (!a.paused) {
+        if (audible) {
+          pendingRef.current = false;
+          setBlocked(false);
+          soundedRef.current = true;
+          fadeTo(1, fadeMs);
+        } else {
+          pendingRef.current = true;
+          setBlocked(true);
+        }
+        return;
+      }
+
       playingRef.current = true;
 
       let p: Promise<void> | undefined;
@@ -173,10 +207,17 @@ export function AudioProvider({ children }: { children: ReactNode }) {
 
       const ok = () => {
         playingRef.current = false;
-        pendingRef.current = false;
-        soundedRef.current = true;
-        setBlocked(false);
-        fadeTo(1, fadeMs);
+        if (audible) {
+          pendingRef.current = false;
+          soundedRef.current = true;
+          setBlocked(false);
+          fadeTo(1, fadeMs);
+        } else {
+          // Muted pre-roll is running; wait for a gesture to unmute.
+          pendingRef.current = true;
+          setBlocked(true);
+          // Keep gain at 0 until unlock so unmute + fade is smooth.
+        }
       };
 
       if (!p) { ok(); return; } // older browsers return void
@@ -185,6 +226,8 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         playingRef.current = false;
         // A newer src/load superseded this play — reconcile already re-ran.
         if (err?.name === 'AbortError') return;
+        // Even muted play can fail (decode/network). Still wait for a gesture
+        // retry so a later click can recover.
         pendingRef.current = true;
         setBlocked(true);
       });
@@ -213,7 +256,6 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         a.src  = wantSrc;
         a.loop = isLoop;
         if (wantSound) {
-          a.muted = false;
           attemptPlay(a, soundedRef.current ? FADE_SWITCH_MS : FADE_FIRST_MS);
         }
       };
@@ -225,16 +267,23 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     a.loop = isLoop;
 
     if (wantSound) {
-      a.muted = false;
       if (a.paused) {
         attemptPlay(a, soundedRef.current ? FADE_RESUME_MS : FADE_FIRST_MS);
-      } else {
+      } else if (unlockedRef.current) {
+        a.muted = false;
         fadeTo(1, soundedRef.current ? FADE_RESUME_MS : FADE_FIRST_MS);
+        pendingRef.current = false;
+        setBlocked(false);
+      } else {
+        // Playing muted, still need a gesture.
+        a.muted = true;
+        pendingRef.current = true;
+        setBlocked(true);
       }
       return;
     }
 
-    // Muted / not yet armed. Keep currentTime so the toggle resumes in place.
+    // Muted preference / not yet armed. Keep currentTime so toggle resumes.
     pendingRef.current = false;
     setBlocked(false);
     fadeTo(0, FADE_OUT_MS, () => {
@@ -244,11 +293,47 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     });
   }, [attemptPlay, fadeTo]);
 
+  /**
+   * Spend a user gesture: mark the page unlocked and make the score audible
+   * immediately (same call stack as the event — required by autoplay policy).
+   */
+  const unlockFromGesture = useCallback(() => {
+    unlockedRef.current = true;
+
+    // Resume a Web Audio context if we opened one — helps Safari/Chromium.
+    try {
+      const Ctx = window.AudioContext ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
+      if (Ctx) {
+        if (!webAudioRef.current) webAudioRef.current = new Ctx();
+        void webAudioRef.current.resume();
+      }
+    } catch { /* optional */ }
+
+    const a = audioRef.current;
+    if (!a) return;
+    if (!(armedRef.current && enabledRef.current && trackRef.current)) return;
+
+    a.muted = false;
+
+    if (a.paused) {
+      // Synchronous play() inside the gesture stack.
+      playingRef.current = false; // allow attemptPlay to run
+      attemptPlay(a, soundedRef.current ? FADE_RESUME_MS : FADE_FIRST_MS);
+    } else {
+      const fadeMs = soundedRef.current ? FADE_RESUME_MS : FADE_FIRST_MS;
+      pendingRef.current = false;
+      soundedRef.current = true;
+      setBlocked(false);
+      fadeTo(1, fadeMs);
+    }
+  }, [attemptPlay, fadeTo]);
+
   // ── The element. Created once, outlives every route. ────────────────────
   useEffect(() => {
     const a = new Audio();
     a.loop = true;
     a.volume = 0;
+    a.muted = true;
     // Warm the buffer as soon as a score is chosen — the main track is 13 MB,
     // and fetching it only at the trigger is what made the start feel late.
     a.preload = 'auto';
@@ -269,15 +354,18 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       if (armedRef.current && enabledRef.current && trackRef.current) {
         pendingRef.current = true;
         setBlocked(true);
+        // Don't clear unlocked — a later gesture can resume.
       }
     };
 
     const onPlaying = () => {
       selfPauseRef.current = false;
-      pendingRef.current = false;
-      soundedRef.current = true;
       failuresRef.current = 0;
-      setBlocked(false);
+      if (unlockedRef.current && !a.muted) {
+        pendingRef.current = false;
+        soundedRef.current = true;
+        setBlocked(false);
+      }
     };
 
     // A track that fails to load must not end the music — skip to the next one,
@@ -304,33 +392,49 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       a.removeEventListener('error', onError);
       a.pause();
       audioRef.current = null;
+      if (webAudioRef.current) {
+        void webAudioRef.current.close().catch(() => {});
+        webAudioRef.current = null;
+      }
     };
   }, []);
 
-  // ── Retry a play() the browser refused, on the first real user gesture. ──
+  // ── First real gesture anywhere → unlock audible playback. ──────────────
   useEffect(() => {
-    const retry = (e: Event) => {
-      if (!pendingRef.current) return;
-      // The audio button owns its own click (see toggle) — if we also acted on
-      // its pointerdown we'd start the score and then immediately mute it.
+    const onGesture = (e: Event) => {
+      // Audio button handles unlock via toggle (avoids double-toggle races
+      // on its own pointerdown → click sequence).
       const el = e.target as Element | null;
       if (el?.closest?.('.audio-control')) return;
-      reconcile();
+
+      // Always record sticky activation so a later arm() can play unmuted.
+      if (!unlockedRef.current) {
+        unlockFromGesture();
+        return;
+      }
+
+      // Already unlocked but still waiting (policy pause, failed play, etc.).
+      if (pendingRef.current) unlockFromGesture();
     };
-    const onVisible = () => { if (!document.hidden && pendingRef.current) reconcile(); };
+
+    const onVisible = () => {
+      if (!document.hidden && pendingRef.current && unlockedRef.current) {
+        reconcile();
+      }
+    };
 
     ACTIVATION_EVENTS.forEach(type =>
-      window.addEventListener(type, retry, { passive: true, capture: true }),
+      window.addEventListener(type, onGesture, { passive: true, capture: true }),
     );
     document.addEventListener('visibilitychange', onVisible);
 
     return () => {
       ACTIVATION_EVENTS.forEach(type =>
-        window.removeEventListener(type, retry, { capture: true }),
+        window.removeEventListener(type, onGesture, { capture: true }),
       );
       document.removeEventListener('visibilitychange', onVisible);
     };
-  }, [reconcile]);
+  }, [unlockFromGesture, reconcile]);
 
   // ── Sync refs, then make the element match. Runs after every commit. ─────
   useEffect(() => {
@@ -361,12 +465,12 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   const toggle = useCallback(() => {
     // Score is waiting on a gesture — this click IS that gesture. Spend it on
     // starting the music rather than on flipping the preference to "muted".
-    if (pendingRef.current) {
-      reconcile();
+    if (pendingRef.current || !unlockedRef.current) {
+      unlockFromGesture();
       return;
     }
     setEnabled(prev => !prev);
-  }, [reconcile]);
+  }, [unlockFromGesture]);
 
   const value = useMemo(
     () => ({ enabled, blocked, armed, volume, track, arm, setTrack, setVolume, toggle }),
