@@ -1209,6 +1209,38 @@ html.standalone-active body {
   color: #eafcff;
 }
 
+/* Score is loaded and wants to sound, but the browser withholds playback until
+   the visitor interacts (scrolling alone is not a user gesture). Pulse so the
+   one click that releases it is obvious. */
+.audio-pending {
+  animation: audio-pending-pulse 1.9s ease-in-out infinite;
+}
+
+.audio-pending + .audio-label,
+.audio-control:has(.audio-pending) .audio-label {
+  color: #5de8f0;
+}
+
+@keyframes audio-pending-pulse {
+  0%, 100% {
+    color: #2f6b7a;
+    background: rgba(93, 232, 240, 0.05);
+    box-shadow: inset 0 0 12px rgba(93, 232, 240, 0.04);
+  }
+  50% {
+    color: #5de8f0;
+    background: rgba(93, 232, 240, 0.16);
+    box-shadow: inset 0 0 14px rgba(93, 232, 240, 0.16);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .audio-pending {
+    animation: none;
+    color: #5de8f0;
+  }
+}
+
 .audio-icon {
   width: 22px;
   height: 18px;

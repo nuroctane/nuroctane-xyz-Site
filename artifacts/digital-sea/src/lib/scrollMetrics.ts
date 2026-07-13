@@ -37,19 +37,37 @@ export function scrollT(): number {
  * resize (debounced to a frame) and on DOM mutations that can change document
  * height (nodes added/removed, media loading in). Returns a cleanup fn.
  */
+let refs = 0;
+let teardown: (() => void) | null = null;
+
 export function installScrollMetrics(): () => void {
-  let raf = 0;
-  const invalidate = () => {
-    if (raf) return;
-    raf = requestAnimationFrame(() => { raf = 0; recompute(); });
-  };
-  recompute();
-  window.addEventListener('resize', invalidate);
-  const mo = new MutationObserver(invalidate);
-  mo.observe(document.body, { childList: true, subtree: true });
+  refs += 1;
+
+  if (refs === 1) {
+    let raf = 0;
+    const invalidate = () => {
+      if (raf) return;
+      raf = requestAnimationFrame(() => { raf = 0; recompute(); });
+    };
+    recompute();
+    window.addEventListener('resize', invalidate);
+    const mo = new MutationObserver(invalidate);
+    mo.observe(document.body, { childList: true, subtree: true });
+    teardown = () => {
+      if (raf) cancelAnimationFrame(raf);
+      window.removeEventListener('resize', invalidate);
+      mo.disconnect();
+    };
+  }
+
+  let released = false;
   return () => {
-    if (raf) cancelAnimationFrame(raf);
-    window.removeEventListener('resize', invalidate);
-    mo.disconnect();
+    if (released) return;
+    released = true;
+    refs -= 1;
+    if (refs === 0 && teardown) {
+      teardown();
+      teardown = null;
+    }
   };
 }

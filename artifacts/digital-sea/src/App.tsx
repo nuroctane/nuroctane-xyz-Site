@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useLocation } from 'wouter';
 import { useScrollProgress } from './hooks/useScrollProgress';
 import { usePerformanceTier } from './hooks/usePerformanceTier';
+import { useMusicDirector } from './hooks/useMusicDirector';
 import type { Mode, Track } from './types';
 import { nodes, PROJECT_THRESHOLD, nodeMid } from './data/nodes';
 import { blogPosts } from './data/blogPosts';
@@ -72,6 +73,10 @@ export default function App() {
     mode === 'blog' || (mode === 'camera' && cameraOriginMode.current === 'blog')
       ? 'blog'
       : 'main';
+
+  // Score comes in past the hero and stays in until the button, the blog, or
+  // the page closing says otherwise.
+  useMusicDirector(activeTrack, mode);
 
   function scrollToT(t: number, behavior: ScrollBehavior = 'instant') {
     const total = document.documentElement.scrollHeight - window.innerHeight;
@@ -373,7 +378,7 @@ export default function App() {
       />
 
       <div className="bottom-left-hud">
-        <AudioControl activeTrack={activeTrack} scrollProgress={scrollProgress} />
+        <AudioControl />
         <div className="hud-modes-row">
           <ModeToggle mode={mode} setMode={handleSetMode} />
           {(mode === 'camera' || mode === 'blog') && (
