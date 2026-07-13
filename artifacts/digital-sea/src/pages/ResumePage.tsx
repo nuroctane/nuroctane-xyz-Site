@@ -62,7 +62,7 @@ function contactHref(label: string): string | undefined {
     return `tel:${t.replace(/[^\d+]/g, '')}`;
   }
   if (/^https?:\/\//i.test(t)) return t;
-  if (/^(github\.com|nuroctane\.xyz|www\.)/i.test(t)) return `https://${t}`;
+  if (/^(github\.com|linkedin\.com|nuroctane\.xyz|www\.)/i.test(t)) return `https://${t}`;
   return undefined;
 }
 
