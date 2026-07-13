@@ -4,7 +4,7 @@
 
 **Agentic Product Engineer · Customer Success · B2B Lending · Technical Support Leadership**
 
-**[ `daviddavieson@gmail.com` ] ❖ [ `https://nuroctane.xyz` ] ❖ [ `github.com/nuroctane` ]**
+**[ `daviddavieson@gmail.com` ] ❖ [ `https://nuroctane.xyz` ] ❖ [ `github.com/nuroctane` ] ❖ [ `linkedin.com/in/david-davieson` ]**
 
 ***
 
