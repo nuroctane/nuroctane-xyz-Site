@@ -7,14 +7,14 @@
 
 ## Index
 - [[#Faith, God & Surrender|Faith, God & Surrender]] (64)
-- [[#Reality, Manifestation & Abundance|Reality, Manifestation & Abundance]] (99)
+- [[#Reality, Manifestation & Abundance|Reality, Manifestation & Abundance]] (100)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (116)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (95)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (96)
 - [[#Relationships, Boundaries & Love|Relationships, Boundaries & Love]] (54)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (21)
-- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (88)
+- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (89)
 - [[#Wealth, Work & Value|Wealth, Work & Value]] (29)
-- [[#Unsorted Sparks|Unsorted Sparks]] (54)
+- [[#Unsorted Sparks|Unsorted Sparks]] (51)
 
 ## Faith, God & Surrender
 
@@ -534,6 +534,14 @@ _Creation, frequency, imagination, prosperity, magic, timelines, desire, and the
 > so stop acting like your dreams are impossible just because they haven't happened yet. keep believing. keep working. keep aligning yourself with the version of you that already has it. your future is responding to the energy you repeat every single day.
 
 > The paradox of life is that we often receive what we aren't obsessed with.
+
+> See the things that you want as already yours.
+> Know that they will come to you at need. Then
+> let them come. Don't fret and worry about them.
+> Don't think about your lack of them. Think of
+> them as yours, as belonging to you, as already in
+> your possession.
+
 
 ## Self, Identity & Awakening
 
@@ -1159,6 +1167,9 @@ _Doing the hard thing, skill, courage, habits, attention, decisions, and embodie
 > What it will do, is generate a few good opportunities a year for u, and u’ll have anywhere from a few seconds to few days to seize them.
 > — @MrE_mssg
 
+> an idiot in motion goes further than a genius at rest
+> — @MachJustine
+
 
 ## Relationships, Boundaries & Love
 
@@ -1591,9 +1602,7 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, attention, and
 > don’t shame yourself into a mission. never works. engage with optionality & potentiality as much as you need to. inspire yourself. let coincidences happen & synchronicity carry you. apply meaning to things. give a fuck. care. that’s when you find yourself locking in on a target.
 > — @nuroctane
 
-
-
-
+> The heart is intuitive; its holistic, its contextual, its relational. It doesn't have a win-lose orientation. It taps into the cosmic computer the field of pure potentiality, pure knowledge, and infinite organizing power and takes everything into account. At times it may not even seem rational, but the heart has a computing ability that is far more accurate and far more precise than anything within the limits of rational thought.
 
 
 ## Wealth, Work & Value
@@ -1701,12 +1710,6 @@ _Good fragments that still belong here, but do not yet have a perfect home._
 
 > If you want to make positive changes in your life, state your intent verbally and mean it. Watch what happens.
 
-> Only put off tomorrow what you are willing to die left undone.
-
-> See the things that you want as already yours.
-> Know that they will come to you at need. Then
-> let them come. Don't fret and worry about them.
-> Don't think about your lack of them. Think of
 > them as yours, as belonging to you, as already in
 > your possession.
 
@@ -1755,7 +1758,6 @@ _Good fragments that still belong here, but do not yet have a perfect home._
 > Live your life as if you choose EVERYTHING that happens to you
 > you will see the advantage in all possibilities and you will be able to maximise them.
 
-> The heart is intuitive; its holistic, its contextual, its relational. It doesn't have a win-lose orientation. It taps into the cosmic computer the field of pure potentiality, pure knowledge, and infinite organizing power and takes everything into account. At times it may not even seem rational, but the heart has a computing ability that is far more accurate and far more precise than anything within the limits of rational thought.
 
 > If all the ‘facts’ point to a conclusion and your intuition says that conclusion is trash, trust your intuition. Time is ALWAYS on the side of your intuition. So be patient and the truth will be revealed in time.
 
@@ -1801,8 +1803,5 @@ _Good fragments that still belong here, but do not yet have a perfect home._
 > I get to > I have to.
 
 > I recommend taking pictures and videos of your parents more often.
-
-> an idiot in motion goes further than a genius at rest
-> — @MachJustine
 
 
