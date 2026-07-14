@@ -12,7 +12,7 @@
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (96)
 - [[#Relationships, Boundaries & Love|Relationships, Boundaries & Love]] (54)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (21)
-- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (89)
+- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (90)
 - [[#Wealth, Work & Value|Wealth, Work & Value]] (29)
 - [[#Unsorted Sparks|Unsorted Sparks]] (51)
 
@@ -1603,6 +1603,10 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, attention, and
 > — @nuroctane
 
 > The heart is intuitive; its holistic, its contextual, its relational. It doesn't have a win-lose orientation. It taps into the cosmic computer the field of pure potentiality, pure knowledge, and infinite organizing power and takes everything into account. At times it may not even seem rational, but the heart has a computing ability that is far more accurate and far more precise than anything within the limits of rational thought.
+
+> failure is a privilege reserved for those who have the balls to enter the arena
+> — @theJayAlto
+
 
 
 ## Wealth, Work & Value
