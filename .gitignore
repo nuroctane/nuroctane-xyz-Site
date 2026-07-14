@@ -52,3 +52,6 @@ Thumbs.db
 .env.*.local
 .vercel
 .sync-state
+
+# Local agent instructions only (never publish to main)
+AGENTS.md
