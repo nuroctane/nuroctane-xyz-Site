@@ -19,6 +19,7 @@
 
 *   **[ NurCLI: Multi-Provider Terminal Coding Agent ]** · [github.com/nuroctane/nur-cli](https://github.com/nuroctane/nur-cli)
     *   Built a production-minded **Rust** coding agent spanning 60+ providers (OpenAI, Anthropic, Gemini, xAI, Groq, plus Meta Model API / Muse Spark among them) - not a thin wrapper: custom harness with streaming TUI, tool loop, subagents, todos, auto-compact, permission modes (manual / plan / auto), session resume, and prompt-cache keys.
+    *   Live **`/model` picker** and in-product **`/plugins` marketplace** (provider-picker UX) installing Superpowers, Vercel, Firecrawl, Chrome DevTools, and more into `~/.nur/plugins` with skills mirrored for discovery.
     *   Native multimodal vision (`look`, `extract_frames` via ffmpeg), hardened sandbox (bash denylist, SSRF blocks, atomic `~/.nur` IO), one-shot install with SHA-256 verify, and ecosystem auto-provision: Graphify, PLUR, Ruflo, Executor, AKM, **800+ skills** - background provision so the TUI never blocks on install.
     *   Designed to rival Claude Code-class terminal agents with denser tools, plugins, and skills; system-installed as `nur`; Orca ADE hook when present.
     *   Expertise: Rust agent harnesses, OpenAI Responses & Chat Completions streaming, multimodal agent UX, sandboxing, skill/plugin ecosystems, ADE integration, token-aware agent UX.
