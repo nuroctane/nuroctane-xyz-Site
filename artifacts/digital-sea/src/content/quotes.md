@@ -12,7 +12,7 @@
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (97)
 - [[#Relationships, Boundaries & Love|Relationships, Boundaries & Love]] (54)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (21)
-- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (92)
+- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (93)
 - [[#Wealth, Work & Value|Wealth, Work & Value]] (29)
 - [[#Unsorted Sparks|Unsorted Sparks]] (51)
 
@@ -1616,6 +1616,10 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, attention, and
 
 > I am relentless because the alternative disgusts me. settling, coasting, going soft in the body and lazy in the spirit and half present with the people I love - I’d rather bleed for the higher version every day than drift comfortably toward the smaller one.
 > — @josbjohnson
+
+> The great work has never been done by a calm nervous system. the calm ones, the regulated breathers, the grounded ones, they produce nothing of value. because nothing of value was ever made by someone who was okay with being here. the stars were born from collapse. the best shit on this planet came out of people who were not functioning, whose nervous system was a mess, raw and misfiring. God does not give visions to the well rested.
+> — @lichthauch
+
 
 
 
