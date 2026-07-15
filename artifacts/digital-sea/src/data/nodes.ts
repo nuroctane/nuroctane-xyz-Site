@@ -159,13 +159,13 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     logo: '/assets/nodes/reddit-logo.png',
   },
 
-  // ─── CREATIVE PROJECTS (11)  -  Meta CLI + MODKEYS first ─────────────────────
+  // ─── CREATIVE PROJECTS (11)  -  NurCLI + MODKEYS first ─────────────────────
   {
-    id: 'meta-cli', label: 'Meta CLI', handle: 'meta / muse',
-    url: 'https://github.com/nuroctane/meta-cli',
-    urlDisplay: 'github.com/nuroctane/meta-cli',
-    subtitle: 'Muse Spark terminal agent',
-    description: 'Unofficial Rust coding agent for Meta Model API  -  streaming TUI, native vision, 800+ skills, hardened sandbox. Built to rival Claude Code-class density for Muse.',
+    id: 'nur-cli', label: 'NurCLI', handle: 'nur',
+    url: 'https://github.com/nuroctane/nur-cli',
+    urlDisplay: 'github.com/nuroctane/nur-cli',
+    subtitle: 'multi-provider terminal agent',
+    description: 'Rust coding agent spanning 40+ providers (OpenAI, Anthropic, Gemini, xAI, Groq, Meta Model API)  -  streaming TUI, native vision, 800+ skills, hardened sandbox. Built to rival Claude Code-class density.',
     avatar: '',
     logo: '/assets/nodes/github-logo.png',
   },
@@ -293,11 +293,11 @@ const EDGE_CARD_WIDTH = 0.048;
 // so the camera looks across the sea at the card instead of being nose-to-it.
 // When inserting a node mid-list, index parity shifts for everything after it  - 
 // invert FLIP membership for those shifted ids so their world-side stays put.
-// 27 nodes (meta-cli first creative; blackjack after snipocr).
+// 27 nodes (nur-cli first creative; blackjack after snipocr).
 const FLIP_X = new Set([
   'tiktok', 'substack', 'kick', 'goodreads', 'remilia',
-  // meta-cli insert shifts creative parity  -  keep facing readable across the sea
-  'meta-cli',
+  // nur-cli insert shifts creative parity  -  keep facing readable across the sea
+  'nur-cli',
   'modkeys',
   'snipocr',
   // flip blackjack so it faces opposite snipocr at adjacent scroll slots
@@ -311,7 +311,7 @@ const FLIP_X = new Set([
 // distance to frame them (esp. mobile). Widths stay well under ~1.6× MID_STEP
 // so neighboring peaks remain distinct; still centered on the even mid.
 const WIDE_CARD: Record<string, number> = {
-  'meta-cli':  0.054,
+  'nur-cli':   0.054,
   modkeys:     0.054,
   snipocr:     0.052,
   blackjack:   0.052,
@@ -328,7 +328,7 @@ const WIDE_CARD: Record<string, number> = {
 
 const Z_OVERRIDE: Record<string, number> = {};
 
-const SOCIAL_COUNT = raw.findIndex(n => n.id === 'meta-cli');
+const SOCIAL_COUNT = raw.findIndex(n => n.id === 'nur-cli');
 
 export const nodes: NodeData[] = raw.map((n, i) => {
   const isEdge = i === 0 || i === raw.length - 1;

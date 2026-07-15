@@ -9,7 +9,7 @@
 ***
 
 ### ░▒▓ SUMMARY ▓▒░
-> **Agentic product engineer & technical operator.** I design, ship, and run full-stack systems - native mobile apps, local multi-model AI routers, custom agent CLIs (Meta CLI for Muse Spark), 3D product UIs, monorepo web platforms, and institutional node infrastructure - with a bias toward on-device privacy, measurable business impact, and finishing the job.
+> **Agentic product engineer & technical operator.** I design, ship, and run full-stack systems - native mobile apps, local multi-model AI routers, custom multi-provider agent CLIs (NurCLI), 3D product UIs, monorepo web platforms, and institutional node infrastructure - with a bias toward on-device privacy, measurable business impact, and finishing the job.
 >
 > Solvency framework first: define constraints, build the smallest correct system, instrument outcomes, then scale. Operate daily across ADEs and agent CLIs (Orca, Herdr, Ohmypi, Cursor, Hermes, Claude Code, Codex, Grok) - optimizing token usage, cutting overall inference spend via local-first routing, and running recursive training loops for specific-utility models - while owning production results in customer success, B2B commercial lending, and technical support leadership.
 
@@ -17,11 +17,11 @@
 
 ## ▄▀▄▀▄▀▄▀▄ P R O J E C T S ▄▀▄▀▄▀▄▀▄
 
-*   **[ Meta CLI: Terminal Coding Agent for Meta Muse ]** · [github.com/nuroctane/meta-cli](https://github.com/nuroctane/meta-cli)
-    *   Built a production-minded, unofficial **Rust** coding agent for Meta Model API (Muse Spark) - not a thin wrapper: custom harness with streaming Meta-blue TUI, tool loop, subagents, todos, auto-compact, permission modes (manual / plan / auto), session resume, and prompt-cache keys.
-    *   Native multimodal vision (`look`, `extract_frames` via ffmpeg), hardened sandbox (bash denylist, SSRF blocks, atomic `~/.meta` IO), one-shot install with SHA-256 verify, and ecosystem auto-provision: Graphify, PLUR, Ruflo, Executor, AKM, **800+ skills** - background provision so the TUI never blocks on install.
-    *   Designed to rival Claude Code-class terminal agents for Muse with denser tools, plugins, and skills; system-installed as `meta` / `muse`; Orca ADE hook when present.
-    *   Expertise: Rust agent harnesses, Meta Responses API streaming, multimodal agent UX, sandboxing, skill/plugin ecosystems, ADE integration, token-aware agent UX.
+*   **[ NurCLI: Multi-Provider Terminal Coding Agent ]** · [github.com/nuroctane/nur-cli](https://github.com/nuroctane/nur-cli)
+    *   Built a production-minded **Rust** coding agent spanning 40+ providers (OpenAI, Anthropic, Gemini, xAI, Groq, plus Meta Model API / Muse Spark among them) - not a thin wrapper: custom harness with streaming TUI, tool loop, subagents, todos, auto-compact, permission modes (manual / plan / auto), session resume, and prompt-cache keys.
+    *   Native multimodal vision (`look`, `extract_frames` via ffmpeg), hardened sandbox (bash denylist, SSRF blocks, atomic `~/.nur` IO), one-shot install with SHA-256 verify, and ecosystem auto-provision: Graphify, PLUR, Ruflo, Executor, AKM, **800+ skills** - background provision so the TUI never blocks on install.
+    *   Designed to rival Claude Code-class terminal agents with denser tools, plugins, and skills; system-installed as `nur`; Orca ADE hook when present.
+    *   Expertise: Rust agent harnesses, OpenAI Responses & Chat Completions streaming, multimodal agent UX, sandboxing, skill/plugin ecosystems, ADE integration, token-aware agent UX.
 *   **[ hermes-local-models: Local Multi-Model AI Router ]** · [github.com/nuroctane/hermes-local-models](https://github.com/nuroctane/hermes-local-models)
     *   Designed and shipped a cross-platform bridge that discovers Atomic Chat / Jan GGUF inventories, builds a multi-model llama-server preset, and serves an OpenAI-compatible API on `localhost:8080` so Hermes Agent/Desktop can use local weights as primary with configurable cloud fallback - shifting default inference off paid APIs to cut overall spend.
     *   One-install model path for every ADE that launches Hermes (Orca and peers) - no per-tool model stack. Win/macOS installers, on-demand single-model VRAM loading, rescan after downloads, LaunchAgent/desktop launchers.
@@ -82,7 +82,7 @@
 
 | **DOMAIN** | **TECHNOLOGIES / COMPETENCIES** |
 | :--- | :--- |
-| **`Agentic Engineering`** | Meta CLI (`meta`/`muse`); Orca, Herdr, Ohmypi, Cursor, Windsurf, OpenCode, Devin, Atrium, Synara, Paseo, Blume; CLIs: Hermes, Claude Code, Codex, Grok, OpenHands; skill/routing design; worktree orchestration; human-in-the-loop review; token-usage optimization; cost-aware agent workflows |
+| **`Agentic Engineering`** | NurCLI (`nur`); Orca, Herdr, Ohmypi, Cursor, Windsurf, OpenCode, Devin, Atrium, Synara, Paseo, Blume; CLIs: Hermes, Claude Code, Codex, Grok, OpenHands; skill/routing design; worktree orchestration; human-in-the-loop review; token-usage optimization; cost-aware agent workflows |
 | **`Local AI & Inference`** | Ollama; Atomic Chat; GGUF multi-model routing; llama-server; OpenAI-compatible local APIs; AnythingLLM; ONNX Runtime (RapidOCR); specific-utility local model training; recursive training loops; token optimization & spend reduction; cloud fallback patterns |
 | **`Product & Frontend`** | TypeScript, React, Next.js, Vite, Three.js, GSAP, Tailwind, design systems, dual mobile/desktop shells, accessibility & reduced-motion |
 | **`Mobile`** | SwiftUI, Kotlin, Jetpack Compose, Capacitor, Core Data, Room, Hilt, AVFoundation, Media3 |
