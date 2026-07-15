@@ -29,7 +29,7 @@ app.use(
 app.use(cors({
   origin: [
     "https://nuroctane.xyz",
-    /^https:\/\/nuroctane-xyz-site(?:-.*)?\.vercel\.app$/,
+    /^https:\/\/nuroctane-xyz(?:-site)?(?:-.*)?\.vercel\.app$/,
     /^https?:\/\/localhost(?::\d+)?$/,
   ],
   credentials: true,
