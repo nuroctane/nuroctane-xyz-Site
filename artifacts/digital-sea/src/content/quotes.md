@@ -9,10 +9,10 @@
 - [[#Faith, God & Surrender|Faith, God & Surrender]] (64)
 - [[#Reality, Manifestation & Abundance|Reality, Manifestation & Abundance]] (100)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (116)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (96)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (97)
 - [[#Relationships, Boundaries & Love|Relationships, Boundaries & Love]] (54)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (21)
-- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (91)
+- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (92)
 - [[#Wealth, Work & Value|Wealth, Work & Value]] (29)
 - [[#Unsorted Sparks|Unsorted Sparks]] (51)
 
@@ -1170,6 +1170,10 @@ _Doing the hard thing, skill, courage, habits, attention, decisions, and embodie
 > an idiot in motion goes further than a genius at rest
 > — @MachJustine
 
+> one common trait I find in high achieving individuals is urgency. it looks almost like impatience until you understand it is closer to reverence, a deep refusal to waste the one thing they can’t buy more of. the alarm goes and they rise. the message is answered while it is still warm. the small task is done before it can find a shelf to hide on. they commit and move in a single motion. an idea sparks and they chase it that day, before the world talks them out of it. they run at their own lives like something is at stake, because they have decided something is.
+> — @josbjohnson
+
+
 
 ## Relationships, Boundaries & Love
 
@@ -1609,6 +1613,10 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, attention, and
 
 > The entire spiritual industry is a coward's invention, designed to package the most violent undertaking a human being can choose into something palatable for soft hands and weekend schedules. the actual practice, the original practice, before it was gutted and resold as self care, involves deliberately breaking your body down as an offering to something that will never confirm it's received the gift. fasting isn't intermittent caloric optimization, it's starving until something inside you cracks open that eating kept shut. prayer isn't meditation apps with bells, it's grinding the same fucking words into your teeth until they bypass your intellect entirely and enter the bloodstream. the desert fathers lived in holes in the ground eating insects, not because they were performing piety, but because they discovered that comfort is the single most efficient mechanism for keeping a man from encountering anything real about himself, or god, or both. every generation produces fewer thousands willing to pay the actual price, and more millions willing to purchase the aesthetic of having paid it
 > — @lichthauch
+
+> I am relentless because the alternative disgusts me. settling, coasting, going soft in the body and lazy in the spirit and half present with the people I love - I’d rather bleed for the higher version every day than drift comfortably toward the smaller one.
+> — @josbjohnson
+
 
 
 
