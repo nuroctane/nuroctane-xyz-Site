@@ -166,7 +166,7 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     urlDisplay: 'github.com/nuroctane/nur-cli',
     subtitle: 'multi-provider terminal agent',
     description: 'Rust coding agent spanning 40+ providers (OpenAI, Anthropic, Gemini, xAI, Groq, Meta Model API)  -  streaming TUI, native vision, 800+ skills, hardened sandbox. Built to rival Claude Code-class density.',
-    avatar: '',
+    avatar: '/assets/nodes/nur-cli-logo.png',
     logo: '/assets/nodes/github-logo.png',
   },
   {
