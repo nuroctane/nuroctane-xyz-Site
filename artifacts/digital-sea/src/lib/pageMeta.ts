@@ -16,6 +16,10 @@ export interface PageMeta {
   imagePath?: string;
   /** noindex for crawlers that honor robots (resume) */
   noindex?: boolean;
+  /** og:site_name override (default NUROCTANE) */
+  siteName?: string;
+  /** document favicon path override */
+  favicon?: string;
 }
 
 const DEFAULT: PageMeta = {
@@ -62,11 +66,14 @@ const PAGES: Record<string, PageMeta> = {
     path: '/modkeys',
   },
   cli: {
-    title: 'NurCLI — Multi-Provider Terminal Agent',
+    title: 'NurCLI',
     description:
       'Your personal coding agent. Rust harness, gold TUI, native vision, 60+ providers, plugin marketplace, 800+ skills. Install on macOS, Windows, Linux.',
-    badge: 'NURCLI',
+    badge: 'NurCLI',
     path: '/cli',
+    siteName: 'NurCLI',
+    favicon: '/assets/nodes/nur-cli-logo.png',
+    imagePath: '/api/og?page=cli',
   },
   blog: {
     title: 'Writings — NUROCTANE',
@@ -167,7 +174,18 @@ export function applyDocumentMeta(meta: PageMeta, origin?: string): void {
   setMeta('meta[property="og:type"]', 'content', 'website');
   setMeta('meta[property="og:url"]', 'content', absoluteUrl(meta.path, originSafe));
   setMeta('meta[property="og:image"]', 'content', ogImageUrl(meta, originSafe));
-  setMeta('meta[property="og:site_name"]', 'content', 'NUROCTANE');
+  setMeta('meta[property="og:site_name"]', 'content', meta.siteName || 'NUROCTANE');
+
+  if (meta.favicon) {
+    let icon = document.querySelector('link[rel="icon"]') as HTMLLinkElement | null;
+    if (!icon) {
+      icon = document.createElement('link');
+      icon.rel = 'icon';
+      document.head.appendChild(icon);
+    }
+    icon.type = meta.favicon.endsWith('.svg') ? 'image/svg+xml' : 'image/png';
+    icon.href = meta.favicon;
+  }
   setMeta('meta[name="twitter:card"]', 'content', 'summary_large_image');
   setMeta('meta[name="twitter:title"]', 'content', meta.title);
   setMeta('meta[name="twitter:description"]', 'content', meta.description);

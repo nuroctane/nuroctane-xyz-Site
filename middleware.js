@@ -52,11 +52,12 @@ const PAGES = {
     path: '/modkeys',
   },
   cli: {
-    title: 'NurCLI — Multi-Provider Terminal Agent',
+    title: 'NurCLI',
     description:
       'Your personal coding agent. Rust harness, gold TUI, native vision, 60+ providers, plugin marketplace, 800+ skills. Install on macOS, Windows, Linux.',
-    badge: 'NURCLI',
+    badge: 'NurCLI',
     path: '/cli',
+    siteName: 'NurCLI',
   },
   blog: {
     title: 'Writings — NUROCTANE',
@@ -130,7 +131,8 @@ function botHtml(meta) {
   <meta name="description" content="${desc}" />
   <meta name="robots" content="${robots}" />
   <link rel="canonical" href="${url}" />
-  <meta property="og:site_name" content="NUROCTANE" />
+  ${meta.path === '/cli' ? '<link rel="icon" type="image/png" href="' + SITE + '/assets/nodes/nur-cli-logo.png" />' : ''}
+  <meta property="og:site_name" content="${escapeHtml(meta.siteName || 'NUROCTANE')}" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="${title}" />
   <meta property="og:description" content="${desc}" />
