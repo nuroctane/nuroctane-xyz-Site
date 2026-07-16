@@ -2,17 +2,16 @@ import { useLocation } from 'wouter';
 import { useState, useEffect, useRef } from 'react';
 
 const DESTINATIONS = [
-  { href: '/', label: 'Home', badge: 'HM' },
-  { href: '/socials', label: 'Socials', badge: 'SO' },
-  { href: '/projects', label: 'Projects', badge: 'PR' },
-  { href: '/blog', label: 'Blog', badge: 'BL' },
-  { href: '/quotes', label: 'Quotes', badge: 'QT' },
-  { href: '/books', label: 'Books', badge: 'BK' },
-  { href: '/resume', label: 'Resume', badge: 'CV' },
-  { href: '/modkeys', label: 'MODKEYS', badge: 'MK' },
-  { href: '/cli', label: 'NurCLI', badge: 'NU' },
-  { href: '/orbit', label: 'Orbit Veil', badge: 'OV', logo: '/assets/nodes/orbit-veil-logo.svg' },
-  { href: '/fin', label: 'Fin', badge: 'FN' },
+  { href: '/', label: 'Home', logo: '/assets/nodes/site-logo.png' },
+  { href: '/socials', label: 'Socials', logo: '/assets/nodes/nuroctane-avatar.png' },
+  { href: '/projects', label: 'Projects', logo: '/assets/nodes/github-logo.png' },
+  { href: '/blog', label: 'Blog', logo: '/assets/nodes/substack-logo.png' },
+  { href: '/quotes', label: 'Quotes', logo: '/assets/nodes/nuroctane-animated-avatar.gif' },
+  { href: '/books', label: 'Books', logo: '/assets/nodes/goodreads-logo.png' },
+  { href: '/modkeys', label: 'MODKEYS', logo: '/assets/nodes/modkeys-logo.png' },
+  { href: '/cli', label: 'NurCLI', logo: '/assets/nodes/nur-cli-logo.png' },
+  { href: '/orbit', label: 'Orbit Veil', logo: '/assets/nodes/orbit-veil-logo.svg' },
+  { href: '/fin', label: 'Fin', logo: '/assets/nodes/venmo-logo.png' },
 ] as const;
 
 export function StandaloneNav() {
@@ -68,10 +67,7 @@ export function StandaloneNav() {
                 aria-current={active ? 'page' : undefined}
               >
                 <span className="qnav-item-badge">
-                  {'logo' in item
-                    ? <img src={item.logo} alt="" className="qnav-item-img" />
-                    : <span className="qnav-item-acronym">{item.badge}</span>
-                  }
+                  <img src={item.logo} alt="" className="qnav-item-img" />
                 </span>
                 <span className="qnav-item-name">{item.label}</span>
               </button>

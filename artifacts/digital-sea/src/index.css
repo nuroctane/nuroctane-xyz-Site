@@ -1694,8 +1694,8 @@ html.standalone-active body {
   }
 
   .orbit-veil-audio {
-    top: calc(50% + 48px);
-    right: 0.55rem;
+    /* Audio remains mounted and playing; only its stray mobile chrome is hidden. */
+    display: none;
   }
 }
 

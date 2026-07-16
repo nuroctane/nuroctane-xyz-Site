@@ -65,9 +65,13 @@ Mobile reference viewport: 390 x 844.
 - Route favicon: Orbit Veil project mark.
 - Leaving via QuickLaunch must restore the normal site favicon/title through the
   canonical route metadata system.
-- QuickLaunch must remain above the WebGL page and expose every current top-level
-  user route: Home, Socials, Projects, Blog, Quotes, Books, Resume, MODKEYS,
-  NurCLI, Orbit Veil, and Fin.
+- QuickLaunch must remain above the WebGL page and expose every current public
+  top-level route: Home, Socials, Projects, Blog, Quotes, Books, MODKEYS,
+  NurCLI, Orbit Veil, and Fin. Resume remains a hidden direct-URL page.
+- Every QuickLaunch destination uses its associated site or project logo; no
+  acronym placeholders appear in the standalone navigation.
+- On mobile, the host audio control chrome is hidden while `MiniAudio` remains
+  mounted so Digital Sea music continues across the Orbit route.
 - Analytics path and route: `/orbit`.
 - Crawler middleware, OG theme, route docs, and page metadata must include the new
   route.
