@@ -1210,3 +1210,125 @@ html.standalone-active.cli-theme body {
     height: 64px;
   }
 }
+
+
+/* ── Live version badge (GitHub releases) ── */
+
+.cli-title-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1rem;
+  margin: 0 0 0.6rem;
+}
+
+.cli-title-row .cli-title {
+  margin: 0;
+}
+
+.cli-version {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  text-decoration: none;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  color: #1a1408;
+  background: linear-gradient(115deg, #ffe678 0%, #e8b923 55%, #c89614 100%);
+  background-size: 180% 100%;
+  border: 1px solid rgba(255, 214, 90, 0.45);
+  padding: 0.32rem 0.65rem 0.32rem 0.5rem;
+  clip-path: polygon(6px 0, calc(100% - 6px) 0, 100% 6px, 100% calc(100% - 6px), calc(100% - 6px) 100%, 6px 100%, 0 calc(100% - 6px), 0 6px);
+  box-shadow: 0 0 18px rgba(232, 185, 35, 0.18);
+  transition:
+    transform 120ms cubic-bezier(0.16, 1, 0.3, 1),
+    box-shadow 160ms cubic-bezier(0.16, 1, 0.3, 1),
+    filter 160ms cubic-bezier(0.16, 1, 0.3, 1);
+  animation: cliGoldShift 5.5s cubic-bezier(0.23, 1, 0.32, 1) infinite;
+}
+.cli-version:hover {
+  filter: brightness(1.06);
+  box-shadow: 0 0 24px rgba(255, 214, 90, 0.28);
+}
+.cli-version:active {
+  transform: scale(0.97);
+}
+.cli-version:focus-visible {
+  outline: 2px solid #ffd65a;
+  outline-offset: 2px;
+}
+
+.cli-version-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #1a1408;
+  opacity: 0.55;
+  flex-shrink: 0;
+}
+.cli-version--live .cli-version-dot {
+  background: #0b3d2a;
+  box-shadow: 0 0 0 0 rgba(52, 199, 123, 0.7);
+  animation: cliVerPulse 1.8s ease-out infinite;
+  opacity: 1;
+}
+.cli-version--loading .cli-version-dot {
+  opacity: 0.35;
+  animation: cliVerBlink 1s steps(2) infinite;
+}
+.cli-version--err {
+  background: #1a1f28;
+  color: #ffba49;
+  border-color: rgba(255, 186, 73, 0.4);
+  animation: none;
+}
+.cli-version--err .cli-version-dot {
+  background: #ffba49;
+}
+.cli-version--flash {
+  box-shadow: 0 0 0 1px rgba(255, 214, 90, 0.55), 0 0 28px rgba(255, 214, 90, 0.4);
+}
+
+.cli-version-label {
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.cli-version-live {
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #0b3d2a;
+  background: rgba(11, 61, 42, 0.12);
+  border: 1px solid rgba(11, 61, 42, 0.22);
+  padding: 0.08rem 0.3rem;
+  font-weight: 700;
+}
+
+.cli-stat-ver {
+  color: #ffd65a !important;
+  font-variant-numeric: tabular-nums;
+  transition: color 200ms ease, text-shadow 200ms ease;
+}
+.cli-stat-ver--flash {
+  color: #fff8b4 !important;
+  text-shadow: 0 0 16px rgba(255, 214, 90, 0.55);
+}
+
+@keyframes cliVerPulse {
+  0% { box-shadow: 0 0 0 0 rgba(52, 199, 123, 0.55); }
+  70% { box-shadow: 0 0 0 8px rgba(52, 199, 123, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(52, 199, 123, 0); }
+}
+@keyframes cliVerBlink {
+  50% { opacity: 0.15; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cli-version,
+  .cli-version--live .cli-version-dot,
+  .cli-version--loading .cli-version-dot {
+    animation: none !important;
+  }
+}

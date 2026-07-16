@@ -500,11 +500,93 @@ function InstallCard({
   );
 }
 
+
+type NurVersion = {
+  version: string;
+  tag: string;
+  name?: string | null;
+  publishedAt?: string | null;
+  htmlUrl: string;
+  fetchedAt?: string;
+};
+
+function useNurCliVersion() {
+  const [data, setData] = useState<NurVersion | null>(null);
+  const [status, setStatus] = useState<'loading' | 'live' | 'error'>('loading');
+  const [flash, setFlash] = useState(false);
+
+  useEffect(() => {
+    let es: EventSource | null = null;
+    let cancelled = false;
+    let pollTimer: number | undefined;
+    const seen = { version: '' as string };
+
+    const apply = (payload: NurVersion) => {
+      if (cancelled || !payload?.version) return;
+      if (seen.version && seen.version !== payload.version) {
+        setFlash(true);
+        window.setTimeout(() => setFlash(false), 1600);
+        trackEvent('Cli Version Update', { version: payload.version });
+      }
+      seen.version = payload.version;
+      setData(payload);
+      setStatus('live');
+    };
+
+    const pollOnce = async () => {
+      try {
+        const res = await fetch('/api/nur-cli-version', { headers: { Accept: 'application/json' } });
+        if (!res.ok) throw new Error(String(res.status));
+        const json = (await res.json()) as NurVersion;
+        apply(json);
+      } catch {
+        if (!cancelled && !seen.version) setStatus('error');
+      }
+    };
+
+    // Prefer SSE stream (live); fall back to JSON poll.
+    try {
+      es = new EventSource('/api/nur-cli-version?stream=1');
+      es.addEventListener('version', (ev) => {
+        try {
+          apply(JSON.parse((ev as MessageEvent).data) as NurVersion);
+        } catch {
+          /* ignore bad frame */
+        }
+      });
+      es.addEventListener('error', () => {
+        // EventSource error can be transient; if we never got data, poll.
+        if (!seen.version) {
+          void pollOnce();
+          pollTimer = window.setInterval(pollOnce, 120_000);
+        }
+      });
+    } catch {
+      void pollOnce();
+      pollTimer = window.setInterval(pollOnce, 120_000);
+    }
+
+    // Safety poll even when SSE works (some hosts buffer SSE oddly)
+    pollTimer = window.setInterval(pollOnce, 180_000);
+    void pollOnce();
+
+    return () => {
+      cancelled = true;
+      es?.close();
+      if (pollTimer) window.clearInterval(pollTimer);
+    };
+  }, []);
+
+  return { data, status, flash };
+}
+
+
 /* ── Page ───────────────────────────────────────────────────────────────── */
 
 export default function CliPage() {
   useStandaloneScroll();
   useReveal();
+  const { data: nurVer, status: verStatus, flash: verFlash } = useNurCliVersion();
 
   // Match nur-cli TUI canvas on the document (overscroll + body).
   useEffect(() => {
@@ -614,7 +696,33 @@ export default function CliPage() {
           />
           <div className="cli-hero-copy">
             <p className="cli-kicker">// multi-provider terminal agent</p>
-            <h1 className="cli-title">NurCLI</h1>
+            <div className="cli-title-row">
+              <h1 className="cli-title">NurCLI</h1>
+              <a
+                className={`cli-version${verStatus === 'live' ? ' cli-version--live' : ''}${verStatus === 'loading' && !nurVer ? ' cli-version--loading' : ''}${verStatus === 'error' && !nurVer ? ' cli-version--err' : ''}${verFlash ? ' cli-version--flash' : ''}`}
+                href={nurVer?.htmlUrl || 'https://github.com/nuroctane/nur-cli/releases/latest'}
+                target="_blank"
+                rel="noreferrer"
+                title={
+                  nurVer?.publishedAt
+                    ? `Released ${new Date(nurVer.publishedAt).toLocaleString()}`
+                    : 'Latest GitHub release'
+                }
+                onClick={() =>
+                  trackEvent('Cli Version Click', { version: nurVer?.version || 'unknown' })
+                }
+              >
+                <span className="cli-version-dot" aria-hidden />
+                <span className="cli-version-label">
+                  {verStatus === 'loading' && !nurVer
+                    ? 'fetching…'
+                    : verStatus === 'error' && !nurVer
+                      ? 'offline'
+                      : `v${nurVer?.version ?? '—'}`}
+                </span>
+                {verStatus === 'live' && <span className="cli-version-live">live</span>}
+              </a>
+            </div>
             <p className="cli-tagline">
               Extremely efficient token spend. Custom Rust harness, dense gold TUI,
               native vision, 60+ providers, 800+ skills — your personal coding agent.
@@ -657,7 +765,12 @@ export default function CliPage() {
           <li><strong>60+</strong><span>providers</span></li>
           <li><strong>~85%</strong><span>token savings aim</span></li>
           <li><strong>800+</strong><span>skills</span></li>
-          <li><strong>1</strong><span>binary · nur</span></li>
+          <li>
+            <strong className={verFlash ? 'cli-stat-ver cli-stat-ver--flash' : 'cli-stat-ver'}>
+              {nurVer ? `v${nurVer.version}` : verStatus === 'loading' ? '…' : 'nur'}
+            </strong>
+            <span>{nurVer ? 'latest release' : 'binary · nur'}</span>
+          </li>
         </ul>
       </header>
 
