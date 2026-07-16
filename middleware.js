@@ -58,6 +58,25 @@ const PAGES = {
     badge: 'NurCLI',
     path: '/cli',
     siteName: 'NurCLI',
+    favicon: '/assets/nodes/nur-cli-logo.png',
+  },
+  orbit: {
+    title: 'Orbit Veil',
+    description:
+      'A real-time 3D presentation of Earth and its satellites, powered by CelesTrak TLE data and in-browser SGP4 propagation.',
+    badge: 'ORBIT VEIL',
+    path: '/orbit',
+    siteName: 'Orbit Veil',
+    favicon: '/assets/nodes/orbit-veil-logo.svg',
+  },
+  'orbit-veil': {
+    title: 'Orbit Veil',
+    description:
+      'A real-time 3D presentation of Earth and its satellites, powered by CelesTrak TLE data and in-browser SGP4 propagation.',
+    badge: 'ORBIT VEIL',
+    path: '/orbit',
+    siteName: 'Orbit Veil',
+    favicon: '/assets/nodes/orbit-veil-logo.svg',
   },
   blog: {
     title: 'Writings — NUROCTANE',
@@ -95,10 +114,11 @@ function resolvePage(pathname) {
   const top = segs[0] || 'home';
   const key = top === '' ? 'home' : top;
   const base = PAGES[key] || PAGES.home;
-  const path = clean === '/' ? '/' : clean;
+  const path = key === 'orbit-veil' ? '/orbit' : (clean === '/' ? '/' : clean);
+  const imageKey = key === 'orbit-veil' ? 'orbit' : key;
   let image =
     base.image ||
-    `${SITE}/api/og?page=${encodeURIComponent(key === 'home' ? 'home' : key)}&title=${encodeURIComponent(base.badge)}`;
+    `${SITE}/api/og?page=${encodeURIComponent(imageKey === 'home' ? 'home' : imageKey)}&title=${encodeURIComponent(base.badge)}`;
   // X is picky about dynamic OG cards — keep /cli image URL stable and short
   if (key === 'cli') {
     image = `${SITE}/api/og?page=cli&v=2`;
@@ -135,7 +155,7 @@ function botHtml(meta) {
   <meta name="description" content="${desc}" />
   <meta name="robots" content="${robots}" />
   <link rel="canonical" href="${url}" />
-  ${meta.path === '/cli' ? '<link rel="icon" type="image/png" href="' + SITE + '/assets/nodes/nur-cli-logo.png" />' : ''}
+  ${meta.favicon ? '<link rel="icon" href="' + SITE + escapeHtml(meta.favicon) + '" />' : ''}
   <meta property="og:site_name" content="${escapeHtml(meta.siteName || 'NUROCTANE')}" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="${title}" />
@@ -189,11 +209,16 @@ export default function middleware(request) {
 export const config = {
   matcher: [
     '/',
+    '/home',
+    '/sea',
+    '/identity',
     '/quotes',
     '/books',
     '/resume',
     '/modkeys',
     '/cli',
+    '/orbit',
+    '/orbit-veil',
     '/blog',
     '/blog/:path*',
     '/socials',

@@ -75,6 +75,26 @@ const PAGES: Record<string, PageMeta> = {
     favicon: '/assets/nodes/nur-cli-logo.png',
     imagePath: '/api/og?page=cli&v=2',
   },
+  orbit: {
+    title: 'Orbit Veil',
+    description:
+      'A real-time 3D presentation of Earth and its satellites, powered by CelesTrak TLE data and in-browser SGP4 propagation.',
+    badge: 'ORBIT VEIL',
+    path: '/orbit',
+    siteName: 'Orbit Veil',
+    favicon: '/assets/nodes/orbit-veil-logo.svg',
+    imagePath: '/api/og?page=orbit&v=1',
+  },
+  'orbit-veil': {
+    title: 'Orbit Veil',
+    description:
+      'A real-time 3D presentation of Earth and its satellites, powered by CelesTrak TLE data and in-browser SGP4 propagation.',
+    badge: 'ORBIT VEIL',
+    path: '/orbit',
+    siteName: 'Orbit Veil',
+    favicon: '/assets/nodes/orbit-veil-logo.svg',
+    imagePath: '/api/og?page=orbit&v=1',
+  },
   blog: {
     title: 'Writings — NUROCTANE',
     description:

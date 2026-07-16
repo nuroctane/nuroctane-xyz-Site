@@ -20,6 +20,7 @@ const THEMES = {
   resume:   { badge: 'RESUME',      accent: '#5de8f0', sub: 'David Davieson',    headline: 'Resume' },
   modkeys:  { badge: 'MODKEYS',     accent: '#f0abfc', sub: 'keyboard configurator', headline: 'MODKEYS' },
   cli:      { badge: 'NurCLI',      accent: '#e8b923', sub: 'multi-provider terminal agent', headline: 'NurCLI' },
+  orbit:    { badge: 'ORBIT VEIL', accent: '#38bdf8', sub: 'real-time satellite tracker', headline: 'Orbit Veil' },
   blog:     { badge: 'WRITINGS',    accent: '#86efac', sub: 'nur.writings',      headline: 'Writings' },
   socials:  { badge: 'SOCIALS',     accent: '#fbbf24', sub: 'the network',       headline: 'Socials' },
   projects: { badge: 'PROJECTS',    accent: '#fb7185', sub: 'creative + technical', headline: 'Projects' },

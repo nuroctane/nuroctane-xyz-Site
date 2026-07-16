@@ -14,6 +14,7 @@ const BooksPage  = lazy(() => import('./pages/BooksPage'));
 const ResumePage = lazy(() => import('./pages/ResumePage'));
 const ModkeysPage = lazy(() => import('./pages/ModkeysPage'));
 const CliPage    = lazy(() => import('./pages/CliPage'));
+const OrbitVeilPage = lazy(() => import('./pages/OrbitVeilPage'));
 
 function Fallback() {
   return <div className="page-loading"><div className="page-loading-dot" /></div>;
@@ -103,6 +104,7 @@ function Root() {
   if (top === 'resume') return <Suspense fallback={<Fallback />}><ResumePage /></Suspense>;
   if (top === 'modkeys') return <Suspense fallback={<Fallback />}><ModkeysPage /></Suspense>;
   if (top === 'cli') return <Suspense fallback={<Fallback />}><CliPage /></Suspense>;
+  if (top === 'orbit') return <Suspense fallback={<Fallback />}><OrbitVeilPage /></Suspense>;
 
   return <App />;
 }

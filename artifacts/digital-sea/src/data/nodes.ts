@@ -159,7 +159,7 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     logo: '/assets/nodes/reddit-logo.png',
   },
 
-  // ─── CREATIVE PROJECTS (11)  -  NurCLI + MODKEYS first ─────────────────────
+  // ─── CREATIVE PROJECTS (13)  -  NurCLI + MODKEYS first ─────────────────────
   {
     id: 'nur-cli', label: 'NurCLI', handle: 'nur',
     url: '/cli',
@@ -268,6 +268,15 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     avatar: '/assets/nodes/nuroctane-tools-avatar.png',
     logo: '/assets/nodes/wrench.png',
   },
+  {
+    id: 'orbit-veil', label: 'Orbit Veil', handle: 'real-time satellite tracker',
+    url: '/orbit',
+    urlDisplay: 'nuroctane.xyz/orbit',
+    subtitle: 'the whole sky, propagated live',
+    description: 'Real-time 3D Earth and satellite tracker. CelesTrak TLE sets refresh on a two-hour cadence while satellite.js runs SGP4 propagation locally for continuous positions, orbital paths, coverage footprints, search, and time travel.',
+    avatar: '/assets/nodes/orbit-veil-logo.svg',
+    logo: '/assets/nodes/orbit-veil-logo.svg',
+  },
 ];
 
 // Cards alternate sides and are spread by *even midpoints* along the scroll
@@ -293,7 +302,7 @@ const EDGE_CARD_WIDTH = 0.048;
 // so the camera looks across the sea at the card instead of being nose-to-it.
 // When inserting a node mid-list, index parity shifts for everything after it  - 
 // invert FLIP membership for those shifted ids so their world-side stays put.
-// 27 nodes (nur-cli first creative; blackjack after snipocr).
+// Existing nodes retain their world-side when new cards are appended.
 const FLIP_X = new Set([
   'tiktok', 'substack', 'kick', 'goodreads', 'remilia',
   // nur-cli insert shifts creative parity  -  keep facing readable across the sea
@@ -324,6 +333,7 @@ const WIDE_CARD: Record<string, number> = {
   miyamaker:   0.058,
   // last card before portals  -  smooth entrance + room to pivot away
   webutils:    0.056,
+  'orbit-veil': 0.058,
 };
 
 const Z_OVERRIDE: Record<string, number> = {};

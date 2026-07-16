@@ -1,4 +1,5 @@
 import React from 'react';
+import { useLocation } from 'wouter';
 import { NodeData, PROJECT_THRESHOLD, nodeMid } from '../../data/nodes';
 import { trackEvent } from '../../lib/analytics';
 
@@ -16,8 +17,10 @@ function ImgWithFallback({
 
 export function NodeCard({ node }: { node: NodeData }) {
   const [exploding, setExploding] = React.useState(false);
+  const [, setLocation] = useLocation();
   const isComingSoon = COMING_SOON_IDS.includes(node.id);
   const hasLink      = Boolean(node.url && node.url !== '#');
+  const isInternal   = Boolean(node.url?.startsWith('/'));
 
   const handleClick = (e: React.MouseEvent) => {
     if (!hasLink || exploding) { e.preventDefault(); return; }
@@ -25,13 +28,19 @@ export function NodeCard({ node }: { node: NodeData }) {
     trackEvent('Sea Node Open', { id: node.id, section, label: node.label });
     setExploding(true);
     setTimeout(() => setExploding(false), 420);
+    if (isInternal && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
+      e.preventDefault();
+      setTimeout(() => setLocation(node.url), 160);
+    }
   };
 
   // Native <a> tags open reliably in every context (including iframes)
   // where window.open may be blocked as a popup.
   const Tag = hasLink ? 'a' : 'div';
   const linkProps = hasLink
-    ? { href: node.url, target: '_blank', rel: 'noopener noreferrer' }
+    ? isInternal
+      ? { href: node.url }
+      : { href: node.url, target: '_blank', rel: 'noopener noreferrer' }
     : {};
 
   return (

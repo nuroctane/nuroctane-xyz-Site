@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-label="Orbit Veil">
+  <defs>
+    <radialGradient id="earth" cx="36%" cy="30%" r="70%">
+      <stop offset="0" stop-color="#38bdf8"/>
+      <stop offset="0.46" stop-color="#2563eb"/>
+      <stop offset="1" stop-color="#071426"/>
+    </radialGradient>
+    <linearGradient id="orbit" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#67e8f9"/>
+      <stop offset="1" stop-color="#38bdf8"/>
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="12" fill="#04060a"/>
+  <circle cx="32" cy="32" r="17" fill="url(#earth)" stroke="#7dd3fc" stroke-opacity=".55"/>
+  <path d="M20 25c8 4 14 1 23 6M18 36c8-1 15 5 25 2" fill="none" stroke="#9bd4c4" stroke-opacity=".5" stroke-width="2"/>
+  <ellipse cx="32" cy="32" rx="27" ry="9.5" fill="none" stroke="url(#orbit)" stroke-width="2.6" transform="rotate(-18 32 32)"/>
+  <circle cx="56" cy="24" r="2.5" fill="#ecfeff"/>
+</svg>

@@ -767,6 +767,12 @@ html.standalone-active body {
   padding-left: 12px;
 }
 
+.qnav-item--active {
+  color: #eafcff;
+  background: rgba(93, 232, 240, 0.1);
+  border-left: 1px solid rgba(93, 232, 240, 0.55);
+}
+
 .qnav-item--soon {
   opacity: 0.45;
 }
@@ -1633,6 +1639,64 @@ html.standalone-active body {
 @keyframes loadPulse {
   0%, 100% { opacity: 0.2; transform: scale(0.8); }
   50%      { opacity: 0.8; transform: scale(1.2); }
+}
+
+/* Orbit Veil is an isolated, exact runtime; host chrome stays above its canvas. */
+.orbit-veil-page {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  background: #04060a;
+}
+
+.orbit-veil-frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+  background: #04060a;
+}
+
+.orbit-veil-page .qnav {
+  top: 50%;
+  right: 1rem;
+  left: auto;
+  transform: translateY(-50%);
+}
+
+.orbit-veil-page .qnav-panel {
+  right: 0;
+  left: auto;
+  transform: translateX(12px);
+}
+
+.orbit-veil-page .qnav-panel--open {
+  transform: translateX(0);
+}
+
+.orbit-veil-audio {
+  position: fixed;
+  top: calc(50% + 54px);
+  right: 1rem;
+  z-index: 1000;
+}
+
+@media (max-width: 640px) {
+  .orbit-veil-page .qnav {
+    right: 0.55rem;
+  }
+
+  .orbit-veil-page .qnav-trigger {
+    width: 34px;
+    height: 34px;
+    opacity: 0.82;
+  }
+
+  .orbit-veil-audio {
+    top: calc(50% + 48px);
+    right: 0.55rem;
+  }
 }
 
 /* ── Quotes page ── */

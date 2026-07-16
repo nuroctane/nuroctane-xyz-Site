@@ -20,6 +20,7 @@ This is my personal [digital sea](https://codelyoko.fandom.com/wiki/Digital_Sea)
 - **📚 Books** — A curated library of books I've read, with community recommendations and live search via Google Books & Open Library APIs
 - **💭 Quotes** — A collection of thoughts, ideas, and quotes that have shaped my thinking, organized by theme
 - **⌨️ Modkeys** — A full 3D mechanical keyboard configurator (desktop + mobile shells), embedded at `/modkeys`
+- **🛰️ Orbit Veil** — A full-Earth, real-time satellite tracker using CelesTrak TLE sets and in-browser SGP4 propagation at `/orbit`
 
 The site is built as a single-page application with a distinct aesthetic inspired by terminal interfaces and digital landscapes. It's not just a portfolio — it's an extension of my mind.
 
@@ -47,7 +48,7 @@ Code is wired (`mode: production` on the Vite SPA). Dashboard:
 2. Optionally enable **Speed Insights** in the same project (`@vercel/speed-insights` v2 + `<SpeedInsights />` in the SPA root).
 3. Redeploy after enable or code changes.
 
-**Page routes (Top Pages):** `/`, `/socials`, `/socials/:id`, `/projects`, `/projects/:id`, `/blog`, `/blog/:slug`, `/fin`, `/books`, `/quotes`, `/resume`, `/modkeys`, `/cli`.
+**Page routes (Top Pages):** `/`, `/socials`, `/socials/:id`, `/projects`, `/projects/:id`, `/blog`, `/blog/:slug`, `/fin`, `/books`, `/quotes`, `/resume`, `/modkeys`, `/cli`, `/orbit`. Home aliases `/home`, `/sea`, and `/identity` resolve to `/`; `/orbit-veil` remains a compatibility alias for `/orbit`.
 
 Sea scroll + QuickNav update the URL (replace/push) so passive browsing still attributes to section routes. `/resume` is unlinked in nav (direct URL only) but still tracked.
 

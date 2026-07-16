@@ -30,6 +30,7 @@ const LOGO_MAP: Record<string, string> = {
   // Project marks (same files as card avatars)
   astrosleep: '/assets/nodes/astrosleep-logo.png',
   blackjack:  '/assets/nodes/blackjack-logo.png',
+  'orbit-veil': '/assets/nodes/orbit-veil-logo.svg',
 };
 
 const ACRONYM_MAP: Record<string, string> = {

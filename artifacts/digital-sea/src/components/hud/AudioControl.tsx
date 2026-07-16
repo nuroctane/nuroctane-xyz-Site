@@ -13,7 +13,7 @@ interface Props {
  * ever interrupting the score.
  */
 export function AudioControl({ mini = false }: Props) {
-  const { enabled, blocked, volume, setVolume, toggle } = useAudioCtx();
+  const { enabled, blocked, armed, track, volume, setVolume, toggle } = useAudioCtx();
   const [expanded, setExpanded] = useState(false);
   const isMobile = useIsMobile();
 
@@ -28,6 +28,8 @@ export function AudioControl({ mini = false }: Props) {
   return (
     <div
       className={`audio-control${mini ? ' mini-audio' : ''}`}
+      data-audio-armed={armed ? 'true' : 'false'}
+      data-audio-track={track ?? 'none'}
       onMouseEnter={() => setExpanded(true)}
       onMouseLeave={() => setExpanded(false)}
     >
