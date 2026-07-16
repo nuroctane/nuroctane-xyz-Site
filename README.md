@@ -47,7 +47,7 @@ Code is wired (`mode: production` on the Vite SPA). Dashboard:
 2. Optionally enable **Speed Insights** in the same project (`@vercel/speed-insights` v2 + `<SpeedInsights />` in the SPA root).
 3. Redeploy after enable or code changes.
 
-**Page routes (Top Pages):** `/`, `/socials`, `/socials/:id`, `/projects`, `/projects/:id`, `/blog`, `/blog/:slug`, `/fin`, `/books`, `/quotes`, `/resume`, `/modkeys`.
+**Page routes (Top Pages):** `/`, `/socials`, `/socials/:id`, `/projects`, `/projects/:id`, `/blog`, `/blog/:slug`, `/fin`, `/books`, `/quotes`, `/resume`, `/modkeys`, `/cli`.
 
 Sea scroll + QuickNav update the URL (replace/push) so passive browsing still attributes to section routes. `/resume` is unlinked in nav (direct URL only) but still tracked.
 

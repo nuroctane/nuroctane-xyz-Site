@@ -61,6 +61,13 @@ const PAGES: Record<string, PageMeta> = {
     badge: 'MODKEYS',
     path: '/modkeys',
   },
+  cli: {
+    title: 'NurCLI — Multi-Provider Terminal Agent',
+    description:
+      'Your personal coding agent. Rust harness, gold TUI, native vision, 60+ providers, plugin marketplace, 800+ skills. Install on macOS, Windows, Linux.',
+    badge: 'NURCLI',
+    path: '/cli',
+  },
   blog: {
     title: 'Writings — NUROCTANE',
     description:

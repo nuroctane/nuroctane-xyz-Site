@@ -18,6 +18,7 @@ export const ANALYTICS_TOP_ROUTES = [
   '/books',
   '/resume',
   '/modkeys',
+  '/cli',
 ] as const;
 
 export type AnalyticsTopRoute = (typeof ANALYTICS_TOP_ROUTES)[number];
@@ -53,6 +54,8 @@ export function resolveAnalytics(location: string): { path: string; route: strin
       return { path: '/resume', route: '/resume' };
     case 'modkeys':
       return { path: '/modkeys', route: '/modkeys' };
+    case 'cli':
+      return { path: '/cli', route: '/cli' };
     case 'fin':
       return { path: '/fin', route: '/fin' };
     case 'socials':

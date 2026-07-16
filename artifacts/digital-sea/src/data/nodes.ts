@@ -162,8 +162,8 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
   // ─── CREATIVE PROJECTS (11)  -  NurCLI + MODKEYS first ─────────────────────
   {
     id: 'nur-cli', label: 'NurCLI', handle: 'nur',
-    url: 'https://github.com/nuroctane/nur-cli',
-    urlDisplay: 'github.com/nuroctane/nur-cli',
+    url: '/cli',
+    urlDisplay: 'nuroctane.xyz/cli',
     subtitle: 'multi-provider terminal agent',
     description: 'Rust coding agent spanning 60+ providers  -  streaming TUI, /model picker, /plugins marketplace, native vision, 800+ skills, hardened sandbox. Built to rival Claude Code-class density.',
     avatar: '/assets/nodes/nur-cli-logo.png',

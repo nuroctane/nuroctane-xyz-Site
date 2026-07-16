@@ -16,6 +16,7 @@ const THEMES = {
   books:    { badge: 'BOOKS',       accent: '#a5b4fc', sub: 'living library',    headline: 'Books' },
   resume:   { badge: 'RESUME',      accent: '#5de8f0', sub: 'David Davieson',    headline: 'Resume' },
   modkeys:  { badge: 'MODKEYS',     accent: '#f0abfc', sub: 'keyboard configurator', headline: 'MODKEYS' },
+  cli:      { badge: 'NURCLI',      accent: '#e8b923', sub: 'terminal coding agent', headline: 'NurCLI' },
   blog:     { badge: 'WRITINGS',    accent: '#86efac', sub: 'nur.writings',      headline: 'Writings' },
   socials:  { badge: 'SOCIALS',     accent: '#fbbf24', sub: 'the network',       headline: 'Socials' },
   projects: { badge: 'PROJECTS',    accent: '#fb7185', sub: 'creative + technical', headline: 'Projects' },
