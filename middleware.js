@@ -96,9 +96,13 @@ function resolvePage(pathname) {
   const key = top === '' ? 'home' : top;
   const base = PAGES[key] || PAGES.home;
   const path = clean === '/' ? '/' : clean;
-  const image =
+  let image =
     base.image ||
     `${SITE}/api/og?page=${encodeURIComponent(key === 'home' ? 'home' : key)}&title=${encodeURIComponent(base.badge)}`;
+  // X is picky about dynamic OG cards — keep /cli image URL stable and short
+  if (key === 'cli') {
+    image = `${SITE}/api/og?page=cli&v=2`;
+  }
   return {
     ...base,
     path,

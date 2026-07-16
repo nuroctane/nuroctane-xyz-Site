@@ -1,11 +1,9 @@
 /**
  * Dynamic Open Graph image for share embeds.
- * GET /api/og?page=resume&title=RESUME
+ * GET /api/og?page=cli
  *
- * Edge runtime + @vercel/og — distinct card per page so Discord/Slack/iMessage
- * unfurls match the route, not a single Digital Sea thumbnail.
- *
- * /cli uses NurCLI gold TUI palette + logo from the GitHub/docs asset.
+ * Edge runtime + @vercel/og. /cli uses NurCLI gold TUI palette + GitHub logo.
+ * Keep styles Satori-safe: flex only, solid colors, no textShadow / background-clip text.
  */
 import { ImageResponse } from '@vercel/og';
 import { createElement as h } from 'react';
@@ -126,14 +124,17 @@ function seaCard(theme, badge, sub, pathLabel) {
   );
 }
 
-/** Gold TUI aesthetic from nur-cli/src/theme.rs + GitHub logo. */
-function cliCard(logoDataUrl) {
+/**
+ * NurCLI gold card — same structural pattern as seaCard (Satori-safe).
+ * Logo via absolute URL (not base64) so @vercel/og can fetch it.
+ */
+function cliCard(logoOk) {
   const gold = '#e8b923';
   const goldBright = '#ffd65a';
   const goldSky = '#ffe08c';
   const violet = '#b294ff';
   const muted = '#948e80';
-  const border = '#302c24';
+  const border = 'rgba(232,185,35,0.28)';
 
   return h(
     'div',
@@ -144,24 +145,11 @@ function cliCard(logoDataUrl) {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'space-between',
-        background: 'linear-gradient(145deg, #0b0e12 0%, #12161c 46%, #0b0e12 100%)',
+        background: 'linear-gradient(145deg, #0b0e12 0%, #12161c 48%, #0b0e12 100%)',
         padding: '52px 60px',
         fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
-        position: 'relative',
       },
     },
-    // gold radial wash
-    h('div', {
-      style: {
-        position: 'absolute',
-        top: -80,
-        left: '20%',
-        width: 700,
-        height: 320,
-        background: 'radial-gradient(ellipse, rgba(255,214,90,0.14) 0%, transparent 70%)',
-        display: 'flex',
-      },
-    }),
     // top bar
     h(
       'div',
@@ -170,14 +158,20 @@ function cliCard(logoDataUrl) {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          color: muted,
-          fontSize: 20,
-          letterSpacing: '0.18em',
         },
       },
       h(
         'div',
-        { style: { display: 'flex', alignItems: 'center', gap: 14 } },
+        {
+          style: {
+            display: 'flex',
+            alignItems: 'center',
+            gap: 14,
+            color: goldSky,
+            fontSize: 22,
+            letterSpacing: '0.2em',
+          },
+        },
         h('div', {
           style: {
             width: 10,
@@ -187,11 +181,21 @@ function cliCard(logoDataUrl) {
             boxShadow: `0 0 18px ${gold}`,
           },
         }),
-        h('span', { style: { color: goldSky } }, 'SYS://CLI'),
+        h('span', null, 'SYS://CLI'),
       ),
-      h('span', { style: { color: violet, letterSpacing: '0.14em' } }, 'nuroctane.xyz/cli'),
+      h(
+        'div',
+        {
+          style: {
+            color: violet,
+            fontSize: 20,
+            letterSpacing: '0.14em',
+          },
+        },
+        'nuroctane.xyz/cli',
+      ),
     ),
-    // main brand row
+    // brand
     h(
       'div',
       {
@@ -199,48 +203,57 @@ function cliCard(logoDataUrl) {
           display: 'flex',
           alignItems: 'center',
           gap: 36,
-          marginTop: 8,
         },
       },
-      logoDataUrl
+      logoOk
         ? h('img', {
-            src: logoDataUrl,
-            width: 168,
-            height: 168,
+            src: NUR_LOGO,
+            width: 160,
+            height: 160,
             style: {
-              width: 168,
-              height: 168,
+              width: 160,
+              height: 160,
               objectFit: 'contain',
               borderRadius: 12,
-              boxShadow: `0 0 40px rgba(232,185,35,0.28)`,
+              border: `1px solid ${border}`,
             },
           })
-        : h('div', {
-            style: {
-              width: 168,
-              height: 168,
-              borderRadius: 12,
-              border: `1px solid ${border}`,
-              background: 'linear-gradient(135deg, #1a1f28, #12161c)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              color: gold,
-              fontSize: 48,
-              fontWeight: 700,
+        : h(
+            'div',
+            {
+              style: {
+                width: 160,
+                height: 160,
+                borderRadius: 12,
+                border: `1px solid ${border}`,
+                background: '#1a1f28',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                color: goldBright,
+                fontSize: 42,
+                fontWeight: 700,
+                letterSpacing: '0.08em',
+              },
             },
-          }, 'NUR'),
+            'NUR',
+          ),
       h(
         'div',
-        { style: { display: 'flex', flexDirection: 'column', gap: 14 } },
+        {
+          style: {
+            display: 'flex',
+            flexDirection: 'column',
+            gap: 14,
+          },
+        },
         h(
           'div',
           {
             style: {
               color: violet,
               fontSize: 22,
-              letterSpacing: '0.2em',
-              textTransform: 'lowercase',
+              letterSpacing: '0.16em',
             },
           },
           '// multi-provider terminal agent',
@@ -249,37 +262,23 @@ function cliCard(logoDataUrl) {
           'div',
           {
             style: {
-              fontSize: 84,
+              color: goldBright,
+              fontSize: 80,
               fontWeight: 700,
               letterSpacing: '0.06em',
-              lineHeight: 1,
-              backgroundImage:
-                'linear-gradient(115deg, #fff8b4 0%, #ffe678 18%, #ffc83c 36%, #e8b923 55%, #c89614 78%, #a06e0f 100%)',
-              backgroundClip: 'text',
-              color: 'transparent',
-              // @vercel/og may not support background-clip text reliably — solid gold fallback via color if needed
+              lineHeight: 1.05,
             },
           },
-          // Use solid goldBright for maximum compatibility with Satori
-          h(
-            'span',
-            {
-              style: {
-                color: goldBright,
-                textShadow: `0 0 40px rgba(232,185,35,0.35)`,
-              },
-            },
-            'NurCLI',
-          ),
+          'NurCLI',
         ),
         h(
           'div',
           {
             style: {
               color: muted,
-              fontSize: 26,
+              fontSize: 24,
               letterSpacing: '0.04em',
-              maxWidth: 720,
+              maxWidth: 700,
               lineHeight: 1.35,
             },
           },
@@ -287,7 +286,7 @@ function cliCard(logoDataUrl) {
         ),
       ),
     ),
-    // footer strip
+    // footer
     h(
       'div',
       {
@@ -299,28 +298,21 @@ function cliCard(logoDataUrl) {
           paddingTop: 26,
           color: muted,
           fontSize: 20,
-          letterSpacing: '0.12em',
+          letterSpacing: '0.1em',
         },
       },
-      h('span', null, 'nur install · /login · /model · /plugins'),
+      h('span', null, 'nur install  ·  /login  ·  /model  ·  /plugins'),
       h('span', { style: { color: gold } }, '/cli'),
     ),
   );
 }
 
-async function fetchLogoDataUrl() {
+async function logoAvailable() {
   try {
-    const res = await fetch(NUR_LOGO, { next: { revalidate: 86400 } });
-    if (!res.ok) return null;
-    const buf = await res.arrayBuffer();
-    const bytes = new Uint8Array(buf);
-    let binary = '';
-    for (let i = 0; i < bytes.length; i++) binary += String.fromCharCode(bytes[i]);
-    // btoa available in edge
-    const b64 = btoa(binary);
-    return `data:image/png;base64,${b64}`;
+    const res = await fetch(NUR_LOGO, { method: 'GET' });
+    return res.ok;
   } catch {
-    return null;
+    return false;
   }
 }
 
@@ -329,26 +321,33 @@ export default async function handler(request) {
     const url = new URL(request.url);
     const page = (url.searchParams.get('page') || 'home').toLowerCase();
     const theme = THEMES[page] || THEMES.home;
-    const badge = (url.searchParams.get('title') || theme.badge);
+    // Prefer theme badge as-is for cli (NurCLI); others uppercase for sea chrome
+    const rawTitle = url.searchParams.get('title') || theme.badge;
+    const badge = page === 'cli' ? String(rawTitle) : String(rawTitle).toUpperCase();
     const sub = url.searchParams.get('sub') || theme.sub;
     const pathLabel = page === 'home' ? '/' : `/${page}`;
 
     let element;
     if (page === 'cli') {
-      const logo = await fetchLogoDataUrl();
-      element = cliCard(logo);
+      const ok = await logoAvailable();
+      element = cliCard(ok);
     } else {
-      element = seaCard(theme, String(badge).toUpperCase(), sub, pathLabel);
+      element = seaCard(theme, badge, sub, pathLabel);
     }
 
     return new ImageResponse(element, {
       width: 1200,
       height: 630,
       headers: {
-        'Cache-Control': 'public, immutable, no-transform, max-age=86400',
+        // shorter cache so X re-fetches after fixes; still CDN friendly
+        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
       },
     });
   } catch (err) {
-    return new Response(`OG image error: ${err?.message || err}`, { status: 500 });
+    // Never return empty image/png — X drops zero-byte cards
+    return new Response(`OG image error: ${err?.message || err}`, {
+      status: 500,
+      headers: { 'content-type': 'text/plain; charset=utf-8' },
+    });
   }
 }

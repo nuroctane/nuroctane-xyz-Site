@@ -73,7 +73,7 @@ const PAGES: Record<string, PageMeta> = {
     path: '/cli',
     siteName: 'NurCLI',
     favicon: '/assets/nodes/nur-cli-logo.png',
-    imagePath: '/api/og?page=cli',
+    imagePath: '/api/og?page=cli&v=2',
   },
   blog: {
     title: 'Writings — NUROCTANE',
