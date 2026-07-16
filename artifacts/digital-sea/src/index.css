@@ -1703,6 +1703,38 @@ html.standalone-active body {
 
 /* ── Quotes page ── */
 
+/* MODKEYS keeps its application CSS isolated; QuickLaunch is mounted as a
+   sibling so the sea navigation retains its own visual language. */
+.modkeys-qnav .qnav {
+  top: 1rem;
+  right: 4.75rem;
+  left: auto;
+  z-index: 1500;
+}
+
+.modkeys-qnav .qnav-panel {
+  right: 0;
+  left: auto;
+  transform: translateX(12px);
+}
+
+.modkeys-qnav .qnav-panel--open {
+  transform: translateX(0);
+}
+
+@media (max-width: 768px) {
+  .modkeys-qnav .qnav {
+    top: max(0.55rem, env(safe-area-inset-top));
+    right: 3.75rem;
+  }
+
+  .modkeys-qnav .qnav-trigger {
+    width: 36px;
+    height: 36px;
+    opacity: 0.9;
+  }
+}
+
 .qs-tabs {
   display: flex;
   flex-wrap: wrap;

@@ -8,6 +8,7 @@
  *   1. the mobile.css sentinel  (proves the stylesheet is in the bundle)
  *   2. the mShellHost marker    (proves React renders the mobile shell natively)
  *   3. the mk-mobile class ref  (proves shell.js classing survives)
+ *   4. the modkeys-qnav marker  (proves Digital Sea QuickLaunch is mounted)
  * Run from repo root: node artifacts/modkeys/check-spa-shell.mjs
  * Wired into the root build script, so it also runs inside Vercel's deploy. */
 import fs from 'node:fs';
@@ -29,6 +30,7 @@ const musts = [
   ['__MODKEYS_MOBILE_CSS_v072__', 'mobile.css sentinel (stylesheet bundled)'],
   ['mShellHost', 'React-rendered mobile shell host'],
   ['mk-mobile', 'mk-mobile class reference'],
+  ['modkeys-qnav', 'Digital Sea QuickLaunch host'],
 ];
 let fail = 0;
 for (const [needle, why] of musts) {
@@ -64,11 +66,22 @@ if (!/flex-direction:\s*row/.test(mTabsBlock)) {
 }
 const idxHtml = fs.readFileSync(path.resolve('artifacts/modkeys/index.html'), 'utf-8');
 const tsxSrc = fs.readFileSync(path.resolve('artifacts/digital-sea/src/pages/ModkeysPage.tsx'), 'utf-8');
+const hostCss = fs.readFileSync(path.resolve('artifacts/digital-sea/src/index.css'), 'utf-8');
 for (const [name, doc] of [['index.html', idxHtml], ['ModkeysPage.tsx', tsxSrc]]) {
   if (/data-sec="[a-z]+"[^>]*style="/.test(doc) || /class="snav mTabs"[^>]*style="/.test(doc)) {
     console.error(`check-spa-shell FAIL: inline style band-aid on tab nav/buttons in ${name} — use mobile.css`);
     fail++;
   }
+}
+
+if (!tsxSrc.includes('<StandaloneNav />') || !tsxSrc.includes('className="modkeys-qnav"')) {
+  console.error('check-spa-shell FAIL: MODKEYS must mount StandaloneNav in its isolated modkeys-qnav host');
+  fail++;
+}
+if (!/\.modkeys-qnav \.qnav\s*\{[^}]*right:\s*4\.75rem/s.test(hostCss) ||
+    !/@media \(max-width:\s*768px\)[\s\S]*?\.modkeys-qnav \.qnav\s*\{[^}]*right:\s*3\.75rem/s.test(hostCss)) {
+  console.error('check-spa-shell FAIL: MODKEYS QuickLaunch desktop/mobile positioning guards are missing');
+  fail++;
 }
 
 if (fail) process.exit(1);

@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { StandaloneNav } from './StandaloneNav';
 
 // Import CSS as raw strings for scoped injection
 import modkeysVars from '../../../modkeys/src/css/variables.css?raw';
@@ -301,6 +302,7 @@ export default function ModkeysPage() {
   }, [isMobile]);
 
   return (
+    <>
     <div className="modkeys-page">
       <div id="loader">
         <div className="lg">
@@ -499,6 +501,10 @@ export default function ModkeysPage() {
           <div className="mBody" id="modalBody"></div>
         </div>
       </div>
-    </div>
+      </div>
+      <div className="modkeys-qnav">
+        <StandaloneNav />
+      </div>
+    </>
   );
 }
