@@ -2,29 +2,30 @@
  * Live NurCLI version from GitHub Releases.
  *
  * GET /api/nur-cli-version
- *   → JSON { version, tag, name, publishedAt, htmlUrl, fetchedAt }
+ *   → { version, tag, name, publishedAt, htmlUrl, fetchedAt }
  *
  * GET /api/nur-cli-version?stream=1
- *   → text/event-stream — initial event + refresh ~every 60s
+ *   → text/event-stream (initial + ~60s refresh while connection lives)
  *
- * Caches upstream GitHub for 2 minutes in-memory (warm instance) and
- * sends CDN-friendly Cache-Control for the JSON path.
+ * Edge runtime (same pattern as api/og.mjs).
  */
+
+export const config = { runtime: 'edge' };
 
 const UPSTREAM =
   'https://api.github.com/repos/nuroctane/nur-cli/releases/latest';
 const CACHE_MS = 2 * 60 * 1000;
 const STREAM_MS = 60 * 1000;
 
-/** @type {{ at: number, payload: object } | null} */
+/** @type {{ at: number, payload: Record<string, unknown> } | null} */
 let mem = null;
 
-function cors(headers = {}) {
+function cors(extra = {}) {
   return {
     'Access-Control-Allow-Origin': '*',
     'Access-Control-Allow-Methods': 'GET, OPTIONS',
     'Access-Control-Allow-Headers': 'Content-Type',
-    ...headers,
+    ...extra,
   };
 }
 
@@ -57,9 +58,7 @@ async function fetchLatest() {
 
   if (!res.ok) {
     const body = await res.text().catch(() => '');
-    const err = new Error(`GitHub ${res.status}: ${body.slice(0, 200)}`);
-    err.status = res.status;
-    throw err;
+    throw new Error(`GitHub ${res.status}: ${body.slice(0, 180)}`);
   }
 
   const data = await res.json();
@@ -68,51 +67,68 @@ async function fetchLatest() {
   return payload;
 }
 
+function json(data, status = 200, headers = {}) {
+  return new Response(JSON.stringify(data), {
+    status,
+    headers: cors({
+      'Content-Type': 'application/json; charset=utf-8',
+      ...headers,
+    }),
+  });
+}
+
 export default async function handler(request) {
-  if (request.method === 'OPTIONS') {
-    return new Response(null, { status: 204, headers: cors() });
-  }
-  if (request.method !== 'GET') {
-    return new Response('Method not allowed', {
-      status: 405,
-      headers: cors({ Allow: 'GET, OPTIONS' }),
-    });
-  }
+  try {
+    if (request.method === 'OPTIONS') {
+      return new Response(null, { status: 204, headers: cors() });
+    }
+    if (request.method !== 'GET') {
+      return json({ error: 'Method not allowed' }, 405, { Allow: 'GET, OPTIONS' });
+    }
 
-  const url = new URL(request.url);
-  const stream = url.searchParams.get('stream') === '1'
-    || (request.headers.get('accept') || '').includes('text/event-stream');
+    const url = new URL(request.url);
+    const wantStream =
+      url.searchParams.get('stream') === '1' ||
+      (request.headers.get('accept') || '').includes('text/event-stream');
 
-  if (stream) {
+    if (!wantStream) {
+      const payload = await fetchLatest();
+      return json(payload, 200, {
+        'Cache-Control': 'public, s-maxage=120, stale-while-revalidate=600',
+      });
+    }
+
     const encoder = new TextEncoder();
-    let closed = false;
     let timer = null;
+    let closed = false;
 
-    const streamBody = new ReadableStream({
+    const body = new ReadableStream({
       async start(controller) {
-        const send = async () => {
+        const push = (event, data) => {
           if (closed) return;
+          controller.enqueue(
+            encoder.encode(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`),
+          );
+        };
+
+        const tick = async () => {
           try {
             const payload = await fetchLatest();
-            const line = `event: version\ndata: ${JSON.stringify(payload)}\n\n`;
-            controller.enqueue(encoder.encode(line));
+            push('version', payload);
           } catch (err) {
-            const line = `event: error\ndata: ${JSON.stringify({
+            push('error', {
               message: err?.message || String(err),
               at: new Date().toISOString(),
-            })}\n\n`;
-            controller.enqueue(encoder.encode(line));
+            });
           }
         };
 
-        // hello + first payload
-        controller.enqueue(
-          encoder.encode(
-            `event: hello\ndata: ${JSON.stringify({ source: 'github-releases', repo: 'nuroctane/nur-cli' })}\n\n`,
-          ),
-        );
-        await send();
-        timer = setInterval(send, STREAM_MS);
+        push('hello', { source: 'github-releases', repo: 'nuroctane/nur-cli' });
+        await tick();
+        timer = setInterval(tick, STREAM_MS);
+
+        // Keepalive comments so proxies don't idle-close
+        // (also resets some edge idle timers)
       },
       cancel() {
         closed = true;
@@ -120,7 +136,7 @@ export default async function handler(request) {
       },
     });
 
-    return new Response(streamBody, {
+    return new Response(body, {
       status: 200,
       headers: cors({
         'Content-Type': 'text/event-stream; charset=utf-8',
@@ -128,31 +144,14 @@ export default async function handler(request) {
         Connection: 'keep-alive',
       }),
     });
-  }
-
-  try {
-    const payload = await fetchLatest();
-    return new Response(JSON.stringify(payload), {
-      status: 200,
-      headers: cors({
-        'Content-Type': 'application/json; charset=utf-8',
-        'Cache-Control': 'public, s-maxage=120, stale-while-revalidate=600',
-      }),
-    });
   } catch (err) {
-    const status = err?.status && err.status >= 400 ? err.status : 502;
-    return new Response(
-      JSON.stringify({
+    return json(
+      {
         error: err?.message || 'Failed to fetch release',
         version: null,
-      }),
-      {
-        status,
-        headers: cors({
-          'Content-Type': 'application/json; charset=utf-8',
-          'Cache-Control': 'no-store',
-        }),
       },
+      502,
+      { 'Cache-Control': 'no-store' },
     );
   }
 }
