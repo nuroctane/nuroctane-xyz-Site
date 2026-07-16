@@ -21,6 +21,7 @@ const PAGES = {
     badge: 'DIGITAL SEA',
     path: '/',
     image: `${SITE}/opengraph.jpg`,
+    favicon: '/assets/nodes/site-logo.png',
   },
   quotes: {
     title: 'Quotes — NUROCTANE',
@@ -28,6 +29,7 @@ const PAGES = {
       'A curated vault of thoughts, lines, and ideas that shape the work — faith, discipline, shadow, and the digital sea.',
     badge: 'QUOTES',
     path: '/quotes',
+    favicon: '/assets/nodes/nuroctane-animated-avatar.gif',
   },
   books: {
     title: 'Books — NUROCTANE',
@@ -35,6 +37,7 @@ const PAGES = {
       'Reading shelves, notes, and community recommendations — a living library inside the digital sea.',
     badge: 'BOOKS',
     path: '/books',
+    favicon: '/assets/nodes/goodreads-logo.png',
   },
   resume: {
     title: 'Resume — David Davieson · NUROCTANE',
@@ -43,6 +46,7 @@ const PAGES = {
     badge: 'RESUME',
     path: '/resume',
     noindex: true,
+    favicon: '/assets/nodes/resume-logo.svg',
   },
   modkeys: {
     title: 'MODKEYS — Keyboard Configurator',
@@ -50,6 +54,7 @@ const PAGES = {
       'Design a mechanical keyboard in the browser — 3D preview, dual desktop/mobile shells, shareable builds, KLE/SVG/PDF export.',
     badge: 'MODKEYS',
     path: '/modkeys',
+    favicon: '/assets/nodes/modkeys-logo.png',
   },
   cli: {
     title: 'NurCLI',
@@ -84,6 +89,7 @@ const PAGES = {
       'Passages from the digital sea — sovereignty, the veil, the machine, and the attractor that pulls from the future.',
     badge: 'WRITINGS',
     path: '/blog',
+    favicon: '/assets/nodes/substack-logo.png',
   },
   socials: {
     title: 'Socials — NUROCTANE',
@@ -91,6 +97,7 @@ const PAGES = {
       'Swim the social constellation — Instagram, X, Discord, and the rest of the network.',
     badge: 'SOCIALS',
     path: '/socials',
+    favicon: '/assets/nodes/nuroctane-avatar.png',
   },
   projects: {
     title: 'Projects — NUROCTANE',
@@ -98,6 +105,7 @@ const PAGES = {
       'Creative and technical projects — MODKEYS, SnipOCR, ASTROSleep, Blackjack, and more.',
     badge: 'PROJECTS',
     path: '/projects',
+    favicon: '/assets/nodes/github-logo.png',
   },
   fin: {
     title: 'Fin — NUROCTANE',
@@ -105,6 +113,42 @@ const PAGES = {
       'End of the digital sea — identity, contact, and a place to book time with nuroctane.',
     badge: 'FIN',
     path: '/fin',
+    favicon: '/assets/nodes/venmo-logo.png',
+  },
+};
+
+const CHILD_FAVICONS = {
+  socials: {
+    instagram: '/assets/nodes/instagram-logo.png',
+    tiktok: '/assets/nodes/tiktok-logo.png',
+    x: '/assets/nodes/x-logo.png',
+    remilia: '/assets/nodes/remilia-quicklaunch-logo.png',
+    substack: '/assets/nodes/substack-logo.png',
+    soundcloud: '/assets/nodes/soundcloud-logo.png',
+    twitch: '/assets/nodes/twitch-logo.png',
+    youtube: '/assets/nodes/youtube-logo.png',
+    kick: '/assets/nodes/kick-logo.png',
+    anilist: '/assets/nodes/anilist-logo.png',
+    letterboxd: '/assets/nodes/letterboxd-logo.png',
+    goodreads: '/assets/nodes/goodreads-logo.png',
+    steam: '/assets/nodes/steam-logo.png',
+    discord: '/assets/nodes/discord-logo.png',
+    reddit: '/assets/nodes/reddit-logo.png',
+  },
+  projects: {
+    'nur-cli': '/assets/nodes/nur-cli-logo.png',
+    modkeys: '/assets/nodes/modkeys-logo.png',
+    snipocr: '/assets/nodes/snipocr-logo.png',
+    blackjack: '/assets/nodes/blackjack-logo.png',
+    atxtunerz: '/assets/nodes/atx_tunerz_society-avatar.jpg',
+    github: '/assets/nodes/github-logo.png',
+    weatherguru: '/assets/nodes/weatherguru-logo.svg',
+    sis: '/assets/nodes/sis-logo.svg',
+    astrosleep: '/assets/nodes/astrosleep-logo.png',
+    geoskin: '/assets/nodes/geoskin-logo.svg',
+    miyamaker: '/assets/nodes/miyamaker-avatar.png',
+    webutils: '/assets/nodes/wrench.png',
+    'orbit-veil': '/assets/nodes/orbit-veil-logo.svg',
   },
 };
 
@@ -127,6 +171,7 @@ function resolvePage(pathname) {
     ...base,
     path,
     image,
+    favicon: CHILD_FAVICONS[top]?.[segs[1]] || base.favicon,
     // Deep links keep section branding but pin canonical URL
     url: `${SITE}${path === '/' ? '/' : path}`,
   };

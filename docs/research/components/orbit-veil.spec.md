@@ -65,6 +65,9 @@ Mobile reference viewport: 390 x 844.
 - Route favicon: Orbit Veil project mark.
 - Leaving via QuickLaunch must restore the normal site favicon/title through the
   canonical route metadata system.
+- Every top-level route and every social/project deep link must apply its own
+  associated favicon so a previous page's logo never leaks across SPA
+  navigation.
 - QuickLaunch must remain above the WebGL page and expose every current public
   top-level route: Home, Socials, Projects, Blog, Quotes, Books, MODKEYS,
   NurCLI, Orbit Veil, and Fin. Resume remains a hidden direct-URL page.

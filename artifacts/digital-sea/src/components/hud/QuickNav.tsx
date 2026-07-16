@@ -30,13 +30,10 @@ const LOGO_MAP: Record<string, string> = {
   // Project marks (same files as card avatars)
   astrosleep: '/assets/nodes/astrosleep-logo.png',
   blackjack:  '/assets/nodes/blackjack-logo.png',
+  weatherguru: '/assets/nodes/weatherguru-logo.svg',
+  sis:         '/assets/nodes/sis-logo.svg',
+  geoskin:     '/assets/nodes/geoskin-logo.svg',
   'orbit-veil': '/assets/nodes/orbit-veil-logo.svg',
-};
-
-const ACRONYM_MAP: Record<string, string> = {
-  weatherguru: 'WG',
-  sis:         'SIS',
-  geoskin:     'CS',
 };
 
 // Computed once at module load. Categorization + order derive from
@@ -99,7 +96,7 @@ function NavItem({
 }) {
   // Prefer explicit LOGO_MAP, else project card avatar (so new project art shows without a second map entry)
   const logo    = LOGO_MAP[node.id] || (node.avatar || undefined);
-  const acronym = ACRONYM_MAP[node.id] ?? node.id.slice(0, 2).toUpperCase();
+  const acronym = node.id.slice(0, 2).toUpperCase();
   const isSoon  = node.url === '#';
 
   return (
