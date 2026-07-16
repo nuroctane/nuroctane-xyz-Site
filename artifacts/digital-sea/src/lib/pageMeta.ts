@@ -176,16 +176,18 @@ export function applyDocumentMeta(meta: PageMeta, origin?: string): void {
   setMeta('meta[property="og:image"]', 'content', ogImageUrl(meta, originSafe));
   setMeta('meta[property="og:site_name"]', 'content', meta.siteName || 'NUROCTANE');
 
-  if (meta.favicon) {
-    let icon = document.querySelector('link[rel="icon"]') as HTMLLinkElement | null;
-    if (!icon) {
-      icon = document.createElement('link');
-      icon.rel = 'icon';
-      document.head.appendChild(icon);
-    }
-    icon.type = meta.favicon.endsWith('.svg') ? 'image/svg+xml' : 'image/png';
-    icon.href = meta.favicon;
+  // Always pin favicon for the active route. /cli overrides to NurCLI logo;
+  // every other page must restore the site logo so SPA nav doesn't leak it.
+  const faviconHref = meta.favicon || '/assets/nodes/site-logo.png';
+  let icon = document.querySelector('link[rel="icon"]') as HTMLLinkElement | null;
+  if (!icon) {
+    icon = document.createElement('link');
+    icon.rel = 'icon';
+    document.head.appendChild(icon);
   }
+  icon.type = faviconHref.endsWith('.svg') ? 'image/svg+xml' : 'image/png';
+  // Bust sticky browser cache when swapping brand icons mid-session
+  icon.href = faviconHref;
   setMeta('meta[name="twitter:card"]', 'content', 'summary_large_image');
   setMeta('meta[name="twitter:title"]', 'content', meta.title);
   setMeta('meta[name="twitter:description"]', 'content', meta.description);
