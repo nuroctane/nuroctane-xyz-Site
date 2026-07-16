@@ -1,5 +1,6 @@
 import { useLocation } from 'wouter';
 import { useState, useEffect, useRef } from 'react';
+import { markNavigationIntent } from '../lib/navIntent';
 
 const DESTINATIONS = [
   { href: '/', label: 'Home', logo: '/assets/nodes/site-logo.png' },
@@ -34,7 +35,10 @@ export function StandaloneNav() {
     return () => document.removeEventListener('keydown', h);
   }, []);
 
-  const nav = (href: string) => { setOpen(false); setLocation(href); };
+  // Leaving a standalone page for a sea route is always an intentional jump:
+  // mark it so App scrolls to the section's first card instead of letting the
+  // passive scroll mirror decide where we land.
+  const nav = (href: string) => { setOpen(false); markNavigationIntent(); setLocation(href); };
 
   return (
     <div className="qnav" ref={panelRef}>

@@ -375,6 +375,20 @@ export function nodeMid(n: Pick<NodeData, 'scrollStart' | 'scrollEnd'>): number 
 }
 
 /**
+ * Scroll t to land on when jumping to a card: slightly before mid so the card
+ * blooms into frame while swimming, but past scrollStart. Never jump to
+ * scrollStart itself  -  an envelope's leading edge sits inside the previous
+ * card's window (widths overlap by design), so /projects landed on Reddit
+ * rather than NurCLI. Shared by nav, deep-links and section jumps so every
+ * entry point frames the same card.
+ */
+const APPROACH_FRAC = 0.35;
+
+export function nodeApproachT(n: Pick<NodeData, 'scrollStart' | 'scrollEnd'>): number {
+  return n.scrollStart + (n.scrollEnd - n.scrollStart) * APPROACH_FRAC;
+}
+
+/**
  * Boundary between socials and creative projects (scroll t).
  * Midway between last social and first project focus  -  stays correct when
  * spacing constants change.

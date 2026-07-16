@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from 'react';
 import { useLocation } from 'wouter';
-import { nodes, NodeData, PROJECT_THRESHOLD, nodeMid } from '../../data/nodes';
+import { nodes, NodeData, PROJECT_THRESHOLD, nodeMid, nodeApproachT } from '../../data/nodes';
 import { blogPosts, BlogPost } from '../../data/blogPosts';
 import type { Mode } from '../../types';
 import { markNavigationIntent } from '../../lib/navIntent';
@@ -54,10 +54,8 @@ function scrollToNode(
   markNavigationIntent();
   setLocation?.(`/${section}/${node.id}`);
   requestAnimationFrame(() => {
-    const total     = document.documentElement.scrollHeight - window.innerHeight;
-    // Approach slightly before mid so the card blooms into frame while swimming
-    const approachT = node.scrollStart + (node.scrollEnd - node.scrollStart) * 0.35;
-    window.scrollTo({ top: approachT * total, behavior: 'smooth' });
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    window.scrollTo({ top: nodeApproachT(node) * total, behavior: 'smooth' });
   });
 }
 
@@ -73,9 +71,8 @@ function scrollToBlogPost(
   markNavigationIntent();
   setLocation?.(`/blog/${slug}`);
   const doScroll = () => {
-    const total     = document.documentElement.scrollHeight - window.innerHeight;
-    const approachT = post.scrollStart + (post.scrollEnd - post.scrollStart) * 0.35;
-    window.scrollTo({ top: approachT * total, behavior: 'smooth' });
+    const total = document.documentElement.scrollHeight - window.innerHeight;
+    window.scrollTo({ top: nodeApproachT(post) * total, behavior: 'smooth' });
   };
 
   if (mode !== 'blog') {

@@ -4,7 +4,7 @@ import { useScrollProgress } from './hooks/useScrollProgress';
 import { usePerformanceTier } from './hooks/usePerformanceTier';
 import { useMusicDirector } from './hooks/useMusicDirector';
 import type { Mode, Track } from './types';
-import { nodes, PROJECT_THRESHOLD, nodeMid } from './data/nodes';
+import { nodes, PROJECT_THRESHOLD, nodeMid, nodeApproachT } from './data/nodes';
 import { blogPosts } from './data/blogPosts';
 import { Scene } from './components/scene/Scene';
 import { QuickNav } from './components/hud/QuickNav';
@@ -25,9 +25,12 @@ const FIN_DISMISS_BLOG = 0.940;
 /** Leave projects only after dropping this far below the enter threshold (hysteresis). */
 const PROJECT_EXIT_SLACK = 0.035;
 
-const socialsStart = nodes[0]?.scrollStart ?? 0;
-const firstProject = nodes.find(n => nodeMid(n) >= PROJECT_THRESHOLD) ?? nodes[0];
-const projectsStart = firstProject?.scrollStart ?? socialsStart;
+// Section jumps land on the first card of the section, framed the same way a
+// leaf nav item frames it  -  not on the section's raw scroll boundary.
+const firstSocial   = nodes[0];
+const firstProject  = nodes.find(n => nodeMid(n) >= PROJECT_THRESHOLD) ?? firstSocial;
+const socialsStart  = firstSocial ? nodeApproachT(firstSocial) : 0;
+const projectsStart = firstProject ? nodeApproachT(firstProject) : socialsStart;
 
 function parseSeaPath(location: string): {
   section: string;
@@ -118,7 +121,7 @@ export default function App() {
           p => p.id === id || p.id === `blog-${id}` || p.id.replace(/^blog-/, '') === id,
         );
         if (post) {
-          const t = post.scrollStart + (post.scrollEnd - post.scrollStart) * 0.35;
+          const t = nodeApproachT(post);
           if (!scrollToT(t)) {
             let cancelled = false;
             const retry = () => { if (!cancelled && !scrollToT(t)) requestAnimationFrame(retry); };
@@ -154,7 +157,7 @@ export default function App() {
       let t = section === 'socials' ? socialsStart : projectsStart;
       if (id) {
         const node = nodes.find(n => n.id === id);
-        if (node) t = node.scrollStart + (node.scrollEnd - node.scrollStart) * 0.35;
+        if (node) t = nodeApproachT(node);
       }
       sectionBandRef.current = section === 'socials' ? '/socials' : '/projects';
       if (!scrollToT(t)) {
