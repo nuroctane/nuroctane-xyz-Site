@@ -70,8 +70,9 @@ Mobile reference viewport: 390 x 844.
   NurCLI, Orbit Veil, and Fin. Resume remains a hidden direct-URL page.
 - Every QuickLaunch destination uses its associated site or project logo; no
   acronym placeholders appear in the standalone navigation.
-- On mobile, the host audio control chrome is hidden while `MiniAudio` remains
-  mounted so Digital Sea music continues across the Orbit route.
+- On mobile, QuickLaunch is anchored to the safe-area-aware top-right corner
+  instead of floating at mid-screen. `MiniAudio` remains mounted and sits
+  directly beneath it so Digital Sea music continues across the Orbit route.
 - Analytics path and route: `/orbit`.
 - Crawler middleware, OG theme, route docs, and page metadata must include the new
   route.

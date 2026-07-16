@@ -1684,7 +1684,9 @@ html.standalone-active body {
 
 @media (max-width: 640px) {
   .orbit-veil-page .qnav {
+    top: max(0.75rem, env(safe-area-inset-top));
     right: 0.55rem;
+    transform: none;
   }
 
   .orbit-veil-page .qnav-trigger {
@@ -1694,8 +1696,8 @@ html.standalone-active body {
   }
 
   .orbit-veil-audio {
-    /* Audio remains mounted and playing; only its stray mobile chrome is hidden. */
-    display: none;
+    top: max(3.6rem, calc(env(safe-area-inset-top) + 3.6rem));
+    right: 0.55rem;
   }
 }
 
