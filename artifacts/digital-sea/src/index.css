@@ -816,6 +816,16 @@ html.standalone-active body {
   text-overflow: ellipsis;
 }
 
+.qnav-item-ext {
+  font-size: 0.6rem;
+  line-height: 1;
+  color: #2a6a7a;
+  flex-shrink: 0;
+  opacity: 0.7;
+}
+
+.qnav-item:hover .qnav-item-ext { opacity: 1; }
+
 .qnav-item-tag {
   font-size: 0.38rem;
   letter-spacing: 0.18em;

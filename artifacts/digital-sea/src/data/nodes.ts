@@ -198,12 +198,12 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
   },
   {
     id: 'atxtunerz', label: 'ATX Tunerz Society', handle: '@atx_tunerz_society',
-    url: 'https://www.instagram.com/atx_tunerz_society/',
-    urlDisplay: 'instagram.com/atx_tunerz_society',
+    url: 'https://tunerzsociety.site',
+    urlDisplay: 'tunerzsociety.site',
     subtitle: 'Austin car culture collective',
     description: "the Austin, TX car club that im VP of.",
     avatar: '/assets/nodes/atx_tunerz_society-avatar.jpg',
-    logo: '/assets/nodes/instagram-logo.png',
+    logo: '/assets/nodes/atx-tunerz-logo.png',
   },
   {
     id: 'github', label: 'GitHub', handle: 'nuroctane',

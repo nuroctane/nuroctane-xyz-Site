@@ -12,8 +12,11 @@ const DESTINATIONS = [
   { href: '/modkeys', label: 'MODKEYS', logo: '/assets/nodes/modkeys-logo.png' },
   { href: '/cli', label: 'NurCLI', logo: '/assets/nodes/nur-cli-logo.png' },
   { href: '/orbit', label: 'Orbit Veil', logo: '/assets/nodes/orbit-veil-logo.svg' },
+  { href: 'https://tunerzsociety.site', label: 'ATX Tunerz', logo: '/assets/nodes/atx-tunerz-logo.png', external: true },
   { href: '/fin', label: 'Fin', logo: '/assets/nodes/venmo-logo.png' },
 ] as const;
+
+const isExternal = (href: string) => /^https?:\/\//.test(href);
 
 export function StandaloneNav() {
   const [location, setLocation] = useLocation();
@@ -35,10 +38,18 @@ export function StandaloneNav() {
     return () => document.removeEventListener('keydown', h);
   }, []);
 
-  // Leaving a standalone page for a sea route is always an intentional jump:
-  // mark it so App scrolls to the section's first card instead of letting the
-  // passive scroll mirror decide where we land.
-  const nav = (href: string) => { setOpen(false); markNavigationIntent(); setLocation(href); };
+  // External destinations (e.g. tunerzsociety.site) open in a new tab; internal
+  // sea routes are intentional jumps  -  mark intent so App scrolls to the
+  // section's first card instead of letting the passive scroll mirror decide.
+  const nav = (href: string) => {
+    setOpen(false);
+    if (isExternal(href)) {
+      window.open(href, '_blank', 'noopener,noreferrer');
+      return;
+    }
+    markNavigationIntent();
+    setLocation(href);
+  };
 
   return (
     <div className="qnav" ref={panelRef}>
@@ -62,7 +73,8 @@ export function StandaloneNav() {
         </div>
         <div className="qnav-body">
           {DESTINATIONS.map((item) => {
-            const active = location === item.href;
+            const external = isExternal(item.href);
+            const active = !external && location === item.href;
             return (
               <button
                 key={item.href}
@@ -74,6 +86,7 @@ export function StandaloneNav() {
                   <img src={item.logo} alt="" className="qnav-item-img" />
                 </span>
                 <span className="qnav-item-name">{item.label}</span>
+                {external && <span className="qnav-item-ext" aria-hidden="true">↗</span>}
               </button>
             );
           })}
