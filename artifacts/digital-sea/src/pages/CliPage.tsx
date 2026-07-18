@@ -13,6 +13,7 @@ import { MiniAudio } from '../components/hud/MiniAudio';
 import { ScrollToTop } from '../components/hud/ScrollToTop';
 import { useStandaloneScroll } from '../hooks/useStandaloneScroll';
 import { trackEvent } from '../lib/analytics';
+import { shouldLoadFoglampMap } from '../lib/foglampEmbed';
 import '../cli-page.css';
 
 /* ── Content ────────────────────────────────────────────────────────────── */
@@ -44,6 +45,10 @@ const BINARY = {
   releases: 'https://github.com/nuroctane/nur-cli/releases/latest',
   name: 'nur-windows-x86_64.exe',
 };
+
+const FOGLAMP_SCAN_URL = 'https://www.foglamp.dev/scan/nurcli-oxpatc';
+const FOGLAMP_PREVIEW_URL = `${FOGLAMP_SCAN_URL}/opengraph-image`;
+const FOGLAMP_DESKTOP_QUERY = '(min-width: 721px)';
 
 const AFTER = [
   { cmd: 'nur auth login', note: 'key → ~/.nur/auth.json  (or set NUR_API_KEY)' },
@@ -580,6 +585,114 @@ function useNurCliVersion() {
   return { data, status, flash };
 }
 
+function FoglampMap() {
+  const [loaded, setLoaded] = useState(() =>
+    typeof window !== 'undefined'
+      ? shouldLoadFoglampMap(window.matchMedia(FOGLAMP_DESKTOP_QUERY).matches, false)
+      : false,
+  );
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const focusAfterLoad = useRef(false);
+
+  useEffect(() => {
+    const query = window.matchMedia(FOGLAMP_DESKTOP_QUERY);
+    const syncWithViewport = () => {
+      setLoaded((current) => shouldLoadFoglampMap(query.matches, current));
+    };
+
+    syncWithViewport();
+    query.addEventListener('change', syncWithViewport);
+    return () => query.removeEventListener('change', syncWithViewport);
+  }, []);
+
+  useEffect(() => {
+    if (!loaded || !focusAfterLoad.current) return;
+    focusAfterLoad.current = false;
+    const frame = window.requestAnimationFrame(() => iframeRef.current?.focus());
+    return () => window.cancelAnimationFrame(frame);
+  }, [loaded]);
+
+  const openMap = (location: 'header' | 'footer') => {
+    trackEvent('Cli Foglamp Open', { location });
+  };
+
+  return (
+    <div className="cli-map-shell">
+      <div className="cli-term-bar cli-map-bar">
+        <span className="cli-term-dots" aria-hidden>
+          <i /><i /><i />
+        </span>
+        <span className="cli-term-title">foglamp · NurCLI architecture</span>
+        <span className="cli-map-actions">
+          <span className="cli-map-status">
+            <i aria-hidden /> interactive
+          </span>
+          <a
+            href={FOGLAMP_SCAN_URL}
+            target="_blank"
+            rel="noreferrer"
+            onClick={() => openMap('header')}
+          >
+            Open <span aria-hidden>↗</span>
+          </a>
+        </span>
+      </div>
+
+      <div className="cli-map-stage">
+        {loaded ? (
+          <iframe
+            ref={iframeRef}
+            src={FOGLAMP_SCAN_URL}
+            title="Interactive Foglamp map of the NurCLI codebase"
+            className="cli-map-frame"
+            loading="eager"
+            allow="fullscreen"
+            allowFullScreen
+            referrerPolicy="strict-origin-when-cross-origin"
+            tabIndex={0}
+          />
+        ) : (
+          <div className="cli-map-preview">
+            <img
+              src={FOGLAMP_PREVIEW_URL}
+              alt=""
+              loading="lazy"
+              decoding="async"
+            />
+            <div className="cli-map-preview-copy">
+              <span>// living architecture</span>
+              <p>Trace the systems, tools, providers, and memory layers behind NurCLI.</p>
+              <button
+                type="button"
+                className="cli-map-load"
+                onClick={() => {
+                  focusAfterLoad.current = true;
+                  setLoaded(true);
+                  trackEvent('Cli Foglamp Load', { source: 'mobile-preview' });
+                }}
+              >
+                Explore interactive map <span aria-hidden>→</span>
+              </button>
+            </div>
+          </div>
+        )}
+      </div>
+
+      <div className="cli-map-foot">
+        <span>Drag to pan · scroll to zoom</span>
+        <a
+          href={FOGLAMP_SCAN_URL}
+          target="_blank"
+          rel="noreferrer"
+          onClick={() => openMap('footer')}
+        >
+          Open full scan <span aria-hidden>↗</span>
+        </a>
+      </div>
+    </div>
+  );
+}
+
 
 /* ── Page ───────────────────────────────────────────────────────────────── */
 
@@ -911,6 +1024,17 @@ export default function CliPage() {
             decoding="async"
           />
         </figure>
+
+        <div className="cli-map-intro">
+          <h3 className="cli-map-heading">
+            <span aria-hidden>//</span> Codebase map
+          </h3>
+          <p>
+            A living architecture view of NurCLI. Follow the graph from the terminal surface
+            through agent orchestration, model routing, tools, and memory.
+          </p>
+        </div>
+        <FoglampMap />
       </section>
 
       {/* Features */}

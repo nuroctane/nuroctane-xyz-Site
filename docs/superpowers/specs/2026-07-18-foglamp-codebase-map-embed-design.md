@@ -47,7 +47,7 @@ The external-link action is always available, so iframe failures or cramped view
 
 A small `FoglampMap` component will own only the progressive-loading behavior:
 
-1. Initialize as unloaded.
+1. Initialize from `matchMedia('(min-width: 721px)')` so desktop renders the iframe on its first client render while mobile remains unloaded.
 2. On mount, check `matchMedia('(min-width: 721px)')`.
 3. Load automatically when the desktop breakpoint matches.
 4. On mobile, render the scan's lightweight Open Graph preview and an `Explore interactive map` button.
