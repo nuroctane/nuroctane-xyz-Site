@@ -586,24 +586,14 @@ export default function ResumePage() {
             ))}
           </ul>
         )}
-        <div className="resume-downloads" aria-label="Resume downloads">
+        <div className="resume-downloads" aria-label="Resume download">
           <a
             className="resume-download"
-            href="/downloads/David-Davieson-Resume.pdf"
-            download
-            onClick={() => trackEvent('Resume Download', { variant: 'designed' })}
+            href="/downloads/David-Davieson-Resume.md"
+            download="David-Davieson-Resume.md"
+            onClick={() => trackEvent('Resume Download', { variant: 'markdown' })}
           >
-            <span className="resume-download-label">Designed resume</span>
-            <span className="resume-download-meta">PDF · 1 page</span>
-          </a>
-          <a
-            className="resume-download resume-download--secondary"
-            href="/downloads/David-Davieson-Resume-ATS.pdf"
-            download
-            onClick={() => trackEvent('Resume Download', { variant: 'ats' })}
-          >
-            <span className="resume-download-label">ATS resume</span>
-            <span className="resume-download-meta">PDF · 2 pages</span>
+            <span className="resume-download-label">download</span>
           </a>
         </div>
       </header>
