@@ -55,3 +55,8 @@ Thumbs.db
 
 # Local agent instructions only (never publish to main)
 AGENTS.md
+
+# local research only
+.casimir-research/
+
+.vercel
