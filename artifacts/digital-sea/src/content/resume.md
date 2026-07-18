@@ -20,9 +20,6 @@
 * **[ Orbit Veil — Real-Time 3D Satellite Intelligence ]** · [nuroctane.xyz/orbit](https://www.nuroctane.xyz/orbit)
   * Built a real-time 3D Earth and satellite tracker using CelesTrak TLE sets and local SGP4 propagation for continuous positions, orbital paths, and coverage footprints.
   * Shipped search, constellation filtering, two-hour data refreshes, and time controls for replaying or accelerating the orbital scene.
-* **[ nuroctane.xyz / Digital Sea — Immersive 3D Portfolio ]** · [nuroctane.xyz](https://www.nuroctane.xyz)
-  * Engineered a React, Vite, and Three.js portfolio with scroll-directed 3D navigation, dynamic social/project nodes, responsive performance tiers, and standalone product routes.
-  * Delivered a pnpm TypeScript monorepo with shared API clients and schemas, Vercel serverless endpoints, Redis-backed features, analytics, and automated smoke checks.
 * **[ MODKEYS — 3D Keyboard Product Configurator ]** · [nuroctane.xyz/modkeys](https://www.nuroctane.xyz/modkeys)
   * Built a React/Vite configurator for mechanical keyboard plates and keycaps with exact geometry, undo/redo, shareable URL-encoded builds, and dual mobile/desktop shells.
   * Connected Express/Vercel and Upstash Redis services and shipped KLE JSON, SVG manufacturing-template, specification-sheet, and PDF export workflows.
@@ -87,7 +84,7 @@
 
 ## LEADERSHIP
 
-* **ATX Tunerz Society — Vice President** · Help lead an Austin automotive community and its digital presence at [tunerzsociety.site](https://tunerzsociety.site).
+* **ATX Tunerz Society — Vice President** · Help lead an Austin automotive community focused on car culture, meetups, and member support; drive **community impact** through events and coordination, and run the club’s public digital presence at [tunerzsociety.site](https://tunerzsociety.site).
 
 ## ADDITIONAL BUILDS
 
