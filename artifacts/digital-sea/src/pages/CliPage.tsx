@@ -169,10 +169,13 @@ const FEATURE_TABS: FeatureTab[] = [
 
 const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: '/help', desc: 'commands + keyboard shortcuts' },
+  { cmd: '/commands', desc: 'commands + keyboard shortcuts  (alias of /help)' },
   { cmd: '/login', desc: 'provider · API key or browser sign-in' },
   { cmd: '/logout', desc: 'clear the stored API key' },
   { cmd: '/model', desc: 'show and switch models for the active provider' },
+  { cmd: '/models', desc: 'show and switch models  (alias of /model)' },
   { cmd: '/plugins', desc: 'browse · install · enable marketplace plugins' },
+  { cmd: '/plugin', desc: 'browse · install · enable marketplace plugins  (alias of /plugins)' },
   { cmd: '/mode', desc: 'permission: manual | plan | auto  (or Shift+Tab)' },
   { cmd: '/plan', desc: 'switch to plan mode (read-only explore)' },
   { cmd: '/manual', desc: 'switch to manual mode (approve writes/shell)' },
@@ -187,6 +190,7 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: '/budget', desc: 'session spend ceiling' },
   { cmd: '/poor', desc: 'cost-saver lean prompt' },
   { cmd: '/usage', desc: 'token usage + cost for this session' },
+  { cmd: '/cost', desc: 'token usage + cost for this session  (alias of /usage)' },
   { cmd: '/context', desc: 'context-window utilization' },
   { cmd: '/status', desc: 'session snapshot: model · mode · cwd · tokens' },
   { cmd: '/doctor', desc: 'health check: version · auth · ecosystem · shell' },
@@ -207,7 +211,9 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: '/btw', desc: 'one-off note on the next message' },
   { cmd: '/bro', desc: 'chill mode: plain words, straight answers (toggle)' },
   { cmd: '/codesearch', desc: 'fast ripgrep over the workspace' },
+  { cmd: '/cs', desc: 'fast ripgrep over the workspace  (alias of /codesearch)' },
   { cmd: '/mc', desc: 'manage MCP servers via Executor' },
+  { cmd: '/mcp', desc: 'manage MCP servers via Executor  (alias of /mc)' },
   { cmd: '/skills', desc: 'list installed skills' },
   { cmd: '/memory', desc: 'show ~/.nur/memory.md excerpt' },
   { cmd: '/graphify', desc: 'knowledge graph status / query / extract' },
@@ -223,6 +229,7 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: '/bug', desc: 'report an issue (GitHub link)' },
   { cmd: '/tips', desc: 'mouse + keyboard interaction tips' },
   { cmd: '/exit', desc: 'quit' },
+  { cmd: '/quit', desc: 'quit  (alias of /exit)' },
 ];
 
 const CLI_SUBCOMMANDS: { cmd: string; desc: string }[] = [
