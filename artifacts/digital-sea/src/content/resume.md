@@ -1,151 +1,110 @@
-# ════════════════════════════════════════════════════════════════════════
-# █▓▒░                      D A V I D   D A V I E S O N               ░▒▓█
-# ════════════════════════════════════════════════════════════════════════
+# David Davieson
 
-**Agentic Product Engineer · Customer Success · B2B Lending · Technical Support Leadership**
+**Product Engineer · Agentic Systems · Customer Success & FinTech**
 
-**[ `daviddavieson@gmail.com` ] ❖ [ `https://nuroctane.xyz` ] ❖ [ `github.com/nuroctane` ] ❖ [ `linkedin.com/in/david-davieson` ]**
+**[ `daviddavieson@gmail.com` ] · [ `https://nuroctane.xyz` ] · [ `github.com/nuroctane` ] · [ `linkedin.com/in/david-davieson` ]**
 
 ***
 
-### ░▒▓ SUMMARY ▓▒░
-> **Agentic product engineer & technical operator.** I design, ship, and run full-stack systems - native mobile apps, local multi-model AI routers, custom multi-provider agent CLIs (NurCLI), 3D product UIs, monorepo web platforms, and institutional node infrastructure - with a bias toward on-device privacy, measurable business impact, and finishing the job.
+## SUMMARY
+
+> **Product engineer and technical operator.** I ship agentic systems, local AI infrastructure, 3D web products, native mobile apps, and institutional integrations across Rust, TypeScript, and Python.
 >
-> Solvency framework first: define constraints, build the smallest correct system, instrument outcomes, then scale. Operate daily across ADEs and agent CLIs (Orca, Herdr, Ohmypi, Cursor, Hermes, Claude Code, Codex, Grok) - optimizing token usage, cutting overall inference spend via local-first routing, and running recursive training loops for specific-utility models - while owning production results in customer success, B2B commercial lending, and technical support leadership.
+> My work combines systems depth with commercial ownership: products spanning 60+ model providers, real-time orbital visualization, privacy-first OCR, and manufacturing-oriented configuration—backed by customer success across **$1B+ AUM**, **$1.2M+ ARR retention**, **$1.7M+ capital deployment**, and technical support leadership.
 
-***
+## SELECTED PRODUCTS
 
-## ▄▀▄▀▄▀▄▀▄ P R O J E C T S ▄▀▄▀▄▀▄▀▄
+* **[ NurCLI — Multi-Provider Terminal Coding Agent ]** · [nuroctane.xyz/cli](https://www.nuroctane.xyz/cli) · [GitHub](https://github.com/nuroctane/nur-cli)
+  * Built a production-minded **Rust** coding agent spanning 60+ providers with a streaming TUI, tool loop, subagents, todos, auto-compaction, session resume, native vision, and manual/plan/auto permission modes.
+  * Designed the plugin marketplace and natural-language skill system, hardened command sandbox, one-command provisioning, and persistent knowledge integrations across Graphify, PLUR, Ruflo, and Executor.
+* **[ Orbit Veil — Real-Time 3D Satellite Intelligence ]** · [nuroctane.xyz/orbit](https://www.nuroctane.xyz/orbit)
+  * Built a real-time 3D Earth and satellite tracker using CelesTrak TLE sets and local SGP4 propagation for continuous positions, orbital paths, and coverage footprints.
+  * Shipped search, constellation filtering, two-hour data refreshes, and time controls for replaying or accelerating the orbital scene.
+* **[ nuroctane.xyz / Digital Sea — Immersive 3D Portfolio ]** · [nuroctane.xyz](https://www.nuroctane.xyz)
+  * Engineered a React, Vite, and Three.js portfolio with scroll-directed 3D navigation, dynamic social/project nodes, responsive performance tiers, and standalone product routes.
+  * Delivered a pnpm TypeScript monorepo with shared API clients and schemas, Vercel serverless endpoints, Redis-backed features, analytics, and automated smoke checks.
+* **[ MODKEYS — 3D Keyboard Product Configurator ]** · [nuroctane.xyz/modkeys](https://www.nuroctane.xyz/modkeys)
+  * Built a React/Vite configurator for mechanical keyboard plates and keycaps with exact geometry, undo/redo, shareable URL-encoded builds, and dual mobile/desktop shells.
+  * Connected Express/Vercel and Upstash Redis services and shipped KLE JSON, SVG manufacturing-template, specification-sheet, and PDF export workflows.
+* **[ SnipOCR — Private Cross-Platform Screenshot OCR ]** · [GitHub](https://github.com/nuroctane/snipocr)
+  * Built Windows and macOS tray utilities that watch screenshot folders and the clipboard, run OCR fully on-device, and return editable text without uploading capture content.
+  * Unified Windows.Media.Ocr, Apple Vision, RapidOCR, and ONNX Runtime behind a shared multi-engine workflow with optional hardware acceleration.
+* **[ hermes-local-models — Local Multi-Model AI Router ]** · [GitHub](https://github.com/nuroctane/hermes-local-models)
+  * Built an OpenAI-compatible local router over GGUF inventories so Hermes and other agent CLIs can use local weights as a primary path with configurable cloud fallback.
+  * Automated cross-platform discovery, llama-server presets, model selection, and fallback routing to reduce paid inference while preserving workflow continuity.
 
-*   **[ NurCLI: Multi-Provider Terminal Coding Agent ]** · [nuroctane.xyz/cli](https://www.nuroctane.xyz/cli) · [github.com/nuroctane/nur-cli](https://github.com/nuroctane/nur-cli)
-    *   Built a production-minded **Rust** coding agent spanning 60+ providers (OpenAI, Anthropic, Gemini, xAI, Groq, plus Meta Model API / Muse Spark among them) - not a thin wrapper: custom harness with streaming TUI, tool loop, subagents, todos, auto-compact, permission modes (manual / plan / auto), session resume, and prompt-cache keys.
-    *   Live **`/model` picker** and in-product **`/plugins` marketplace** (provider-picker UX) installing Superpowers, Vercel, Firecrawl, Chrome DevTools, and more into `~/.nur/plugins` with skills mirrored for discovery.
-    *   Native multimodal vision (`look`, `extract_frames` via ffmpeg), hardened sandbox (bash denylist, SSRF blocks, atomic `~/.nur` IO), one-shot install with SHA-256 verify, and ecosystem auto-provision: Graphify, PLUR, Ruflo, Executor, AKM, **800+ skills** - background provision so the TUI never blocks on install.
-    *   Designed to rival Claude Code-class terminal agents with denser tools, plugins, and skills; system-installed as `nur`; Orca ADE hook when present.
-    *   Expertise: Rust agent harnesses, OpenAI Responses & Chat Completions streaming, multimodal agent UX, sandboxing, skill/plugin ecosystems, ADE integration, token-aware agent UX.
-*   **[ hermes-local-models: Local Multi-Model AI Router ]** · [github.com/nuroctane/hermes-local-models](https://github.com/nuroctane/hermes-local-models)
-    *   Designed and shipped a cross-platform bridge that discovers Atomic Chat / Jan GGUF inventories, builds a multi-model llama-server preset, and serves an OpenAI-compatible API on `localhost:8080` so Hermes Agent/Desktop can use local weights as primary with configurable cloud fallback - shifting default inference off paid APIs to cut overall spend.
-    *   One-install model path for every ADE that launches Hermes (Orca and peers) - no per-tool model stack. Win/macOS installers, on-demand single-model VRAM loading, rescan after downloads, LaunchAgent/desktop launchers.
-    *   Paired local routing with token-aware agent workflows (tighter prompts, scoped context, selective cloud fallback only when needed) and recursive training loops for specific-utility local models.
-    *   Expertise: local inference ops, token/cost optimization, OpenAI-compatible routing, agent config patching, cross-platform path discovery, ADE integration patterns.
+## PROFESSIONAL EXPERIENCE
 
-*   **[ SnipOCR: Offline Screenshot OCR ]** · [github.com/nuroctane/snipocr](https://github.com/nuroctane/snipocr)
-    *   Built a tray / menu-bar utility that watches OS screenshot folders and clipboard, runs fully on-device OCR, returns editable text to the clipboard, and surfaces a review popup - no cloud path for capture content.
-    *   Multi-engine backend: Windows.Media.Ocr, Apple Vision, and RapidOCR + ONNX Runtime (shared cross-platform neural path) with optional DirectML / CoreML / CUDA acceleration.
-    *   Expertise: OS integration (Win32 clipboard + WinRT OCR; macOS Pasteboard + Vision), offline ML packaging, privacy-preserving desktop tooling.
+### BANK OZK
+**`B2B Loan Advisor`** | *(2025–Present)*
+> * Orchestrate end-to-end commercial financing for SMEs across working-capital, private-credit-aligned, and growth facilities.
+> * Facilitated **$1.7M+ in capital deployment** by matching borrower profiles to underwriting criteria and driving discovery through term-fit handoff.
+> * Use CRM analytics to tailor facility strategies and sustain pipeline velocity without sacrificing underwriting quality.
 
-*   **[ ASTROSleep: Dual-Native Sleep App ]** · [github.com/nuroctane/ASTROSleep](https://github.com/nuroctane/ASTROSleep)
-    *   Shipped dual-platform native apps (iOS SwiftUI / AVFoundation / Core Data; Android Kotlin / Jetpack Compose / Media3 / Room / Hilt) that keep birth data on-device, compute a sidereal 13-sign natal chart, score nightly transits + moon phase, and rank ambient layers via a 12-dimensional tag engine.
-    *   Multi-layer looping audio (per-layer volume, speed, EQ, LFO, sleep-timer fade), optional rate-limited affirmation proxy that never receives birth data, shared “Digital Sea” design system and scoring lockstep across platforms.
-    *   Expertise: privacy-first product architecture, cross-platform engine parity, native audio pipelines, design-system driven UI.
+### CHARTER COMMUNICATIONS
+**`Customer Solutions`** | *(May 2025–Sep 2025)*
+> * Delivered sales and retention solutions for commercial and residential connected services at top-tier performance levels.
+> * Built a churn-reduction framework that defended **$1.2M+ ARR** and increased customer LTV approximately **25%** through CRM risk signals and proactive dispatch upgrades.
 
-*   **[ Blackjack: Odds-First Web3 Table ]** · [github.com/nuroctane/blackjack](https://github.com/nuroctane/blackjack)
-    *   Engineered a composition-aware multi-deck shoe with full rules surface (split to 4 hands, insurance/even money, late surrender, DAS, H17/S17, penetration cut-card) and exact math: next-hit bust probability, recursive dealer outcome distribution, stand EV, Hi-Lo count, labeled basic-strategy advisor.
-    *   Product shell: Next.js 15 / React 19 / TypeScript, RainbowKit + WalletConnect / SIWE identity path, Capacitor iOS/Android native wrap, tokenized “Digital Sea” UI with session stats + local persistence.
-    *   Expertise: combinatorial game engines, trustworthy odds UX, wallet-native web apps, agent-assisted design craft.
+### BLOCKDAEMON
+**`Customer Success Manager`** | *(Feb 2023–May 2025)*
+> * Owned the lifecycle for **$1B+ AUM** institutional clients using high-availability blockchain node services and MPC wallets.
+> * Established Grafana and Amazon Athena KPI cadences and drove **MTTR below 24 hours** on supported flows.
+> * Co-led feature rollouts and product launches by reviewing pull requests, deploying previews, and translating client needs across sales, compliance, product, and engineering.
+> * Diagnosed critical API discrepancies in Postman and delivered engineering-ready reproductions that prevented deployment delays.
 
-*   **[ MODKEYS + nuroctane.xyz: 3D Product + Digital Sea ]** · [github.com/nuroctane/nuroctane-xyz-Site](https://github.com/nuroctane/nuroctane-xyz-Site) · [nuroctane.xyz](https://nuroctane.xyz)
-    *   Built a browser mechanical-keyboard configurator (Three.js, custom GLSL lighting, dual purpose-built desktop/mobile shells - not a shrunk desktop) with undo/redo (50 states), shareable URL-encoded builds, and export to KLE JSON, SVG manufacturing template, spec sheet, and PDF.
-    *   Embedded in a pnpm monorepo React/Vite SPA with Express 5 on Vercel serverless, Upstash Redis KV, books/quotes surfaces (Google Books + Open Library), typecheck/smoke/shell-integrity CI gates.
-    *   Expertise: WebGL product UX, dual-shell SPA architecture, monorepo delivery, serverless + KV, design systems.
+### APPLE
+**`Technical Support Lead`** | *(2022–2023)*
+> * Mentored **10–15 specialists** to exceed **70% NPS** and **85% CSAT** while reporting performance trends to senior management.
+> * Owned escalations, coaching loops, and privacy and device-management standards across high-volume technical support.
 
-*   **[ Milady Derivatives: Community NFT Intelligence ]** · [github.com/nuroctane/milady-derivatives](https://github.com/nuroctane/milady-derivatives)
-    *   Productized a community gallery fork with live floor/volume merge (CoinGecko + Magic Eden), data enrichment scripts, AVIF image optimization, parent-lineage family tree, multi-chain validation, open JSON APIs, and Firebase Hosting + GitHub Actions deploy CI.
-    *   Expertise: data pipeline scripting, marketplace API integration, static hosting CI, community open data.
-
-*   **[ ERC-721M: NFT Liquidity Standard ]** · [github.com/Zodomo/ERC721M](https://github.com/Zodomo/ERC721M)
-    *   Collaborated on the ERC-721M token standard for an NFT liquidity redistribution framework - mechanism design + smart-contract surface for fairer secondary liquidity paths.
-    *   Expertise: EVM token standards, collaborative open-source protocol work.
-
-***
-
-## ▄▀▄▀▄▀▄▀▄ P R O F E S S I O N A L   I M P A C T ▄▀▄▀▄▀▄▀▄
-
-*   **[ Node Health & SLO Monitoring: Blockdaemon ]**
-    *   Configured Grafana and Prometheus to visualize node uptime, SLO compliance, and incident trends across institutional client accounts - enabling proactive alerting and reducing mean time to detection.
-*   **[ Partner API Integration & Provisioning: Blockdaemon ]**
-    *   Built a Postman-based API key provisioning and testing workflow that automated partner onboarding steps, cutting integration setup friction and reducing Go-Live blockers across multi-country deployments.
-*   **[ On-Chain DeFi Protocol Intelligence: Blockdaemon ]**
-    *   Developed Python scripts pulling on-chain data from blockchain explorers to generate structured protocol intelligence reports - surfacing mechanism risks and yield strategies for internal teams and enterprise partners.
-*   **[ Enterprise Post-Sales Service Delivery: Apple, Coinbase ]**
-    *   Led technical support teams to maintain **>85% First Call Resolution** and **>95% CSAT** by optimizing device management and privacy protocols.
-    *   Architected advanced DeFi/CeFi support infrastructure for staking, yield farming, bridge ops, and hardware-wallet security (Ledger/Trezor, TOTP, encrypted backups); maintained **99.9% uptime** on high-volume institutional flows.
-*   **[ Strategic Revenue Retention: Charter ]**
-    *   Engineered a personal churn-reduction framework for high-volume residential and enterprise portfolios, securing **$1.2M+ ARR**.
-    *   Leveraged CRM behavioral analytics to identify churn-risk indicators and proactively partnered with dispatch for technical upgrades - **+25% customer LTV**, consistently outperforming quarterly win-back quotas.
-*   **[ SME Capital Acquisition & Risk Underwriting: Bank OZK ]**
-    *   Facilitated **$1.7M+ in capital deployment** for SMEs by cross-referencing private credit, MCA, and non-banked lender criteria against borrower fit.
-    *   Leveraged CRM analytics to architect customized commercial financing strategies across working capital and growth facilities for prospected clients.
-
-***
-
-## ▄▀▄▀▄▀▄▀▄ S K I L L S   &   T O O L S ▄▀▄▀▄▀▄▀▄
-
-| **DOMAIN** | **TECHNOLOGIES / COMPETENCIES** |
-| :--- | :--- |
-| **`Agentic Engineering`** | NurCLI (`nur`); Orca, Herdr, Ohmypi, Cursor, Windsurf, OpenCode, Devin, Atrium, Synara, Paseo, Blume; CLIs: Hermes, Claude Code, Codex, Grok, OpenHands; skill/routing design; worktree orchestration; human-in-the-loop review; token-usage optimization; cost-aware agent workflows |
-| **`Local AI & Inference`** | Ollama; Atomic Chat; GGUF multi-model routing; llama-server; OpenAI-compatible local APIs; AnythingLLM; ONNX Runtime (RapidOCR); specific-utility local model training; recursive training loops; token optimization & spend reduction; cloud fallback patterns |
-| **`Product & Frontend`** | TypeScript, React, Next.js, Vite, Three.js, GSAP, Tailwind, design systems, dual mobile/desktop shells, accessibility & reduced-motion |
-| **`Mobile`** | SwiftUI, Kotlin, Jetpack Compose, Capacitor, Core Data, Room, Hilt, AVFoundation, Media3 |
-| **`Backend & Delivery`** | Node/Express, Python, pnpm monorepos, Vercel serverless, Firebase Hosting/CI, Upstash Redis, REST, GitHub Actions |
-| **`Cloud & Infra`** | AWS (EC2, S3, Lambda, VPC, Athena), Docker, Kubernetes (ops), Grafana, Prometheus |
-| **`Blockchain & FinTech`** | EVM, Solidity, wagmi/viem, RainbowKit, SIWE, RPC nodes, MPC wallets, DeFi/CeFi ops, commercial credit underwriting support |
-| **`Security & OpSec`** | Local-first privacy design, hardware wallets, TOTP, VPN hygiene, Kali fundamentals, least-privilege secrets |
-| **`Data & Ops`** | SQL familiarity, CRM analytics, Postman, KPI/SLO reporting, Salesforce, Jira, Confluence |
-| **`OS & Tooling`** | Windows, Linux (Ubuntu/WSL), macOS; Git/GitHub; VS Code / Visual Studio / JetBrains / Zed / Warp; PowerShell; Docker Desktop |
-| **`Creative`** | Figma, Adobe Suite, Ableton Live, DaVinci Resolve, Obsidian, Notion |
-
-***
-
-## ▄▀▄▀▄▀▄▀▄ W O R K   E X P E R I E N C E ▄▀▄▀▄▀▄▀▄
-
-### ❖ BANK OZK ❖
-**`B2B Loan Advisor`** | *(2025-Present)*
-> * Orchestrated end-to-end commercial financing lifecycle for SMEs - high-volume pipeline across working capital, private credit-aligned, and growth facilities.
-> * Facilitated **$1.7M+ in capital deployment** by matching borrower profiles to underwriting criteria and driving discovery → term fit → handoff.
-> * Used CRM analytics to customize facility strategies for prospected clients and keep pipeline velocity high without sacrificing underwriting quality.
-
-### ❖ CHARTER COMMUNICATIONS ❖
-**`Customer Solutions`** | *(May 2025-Sep 2025)*
-> * Delivered tailored sales and retention solutions for commercial and residential connected services at top-tier performance levels.
-> * Personal churn-reduction framework defended **$1.2M+ ARR** and lifted customer LTV ~**25%** via CRM risk signals and proactive dispatch upgrades.
-
-### ❖ BLOCKDAEMON ❖
-**`Customer Success Manager`** | *(Feb 2023-May 2025)*
-> * Lifecycle owner for **$1B+ AUM** institutional clients on high-availability node services and MPC wallets.
-> * Grafana + Amazon Athena weekly KPI cadence; drove **MTTR under 24 hours** on supported flows.
-> * Co-led feature rollouts and product launches by reviewing PRs and deploying previews for technical alignment with client needs.
-> * Orchestrated cross-disciplinary onboarding that reduced friction between sales, compliance, and engineering.
-> * Rectified critical API discrepancies via Postman with engineering-ready repros that prevented deployment delays.
-
-### ❖ APPLE ❖
-**`Technical Support Lead`** | *(2022-2023)*
-> * Mentored a team of **10-15** specialists to exceed **70% NPS** and **85% CSAT**, reporting performance trends directly to senior management.
-> * Owned escalations, coaching loops, and privacy/device-management standards across high-volume consumer technical support.
-
-### ❖ COINBASE ❖
+### COINBASE
 **`Technical Support Lead`** | *(2022)*
-> * Led technical lifecycles for DeFi/CeFi support protocols for small teams (**5-7**) - rollups, yield farming, NFT smart-contract interactions.
-> * Implemented bespoke and recommended OpSec protocols for clients (hardware wallets, TOTP, encrypted backups) on high-volume institutional-adjacent flows.
+> * Led technical support protocols for teams of **5–7** across DeFi/CeFi operations, rollups, yield farming, and smart-contract interactions.
+> * Implemented client OpSec practices spanning hardware wallets, TOTP, and encrypted backups for high-volume institutional-adjacent workflows.
 
-***
+## COMMERCIAL & OPERATIONAL IMPACT
 
-## ▄▀▄▀▄▀▄▀▄ C O M P E T E N C I E S ▄▀▄▀▄▀▄▀▄
+* **$1B+ AUM** institutional customer lifecycle ownership
+* **$1.7M+** SME capital deployment
+* **$1.2M+ ARR** defended through retention systems
+* Approximately **25%** customer LTV improvement
+* **MTTR below 24 hours** on supported infrastructure flows
+* **70%+ NPS** and **85%+ CSAT** team performance
 
-| **PROGRAMMING** | **WORLD LANGUAGES** |
+## SKILLS & TOOLING
+
+| DOMAIN | TECHNOLOGIES / COMPETENCIES |
 | :--- | :--- |
-| `TypeScript / JavaScript` | `English` |
-| `Python` | `Spanish` *(Advanced writing, Intermediate speaking)* |
-| `Swift` · `Kotlin` | |
-| `Solidity` · `SQL` | |
-| `Rust` *(agent harnesses / systems)* | |
+| **Languages** | TypeScript/JavaScript, Python, Rust, Swift, Kotlin, Solidity, SQL |
+| **Agentic & Local AI** | Multi-provider model APIs, tool calling, subagents, plugins, skills, permission systems, Ollama, llama-server, GGUF routing, ONNX Runtime |
+| **Product & Web** | React, Next.js, Vite, Three.js, GSAP, Tailwind CSS, design systems, responsive and accessible UI |
+| **Mobile** | SwiftUI, Jetpack Compose, Capacitor, AVFoundation, Media3, Core Data, Room, Hilt |
+| **Backend & Delivery** | Node.js, Express, Python, REST, Vercel, Upstash Redis, Firebase, pnpm monorepos, GitHub Actions |
+| **Cloud & Operations** | AWS EC2/S3/Lambda/VPC/Athena, Docker, Kubernetes operations, Grafana, Prometheus, Postman |
+| **FinTech & Blockchain** | Commercial credit, EVM, wagmi/viem, RainbowKit, SIWE, RPC nodes, MPC wallets, DeFi/CeFi operations |
+| **Customer Systems** | Technical discovery, enterprise onboarding, lifecycle ownership, KPI/SLO reporting, CRM analytics, Salesforce, Jira, Confluence |
 
-***
+## LEADERSHIP
 
-## ▄▀▄▀▄▀▄▀▄ E D U C A T I O N ▄▀▄▀▄▀▄▀▄
+* **ATX Tunerz Society — Vice President** · Help lead an Austin automotive community and its digital presence at [tunerzsociety.site](https://tunerzsociety.site).
 
-*   **[ University of North Texas ]** - BA, Communications (2021) · Student Council · Cross-Examination Debate
-*   **[ Houston Community College ]** - AS, Computer Science · EPA Universal Technician (TX) · Cert #102116565
-*   **[ Lamar Consolidated HS ]** - Debate, TSA, Student Council, Band, Chess Club, Soccer
+## ADDITIONAL BUILDS
 
-# ════════════════════════════════════════════════════════════════════════
+* **[ Blackjack — Odds-First Mobile Web3 Table ]** · [GitHub](https://github.com/nuroctane/blackjack)
+  * Multi-deck blackjack engine with full rules, recursive dealer outcomes, exact bust probability, SIWE/GitHub authentication, and a Capacitor mobile shell.
+* **[ ASTROSleep — Dual-Native Sleep Application ]** · [GitHub](https://github.com/nuroctane/ASTROSleep)
+  * SwiftUI and Jetpack Compose applications with on-device natal calculations, 12-dimension nightly scoring, and layered ambient audio.
+* **[ Milady Derivatives Intelligence ]** · [GitHub](https://github.com/nuroctane/milady-derivatives)
+  * NFT collection intelligence pipeline with deterministic enrichment, lineage mapping, optimized imagery, open JSON APIs, and Firebase/GitHub Actions delivery.
+* **[ ERC-721M — NFT Liquidity Standard ]** · [GitHub](https://github.com/Zodomo/ERC721M)
+  * Collaborated on an EVM token standard and smart-contract surface for redistributing NFT secondary-market liquidity.
+
+## EDUCATION
+
+* **University of North Texas** — BA, Communications, 2021 · Student Council · Cross-Examination Debate
+* **Houston Community College** — AS, Computer Science · EPA Universal Technician (TX), Cert. 102116565
+
+## LANGUAGES
+
+English (native) · Spanish (advanced writing, intermediate speaking)

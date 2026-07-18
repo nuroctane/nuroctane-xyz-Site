@@ -500,10 +500,36 @@ function BlockView({ block }: { block: Block }) {
   }
 }
 
+/* ── Resume layout ─────────────────────────────────────────────────────── */
+
+const PRIMARY_SECTIONS = new Set([
+  'summary',
+  'selected-products',
+  'professional-experience',
+  'additional-builds',
+]);
+
+function sectionKey(heading: string): string {
+  return heading.toLowerCase().replace(/&/g, 'and').replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+}
+
+function ResumeSectionView({ section }: { section: ResumeSection }) {
+  return (
+    <section className="resume-section" data-section={sectionKey(section.heading)}>
+      {section.heading && <h2 className="resume-heading">{section.heading}</h2>}
+      {section.blocks.map((block, index) => (
+        <BlockView key={index} block={block} />
+      ))}
+    </section>
+  );
+}
+
 /* ── Page ──────────────────────────────────────────────────────────────── */
 
 export default function ResumePage() {
   const doc = useMemo(() => parseResume(raw), []);
+  const primarySections = doc.sections.filter(section => PRIMARY_SECTIONS.has(sectionKey(section.heading)));
+  const supportingSections = doc.sections.filter(section => !PRIMARY_SECTIONS.has(sectionKey(section.heading)));
   useStandaloneScroll();
 
   // Hidden page: keep crawlers out; only reachable via direct URL.
@@ -560,16 +586,40 @@ export default function ResumePage() {
             ))}
           </ul>
         )}
+        <div className="resume-downloads" aria-label="Resume downloads">
+          <a
+            className="resume-download"
+            href="/downloads/David-Davieson-Resume.pdf"
+            download
+            onClick={() => trackEvent('Resume Download', { variant: 'designed' })}
+          >
+            <span className="resume-download-label">Designed resume</span>
+            <span className="resume-download-meta">PDF · 1 page</span>
+          </a>
+          <a
+            className="resume-download resume-download--secondary"
+            href="/downloads/David-Davieson-Resume-ATS.pdf"
+            download
+            onClick={() => trackEvent('Resume Download', { variant: 'ats' })}
+          >
+            <span className="resume-download-label">ATS resume</span>
+            <span className="resume-download-meta">PDF · 2 pages</span>
+          </a>
+        </div>
       </header>
 
-      {doc.sections.map((s, si) => (
-        <section key={si} className="resume-section">
-          {s.heading && <h2 className="resume-heading">{s.heading}</h2>}
-          {s.blocks.map((b, bi) => (
-            <BlockView key={bi} block={b} />
+      <div className="resume-layout">
+        <main className="resume-main">
+          {primarySections.map(section => (
+            <ResumeSectionView key={section.heading} section={section} />
           ))}
-        </section>
-      ))}
+        </main>
+        <aside className="resume-sidebar" aria-label="Supporting resume details">
+          {supportingSections.map(section => (
+            <ResumeSectionView key={section.heading} section={section} />
+          ))}
+        </aside>
+      </div>
     </div>
   );
 }
