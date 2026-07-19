@@ -14,6 +14,16 @@ function toLocalInput(d: Date | null): string {
   const pad = (n: number) => String(n).padStart(2, '0');
   return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
 }
+function toLocalDateOnly(d: Date | null): string {
+  if (!d) return '';
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+}
+function toLocalTimeOnly(d: Date | null): string {
+  if (!d) return '';
+  const pad = (n: number) => String(n).padStart(2, '0');
+  return `${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
 
 export function ObservatoryHud() {
   const o = useObservatory();
@@ -25,8 +35,33 @@ export function ObservatoryHud() {
     const d = new Date(value);
     if (!Number.isNaN(d.getTime())) o.setTime(d);
   };
+  const onDateOnly = (value: string) => {
+    if (!value) return;
+    const cur = o.time;
+    const [y, m, day] = value.split('-').map(Number);
+    if (!y || !m || !day) return;
+    const nd = new Date(cur);
+    nd.setFullYear(y, m - 1, day);
+    o.setTime(nd);
+  };
+  const onTimeOnly = (value: string) => {
+    if (!value) return;
+    const cur = o.time;
+    const [hh, mm] = value.split(':').map(Number);
+    if (Number.isNaN(hh) || Number.isNaN(mm)) return;
+    const nd = new Date(cur);
+    nd.setHours(hh, mm, 0, 0);
+    o.setTime(nd);
+  };
+  const onYearSlider = (yr: number) => {
+    const nd = new Date(o.time);
+    nd.setFullYear(yr);
+    o.setTime(nd);
+  };
 
   const dateInputValue = toLocalInput(o.time);
+  const dateOnly = toLocalDateOnly(o.time);
+  const timeOnly = toLocalTimeOnly(o.time);
 
   if (!o.hudOpen) {
     return (
@@ -102,11 +137,25 @@ export function ObservatoryHud() {
               </select>
             </label>
             {o.zodiac === 'sidereal' && <div className="obs-muted">Ayanamsa {o.chart.ayanamsa.toFixed(6)}°</div>}
+
+            <div className="obs-panel-hd" style={{ marginTop: '0.75rem' }}>DATE & TIME — fully selectable</div>
             <label className="obs-field">
-              <span>UTC</span>
-              <input type="datetime-local" value={dateInputValue} onChange={(e) => onDateInput(e.target.value)} />
+              <span>Date (1800-2100)</span>
+              <input type="date" value={dateOnly} min="1800-01-01" max="2100-12-31" onChange={(e) => onDateOnly(e.target.value)} />
             </label>
-            <div className="obs-seg">
+            <label className="obs-field">
+              <span>Time</span>
+              <input type="time" value={timeOnly} step={60} onChange={(e) => onTimeOnly(e.target.value)} />
+            </label>
+            <label className="obs-field">
+              <span>UTC datetime</span>
+              <input type="datetime-local" value={dateInputValue} min="1800-01-01T00:00" max="2100-12-31T23:59" onChange={(e) => onDateInput(e.target.value)} />
+            </label>
+            <label className="obs-field">
+              <span>Year {o.time.getFullYear()}</span>
+              <input type="range" min={1800} max={2100} step={1} value={o.time.getFullYear()} onChange={(e) => onYearSlider(Number(e.target.value))} />
+            </label>
+            <div className="obs-seg" style={{ marginTop: '0.5rem' }}>
               {SPEEDS.map((s) => (
                 <button key={s} type="button" className={o.speed === s ? 'is-active' : ''} onClick={() => o.setSpeed(s)}>
                   {s === 0 ? '⏸' : s === 1 ? '1×' : `${s}`}

@@ -8,7 +8,7 @@ const UnifiedWorld = lazy(() => import('./modes/UnifiedWorld').then((m) => ({ de
 function Shell() {
   return (
     <div className="obs-root obs-root--unified">
-      <Suspense fallback={<div className="obs-loading">Loading unified 3D world — Earth Google-Earth grade + satellites + weather + all planets + constellations…</div>}>
+      <Suspense fallback={<div className="obs-loading">Loading observatory — one unified world…</div>}>
         <UnifiedWorld />
       </Suspense>
       <ObservatoryHud />

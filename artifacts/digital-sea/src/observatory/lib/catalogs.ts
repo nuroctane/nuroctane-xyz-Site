@@ -217,7 +217,7 @@ export const BODIES: BodyMeta[] = [
   { id: 'Uranus', label: 'Uranus', se: 7, color: '#67e8f9', group: 'outer', defaultOn: true },
   { id: 'Neptune', label: 'Neptune', se: 8, color: '#818cf8', group: 'outer', defaultOn: true },
   { id: 'Pluto', label: 'Pluto', se: 9, color: '#c4b5fd', group: 'outer', defaultOn: true },
-  { id: 'Earth', label: 'Earth', se: 14, color: '#38bdf8', group: 'personal', defaultOn: false },
+  { id: 'Earth', label: 'Earth', se: 14, color: '#38bdf8', group: 'personal', defaultOn: true },
 
   // nodes & lilith
   { id: 'MeanNode', label: 'Mean North Node (Rahu)', se: 10, color: '#a78bfa', group: 'node', defaultOn: true },

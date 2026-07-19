@@ -86,7 +86,7 @@ function fallbackPositions(date: Date, zodiac: ZodiacMode, ayan: number, enabled
   };
   const out: PlanetPosition[] = [];
   for (const meta of BODIES) {
-    if (enabled[meta.id] === false) continue;
+    if (enabled[meta.id] === false && meta.id !== 'Earth' && meta.id !== 'Sun') continue;
     if (meta.se < 0) continue;
     if (meta.se >= 10000) continue; // no fallback for TNOs / hypotheticals
     if (meta.se >= 40 && meta.se <= 59) continue;
@@ -150,7 +150,7 @@ function swissPositions(
   const isHelio = zodiac === 'heliocentric' || opts.helio;
 
   for (const meta of BODIES) {
-    if (enabled[meta.id] === false) continue;
+    if (enabled[meta.id] === false && meta.id !== 'Earth' && meta.id !== 'Sun') continue;
     if (meta.se < 0) continue;
     const calcOpts: any = {
       sidereal: zodiac === 'sidereal',

@@ -523,7 +523,7 @@ export function EarthExploreMode() {
             </div>
           )}
           <div className="obs-earth-note">
-            Esri World Imagery max 19 — closest open to Google Earth. Mapillary link for street-level. Imagery below meteorology, below satellites (ISS).<br />
+            Esri World Imagery max 19 — high-detail imagery. Mapillary link for street-level. Imagery below meteorology, below satellites (ISS).<br />
             <a href={`https://www.mapillary.com/app/?lat=${observer.lat}&lng=${observer.lon}&z=16`} target="_blank" rel="noreferrer">Open Mapillary at observer →</a>
             <br />Double-click globe to set observer (affects houses).
           </div>
