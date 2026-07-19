@@ -958,3 +958,85 @@
 .obs-top-right { justify-self: end; display: flex; gap: 0.4rem; }
 .obs-icon-btn { appearance: none; border: 1px solid rgba(148,163,184,0.2); background: rgba(15,23,42,0.8); color: #94a3b8; width: 28px; height: 28px; border-radius: 8px; cursor: pointer; font: inherit; }
 
+
+/* Unified dashboard — clean, smooth comprehensive 3d */
+.obs-root--unified { background: #02040a; }
+.obs-unified { position: absolute; inset: 0; background: #02040a; }
+.obs-cesium-host--unified {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  display: block;
+}
+.obs-unified-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 6;
+}
+.obs-unified-overlay > * { pointer-events: auto; }
+
+.obs-earth-tools--unified {
+  position: absolute;
+  top: 4.5rem;
+  left: 1rem;
+  width: 320px;
+  max-height: calc(100vh - 10rem);
+  overflow: auto;
+  background: rgba(8,12,20,0.86);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(148,163,184,0.12);
+  border-radius: 12px;
+  padding: 0.7rem;
+}
+
+.obs-solar-mini {
+  position: absolute;
+  right: 340px;
+  bottom: 1rem;
+  width: 380px;
+  height: 280px;
+  background: rgba(8,12,20,0.88);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(148,163,184,0.14);
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.obs-solar-mini-hd {
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  padding: 0.5rem 0.7rem;
+  border-bottom: 1px solid rgba(148,163,184,0.08);
+}
+.obs-solar-mini-canvas {
+  flex: 1;
+  position: relative;
+  background: #04060a;
+}
+.obs-solar-mini-canvas .obs-canvas-host {
+  position: absolute !important;
+  inset: 0 !important;
+}
+.obs-solar-mini-canvas .obs-3d-note { display: none; }
+
+.obs-hud--unified .obs-top--unified {
+  grid-template-columns: 1fr auto auto;
+}
+.obs-top-center { display: flex; gap: 0.4rem; align-items: center; }
+.obs-hud--unified .obs-left { top: 4.5rem; }
+.obs-hud--unified .obs-right { top: 4.5rem; }
+
+@media (max-width: 1100px) {
+  .obs-solar-mini { right: 1rem; width: 320px; height: 240px; bottom: 0.5rem; }
+  .obs-earth-tools--unified { width: 280px; }
+}
+@media (max-width: 720px) {
+  .obs-solar-mini { display: none; }
+  .obs-earth-tools--unified { display: none; }
+}
+
