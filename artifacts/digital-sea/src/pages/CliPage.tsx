@@ -84,7 +84,7 @@ const FEATURE_TABS: FeatureTab[] = [
         <li>Session budgets · tool-result spill · smarter auto-compact</li>
         <li><code>/model</code> live model list · <code>/plugins</code> marketplace · <code>/fusion</code> multi-model debate</li>
         <li><code>/local</code> bundled llama.cpp · <code>/bench</code> worktree benchmarks · <code>nur gateway</code> Telegram bot</li>
-        <li>Natural-language skill activation — no slash required</li>
+        <li>Natural-language + slash skill activation — /skill-name or plain phrases</li>
         <li>Resume other agents: Claude · Codex · Cursor · Grok · Nur</li>
       </ul>
     ),
@@ -123,7 +123,7 @@ const FEATURE_TABS: FeatureTab[] = [
   {
     id: 'ecosystem',
     label: 'Ecosystem',
-    blurb: 'Graph, memory, plugins, skills.',
+    blurb: 'Graph, memory, plugins, skills as /name.',
     body: (
       <ul className="cli-feat-list">
         <li><strong>Graphify</strong> — code knowledge graph</li>
@@ -214,7 +214,17 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: '/cs', desc: 'fast ripgrep over the workspace  (alias of /codesearch)' },
   { cmd: '/mc', desc: 'manage MCP servers via Executor' },
   { cmd: '/mcp', desc: 'manage MCP servers via Executor  (alias of /mc)' },
-  { cmd: '/skills', desc: 'list installed skills' },
+  { cmd: '/skills', desc: 'list installed skills (also /name for any skill)' },
+  { cmd: '/adhd', desc: 'sticky ADHD-friendly output for this session (toggle)' },
+  { cmd: '/site-cli', desc: 'skill: HAR capture → derived site API client/CLI' },
+  { cmd: '/fable-method', desc: 'skill: Fable think-act-prove loop' },
+  { cmd: '/fable-loop', desc: 'skill: orchestrated Fable multi-step loop' },
+  { cmd: '/fable-judge', desc: 'skill: adversarial verification of finished work' },
+  { cmd: '/tech-spec', desc: 'skill: typed call-stack architecture handoff' },
+  { cmd: '/design-eng', desc: 'skill: Emil design-eng UI/motion craft' },
+  { cmd: '/test-driven-development', desc: 'skill: TDD red-green-refactor' },
+  { cmd: '/systematic-debugging', desc: 'skill: root-cause-first debugging' },
+  { cmd: '/<skill>', desc: 'any installed skill — sticky toggle or /skill <prompt> one-shot' },
   { cmd: '/memory', desc: 'show ~/.nur/memory.md excerpt' },
   { cmd: '/graphify', desc: 'knowledge graph status / query / extract' },
   { cmd: '/plur', desc: 'shared engram memory' },
@@ -1125,7 +1135,7 @@ export default function CliPage() {
           <h2 className="cli-h2">
             <span className="cli-h2-num">04</span> Commands
           </h2>
-          <p className="cli-lead">Slash commands in the TUI, or shell subcommands from your terminal.</p>
+          <p className="cli-lead">Slash commands in the TUI, or shell subcommands from your terminal. Every installed skill is also a slash command: /skill-name (sticky) or /skill-name &lt;prompt&gt; (one-shot).</p>
         </div>
 
         <div className="cli-cmd-toolbar">
