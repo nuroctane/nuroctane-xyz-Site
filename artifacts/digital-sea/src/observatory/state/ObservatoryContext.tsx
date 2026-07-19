@@ -125,6 +125,10 @@ interface ObservatoryState {
 
   // Natal vs current comparison
   natalChart: ChartSnapshot | null;
+
+  // Timezone display
+  timezone: 'utc' | 'local' | 'observer';
+  setTimezone: (tz: 'utc' | 'local' | 'observer') => void;
 }
 
 const Ctx = createContext<ObservatoryState | null>(null);
@@ -174,6 +178,7 @@ export function ObservatoryProvider({ children }: { children: ReactNode }) {
   const [showGroundTrack, setShowGroundTrack] = useState(true);
   const [showOrbitTrail, setShowOrbitTrail] = useState(true);
   const [anchorPlanet, setAnchorPlanet] = useState<BodyId | 'Sun' | null>('Earth');
+  const [timezone, setTimezone] = useState<'utc' | 'local' | 'observer'>('utc');
 
   useEffect(() => {
     let cancelled = false;
@@ -451,6 +456,8 @@ export function ObservatoryProvider({ children }: { children: ReactNode }) {
       anchorPlanet,
       setAnchorPlanet,
       natalChart,
+      timezone,
+      setTimezone,
     }),
     [
       mode, time, setTime, speed, live, returnToLive, zodiac, ayanamsaId, houseSystem,
@@ -460,7 +467,7 @@ export function ObservatoryProvider({ children }: { children: ReactNode }) {
       selectedMission, query, earthSubmode, swiss, swissVersion, hudOpen, systemsPanel,
       topocentric, heliocentric, nodeMode, lilithMode,
       enabledSatGroups, setSatGroupEnabled, toggleSatGroup, setAllSatGroups,
-      selectedSatId, satSearch, followSat, showGroundTrack, showOrbitTrail, anchorPlanet, natalChart,
+      selectedSatId, satSearch, followSat, showGroundTrack, showOrbitTrail, anchorPlanet, natalChart, timezone,
     ],
   );
 

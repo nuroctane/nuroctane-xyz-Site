@@ -44,7 +44,7 @@
   position: absolute;
   inset: 0;
   pointer-events: none;
-  z-index: 10;
+  z-index: 80;
 }
 .obs-hud * { pointer-events: auto; }
 .obs-hud--collapsed .obs-fab {
@@ -75,7 +75,7 @@
   grid-template-columns: 1fr auto auto;
   gap: 0.75rem;
   align-items: center;
-  z-index: 12;
+  z-index: 90;
   pointer-events: none;
 }
 .obs-top > *, .obs-top--unified > * { pointer-events: auto; }
@@ -502,7 +502,7 @@
   position: absolute;
   left: 1rem;
   bottom: 1rem;
-  z-index: 7;
+  z-index: 35;
   display: flex;
   flex-wrap: wrap;
   gap: 0.45rem;
@@ -545,7 +545,7 @@
   top: 4.5rem;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 6;
+  z-index: 30;
   background: rgba(8,12,20,0.62);
   backdrop-filter: blur(10px);
   border: 1px solid rgba(255,255,255,0.06);

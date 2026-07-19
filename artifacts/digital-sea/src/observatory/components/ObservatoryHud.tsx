@@ -258,7 +258,6 @@ export function ObservatoryHud() {
                 ['planets', 'Planets'],
                 ['orbits', 'Orbits'],
                 ['labels', 'Labels'],
-                ['satellites', 'Satellites'],
                 ['earthquakes', 'Quakes'],
                 ['eonet', 'EONET'],
                 ['storms', 'Storms'],
@@ -267,7 +266,6 @@ export function ObservatoryHud() {
                 ['winds', 'Winds'],
                 ['clouds', 'Clouds'],
                 ['missions', 'Missions'],
-                ['traffic', 'Traffic'],
                 ['astroCartography', 'AC lines'],
                 ['cities', 'Cities'],
                 ['constellations', 'Constellations'],
@@ -315,6 +313,14 @@ export function ObservatoryHud() {
         {o.systemsPanel === 'advanced' && (
           <section className="obs-panel">
             <div className="obs-panel-hd">ADVANCED</div>
+            <div className="obs-field">
+              <span>Timezone display</span>
+              <div className="obs-seg">
+                <button type="button" className={o.timezone === 'utc' ? 'is-active' : ''} onClick={() => o.setTimezone('utc')}>UTC</button>
+                <button type="button" className={o.timezone === 'local' ? 'is-active' : ''} onClick={() => o.setTimezone('local')}>Local</button>
+                <button type="button" className={o.timezone === 'observer' ? 'is-active' : ''} onClick={() => o.setTimezone('observer')}>Place</button>
+              </div>
+            </div>
             <label className="obs-toggle"><input type="checkbox" checked={o.topocentric} onChange={(e) => o.setTopocentric(e.target.checked)} /><span>Topocentric</span></label>
             <label className="obs-toggle"><input type="checkbox" checked={o.heliocentric} onChange={(e) => o.setHeliocentric(e.target.checked)} /><span>Heliocentric</span></label>
             <div className="obs-field">
@@ -373,9 +379,14 @@ export function ObservatoryHud() {
 
       <aside className="obs-right">
         <section className="obs-panel obs-panel--clock">
-          <div className="obs-panel-hd">TIME</div>
-          <div className="obs-mono">{formatUtc(o.time)}</div>
-          <div className="obs-mono">{formatClock(o.time)}</div>
+          <div className="obs-panel-hd">TIME · {o.timezone.toUpperCase()}</div>
+          <div className="obs-mono">{o.timezone === 'local' ? formatClock(o.time) : o.timezone === 'observer' ? (() => { const off = o.observer.lon / 15; const d = new Date(o.time.getTime() + off * 3600000); return `${formatClock(d)} ${off >= 0 ? '+' : ''}${off.toFixed(1)}h`; })() : formatUtc(o.time)}</div>
+          <div className="obs-mono" style={{ opacity: 0.7, fontSize: '10px' }}>{o.timezone !== 'utc' ? formatUtc(o.time) : formatClock(o.time)}</div>
+          <div className="obs-seg" style={{ marginTop: '0.4rem' }}>
+            <button type="button" className={o.timezone === 'utc' ? 'is-active' : ''} onClick={() => o.setTimezone('utc')}>UTC</button>
+            <button type="button" className={o.timezone === 'local' ? 'is-active' : ''} onClick={() => o.setTimezone('local')}>Local</button>
+            <button type="button" className={o.timezone === 'observer' ? 'is-active' : ''} onClick={() => o.setTimezone('observer')}>Place</button>
+          </div>
         </section>
         <section className="obs-panel obs-panel--planets">
           <div className="obs-panel-hd">PLANETS</div>

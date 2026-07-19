@@ -21,7 +21,7 @@ function latLonToVector3(lat: number, lon: number, radius: number): THREE.Vector
 }
 
 // ---------- Photoreal Earth ----------
-function PhotorealEarthShell({ size, sunDirRef }: { size: number; sunDirRef: React.MutableRefObject<THREE.Vector3> }) {
+function PhotorealEarthShell({ size, sunDirRef, cloudsEnabled }: { size: number; sunDirRef: React.MutableRefObject<THREE.Vector3>; cloudsEnabled?: boolean }) {
   const [dayMap, nightMap, cloudMap, specularMap, normalMap] = useTexture([
     'https://threejs.org/examples/textures/planets/earth_atmos_2048.jpg',
     'https://threejs.org/examples/textures/planets/earth_lights_2048.png',
@@ -41,7 +41,10 @@ function PhotorealEarthShell({ size, sunDirRef }: { size: number; sunDirRef: Rea
 
   const matRef = useRef<THREE.ShaderMaterial>(null);
   useFrame(() => {
-    if (matRef.current) matRef.current.uniforms.sunDir.value.copy(sunDirRef.current);
+    if (matRef.current) {
+      matRef.current.uniforms.sunDir.value.copy(sunDirRef.current);
+      matRef.current.uniforms.cloudStrength.value = cloudsEnabled === false ? 0.0 : 1.0;
+    }
   });
 
   return (
@@ -56,6 +59,7 @@ function PhotorealEarthShell({ size, sunDirRef }: { size: number; sunDirRef: Rea
           specularTex: { value: specularMap },
           normalTex: { value: normalMap },
           sunDir: { value: sunDirRef.current },
+          cloudStrength: { value: cloudsEnabled === false ? 0.0 : 1.0 },
         }}
         vertexShader={`
           varying vec2 vUv;
@@ -73,19 +77,20 @@ function PhotorealEarthShell({ size, sunDirRef }: { size: number; sunDirRef: Rea
           uniform sampler2D specularTex;
           uniform sampler2D normalTex;
           uniform vec3 sunDir;
+          uniform float cloudStrength;
           varying vec2 vUv;
           varying vec3 vNormal;
           void main(){
             vec3 day = texture2D(dayTex, vUv).rgb;
             vec3 night = texture2D(nightTex, vUv).rgb;
             vec3 cloudCol = texture2D(cloudTex, vUv).rgb;
-            float cloudA = dot(cloudCol, vec3(0.333));
+            float cloudA = dot(cloudCol, vec3(0.333)) * cloudStrength;
             float specMask = texture2D(specularTex, vUv).r;
             vec3 nMap = texture2D(normalTex, vUv).rgb*2.0-1.0;
             vec3 N = normalize(vNormal + nMap*0.22);
             float NdotSun = dot(N, normalize(sunDir));
             float dayMix = smoothstep(-0.28, 0.20, NdotSun);
-            vec3 dayWithClouds = mix(day, vec3(0.92), cloudA*0.42);
+            vec3 dayWithClouds = mix(day, vec3(0.92), cloudA*0.62);
             vec3 nightBoost = night * (1.0-dayMix) * 1.7;
             vec3 col = mix(dayWithClouds*0.18 + nightBoost, dayWithClouds, dayMix);
             float spec = pow(max(0.0, dot(reflect(-normalize(sunDir), N), vec3(0.0,0.0,1.0))), 28.0) * specMask * dayMix * 0.60;
@@ -97,6 +102,24 @@ function PhotorealEarthShell({ size, sunDirRef }: { size: number; sunDirRef: Rea
           }
         `}
       />
+    </mesh>
+  );
+}
+
+function CloudLayer({ size, enabled }: { size: number; enabled: boolean }) {
+  const [cloudTex] = useTexture(['https://threejs.org/examples/textures/planets/earth_clouds_1024.png']) as unknown as THREE.Texture[];
+  useMemo(() => {
+    if (cloudTex) {
+      cloudTex.wrapS = cloudTex.wrapT = THREE.RepeatWrapping;
+      cloudTex.colorSpace = THREE.SRGBColorSpace;
+      cloudTex.anisotropy = 8;
+    }
+  }, [cloudTex]);
+  if (!enabled) return null;
+  return (
+    <mesh scale={[1.015, 1.015, 1.015]}>
+      <sphereGeometry args={[size, 64, 64]} />
+      <meshBasicMaterial map={cloudTex} transparent opacity={0.48} depthWrite={false} />
     </mesh>
   );
 }
@@ -325,7 +348,7 @@ function SatelliteField({
             <sphereGeometry args={[0.052, 12, 12]} />
             <meshBasicMaterial color={selected.color} transparent opacity={0.18} blending={THREE.AdditiveBlending} depthWrite={false} />
           </mesh>
-          <Html distanceFactor={2.2} style={{ pointerEvents: 'none' }}>
+          <Html zIndexRange={[0,5]} distanceFactor={2.2} style={{ pointerEvents: 'none' }}>
             <div className="obs-label obs-label--planet is-active" style={{ borderColor: selected.color }}>
               <span className="obs-label-dot" style={{ background: selected.color, boxShadow: `0 0 10px ${selected.color}` }} />
               {selected.name} · {selected.group}
@@ -349,7 +372,7 @@ function QuakeMarkers({ quakes, earthRadius }: { quakes: QuakeFeature[]; earthRa
           <group key={`q-${q.id}`} position={[pos.x, pos.y, pos.z]}>
             <mesh><octahedronGeometry args={[0.022 + mag * 0.007, 0]} /><meshStandardMaterial color={col} emissive={col} emissiveIntensity={1.0} /></mesh>
             <mesh scale={[1.9, 1.9, 1.9]}><octahedronGeometry args={[0.022 + mag * 0.007, 0]} /><meshBasicMaterial color={col} transparent opacity={0.22} blending={THREE.AdditiveBlending} depthWrite={false} /></mesh>
-            {mag > 5 && <Html distanceFactor={5} style={{ pointerEvents: 'none' }}><div className="obs-earth-pin" style={{ background: col, boxShadow: `0 0 14px ${col}` }}>M{mag.toFixed(1)}</div></Html>}
+            {mag > 5 && <Html zIndexRange={[0,5]} distanceFactor={5} style={{ pointerEvents: 'none' }}><div className="obs-earth-pin" style={{ background: col, boxShadow: `0 0 14px ${col}` }}>M{mag.toFixed(1)}</div></Html>}
           </group>
         );
       })}
@@ -368,49 +391,64 @@ function EonetMarkers({ events, earthRadius, layers }: { events: EonetEvent[]; e
         if (cat.includes('fire') && !layers.wildfires && !layers.eonet) visible = false;
         if (cat.includes('volcano') && !layers.volcanoes && !layers.eonet) visible = false;
         if (!visible) return null;
+
         if (cat.includes('storm')) {
+          // Weather radar style: pulsing rings + core + sweep hint
           return (
             <group key={`e-${ev.id}`} position={[pos.x, pos.y, pos.z]}>
-              <mesh rotation={[Math.PI / 2, 0, 0]}><torusGeometry args={[0.020, 0.006, 8, 20]} /><meshStandardMaterial color="#22d3ee" emissive="#22d3ee" emissiveIntensity={0.9} /></mesh>
-              <mesh><sphereGeometry args={[0.008, 8, 8]} /><meshBasicMaterial color="#22d3ee" transparent opacity={0.8} /></mesh>
-              <mesh scale={[1.8, 1.8, 1.8]}><sphereGeometry args={[0.008, 8, 8]} /><meshBasicMaterial color="#22d3ee" transparent opacity={0.18} blending={THREE.AdditiveBlending} depthWrite={false} /></mesh>
+              {/* radar rings */}
+              <mesh><ringGeometry args={[0.016, 0.018, 24]} /><meshBasicMaterial color="#22d3ee" transparent opacity={0.85} side={THREE.DoubleSide} /></mesh>
+              <mesh><ringGeometry args={[0.026, 0.0285, 24]} /><meshBasicMaterial color="#22d3ee" transparent opacity={0.45} side={THREE.DoubleSide} /></mesh>
+              <mesh><ringGeometry args={[0.038, 0.040, 24]} /><meshBasicMaterial color="#22d3ee" transparent opacity={0.22} side={THREE.DoubleSide} /></mesh>
+              <mesh><ringGeometry args={[0.050, 0.052, 24]} /><meshBasicMaterial color="#22d3ee" transparent opacity={0.12} side={THREE.DoubleSide} /></mesh>
+              {/* core */}
+              <mesh><sphereGeometry args={[0.010, 10, 10]} /><meshStandardMaterial color="#22d3ee" emissive="#22d3ee" emissiveIntensity={1.2} /></mesh>
+              <mesh scale={[2.2, 2.2, 2.2]}><sphereGeometry args={[0.010, 10, 10]} /><meshBasicMaterial color="#22d3ee" transparent opacity={0.20} blending={THREE.AdditiveBlending} depthWrite={false} /></mesh>
+              {/* cross sweep */}
+              <mesh rotation={[Math.PI / 2, 0, 0]}><planeGeometry args={[0.0015, 0.052]} /><meshBasicMaterial color="#7dd3fc" transparent opacity={0.9} side={THREE.DoubleSide} /></mesh>
+              <mesh rotation={[Math.PI / 2, 0, Math.PI / 2]}><planeGeometry args={[0.0015, 0.052]} /><meshBasicMaterial color="#7dd3fc" transparent opacity={0.9} side={THREE.DoubleSide} /></mesh>
             </group>
           );
         }
         if (cat.includes('fire')) {
           return (
             <group key={`e-${ev.id}`} position={[pos.x, pos.y, pos.z]}>
-              <mesh><tetrahedronGeometry args={[0.020, 0]} /><meshStandardMaterial color="#fb923c" emissive="#fb923c" emissiveIntensity={1.1} /></mesh>
-              <mesh scale={[1.6, 1.6, 1.6]}><tetrahedronGeometry args={[0.020, 0]} /><meshBasicMaterial color="#fb923c" transparent opacity={0.24} blending={THREE.AdditiveBlending} depthWrite={false} /></mesh>
+              <mesh><tetrahedronGeometry args={[0.022, 0]} /><meshStandardMaterial color="#fb923c" emissive="#fb923c" emissiveIntensity={1.3} /></mesh>
+              <mesh scale={[1.8, 1.8, 1.8]}><tetrahedronGeometry args={[0.022, 0]} /><meshBasicMaterial color="#fb923c" transparent opacity={0.28} blending={THREE.AdditiveBlending} depthWrite={false} /></mesh>
             </group>
           );
         }
         if (cat.includes('volcano')) {
+          // Improved volcano: larger cone, bright emissive, glow, smoke column
           return (
             <group key={`e-${ev.id}`} position={[pos.x, pos.y, pos.z]}>
-              <mesh><coneGeometry args={[0.018, 0.04, 10]} /><meshStandardMaterial color="#ef4444" emissive="#ef4444" emissiveIntensity={1.0} /></mesh>
-              <mesh position={[0, 0.028, 0]}><sphereGeometry args={[0.006, 6, 6]} /><meshBasicMaterial color="#fda4af" transparent opacity={0.7} /></mesh>
+              <mesh><coneGeometry args={[0.028, 0.085, 12]} /><meshStandardMaterial color="#ef4444" emissive="#ef4444" emissiveIntensity={2.2} roughness={0.6} /></mesh>
+              <mesh position={[0, 0.048, 0]} scale={[1, 1, 1]}><sphereGeometry args={[0.012, 10, 10]} /><meshStandardMaterial color="#fda4af" emissive="#fda4af" emissiveIntensity={1.5} /></mesh>
+              <mesh scale={[2.0, 2.0, 2.0]}><coneGeometry args={[0.028, 0.085, 12]} /><meshBasicMaterial color="#ef4444" transparent opacity={0.18} blending={THREE.AdditiveBlending} depthWrite={false} /></mesh>
+              {/* smoke */}
+              <mesh position={[0, 0.095, 0]}><sphereGeometry args={[0.014, 8, 8]} /><meshStandardMaterial color="#a1a1aa" transparent opacity={0.55} /></mesh>
+              <mesh position={[0, 0.115, 0]}><sphereGeometry args={[0.010, 8, 8]} /><meshStandardMaterial color="#d4d4d8" transparent opacity={0.35} /></mesh>
             </group>
           );
         }
         if (cat.includes('ice') || cat.includes('snow')) {
           return (
             <group key={`e-${ev.id}`} position={[pos.x, pos.y, pos.z]}>
-              <mesh rotation={[Math.PI / 2, 0, 0]}><circleGeometry args={[0.020, 12]} /><meshStandardMaterial color="#7dd3fc" transparent opacity={0.85} /></mesh>
+              <mesh rotation={[Math.PI / 2, 0, 0]}><circleGeometry args={[0.022, 12]} /><meshStandardMaterial color="#7dd3fc" transparent opacity={0.90} /></mesh>
             </group>
           );
         }
         if (cat.includes('flood') || cat.includes('sea')) {
           return (
             <group key={`e-${ev.id}`} position={[pos.x, pos.y, pos.z]}>
-              <mesh><boxGeometry args={[0.028, 0.010, 0.028]} /><meshStandardMaterial color="#3b82f6" emissive="#3b82f6" emissiveIntensity={0.8} /></mesh>
+              <mesh><boxGeometry args={[0.030, 0.012, 0.030]} /><meshStandardMaterial color="#3b82f6" emissive="#3b82f6" emissiveIntensity={0.9} /></mesh>
             </group>
           );
         }
         const col = cat.includes('drought') ? '#fde68a' : cat.includes('dust') ? '#a3a3a3' : cat.includes('temp') ? '#f97316' : '#a3e635';
         return (
           <group key={`e-${ev.id}`} position={[pos.x, pos.y, pos.z]}>
-            <mesh><dodecahedronGeometry args={[0.016, 0]} /><meshStandardMaterial color={col} emissive={col} emissiveIntensity={0.85} /></mesh>
+            <mesh><dodecahedronGeometry args={[0.018, 0]} /><meshStandardMaterial color={col} emissive={col} emissiveIntensity={0.95} /></mesh>
           </group>
         );
       })}
@@ -421,18 +459,20 @@ function EonetMarkers({ events, earthRadius, layers }: { events: EonetEvent[]; e
 function WindField({ winds, earthRadius }: { winds: WindSample[]; earthRadius: number }) {
   return (
     <>
-      {winds.slice(0, 180).map((w, i) => {
-        const p1 = latLonToVector3(w.lat, w.lon, earthRadius * 1.045);
+      {winds.slice(0, 220).map((w, i) => {
+        const p1 = latLonToVector3(w.lat, w.lon, earthRadius * 1.048);
         const sp = Math.sqrt(w.u * w.u + w.v * w.v);
         const br = Math.atan2(w.u, w.v);
-        const len = Math.min(3.2, sp * 0.11 + 0.28);
-        const p2 = latLonToVector3(w.lat + Math.cos(br) * len, w.lon + Math.sin(br) * len, earthRadius * 1.045);
+        const len = Math.min(7.5, sp * 0.24 + 0.85);
+        const p2 = latLonToVector3(w.lat + Math.cos(br) * len, w.lon + Math.sin(br) * len, earthRadius * 1.048);
         const col = sp > 14 ? '#22d3ee' : sp > 8 ? '#7dd3fc' : '#e0f2fe';
+        const isStrong = sp > 10;
         return (
           <group key={`wind-${i}`}>
-            <Line points={[[p1.x, p1.y, p1.z] as any, [p2.x, p2.y, p2.z] as any]} color={col} transparent opacity={0.88} lineWidth={sp > 12 ? 3 : 2} />
-            <mesh position={[p2.x, p2.y, p2.z]}><coneGeometry args={[0.004, 0.010, 6]} /><meshBasicMaterial color={col} /></mesh>
-            <mesh position={[p1.x, p1.y, p1.z]}><sphereGeometry args={[0.0045, 6, 6]} /><meshBasicMaterial color={col} transparent opacity={0.9} /></mesh>
+            <Line points={[[p1.x, p1.y, p1.z] as any, [p2.x, p2.y, p2.z] as any]} color={col} transparent opacity={isStrong ? 1.0 : 0.92} lineWidth={isStrong ? 5 : 3.2} />
+            <mesh position={[p2.x, p2.y, p2.z]}><coneGeometry args={[0.007, 0.018, 7]} /><meshBasicMaterial color={col} /></mesh>
+            <mesh position={[p1.x, p1.y, p1.z]}><sphereGeometry args={[0.007, 7, 7]} /><meshBasicMaterial color={col} transparent opacity={0.95} /></mesh>
+            {isStrong && <mesh position={[(p1.x + p2.x) / 2, (p1.y + p2.y) / 2, (p1.z + p2.z) / 2]}><sphereGeometry args={[0.004, 6, 6]} /><meshBasicMaterial color={col} transparent opacity={0.6} /></mesh>}
           </group>
         );
       })}
@@ -500,7 +540,7 @@ function GeographyLabels({ earthRadius, earthWorldPos, layers }: { earthRadius: 
         const p = latLonToVector3(c.lat, c.lon, earthRadius * 1.045);
         return (
           <group key={`cont-${c.name}`} position={[p.x, p.y, p.z]}>
-            <Html distanceFactor={6} style={{ pointerEvents: 'none' }}>
+            <Html zIndexRange={[0,5]} distanceFactor={6} style={{ pointerEvents: 'none' }}>
               <div className="obs-geo-label obs-geo-label--continent">{c.name}</div>
             </Html>
           </group>
@@ -510,7 +550,7 @@ function GeographyLabels({ earthRadius, earthWorldPos, layers }: { earthRadius: 
         const p = latLonToVector3(c.lat, c.lon, earthRadius * 1.028);
         return (
           <group key={`cnty-${c.name}`} position={[p.x, p.y, p.z]}>
-            <Html distanceFactor={4.5} style={{ pointerEvents: 'none' }}>
+            <Html zIndexRange={[0,5]} distanceFactor={4.5} style={{ pointerEvents: 'none' }}>
               <div className="obs-geo-label obs-geo-label--country">{c.name}</div>
             </Html>
           </group>
@@ -521,7 +561,7 @@ function GeographyLabels({ earthRadius, earthWorldPos, layers }: { earthRadius: 
         return (
           <group key={`city-${c.name}`} position={[p.x, p.y, p.z]}>
             <mesh><sphereGeometry args={[0.004, 6, 6]} /><meshBasicMaterial color="#e2e8f0" transparent opacity={0.65} /></mesh>
-            <Html distanceFactor={2.8} style={{ pointerEvents: 'none' }}>
+            <Html zIndexRange={[0,5]} distanceFactor={2.8} style={{ pointerEvents: 'none' }}>
               <div className="obs-geo-label obs-geo-label--city">{c.name}</div>
             </Html>
           </group>
@@ -598,7 +638,7 @@ function TexturedPlanetInner({
       {cfg.atmosphereColor && <AtmosphereGlow size={size} color={cfg.atmosphereColor} strength={isHovered ? (cfg.atmosphereStrength ?? 0.6) * 1.6 : cfg.atmosphereStrength ?? 0.6} power={2.5} />}
       {(selected || isHovered) && <mesh><sphereGeometry args={[size * 1.28, 28, 28]} /><meshBasicMaterial color={cfg.baseColor} transparent opacity={isHovered ? 0.20 : 0.12} blending={THREE.AdditiveBlending} depthWrite={false} side={THREE.BackSide} /></mesh>}
       {(showLabel || isHovered || selected) && (
-        <Html distanceFactor={9} style={{ pointerEvents: 'none' }}>
+        <Html zIndexRange={[0,5]} distanceFactor={9} style={{ pointerEvents: 'none' }}>
           <div className={`obs-label obs-label--planet ${isHovered ? 'is-hover' : ''} ${selected ? 'is-active' : ''}`}>
             <span className="obs-label-dot" style={{ background: cfg.baseColor, boxShadow: `0 0 10px ${cfg.baseColor}` }} />
             {name}{retro ? ' ℞' : ''}
@@ -634,7 +674,7 @@ function ProceduralPlanetMesh({
       {id === 'Sun' && <><SunCorona size={size} /><SunDisk size={size} /></>}
       {cfg.hasRings && <><mesh rotation={[Math.PI / 2.62, 0, 0.18]}><ringGeometry args={[size * 1.38, size * 2.42, 96]} /><meshBasicMaterial color={cfg.ringColor ?? '#fde68a'} transparent opacity={0.56} side={THREE.DoubleSide} /></mesh><RingGlow inner={size * 1.38} outer={size * 2.42} color={cfg.ringColor ?? '#fde68a'} /></>}
       {(selected || isHovered) && <mesh><sphereGeometry args={[size * 1.28, 28, 28]} /><meshBasicMaterial color={cfg.baseColor} transparent opacity={isHovered ? 0.20 : 0.12} blending={THREE.AdditiveBlending} depthWrite={false} side={THREE.BackSide} /></mesh>}
-      {(showLabel || isHovered || selected) && <Html distanceFactor={9} style={{ pointerEvents: 'none' }}><div className={`obs-label obs-label--planet ${isHovered ? 'is-hover' : ''} ${selected ? 'is-active' : ''}`}><span className="obs-label-dot" style={{ background: cfg.baseColor, boxShadow: `0 0 10px ${cfg.baseColor}` }} />{name}{retro ? ' ℞' : ''}</div></Html>}
+      {(showLabel || isHovered || selected) && <Html zIndexRange={[0,5]} distanceFactor={9} style={{ pointerEvents: 'none' }}><div className={`obs-label obs-label--planet ${isHovered ? 'is-hover' : ''} ${selected ? 'is-active' : ''}`}><span className="obs-label-dot" style={{ background: cfg.baseColor, boxShadow: `0 0 10px ${cfg.baseColor}` }} />{name}{retro ? ' ℞' : ''}</div></Html>}
     </>
   );
 }
@@ -691,7 +731,9 @@ function EarthDetailContent({
     return () => { cancelled = true; };
   }, [layers.winds]);
   useEffect(() => {
-    if (!layers.satellites) return;
+    // ISS always polls if any sat group enabled (sats tab suffices)
+    const anySat = Object.values(enabledSatGroups as any).some(Boolean);
+    if (!anySat) return;
     let id: any = null;
     const tick = async () => {
       try {
@@ -703,7 +745,7 @@ function EarthDetailContent({
     };
     tick(); id = setInterval(tick, 5000);
     return () => { if (id) clearInterval(id); };
-  }, [layers.satellites]);
+  }, [enabledSatGroups]);
 
   const acLines = useMemo(() => {
     if (!layers.astroCartography) return [];
@@ -715,9 +757,10 @@ function EarthDetailContent({
   }, [chart, layers.astroCartography]);
 
   const R = earthRadius;
+  const anySatOn = Object.values(enabledSatGroups as any).some(Boolean);
   return (
     <>
-      {layers.satellites && (
+      {anySatOn && (
         <SatelliteField
           earthRadius={R}
           earthWorldPos={earthWorldPos}
@@ -740,13 +783,13 @@ function EarthDetailContent({
         return <Line key={`ac-${line.id}-${idx}`} points={pts} color={line.bodyColor || '#38bdf8'} transparent opacity={line.type === 'MC' || line.type === 'IC' ? 0.92 : 0.66} lineWidth={line.type === 'MC' ? 2.2 : 1.3} />;
       })}
 
-      {layers.satellites && iss && (() => {
+      {anySatOn && iss && (() => {
         const pos = latLonToVector3(iss.lat, iss.lon, R * 1.20);
         return (
           <group position={[pos.x, pos.y, pos.z]}>
             <mesh><sphereGeometry args={[0.032, 16, 16]} /><meshStandardMaterial color="#a3e635" emissive="#a3e635" emissiveIntensity={1.2} /></mesh>
             <mesh scale={[1.9, 1.9, 1.9]}><sphereGeometry args={[0.032, 12, 12]} /><meshBasicMaterial color="#a3e635" transparent opacity={0.24} blending={THREE.AdditiveBlending} depthWrite={false} /></mesh>
-            <Html distanceFactor={4} style={{ pointerEvents: 'none' }}><div className="obs-label obs-label--planet"><span className="obs-label-dot" style={{ background: '#a3e635', boxShadow: '0 0 12px #a3e635' }} />ISS</div></Html>
+            <Html zIndexRange={[0,5]} distanceFactor={4} style={{ pointerEvents: 'none' }}><div className="obs-label obs-label--planet"><span className="obs-label-dot" style={{ background: '#a3e635', boxShadow: '0 0 12px #a3e635' }} />ISS</div></Html>
           </group>
         );
       })()}
@@ -757,13 +800,6 @@ function EarthDetailContent({
         const incl = (m as any).inclination ? (m as any).inclination * Math.PI / 180 : 0.35;
         const pos = new THREE.Vector3(Math.cos(ang) * r, Math.sin(ang) * Math.sin(incl) * r + Math.cos(incl) * r * 0.20 * Math.sin(ang * 1.5), Math.sin(ang) * r);
         return (<group key={`m-${m.id}`} position={[pos.x, pos.y, pos.z]}><mesh><octahedronGeometry args={[0.024, 0]} /><meshStandardMaterial color={m.color} emissive={m.color} emissiveIntensity={0.9} /></mesh><mesh scale={[1.7, 1.7, 1.7]}><octahedronGeometry args={[0.024, 0]} /><meshBasicMaterial color={m.color} transparent opacity={0.20} blending={THREE.AdditiveBlending} depthWrite={false} /></mesh></group>);
-      })}
-
-      {layers.traffic && [...Array(32)].map((_, i) => {
-        const lat = (Math.random() - 0.5) * 130;
-        const lon = (Math.random() - 0.5) * 360;
-        const pos = latLonToVector3(lat, lon, R * 1.02);
-        return (<group key={`traffic-${i}`} position={[pos.x, pos.y, pos.z]}><mesh><ringGeometry args={[0.022, 0.036, 16]} /><meshBasicMaterial color="#f472b6" transparent opacity={0.42} side={THREE.DoubleSide} /></mesh><mesh scale={[1.3, 1.3, 1]}><ringGeometry args={[0.022, 0.036, 16]} /><meshBasicMaterial color="#f472b6" transparent opacity={0.14} blending={THREE.AdditiveBlending} side={THREE.DoubleSide} depthWrite={false} /></mesh></group>);
       })}
     </>
   );
@@ -801,7 +837,7 @@ function AspectLines({ hoveredId, setHoveredId }: { hoveredId: string | null; se
               // @ts-ignore
               onPointerOut={() => { setHoveredId(null); document.body.style.cursor = 'default'; }}
             />
-            {isHover && <Html position={[(a.helio.x + b.helio.x) / 2, (a.helio.y + b.helio.y) / 2 + 0.45, (a.helio.z + b.helio.z) / 2]} style={{ pointerEvents: 'none' }}><div className="obs-tooltip obs-tooltip--aspect"><div className="obs-tooltip-hd" style={{ borderColor: hit.color }}>{hit.label}</div><div>Δ {hit.delta.toFixed(2)}° · Aspects → {hit.aspect}</div></div></Html>}
+            {isHover && <Html zIndexRange={[0,5]} position={[(a.helio.x + b.helio.x) / 2, (a.helio.y + b.helio.y) / 2 + 0.45, (a.helio.z + b.helio.z) / 2]} style={{ pointerEvents: 'none' }}><div className="obs-tooltip obs-tooltip--aspect"><div className="obs-tooltip-hd" style={{ borderColor: hit.color }}>{hit.label}</div><div>Δ {hit.delta.toFixed(2)}° · Aspects → {hit.aspect}</div></div></Html>}
           </group>
         );
       })}
@@ -987,7 +1023,10 @@ function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) 
             onPointerOut={() => { document.body.style.cursor = 'default'; setHoveredPlanet((cur) => (cur === 'Earth' ? null : cur)); }}
           >
             <Suspense fallback={<mesh><sphereGeometry args={[earthSize, 64, 64]} /><meshStandardMaterial color="#1d4ed8" /></mesh>}>
-              <PhotorealEarthShell size={earthSize} sunDirRef={sunDirRef} />
+              <PhotorealEarthShell size={earthSize} sunDirRef={sunDirRef} cloudsEnabled={layers.clouds !== false} />
+            </Suspense>
+            <Suspense fallback={null}>
+              <CloudLayer size={earthSize} enabled={layers.clouds !== false} />
             </Suspense>
           </group>
 
@@ -1016,7 +1055,7 @@ function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) 
           <mesh><sphereGeometry args={[earthSize * 1.2, 32, 32]} /><meshBasicMaterial color="#38bdf8" transparent opacity={hoveredPlanet === 'Earth' ? 0.13 : 0.07} blending={THREE.AdditiveBlending} depthWrite={false} side={THREE.BackSide} /></mesh>
         )}
         {(layers.labels || hoveredPlanet === 'Earth' || selectedPlanet === 'Earth') && (
-          <Html distanceFactor={7} style={{ pointerEvents: 'none' }} position={[0, earthSize * 1.25, 0]}><div className={`obs-label obs-label--planet ${hoveredPlanet === 'Earth' ? 'is-hover' : ''} ${selectedPlanet === 'Earth' ? 'is-active' : ''}`}><span className="obs-label-dot" style={{ background: '#38bdf8', boxShadow: '0 0 12px #38bdf8' }} />Earth</div></Html>
+          <Html distanceFactor={7} zIndexRange={[0, 5]} style={{ pointerEvents: 'none' }} position={[0, earthSize * 1.25, 0]}><div className={`obs-label obs-label--planet ${hoveredPlanet === 'Earth' ? 'is-hover' : ''} ${selectedPlanet === 'Earth' ? 'is-active' : ''}`}><span className="obs-label-dot" style={{ background: '#38bdf8', boxShadow: '0 0 12px #38bdf8' }} />Earth</div></Html>
         )}
       </group>
 
