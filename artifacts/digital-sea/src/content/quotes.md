@@ -10,7 +10,7 @@
 - [[#Reality, Manifestation & Abundance|Reality, Manifestation & Abundance]] (100)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (116)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (97)
-- [[#Relationships, Boundaries & Love|Relationships, Boundaries & Love]] (54)
+- [[#Relationships, Boundaries & Love|Relationships, Boundaries & Love]] (55)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (21)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (93)
 - [[#Wealth, Work & Value|Wealth, Work & Value]] (29)
@@ -1313,6 +1313,10 @@ _Love, friendship, projection, women and men, rejection, intimacy, standards, an
 > I recommend being honest from the beginning. Pretending is exhausting.
 
 > The preeminent skill is likability.
+
+> An important stage in your journey is grieving the life you lost to fantasy, escapism, false beliefs, denial and the lies you believed about yourself, relationships, spirituality, the nature of reality and what it means to be human.
+> — @Maryamhasnaa
+
 
 ## Shadow, Discernment & Protection
 
