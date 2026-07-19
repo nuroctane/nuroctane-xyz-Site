@@ -868,12 +868,14 @@ function CameraFlyController({
   controlsRef,
   followSatId,
   satPosRef,
+  anchorPlanet,
 }: {
   earthPos: THREE.Vector3;
   chart: any;
   controlsRef: React.MutableRefObject<any>;
   followSatId: string | null;
   satPosRef: React.MutableRefObject<Map<string, THREE.Vector3>>;
+  anchorPlanet?: string | null;
 }) {
   const { camera } = useThree();
   const flying = useRef<null | { startPos: THREE.Vector3; endPos: THREE.Vector3; startTarget: THREE.Vector3; endTarget: THREE.Vector3; start: number; dur: number }>(null);
@@ -882,6 +884,9 @@ function CameraFlyController({
 
   const chartRef = useRef(chart);
   useEffect(() => { chartRef.current = chart; }, [chart]);
+
+  const anchorRef = useRef(anchorPlanet);
+  useEffect(() => { anchorRef.current = anchorPlanet; }, [anchorPlanet]);
 
   useEffect(() => {
     const makeFly = (target: THREE.Vector3, offset: THREE.Vector3, dur = 1900) => {
@@ -922,10 +927,27 @@ function CameraFlyController({
     if (followSatId && satPosRef.current.has(followSatId)) {
       const wPos = satPosRef.current.get(followSatId)!;
       if (controlsRef.current) {
-        // lerp target to satellite world pos
         const target = controlsRef.current.target as THREE.Vector3;
         target.lerp(wPos, 0.06);
         controlsRef.current.update();
+      }
+    } else if (!flying.current && anchorRef.current) {
+      // When anchored to a planet, gently follow its helio as it orbits (so Earth stays in view while orbiting)
+      // Only follow if anchor is Earth and not currently flying, to keep Earth centered during time scrub
+      if (anchorRef.current === 'Earth' && controlsRef.current) {
+        const tgt = controlsRef.current.target as THREE.Vector3;
+        // lerp slowly to Earth's current position so orbit is visible but camera doesn't snap
+        tgt.lerp(earthPosRef.current, 0.04);
+        controlsRef.current.update();
+      } else if (anchorRef.current !== 'Sun' && anchorRef.current !== 'solar') {
+        const c = chartRef.current;
+        const p = c?.planets?.find((pl: any) => pl.id === anchorRef.current) as PlanetPosition | undefined;
+        if (p && controlsRef.current) {
+          const world = new THREE.Vector3(p.helio.x, p.helio.y, p.helio.z);
+          const tgt = controlsRef.current.target as THREE.Vector3;
+          tgt.lerp(world, 0.04);
+          controlsRef.current.update();
+        }
       }
     }
     if (!flying.current) return;
@@ -943,7 +965,7 @@ function CameraFlyController({
 }
 
 function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) => void }) {
-  const { chart, layers, selectedPlanet, setSelectedPlanet, time, zodiac, ayanamsaId, enabledBodies, enabledSatGroups, satSearch, selectedSatId, setSelectedSatId, showGroundTrack, showOrbitTrail, followSat } = useObservatory() as any;
+  const { chart, layers, selectedPlanet, setSelectedPlanet, time, zodiac, ayanamsaId, enabledBodies, enabledSatGroups, satSearch, selectedSatId, setSelectedSatId, showGroundTrack, showOrbitTrail, followSat, anchorPlanet, speed } = useObservatory() as any;
   const swissRef = useRef<any>(null);
   const [hoveredPlanet, setHoveredPlanet] = useState<string | null>(null);
   const [hoveredOrbit, setHoveredOrbit] = useState<string | null>(null);
@@ -958,24 +980,31 @@ function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) 
   const earthPosArr: [number, number, number] = [earthHelio.x, earthHelio.y, earthHelio.z];
   const earthPosVec = useMemo(() => new THREE.Vector3(earthHelio.x, earthHelio.y, earthHelio.z), [earthHelio.x, earthHelio.y, earthHelio.z]);
 
-  // accurate sidereal rotation angle
-  const earthRot = useMemo(() => {
+  // accurate sidereal rotation angle — drives day/night, based on UTC time
+  const earthRotAccurate = useMemo(() => {
     const t = time.getTime();
     return ((t / 86400000) * Math.PI * 2 * 1.0027379) % (Math.PI * 2);
   }, [time]);
 
-  // sun dir in earth local rotating frame: opposite of earth pos, inverse-rotated
-  const sunDirLocal = useMemo(() => {
+  // sun direction in world space (sun at origin)
+  const sunDirWorld = useMemo(() => {
     const toSun = new THREE.Vector3(-earthHelio.x, -earthHelio.y, -earthHelio.z).normalize();
-    // inverse rotate by earthRot around Y
-    const cos = Math.cos(-earthRot);
-    const sin = Math.sin(-earthRot);
-    const x = toSun.x * cos - toSun.z * sin;
-    const z = toSun.x * sin + toSun.z * cos;
-    return new THREE.Vector3(x, toSun.y, z).normalize();
-  }, [earthHelio, earthRot]);
-  const sunDirRef = useRef(sunDirLocal);
-  useEffect(() => { sunDirRef.current.copy(sunDirLocal); }, [sunDirLocal]);
+    return toSun;
+  }, [earthHelio]);
+  const sunDirRef = useRef(sunDirWorld);
+  useEffect(() => { sunDirRef.current.copy(sunDirWorld); }, [sunDirWorld]);
+
+  // For UX, add subtle idle spin when paused so Earth never looks frozen, but keep accurate angle as base
+  const earthGroupRef = useRef<THREE.Group>(null);
+  const idleSpinRef = useRef(0);
+  useFrame((_, dt) => {
+    if (speed === 0) {
+      idleSpinRef.current = (idleSpinRef.current + dt * 0.012) % (Math.PI * 2);
+    }
+    if (earthGroupRef.current) {
+      earthGroupRef.current.rotation.y = earthRotAccurate + idleSpinRef.current;
+    }
+  });
 
   const bodies = useMemo(() => chart.planets.filter((p: PlanetPosition) => {
     if (p.id === 'Earth' || p.id === 'Sun') return true;
@@ -1015,7 +1044,7 @@ function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) 
 
       {/* Earth with accurate rotation + orbit — rotating frame contains all geo markers */}
       <group position={earthPosArr}>
-        <group rotation={[0, earthRot, 0]}>
+        <group ref={earthGroupRef as any}>
           {/* Photoreal Earth */}
           <group
             onClick={(e) => { e.stopPropagation(); setSelectedPlanet('Earth' as any); }}
@@ -1069,7 +1098,7 @@ function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) 
       <gridHelper args={[160, 30, 0x1b2e57, 0x0e1b33]} />
 
       <OrbitControls ref={controlsRef} makeDefault enablePan minDistance={0.9} maxDistance={240} enableDamping dampingFactor={0.086} rotateSpeed={0.56} zoomSpeed={1.0} panSpeed={0.68} />
-      <CameraFlyController earthPos={earthPosVec} chart={chart} controlsRef={controlsRef} followSatId={followSat ? selectedSatId : null} satPosRef={satPosRef} />
+      <CameraFlyController earthPos={earthPosVec} chart={chart} controlsRef={controlsRef} followSatId={followSat ? selectedSatId : null} satPosRef={satPosRef} anchorPlanet={anchorPlanet} />
     </>
   );
 }

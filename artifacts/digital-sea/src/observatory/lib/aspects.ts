@@ -30,7 +30,7 @@ export function findAspects(
             a: a.id as BodyId,
             b: b.id as BodyId,
             aspect: def.id,
-            label: def.label,
+            label: `${a.name} ${def.label} ${b.name}`,
             color: def.color,
             angle: def.angle,
             delta,
@@ -46,4 +46,8 @@ export function findAspects(
     }
   }
   return hits.sort((x, y) => x.delta - y.delta);
+}
+
+export function formatAspectLabel(aName: string, bName: string, aspectLabel: string): string {
+  return `${aName} ${aspectLabel} ${bName}`;
 }

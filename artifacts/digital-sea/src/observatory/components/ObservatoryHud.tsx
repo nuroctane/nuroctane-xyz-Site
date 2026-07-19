@@ -397,10 +397,58 @@ export function ObservatoryHud() {
           ))}
         </section>
         <section className="obs-panel obs-panel--aspects">
-          <div className="obs-panel-hd">ASPECTS</div>
-          {o.chart.aspects.slice(0, 20).map((a, i) => (
-            <div key={i} className="obs-aspect-row"><span className="swatch" style={{ background: a.color }} /><span className="txt">{a.label}</span></div>
-          ))}
+          <div className="obs-panel-hd">ASPECTS · {o.chart.aspects.length}</div>
+          <div style={{ maxHeight: '180px', overflow: 'auto' }}>
+            {o.chart.aspects.slice(0, 60).map((a, i) => (
+              <div key={i} className="obs-aspect-row"><span className="swatch" style={{ background: a.color }} /><span className="txt">{a.label}</span><span className="delta">{a.delta.toFixed(1)}°</span></div>
+            ))}
+            {o.chart.aspects.length === 0 && <div className="obs-muted">No aspects at this time.</div>}
+          </div>
+          {(o as any).natalChart && (() => {
+            const natal = (o as any).natalChart;
+            // compute cross aspects natal vs current
+            const cross: any[] = [];
+            const enabled = o.enabledAspects;
+            const orbScale = o.orbScale;
+            const defs = ASPECT_DEFS.filter((d) => enabled[d.id] !== false);
+            const degDeltaFn = (a: number, b: number) => { let d = Math.abs(a - b) % 360; if (d > 180) d = 360 - d; return d; };
+            for (const n of natal.planets) {
+              for (const c of o.chart.planets) {
+                if (n.id === 'Earth' || c.id === 'Earth') continue;
+                const sep = degDeltaFn(n.lon, c.lon);
+                for (const def of defs) {
+                  const delta = Math.abs(sep - def.angle);
+                  const orb = def.defaultOrb * orbScale;
+                  if (delta <= orb) {
+                    cross.push({ label: `${n.name} ${def.label} ${c.name}`, color: def.color, delta, a: n.id, b: c.id, aspect: def.id });
+                  }
+                }
+              }
+            }
+            cross.sort((x, y) => x.delta - y.delta);
+            const top = cross.slice(0, 40);
+            return (
+              <div style={{ marginTop: '0.6rem' }}>
+                <div className="obs-panel-hd">NATAL × NOW · {cross.length}</div>
+                <div style={{ maxHeight: '160px', overflow: 'auto' }}>
+                  {top.map((a, i) => (
+                    <div key={i} className="obs-aspect-row"><span className="swatch" style={{ background: a.color }} /><span className="txt">{a.label}</span><span className="delta">{a.delta.toFixed(1)}°</span></div>
+                  ))}
+                  {cross.length === 0 && <div className="obs-muted">No cross aspects.</div>}
+                </div>
+              </div>
+            );
+          })()}
+          {(o as any).natalChart && (
+            <div style={{ marginTop: '0.5rem' }}>
+              <div className="obs-panel-hd">NATAL · {(o as any).natalChart.aspects.length}</div>
+              <div style={{ maxHeight: '120px', overflow: 'auto' }}>
+                {(o as any).natalChart.aspects.slice(0, 30).map((a: any, i: number) => (
+                  <div key={i} className="obs-aspect-row"><span className="swatch" style={{ background: a.color }} /><span className="txt">{a.label}</span><span className="delta">{a.delta.toFixed(1)}°</span></div>
+                ))}
+              </div>
+            </div>
+          )}
         </section>
       </aside>
     </div>
