@@ -483,26 +483,30 @@ function GeographyLabels({ earthRadius, earthWorldPos, layers }: { earthRadius: 
   const [dist, setDist] = useState(8);
   useFrame(() => {
     const d = camera.position.distanceTo(earthWorldPos);
-    // throttle update
     if (Math.abs(d - dist) > 0.08) setDist(d);
   });
   if (!layers.labels && !layers.cities) return null;
-  const showContinents = dist < 22 && layers.labels;
-  const showCountries = dist < 7.5 && layers.labels;
-  const showCities = dist < 4.2 && (layers.cities || layers.labels);
+  // Exclusive bands — never show all at once (avoids clutter)
+  // Far: continents only, mid: countries only, close: cities only
+  let mode: 'continents' | 'countries' | 'cities' | 'none' = 'none';
+  if (dist < 3.4 && (layers.cities || layers.labels)) mode = 'cities';
+  else if (dist < 6.8 && layers.labels) mode = 'countries';
+  else if (dist < 22 && layers.labels) mode = 'continents';
+
+  if (mode === 'none') return null;
   return (
     <group>
-      {showContinents && CONTINENTS.map((c) => {
+      {mode === 'continents' && CONTINENTS.map((c) => {
         const p = latLonToVector3(c.lat, c.lon, earthRadius * 1.045);
         return (
           <group key={`cont-${c.name}`} position={[p.x, p.y, p.z]}>
             <Html distanceFactor={6} style={{ pointerEvents: 'none' }}>
-              <div className="obs-geo-label obs-geo-label--continent">{c.name.toUpperCase()}</div>
+              <div className="obs-geo-label obs-geo-label--continent">{c.name}</div>
             </Html>
           </group>
         );
       })}
-      {showCountries && COUNTRIES.map((c) => {
+      {mode === 'countries' && COUNTRIES.map((c) => {
         const p = latLonToVector3(c.lat, c.lon, earthRadius * 1.028);
         return (
           <group key={`cnty-${c.name}`} position={[p.x, p.y, p.z]}>
@@ -512,11 +516,11 @@ function GeographyLabels({ earthRadius, earthWorldPos, layers }: { earthRadius: 
           </group>
         );
       })}
-      {showCities && MAJOR_CITIES.map((c) => {
+      {mode === 'cities' && MAJOR_CITIES.map((c) => {
         const p = latLonToVector3(c.lat, c.lon, earthRadius * 1.018);
         return (
           <group key={`city-${c.name}`} position={[p.x, p.y, p.z]}>
-            <mesh><sphereGeometry args={[0.004, 6, 6]} /><meshBasicMaterial color="#e2e8f0" transparent opacity={0.7} /></mesh>
+            <mesh><sphereGeometry args={[0.004, 6, 6]} /><meshBasicMaterial color="#e2e8f0" transparent opacity={0.65} /></mesh>
             <Html distanceFactor={2.8} style={{ pointerEvents: 'none' }}>
               <div className="obs-geo-label obs-geo-label--city">{c.name}</div>
             </Html>
@@ -840,6 +844,9 @@ function CameraFlyController({
   const earthPosRef = useRef(earthPos);
   useEffect(() => { earthPosRef.current = earthPos; }, [earthPos]);
 
+  const chartRef = useRef(chart);
+  useEffect(() => { chartRef.current = chart; }, [chart]);
+
   useEffect(() => {
     const makeFly = (target: THREE.Vector3, offset: THREE.Vector3, dur = 1900) => {
       const curPos = camera.position.clone();
@@ -851,7 +858,8 @@ function CameraFlyController({
     const onPlanet = (e: any) => {
       const id = e.detail?.id;
       if (!id) return;
-      const p = chart.planets.find((pl: any) => pl.id === id) as PlanetPosition | undefined;
+      const c = chartRef.current;
+      const p = c?.planets?.find((pl: any) => pl.id === id) as PlanetPosition | undefined;
       let target: THREE.Vector3;
       if (id === 'Sun') target = new THREE.Vector3(0, 0, 0);
       else if (p) target = new THREE.Vector3(p.helio.x, p.helio.y, p.helio.z);
@@ -865,15 +873,13 @@ function CameraFlyController({
     window.addEventListener('obs-flyto-earth', onEarth as any);
     window.addEventListener('obs-flyto-solar', onSolar as any);
     window.addEventListener('obs-flyto-planet', onPlanet as any);
-    // auto-focus earth on mount — guaranteed visible
-    const t = setTimeout(() => { if (earthPosRef.current.length() > 0.1) onEarth(); }, 650);
     return () => {
       window.removeEventListener('obs-flyto-earth', onEarth as any);
       window.removeEventListener('obs-flyto-solar', onSolar as any);
       window.removeEventListener('obs-flyto-planet', onPlanet as any);
-      clearTimeout(t);
     };
-  }, [camera, controlsRef, chart]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [camera, controlsRef]);
 
   useFrame(() => {
     // follow satellite functional
@@ -940,23 +946,17 @@ function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) 
     return (enabledBodies as any)[p.id] !== false;
   }).filter((p: PlanetPosition) => SOLAR_BODIES.includes(p.id as any) || p.id === 'Sun' || ['Moon', 'Chiron', 'Eris', 'Haumea', 'Makemake', 'Sedna', 'Quaoar', 'Orcus', 'Ixion', 'Varuna', 'Ceres', 'Vesta', 'Pallas', 'Juno', 'Pholus'].includes(p.id)), [chart.planets, enabledBodies]);
 
-  // ensure controls target earth on first mount
-  useEffect(() => {
-    const iv = setInterval(() => {
-      if (controlsRef.current) {
-        // if still at origin and we have earth pos, nudge target
-        const tgt = controlsRef.current.target as THREE.Vector3;
-        if (tgt.length() < 0.1) {
-          tgt.copy(earthPosVec);
-          controlsRef.current.update();
-        }
-        clearInterval(iv);
-      }
-    }, 120);
-    return () => clearInterval(iv);
-  }, [earthPosVec]);
-
   const earthSize = 1.08;
+
+  const didInitTarget = useRef(false);
+  useEffect(() => {
+    if (didInitTarget.current) return;
+    if (!controlsRef.current) return;
+    // set initial target to Earth once — no forcing afterwards
+    controlsRef.current.target.copy(earthPosVec);
+    controlsRef.current.update();
+    didInitTarget.current = true;
+  }, [earthPosVec]);
 
   return (
     <>
@@ -1029,7 +1029,7 @@ function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) 
       <mesh rotation={[Math.PI / 2, 0, 0]}><circleGeometry args={[80, 64]} /><meshBasicMaterial color="#0a1220" transparent opacity={0.10} side={THREE.DoubleSide} depthWrite={false} /></mesh>
       <gridHelper args={[160, 30, 0x1b2e57, 0x0e1b33]} />
 
-      <OrbitControls ref={controlsRef} makeDefault enablePan minDistance={0.9} maxDistance={240} enableDamping dampingFactor={0.086} rotateSpeed={0.56} zoomSpeed={1.0} panSpeed={0.68} target={earthPosVec} />
+      <OrbitControls ref={controlsRef} makeDefault enablePan minDistance={0.9} maxDistance={240} enableDamping dampingFactor={0.086} rotateSpeed={0.56} zoomSpeed={1.0} panSpeed={0.68} />
       <CameraFlyController earthPos={earthPosVec} chart={chart} controlsRef={controlsRef} followSatId={followSat ? selectedSatId : null} satPosRef={satPosRef} />
     </>
   );
@@ -1066,12 +1066,12 @@ export function UnifiedWorld() {
         <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
           <button type="button" className={`obs-pill obs-pill--action ${mode === 'earth' ? 'is-active' : ''}`} onClick={() => { setMode('earth'); window.dispatchEvent(new CustomEvent('obs-flyto-earth')); }}>🌍 Focus Earth</button>
           <button type="button" className={`obs-pill obs-pill--action ${mode === 'solar' ? 'is-active' : ''}`} onClick={() => { setMode('solar'); window.dispatchEvent(new CustomEvent('obs-flyto-solar')); }}>☀️ Solar overview</button>
-          <span className="obs-pill obs-pill--stats">{chart.planets.length} bodies · {Object.values(enabledSatGroups).filter(Boolean).length}/{SATELLITE_GROUPS.length} sat groups · {chart.aspects.length} aspects — unified · NASA 2K textures</span>
+          <span className="obs-pill obs-pill--stats">{chart.planets.length} bodies · {chart.aspects.length} aspects</span>
         </div>
       </div>
 
       <div className="obs-world-hint">
-        Drag to orbit · Scroll to zoom · Click planet or satellite to select · Pinch to zoom · Double-click Earth to focus
+        Drag to orbit · Scroll to zoom · Click to select
       </div>
     </div>
   );

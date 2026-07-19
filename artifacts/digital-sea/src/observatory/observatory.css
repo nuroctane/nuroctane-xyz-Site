@@ -657,79 +657,43 @@
   border-radius: 3px;
 }
 
-/* --- Progressive geo labels --- */
+/* --- Progressive geo labels — clean, exclusive, no clutter --- */
 .obs-geo-label {
   font-family: 'JetBrains Mono', ui-monospace, monospace;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  background: rgba(8,12,20,0.72);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255,255,255,0.06);
-  border-radius: 999px;
-  padding: 0.14rem 0.52rem;
   white-space: nowrap;
   pointer-events: none;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.85);
 }
 .obs-geo-label--continent {
-  font-size: 11px;
-  color: #e2e8f0;
-  background: rgba(8,12,20,0.62);
-  border-color: rgba(56,189,248,0.18);
-  box-shadow: 0 2px 12px rgba(0,0,0,0.35), 0 0 0 1px rgba(56,189,248,0.08);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  color: rgba(226,232,240,0.92);
+  text-transform: uppercase;
 }
 .obs-geo-label--country {
-  font-size: 9.5px;
-  color: #94a3b8;
-  background: rgba(8,12,20,0.56);
-  letter-spacing: 0.06em;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: rgba(148,163,184,0.88);
 }
 .obs-geo-label--city {
-  font-size: 8.5px;
+  font-size: 9px;
   font-weight: 500;
-  color: #cbd5e1;
-  background: rgba(8,12,20,0.66);
-  border-color: rgba(255,255,255,0.06);
+  color: rgba(203,213,225,0.9);
+  letter-spacing: 0.02em;
   text-transform: none;
-  letter-spacing: 0.02em;
 }
 
-/* toggle with description */
-.obs-toggle--with-desc {
-  align-items: flex-start;
-}
-.obs-toggle-main {
-  display: flex;
-  flex-direction: column;
-  gap: 0.08rem;
-}
-.obs-toggle-desc {
-  font-size: 9px;
-  color: #64748b;
-  line-height: 1.3;
-  letter-spacing: 0.02em;
+/* date card — one unified module */
+.obs-date-card {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 12px;
+  padding: 0.6rem;
 }
 
-/* tip text actual usage tips, not product */
-.obs-tip {
-  font-size: 10px;
-  line-height: 1.5;
-  color: #64748b;
-  padding: 0.35rem 0.45rem;
-  border-left: 2px solid rgba(56,189,248,0.18);
-  background: rgba(255,255,255,0.02);
-  border-radius: 0 6px 6px 0;
-  margin-bottom: 0.55rem;
-}
-.obs-tip::before {
-  content: 'TIP: ';
-  font-weight: 700;
-  color: #7dd3fc;
-  font-size: 9px;
-  letter-spacing: 0.06em;
-}
-
-/* sat panel mini active state */
+/* sat active */
 .obs-mini.is-active {
   background: rgba(56,189,248,0.18);
   color: #e0f2fe;
