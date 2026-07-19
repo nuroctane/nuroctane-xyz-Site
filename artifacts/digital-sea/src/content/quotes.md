@@ -9,7 +9,7 @@
 - [[#Faith, God & Surrender|Faith, God & Surrender]] (64)
 - [[#Reality, Manifestation & Abundance|Reality, Manifestation & Abundance]] (100)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (116)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (97)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (98)
 - [[#Relationships, Boundaries & Love|Relationships, Boundaries & Love]] (55)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (21)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (93)
@@ -1172,6 +1172,10 @@ _Doing the hard thing, skill, courage, habits, attention, decisions, and embodie
 
 > one common trait I find in high achieving individuals is urgency. it looks almost like impatience until you understand it is closer to reverence, a deep refusal to waste the one thing they can’t buy more of. the alarm goes and they rise. the message is answered while it is still warm. the small task is done before it can find a shelf to hide on. they commit and move in a single motion. an idea sparks and they chase it that day, before the world talks them out of it. they run at their own lives like something is at stake, because they have decided something is.
 > — @josbjohnson
+
+> The father of seven has not finished a thought in four years. he is just moving. feeding. driving. wiping. his brain is soup and his back is finished and he has no opinions about civilization he is too tired for opinions. and meanwhile civilization is growing out of him like he is dirt and he doesnt even notice because there is milk on the floor again. the childfree man has read eleven books this year about the decline of the west and he is the decline and the books are the evidence and he will understand this at fifty eight in a room that is very clean and very quiet
+> — @lichthauch
+
 
 
 
