@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { useObservatory } from '../state/ObservatoryContext';
 import { MISSIONS, MAJOR_CITIES } from '../data/missions';
 import { CONSTELLATIONS } from '../data/constellations';
+import { BRIGHT_STARS } from '../lib/brightStars';
 import { fetchEarthquakes, fetchEonet, fetchGlobalWindGrid, fetchRealWindGrid, type QuakeFeature, type EonetEvent, type WindSample } from '../lib/meteo';
 import { computeACLines, jdFromDate } from '../lib/astroCartography';
 import { raDecToVector } from '../lib/math';
@@ -13,6 +14,18 @@ import { SOLAR_BODIES, type PlanetPosition } from '../lib/types';
 import { SATELLITE_GROUPS, type SatelliteGroupId } from '../lib/types';
 import { getPlanetConfig, getPlanetTextureUrls, gasGiantTexture, moonTexture, marsTexture } from '../lib/planetModels';
 import { AtmosphereGlow, SunCorona, RingGlow, Aurora, SunDisk } from '../lib/planetShaders';
+
+const J2000_MS = Date.UTC(2000, 0, 1, 12, 0, 0);
+function siderealRotationAngle(time: Date, hours: number | undefined): number {
+  if (!hours || hours === 0) return 0;
+  const ms = time.getTime() - J2000_MS;
+  const periodMs = hours * 3600_000;
+  const rot = (ms / periodMs) * Math.PI * 2;
+  const twoPi = Math.PI * 2;
+  let a = rot % twoPi;
+  if (a < 0) a += twoPi;
+  return a;
+}
 
 function latLonToVector3(lat: number, lon: number, radius: number): THREE.Vector3 {
   const phi = (90 - lat) * (Math.PI / 180);
@@ -679,13 +692,25 @@ function ProceduralPlanetMesh({
   );
 }
 
-function PlanetBody({ p, selected, isHovered, onSelect, onHover, showLabel }: {
-  p: PlanetPosition; selected: boolean; isHovered: boolean; onSelect: () => void; onHover: (v: boolean) => void; showLabel: boolean;
+function PlanetBody({ p, selected, isHovered, onSelect, onHover, showLabel, time, earthPos }: {
+  p: PlanetPosition; selected: boolean; isHovered: boolean; onSelect: () => void; onHover: (v: boolean) => void; showLabel: boolean; time: Date; earthPos?: THREE.Vector3;
 }) {
   const cfg = getPlanetConfig(p.id);
   const size = p.id === 'Sun' ? 1.28 : p.id === 'Jupiter' ? 0.94 : p.id === 'Saturn' ? 0.86 : p.id === 'Neptune' || p.id === 'Uranus' ? 0.62 : p.id === 'Venus' ? 0.54 : p.id === 'Mars' ? 0.42 : p.id === 'Moon' ? 0.20 : ['Eris', 'Haumea'].includes(p.id) ? 0.24 : 0.30;
   const ref = useRef<THREE.Group>(null);
-  useFrame((_, dt) => { if (ref.current) ref.current.rotation.y += dt * (cfg.rotationSpeed ?? 0.14); });
+  // accurate rotation from J2000 sidereal, with Moon tidally locked override
+  const baseAngle = useMemo(() => siderealRotationAngle(time, cfg.siderealDayHours), [time, cfg.siderealDayHours]);
+  useFrame(() => {
+    if (!ref.current) return;
+    if (p.id === 'Moon' && earthPos) {
+      const dx = earthPos.x - p.helio.x;
+      const dz = earthPos.z - p.helio.z;
+      const yaw = Math.atan2(dx, dz);
+      ref.current.rotation.y = yaw + Math.PI;
+    } else {
+      ref.current.rotation.y = baseAngle;
+    }
+  });
   const urls = getPlanetTextureUrls(p.id);
   const isReal = !!urls?.map && p.id !== 'Sun';
   return (
@@ -815,6 +840,8 @@ function OrbitRing({ planetId, date, zodiac, ayanamsaId, swiss, isHovered, onHov
 function AspectLines({ hoveredId, setHoveredId }: { hoveredId: string | null; setHoveredId: (id: string | null) => void }) {
   const { chart, layers } = useObservatory();
   const map = useMemo(() => new Map(chart.planets.map((p: any) => [p.id, p])), [chart.planets]);
+  const hoverPosRef = useRef<THREE.Vector3 | null>(null);
+  const [hoverPos, setHoverPos] = useState<THREE.Vector3 | null>(null);
   if (!layers.aspects) return null;
   const aspects = chart.aspects.slice(0, 130);
   return (
@@ -824,20 +851,43 @@ function AspectLines({ hoveredId, setHoveredId }: { hoveredId: string | null; se
         const pts: [number, number, number][] = [[a.helio.x, a.helio.y, a.helio.z], [b.helio.x, b.helio.y, b.helio.z]];
         const id = `${hit.a}-${hit.aspect}-${hit.b}-${i}`;
         const isHover = hoveredId === id;
+        // wider invisible hit line for easier hover
+        const mid: [number, number, number] = [(a.helio.x + b.helio.x) / 2, (a.helio.y + b.helio.y) / 2, (a.helio.z + b.helio.z) / 2];
+        const tooltipPos = hoverPos && isHover ? [hoverPos.x, hoverPos.y, hoverPos.z] as [number, number, number] : mid;
         return (
           <group key={id}>
+            <Line
+              points={pts}
+              color="white"
+              transparent
+              opacity={0}
+              lineWidth={12}
+              // @ts-ignore
+              onPointerMove={(e: any) => {
+                if (e.point) {
+                  hoverPosRef.current = e.point.clone();
+                  setHoverPos(e.point.clone());
+                }
+                if (hoveredId !== id) setHoveredId(id);
+              }}
+              // @ts-ignore
+              onPointerOver={(e: any) => {
+                e.stopPropagation();
+                if (e.point) { hoverPosRef.current = e.point.clone(); setHoverPos(e.point.clone()); }
+                setHoveredId(id);
+                document.body.style.cursor = 'pointer';
+              }}
+              // @ts-ignore
+              onPointerOut={() => { setHoveredId(null); setHoverPos(null); hoverPosRef.current = null; document.body.style.cursor = 'default'; }}
+            />
             <Line
               points={pts}
               color={isHover ? '#fff' : hit.color || '#38bdf8'}
               transparent
               opacity={isHover ? 1 : 0.40}
               lineWidth={isHover ? 3.2 : 1.1}
-              // @ts-ignore
-              onPointerOver={(e: any) => { e.stopPropagation(); setHoveredId(id); document.body.style.cursor = 'pointer'; }}
-              // @ts-ignore
-              onPointerOut={() => { setHoveredId(null); document.body.style.cursor = 'default'; }}
             />
-            {isHover && <Html zIndexRange={[0,5]} position={[(a.helio.x + b.helio.x) / 2, (a.helio.y + b.helio.y) / 2 + 0.45, (a.helio.z + b.helio.z) / 2]} style={{ pointerEvents: 'none' }}><div className="obs-tooltip obs-tooltip--aspect"><div className="obs-tooltip-hd" style={{ borderColor: hit.color }}>{hit.label}</div><div>Δ {hit.delta.toFixed(2)}° · Aspects → {hit.aspect}</div></div></Html>}
+            {isHover && <Html zIndexRange={[0,5]} position={tooltipPos} style={{ pointerEvents: 'none' }} transform sprite={false} distanceFactor={12}><div className="obs-tooltip obs-tooltip--aspect obs-tooltip--instant"><div className="obs-tooltip-hd" style={{ borderColor: hit.color }}>{hit.label}</div><div>Δ {hit.delta.toFixed(2)}° · {hit.aspect}</div></div></Html>}
           </group>
         );
       })}
@@ -860,6 +910,84 @@ function ConstellationLines({ radius = 140 }: { radius?: number }) {
   }, [radius]);
   if (!layers.constellations) return null;
   return (<group>{lines.map((l) => <Line key={l.id} points={l.pts} color="#7dd3fc" transparent opacity={0.22} lineWidth={0.9} />)}</group>);
+}
+
+function RealStars({ radius = 780 }: { radius?: number }) {
+  const { chart, layers, anchorPlanet } = useObservatory() as any;
+  const { camera } = useThree();
+  const [labels, setLabels] = useState<(typeof BRIGHT_STARS)[0][]>([]);
+  const starVecs = useMemo(() => {
+    return BRIGHT_STARS.map((s) => {
+      const v = raDecToVector(s.ra, s.dec);
+      return { s, v: new THREE.Vector3(v.x, v.y, v.z).normalize(), pos: new THREE.Vector3(v.x * radius, v.y * radius, v.z * radius) };
+    });
+  }, [radius]);
+  const pointsGeo = useMemo(() => {
+    const pos = new Float32Array(starVecs.length * 3);
+    const col = new Float32Array(starVecs.length * 3);
+    for (let i = 0; i < starVecs.length; i++) {
+      const sv = starVecs[i]!;
+      pos[i * 3] = sv.pos.x; pos[i * 3 + 1] = sv.pos.y; pos[i * 3 + 2] = sv.pos.z;
+      const b = Math.max(0.18, Math.min(1, 1.18 - sv.s.mag * 0.19));
+      col[i * 3] = b; col[i * 3 + 1] = b; col[i * 3 + 2] = b * 0.985;
+    }
+    const geo = new THREE.BufferGeometry();
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
+    return geo;
+  }, [starVecs]);
+
+  useFrame(() => {
+    if (Math.random() > 0.12) return;
+    if (!layers.constellations) return;
+    const anchored = anchorPlanet;
+    if (anchored && anchored !== 'Sun' && anchored !== 'solar' && anchored != null && anchored !== 'Earth') {
+      if (labels.length) setLabels([]);
+      return;
+    }
+    const camPos = camera.position;
+    const distToOrigin = camPos.length();
+    if (distToOrigin < 8) { if (labels.length) setLabels([]); return; }
+    const camDir = new THREE.Vector3();
+    camera.getWorldDirection(camDir);
+    const planetDirs: THREE.Vector3[] = (chart.planets as PlanetPosition[]).slice(0, 14).map((p: any) => new THREE.Vector3(p.helio.x, p.helio.y, p.helio.z).normalize());
+    const cands: { s: (typeof BRIGHT_STARS)[0]; dot: number }[] = [];
+    for (const sv of starVecs) {
+      if (sv.s.mag > 2.8) continue;
+      const dotCam = sv.v.dot(camDir);
+      if (dotCam < 0.80) continue;
+      let nearPlanet = false;
+      for (const pd of planetDirs) {
+        if (sv.v.dot(pd) > 0.986) { nearPlanet = true; break; }
+      }
+      if (nearPlanet) continue;
+      const ndc = sv.pos.clone().project(camera);
+      if (ndc.z > 1 || Math.abs(ndc.x) > 0.88 || Math.abs(ndc.y) > 0.88) continue;
+      cands.push({ s: sv.s, dot: dotCam });
+    }
+    cands.sort((a, b) => b.dot - a.dot || a.s.mag - b.s.mag);
+    const maxLabels = distToOrigin > 50 ? 7 : distToOrigin > 24 ? 10 : 12;
+    const picked = cands.slice(0, maxLabels).map((c) => c.s);
+    if (picked.length !== labels.length || picked.some((p, i) => p.id !== labels[i]?.id)) setLabels(picked);
+  });
+
+  return (
+    <group>
+      <points geometry={pointsGeo}>
+        <pointsMaterial vertexColors sizeAttenuation size={1.55} transparent opacity={0.95} depthWrite={false} blending={THREE.AdditiveBlending} />
+      </points>
+      {labels.map((s) => {
+        const v = raDecToVector(s.ra, s.dec);
+        return (
+          <group key={`starlabel-${s.id}`} position={[v.x * (radius * 0.998), v.y * (radius * 0.998), v.z * (radius * 0.998)]}>
+            <Html zIndexRange={[0, 5]} distanceFactor={130} style={{ pointerEvents: 'none' }} center>
+              <div className="obs-star-label">{s.name}</div>
+            </Html>
+          </group>
+        );
+      })}
+    </group>
+  );
 }
 
 function CameraFlyController({
@@ -980,13 +1108,10 @@ function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) 
   const earthPosArr: [number, number, number] = [earthHelio.x, earthHelio.y, earthHelio.z];
   const earthPosVec = useMemo(() => new THREE.Vector3(earthHelio.x, earthHelio.y, earthHelio.z), [earthHelio.x, earthHelio.y, earthHelio.z]);
 
-  // accurate sidereal rotation angle — drives day/night, based on UTC time
-  const earthRotAccurate = useMemo(() => {
-    const t = time.getTime();
-    return ((t / 86400000) * Math.PI * 2 * 1.0027379) % (Math.PI * 2);
-  }, [time]);
+  // accurate sidereal rotation — chronologically accurate GMST from J2000
+  const earthRotAccurate = useMemo(() => siderealRotationAngle(time, 23.9344696), [time]);
 
-  // sun direction in world space (sun at origin)
+  // sun direction in world space (sun at origin) — fixed, Earth rotation moves day/night
   const sunDirWorld = useMemo(() => {
     const toSun = new THREE.Vector3(-earthHelio.x, -earthHelio.y, -earthHelio.z).normalize();
     return toSun;
@@ -994,15 +1119,10 @@ function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) 
   const sunDirRef = useRef(sunDirWorld);
   useEffect(() => { sunDirRef.current.copy(sunDirWorld); }, [sunDirWorld]);
 
-  // For UX, add subtle idle spin when paused so Earth never looks frozen, but keep accurate angle as base
   const earthGroupRef = useRef<THREE.Group>(null);
-  const idleSpinRef = useRef(0);
-  useFrame((_, dt) => {
-    if (speed === 0) {
-      idleSpinRef.current = (idleSpinRef.current + dt * 0.012) % (Math.PI * 2);
-    }
+  useFrame(() => {
     if (earthGroupRef.current) {
-      earthGroupRef.current.rotation.y = earthRotAccurate + idleSpinRef.current;
+      earthGroupRef.current.rotation.y = earthRotAccurate;
     }
   });
 
@@ -1030,11 +1150,12 @@ function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) 
       <ambientLight intensity={0.62} />
       <pointLight position={[0, 0, 0]} intensity={5.8} distance={300} decay={1.2} color="#fff4d0" />
       <directionalLight position={[16, 24, 16]} intensity={0.52} color="#cfe8ff" />
-      <Stars radius={460} depth={180} count={15000} factor={7} saturation={0} fade speed={0.16} />
+      <Stars radius={460} depth={180} count={6000} factor={4} saturation={0} fade speed={0.08} />
+      <RealStars radius={780} />
       <ConstellationLines radius={145} />
 
       {bodies.filter((p: PlanetPosition) => p.id === 'Sun').map((p: PlanetPosition) => (
-        <PlanetBody key="Sun" p={{ ...p, helio: { x: 0, y: 0, z: 0 } } as any} selected={selectedPlanet === p.id} isHovered={hoveredPlanet === p.id} onSelect={() => { setSelectedPlanet(p.id); window.dispatchEvent(new CustomEvent('obs-flyto-planet', { detail: { id: 'Sun' } })); }} onHover={(v) => setHoveredPlanet(v ? p.id : null)} showLabel={layers.labels} />
+        <PlanetBody key="Sun" p={{ ...p, helio: { x: 0, y: 0, z: 0 } } as any} time={time} earthPos={earthPosVec} selected={selectedPlanet === p.id} isHovered={hoveredPlanet === p.id} onSelect={() => { setSelectedPlanet(p.id); window.dispatchEvent(new CustomEvent('obs-flyto-planet', { detail: { id: 'Sun' } })); }} onHover={(v) => setHoveredPlanet(v ? p.id : null)} showLabel={layers.labels} />
       ))}
 
       {layers.orbits && SOLAR_BODIES.filter((id) => id !== 'Earth').map((id: any) => (
@@ -1089,7 +1210,7 @@ function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) 
       </group>
 
       {layers.planets && bodies.filter((p: PlanetPosition) => p.id !== 'Sun' && p.id !== 'Earth').map((p: PlanetPosition) => (
-        <PlanetBody key={p.id} p={p} selected={selectedPlanet === p.id} isHovered={hoveredPlanet === p.id} onSelect={() => { setSelectedPlanet(p.id as any); window.dispatchEvent(new CustomEvent('obs-flyto-planet', { detail: { id: p.id } })); }} onHover={(v) => setHoveredPlanet(v ? p.id : null)} showLabel={layers.labels} />
+        <PlanetBody key={p.id} p={p} time={time} earthPos={earthPosVec} selected={selectedPlanet === p.id} isHovered={hoveredPlanet === p.id} onSelect={() => { setSelectedPlanet(p.id as any); window.dispatchEvent(new CustomEvent('obs-flyto-planet', { detail: { id: p.id } })); }} onHover={(v) => setHoveredPlanet(v ? p.id : null)} showLabel={layers.labels} />
       ))}
 
       <AspectLines hoveredId={hoveredAspect} setHoveredId={setHoveredAspect} />

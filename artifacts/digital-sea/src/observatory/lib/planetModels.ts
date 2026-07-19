@@ -13,37 +13,39 @@ export type PlanetConfig = {
   hasAurora?: boolean;
   atmosphereStrength?: number;
   rotationSpeed?: number;
+  /** Sidereal rotation period in hours — accurate, negative = retrograde */
+  siderealDayHours?: number;
   glowPower?: number;
   metalness?: number;
   roughness?: number;
 };
 
 export const PLANET_CONFIGS: Record<string, PlanetConfig> = {
-  Sun: { id: 'Sun', baseColor: '#fde68a', emissive: '#f59e0b', atmosphereColor: '#fbbf24', atmosphereStrength: 1.35, rotationSpeed: 0.06, glowPower: 1.6, metalness: 0, roughness: 1 },
-  Mercury: { id: 'Mercury', baseColor: '#a8a29e', atmosphereColor: '#52525b', atmosphereStrength: 0.12, rotationSpeed: 0.04, metalness: 0.35, roughness: 0.88 },
-  Venus: { id: 'Venus', baseColor: '#fcd34d', atmosphereColor: '#fde68a', cloudColor: '#fef3c7', hasClouds: true, atmosphereStrength: 0.95, rotationSpeed: -0.015, roughness: 0.92 },
-  Earth: { id: 'Earth', baseColor: '#1d4ed8', atmosphereColor: '#38bdf8', cloudColor: '#ffffff', hasClouds: true, hasCityLights: true, hasAurora: true, atmosphereStrength: 0.9, rotationSpeed: 0.18, roughness: 0.68 },
-  Moon: { id: 'Moon', baseColor: '#d6d3d1', atmosphereStrength: 0.04, rotationSpeed: 0.02, roughness: 0.95 },
-  Mars: { id: 'Mars', baseColor: '#fb7185', atmosphereColor: '#fda4af', atmosphereStrength: 0.32, rotationSpeed: 0.17, roughness: 0.82 },
-  Jupiter: { id: 'Jupiter', baseColor: '#fdba74', atmosphereColor: '#fed7aa', hasClouds: true, atmosphereStrength: 0.62, rotationSpeed: 0.42, roughness: 0.58 },
-  Saturn: { id: 'Saturn', baseColor: '#fde68a', atmosphereColor: '#fef3c7', hasRings: true, ringColor: '#fde68a', atmosphereStrength: 0.58, rotationSpeed: 0.36, roughness: 0.52 },
-  Uranus: { id: 'Uranus', baseColor: '#67e8f9', atmosphereColor: '#22d3ee', atmosphereStrength: 0.72, rotationSpeed: 0.24, roughness: 0.62 },
-  Neptune: { id: 'Neptune', baseColor: '#818cf8', atmosphereColor: '#6366f1', atmosphereStrength: 0.78, rotationSpeed: 0.28, roughness: 0.58 },
-  Pluto: { id: 'Pluto', baseColor: '#e9d5ff', atmosphereColor: '#ddd6fe', atmosphereStrength: 0.18, rotationSpeed: 0.07, roughness: 0.9 },
-  Eris: { id: 'Eris', baseColor: '#f9a8d4', atmosphereStrength: 0.14, roughness: 0.9 },
-  Haumea: { id: 'Haumea', baseColor: '#c7d2fe', hasRings: true, ringColor: '#a5b4fc', atmosphereStrength: 0.22, roughness: 0.82 },
-  Makemake: { id: 'Makemake', baseColor: '#bfdbfe', atmosphereStrength: 0.14, roughness: 0.85 },
-  Sedna: { id: 'Sedna', baseColor: '#fca5a5', atmosphereStrength: 0.1, roughness: 0.9 },
-  Quaoar: { id: 'Quaoar', baseColor: '#a7f3d0', atmosphereStrength: 0.12, roughness: 0.86 },
-  Orcus: { id: 'Orcus', baseColor: '#ddd6fe', atmosphereStrength: 0.11, roughness: 0.86 },
-  Ixion: { id: 'Ixion', baseColor: '#fecdd3', atmosphereStrength: 0.1, roughness: 0.9 },
-  Varuna: { id: 'Varuna', baseColor: '#bae6fd', atmosphereStrength: 0.1, roughness: 0.9 },
-  Ceres: { id: 'Ceres', baseColor: '#a7f3d0', atmosphereStrength: 0.1, roughness: 0.9 },
-  Vesta: { id: 'Vesta', baseColor: '#fde68a', atmosphereStrength: 0.1, roughness: 0.9 },
-  Chiron: { id: 'Chiron', baseColor: '#f0abfc', atmosphereStrength: 0.24, roughness: 0.82 },
-  Pholus: { id: 'Pholus', baseColor: '#f0abfc', atmosphereStrength: 0.2 },
-  Pallas: { id: 'Pallas', baseColor: '#a7f3d0', atmosphereStrength: 0.08 },
-  Juno: { id: 'Juno', baseColor: '#fde68a', atmosphereStrength: 0.08 },
+  Sun: { id: 'Sun', baseColor: '#fde68a', emissive: '#f59e0b', atmosphereColor: '#fbbf24', atmosphereStrength: 1.35, siderealDayHours: 609.12, glowPower: 1.6, metalness: 0, roughness: 1 },
+  Mercury: { id: 'Mercury', baseColor: '#a8a29e', atmosphereColor: '#52525b', atmosphereStrength: 0.12, siderealDayHours: 1407.6, metalness: 0.35, roughness: 0.88 },
+  Venus: { id: 'Venus', baseColor: '#fcd34d', atmosphereColor: '#fde68a', cloudColor: '#fef3c7', hasClouds: true, atmosphereStrength: 0.95, siderealDayHours: -5832.5, roughness: 0.92 },
+  Earth: { id: 'Earth', baseColor: '#1d4ed8', atmosphereColor: '#38bdf8', cloudColor: '#ffffff', hasClouds: true, hasCityLights: true, hasAurora: true, atmosphereStrength: 0.9, siderealDayHours: 23.9344696, roughness: 0.68 },
+  Moon: { id: 'Moon', baseColor: '#d6d3d1', atmosphereStrength: 0.04, siderealDayHours: 655.728, roughness: 0.95 },
+  Mars: { id: 'Mars', baseColor: '#fb7185', atmosphereColor: '#fda4af', atmosphereStrength: 0.32, siderealDayHours: 24.6229, roughness: 0.82 },
+  Jupiter: { id: 'Jupiter', baseColor: '#fdba74', atmosphereColor: '#fed7aa', hasClouds: true, atmosphereStrength: 0.62, siderealDayHours: 9.925, roughness: 0.58 },
+  Saturn: { id: 'Saturn', baseColor: '#fde68a', atmosphereColor: '#fef3c7', hasRings: true, ringColor: '#fde68a', atmosphereStrength: 0.58, siderealDayHours: 10.656, roughness: 0.52 },
+  Uranus: { id: 'Uranus', baseColor: '#67e8f9', atmosphereColor: '#22d3ee', atmosphereStrength: 0.72, siderealDayHours: -17.24, roughness: 0.62 },
+  Neptune: { id: 'Neptune', baseColor: '#818cf8', atmosphereColor: '#6366f1', atmosphereStrength: 0.78, siderealDayHours: 16.11, roughness: 0.58 },
+  Pluto: { id: 'Pluto', baseColor: '#e9d5ff', atmosphereColor: '#ddd6fe', atmosphereStrength: 0.18, siderealDayHours: -153.2928, roughness: 0.9 },
+  Eris: { id: 'Eris', baseColor: '#f9a8d4', atmosphereStrength: 0.14, siderealDayHours: 25.92, roughness: 0.9 },
+  Haumea: { id: 'Haumea', baseColor: '#c7d2fe', hasRings: true, ringColor: '#a5b4fc', atmosphereStrength: 0.22, siderealDayHours: 3.915, roughness: 0.82 },
+  Makemake: { id: 'Makemake', baseColor: '#bfdbfe', atmosphereStrength: 0.14, siderealDayHours: 22.826, roughness: 0.85 },
+  Sedna: { id: 'Sedna', baseColor: '#fca5a5', atmosphereStrength: 0.1, siderealDayHours: 240, roughness: 0.9 },
+  Quaoar: { id: 'Quaoar', baseColor: '#a7f3d0', atmosphereStrength: 0.12, siderealDayHours: 17.68, roughness: 0.86 },
+  Orcus: { id: 'Orcus', baseColor: '#ddd6fe', atmosphereStrength: 0.11, siderealDayHours: 13.0, roughness: 0.86 },
+  Ixion: { id: 'Ixion', baseColor: '#fecdd3', atmosphereStrength: 0.1, siderealDayHours: 12.5, roughness: 0.9 },
+  Varuna: { id: 'Varuna', baseColor: '#bae6fd', atmosphereStrength: 0.1, siderealDayHours: 6.34, roughness: 0.9 },
+  Ceres: { id: 'Ceres', baseColor: '#a7f3d0', atmosphereStrength: 0.1, siderealDayHours: 9.074, roughness: 0.9 },
+  Vesta: { id: 'Vesta', baseColor: '#fde68a', atmosphereStrength: 0.1, siderealDayHours: 5.342, roughness: 0.9 },
+  Chiron: { id: 'Chiron', baseColor: '#f0abfc', atmosphereStrength: 0.24, siderealDayHours: 5.92, roughness: 0.82 },
+  Pholus: { id: 'Pholus', baseColor: '#f0abfc', atmosphereStrength: 0.2, siderealDayHours: 9.98 },
+  Pallas: { id: 'Pallas', baseColor: '#a7f3d0', atmosphereStrength: 0.08, siderealDayHours: 7.813 },
+  Juno: { id: 'Juno', baseColor: '#fde68a', atmosphereStrength: 0.08, siderealDayHours: 7.21 },
 };
 
 export function getPlanetConfig(id: string): PlanetConfig {
