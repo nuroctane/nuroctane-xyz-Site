@@ -1,8 +1,9 @@
 import { useEffect } from 'react';
 import { StandaloneNav } from './StandaloneNav';
 import { MiniAudio } from '../components/hud/MiniAudio';
+import ObservatoryApp from '../observatory/ObservatoryApp';
 
-export default function OrbitVeilPage() {
+export default function ObservatoryPage() {
   useEffect(() => {
     const previousOverflow = document.body.style.overflow;
     document.body.style.overflow = 'hidden';
@@ -12,15 +13,10 @@ export default function OrbitVeilPage() {
   }, []);
 
   return (
-    <main className="orbit-veil-page">
-      <iframe
-        className="orbit-veil-frame"
-        src="/orbit-veil-runtime/index.html"
-        title="Orbit Veil real-time satellite tracker"
-        allow="fullscreen"
-      />
+    <main className="observatory-page">
+      <ObservatoryApp />
       <StandaloneNav />
-      <div className="orbit-veil-audio">
+      <div className="observatory-audio">
         <MiniAudio />
       </div>
     </main>

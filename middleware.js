@@ -65,22 +65,31 @@ const PAGES = {
     siteName: 'NurCLI',
     favicon: '/assets/nodes/nur-cli-logo.png',
   },
-  orbit: {
-    title: 'Orbit Veil',
+  observatory: {
+    title: 'Observatory',
     description:
-      'A real-time 3D presentation of Earth and its satellites, powered by CelesTrak TLE data and in-browser SGP4 propagation.',
-    badge: 'ORBIT VEIL',
-    path: '/orbit',
-    siteName: 'Orbit Veil',
+      'Astrology-rooted 3D web observatory — Swiss Ephemeris, all house/ayanamsa systems, aspects, Earth satellites, solar system, Cesium globe, and NASA mission hooks.',
+    badge: 'OBSERVATORY',
+    path: '/observatory',
+    siteName: 'Observatory',
+    favicon: '/assets/nodes/orbit-veil-logo.svg',
+  },
+  orbit: {
+    title: 'Observatory',
+    description:
+      'Astrology-rooted 3D web observatory — Swiss Ephemeris, all house/ayanamsa systems, aspects, Earth satellites, solar system, Cesium globe, and NASA mission hooks.',
+    badge: 'OBSERVATORY',
+    path: '/observatory',
+    siteName: 'Observatory',
     favicon: '/assets/nodes/orbit-veil-logo.svg',
   },
   'orbit-veil': {
-    title: 'Orbit Veil',
+    title: 'Observatory',
     description:
-      'A real-time 3D presentation of Earth and its satellites, powered by CelesTrak TLE data and in-browser SGP4 propagation.',
-    badge: 'ORBIT VEIL',
-    path: '/orbit',
-    siteName: 'Orbit Veil',
+      'Astrology-rooted 3D web observatory — Swiss Ephemeris, all house/ayanamsa systems, aspects, Earth satellites, solar system, Cesium globe, and NASA mission hooks.',
+    badge: 'OBSERVATORY',
+    path: '/observatory',
+    siteName: 'Observatory',
     favicon: '/assets/nodes/orbit-veil-logo.svg',
   },
   blog: {
@@ -149,6 +158,7 @@ const CHILD_FAVICONS = {
     miyamaker: '/assets/nodes/miyamaker-avatar.png',
     webutils: '/assets/nodes/wrench.png',
     'orbit-veil': '/assets/nodes/orbit-veil-logo.svg',
+    observatory: '/assets/nodes/orbit-veil-logo.svg',
   },
 };
 
@@ -158,8 +168,10 @@ function resolvePage(pathname) {
   const top = segs[0] || 'home';
   const key = top === '' ? 'home' : top;
   const base = PAGES[key] || PAGES.home;
-  const path = key === 'orbit-veil' ? '/orbit' : (clean === '/' ? '/' : clean);
-  const imageKey = key === 'orbit-veil' ? 'orbit' : key;
+  const path =
+    key === 'orbit-veil' || key === 'orbit' ? '/observatory' : (clean === '/' ? '/' : clean);
+  const imageKey =
+    key === 'orbit-veil' || key === 'orbit' ? 'observatory' : key;
   let image =
     base.image ||
     `${SITE}/api/og?page=${encodeURIComponent(imageKey === 'home' ? 'home' : imageKey)}&title=${encodeURIComponent(base.badge)}`;
@@ -264,6 +276,7 @@ export const config = {
     '/cli',
     '/orbit',
     '/orbit-veil',
+    '/observatory',
     '/blog',
     '/blog/:path*',
     '/socials',

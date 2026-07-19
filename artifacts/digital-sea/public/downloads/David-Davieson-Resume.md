@@ -15,7 +15,7 @@ Product engineer and technical operator who ships agentic systems, local AI infr
 - Built a Rust coding agent spanning 60+ providers with a streaming TUI, tool loop, subagents, todos, auto-compaction, session resume, native vision, and manual/plan/auto permission modes.
 - Designed the plugin and natural-language skill system, hardened command sandbox, one-command provisioning, and knowledge integrations across Graphify, PLUR, Ruflo, and Executor.
 
-### Orbit Veil — Real-time 3D satellite intelligence
+### Observatory — 3D web observatory / Orbit Veil
 [nuroctane.xyz/orbit](https://nuroctane.xyz/orbit)
 - Built a real-time 3D Earth and satellite tracker using CelesTrak TLE sets and local SGP4 propagation for continuous positions, orbital paths, and coverage footprints.
 - Shipped search, constellation filtering, two-hour data refreshes, and time controls for replaying or accelerating the orbital scene.

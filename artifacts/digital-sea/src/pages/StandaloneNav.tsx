@@ -11,7 +11,7 @@ const DESTINATIONS = [
   { href: '/books', label: 'Books', logo: '/assets/nodes/goodreads-logo.png' },
   { href: '/modkeys', label: 'MODKEYS', logo: '/assets/nodes/modkeys-logo.png' },
   { href: '/cli', label: 'NurCLI', logo: '/assets/nodes/nur-cli-logo.png' },
-  { href: '/orbit', label: 'Orbit Veil', logo: '/assets/nodes/orbit-veil-logo.svg' },
+  { href: '/observatory', label: 'Observatory', logo: '/assets/nodes/orbit-veil-logo.svg' },
   { href: 'https://tunerzsociety.site', label: 'ATX Tunerz', logo: '/assets/nodes/atx-tunerz-logo.png', external: true },
   { href: '/fin', label: 'Fin', logo: '/assets/nodes/venmo-logo.png' },
 ] as const;

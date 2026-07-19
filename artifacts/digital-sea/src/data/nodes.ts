@@ -269,11 +269,11 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     logo: '/assets/nodes/wrench.png',
   },
   {
-    id: 'orbit-veil', label: 'Orbit Veil', handle: 'real-time satellite tracker',
-    url: '/orbit',
-    urlDisplay: 'nuroctane.xyz/orbit',
-    subtitle: 'the whole sky, propagated live',
-    description: 'Real-time 3D Earth and satellite tracker. CelesTrak TLE sets refresh on a two-hour cadence while satellite.js runs SGP4 propagation locally for continuous positions, orbital paths, coverage footprints, search, and time travel.',
+    id: 'observatory', label: 'Observatory', handle: '3d web observatory',
+    url: '/observatory',
+    urlDisplay: 'nuroctane.xyz/observatory',
+    subtitle: 'sky, system, satellites, time',
+    description: 'Astrology-rooted 3D observatory: Swiss Ephemeris, every major house system and ayanamsa, full aspectarian, live Earth satellites (CelesTrak/SGP4), solar system, Cesium globe, and NASA Eyes/Horizons mission hooks.',
     avatar: '/assets/nodes/orbit-veil-logo.svg',
     logo: '/assets/nodes/orbit-veil-logo.svg',
   },
@@ -333,6 +333,7 @@ const WIDE_CARD: Record<string, number> = {
   miyamaker:   0.058,
   // last card before portals  -  smooth entrance + room to pivot away
   webutils:    0.056,
+  observatory: 0.058,
   'orbit-veil': 0.058,
 };
 

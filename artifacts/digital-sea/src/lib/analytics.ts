@@ -19,7 +19,7 @@ export const ANALYTICS_TOP_ROUTES = [
   '/resume',
   '/modkeys',
   '/cli',
-  '/orbit',
+  '/observatory',
 ] as const;
 
 export type AnalyticsTopRoute = (typeof ANALYTICS_TOP_ROUTES)[number];
@@ -59,7 +59,8 @@ export function resolveAnalytics(location: string): { path: string; route: strin
       return { path: '/cli', route: '/cli' };
     case 'orbit':
     case 'orbit-veil':
-      return { path: '/orbit', route: '/orbit' };
+    case 'observatory':
+      return { path: '/observatory', route: '/observatory' };
     case 'fin':
       return { path: '/fin', route: '/fin' };
     case 'socials':

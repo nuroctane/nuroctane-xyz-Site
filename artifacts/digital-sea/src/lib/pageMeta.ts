@@ -79,25 +79,36 @@ const PAGES: Record<string, PageMeta> = {
     favicon: '/assets/nodes/nur-cli-logo.png',
     imagePath: '/api/og?page=cli&v=2',
   },
-  orbit: {
-    title: 'Orbit Veil',
+  observatory: {
+    title: 'Observatory',
     description:
-      'A real-time 3D presentation of Earth and its satellites, powered by CelesTrak TLE data and in-browser SGP4 propagation.',
-    badge: 'ORBIT VEIL',
-    path: '/orbit',
-    siteName: 'Orbit Veil',
+      'Astrology-rooted 3D web observatory — Swiss Ephemeris, all house/ayanamsa systems, aspects, Earth satellites, solar system, Cesium globe, and NASA mission hooks.',
+    badge: 'OBSERVATORY',
+    path: '/observatory',
+    siteName: 'Observatory',
     favicon: '/assets/nodes/orbit-veil-logo.svg',
-    imagePath: '/api/og?page=orbit&v=1',
+    imagePath: '/api/og?page=observatory&v=2',
+  },
+  // Legacy keys redirect metadata to /observatory
+  orbit: {
+    title: 'Observatory',
+    description:
+      'Astrology-rooted 3D web observatory — Swiss Ephemeris, all house/ayanamsa systems, aspects, Earth satellites, solar system, Cesium globe, and NASA mission hooks.',
+    badge: 'OBSERVATORY',
+    path: '/observatory',
+    siteName: 'Observatory',
+    favicon: '/assets/nodes/orbit-veil-logo.svg',
+    imagePath: '/api/og?page=observatory&v=2',
   },
   'orbit-veil': {
-    title: 'Orbit Veil',
+    title: 'Observatory',
     description:
-      'A real-time 3D presentation of Earth and its satellites, powered by CelesTrak TLE data and in-browser SGP4 propagation.',
-    badge: 'ORBIT VEIL',
-    path: '/orbit',
-    siteName: 'Orbit Veil',
+      'Astrology-rooted 3D web observatory — Swiss Ephemeris, all house/ayanamsa systems, aspects, Earth satellites, solar system, Cesium globe, and NASA mission hooks.',
+    badge: 'OBSERVATORY',
+    path: '/observatory',
+    siteName: 'Observatory',
     favicon: '/assets/nodes/orbit-veil-logo.svg',
-    imagePath: '/api/og?page=orbit&v=1',
+    imagePath: '/api/og?page=observatory&v=2',
   },
   blog: {
     title: 'Writings — NUROCTANE',
@@ -165,6 +176,7 @@ const CHILD_FAVICONS: Record<string, Record<string, string>> = {
     miyamaker: '/assets/nodes/miyamaker-avatar.png',
     webutils: '/assets/nodes/wrench.png',
     'orbit-veil': '/assets/nodes/orbit-veil-logo.svg',
+    observatory: '/assets/nodes/orbit-veil-logo.svg',
   },
 };
 

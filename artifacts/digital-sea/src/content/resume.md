@@ -17,9 +17,9 @@
 * **[ NurCLI — Multi-Provider Terminal Coding Agent ]** · [nuroctane.xyz/cli](https://www.nuroctane.xyz/cli) · [GitHub](https://github.com/nuroctane/nur-cli)
   * Built a production-minded **Rust** coding agent spanning 60+ providers with a streaming TUI, tool loop, subagents, todos, auto-compaction, session resume, native vision, and manual/plan/auto permission modes.
   * Designed the plugin marketplace and natural-language skill system, hardened command sandbox, one-command provisioning, and persistent knowledge integrations across Graphify, PLUR, Ruflo, and Executor.
-* **[ Orbit Veil — Real-Time 3D Satellite Intelligence ]** · [nuroctane.xyz/orbit](https://www.nuroctane.xyz/orbit)
-  * Built a real-time 3D Earth and satellite tracker using CelesTrak TLE sets and local SGP4 propagation for continuous positions, orbital paths, and coverage footprints.
-  * Shipped search, constellation filtering, two-hour data refreshes, and time controls for replaying or accelerating the orbital scene.
+* **[ Observatory — 3D Web Observatory ]** · [nuroctane.xyz/observatory](https://www.nuroctane.xyz/observatory)
+  * Multi-mode 3D observatory: Swiss Ephemeris (WASM) with every major house system and ayanamsa, full aspectarian, solar system, constellation sky chart, Cesium Earth explore, and NASA Eyes/Horizons mission hooks.
+  * Retains the sealed CelesTrak/SGP4 satellite field for live Earth orbital coverage alongside progressive globe and rover data panels.
 * **[ MODKEYS — 3D Keyboard Product Configurator ]** · [nuroctane.xyz/modkeys](https://www.nuroctane.xyz/modkeys)
   * Built a React/Vite configurator for mechanical keyboard plates and keycaps with exact geometry, undo/redo, shareable URL-encoded builds, and dual mobile/desktop shells.
   * Connected Express/Vercel and Upstash Redis services and shipped KLE JSON, SVG manufacturing-template, specification-sheet, and PDF export workflows.

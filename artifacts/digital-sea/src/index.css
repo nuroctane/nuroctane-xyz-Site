@@ -1651,8 +1651,9 @@ html.standalone-active body {
   50%      { opacity: 0.8; transform: scale(1.2); }
 }
 
-/* Orbit Veil is an isolated, exact runtime; host chrome stays above its canvas. */
-.orbit-veil-page {
+/* Observatory / Orbit Veil host chrome stays above the WebGL stage. */
+.orbit-veil-page,
+.observatory-page {
   position: fixed;
   inset: 0;
   z-index: 0;
@@ -1668,24 +1669,28 @@ html.standalone-active body {
   background: #04060a;
 }
 
-.orbit-veil-page .qnav {
+.orbit-veil-page .qnav,
+.observatory-page .qnav {
   top: 50%;
   right: 1rem;
   left: auto;
   transform: translateY(-50%);
 }
 
-.orbit-veil-page .qnav-panel {
+.orbit-veil-page .qnav-panel,
+.observatory-page .qnav-panel {
   right: 0;
   left: auto;
   transform: translateX(12px);
 }
 
-.orbit-veil-page .qnav-panel--open {
+.orbit-veil-page .qnav-panel--open,
+.observatory-page .qnav-panel--open {
   transform: translateX(0);
 }
 
-.orbit-veil-audio {
+.orbit-veil-audio,
+.observatory-audio {
   position: fixed;
   top: calc(50% + 54px);
   right: 1rem;
@@ -1693,19 +1698,22 @@ html.standalone-active body {
 }
 
 @media (max-width: 640px) {
-  .orbit-veil-page .qnav {
+  .orbit-veil-page .qnav,
+.observatory-page .qnav {
     top: max(0.75rem, env(safe-area-inset-top));
     right: 0.55rem;
     transform: none;
   }
 
-  .orbit-veil-page .qnav-trigger {
+  .orbit-veil-page .qnav-trigger,
+  .observatory-page .qnav-trigger {
     width: 34px;
     height: 34px;
     opacity: 0.82;
   }
 
-  .orbit-veil-audio {
+  .orbit-veil-audio,
+.observatory-audio {
     top: max(3.6rem, calc(env(safe-area-inset-top) + 3.6rem));
     right: 0.55rem;
   }
