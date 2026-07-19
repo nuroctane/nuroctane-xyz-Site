@@ -578,4 +578,34 @@
   font-family: Inter, sans-serif;
   white-space: nowrap;
 }
+.obs-anchor-bar {
+  display: flex;
+  gap: 0.32rem;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  max-width: 72vw;
+  padding-bottom: 0.15rem;
+  margin-bottom: 0.35rem;
+  scrollbar-width: none;
+}
+.obs-anchor-bar::-webkit-scrollbar { display: none; }
+.obs-pill--anchor {
+  appearance: none;
+  border: 1px solid rgba(255,255,255,0.08);
+  background: rgba(12,18,32,0.86);
+  backdrop-filter: blur(12px);
+  color: #94a3b8;
+  font-family: JetBrains Mono, monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  padding: 0.32rem 0.62rem;
+  border-radius: 999px;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 140ms;
+}
+.obs-pill--anchor:hover { background: rgba(56,189,248,0.12); border-color: rgba(56,189,248,0.24); color: #e0f2fe; }
+.obs-pill--anchor.is-active { background: rgba(56,189,248,0.18); border-color: rgba(56,189,248,0.38); color: #f0f9ff; }
+
 

@@ -101,6 +101,8 @@ export function ObservatoryHud() {
               ['aspects', 'Aspects'],
               ['chart', 'Chart'],
               ['layers', 'Layers'],
+              ['satellites', 'Sats'],
+              ['anchors', 'Anchors'],
               ['observer', 'Place'],
               ['advanced', 'Advanced'],
             ] as const
@@ -333,6 +335,77 @@ export function ObservatoryHud() {
               </div>
             </div>
             <div className="obs-muted">Swiss {o.swissVersion} ready {o.swissReady ? 'yes' : 'no'} — range 1800-2100</div>
+          </section>
+        )}
+
+        {o.systemsPanel === 'satellites' && (
+          <section className="obs-panel obs-panel--scroll-lg">
+            <div className="obs-panel-hd">SATELLITES — orbit veil full capacity</div>
+            <div className="obs-muted">Color-coded by owner/company. Filter, search, follow, ground track, orbit trail.</div>
+            <div className="obs-field">
+              <span>Search</span>
+              <input type="text" value={o.satSearch} placeholder="STARLINK, ONEWEB, GPS..." onChange={(e) => o.setSatSearch(e.target.value)} />
+            </div>
+            <div className="obs-chip-row">
+              <button type="button" className="obs-mini" onClick={() => o.setAllSatGroups(true)}>All on</button>
+              <button type="button" className="obs-mini" onClick={() => o.setAllSatGroups(false)}>All off</button>
+              <button type="button" className="obs-mini" onClick={() => o.setShowGroundTrack(!o.showGroundTrack)}>{o.showGroundTrack ? 'Track on' : 'Track off'}</button>
+              <button type="button" className="obs-mini" onClick={() => o.setShowOrbitTrail(!o.showOrbitTrail)}>{o.showOrbitTrail ? 'Trail on' : 'Trail off'}</button>
+              <button type="button" className="obs-mini" onClick={() => o.setFollowSat(!o.followSat)}>{o.followSat ? 'Follow on' : 'Follow off'}</button>
+            </div>
+            {(o as any).SATELLITE_GROUPS ? null : null}
+            {(() => {
+              const groups = (o as any).satGroupsMeta ?? [
+                { id: 'starlink', label: 'Starlink', owner: 'SpaceX', color: '#38bdf8', count: 4200 },
+                { id: 'oneweb', label: 'OneWeb', owner: 'OneWeb', color: '#e2e8f0', count: 620 },
+                { id: 'planet', label: 'Planet Labs', owner: 'Planet', color: '#fde68a', count: 420 },
+                { id: 'iridium', label: 'Iridium', owner: 'Iridium', color: '#94a3b8', count: 86 },
+                { id: 'gps', label: 'GPS', owner: 'US GPS', color: '#4ade80', count: 32 },
+                { id: 'galileo', label: 'Galileo', owner: 'EU Galileo', color: '#a78bfa', count: 28 },
+                { id: 'glonass', label: 'GLONASS', owner: 'RU GLONASS', color: '#fb923c', count: 26 },
+                { id: 'debris', label: 'Debris', owner: 'Debris', color: '#ef4444', count: 1100 },
+                { id: 'cosmos', label: 'Cosmos & Legacy', owner: 'RU Legacy', color: '#71717a', count: 400 },
+                { id: 'other', label: 'Other', owner: 'Mixed', color: '#64748b', count: 298 },
+              ];
+              const q = o.satSearch.toLowerCase();
+              return groups.filter((g: any) => !q || g.label.toLowerCase().includes(q) || g.owner.toLowerCase().includes(q)).map((g: any) => (
+                <label key={g.id} className="obs-toggle">
+                  <input type="checkbox" checked={!!(o.enabledSatGroups as any)[g.id]} onChange={() => o.toggleSatGroup(g.id as any)} />
+                  <span className="dot" style={{ background: g.color, boxShadow: `0 0 8px ${g.color}` }} />
+                  <span>{g.label}</span>
+                  <span className="tag">{g.owner} · {g.count}</span>
+                </label>
+              ));
+            })()}
+            {o.selectedSatId && (
+              <div className="obs-note">
+                Selected satellite: <b>{o.selectedSatId}</b><br />
+                {o.followSat ? 'Following — camera locked' : 'Click follow to track'}<br />
+                Ground track {o.showGroundTrack ? 'on' : 'off'} · Orbit trail {o.showOrbitTrail ? 'on' : 'off'}
+              </div>
+            )}
+          </section>
+        )}
+
+        {o.systemsPanel === 'anchors' && (
+          <section className="obs-panel obs-panel--scroll-lg">
+            <div className="obs-panel-hd">PLANET ANCHORS — more than Sun</div>
+            <div className="obs-muted">Fly camera to any planet. Each anchor preserves orbit & rotation accuracy based on time.</div>
+            <div className="obs-chip-row">
+              <button type="button" className="obs-mini" onClick={() => window.dispatchEvent(new CustomEvent('obs-flyto-solar'))}>☀️ Solar overview (Sun)</button>
+              <button type="button" className="obs-mini" onClick={() => window.dispatchEvent(new CustomEvent('obs-flyto-earth'))}>🌍 Earth</button>
+            </div>
+            {['Mercury','Venus','Earth','Moon','Mars','Jupiter','Saturn','Uranus','Neptune','Pluto','Sun'].map((id) => (
+              <button key={id} type="button" className="obs-planet-row" onClick={() => {
+                o.setAnchorPlanet(id as any);
+                window.dispatchEvent(new CustomEvent('obs-flyto-planet', { detail: { id } }));
+              }}>
+                <span className="dot" style={{ background: (BODIES.find(b=>b.id===id)?.color ?? '#38bdf8') }} />
+                <span className="name">Focus {id}</span>
+                <span className="lon">{o.anchorPlanet === id ? 'active' : 'anchor'}</span>
+              </button>
+            ))}
+            <div className="obs-muted">Tip: You can hide planets via Bodies panel — anchors respect visibility toggles.</div>
           </section>
         )}
       </aside>

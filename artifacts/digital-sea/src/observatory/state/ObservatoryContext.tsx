@@ -16,8 +16,10 @@ import {
   DEFAULT_OBSERVER,
   EPHEMERIS_MAX,
   EPHEMERIS_MIN,
+  SATELLITE_GROUPS,
   defaultAspectEnabled,
   defaultBodyEnabled,
+  defaultSatelliteEnabled,
   type AspectId,
   type BodyId,
   type ChartSnapshot,
@@ -29,6 +31,7 @@ import {
   type ZodiacMode,
   type NodeMode,
   type LilithMode,
+  type SatelliteGroupId,
 } from '../lib/types';
 import type { SwissReady } from '../lib/swissEngine';
 
@@ -87,7 +90,7 @@ interface ObservatoryState {
   swissVersion: string | null;
   hudOpen: boolean;
   setHudOpen: (v: boolean) => void;
-  systemsPanel: 'layers' | 'zodiac' | 'houses' | 'bodies' | 'aspects' | 'chart' | 'observer' | 'advanced';
+  systemsPanel: 'layers' | 'zodiac' | 'houses' | 'bodies' | 'aspects' | 'chart' | 'observer' | 'advanced' | 'satellites' | 'anchors';
   setSystemsPanel: (p: ObservatoryState['systemsPanel']) => void;
 
   // Advanced system toggles — comprehensive Time Nomad parity
@@ -99,6 +102,26 @@ interface ObservatoryState {
   setNodeMode: (m: NodeMode) => void;
   lilithMode: LilithMode;
   setLilithMode: (m: LilithMode) => void;
+
+  // Satellite field — orbit veil full capacity
+  enabledSatGroups: Record<SatelliteGroupId, boolean>;
+  setSatGroupEnabled: (id: SatelliteGroupId, on: boolean) => void;
+  toggleSatGroup: (id: SatelliteGroupId) => void;
+  setAllSatGroups: (on: boolean) => void;
+  selectedSatId: string | null;
+  setSelectedSatId: (id: string | null) => void;
+  satSearch: string;
+  setSatSearch: (q: string) => void;
+  followSat: boolean;
+  setFollowSat: (v: boolean) => void;
+  showGroundTrack: boolean;
+  setShowGroundTrack: (v: boolean) => void;
+  showOrbitTrail: boolean;
+  setShowOrbitTrail: (v: boolean) => void;
+
+  // Planet anchors — fly to any planet
+  anchorPlanet: BodyId | 'Sun' | null;
+  setAnchorPlanet: (id: BodyId | 'Sun' | null) => void;
 }
 
 const Ctx = createContext<ObservatoryState | null>(null);
@@ -139,6 +162,15 @@ export function ObservatoryProvider({ children }: { children: ReactNode }) {
   const [heliocentric, setHeliocentric] = useState(false);
   const [nodeMode, setNodeMode] = useState<NodeMode>('mean');
   const [lilithMode, setLilithMode] = useState<LilithMode>('mean');
+
+  // Satellite field — orbit veil full features
+  const [enabledSatGroups, setEnabledSatGroups] = useState(defaultSatelliteEnabled);
+  const [selectedSatId, setSelectedSatId] = useState<string | null>(null);
+  const [satSearch, setSatSearch] = useState('');
+  const [followSat, setFollowSat] = useState(false);
+  const [showGroundTrack, setShowGroundTrack] = useState(true);
+  const [showOrbitTrail, setShowOrbitTrail] = useState(true);
+  const [anchorPlanet, setAnchorPlanet] = useState<BodyId | 'Sun' | null>('Earth');
 
   useEffect(() => {
     let cancelled = false;
@@ -205,6 +237,18 @@ export function ObservatoryProvider({ children }: { children: ReactNode }) {
       for (const ad of ASPECT_DEFS) if (ad.family === family) (next as any)[ad.id] = on;
       return next;
     });
+  }, []);
+
+  const setSatGroupEnabled = useCallback((id: SatelliteGroupId, on: boolean) => {
+    setEnabledSatGroups((prev) => ({ ...prev, [id]: on }));
+  }, []);
+  const toggleSatGroup = useCallback((id: SatelliteGroupId) => {
+    setEnabledSatGroups((prev) => ({ ...prev, [id]: !prev[id] }));
+  }, []);
+  const setAllSatGroups = useCallback((on: boolean) => {
+    const next = {} as Record<SatelliteGroupId, boolean>;
+    for (const g of SATELLITE_GROUPS) next[g.id] = on;
+    setEnabledSatGroups(next);
   }, []);
 
   useEffect(() => {
@@ -360,6 +404,22 @@ export function ObservatoryProvider({ children }: { children: ReactNode }) {
       setNodeMode,
       lilithMode,
       setLilithMode,
+      enabledSatGroups,
+      setSatGroupEnabled,
+      toggleSatGroup,
+      setAllSatGroups,
+      selectedSatId,
+      setSelectedSatId,
+      satSearch,
+      setSatSearch,
+      followSat,
+      setFollowSat,
+      showGroundTrack,
+      setShowGroundTrack,
+      showOrbitTrail,
+      setShowOrbitTrail,
+      anchorPlanet,
+      setAnchorPlanet,
     }),
     [
       mode, time, setTime, speed, live, returnToLive, zodiac, ayanamsaId, houseSystem,
@@ -368,6 +428,8 @@ export function ObservatoryProvider({ children }: { children: ReactNode }) {
       enableAspectFamily, layers, toggleLayer, setLayer, observer, setObserver, chart, selectedPlanet,
       selectedMission, query, earthSubmode, swiss, swissVersion, hudOpen, systemsPanel,
       topocentric, heliocentric, nodeMode, lilithMode,
+      enabledSatGroups, setSatGroupEnabled, toggleSatGroup, setAllSatGroups,
+      selectedSatId, satSearch, followSat, showGroundTrack, showOrbitTrail, anchorPlanet,
     ],
   );
 

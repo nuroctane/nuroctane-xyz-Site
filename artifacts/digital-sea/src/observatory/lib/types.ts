@@ -161,20 +161,40 @@ export const DEFAULT_LAYERS: LayerState = {
   nodes: true,
   lots: true,
   buildings: true,
-  cities: true,
+  cities: false,
   terrain: true,
   earthquakes: true,
   eonet: true,
   storms: true,
   wildfires: false,
   volcanoes: false,
-  clouds: false,
+  clouds: true,
   precipitation: false,
   temperature: false,
-  winds: false,
+  winds: true,
   traffic: false,
   astroCartography: false,
 };
+
+export type SatelliteGroupId = 'starlink' | 'oneweb' | 'planet' | 'iridium' | 'gps' | 'galileo' | 'glonass' | 'debris' | 'cosmos' | 'other';
+export interface SatelliteGroupMeta { id: SatelliteGroupId; label: string; color: string; owner: string; count: number; }
+export const SATELLITE_GROUPS: SatelliteGroupMeta[] = [
+  { id: 'starlink', label: 'Starlink', color: '#38bdf8', owner: 'SpaceX', count: 4200 },
+  { id: 'oneweb', label: 'OneWeb', color: '#e2e8f0', owner: 'OneWeb', count: 620 },
+  { id: 'planet', label: 'Planet Labs', color: '#fde68a', owner: 'Planet', count: 420 },
+  { id: 'iridium', label: 'Iridium', color: '#94a3b8', owner: 'Iridium', count: 86 },
+  { id: 'gps', label: 'GPS', color: '#4ade80', owner: 'US / GPS', count: 32 },
+  { id: 'galileo', label: 'Galileo', color: '#a78bfa', owner: 'EU / Galileo', count: 28 },
+  { id: 'glonass', label: 'GLONASS', color: '#fb923c', owner: 'RU / GLONASS', count: 26 },
+  { id: 'debris', label: 'Debris', color: '#ef4444', owner: 'Debris / Fengyun / Cosmos debris', count: 1100 },
+  { id: 'cosmos', label: 'Cosmos & Legacy', color: '#71717a', owner: 'RU / Legacy', count: 400 },
+  { id: 'other', label: 'Other', color: '#64748b', owner: 'Mixed', count: 298 },
+];
+export function defaultSatelliteEnabled(): Record<SatelliteGroupId, boolean> {
+  const out = {} as Record<SatelliteGroupId, boolean>;
+  for (const g of SATELLITE_GROUPS) out[g.id] = true;
+  return out;
+}
 
 export function defaultBodyEnabled(): Record<BodyId, boolean> {
   const out = {} as Record<BodyId, boolean>;

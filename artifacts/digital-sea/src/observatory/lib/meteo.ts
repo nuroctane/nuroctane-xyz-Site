@@ -97,25 +97,24 @@ export function gibsTrueColorUrl(): string {
 export type WindSample = { lat: number; lon: number; u: number; v: number };
 
 /**
- * Very small global wind grid synthetic fallback: trades + westerlies with seasonal tilt.
+ * Denser global wind grid synthetic fallback — trades + westerlies — for high visibility.
  */
 export async function fetchGlobalWindGrid(): Promise<WindSample[]> {
-  const lats = [-60, -40, -20, 0, 20, 40, 60];
-  const lons = [-160, -120, -80, -40, 0, 40, 80, 120, 160];
+  const lats = [-60, -45, -30, -15, 0, 15, 30, 45, 60];
+  const lons = [-180, -150, -120, -90, -60, -30, 0, 30, 60, 90, 120, 150];
   const out: WindSample[] = [];
   for (const lat of lats) {
     for (const lon of lons) {
       const isTropic = Math.abs(lat) < 30;
-      // NE trades ~ 45° (from NE), SE trades ~ 135°, westerlies ~ 270°
       let dir: number;
       if (Math.abs(lat) < 8) {
-        dir = lon % 120 < 60 ? 270 : 90; // ITCZ variable
+        dir = lon % 120 < 60 ? 270 : 90;
       } else if (isTropic) {
         dir = lat > 0 ? 225 + Math.sin((lon * Math.PI) / 180) * 12 : 315 + Math.cos((lon * Math.PI) / 180) * 10;
       } else {
         dir = lat > 0 ? 90 + Math.sin((lat * 0.7 * Math.PI) / 180) * 20 : 270 + Math.sin((lat * 0.7 * Math.PI) / 180) * 15;
       }
-      const speed = 3 + Math.abs(Math.sin((lat * 2 * Math.PI) / 180)) * 8 + Math.random() * 3;
+      const speed = 4 + Math.abs(Math.sin((lat * 2 * Math.PI) / 180)) * 8 + Math.random() * 3.5;
       const rad = (dir * Math.PI) / 180;
       out.push({ lat, lon, u: Math.cos(rad) * speed, v: Math.sin(rad) * speed });
     }
@@ -124,12 +123,12 @@ export async function fetchGlobalWindGrid(): Promise<WindSample[]> {
 }
 
 /**
- * Real wind sampling via Open-Meteo — fetches current wind speed/dir for a sparse grid.
+ * Real wind sampling via Open-Meteo — denser 9x13 grid for visible layer.
  * Uses https://open-meteo.com/ (no key, CORS). Falls back to synthetic if fails.
  */
 export async function fetchRealWindGrid(): Promise<WindSample[]> {
-  const gridLats = [-50, -30, -10, 10, 30, 50];
-  const gridLons = [-140, -100, -60, -20, 20, 60, 100, 140];
+  const gridLats = [-60, -45, -30, -15, 0, 15, 30, 45, 60];
+  const gridLons = [-150, -120, -90, -60, -30, 0, 30, 60, 90, 120, 150];
   const tasks: Promise<WindSample>[] = [];
 
   for (const lat of gridLats) {
@@ -143,7 +142,6 @@ export async function fetchRealWindGrid(): Promise<WindSample[]> {
             const j = (await r.json()) as any;
             const speed = Number(j.current?.wind_speed_10m ?? 5);
             const dir = Number(j.current?.wind_direction_10m ?? 0);
-            // meteorological dir = direction wind comes from, convert to vector to
             const toRad = ((dir + 180) % 360) * Math.PI / 180;
             return { lat, lon, u: Math.cos(toRad) * speed, v: Math.sin(toRad) * speed };
           } catch {
