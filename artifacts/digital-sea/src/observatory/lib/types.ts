@@ -161,7 +161,7 @@ export const DEFAULT_LAYERS: LayerState = {
   nodes: true,
   lots: true,
   buildings: true,
-  cities: false,
+  cities: true,
   terrain: true,
   earthquakes: true,
   eonet: true,

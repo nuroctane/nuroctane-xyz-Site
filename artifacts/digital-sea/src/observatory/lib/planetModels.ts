@@ -30,7 +30,6 @@ export const PLANET_CONFIGS: Record<string, PlanetConfig> = {
   Uranus: { id: 'Uranus', baseColor: '#67e8f9', atmosphereColor: '#22d3ee', atmosphereStrength: 0.72, rotationSpeed: 0.24, roughness: 0.62 },
   Neptune: { id: 'Neptune', baseColor: '#818cf8', atmosphereColor: '#6366f1', atmosphereStrength: 0.78, rotationSpeed: 0.28, roughness: 0.58 },
   Pluto: { id: 'Pluto', baseColor: '#e9d5ff', atmosphereColor: '#ddd6fe', atmosphereStrength: 0.18, rotationSpeed: 0.07, roughness: 0.9 },
-  // Dwarf / asteroids
   Eris: { id: 'Eris', baseColor: '#f9a8d4', atmosphereStrength: 0.14, roughness: 0.9 },
   Haumea: { id: 'Haumea', baseColor: '#c7d2fe', hasRings: true, ringColor: '#a5b4fc', atmosphereStrength: 0.22, roughness: 0.82 },
   Makemake: { id: 'Makemake', baseColor: '#bfdbfe', atmosphereStrength: 0.14, roughness: 0.85 },
@@ -45,11 +44,26 @@ export const PLANET_CONFIGS: Record<string, PlanetConfig> = {
   Pholus: { id: 'Pholus', baseColor: '#f0abfc', atmosphereStrength: 0.2 },
   Pallas: { id: 'Pallas', baseColor: '#a7f3d0', atmosphereStrength: 0.08 },
   Juno: { id: 'Juno', baseColor: '#fde68a', atmosphereStrength: 0.08 },
-  // Uranian + others fallback via default
 };
 
 export function getPlanetConfig(id: string): PlanetConfig {
   return PLANET_CONFIGS[id] ?? { id, baseColor: '#94a3b8', atmosphereStrength: 0.22, roughness: 0.8, metalness: 0.1, rotationSpeed: 0.12 };
+}
+
+// Local NASA-grade textures — solarsystemscope 2K downloads → /assets/planets
+export const PLANET_TEXTURE_URLS: Record<string, { map: string; ringMap?: string }> = {
+  Mercury: { map: '/assets/planets/2k_mercury.jpg' },
+  Venus: { map: '/assets/planets/2k_venus_atmosphere.jpg' },
+  Moon: { map: '/assets/planets/2k_moon.jpg' },
+  Mars: { map: '/assets/planets/2k_mars.jpg' },
+  Jupiter: { map: '/assets/planets/2k_jupiter.jpg' },
+  Saturn: { map: '/assets/planets/2k_saturn.jpg', ringMap: '/assets/planets/2k_saturn_ring_alpha.png' },
+  Uranus: { map: '/assets/planets/2k_uranus.jpg' },
+  Neptune: { map: '/assets/planets/2k_neptune.jpg' },
+};
+
+export function getPlanetTextureUrls(id: string): { map: string; ringMap?: string } | null {
+  return (PLANET_TEXTURE_URLS as any)[id] ?? null;
 }
 
 function canvasTexture(draw: (ctx: CanvasRenderingContext2D, w: number, h: number) => void, size = 1024): THREE.CanvasTexture {
@@ -65,10 +79,8 @@ function canvasTexture(draw: (ctx: CanvasRenderingContext2D, w: number, h: numbe
   return t;
 }
 
-// High quality Earth: ocean + continents + deserts + ice, 1024px
 export function earthBaseTexture(): THREE.CanvasTexture {
   return canvasTexture((ctx, w, h) => {
-    // Deep ocean gradient
     const g = ctx.createLinearGradient(0, 0, 0, h);
     g.addColorStop(0, '#0b2a5c');
     g.addColorStop(0.2, '#0e3a7a');
@@ -77,8 +89,6 @@ export function earthBaseTexture(): THREE.CanvasTexture {
     g.addColorStop(1, '#0b2a5c');
     ctx.fillStyle = g;
     ctx.fillRect(0, 0, w, h);
-
-    // Subtle ocean noise
     ctx.globalAlpha = 0.12;
     for (let i = 0; i < 8000; i++) {
       const x = Math.random() * w, y = Math.random() * h;
@@ -86,9 +96,6 @@ export function earthBaseTexture(): THREE.CanvasTexture {
       ctx.fillRect(x, y, 1, 1);
     }
     ctx.globalAlpha = 1;
-
-    // continent generation - large landmasses approx positions (equirectangular)
-    // Rough Afro-Eurasia blob
     const land = (cx: number, cy: number, scale: number, color: string) => {
       ctx.fillStyle = color;
       ctx.beginPath();
@@ -104,23 +111,15 @@ export function earthBaseTexture(): THREE.CanvasTexture {
       ctx.closePath();
       ctx.fill();
     };
-
-    // Africa-Eurasia
     land(w * 0.52, h * 0.48, 1.35, '#2a5a2a');
     land(w * 0.55, h * 0.42, 1.1, '#3a6a3a');
-    land(w * 0.58, h * 0.35, 0.7, '#8a7a4a'); // Sahara
-    land(w * 0.72, h * 0.38, 0.75, '#3d6d2a'); // Asia
-    land(w * 0.68, h * 0.32, 0.45, '#e8e0c0'); // Siberian light
-
-    // Americas
+    land(w * 0.58, h * 0.35, 0.7, '#8a7a4a');
+    land(w * 0.72, h * 0.38, 0.75, '#3d6d2a');
+    land(w * 0.68, h * 0.32, 0.45, '#e8e0c0');
     land(w * 0.18, h * 0.38, 0.9, '#2f5e2f');
     land(w * 0.20, h * 0.60, 0.85, '#2a5a2a');
-    land(w * 0.26, h * 0.64, 0.35, '#7a6a3a'); // south america desert
-
-    // Australia
+    land(w * 0.26, h * 0.64, 0.35, '#7a6a3a');
     land(w * 0.82, h * 0.72, 0.32, '#7a6a3a');
-
-    // Add smaller islands + detail ellipses
     ctx.fillStyle = '#345a34';
     for (let i = 0; i < 120; i++) {
       const x = Math.random() * w;
@@ -133,8 +132,6 @@ export function earthBaseTexture(): THREE.CanvasTexture {
       ctx.ellipse(x, y, rx, ry, Math.random() * Math.PI, 0, Math.PI * 2);
       ctx.fill();
     }
-
-    // Ice caps with gradient
     const iceGradN = ctx.createLinearGradient(0, 0, 0, 44);
     iceGradN.addColorStop(0, '#f0faff');
     iceGradN.addColorStop(1, 'rgba(200,230,255,0)');
@@ -155,7 +152,6 @@ export function earthBaseTexture(): THREE.CanvasTexture {
 export function cloudTexture(): THREE.CanvasTexture {
   return canvasTexture((ctx, w, h) => {
     ctx.clearRect(0, 0, w, h);
-    // soft cloudy blobs
     for (let i = 0; i < 220; i++) {
       const x = Math.random() * w;
       const y = Math.random() * h;
@@ -170,7 +166,6 @@ export function cloudTexture(): THREE.CanvasTexture {
       ctx.arc(x, y, r, 0, Math.PI * 2);
       ctx.fill();
     }
-    // add some storm swirls
     ctx.globalAlpha = 0.22;
     for (let i = 0; i < 18; i++) {
       const x = Math.random() * w;
@@ -194,7 +189,6 @@ export function cloudTexture(): THREE.CanvasTexture {
 export function gasGiantTexture(base: string, bands = 7): THREE.CanvasTexture {
   const baseCol = new THREE.Color(base);
   return canvasTexture((ctx, w, h) => {
-    // subtle vertical gradient bands like Jupiter/Saturn
     for (let y = 0; y < h; y++) {
       const t = y / h;
       const bandIdx = Math.floor(t * bands);
@@ -203,14 +197,10 @@ export function gasGiantTexture(base: string, bands = 7): THREE.CanvasTexture {
       let v = isBoundary ? 0.78 : 0.86 + Math.sin(bandIdx * 1.9 + t * 6) * 0.12;
       if (bandIdx % 2 === 0) v -= 0.06;
       const col = baseCol.clone().multiplyScalar(v);
-      // add hue variation
-      if (bandIdx % 3 === 1) {
-        col.r *= 1.05; col.g *= 0.98;
-      }
+      if (bandIdx % 3 === 1) { col.r *= 1.05; col.g *= 0.98; }
       ctx.fillStyle = `rgb(${Math.floor(col.r * 255)},${Math.floor(col.g * 255)},${Math.floor(col.b * 255)})`;
       ctx.fillRect(0, y, w, Math.ceil(h / bands) + 2);
     }
-    // turbulence & storms
     ctx.globalAlpha = 0.16;
     for (let i = 0; i < 420; i++) {
       const x = Math.random() * w;
@@ -223,7 +213,6 @@ export function gasGiantTexture(base: string, bands = 7): THREE.CanvasTexture {
       ctx.fill();
     }
     ctx.globalAlpha = 1;
-    // Great Red Spot / big storm for Jupiter-ish
     if (base.toLowerCase().includes('fdba') || base.toLowerCase().includes('fd')) {
       const cx = w * 0.68, cy = h * 0.44;
       const grad = ctx.createRadialGradient(cx, cy, 0, cx, cy, 56);
@@ -234,13 +223,7 @@ export function gasGiantTexture(base: string, bands = 7): THREE.CanvasTexture {
       ctx.beginPath();
       ctx.ellipse(cx, cy, 54, 28, -0.12, 0, Math.PI * 2);
       ctx.fill();
-      ctx.strokeStyle = 'rgba(100,15,15,0.32)';
-      ctx.lineWidth = 1.5;
-      ctx.beginPath();
-      ctx.ellipse(cx, cy, 58, 30, -0.12, 0, Math.PI * 2);
-      ctx.stroke();
     }
-    // polar darkening
     const polarGrad = ctx.createLinearGradient(0, 0, 0, h);
     polarGrad.addColorStop(0, 'rgba(0,0,0,0.42)');
     polarGrad.addColorStop(0.14, 'rgba(0,0,0,0)');
@@ -255,16 +238,11 @@ export function cityLightsTexture(): THREE.CanvasTexture {
   return canvasTexture((ctx, w, h) => {
     ctx.fillStyle = 'rgba(0,0,0,1)';
     ctx.fillRect(0, 0, w, h);
-
-    // cluster centers mimicking populated lat zones
     const clusters = [
-      { x: 0.52, y: 0.42, n: 180 }, // Europe
-      { x: 0.73, y: 0.43, n: 140 }, // East Asia
-      { x: 0.62, y: 0.44, n: 90 }, // India/Middle east
-      { x: 0.18, y: 0.42, n: 110 }, // US east
-      { x: 0.12, y: 0.46, n: 60 }, // US west
-      { x: 0.28, y: 0.66, n: 50 }, // Brazil coast
-      { x: 0.81, y: 0.72, n: 35 }, // Australia east
+      { x: 0.52, y: 0.42, n: 180 }, { x: 0.73, y: 0.43, n: 140 },
+      { x: 0.62, y: 0.44, n: 90 }, { x: 0.18, y: 0.42, n: 110 },
+      { x: 0.12, y: 0.46, n: 60 }, { x: 0.28, y: 0.66, n: 50 },
+      { x: 0.81, y: 0.72, n: 35 },
     ];
     for (const cl of clusters) {
       for (let i = 0; i < cl.n; i++) {
@@ -279,7 +257,6 @@ export function cityLightsTexture(): THREE.CanvasTexture {
         ctx.beginPath();
         ctx.arc(x, y, rr, 0, Math.PI * 2);
         ctx.fill();
-        // soft glow
         const glow = ctx.createRadialGradient(x, y, 0, x, y, rr * 4.5);
         glow.addColorStop(0, `rgba(255,220,100,${alpha * 0.28})`);
         glow.addColorStop(1, 'rgba(255,220,100,0)');
@@ -289,7 +266,6 @@ export function cityLightsTexture(): THREE.CanvasTexture {
         ctx.fill();
       }
     }
-    // random sparse dots
     ctx.fillStyle = 'rgba(255,225,120,0.85)';
     for (let i = 0; i < 320; i++) {
       const x = Math.random() * w;
@@ -307,7 +283,6 @@ export function moonTexture(): THREE.CanvasTexture {
   return canvasTexture((ctx, w, h) => {
     ctx.fillStyle = '#c2bdb5';
     ctx.fillRect(0, 0, w, h);
-    // craters
     for (let i = 0; i < 260; i++) {
       const x = Math.random() * w;
       const y = Math.random() * h;
@@ -320,7 +295,6 @@ export function moonTexture(): THREE.CanvasTexture {
       ctx.beginPath();
       ctx.arc(x, y, r, 0, Math.PI * 2);
       ctx.fill();
-      // rim
       ctx.strokeStyle = 'rgba(90,85,78,0.22)';
       ctx.lineWidth = 0.8;
       ctx.beginPath();
@@ -343,14 +317,12 @@ export function marsTexture(): THREE.CanvasTexture {
       ctx.ellipse(x, y, rx, ry, Math.random() * Math.PI, 0, Math.PI * 2);
       ctx.fill();
     }
-    // polar caps
     ctx.fillStyle = 'rgba(225,235,245,0.92)';
     ctx.fillRect(0, 0, w, 26);
     ctx.fillRect(0, h - 26, w, 26);
     ctx.fillStyle = 'rgba(255,255,255,0.55)';
     ctx.fillRect(0, 0, w, 14);
     ctx.fillRect(0, h - 14, w, 14);
-    // dark markings
     ctx.fillStyle = 'rgba(40,20,15,0.22)';
     for (let i = 0; i < 30; i++) {
       const x = Math.random() * w, y = Math.random() * h * 0.6 + h * 0.2;
@@ -365,14 +337,10 @@ export function earthSpecularTexture(): THREE.CanvasTexture {
   return canvasTexture((ctx, w, h) => {
     ctx.fillStyle = '#000000';
     ctx.fillRect(0, 0, w, h);
-    // oceans white for specular
     ctx.fillStyle = '#ffffff';
-    // cheap: same continents mask inverted - ocean bright
-    // reuse ocean base bright
     ctx.globalAlpha = 0.9;
     ctx.fillRect(0, 0, w, h);
     ctx.globalAlpha = 1;
-    // paint continents black (low specular)
     ctx.fillStyle = '#000000';
     for (let i = 0; i < 50; i++) {
       const x = Math.random() * w, y = Math.random() * h;

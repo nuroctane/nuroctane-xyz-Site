@@ -122,6 +122,9 @@ interface ObservatoryState {
   // Planet anchors — fly to any planet
   anchorPlanet: BodyId | 'Sun' | null;
   setAnchorPlanet: (id: BodyId | 'Sun' | null) => void;
+
+  // Natal vs current comparison
+  natalChart: ChartSnapshot | null;
 }
 
 const Ctx = createContext<ObservatoryState | null>(null);
@@ -324,6 +327,33 @@ export function ObservatoryProvider({ children }: { children: ReactNode }) {
     [chartTick, time, zodiac, ayanamsaId, houseSystem, observer, enabledBodies, enabledAspects, fortuneFormula, chartType, birthDate, secondDate, secondObserver, orbScale, swiss, topocentric, heliocentric, nodeMode, lilithMode],
   );
 
+  const natalChart = useMemo<ChartSnapshot | null>(() => {
+    if (!birthDate) return null;
+    try {
+      return buildChart({
+        date: birthDate,
+        zodiac,
+        ayanamsaId,
+        houseSystem,
+        observer,
+        enabledBodies,
+        enabledAspects,
+        fortuneFormula,
+        chartType: 'natal',
+        birthDate: null,
+        secondDate: null,
+        secondObserver,
+        orbScale,
+        swiss,
+        topocentric,
+        heliocentric: false,
+        trueNode: nodeMode === 'true',
+      });
+    } catch {
+      return null;
+    }
+  }, [birthDate, zodiac, ayanamsaId, houseSystem, observer, enabledBodies, enabledAspects, fortuneFormula, secondObserver, orbScale, swiss, topocentric, nodeMode, chartTick]);
+
   // Apply node/lilith mode side-effects to enabledBodies for UX (toggle shows which is active)
   useEffect(() => {
     setEnabledBodies((prev) => {
@@ -420,6 +450,7 @@ export function ObservatoryProvider({ children }: { children: ReactNode }) {
       setShowOrbitTrail,
       anchorPlanet,
       setAnchorPlanet,
+      natalChart,
     }),
     [
       mode, time, setTime, speed, live, returnToLive, zodiac, ayanamsaId, houseSystem,
@@ -429,7 +460,7 @@ export function ObservatoryProvider({ children }: { children: ReactNode }) {
       selectedMission, query, earthSubmode, swiss, swissVersion, hudOpen, systemsPanel,
       topocentric, heliocentric, nodeMode, lilithMode,
       enabledSatGroups, setSatGroupEnabled, toggleSatGroup, setAllSatGroups,
-      selectedSatId, satSearch, followSat, showGroundTrack, showOrbitTrail, anchorPlanet,
+      selectedSatId, satSearch, followSat, showGroundTrack, showOrbitTrail, anchorPlanet, natalChart,
     ],
   );
 

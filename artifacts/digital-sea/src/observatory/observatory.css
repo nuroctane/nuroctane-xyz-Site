@@ -608,4 +608,132 @@
 .obs-pill--anchor:hover { background: rgba(56,189,248,0.12); border-color: rgba(56,189,248,0.24); color: #e0f2fe; }
 .obs-pill--anchor.is-active { background: rgba(56,189,248,0.18); border-color: rgba(56,189,248,0.38); color: #f0f9ff; }
 
+/* --- Fable polish: themed date pickers (dark glass) --- */
+.obs-input--themed {
+  color-scheme: dark;
+  background: rgba(0,0,0,0.32) !important;
+  border: 1px solid rgba(255,255,255,0.10) !important;
+}
+.obs-input--themed:focus {
+  border-color: rgba(56,189,248,0.40) !important;
+  background: rgba(0,0,0,0.48) !important;
+  box-shadow: 0 0 0 2px rgba(56,189,248,0.12);
+}
+.obs-field input[type="date"]::-webkit-calendar-picker-indicator,
+.obs-field input[type="time"]::-webkit-calendar-picker-indicator,
+.obs-field input[type="datetime-local"]::-webkit-calendar-picker-indicator,
+.obs-input--themed::-webkit-calendar-picker-indicator {
+  filter: invert(0.78) sepia(0.1) saturate(1.2) hue-rotate(175deg) brightness(1.15);
+  opacity: 0.85;
+  cursor: pointer;
+  padding: 2px;
+  border-radius: 4px;
+  transition: filter 140ms;
+}
+.obs-field input[type="date"]::-webkit-calendar-picker-indicator:hover,
+.obs-field input[type="time"]::-webkit-calendar-picker-indicator:hover,
+.obs-field input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
+  filter: invert(0.92) sepia(0.1) saturate(1.4) hue-rotate(175deg) brightness(1.35);
+  opacity: 1;
+}
+/* date edit parts */
+.obs-field input::-webkit-datetime-edit { color: #e2e8f0; }
+.obs-field input::-webkit-datetime-edit-fields-wrapper { padding: 0; }
+.obs-field input::-webkit-datetime-edit-text { color: #64748b; padding: 0 0.15em; }
+.obs-field input::-webkit-datetime-edit-month-field,
+.obs-field input::-webkit-datetime-edit-day-field,
+.obs-field input::-webkit-datetime-edit-year-field,
+.obs-field input::-webkit-datetime-edit-hour-field,
+.obs-field input::-webkit-datetime-edit-minute-field {
+  color: #e2e8f0;
+}
+.obs-field input::-webkit-datetime-edit-month-field:focus,
+.obs-field input::-webkit-datetime-edit-day-field:focus,
+.obs-field input::-webkit-datetime-edit-year-field:focus,
+.obs-field input::-webkit-datetime-edit-hour-field:focus,
+.obs-field input::-webkit-datetime-edit-minute-field:focus {
+  background: rgba(56,189,248,0.22);
+  color: #f0f9ff;
+  border-radius: 3px;
+}
+
+/* --- Progressive geo labels --- */
+.obs-geo-label {
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: rgba(8,12,20,0.72);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255,255,255,0.06);
+  border-radius: 999px;
+  padding: 0.14rem 0.52rem;
+  white-space: nowrap;
+  pointer-events: none;
+}
+.obs-geo-label--continent {
+  font-size: 11px;
+  color: #e2e8f0;
+  background: rgba(8,12,20,0.62);
+  border-color: rgba(56,189,248,0.18);
+  box-shadow: 0 2px 12px rgba(0,0,0,0.35), 0 0 0 1px rgba(56,189,248,0.08);
+}
+.obs-geo-label--country {
+  font-size: 9.5px;
+  color: #94a3b8;
+  background: rgba(8,12,20,0.56);
+  letter-spacing: 0.06em;
+}
+.obs-geo-label--city {
+  font-size: 8.5px;
+  font-weight: 500;
+  color: #cbd5e1;
+  background: rgba(8,12,20,0.66);
+  border-color: rgba(255,255,255,0.06);
+  text-transform: none;
+  letter-spacing: 0.02em;
+}
+
+/* toggle with description */
+.obs-toggle--with-desc {
+  align-items: flex-start;
+}
+.obs-toggle-main {
+  display: flex;
+  flex-direction: column;
+  gap: 0.08rem;
+}
+.obs-toggle-desc {
+  font-size: 9px;
+  color: #64748b;
+  line-height: 1.3;
+  letter-spacing: 0.02em;
+}
+
+/* tip text actual usage tips, not product */
+.obs-tip {
+  font-size: 10px;
+  line-height: 1.5;
+  color: #64748b;
+  padding: 0.35rem 0.45rem;
+  border-left: 2px solid rgba(56,189,248,0.18);
+  background: rgba(255,255,255,0.02);
+  border-radius: 0 6px 6px 0;
+  margin-bottom: 0.55rem;
+}
+.obs-tip::before {
+  content: 'TIP: ';
+  font-weight: 700;
+  color: #7dd3fc;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+}
+
+/* sat panel mini active state */
+.obs-mini.is-active {
+  background: rgba(56,189,248,0.18);
+  color: #e0f2fe;
+  border-color: rgba(56,189,248,0.30);
+}
+
 
