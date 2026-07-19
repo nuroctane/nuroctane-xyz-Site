@@ -1,17 +1,15 @@
 import { Suspense, lazy } from 'react';
-import { ObservatoryHud } from './components/ObservatoryHud';
 import { ObservatoryProvider } from './state/ObservatoryContext';
+import { ObservatoryHud } from './components/ObservatoryHud';
 import './observatory.css';
 
-const UnifiedMode = lazy(() =>
-  import('./modes/UnifiedMode').then((m) => ({ default: m.UnifiedMode })),
-);
+const UnifiedWorld = lazy(() => import('./modes/UnifiedWorld').then((m) => ({ default: m.UnifiedWorld })));
 
 function Shell() {
   return (
     <div className="obs-root obs-root--unified">
-      <Suspense fallback={<div className="obs-loading">Loading unified 3D dashboard — Cesium + solar system models…</div>}>
-        <UnifiedMode />
+      <Suspense fallback={<div className="obs-loading">Loading unified 3D world — Earth Google-Earth grade + satellites + weather + all planets + constellations…</div>}>
+        <UnifiedWorld />
       </Suspense>
       <ObservatoryHud />
     </div>
