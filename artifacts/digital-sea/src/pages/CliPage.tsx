@@ -86,6 +86,7 @@ const FEATURE_TABS: FeatureTab[] = [
         <li><code>/local</code> bundled llama.cpp · <code>/bench</code> worktree benchmarks · <code>nur gateway</code> Telegram bot</li>
         <li>Natural-language + slash skill activation — /skill-name or plain phrases</li>
         <li>Resume other agents: Claude · Codex · Cursor · Grok · Nur</li>
+        <li><strong>chagent</strong> <code>/chagent</code> · <code>/hijack</code> — migrate a Claude/Codex/Cursor/Grok session into nur & resume it (import picker)</li>
       </ul>
     ),
   },
@@ -185,8 +186,12 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: '/new', desc: 'start a fresh session' },
   { cmd: '/cd', desc: 'change working directory (tools sandbox here)' },
   { cmd: '/pwd', desc: 'print the current working directory' },
-  { cmd: '/sessions', desc: 'browse & open past sessions' },
+  { cmd: '/sessions', desc: 'browse & open past sessions (press c to fold in chagent imports)' },
   { cmd: '/resume', desc: 'browse & open past sessions (alias)' },
+  { cmd: '/chagent', desc: 'chagent: import a Claude/Codex/Cursor/Grok session & resume it (picker)' },
+  { cmd: '/hijack', desc: 'take over a foreign agent session  (alias of /chagent)' },
+  { cmd: '/takeover', desc: 'take over a foreign agent session  (alias of /chagent)' },
+  { cmd: '/sessionresume', desc: 'import a foreign agent session  (alias of /chagent)' },
   { cmd: '/budget', desc: 'session spend ceiling' },
   { cmd: '/poor', desc: 'cost-saver lean prompt' },
   { cmd: '/usage', desc: 'token usage + cost for this session' },
@@ -222,6 +227,7 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: '/fable-judge', desc: 'skill: adversarial verification of finished work' },
   { cmd: '/tech-spec', desc: 'skill: typed call-stack architecture handoff' },
   { cmd: '/design-eng', desc: 'skill: Emil design-eng UI/motion craft' },
+  { cmd: '/skeuo', desc: 'skill: dark skeuomorphic UI — knobs, sliders, tactile depth (/skeuomorphic-ui)' },
   { cmd: '/test-driven-development', desc: 'skill: TDD red-green-refactor' },
   { cmd: '/systematic-debugging', desc: 'skill: root-cause-first debugging' },
   { cmd: '/<skill>', desc: 'any installed skill — sticky toggle or /skill <prompt> one-shot' },
