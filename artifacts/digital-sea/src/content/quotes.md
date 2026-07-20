@@ -14,7 +14,7 @@
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (21)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (93)
 - [[#Wealth, Work & Value|Wealth, Work & Value]] (29)
-- [[#Unsorted Sparks|Unsorted Sparks]] (51)
+- [[#Unsorted Sparks|Unsorted Sparks]] (52)
 
 ## Faith, God & Surrender
 
@@ -1831,5 +1831,9 @@ _Good fragments that still belong here, but do not yet have a perfect home._
 > I get to > I have to.
 
 > I recommend taking pictures and videos of your parents more often.
+
+> “you’re usually one phone call away from that mountain becoming a molehill”
+> — @nuroctane
+
 
 
