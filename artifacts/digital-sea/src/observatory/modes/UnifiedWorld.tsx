@@ -1108,8 +1108,15 @@ function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) 
   const earthPosArr: [number, number, number] = [earthHelio.x, earthHelio.y, earthHelio.z];
   const earthPosVec = useMemo(() => new THREE.Vector3(earthHelio.x, earthHelio.y, earthHelio.z), [earthHelio.x, earthHelio.y, earthHelio.z]);
 
-  // accurate sidereal rotation — chronologically accurate GMST from J2000
-  const earthRotAccurate = useMemo(() => siderealRotationAngle(time, 23.9344696), [time]);
+  // accurate sidereal rotation — GMST from J2000, chronologically accurate day/night
+  const earthRotAccurate = useMemo(() => {
+    const ms = time.getTime() - J2000_MS;
+    const days = ms / 86400000;
+    const gmstDeg = (280.46061837 + 360.98564736629 * days) % 360;
+    let rad = (gmstDeg * Math.PI) / 180;
+    if (rad < 0) rad += Math.PI * 2;
+    return rad;
+  }, [time]);
 
   // sun direction in world space (sun at origin) — fixed, Earth rotation moves day/night
   const sunDirWorld = useMemo(() => {
@@ -1120,9 +1127,15 @@ function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) 
   useEffect(() => { sunDirRef.current.copy(sunDirWorld); }, [sunDirWorld]);
 
   const earthGroupRef = useRef<THREE.Group>(null);
-  useFrame(() => {
+  const idleSpinRef = useRef(0);
+  useFrame((_, dt) => {
+    if (speed === 0) {
+      idleSpinRef.current = (idleSpinRef.current + dt * 0.012) % (Math.PI * 2);
+    } else {
+      idleSpinRef.current = 0;
+    }
     if (earthGroupRef.current) {
-      earthGroupRef.current.rotation.y = earthRotAccurate;
+      earthGroupRef.current.rotation.y = earthRotAccurate + idleSpinRef.current;
     }
   });
 
@@ -1225,7 +1238,7 @@ function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) 
 }
 
 export function UnifiedWorld() {
-  const { chart, enabledSatGroups, anchorPlanet } = useObservatory() as any;
+  const { chart, enabledSatGroups, anchorPlanet, setAnchorPlanet } = useObservatory() as any;
   const [mode, setMode] = useState<'solar' | 'earth' | string>('earth');
 
   // sync anchorPlanet from context to local mode for pill highlight
@@ -1246,6 +1259,7 @@ export function UnifiedWorld() {
           {['Sun', 'Mercury', 'Venus', 'Earth', 'Moon', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto'].map((id) => (
             <button key={id} type="button" className={`obs-pill obs-pill--anchor ${mode === id.toLowerCase() ? 'is-active' : ''}`} onClick={() => {
               setMode(id.toLowerCase());
+              setAnchorPlanet(id as any);
               if (id === 'Sun') window.dispatchEvent(new CustomEvent('obs-flyto-solar'));
               else if (id === 'Earth') window.dispatchEvent(new CustomEvent('obs-flyto-earth'));
               else window.dispatchEvent(new CustomEvent('obs-flyto-planet', { detail: { id } }));
@@ -1253,8 +1267,8 @@ export function UnifiedWorld() {
           ))}
         </div>
         <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap' }}>
-          <button type="button" className={`obs-pill obs-pill--action ${mode === 'earth' ? 'is-active' : ''}`} onClick={() => { setMode('earth'); window.dispatchEvent(new CustomEvent('obs-flyto-earth')); }}>🌍 Focus Earth</button>
-          <button type="button" className={`obs-pill obs-pill--action ${mode === 'solar' ? 'is-active' : ''}`} onClick={() => { setMode('solar'); window.dispatchEvent(new CustomEvent('obs-flyto-solar')); }}>☀️ Solar overview</button>
+          <button type="button" className={`obs-pill obs-pill--action ${mode === 'earth' ? 'is-active' : ''}`} onClick={() => { setMode('earth'); setAnchorPlanet('Earth' as any); window.dispatchEvent(new CustomEvent('obs-flyto-earth')); }}>🌍 Focus Earth</button>
+          <button type="button" className={`obs-pill obs-pill--action ${mode === 'solar' ? 'is-active' : ''}`} onClick={() => { setMode('solar'); setAnchorPlanet('Sun' as any); window.dispatchEvent(new CustomEvent('obs-flyto-solar')); }}>☀️ Solar overview</button>
           <span className="obs-pill obs-pill--stats">{chart.planets.length} bodies · {chart.aspects.length} aspects</span>
         </div>
       </div>

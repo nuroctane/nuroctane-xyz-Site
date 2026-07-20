@@ -138,8 +138,11 @@ export const SPEEDS = [-86400, -3600, -240, -60, -10, -1, 0, 1, 10, 60, 240, 360
 export function ObservatoryProvider({ children }: { children: ReactNode }) {
   const [mode, setMode] = useState<ObservatoryMode>('sky');
   const [time, setTimeState] = useState(() => new Date());
-  const [speed, setSpeed] = useState(1);
-  const [live, setLive] = useState(true);
+  const [speedRaw, setSpeedRaw] = useState(1);
+  const speed = speedRaw;
+  const [liveState, setLiveState] = useState(true);
+  const live = liveState;
+  const setLive = useCallback((v: boolean) => setLiveState(v), []);
   const [zodiac, setZodiac] = useState<ZodiacMode>('sidereal');
   const [ayanamsaId, setAyanamsaId] = useState(1);
   const [houseSystem, setHouseSystem] = useState<HouseSystemId>('P');
@@ -198,13 +201,18 @@ export function ObservatoryProvider({ children }: { children: ReactNode }) {
 
   const setTime = useCallback((d: Date) => {
     setTimeState(clampDate(d, EPHEMERIS_MIN, EPHEMERIS_MAX));
-    setLive(false);
+    setLiveState(false);
+  }, []);
+
+  const setSpeed = useCallback((s: number) => {
+    setSpeedRaw(s);
+    if (s !== 1) setLiveState(false);
   }, []);
 
   const returnToLive = useCallback(() => {
     setTimeState(new Date());
-    setSpeed(1);
-    setLive(true);
+    setSpeedRaw(1);
+    setLiveState(true);
   }, []);
 
   const setObserver = useCallback((o: ObserverLoc) => {
