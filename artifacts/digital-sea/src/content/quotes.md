@@ -14,7 +14,7 @@
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (21)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (93)
 - [[#Wealth, Work & Value|Wealth, Work & Value]] (29)
-- [[#Unsorted Sparks|Unsorted Sparks]] (52)
+- [[#Unsorted Sparks|Unsorted Sparks]] (53)
 
 ## Faith, God & Surrender
 
@@ -1834,6 +1834,16 @@ _Good fragments that still belong here, but do not yet have a perfect home._
 
 > “you’re usually one phone call away from that mountain becoming a molehill”
 > — @nuroctane
+
+> One of my favourite lesson from Reality Transurfing is:
+> 
+> Wether you’re good or evil, if you feel guilt things WILL turn against you.
+> 
+> That’s why a lot of evil people don’t seem to have things turn against them, simply because they act without feeling shame nor fear against the consequences (no guilt).
+> 
+> Not evil advice.
+> — @QuantumRover
+
 
 
 
