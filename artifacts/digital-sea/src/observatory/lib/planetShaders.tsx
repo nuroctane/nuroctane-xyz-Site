@@ -114,7 +114,7 @@ export function SunCorona({ size }: { size: number }) {
         />
       </mesh>
       {/* far outer corona Gargantua halo */}
-      <mesh scale={[2.35, 2.35, 2.35]}>
+      <mesh scale={[2.05, 2.05, 2.05]}>
         <sphereGeometry args={[size, 32, 32]} />
         <shaderMaterial
           ref={outerRef as any}
@@ -141,7 +141,7 @@ export function SunCorona({ size }: { size: number }) {
         />
       </mesh>
       {/* extra far glow */}
-      <mesh scale={[3.1, 3.1, 3.1]}>
+      <mesh scale={[2.6, 2.6, 2.6]}>
         <sphereGeometry args={[size, 24, 24]} />
         <meshBasicMaterial color="#f59e0b" transparent opacity={0.035} blending={THREE.AdditiveBlending} depthWrite={false} side={THREE.BackSide} />
       </mesh>
@@ -346,7 +346,7 @@ export function SunDisk({ size }: { size: number }) {
   });
   return (
     <mesh rotation={[Math.PI / 2.2, 0, 0]}>
-      <ringGeometry args={[size * 1.42, size * 3.2, 128]} />
+      <ringGeometry args={[size * 1.42, size * 2.35, 128]} />
       <shaderMaterial
         ref={ref as any}
         transparent

@@ -132,7 +132,23 @@ function fallbackPositions(date: Date, zodiac: ZodiacMode, ayan: number, enabled
       });
     } catch { continue; }
   }
+  placeMoonNearEarth(out);
   return out;
+}
+
+// The Moon's geocentric distance (~0.0026 AU) is meaningless on the heliocentric
+// visual scale — anchor it next to Earth in the direction of its geocentric longitude.
+const MOON_VISUAL_DIST = 1.9;
+function placeMoonNearEarth(planets: PlanetPosition[]) {
+  const earth = planets.find((p) => p.id === 'Earth');
+  const moon = planets.find((p) => p.id === 'Moon');
+  if (!earth || !moon) return;
+  const a = (moon.tropicalLon * Math.PI) / 180;
+  moon.helio = {
+    x: earth.helio.x + Math.cos(a) * MOON_VISUAL_DIST,
+    y: earth.helio.y,
+    z: earth.helio.z - Math.sin(a) * MOON_VISUAL_DIST,
+  };
 }
 
 function swissPositions(
@@ -214,6 +230,7 @@ function swissPositions(
     }
   }
 
+  placeMoonNearEarth(planets);
   return { planets, ayan };
 }
 

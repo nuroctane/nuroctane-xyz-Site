@@ -89,9 +89,9 @@ export function eclipticToSkyVector(lonDeg: number, latDeg: number, obliquityDeg
 
 /** Visual heliocentric scale: compress outer system (Eyes-style). */
 export function visualOrbitRadius(au: number): number {
-  // Earth ~ 3 units; Neptune still in view
-  const r = Math.max(0.15, Math.pow(Math.abs(au), 0.65) * 3.1);
-  return r;
+  // Offset floor keeps the innermost orbits (Mercury ~4.2, Earth ~5.5)
+  // clear of the Sun's corona/disk visuals (~2.9 units); Neptune ~30 stays in view
+  return 2.6 + Math.pow(Math.abs(au), 0.66) * 2.9;
 }
 
 export function julianDay(date: Date): number {

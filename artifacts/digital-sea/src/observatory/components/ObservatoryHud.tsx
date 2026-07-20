@@ -10,19 +10,12 @@ import {
 import { formatClock, formatLon, formatUtc, degDelta } from '../lib/math';
 import { SPEEDS, useObservatory } from '../state/ObservatoryContext';
 import { useEffect, useMemo, useState } from 'react';
-
-function toLocalInput(d: Date | null): string {
-  if (!d) return '';
-  const pad = (n: number) => String(n).padStart(2, '0');
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
-}
+import { GlassDatePicker } from './GlassDatePicker';
 
 export function ObservatoryHud() {
   const o = useObservatory();
   const selected = o.chart.planets.find((p) => p.id === o.selectedPlanet);
   const visibleBodies = o.chart.planets.filter((p) => o.enabledBodies[p.id as BodyId] !== false);
-
-  const dateInputValue = toLocalInput(o.time);
 
   const onYear = (yr: number) => {
     const nd = new Date(o.time);
@@ -141,7 +134,7 @@ export function ObservatoryHud() {
             <div className="obs-date-card">
               <label className="obs-field">
                 <span>Date & time</span>
-                <input className="obs-input--themed" type="datetime-local" value={dateInputValue} min="1800-01-01T00:00" max="2100-12-31T23:59" onChange={(e) => { if (e.target.value) o.setTime(new Date(e.target.value)); }} />
+                <GlassDatePicker value={o.time} onChange={(d) => { if (d) o.setTime(d); }} />
               </label>
               <label className="obs-field">
                 <span>Year</span>
@@ -223,19 +216,19 @@ export function ObservatoryHud() {
             </div>
             <label className="obs-field">
               <span>Birth</span>
-              <input className="obs-input--themed" type="datetime-local" value={toLocalInput(o.birthDate)} onChange={(e) => o.setBirthDate(e.target.value ? new Date(e.target.value) : null)} />
+              <GlassDatePicker value={o.birthDate} onChange={(d) => o.setBirthDate(d)} allowClear placeholder="— set birth —" />
             </label>
             <label className="obs-field">
               <span>Second</span>
-              <input className="obs-input--themed" type="datetime-local" value={toLocalInput(o.secondDate)} onChange={(e) => o.setSecondDate(e.target.value ? new Date(e.target.value) : null)} />
+              <GlassDatePicker value={o.secondDate} onChange={(d) => o.setSecondDate(d)} allowClear placeholder="— set second —" />
             </label>
 
             {(o as any).natalChart && (
               <div style={{ marginTop: '0.8rem' }}>
                 <div className="obs-panel-hd">NATAL vs NOW</div>
-                <div style={{ maxHeight: '200px', overflow: 'auto', border: '1px solid rgba(255,255,255,0.06)', borderRadius: '8px' }}>
+                <div style={{ maxHeight: '200px', overflow: 'auto', border: '1px solid rgba(255,255,255,0.10)', borderRadius: '12px', background: 'rgba(255,255,255,0.04)' }}>
                   <table style={{ width: '100%', fontSize: '11px', borderCollapse: 'collapse' }}>
-                    <thead><tr style={{ color: '#64748b', textAlign: 'left' }}><th style={{ padding: '4px 6px' }}>Body</th><th>Nat</th><th>Now</th><th>Δ</th></tr></thead>
+                    <thead><tr style={{ color: 'var(--ink-dim)', textAlign: 'left' }}><th style={{ padding: '4px 6px' }}>Body</th><th>Nat</th><th>Now</th><th>Δ</th></tr></thead>
                     <tbody>
                       {natalComparison.map((r) => (
                         <tr key={r.id} style={{ borderTop: '1px solid rgba(255,255,255,0.05)' }}>
