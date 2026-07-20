@@ -103,7 +103,7 @@ const FEATURE_TABS: FeatureTab[] = [
         <li><strong>web</strong> — <code>web_search</code> · <code>web_fetch</code></li>
         <li><strong>browser</strong> — real default browser via agent-browser-cli</li>
         <li><strong>git</strong> — <code>git_status</code> · <code>git_diff</code></li>
-        <li><strong>knowledge</strong> — Graphify · PLUR · Ruflo · Executor · skill · memory · Excalidraw · omp</li>
+        <li><strong>knowledge</strong> — Graphify · PLUR · Ruflo · Akarso · Executor · skill · memory · Excalidraw · omp</li>
       </ul>
     ),
   },
@@ -192,6 +192,9 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: '/hijack', desc: 'take over a foreign agent session  (alias of /chagent)' },
   { cmd: '/takeover', desc: 'take over a foreign agent session  (alias of /chagent)' },
   { cmd: '/sessionresume', desc: 'import a foreign agent session  (alias of /chagent)' },
+  { cmd: '/akarso', desc: 'post/schedule/reply across 14 social platforms (native akarso tool)' },
+  { cmd: '/openseo', desc: 'SEO research/audits via OpenSEO MCP (open-source Semrush/Ahrefs alt)' },
+  { cmd: '/dialkit', desc: 'live-tune interface parameters — dials/sliders across React/Svelte/Vue/Solid' },
   { cmd: '/budget', desc: 'session spend ceiling' },
   { cmd: '/poor', desc: 'cost-saver lean prompt' },
   { cmd: '/usage', desc: 'token usage + cost for this session' },
@@ -313,9 +316,11 @@ const INSPIRATIONS: Inspiration[] = [
   { group: 'libs', name: 'tree-sitter', href: 'https://tree-sitter.github.io/tree-sitter/', why: 'local AST parsing behind Graphify code maps' },
   { group: 'libs', name: 'FFmpeg', href: 'https://ffmpeg.org', why: 'extract_frames sparse keyframe pipeline' },
   { group: 'stack', name: 'Graphify', href: 'https://github.com/Graphify-Labs/graphify', why: 'code knowledge graph — query / path / explain' },
-  { group: 'stack', name: 'PLUR', href: 'https://nuroctane.github.io/nur-cli/ecosystem/', why: 'shared engram memory across agents & sessions' },
-  { group: 'stack', name: 'Ruflo', href: 'https://nuroctane.github.io/nur-cli/ecosystem/', why: 'vector memory + swarm / hive-mind helpers' },
+  { group: 'stack', name: 'PLUR', href: 'https://plur.ai/', why: 'shared engram memory across agents & sessions' },
+  { group: 'stack', name: 'Ruflo', href: 'https://github.com/ruvnet/ruflo', why: 'vector memory + swarm / hive-mind helpers' },
   { group: 'stack', name: 'Executor', href: 'https://executor.sh', why: 'MCP / OpenAPI gateway catalog' },
+  { group: 'stack', name: 'Akarso', href: 'https://akarso.co', why: 'post/schedule across 14 social platforms — native akarso tool + /akarso' },
+  { group: 'stack', name: 'OpenSEO', href: 'https://openseo.so', why: 'open-source Semrush/Ahrefs alt — SEO research/audits via MCP + /openseo' },
   { group: 'stack', name: 'Foglamp Scan', href: 'https://www.foglamp.dev/scan', why: 'shareable codebase architecture map via /scan' },
   { group: 'stack', name: 'tldraw offline', href: 'https://offline.tldraw.com/', why: 'local .tldraw boards the agent can open / build via /draw' },
   { group: 'stack', name: 'agent-browser-cli', href: 'https://github.com/sleepinginsummer/agent-browser-cli', why: 'real default-browser perception + control' },
@@ -346,6 +351,11 @@ const INSPIRATIONS: Inspiration[] = [
   { group: 'plugins', name: 'Gemini API', href: 'https://ai.google.dev/gemini-api/docs', why: 'Google Gemini provider · key or browser SSO' },
   { group: 'plugins', name: 'OpenAI Responses API', href: 'https://platform.openai.com/docs/api-reference/responses', why: 'multimodal + tool-calling protocol shape' },
   { group: 'plugins', name: 'Anthropic Messages API', href: 'https://docs.anthropic.com', why: 'tool-use + extended thinking streaming patterns' },
+  { group: 'plugins', name: 'Dialkit', href: 'https://github.com/joshpuckett/dialkit', why: 'live-tune interface parameters — dials/sliders across frameworks · /dialkit' },
+  { group: 'plugins', name: 'LangExtract', href: 'https://github.com/google/langextract', why: 'structured extraction from text via LLMs with source grounding' },
+  { group: 'plugins', name: 'nanocodex', href: 'https://github.com/gakonst/nanocodex', why: 'minimal Rust coding agent — reference tools incl. web_search' },
+  { group: 'plugins', name: 'Skeuomorphic UI', href: 'https://github.com/Saurabh-2607/Skills', why: 'dark skeuomorphic components skill · /skeuo' },
+  { group: 'plugins', name: 'recent.design', href: 'https://recent.design/skills', why: 'curated design-engineer skill index (Emil, ibelick, OKLCH, …)' },
 ];
 
 const INSP_GROUPS: { id: Inspiration['group']; label: string }[] = [
