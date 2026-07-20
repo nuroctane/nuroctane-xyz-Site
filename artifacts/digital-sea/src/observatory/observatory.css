@@ -482,9 +482,14 @@
   max-width: 260px;
 }
 .obs-tooltip--aspect .obs-tooltip-hd { font-weight: 700; color: #f8fafc; margin-bottom: 0.2rem; border-left: 3px solid; padding-left: 0.4rem; }
-.obs-tooltip--instant { transition: none !important; animation: none !important; transform: translate3d(10px, -10px, 0); opacity: 1; }
+.obs-tooltip--instant { transition: none !important; animation: none !important; opacity: 1; }
+.obs-tooltip--billboard { transform: translate3d(12px, -14px, 0) !important; will-change: transform; backface-visibility: hidden; -webkit-font-smoothing: antialiased; }
 .obs-label.is-hover { background: rgba(56,189,248,0.18) !important; border-color: rgba(56,189,248,0.35) !important; color: #e0f2fe !important; }
 .obs-label.is-active { background: rgba(56,189,248,0.25) !important; border-color: rgba(56,189,248,0.5) !important; }
+
+/* keep planet/geo labels small even when camera far — clamp via CSS + larger distanceFactor in TSX */
+.obs-label { max-width: 140px; font-size: 10px !important; line-height: 1.2; transform-origin: center center; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.obs-label--planet { font-size: 10px !important; padding: 0.14rem 0.48rem !important; }
 
 /* real stars — progressive faint labels in empty sky */
 .obs-star-label {
@@ -501,6 +506,9 @@
   pointer-events: none;
   transform: translate3d(8px, -8px, 0);
   text-shadow: 0 1px 6px rgba(0,0,0,0.8);
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* === Unified World — one big canvas Earth + solar + sky + missions === */

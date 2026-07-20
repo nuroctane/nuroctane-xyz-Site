@@ -361,7 +361,7 @@ function SatelliteField({
             <sphereGeometry args={[0.052, 12, 12]} />
             <meshBasicMaterial color={selected.color} transparent opacity={0.18} blending={THREE.AdditiveBlending} depthWrite={false} />
           </mesh>
-          <Html zIndexRange={[0,5]} distanceFactor={2.2} style={{ pointerEvents: 'none' }}>
+          <Html zIndexRange={[0,5]} distanceFactor={10} style={{ pointerEvents: 'none' }}>
             <div className="obs-label obs-label--planet is-active" style={{ borderColor: selected.color }}>
               <span className="obs-label-dot" style={{ background: selected.color, boxShadow: `0 0 10px ${selected.color}` }} />
               {selected.name} · {selected.group}
@@ -385,7 +385,7 @@ function QuakeMarkers({ quakes, earthRadius }: { quakes: QuakeFeature[]; earthRa
           <group key={`q-${q.id}`} position={[pos.x, pos.y, pos.z]}>
             <mesh><octahedronGeometry args={[0.022 + mag * 0.007, 0]} /><meshStandardMaterial color={col} emissive={col} emissiveIntensity={1.0} /></mesh>
             <mesh scale={[1.9, 1.9, 1.9]}><octahedronGeometry args={[0.022 + mag * 0.007, 0]} /><meshBasicMaterial color={col} transparent opacity={0.22} blending={THREE.AdditiveBlending} depthWrite={false} /></mesh>
-            {mag > 5 && <Html zIndexRange={[0,5]} distanceFactor={5} style={{ pointerEvents: 'none' }}><div className="obs-earth-pin" style={{ background: col, boxShadow: `0 0 14px ${col}` }}>M{mag.toFixed(1)}</div></Html>}
+            {mag > 5 && <Html zIndexRange={[0,5]} distanceFactor={14} style={{ pointerEvents: 'none' }}><div className="obs-earth-pin" style={{ background: col, boxShadow: `0 0 14px ${col}` }}>M{mag.toFixed(1)}</div></Html>}
           </group>
         );
       })}
@@ -553,7 +553,7 @@ function GeographyLabels({ earthRadius, earthWorldPos, layers }: { earthRadius: 
         const p = latLonToVector3(c.lat, c.lon, earthRadius * 1.045);
         return (
           <group key={`cont-${c.name}`} position={[p.x, p.y, p.z]}>
-            <Html zIndexRange={[0,5]} distanceFactor={6} style={{ pointerEvents: 'none' }}>
+            <Html zIndexRange={[0,5]} distanceFactor={22} style={{ pointerEvents: 'none' }}>
               <div className="obs-geo-label obs-geo-label--continent">{c.name}</div>
             </Html>
           </group>
@@ -563,7 +563,7 @@ function GeographyLabels({ earthRadius, earthWorldPos, layers }: { earthRadius: 
         const p = latLonToVector3(c.lat, c.lon, earthRadius * 1.028);
         return (
           <group key={`cnty-${c.name}`} position={[p.x, p.y, p.z]}>
-            <Html zIndexRange={[0,5]} distanceFactor={4.5} style={{ pointerEvents: 'none' }}>
+            <Html zIndexRange={[0,5]} distanceFactor={14} style={{ pointerEvents: 'none' }}>
               <div className="obs-geo-label obs-geo-label--country">{c.name}</div>
             </Html>
           </group>
@@ -574,7 +574,7 @@ function GeographyLabels({ earthRadius, earthWorldPos, layers }: { earthRadius: 
         return (
           <group key={`city-${c.name}`} position={[p.x, p.y, p.z]}>
             <mesh><sphereGeometry args={[0.004, 6, 6]} /><meshBasicMaterial color="#e2e8f0" transparent opacity={0.65} /></mesh>
-            <Html zIndexRange={[0,5]} distanceFactor={2.8} style={{ pointerEvents: 'none' }}>
+            <Html zIndexRange={[0,5]} distanceFactor={5.5} style={{ pointerEvents: 'none' }}>
               <div className="obs-geo-label obs-geo-label--city">{c.name}</div>
             </Html>
           </group>
@@ -651,7 +651,7 @@ function TexturedPlanetInner({
       {cfg.atmosphereColor && <AtmosphereGlow size={size} color={cfg.atmosphereColor} strength={isHovered ? (cfg.atmosphereStrength ?? 0.6) * 1.6 : cfg.atmosphereStrength ?? 0.6} power={2.5} />}
       {(selected || isHovered) && <mesh><sphereGeometry args={[size * 1.28, 28, 28]} /><meshBasicMaterial color={cfg.baseColor} transparent opacity={isHovered ? 0.20 : 0.12} blending={THREE.AdditiveBlending} depthWrite={false} side={THREE.BackSide} /></mesh>}
       {(showLabel || isHovered || selected) && (
-        <Html zIndexRange={[0,5]} distanceFactor={9} style={{ pointerEvents: 'none' }}>
+        <Html zIndexRange={[0,5]} distanceFactor={22} style={{ pointerEvents: 'none' }}>
           <div className={`obs-label obs-label--planet ${isHovered ? 'is-hover' : ''} ${selected ? 'is-active' : ''}`}>
             <span className="obs-label-dot" style={{ background: cfg.baseColor, boxShadow: `0 0 10px ${cfg.baseColor}` }} />
             {name}{retro ? ' ℞' : ''}
@@ -687,7 +687,7 @@ function ProceduralPlanetMesh({
       {id === 'Sun' && <><SunCorona size={size} /><SunDisk size={size} /></>}
       {cfg.hasRings && <><mesh rotation={[Math.PI / 2.62, 0, 0.18]}><ringGeometry args={[size * 1.38, size * 2.42, 96]} /><meshBasicMaterial color={cfg.ringColor ?? '#fde68a'} transparent opacity={0.56} side={THREE.DoubleSide} /></mesh><RingGlow inner={size * 1.38} outer={size * 2.42} color={cfg.ringColor ?? '#fde68a'} /></>}
       {(selected || isHovered) && <mesh><sphereGeometry args={[size * 1.28, 28, 28]} /><meshBasicMaterial color={cfg.baseColor} transparent opacity={isHovered ? 0.20 : 0.12} blending={THREE.AdditiveBlending} depthWrite={false} side={THREE.BackSide} /></mesh>}
-      {(showLabel || isHovered || selected) && <Html zIndexRange={[0,5]} distanceFactor={9} style={{ pointerEvents: 'none' }}><div className={`obs-label obs-label--planet ${isHovered ? 'is-hover' : ''} ${selected ? 'is-active' : ''}`}><span className="obs-label-dot" style={{ background: cfg.baseColor, boxShadow: `0 0 10px ${cfg.baseColor}` }} />{name}{retro ? ' ℞' : ''}</div></Html>}
+      {(showLabel || isHovered || selected) && <Html zIndexRange={[0,5]} distanceFactor={22} style={{ pointerEvents: 'none' }}><div className={`obs-label obs-label--planet ${isHovered ? 'is-hover' : ''} ${selected ? 'is-active' : ''}`}><span className="obs-label-dot" style={{ background: cfg.baseColor, boxShadow: `0 0 10px ${cfg.baseColor}` }} />{name}{retro ? ' ℞' : ''}</div></Html>}
     </>
   );
 }
@@ -814,7 +814,7 @@ function EarthDetailContent({
           <group position={[pos.x, pos.y, pos.z]}>
             <mesh><sphereGeometry args={[0.032, 16, 16]} /><meshStandardMaterial color="#a3e635" emissive="#a3e635" emissiveIntensity={1.2} /></mesh>
             <mesh scale={[1.9, 1.9, 1.9]}><sphereGeometry args={[0.032, 12, 12]} /><meshBasicMaterial color="#a3e635" transparent opacity={0.24} blending={THREE.AdditiveBlending} depthWrite={false} /></mesh>
-            <Html zIndexRange={[0,5]} distanceFactor={4} style={{ pointerEvents: 'none' }}><div className="obs-label obs-label--planet"><span className="obs-label-dot" style={{ background: '#a3e635', boxShadow: '0 0 12px #a3e635' }} />ISS</div></Html>
+            <Html zIndexRange={[0,5]} distanceFactor={12} style={{ pointerEvents: 'none' }}><div className="obs-label obs-label--planet"><span className="obs-label-dot" style={{ background: '#a3e635', boxShadow: '0 0 12px #a3e635' }} />ISS</div></Html>
           </group>
         );
       })()}
@@ -887,7 +887,7 @@ function AspectLines({ hoveredId, setHoveredId }: { hoveredId: string | null; se
               opacity={isHover ? 1 : 0.40}
               lineWidth={isHover ? 3.2 : 1.1}
             />
-            {isHover && <Html zIndexRange={[0,5]} position={tooltipPos} style={{ pointerEvents: 'none' }} transform sprite={false} distanceFactor={12}><div className="obs-tooltip obs-tooltip--aspect obs-tooltip--instant"><div className="obs-tooltip-hd" style={{ borderColor: hit.color }}>{hit.label}</div><div>Δ {hit.delta.toFixed(2)}° · {hit.aspect}</div></div></Html>}
+            {isHover && <Html zIndexRange={[0,5]} position={tooltipPos} style={{ pointerEvents: 'none' }} distanceFactor={28} center sprite><div className="obs-tooltip obs-tooltip--aspect obs-tooltip--instant obs-tooltip--billboard"><div className="obs-tooltip-hd" style={{ borderColor: hit.color }}>{hit.label}</div><div>Δ {hit.delta.toFixed(2)}° · {hit.aspect}</div></div></Html>}
           </group>
         );
       })}
@@ -980,7 +980,7 @@ function RealStars({ radius = 780 }: { radius?: number }) {
         const v = raDecToVector(s.ra, s.dec);
         return (
           <group key={`starlabel-${s.id}`} position={[v.x * (radius * 0.998), v.y * (radius * 0.998), v.z * (radius * 0.998)]}>
-            <Html zIndexRange={[0, 5]} distanceFactor={130} style={{ pointerEvents: 'none' }} center>
+            <Html zIndexRange={[0, 5]} distanceFactor={360} style={{ pointerEvents: 'none' }} center>
               <div className="obs-star-label">{s.name}</div>
             </Html>
           </group>
@@ -1218,7 +1218,7 @@ function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) 
           <mesh><sphereGeometry args={[earthSize * 1.2, 32, 32]} /><meshBasicMaterial color="#38bdf8" transparent opacity={hoveredPlanet === 'Earth' ? 0.13 : 0.07} blending={THREE.AdditiveBlending} depthWrite={false} side={THREE.BackSide} /></mesh>
         )}
         {(layers.labels || hoveredPlanet === 'Earth' || selectedPlanet === 'Earth') && (
-          <Html distanceFactor={7} zIndexRange={[0, 5]} style={{ pointerEvents: 'none' }} position={[0, earthSize * 1.25, 0]}><div className={`obs-label obs-label--planet ${hoveredPlanet === 'Earth' ? 'is-hover' : ''} ${selectedPlanet === 'Earth' ? 'is-active' : ''}`}><span className="obs-label-dot" style={{ background: '#38bdf8', boxShadow: '0 0 12px #38bdf8' }} />Earth</div></Html>
+          <Html distanceFactor={18} zIndexRange={[0, 5]} style={{ pointerEvents: 'none' }} position={[0, earthSize * 1.25, 0]}><div className={`obs-label obs-label--planet ${hoveredPlanet === 'Earth' ? 'is-hover' : ''} ${selectedPlanet === 'Earth' ? 'is-active' : ''}`}><span className="obs-label-dot" style={{ background: '#38bdf8', boxShadow: '0 0 12px #38bdf8' }} />Earth</div></Html>
         )}
       </group>
 
