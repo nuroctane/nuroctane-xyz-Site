@@ -1,7 +1,7 @@
 /* Observatory — Unified 3D Dashboard — Liquid Glass edition
-   Optics per liquidGL / Apple Liquid Glass: live backdrop refraction (SVG lens
-   displacement on Chromium, blur+saturate everywhere), specular rim light,
-   interactive shimmer. Terminal mono type throughout. */
+   Clear neutral glass: crisp backdrop blur (low saturation so the scene's blue
+   doesn't bleed in), specular rim light, interactive shimmer.
+   Terminal mono type throughout. */
 
 .obs-root {
   /* glass tokens */
@@ -35,7 +35,7 @@
 .obs-root--unified { background: radial-gradient(140% 140% at 15% 15%, #0e1a2e 0%, #070c18 35%, #02040a 100%); }
 
 /* ---- shared glass recipes ---------------------------------------------- */
-/* Large refractive surfaces: lens displacement (Chromium) with blur fallback */
+/* Clear glass: neutral, crisp, low saturation so the blue scene doesn't bleed in */
 .obs-panel,
 .obs-tabs,
 .obs-earth-tools--unified,
@@ -44,14 +44,13 @@
 .obs-city-hits,
 .obs-dtp-pop {
   background: var(--glass-bg);
-  -webkit-backdrop-filter: blur(14px) saturate(1.6) brightness(1.08);
-  backdrop-filter: blur(14px) saturate(1.6) brightness(1.08);
-  backdrop-filter: url(#obs-lens) blur(14px) saturate(1.6) brightness(1.08);
+  -webkit-backdrop-filter: blur(10px) saturate(1.05) brightness(1.12);
+  backdrop-filter: blur(10px) saturate(1.05) brightness(1.12);
   border: 1px solid var(--glass-stroke);
   box-shadow: var(--glass-depth), var(--glass-specular);
 }
 
-/* Small capsule glass: soft blur only (displacement wobbles small shapes) */
+/* Small capsule glass */
 .obs-fab,
 .obs-icon-btn,
 .obs-mini,
@@ -60,8 +59,8 @@
 .obs-world-hint,
 .obs-dtp-trigger {
   background: var(--glass-bg);
-  -webkit-backdrop-filter: blur(10px) saturate(1.5) brightness(1.06);
-  backdrop-filter: blur(10px) saturate(1.5) brightness(1.06);
+  -webkit-backdrop-filter: blur(8px) saturate(1.05) brightness(1.10);
+  backdrop-filter: blur(8px) saturate(1.05) brightness(1.10);
   border: 1px solid var(--glass-stroke-soft);
   box-shadow:
     0 4px 16px rgba(0, 0, 0, 0.30),
@@ -234,8 +233,8 @@
   display: flex;
   gap: 0.2rem;
   flex-wrap: wrap;
-  padding: 0.3rem;
-  border-radius: 999px;
+  padding: 0.32rem;
+  border-radius: 16px;
 }
 .obs-tabs > button {
   appearance: none;
@@ -315,8 +314,8 @@
 .obs-field input, .obs-field select {
   width: 100%;
   background: rgba(255, 255, 255, 0.06);
-  -webkit-backdrop-filter: blur(8px) saturate(1.4);
-  backdrop-filter: blur(8px) saturate(1.4);
+  -webkit-backdrop-filter: blur(7px) saturate(1.05);
+  backdrop-filter: blur(7px) saturate(1.05);
   border: 1px solid var(--glass-stroke-soft);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.18), inset 0 2px 6px rgba(0, 0, 0, 0.25);
   color: var(--ink);
@@ -465,8 +464,8 @@
   letter-spacing: 0.05em;
   color: var(--ink);
   background: rgba(255, 255, 255, 0.08);
-  -webkit-backdrop-filter: blur(10px) saturate(1.5) brightness(1.06);
-  backdrop-filter: blur(10px) saturate(1.5) brightness(1.06);
+  -webkit-backdrop-filter: blur(8px) saturate(1.05) brightness(1.08);
+  backdrop-filter: blur(8px) saturate(1.05) brightness(1.08);
   border: 1px solid var(--glass-stroke-soft);
   padding: 0.15rem 0.45rem;
   border-radius: 999px;
@@ -632,8 +631,8 @@
   letter-spacing: 0.06em;
   color: var(--ink-dim);
   background: rgba(255, 255, 255, 0.06);
-  -webkit-backdrop-filter: blur(10px) saturate(1.4);
-  backdrop-filter: blur(10px) saturate(1.4);
+  -webkit-backdrop-filter: blur(8px) saturate(1.05);
+  backdrop-filter: blur(8px) saturate(1.05);
   border: 1px solid var(--glass-stroke-soft);
   padding: 0.3rem 0.6rem;
   border-radius: 999px;
@@ -646,8 +645,8 @@
   z-index: 20;
   pointer-events: none;
   background: rgba(255, 255, 255, 0.09);
-  -webkit-backdrop-filter: blur(14px) saturate(1.6) brightness(1.08);
-  backdrop-filter: blur(14px) saturate(1.6) brightness(1.08);
+  -webkit-backdrop-filter: blur(10px) saturate(1.05) brightness(1.10);
+  backdrop-filter: blur(10px) saturate(1.05) brightness(1.10);
   border: 1px solid var(--glass-stroke);
   color: var(--ink);
   font-size: 11px;
@@ -661,8 +660,8 @@
 .obs-tooltip {
   pointer-events: none;
   background: rgba(255, 255, 255, 0.09);
-  -webkit-backdrop-filter: blur(14px) saturate(1.6) brightness(1.08);
-  backdrop-filter: blur(14px) saturate(1.6) brightness(1.08);
+  -webkit-backdrop-filter: blur(10px) saturate(1.05) brightness(1.10);
+  backdrop-filter: blur(10px) saturate(1.05) brightness(1.10);
   border: 1px solid var(--glass-stroke);
   color: var(--ink);
   font-size: 10.5px;
@@ -691,8 +690,8 @@
   letter-spacing: 0.04em;
   color: rgba(238, 244, 252, 0.92);
   background: rgba(255, 255, 255, 0.06);
-  -webkit-backdrop-filter: blur(8px) saturate(1.4);
-  backdrop-filter: blur(8px) saturate(1.4);
+  -webkit-backdrop-filter: blur(7px) saturate(1.05);
+  backdrop-filter: blur(7px) saturate(1.05);
   border: 1px solid rgba(255, 255, 255, 0.10);
   padding: 0.12rem 0.4rem;
   border-radius: 999px;
@@ -733,8 +732,8 @@
 .obs-world-ui .obs-pill--action {
   appearance: none;
   background: var(--glass-bg);
-  -webkit-backdrop-filter: blur(12px) saturate(1.6) brightness(1.08);
-  backdrop-filter: blur(12px) saturate(1.6) brightness(1.08);
+  -webkit-backdrop-filter: blur(9px) saturate(1.05) brightness(1.10);
+  backdrop-filter: blur(9px) saturate(1.05) brightness(1.10);
   border: 1px solid var(--glass-stroke-soft);
   color: var(--ink);
   font-family: var(--mono);
@@ -760,8 +759,8 @@
 }
 .obs-world-ui .obs-pill--stats {
   background: var(--glass-bg);
-  -webkit-backdrop-filter: blur(12px) saturate(1.5);
-  backdrop-filter: blur(12px) saturate(1.5);
+  -webkit-backdrop-filter: blur(9px) saturate(1.05);
+  backdrop-filter: blur(9px) saturate(1.05);
   border: 1px solid var(--glass-stroke-soft);
   color: var(--ink-dim);
   font-family: var(--mono);
@@ -802,8 +801,8 @@
   font-size: 9px;
   color: rgba(255, 255, 255, 0.85);
   background: rgba(255, 255, 255, 0.07);
-  -webkit-backdrop-filter: blur(8px) saturate(1.4);
-  backdrop-filter: blur(8px) saturate(1.4);
+  -webkit-backdrop-filter: blur(7px) saturate(1.05);
+  backdrop-filter: blur(7px) saturate(1.05);
   border: 1px solid rgba(255, 255, 255, 0.10);
   padding: 0.08rem 0.34rem;
   border-radius: 999px;
@@ -825,8 +824,8 @@
 .obs-pill--anchor {
   appearance: none;
   background: var(--glass-bg);
-  -webkit-backdrop-filter: blur(10px) saturate(1.5) brightness(1.06);
-  backdrop-filter: blur(10px) saturate(1.5) brightness(1.06);
+  -webkit-backdrop-filter: blur(8px) saturate(1.05) brightness(1.08);
+  backdrop-filter: blur(8px) saturate(1.05) brightness(1.08);
   border: 1px solid var(--glass-stroke-soft);
   color: var(--ink-mid);
   font-family: var(--mono);

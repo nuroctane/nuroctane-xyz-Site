@@ -62,7 +62,7 @@ function PhotorealEarthShell({ size, sunDirRef, cloudsEnabled }: { size: number;
 
   return (
     <mesh>
-      <sphereGeometry args={[size, 128, 128]} />
+      <sphereGeometry args={[size, 96, 96]} />
       <shaderMaterial
         ref={matRef as any}
         uniforms={{
@@ -131,7 +131,7 @@ function CloudLayer({ size, enabled }: { size: number; enabled: boolean }) {
   if (!enabled) return null;
   return (
     <mesh scale={[1.015, 1.015, 1.015]}>
-      <sphereGeometry args={[size, 64, 64]} />
+      <sphereGeometry args={[size, 48, 48]} />
       <meshBasicMaterial map={cloudTex} transparent opacity={0.48} depthWrite={false} />
     </mesh>
   );
@@ -937,8 +937,10 @@ function RealStars({ radius = 780 }: { radius?: number }) {
     return geo;
   }, [starVecs]);
 
+  const frameCount = useRef(0);
   useFrame(() => {
-    if (Math.random() > 0.12) return;
+    frameCount.current = (frameCount.current + 1) % 12;
+    if (frameCount.current !== 0) return;
     if (!layers.constellations) return;
     const anchored = anchorPlanet;
     if (anchored && anchored !== 'Sun' && anchored !== 'solar' && anchored != null && anchored !== 'Earth') {
@@ -1163,7 +1165,7 @@ function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) 
       <ambientLight intensity={0.62} />
       <pointLight position={[0, 0, 0]} intensity={5.8} distance={300} decay={1.2} color="#fff4d0" />
       <directionalLight position={[16, 24, 16]} intensity={0.52} color="#cfe8ff" />
-      <Stars radius={460} depth={180} count={6000} factor={4} saturation={0} fade speed={0.08} />
+      <Stars radius={460} depth={180} count={3800} factor={4} saturation={0} fade speed={0.08} />
       <RealStars radius={780} />
       <ConstellationLines radius={145} />
 
@@ -1228,9 +1230,6 @@ function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) 
 
       <AspectLines hoveredId={hoveredAspect} setHoveredId={setHoveredAspect} />
 
-      <mesh rotation={[Math.PI / 2, 0, 0]}><circleGeometry args={[80, 64]} /><meshBasicMaterial color="#0a1220" transparent opacity={0.10} side={THREE.DoubleSide} depthWrite={false} /></mesh>
-      <gridHelper args={[160, 30, 0x1b2e57, 0x0e1b33]} />
-
       <OrbitControls ref={controlsRef} makeDefault enablePan minDistance={0.9} maxDistance={240} enableDamping dampingFactor={0.086} rotateSpeed={0.56} zoomSpeed={1.0} panSpeed={0.68} />
       <CameraFlyController earthPos={earthPosVec} chart={chart} controlsRef={controlsRef} followSatId={followSat ? selectedSatId : null} satPosRef={satPosRef} anchorPlanet={anchorPlanet} />
     </>
@@ -1248,7 +1247,7 @@ export function UnifiedWorld() {
 
   return (
     <div className="obs-unified-world">
-      <Canvas camera={{ position: [5.4, 3.4, 8.4], fov: 44 }} dpr={[1, 1.9]} gl={{ antialias: true, alpha: false, powerPreference: 'high-performance', stencil: false, depth: true }}>
+      <Canvas camera={{ position: [5.4, 3.4, 8.4], fov: 44 }} dpr={[1, 1.6]} gl={{ antialias: true, alpha: false, powerPreference: 'high-performance', stencil: false, depth: true }}>
         <Suspense fallback={null}>
           <UnifiedScene setFocus={setMode} />
         </Suspense>
