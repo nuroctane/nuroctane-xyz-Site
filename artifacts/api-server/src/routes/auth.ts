@@ -59,6 +59,7 @@ router.get("/auth/github/callback", async (req, res) => {
         client_secret: getClientSecret(),
         code,
       }),
+      signal: AbortSignal.timeout(6000),
     });
 
     const tokenData = (await tokenRes.json()) as { access_token?: string; error?: string };
@@ -69,6 +70,7 @@ router.get("/auth/github/callback", async (req, res) => {
 
     const userRes = await fetch("https://api.github.com/user", {
       headers: { Authorization: `Bearer ${tokenData.access_token}` },
+      signal: AbortSignal.timeout(6000),
     });
     const ghUser = (await userRes.json()) as GitHubUser;
 

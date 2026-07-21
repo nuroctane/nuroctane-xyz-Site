@@ -577,10 +577,10 @@ function useNurCliVersion() {
   const [flash, setFlash] = useState(false);
 
   useEffect(() => {
-    let es: EventSource | null = null;
     let cancelled = false;
     let pollTimer: number | undefined;
     const seen = { version: '' as string };
+    const POLL_MS = 5 * 60 * 1000;
 
     const apply = (payload: NurVersion) => {
       if (cancelled || !payload?.version) return;
@@ -595,8 +595,12 @@ function useNurCliVersion() {
     };
 
     const pollOnce = async () => {
+      if (document.visibilityState !== 'visible') return;
       try {
-        const res = await fetch('/api/nur-cli-version', { headers: { Accept: 'application/json' } });
+        const res = await fetch('/api/nur-cli-version', {
+          headers: { Accept: 'application/json' },
+          cache: 'no-store',
+        });
         if (!res.ok) throw new Error(String(res.status));
         const json = (await res.json()) as NurVersion;
         apply(json);
@@ -605,36 +609,18 @@ function useNurCliVersion() {
       }
     };
 
-    // Prefer SSE stream (live); fall back to JSON poll.
-    try {
-      es = new EventSource('/api/nur-cli-version?stream=1');
-      es.addEventListener('version', (ev) => {
-        try {
-          apply(JSON.parse((ev as MessageEvent).data) as NurVersion);
-        } catch {
-          /* ignore bad frame */
-        }
-      });
-      es.addEventListener('error', () => {
-        // EventSource error can be transient; if we never got data, poll.
-        if (!seen.version) {
-          void pollOnce();
-          pollTimer = window.setInterval(pollOnce, 120_000);
-        }
-      });
-    } catch {
-      void pollOnce();
-      pollTimer = window.setInterval(pollOnce, 120_000);
-    }
-
-    // Safety poll even when SSE works (some hosts buffer SSE oddly)
-    pollTimer = window.setInterval(pollOnce, 180_000);
     void pollOnce();
+    pollTimer = window.setInterval(pollOnce, POLL_MS);
+
+    const onVis = () => {
+      if (document.visibilityState === 'visible') void pollOnce();
+    };
+    document.addEventListener('visibilitychange', onVis);
 
     return () => {
       cancelled = true;
-      es?.close();
       if (pollTimer) window.clearInterval(pollTimer);
+      document.removeEventListener('visibilitychange', onVis);
     };
   }, []);
 

@@ -25,6 +25,7 @@ router.get("/visitor-books", async (_req, res) => {
     const overridesRaw = await kvGet<Record<string, boolean>>(OVERRIDES_KEY);
     const books = booksRaw ?? [];
     const overrides = overridesRaw ?? {};
+    res.setHeader("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300");
     return res.json({ books, overrides });
   } catch (err) {
     logger.error({ err }, "Failed to get visitor books");

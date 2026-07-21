@@ -177,6 +177,7 @@ router.get("/modkeys/gallery", async (_req, res) => {
     const templates = gallery.map(({ id, name, snap, layout, createdAt }) => ({
       id, name, snap, layout, createdAt,
     }));
+    res.setHeader("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300");
     return res.json({ templates });
   } catch (err) {
     logger.error({ err }, "Failed to get gallery");

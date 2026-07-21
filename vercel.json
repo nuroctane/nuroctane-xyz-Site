@@ -10,5 +10,12 @@
       "path": "/api/github-contrib/refresh",
       "schedule": "0 12 * * *"
     }
-  ]
+  ],
+  "functions": {
+    "api/og.mjs": { "maxDuration": 10 },
+    "api/nur-cli-version.mjs": { "maxDuration": 10 },
+    "api/[[...slug]].mjs": { "maxDuration": 10 },
+    "api/visitor-books.mjs": { "maxDuration": 10 },
+    "api/modkeys/[[...slug]].mjs": { "maxDuration": 10 }
+  }
 }

@@ -1,21 +1,17 @@
 /**
- * Live NurCLI version from GitHub Releases.
+ * Live NurCLI version from GitHub Releases — optimized for cost.
  *
- * GET /api/nur-cli-version
- *   → { version, tag, name, publishedAt, htmlUrl, fetchedAt }
+ * Previously supported ?stream=1 SSE which held Edge connections open
+ * indefinitely (burning Edge Requests + GitHub API quota). Now always
+ * returns cached JSON. Client polls sparingly (5m) with visibility guard.
  *
- * GET /api/nur-cli-version?stream=1
- *   → text/event-stream (initial + ~60s refresh while connection lives)
- *
- * Edge runtime (same pattern as api/og.mjs).
+ * GET /api/nur-cli-version → { version, tag, name, publishedAt, htmlUrl, fetchedAt }
  */
-
 export const config = { runtime: 'edge' };
 
-const UPSTREAM =
-  'https://api.github.com/repos/nuroctane/nur-cli/releases/latest';
-const CACHE_MS = 2 * 60 * 1000;
-const STREAM_MS = 60 * 1000;
+const UPSTREAM = 'https://api.github.com/repos/nuroctane/nur-cli/releases/latest';
+const CACHE_MS = 5 * 60 * 1000; // 5 min in-memory per isolate
+const FETCH_TIMEOUT_MS = 6_000;
 
 /** @type {{ at: number, payload: Record<string, unknown> } | null} */
 let mem = null;
@@ -37,9 +33,7 @@ function normalize(data) {
     tag: tag || `v${version}`,
     name: data.name || tag || null,
     publishedAt: data.published_at || null,
-    htmlUrl:
-      data.html_url ||
-      'https://github.com/nuroctane/nur-cli/releases/latest',
+    htmlUrl: data.html_url || 'https://github.com/nuroctane/nur-cli/releases/latest',
     fetchedAt: new Date().toISOString(),
   };
 }
@@ -48,23 +42,35 @@ async function fetchLatest() {
   const now = Date.now();
   if (mem && now - mem.at < CACHE_MS) return mem.payload;
 
-  const res = await fetch(UPSTREAM, {
-    headers: {
-      Accept: 'application/vnd.github+json',
-      'User-Agent': 'nuroctane.xyz-cli-version',
-      'X-GitHub-Api-Version': '2022-11-28',
-    },
-  });
+  const ctrl = new AbortController();
+  const t = setTimeout(() => ctrl.abort(), FETCH_TIMEOUT_MS);
 
-  if (!res.ok) {
-    const body = await res.text().catch(() => '');
-    throw new Error(`GitHub ${res.status}: ${body.slice(0, 180)}`);
+  try {
+    const res = await fetch(UPSTREAM, {
+      headers: {
+        Accept: 'application/vnd.github+json',
+        'User-Agent': 'nuroctane.xyz-cli-version-v2',
+        'X-GitHub-Api-Version': '2022-11-28',
+      },
+      signal: ctrl.signal,
+      // @ts-ignore edge supports cache option
+      cache: 'no-store',
+    });
+
+    if (!res.ok) {
+      // On 304 or rate limit — serve stale if we have it
+      if (mem) return mem.payload;
+      const body = await res.text().catch(() => '');
+      throw new Error(`GitHub ${res.status}: ${body.slice(0, 180)}`);
+    }
+
+    const data = await res.json();
+    const payload = normalize(data);
+    mem = { at: now, payload };
+    return payload;
+  } finally {
+    clearTimeout(t);
   }
-
-  const data = await res.json();
-  const payload = normalize(data);
-  mem = { at: now, payload };
-  return payload;
 }
 
 function json(data, status = 200, headers = {}) {
@@ -86,65 +92,22 @@ export default async function handler(request) {
       return json({ error: 'Method not allowed' }, 405, { Allow: 'GET, OPTIONS' });
     }
 
-    const url = new URL(request.url);
-    const wantStream =
-      url.searchParams.get('stream') === '1' ||
-      (request.headers.get('accept') || '').includes('text/event-stream');
+    const payload = await fetchLatest();
 
-    if (!wantStream) {
-      const payload = await fetchLatest();
-      return json(payload, 200, {
-        'Cache-Control': 'public, s-maxage=120, stale-while-revalidate=600',
-      });
-    }
-
-    const encoder = new TextEncoder();
-    let timer = null;
-    let closed = false;
-
-    const body = new ReadableStream({
-      async start(controller) {
-        const push = (event, data) => {
-          if (closed) return;
-          controller.enqueue(
-            encoder.encode(`event: ${event}\ndata: ${JSON.stringify(data)}\n\n`),
-          );
-        };
-
-        const tick = async () => {
-          try {
-            const payload = await fetchLatest();
-            push('version', payload);
-          } catch (err) {
-            push('error', {
-              message: err?.message || String(err),
-              at: new Date().toISOString(),
-            });
-          }
-        };
-
-        push('hello', { source: 'github-releases', repo: 'nuroctane/nur-cli' });
-        await tick();
-        timer = setInterval(tick, STREAM_MS);
-
-        // Keepalive comments so proxies don't idle-close
-        // (also resets some edge idle timers)
-      },
-      cancel() {
-        closed = true;
-        if (timer) clearInterval(timer);
-      },
-    });
-
-    return new Response(body, {
-      status: 200,
-      headers: cors({
-        'Content-Type': 'text/event-stream; charset=utf-8',
-        'Cache-Control': 'no-cache, no-transform',
-        Connection: 'keep-alive',
-      }),
+    // Strong CDN caching — reduces origin hits by ~90%
+    // s-maxage 300 = 5min at edge, stale-while-revalidate 1h for bursts
+    return json(payload, 200, {
+      'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=3600',
+      'CDN-Cache-Control': 'public, s-maxage=600, stale-while-revalidate=3600',
+      'Vercel-CDN-Cache-Control': 'public, s-maxage=600, stale-while-revalidate=3600',
     });
   } catch (err) {
+    // Serve stale memory on error if possible — avoids 502 spikes
+    if (mem) {
+      return json({ ...mem.payload, stale: true }, 200, {
+        'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=300',
+      });
+    }
     return json(
       {
         error: err?.message || 'Failed to fetch release',

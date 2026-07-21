@@ -2,8 +2,8 @@
  * Dynamic Open Graph image for share embeds.
  * GET /api/og?page=cli
  *
- * Edge runtime + @vercel/og. /cli uses NurCLI gold TUI palette + GitHub logo.
- * Keep styles Satori-safe: flex only, solid colors, no textShadow / background-clip text.
+ * Edge runtime + @vercel/og. Optimized: longer cache, no blocking logo fetch.
+ * Keep styles Satori-safe: flex only, solid colors.
  */
 import { ImageResponse } from '@vercel/og';
 import { createElement as h } from 'react';
@@ -61,7 +61,6 @@ function seaCard(theme, badge, sub, pathLabel) {
           height: 10,
           borderRadius: 999,
           background: theme.accent,
-          boxShadow: `0 0 18px ${theme.accent}`,
         },
       }),
       h('span', null, 'SYS://NUROCTANE'),
@@ -126,11 +125,7 @@ function seaCard(theme, badge, sub, pathLabel) {
   );
 }
 
-/**
- * NurCLI gold card — same structural pattern as seaCard (Satori-safe).
- * Logo via absolute URL (not base64) so @vercel/og can fetch it.
- */
-function cliCard(logoOk) {
+function cliCard() {
   const gold = '#e8b923';
   const goldBright = '#ffd65a';
   const goldSky = '#ffe08c';
@@ -152,7 +147,6 @@ function cliCard(logoOk) {
         fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
       },
     },
-    // top bar
     h(
       'div',
       {
@@ -180,7 +174,6 @@ function cliCard(logoOk) {
             height: 10,
             borderRadius: 999,
             background: gold,
-            boxShadow: `0 0 18px ${gold}`,
           },
         }),
         h('span', null, 'SYS://CLI'),
@@ -197,7 +190,6 @@ function cliCard(logoOk) {
         'nuroctane.xyz/cli',
       ),
     ),
-    // brand
     h(
       'div',
       {
@@ -207,39 +199,27 @@ function cliCard(logoOk) {
           gap: 36,
         },
       },
-      logoOk
-        ? h('img', {
-            src: NUR_LOGO,
+      // No external image fetch — use text logo to avoid extra Edge fetch + origin cost
+      h(
+        'div',
+        {
+          style: {
             width: 160,
             height: 160,
-            style: {
-              width: 160,
-              height: 160,
-              objectFit: 'contain',
-              borderRadius: 12,
-              border: `1px solid ${border}`,
-            },
-          })
-        : h(
-            'div',
-            {
-              style: {
-                width: 160,
-                height: 160,
-                borderRadius: 12,
-                border: `1px solid ${border}`,
-                background: '#1a1f28',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                color: goldBright,
-                fontSize: 42,
-                fontWeight: 700,
-                letterSpacing: '0.08em',
-              },
-            },
-            'NUR',
-          ),
+            borderRadius: 12,
+            border: `1px solid ${border}`,
+            background: '#1a1f28',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            color: goldBright,
+            fontSize: 42,
+            fontWeight: 700,
+            letterSpacing: '0.08em',
+          },
+        },
+        'NUR',
+      ),
       h(
         'div',
         {
@@ -288,7 +268,6 @@ function cliCard(logoOk) {
         ),
       ),
     ),
-    // footer
     h(
       'div',
       {
@@ -309,44 +288,29 @@ function cliCard(logoOk) {
   );
 }
 
-async function logoAvailable() {
-  try {
-    const res = await fetch(NUR_LOGO, { method: 'GET' });
-    return res.ok;
-  } catch {
-    return false;
-  }
-}
-
 export default async function handler(request) {
   try {
     const url = new URL(request.url);
     const page = (url.searchParams.get('page') || 'home').toLowerCase();
     const theme = THEMES[page] || THEMES.home;
-    // Prefer theme badge as-is for cli (NurCLI); others uppercase for sea chrome
     const rawTitle = url.searchParams.get('title') || theme.badge;
     const badge = page === 'cli' ? String(rawTitle) : String(rawTitle).toUpperCase();
     const sub = url.searchParams.get('sub') || theme.sub;
     const pathLabel = page === 'home' ? '/' : `/${page}`;
 
-    let element;
-    if (page === 'cli') {
-      const ok = await logoAvailable();
-      element = cliCard(ok);
-    } else {
-      element = seaCard(theme, badge, sub, pathLabel);
-    }
+    const element = page === 'cli' ? cliCard() : seaCard(theme, badge, sub, pathLabel);
 
+    // Longer cache: OG images are static-ish — 1 day at edge, 1 week stale
     return new ImageResponse(element, {
       width: 1200,
       height: 630,
       headers: {
-        // shorter cache so X re-fetches after fixes; still CDN friendly
-        'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
+        'Cache-Control': 'public, s-maxage=86400, stale-while-revalidate=604800',
+        'CDN-Cache-Control': 'public, s-maxage=86400, stale-while-revalidate=604800',
+        'Vercel-CDN-Cache-Control': 'public, s-maxage=86400, stale-while-revalidate=604800',
       },
     });
   } catch (err) {
-    // Never return empty image/png — X drops zero-byte cards
     return new Response(`OG image error: ${err?.message || err}`, {
       status: 500,
       headers: { 'content-type': 'text/plain; charset=utf-8' },
