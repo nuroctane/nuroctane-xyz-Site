@@ -85,8 +85,8 @@ const FEATURE_TABS: FeatureTab[] = [
         <li><code>/model</code> live model list · <code>/plugins</code> marketplace · <code>/fusion</code> multi-model debate</li>
         <li><code>/local</code> bundled llama.cpp · <code>/bench</code> worktree benchmarks · <code>nur gateway</code> Telegram bot</li>
         <li>Natural-language + slash skill activation — /skill-name or plain phrases</li>
-        <li>Resume other agents: Claude · Codex · Cursor · Grok · Nur</li>
-        <li><strong>chagent</strong> <code>/chagent</code> · <code>/hijack</code> — migrate a Claude/Codex/Cursor/Grok session into nur & resume it (import picker)</li>
+        <li>Take over other agents: Claude · Codex · Cursor · Grok · Nur</li>
+        <li><strong>takeover</strong> <code>/takeover</code> · <code>/hijack</code> — migrate a Claude/Codex/Cursor/Grok session into nur & resume it; press <code>c</code> to switch between the sessions and takeover windows</li>
       </ul>
     ),
   },
@@ -186,12 +186,10 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: '/new', desc: 'start a fresh session' },
   { cmd: '/cd', desc: 'change working directory (tools sandbox here)' },
   { cmd: '/pwd', desc: 'print the current working directory' },
-  { cmd: '/sessions', desc: 'browse & open past sessions (press c to fold in chagent imports)' },
-  { cmd: '/resume', desc: 'browse & open past sessions (alias)' },
-  { cmd: '/chagent', desc: 'chagent: import a Claude/Codex/Cursor/Grok session & resume it (picker)' },
-  { cmd: '/hijack', desc: 'take over a foreign agent session  (alias of /chagent)' },
-  { cmd: '/takeover', desc: 'take over a foreign agent session  (alias of /chagent)' },
-  { cmd: '/sessionresume', desc: 'import a foreign agent session  (alias of /chagent)' },
+  { cmd: '/sessions', desc: 'browse & open past sessions — press c to switch to takeover' },
+  { cmd: '/resume', desc: 'browse & open past sessions (alias of /sessions)' },
+  { cmd: '/takeover', desc: 'import a Claude/Codex/Cursor/Grok session & resume it — press c to switch to sessions' },
+  { cmd: '/hijack', desc: 'take over a foreign agent session (alias of /takeover)' },
   { cmd: '/akarso', desc: 'post/schedule/reply across 14 social platforms (native akarso tool)' },
   { cmd: '/openseo', desc: 'SEO research/audits via OpenSEO MCP (open-source Semrush/Ahrefs alt)' },
   { cmd: '/dialkit', desc: 'live-tune interface parameters — dials/sliders across React/Svelte/Vue/Solid' },
