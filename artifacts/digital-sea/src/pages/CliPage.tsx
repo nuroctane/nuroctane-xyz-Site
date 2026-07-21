@@ -188,7 +188,7 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: '/pwd', desc: 'print the current working directory' },
   { cmd: '/sessions', desc: 'browse & open past sessions — press c to switch to takeover' },
   { cmd: '/resume', desc: 'browse & open past sessions (alias of /sessions)' },
-  { cmd: '/takeover', desc: 'import a Claude/Codex/Cursor/Grok session & resume it — press c to switch to sessions' },
+  { cmd: '/takeover', desc: 'import a Claude/Codex/Cursor/Grok session & resume it — all workspaces, tab to narrow, c to switch to sessions' },
   { cmd: '/hijack', desc: 'take over a foreign agent session (alias of /takeover)' },
   { cmd: '/akarso', desc: 'post/schedule/reply across 14 social platforms (native akarso tool)' },
   { cmd: '/openseo', desc: 'SEO research/audits via OpenSEO MCP (open-source Semrush/Ahrefs alt)' },
