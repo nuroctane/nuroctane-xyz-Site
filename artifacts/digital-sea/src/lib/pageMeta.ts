@@ -72,7 +72,7 @@ const PAGES: Record<string, PageMeta> = {
   cli: {
     title: 'NurCLI',
     description:
-      'Your personal coding agent. Rust harness, gold TUI, native vision, 60 providers, plugin marketplace, 800+ skills. Install on macOS, Windows, Linux.',
+      'Your personal coding agent. Rust harness, gold TUI, native vision, 61 providers, plugin marketplace, 800+ skills. Install on macOS, Windows, Linux.',
     badge: 'NurCLI',
     path: '/cli',
     siteName: 'NurCLI',

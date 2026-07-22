@@ -1048,7 +1048,7 @@ export default function CliPage() {
             ))}
           </ol>
           <p className="cli-after-note">
-            Or run <code>nur</code> and use <code>/login</code> in the TUI — pick any of 60 providers,
+            Or run <code>nur</code> and use <code>/login</code> in the TUI — pick any of 61 providers,
             paste a key, or sign in with the browser where available.
             {' '}
             <a
