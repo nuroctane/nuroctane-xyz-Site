@@ -78,7 +78,8 @@ const FEATURE_TABS: FeatureTab[] = [
     blurb: 'Modes, providers, budgets, resume.',
     body: (
       <ul className="cli-feat-list">
-        <li><strong>Multi-provider</strong> via <code>/login</code> — 60 (OpenAI, Anthropic, Gemini, xAI, Groq, OpenRouter, Ollama, Meta Model API, …)</li>
+        <li><strong>Multi-provider</strong> via <code>/login</code> — 61 (OpenAI, Anthropic, Gemini, xAI, Groq, OpenRouter, Ollama, Meta Model API, …)</li>
+        <li><strong>Signed into the vendor CLI = signed into nur</strong> — Claude Code, Codex, Grok, Kimi, Cursor, OpenCode, Antigravity/gcloud sessions are imported automatically, and refreshed when stale. No key to paste.</li>
         <li>Permission modes: <strong>manual</strong> / <strong>plan</strong> / <strong>auto</strong> · Shift+Tab mid-turn</li>
         <li>Tool loop · approvals · Esc cancel · subagents · todos · plan mode</li>
         <li><code>/swarm</code> subagent grid <strong>auto-surfaces</strong> the moment a subagent spawns — <code>hide</code> dismisses it for the turn, <code>off</code> freezes, <code>clear</code> drops finished runs</li>
@@ -152,6 +153,8 @@ const FEATURE_TABS: FeatureTab[] = [
         <li>Peek · drag-select · scrollbar · sticky prompt</li>
         <li>Ctrl+A / C / V / X · reverse-search prompt history (Ctrl+R)</li>
         <li>Approval mini-diff · y / a / n · sessions browser</li>
+        <li><code>/sidegraph</code> — the live query drawn on a <strong>2D canvas</strong>: parallel subagents fan out side by side and rejoin the trunk, a steer draws a real back-edge into the reasoning it re-enters. Click-drag pans both axes; drag the left border to resize.</li>
+        <li>Command palette spans the full window width — widen the terminal, read more of every tip</li>
         <li>Splash: NUR logotype + active provider · lean banner</li>
       </ul>
     ),
@@ -166,6 +169,8 @@ const FEATURE_TABS: FeatureTab[] = [
         <li>Atomic writes under <code>~/.nur/</code> · session + compaction backups</li>
         <li>Sandbox · denylist · SSRF blocks · permissions / hooks TOML</li>
         <li>API retries · install SHA-256 · <code>nur doctor</code></li>
+        <li><strong>Long runs stay alive</strong> — the real context window is read from the model catalog, auto-compaction runs as often as a run needs (and carries the in-flight work across), and Anthropic streaming retries with backoff instead of dying on one 429</li>
+        <li><strong>No hidden turn caps</strong> — subagents inherit the parent budget verbatim</li>
         <li>Logs: <code>~/.nur/nur.log</code></li>
       </ul>
     ),
@@ -214,7 +219,7 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: '/receipt', desc: 'session receipt — hash-chained verification' },
   { cmd: '/cua', desc: 'computer-use desktop driver on / off / status' },
   { cmd: '/graph', desc: 'inline live execution-graph card for the turn' },
-  { cmd: '/sidegraph', desc: 'live node-graph of the current query: tools · subagents · steers · interrupts' },
+  { cmd: '/sidegraph', desc: '2D canvas graph of the current query — parallel subagents fan out, drag to pan, drag the border to resize' },
   { cmd: '/swarm', desc: 'inline subagent grid — auto-surfaces when a subagent spawns · detail | hide | off | clear' },
   { cmd: '/subagents', desc: 'inline subagent grid  (alias of /swarm)' },
   { cmd: '/agents', desc: 'inline subagent grid  (alias of /swarm)' },
@@ -894,7 +899,7 @@ export default function CliPage() {
             </div>
             <p className="cli-tagline">
               Extremely efficient token spend. Custom Rust harness, dense gold TUI,
-              native vision, 60 providers, 800+ skills — your personal coding agent.
+              native vision, 61 providers, 800+ skills — your personal coding agent.
             </p>
             <div className="cli-hero-cta">
               <button
@@ -931,7 +936,7 @@ export default function CliPage() {
         </div>
 
         <ul className="cli-stats" aria-label="Highlights">
-          <li><strong>60</strong><span>providers</span></li>
+          <li><strong>61</strong><span>providers</span></li>
           <li><strong>~85%</strong><span>token savings aim</span></li>
           <li><strong>800+</strong><span>skills</span></li>
           <li>
