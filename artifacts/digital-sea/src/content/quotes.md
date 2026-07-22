@@ -14,7 +14,7 @@
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (21)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (93)
 - [[#Wealth, Work & Value|Wealth, Work & Value]] (29)
-- [[#Unsorted Sparks|Unsorted Sparks]] (53)
+- [[#Unsorted Sparks|Unsorted Sparks]] (54)
 
 ## Faith, God & Surrender
 
@@ -1843,6 +1843,11 @@ _Good fragments that still belong here, but do not yet have a perfect home._
 > 
 > Not evil advice.
 > — @QuantumRover
+
+> @DejaRu22 “Consider and fuck around with this mental model:
+> The only difference between people is what they say to themselves, and that accounts for nearly ALL results or lack thereof in life.”
+> — @nuroctane
+
 
 
 
