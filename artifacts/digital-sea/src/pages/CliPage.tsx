@@ -78,9 +78,10 @@ const FEATURE_TABS: FeatureTab[] = [
     blurb: 'Modes, providers, budgets, resume.',
     body: (
       <ul className="cli-feat-list">
-        <li><strong>Multi-provider</strong> via <code>/login</code> — 60+ (OpenAI, Anthropic, Gemini, xAI, Groq, OpenRouter, Ollama, Meta Model API, …)</li>
+        <li><strong>Multi-provider</strong> via <code>/login</code> — 60 (OpenAI, Anthropic, Gemini, xAI, Groq, OpenRouter, Ollama, Meta Model API, …)</li>
         <li>Permission modes: <strong>manual</strong> / <strong>plan</strong> / <strong>auto</strong> · Shift+Tab mid-turn</li>
         <li>Tool loop · approvals · Esc cancel · subagents · todos · plan mode</li>
+        <li><code>/swarm</code> subagent grid <strong>auto-surfaces</strong> the moment a subagent spawns — <code>hide</code> dismisses it for the turn, <code>off</code> freezes, <code>clear</code> drops finished runs</li>
         <li>Session budgets · tool-result spill · smarter auto-compact</li>
         <li><code>/model</code> live model list · <code>/plugins</code> marketplace · <code>/fusion</code> multi-model debate</li>
         <li><code>/local</code> bundled llama.cpp · <code>/bench</code> worktree benchmarks · <code>nur gateway</code> Telegram bot</li>
@@ -132,6 +133,9 @@ const FEATURE_TABS: FeatureTab[] = [
         <li><strong>Ruflo</strong> — vector memory + swarm helpers</li>
         <li><strong>Executor</strong> — MCP / OpenAPI gateway</li>
         <li><strong>omp</strong> — Oh My Pi coding-agent backend</li>
+        <li><strong>fractal</strong> — recursive agent trees in git worktrees via <code>/fractal</code> · <em>Unix only</em> — fractal 1.0.0 imports <code>fcntl</code>, so it does not run on Windows (use WSL or a Linux/macOS host) · Python 3.12–3.14, <code>pipx install plasma-fractal</code></li>
+        <li><strong>penecho</strong> — infinite-canvas sidecar bridged from nur auth (<code>/penecho</code>)</li>
+        <li><strong>t3code</strong> — vendor-CLI auth delegation: driver probing, env isolation, pairing tokens</li>
         <li><strong>Plugins</strong> — Superpowers, Vercel, Firecrawl, Fable, Chrome DevTools, …</li>
         <li><strong>AKM</strong> — skill package manager · 800+ cybersecurity / design packs</li>
         <li><strong>Cua</strong> — full-desktop computer-use driver</li>
@@ -210,6 +214,15 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: '/receipt', desc: 'session receipt — hash-chained verification' },
   { cmd: '/cua', desc: 'computer-use desktop driver on / off / status' },
   { cmd: '/graph', desc: 'inline live execution-graph card for the turn' },
+  { cmd: '/sidegraph', desc: 'live node-graph of the current query: tools · subagents · steers · interrupts' },
+  { cmd: '/swarm', desc: 'inline subagent grid — auto-surfaces when a subagent spawns · detail | hide | off | clear' },
+  { cmd: '/subagents', desc: 'inline subagent grid  (alias of /swarm)' },
+  { cmd: '/agents', desc: 'inline subagent grid  (alias of /swarm)' },
+  { cmd: '/fractal', desc: 'recursive agent tree in git worktrees: init | node list | node status <name> | node start <name> | attach <name> | open — Unix only, use WSL on Windows' },
+  { cmd: '/penecho', desc: 'skill: penecho infinite canvas — ink · MathJax · plots · animations' },
+  { cmd: '/pen', desc: 'penecho canvas  (alias of /penecho)' },
+  { cmd: '/drawings', desc: 'penecho canvas  (alias of /penecho)' },
+  { cmd: '/t3code', desc: 'skill: vendor-CLI auth delegation — driver probing · delegate · pairing tokens' },
   { cmd: '/draw', desc: 'open / build interactive tldraw offline boards' },
   { cmd: '/steer', desc: 'inject a message into the running turn (no cancel)' },
   { cmd: '/scan', desc: 'map the codebase → shareable foglamp scan' },
@@ -321,6 +334,9 @@ const INSPIRATIONS: Inspiration[] = [
   { group: 'stack', name: 'OpenSEO', href: 'https://openseo.so', why: 'open-source Semrush/Ahrefs alt — SEO research/audits via MCP + /openseo' },
   { group: 'stack', name: 'Foglamp Scan', href: 'https://www.foglamp.dev/scan', why: 'shareable codebase architecture map via /scan' },
   { group: 'stack', name: 'tldraw offline', href: 'https://offline.tldraw.com/', why: 'local .tldraw boards the agent can open / build via /draw' },
+  { group: 'stack', name: 'fractal', href: 'https://github.com/plasma-ai/fractal', why: 'hierarchical recursive agent loops in git worktrees — theirs, driven by nur via /fractal and the fractal tool (Apache-2.0)' },
+  { group: 'stack', name: 'penecho', href: 'https://github.com/penecho/penecho', why: 'think with AI beyond the chat box — infinite canvas run as a sidecar, nur only bridges auth + launches it (AGPL-3.0)' },
+  { group: 'stack', name: 't3code', href: 'https://github.com/pingdotgg/t3code', why: 'vendor-CLI auth delegation — nur mirrors its driver-probing / no-secret-storage pattern in the t3code tool (MIT)' },
   { group: 'stack', name: 'agent-browser-cli', href: 'https://github.com/sleepinginsummer/agent-browser-cli', why: 'real default-browser perception + control' },
   { group: 'stack', name: 'Cua', href: 'https://github.com/trycua/cua', why: 'computer-use desktop driver (/cua)' },
   { group: 'stack', name: 'AKM', href: 'https://www.npmjs.com/package/akm-cli', why: 'skill package manager across Claude / OpenCode / Cursor' },
@@ -878,7 +894,7 @@ export default function CliPage() {
             </div>
             <p className="cli-tagline">
               Extremely efficient token spend. Custom Rust harness, dense gold TUI,
-              native vision, 60+ providers, 800+ skills — your personal coding agent.
+              native vision, 60 providers, 800+ skills — your personal coding agent.
             </p>
             <div className="cli-hero-cta">
               <button
@@ -915,7 +931,7 @@ export default function CliPage() {
         </div>
 
         <ul className="cli-stats" aria-label="Highlights">
-          <li><strong>60+</strong><span>providers</span></li>
+          <li><strong>60</strong><span>providers</span></li>
           <li><strong>~85%</strong><span>token savings aim</span></li>
           <li><strong>800+</strong><span>skills</span></li>
           <li>
@@ -1027,7 +1043,7 @@ export default function CliPage() {
             ))}
           </ol>
           <p className="cli-after-note">
-            Or run <code>nur</code> and use <code>/login</code> in the TUI — pick any of 60+ providers,
+            Or run <code>nur</code> and use <code>/login</code> in the TUI — pick any of 60 providers,
             paste a key, or sign in with the browser where available.
             {' '}
             <a
