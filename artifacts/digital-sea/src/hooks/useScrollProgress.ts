@@ -1,11 +1,11 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { scrollMax } from '../lib/scrollMetrics';
 
 export function useScrollProgress() {
   const progress = useRef(0);
+  const [isMobile, setIsMobile] = useState(() => typeof window !== 'undefined' && window.innerWidth < 768);
 
   useEffect(() => {
-    const isMobile = window.innerWidth < 768;
     const target = { value: 0 };
 
     const onScroll = () => {
@@ -15,7 +15,12 @@ export function useScrollProgress() {
       if (!isMobile) progress.current = target.value;
     };
 
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+
     window.addEventListener('scroll', onScroll, { passive: true });
+    window.addEventListener('resize', handleResize);
     onScroll();
     progress.current = target.value;
 
@@ -36,8 +41,9 @@ export function useScrollProgress() {
     return () => {
       cancelAnimationFrame(rafId);
       window.removeEventListener('scroll', onScroll);
+      window.removeEventListener('resize', handleResize);
     };
-  }, []);
+  }, [isMobile]);
 
   return progress;
 }

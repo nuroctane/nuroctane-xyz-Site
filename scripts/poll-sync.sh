@@ -3,7 +3,7 @@
 # Also runs quotes sync (Obsidian → repo)
 # Tracks last run to enforce ~90 min interval between pulls
 
-REPO_ROOT="/c/Users/david/Laboratory/nuroctane.xyz"
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || REPO_ROOT="/c/Users/david/Laboratory/nuroctane.xyz"
 STATE_FILE="$REPO_ROOT/.sync-state"
 NOW=$(date +%s)
 INTERVAL=5400  # 90 minutes in seconds
@@ -21,7 +21,7 @@ if (( NOW - LAST_RUN >= INTERVAL )); then
 fi
 
 # Always run quotes sync (Obsidian → repo) - it's cheap and only commits on change
-/c/Users/david/.hermes/scripts/sync-quotes.sh
+"$REPO_ROOT/scripts/sync-quotes.sh"
 
 # Conditional git pull for books (repo → Obsidian)
 if (( SHOULD_PULL )); then

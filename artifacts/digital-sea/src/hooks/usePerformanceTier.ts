@@ -67,13 +67,43 @@ function runGPUBenchmark(): Promise<number> {
   });
 }
 
+// Generate a GPU fingerprint for caching benchmark results
+function getGPUFingerprint(): string {
+  const canvas = document.createElement('canvas');
+  const gl = canvas.getContext('webgl');
+  if (!gl) return 'unknown';
+  const renderer = gl.getParameter(gl.RENDERER);
+  const vendor = gl.getParameter(gl.VENDOR);
+  return `${vendor}~${renderer}`;
+}
+
 export function usePerformanceTier(): PerformanceTier {
   const [tier, setTier] = useState<PerformanceTier>(() => detectInitialTier());
 
   useEffect(() => {
     let cancelled = false;
+    const fingerprint = getGPUFingerprint();
+    const cacheKey = `gpu-benchmark-${fingerprint}`;
+    
+    // Check sessionStorage for cached result
+    const cached = sessionStorage.getItem(cacheKey);
+    if (cached) {
+      const cachedMs = parseFloat(cached);
+      if (!isNaN(cachedMs) && cachedMs > 18) {
+        const downgrade: Record<PerformanceTier, PerformanceTier> = {
+          high: 'medium', medium: 'low', low: 'minimal', minimal: 'minimal',
+        };
+        setTier(downgrade[tier]);
+        return;
+      }
+    }
+
     runGPUBenchmark().then(avgMs => {
       if (cancelled || avgMs === 0) return;
+      
+      // Cache the result
+      sessionStorage.setItem(cacheKey, String(avgMs));
+      
       if (avgMs > 18) {
         const downgrade: Record<PerformanceTier, PerformanceTier> = {
           high: 'medium', medium: 'low', low: 'minimal', minimal: 'minimal',

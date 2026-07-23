@@ -275,7 +275,7 @@ export function applyDocumentMeta(meta: PageMeta, origin?: string): void {
           ? 'image/jpeg'
           : 'image/png';
   // Bust sticky browser cache when swapping brand icons mid-session
-  icon.href = faviconHref;
+  icon.href = faviconHref + (faviconHref.includes('?') ? '&' : '?') + `v=${Date.now()}`;
   setMeta('meta[name="twitter:card"]', 'content', 'summary_large_image');
   setMeta('meta[name="twitter:title"]', 'content', meta.title);
   setMeta('meta[name="twitter:description"]', 'content', meta.description);

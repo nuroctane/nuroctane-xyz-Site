@@ -10,8 +10,18 @@
 const SITE = 'https://www.nuroctane.xyz';
 
 /** Crawlers + unfurlers that read OG tags from raw HTML (not client JS). */
-const BOT_RE =
-  /bot|crawl|spider|slurp|facebookexternalhit|facebot|embedly|quora link preview|whatsapp|discord|telegram|twitterbot|linkedinbot|pinterest|slackbot|vkshare|w3c_validator|redditbot|applebot|bingpreview|outbrain|skypeuripreview|tumblr|bitlybot|flipboard|nuzzel|qwantify|bitrix link preview|xing-contenttabreceiver|chrome-lighthouse|google page speed|preview|unfurl|iframely|opengraph|meta-externalagent|meta-externalfetcher/i;
+const BOT_UA_SUBSTRINGS = [
+  'bot', 'crawl', 'spider', 'slurp',
+  'facebookexternalhit', 'facebot', 'embedly', 'quora link preview',
+  'whatsapp', 'discord', 'telegram', 'twitterbot', 'linkedinbot', 'pinterest',
+  'slackbot', 'vkshare', 'w3c_validator', 'redditbot', 'applebot', 'bingpreview',
+  'outbrain', 'skypeuripreview', 'tumblr', 'bitlybot', 'flipboard', 'nuzzel',
+  'qwantify', 'bitrix link preview', 'xing-contenttabreceiver', 'chrome-lighthouse',
+  'google page speed', 'preview', 'unfurl', 'iframely', 'opengraph',
+  'meta-externalagent', 'meta-externalfetcher',
+];
+
+const BOT_RE = new RegExp(BOT_UA_SUBSTRINGS.join('|'), 'i');
 
 const PAGES = {
   home: {
@@ -168,13 +178,9 @@ function resolvePage(pathname) {
   const top = segs[0] || 'home';
   const key = top === '' ? 'home' : top;
   const base = PAGES[key] || PAGES.home;
-  const path =
-    key === 'orbit-veil' || key === 'orbit' ? '/observatory' : (clean === '/' ? '/' : clean);
-  const imageKey =
-    key === 'orbit-veil' || key === 'orbit' ? 'observatory' : key;
-  let image =
-    base.image ||
-    `${SITE}/api/og?page=${encodeURIComponent(imageKey === 'home' ? 'home' : imageKey)}&title=${encodeURIComponent(base.badge)}`;
+  const path = key === 'orbit-veil' || key === 'orbit' ? '/observatory' : (clean === '/' ? '/' : clean);
+  const imageKey = key === 'orbit-veil' || key === 'orbit' ? 'observatory' : key;
+  let image = base.image || `${SITE}/api/og?page=${encodeURIComponent(imageKey === 'home' ? 'home' : imageKey)}&title=${encodeURIComponent(base.badge)}`;
   // X is picky about dynamic OG cards — keep /cli image URL stable and short
   if (key === 'cli') {
     image = `${SITE}/api/og?page=cli&v=2`;
@@ -184,17 +190,17 @@ function resolvePage(pathname) {
     path,
     image,
     favicon: CHILD_FAVICONS[top]?.[segs[1]] || base.favicon,
-    // Deep links keep section branding but pin canonical URL
+    // Deep links keep the section branding but pin canonical URL
     url: `${SITE}${path === '/' ? '/' : path}`,
   };
 }
 
 function escapeHtml(s) {
   return String(s)
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;');
+    .replace(/&/g, '&')
+    .replace(/</g, '<')
+    .replace(/>/g, '>')
+    .replace(/"/g, '"');
 }
 
 function botHtml(meta) {

@@ -17,6 +17,7 @@ interface Book {
   author?: string;
   dateAdded: string;
   read?: boolean;
+  sessionId?: string;
 }
 
 router.get("/visitor-books", async (_req, res) => {
@@ -54,21 +55,37 @@ router.post("/visitor-books", async (req, res) => {
     }
 
     if (action === "delete") {
-      const { password, book } = req.body;
+      const { password, book, sessionId } = req.body;
       const books = (await kvGet<Book[]>(BOOKS_KEY)) ?? [];
-      const idx = books.findIndex(
-        (b) => b.title === book.title && b.author === book.author && b.dateAdded === book.dateAdded,
-      );
-      if (idx >= 0) {
-        const stored = books[idx] as any;
-        const isOwner = stored.sessionId && stored.sessionId === req.body.sessionId;
-        if (!isOwner && (!ADMIN_PASSWORD || password !== ADMIN_PASSWORD)) return res.status(403).json({ error: "Unauthorized" });
+      let idx = -1;
+
+      if (sessionId) {
+        // Owner delete via sessionId (no password required)
+        idx = books.findIndex(
+          (b) => b.title === book.title && b.author === book.author && b.dateAdded === book.dateAdded && b.sessionId === sessionId,
+        );
+        if (idx >= 0) {
+          books.splice(idx, 1);
+          await kvSet(BOOKS_KEY, books);
+          return res.json({ ok: true });
+        }
       }
-      const filtered = books.filter(
-        (b) => !(b.title === book.title && b.author === book.author && b.dateAdded === book.dateAdded),
-      );
-      await kvSet(BOOKS_KEY, filtered);
-      return res.json({ ok: true });
+
+      if (password) {
+        // Admin delete via password
+        if (!ADMIN_PASSWORD) return res.status(500).json({ error: "Admin password not configured" });
+        if (password !== ADMIN_PASSWORD) return res.status(403).json({ error: "Unauthorized" });
+        idx = books.findIndex(
+          (b) => b.title === book.title && b.author === book.author && b.dateAdded === book.dateAdded,
+        );
+        if (idx >= 0) {
+          books.splice(idx, 1);
+          await kvSet(BOOKS_KEY, books);
+          return res.json({ ok: true });
+        }
+      }
+
+      return res.status(404).json({ error: "Book not found or unauthorized" });
     }
 
     if (action === "toggleVisitorRead") {

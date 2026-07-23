@@ -14,9 +14,9 @@
 
 set -uo pipefail
 
-SRC="/c/Users/david/iCloudDrive/iCloud~md~obsidian/∞∞∞/Metaphysics/Quotes.md"
-DEST="/c/Users/david/Laboratory/nuroctane.xyz/artifacts/digital-sea/src/content/quotes.md"
-REPO_ROOT="/c/Users/david/Laboratory/nuroctane.xyz"
+REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || REPO_ROOT="/c/Users/david/Laboratory/nuroctane.xyz"
+SRC="${OBSIDIAN_VAULT:-$HOME/iCloudDrive/iCloud~md~obsidian/∞∞∞/Metaphysics/Quotes.md}"
+DEST="$REPO_ROOT/artifacts/digital-sea/src/content/quotes.md"
 REL_DEST="artifacts/digital-sea/src/content/quotes.md"
 
 [[ -f "$SRC" ]] || { echo "Source not found: $SRC"; exit 1; }

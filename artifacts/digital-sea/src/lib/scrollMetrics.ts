@@ -57,6 +57,7 @@ export function installScrollMetrics(): () => void {
       if (raf) cancelAnimationFrame(raf);
       window.removeEventListener('resize', invalidate);
       mo.disconnect();
+      teardown = null;
     };
   }
 
@@ -67,7 +68,6 @@ export function installScrollMetrics(): () => void {
     refs -= 1;
     if (refs === 0 && teardown) {
       teardown();
-      teardown = null;
     }
   };
 }
