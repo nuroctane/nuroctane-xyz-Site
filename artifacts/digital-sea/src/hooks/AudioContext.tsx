@@ -82,13 +82,17 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   const idxRef     = useRef(idx);
   const volumeRef  = useRef(volume);
 
-  const gainRef      = useRef(0);
-  const fadeTimerRef = useRef<ReturnType<typeof setInterval> | null>(null);
-  const playingRef   = useRef(false);
-  const pendingRef   = useRef(false);
-  const selfPauseRef = useRef(false);
-  const soundedRef   = useRef(false);
-  const failuresRef  = useRef(0);
+  const gainRef        = useRef(0);
+  const fadeTimerRef   = useRef<ReturnType<typeof setInterval> | null>(null);
+  const playingRef     = useRef(false);
+  const pendingRef     = useRef(false);
+  const selfPauseRef   = useRef(false);
+  const soundedRef     = useRef(false);
+  const failuresRef    = useRef(0);
+  /** Incremented on each attemptPlay call; guards against stale promise handlers. */
+  const playGenRef     = useRef(0);
+  /** Re-entrancy guard for reconcile(). */
+  const reconcilingRef = useRef(false);
 
   const applyVolume = useCallback((a: HTMLAudioElement) => {
     a.volume = Math.max(0, Math.min(1, volumeRef.current * gainRef.current));
@@ -135,8 +139,8 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   /** Unmuted play, same as the old site — no muted gate. */
   const attemptPlay = useCallback(
     (a: HTMLAudioElement, fadeMs: number) => {
-      if (playingRef.current) return;
-      if (!a.paused) {
+      // Guard: already playing this track at audible volume
+      if (!a.paused && a.currentTime > 0 && gainRef.current > 0.01) {
         a.muted = false;
         pendingRef.current = false;
         setBlocked(false);
@@ -144,7 +148,10 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         fadeTo(1, fadeMs);
         return;
       }
+      // Guard: play attempt already in flight
+      if (playingRef.current) return;
 
+      const thisGen = ++playGenRef.current;
       playingRef.current = true;
       a.muted = false;
 
@@ -152,13 +159,15 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       try {
         p = a.play() as Promise<void> | undefined;
       } catch {
-        playingRef.current = false;
+        if (playGenRef.current === thisGen) playingRef.current = false;
         pendingRef.current = true;
         setBlocked(true);
         return;
       }
 
       const ok = () => {
+        // Ignore if a newer play attempt started
+        if (playGenRef.current !== thisGen) return;
         playingRef.current = false;
         pendingRef.current = false;
         soundedRef.current = true;
@@ -169,6 +178,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       if (!p) { ok(); return; }
 
       p.then(ok).catch((err: DOMException) => {
+        if (playGenRef.current !== thisGen) return;
         playingRef.current = false;
         if (err?.name === 'AbortError') return;
         // Cold browser only — most visits with prior engagement just play.
@@ -180,52 +190,59 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   );
 
   const reconcile = useCallback(() => {
-    const a = audioRef.current;
-    const t = trackRef.current;
-    if (!a || !t) return;
+    // Re-entrancy guard
+    if (reconcilingRef.current) return;
+    reconcilingRef.current = true;
+    try {
+      const a = audioRef.current;
+      const t = trackRef.current;
+      if (!a || !t) return;
 
-    const list      = PLAYLISTS[t];
-    const wantSrc   = src(list[idxRef.current % list.length]);
-    const wantSound = armedRef.current && enabledRef.current;
-    const isLoop    = list.length === 1;
+      const list      = PLAYLISTS[t];
+      const wantSrc   = src(list[idxRef.current % list.length]);
+      const wantSound = armedRef.current && enabledRef.current;
+      const isLoop    = list.length === 1;
 
-    if (a.src !== wantSrc) {
-      const swap = () => {
-        selfPauseRef.current = true;
-        gainRef.current = 0;
-        a.volume = 0;
-        a.src  = wantSrc;
-        a.loop = isLoop;
-        if (wantSound) {
-          attemptPlay(a, soundedRef.current ? FADE_SWITCH_MS : FADE_FIRST_MS);
-        }
-      };
-      if (!a.paused && gainRef.current > 0.01) fadeTo(0, FADE_OUT_MS, swap);
-      else swap();
-      return;
-    }
-
-    a.loop = isLoop;
-
-    if (wantSound) {
-      if (a.paused) {
-        attemptPlay(a, soundedRef.current ? FADE_RESUME_MS : FADE_FIRST_MS);
-      } else {
-        a.muted = false;
-        fadeTo(1, soundedRef.current ? FADE_RESUME_MS : FADE_FIRST_MS);
-        pendingRef.current = false;
-        setBlocked(false);
+      if (a.src !== wantSrc) {
+        const swap = () => {
+          selfPauseRef.current = true;
+          gainRef.current = 0;
+          a.volume = 0;
+          a.src  = wantSrc;
+          a.loop = isLoop;
+          if (wantSound) {
+            attemptPlay(a, soundedRef.current ? FADE_SWITCH_MS : FADE_FIRST_MS);
+          }
+        };
+        if (!a.paused && gainRef.current > 0.01) fadeTo(0, FADE_OUT_MS, swap);
+        else swap();
+        return;
       }
-      return;
-    }
 
-    pendingRef.current = false;
-    setBlocked(false);
-    fadeTo(0, FADE_OUT_MS, () => {
-      selfPauseRef.current = true;
-      a.pause();
-      a.muted = true;
-    });
+      a.loop = isLoop;
+
+      if (wantSound) {
+        if (a.paused) {
+          attemptPlay(a, soundedRef.current ? FADE_RESUME_MS : FADE_FIRST_MS);
+        } else {
+          a.muted = false;
+          fadeTo(1, soundedRef.current ? FADE_RESUME_MS : FADE_FIRST_MS);
+          pendingRef.current = false;
+          setBlocked(false);
+        }
+        return;
+      }
+
+      pendingRef.current = false;
+      setBlocked(false);
+      fadeTo(0, FADE_OUT_MS, () => {
+        selfPauseRef.current = true;
+        a.pause();
+        a.muted = true;
+      });
+    } finally {
+      reconcilingRef.current = false;
+    }
   }, [attemptPlay, fadeTo]);
 
   // Create the element once. Preload main track so the first arm isn't a fetch.
