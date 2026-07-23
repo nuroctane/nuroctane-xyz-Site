@@ -76,6 +76,7 @@
 | **Languages** | TypeScript/JavaScript, Python, Rust, Swift, Kotlin, Solidity, SQL |
 | **Agentic & Local AI** | Multi-provider model APIs, tool calling, subagents, plugins, skills, permission systems, Ollama, llama-server, GGUF routing, ONNX Runtime |
 | **Product & Web** | React, Next.js, Vite, Three.js, GSAP, Tailwind CSS, design systems, responsive and accessible UI |
+| **IDEs & Editors** | Zed, VS Code, Cursor, Windsurf, Neovim, JetBrains Suite |
 | **Mobile** | SwiftUI, Jetpack Compose, Capacitor, AVFoundation, Media3, Core Data, Room, Hilt |
 | **Backend & Delivery** | Node.js, Express, Python, REST, Vercel, Upstash Redis, Firebase, pnpm monorepos, GitHub Actions |
 | **Cloud & Operations** | AWS EC2/S3/Lambda/VPC/Athena, Docker, Kubernetes operations, Grafana, Prometheus, Postman |

@@ -300,6 +300,9 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       a.removeEventListener('playing', onPlaying);
       a.removeEventListener('error', onError);
       a.pause();
+      // Invalidate in-flight play attempts from this mount (React 18 StrictMode double-mount)
+      playGenRef.current++;
+      playingRef.current = false;
       audioRef.current = null;
     };
   }, []);
