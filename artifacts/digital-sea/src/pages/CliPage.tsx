@@ -82,10 +82,13 @@ const FEATURE_TABS: FeatureTab[] = [
         <li><strong>Signed into the vendor CLI = signed into nur</strong> — Claude Code, Codex, Grok, Kimi, Cursor, OpenCode, Antigravity/gcloud sessions are imported automatically, and refreshed when stale. No key to paste.</li>
         <li>Permission modes: <strong>manual</strong> / <strong>plan</strong> / <strong>auto</strong> · Shift+Tab mid-turn</li>
         <li>Tool loop · approvals · Esc cancel · subagents · todos · plan mode</li>
-        <li><code>/swarm</code> subagent grid <strong>auto-surfaces</strong> the moment a subagent spawns — <code>hide</code> dismisses it for the turn, <code>off</code> freezes, <code>clear</code> drops finished runs</li>
+        <li><strong>Cross-provider subagents</strong> — the <code>agent</code> tool takes an optional <code>provider</code> (and optional <code>model</code>), so a child can run on a different provider than the parent. Natural-language aliases resolve: claude / sonnet / opus → anthropic, grok → xai, gemini / flash / pro → google, <code>antigravity</code> stays its own provider.</li>
+        <li>A routed subagent uses <strong>that provider&apos;s</strong> stored credentials, and auto-imports a logged-in vendor CLI session when there is no key on disk. No credentials at all → the spawn is <strong>blocked</strong>, never silently re-run on the parent: <code>/login</code> opens pre-selected to that provider, and after sign-in nur injects the exact re-deploy call.</li>
+        <li><strong>Fan-out</strong> — several <code>agent</code> calls in one response run concurrently, <strong>up to 4 at a time</strong>; the rest queue behind the cap</li>
+        <li><code>/swarm</code> subagent grid <strong>auto-surfaces</strong> the moment a subagent spawns, and every pane names the provider that child ran on — <code>hide</code> dismisses it for the turn, <code>off</code> freezes, <code>clear</code> drops finished runs, <code>detail</code> adds the status row</li>
         <li>Session budgets · tool-result spill · smarter auto-compact</li>
         <li><code>/model</code> live model list · <code>/plugins</code> marketplace · <code>/fusion</code> multi-model debate</li>
-        <li><code>/local</code> bundled llama.cpp · <code>/bench</code> worktree benchmarks · <code>nur gateway</code> Telegram bot</li>
+        <li><code>/local</code> bundled llama.cpp · <code>/bench</code> worktree benchmarks (<code>/bench optimize</code> = GEPA) · <code>nur gateway</code> Telegram bot</li>
         <li>Natural-language + slash skill activation — /skill-name or plain phrases</li>
         <li>Take over other agents: Claude · Codex · Cursor · Grok · Nur</li>
         <li><strong>takeover</strong> <code>/takeover</code> · <code>/hijack</code> — migrate a Claude/Codex/Cursor/Grok session into nur & resume it; press <code>c</code> to switch between the sessions and takeover windows</li>
@@ -105,7 +108,10 @@ const FEATURE_TABS: FeatureTab[] = [
         <li><strong>web</strong> — <code>web_search</code> · <code>web_fetch</code></li>
         <li><strong>browser</strong> — real default browser via agent-browser-cli</li>
         <li><strong>git</strong> — <code>git_status</code> · <code>git_diff</code></li>
-        <li><strong>knowledge</strong> — Graphify · PLUR · Ruflo · Akarso · Executor · skill · memory · Excalidraw · omp</li>
+        <li><strong>knowledge</strong> — <code>graphify</code> · <code>graphjin</code> · <code>plur</code> · <code>ruflo</code> · <code>executor</code> · <code>skill</code> · <code>memory</code></li>
+        <li><strong>diagrams</strong> — <code>excalidraw</code> · <code>tldraw</code></li>
+        <li><strong>delegation</strong> — <code>agent</code> (optional <code>provider</code> / <code>model</code>, up to 4 concurrent) · <code>omp</code> · <code>fractal</code> · <code>penecho</code> · <code>t3code</code> · <code>akarso</code></li>
+        <li><strong>plan</strong> — <code>todo_write</code> · <code>submit_plan</code></li>
       </ul>
     ),
   },
@@ -130,6 +136,7 @@ const FEATURE_TABS: FeatureTab[] = [
     body: (
       <ul className="cli-feat-list">
         <li><strong>Graphify</strong> — code knowledge graph</li>
+        <li><strong>GraphJin</strong> — governed live data via the <code>graphjin</code> tool · <code>/graphjin</code> (<code>/gj</code>) catalog · schema · explain · query · security · ask · <em>detect-only</em>, nur never installs it for you</li>
         <li><strong>PLUR</strong> — shared engram memory across tools/sessions</li>
         <li><strong>Ruflo</strong> — vector memory + swarm helpers</li>
         <li><strong>Executor</strong> — MCP / OpenAPI gateway</li>
@@ -153,7 +160,8 @@ const FEATURE_TABS: FeatureTab[] = [
         <li>Peek · drag-select · scrollbar · sticky prompt</li>
         <li>Ctrl+A / C / V / X · reverse-search prompt history (Ctrl+R)</li>
         <li>Approval mini-diff · y / a / n · sessions browser</li>
-        <li><code>/sidegraph</code> — the live query drawn on a <strong>2D canvas</strong>: parallel subagents fan out side by side and rejoin the trunk, a steer draws a real back-edge into the reasoning it re-enters. Click-drag pans both axes; drag the left border to resize.</li>
+        <li><code>/sidegraph</code> — the live query drawn on a <strong>2D canvas</strong>: parallel subagents fan out side by side and rejoin the trunk, a steer draws a real back-edge into the reasoning it re-enters. Click-drag pans both axes, Ctrl+wheel zooms, drag the left border to resize, right-click a box to peek its live subagent tool output (double/right-click empty canvas resets).</li>
+        <li><code>/swarm</code> panes are <strong>click-to-peek</strong> — the modal lists that child&apos;s tool trace, each entry unfolds in place to full args + output, <code>c</code> copies one entry, Ctrl+C copies the lot, <code>e</code> expands the modal</li>
         <li>Command palette spans the full window width — widen the terminal, read more of every tip</li>
         <li>Splash: NUR logotype + active provider · lean banner</li>
       </ul>
@@ -169,7 +177,8 @@ const FEATURE_TABS: FeatureTab[] = [
         <li>Atomic writes under <code>~/.nur/</code> · session + compaction backups</li>
         <li>Sandbox · denylist · SSRF blocks · permissions / hooks TOML</li>
         <li>API retries · install SHA-256 · <code>nur doctor</code></li>
-        <li><strong>Long runs stay alive</strong> — the real context window is read from the model catalog, auto-compaction runs as often as a run needs (and carries the in-flight work across), and Anthropic streaming retries with backoff instead of dying on one 429</li>
+        <li><strong>Auto-update</strong> — nur checks GitHub Releases on launch (off the render thread, never blocking startup) and self-installs a newer build. <code>nur update</code> forces the check now; opt out with <code>auto_update = false</code> in config or <code>NUR_SKIP_AUTO_UPDATE=1</code>.</li>
+        <li><strong>Long runs stay alive</strong> — the real context window is read from the model catalog, auto-compaction runs as often as a run needs (and carries the in-flight work across), and streaming retries with backoff instead of dying on one 429</li>
         <li><strong>No hidden turn caps</strong> — subagents inherit the parent budget verbatim</li>
         <li>Logs: <code>~/.nur/nur.log</code></li>
       </ul>
@@ -180,7 +189,7 @@ const FEATURE_TABS: FeatureTab[] = [
 const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: '/help', desc: 'commands + keyboard shortcuts' },
   { cmd: '/commands', desc: 'commands + keyboard shortcuts  (alias of /help)' },
-  { cmd: '/login', desc: 'provider · API key or browser sign-in' },
+  { cmd: '/login', desc: 'provider · API key or browser sign-in — /login <provider> pre-selects one (grok · gemini · antigravity …)' },
   { cmd: '/logout', desc: 'clear the stored API key' },
   { cmd: '/model', desc: 'show and switch models for the active provider' },
   { cmd: '/models', desc: 'show and switch models  (alias of /model)' },
@@ -213,14 +222,14 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: '/turns', desc: 'per-session agent-turn ceiling (0 = unlimited)' },
   { cmd: '/fusion', desc: 'multi-model debate → one synthesized answer' },
   { cmd: '/local', desc: 'run a model locally via bundled llama.cpp' },
-  { cmd: '/bench', desc: 'benchmark models on your tasks' },
+  { cmd: '/bench', desc: 'benchmark models on your tasks: add | list | run <name> [models] | remove | optimize (GEPA)' },
   { cmd: '/failover', desc: 'cross-provider failover + privacy tiers' },
   { cmd: '/undo', desc: 'revert the last file edit this session' },
   { cmd: '/receipt', desc: 'session receipt — hash-chained verification' },
   { cmd: '/cua', desc: 'computer-use desktop driver on / off / status' },
   { cmd: '/graph', desc: 'inline live execution-graph card for the turn' },
-  { cmd: '/sidegraph', desc: '2D canvas graph of the current query — parallel subagents fan out, drag to pan, drag the border to resize' },
-  { cmd: '/swarm', desc: 'inline subagent grid — auto-surfaces when a subagent spawns · detail | hide | off | clear' },
+  { cmd: '/sidegraph', desc: '2D canvas graph of the current query — parallel subagents fan out, drag to pan, Ctrl+wheel to zoom, drag the border to resize, right-click a box to peek · on | off | hide | zoom | reset' },
+  { cmd: '/swarm', desc: 'inline subagent grid — auto-surfaces when a subagent spawns, each pane names the provider it ran on · detail | hide | off | clear' },
   { cmd: '/subagents', desc: 'inline subagent grid  (alias of /swarm)' },
   { cmd: '/agents', desc: 'inline subagent grid  (alias of /swarm)' },
   { cmd: '/fractal', desc: 'recursive agent tree in git worktrees: init | node list | node status <name> | node start <name> | attach <name> | open — Unix only, use WSL on Windows' },
@@ -251,7 +260,9 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: '/systematic-debugging', desc: 'skill: root-cause-first debugging' },
   { cmd: '/<skill>', desc: 'any installed skill — sticky toggle or /skill <prompt> one-shot' },
   { cmd: '/memory', desc: 'show ~/.nur/memory.md excerpt' },
-  { cmd: '/graphify', desc: 'knowledge graph status / query / extract' },
+  { cmd: '/graphify', desc: 'knowledge graph status / query / path / explain / extract' },
+  { cmd: '/graphjin', desc: 'governed live data: catalog | schema | explain | query | security | ask' },
+  { cmd: '/gj', desc: 'governed live data  (alias of /graphjin)' },
   { cmd: '/plur', desc: 'shared engram memory' },
   { cmd: '/ruflo', desc: 'vector memory / swarm' },
   { cmd: '/ecosystem', desc: 'ecosystem readiness' },
@@ -276,17 +287,21 @@ const CLI_SUBCOMMANDS: { cmd: string; desc: string }[] = [
   { cmd: 'nur --mode plan', desc: 'plan mode from the shell' },
   { cmd: 'nur --continuous', desc: 'sovereign loop until DONE' },
   { cmd: 'nur auth login', desc: 'store API key locally' },
+  { cmd: 'nur auth status', desc: 'auth status (never prints the full key)' },
+  { cmd: 'nur auth logout', desc: 'remove the saved key / OAuth session' },
   { cmd: 'nur install', desc: 'one-stop stack install / repair' },
-  { cmd: 'nur update', desc: 'pull · rebuild · reinstall' },
+  { cmd: 'nur update', desc: 'force the update now — GitHub release, else git pull + rebuild + reinstall' },
   { cmd: 'nur doctor', desc: 'health check' },
   { cmd: 'nur ecosystem ensure', desc: 'install / repair knowledge packs' },
-  { cmd: 'nur plugins', desc: 'marketplace from the shell' },
+  { cmd: 'nur ecosystem status', desc: 'ecosystem readiness without touching anything' },
+  { cmd: 'nur plugins', desc: 'marketplace from the shell — list | install | enable | disable | uninstall' },
   { cmd: 'nur sessions', desc: 'list sessions' },
   { cmd: 'nur usage', desc: 'usage log' },
   { cmd: 'nur gateway', desc: 'Telegram bot mode' },
-  { cmd: 'nur local', desc: 'local llama.cpp server control' },
-  { cmd: 'nur bench', desc: 'benchmark harness' },
+  { cmd: 'nur local', desc: 'local llama.cpp server control — up | down | status | models' },
+  { cmd: 'nur bench', desc: 'benchmark harness — add | list | run | remove | optimize (GEPA)' },
   { cmd: 'nur browser setup', desc: 'stage browser extension once' },
+  { cmd: 'nur install-hook', desc: 'install the Orca agent hook for usage/status reporting' },
 ];
 
 type Inspiration = {
@@ -304,6 +319,7 @@ const INSPIRATIONS: Inspiration[] = [
   { group: 'agents', name: 'Oh My Pi', href: 'https://omp.sh', why: 'headless coding-agent backend delegated via the omp tool' },
   { group: 'agents', name: 'Grok CLI', href: 'https://x.ai', why: 'resume-grok path · browser sign-in patterns for xAI' },
   { group: 'agents', name: 'Kimi Code', href: 'https://www.kimi.com/code/docs/en/', why: 'browser OAuth + coding-plan models via /login · Moonshot Kimi' },
+  { group: 'agents', name: 'Antigravity', href: 'https://antigravity.google', why: 'agy CLI session imported by /login · its own provider id for cross-provider subagents' },
   { group: 'agents', name: 'Orca ADE', href: 'https://www.onorca.dev/', why: 'agent host panels · status/usage hooks · OSC state signaling · nur install-hook' },
   { group: 'agents', name: 'Aider', href: 'https://aider.chat', why: 'git-aware coding agent lineage · repo-as-context discipline' },
   { group: 'agents', name: 'Cline', href: 'https://github.com/cline/cline', why: 'tool-loop approval UX · autonomous coding agent patterns' },
@@ -326,12 +342,19 @@ const INSPIRATIONS: Inspiration[] = [
   { group: 'libs', name: 'Clap', href: 'https://github.com/clap-rs/clap', why: 'CLI surface: subcommands, flags, help' },
   { group: 'libs', name: 'tui-markdown', href: 'https://crates.io/crates/tui-markdown', why: 'markdown rendering inside the transcript' },
   { group: 'libs', name: 'tui-scrollview', href: 'https://crates.io/crates/tui-scrollview', why: 'scrollable transcript viewport' },
-  { group: 'libs', name: 'ratatui-image', href: 'https://crates.io/crates/ratatui-image', why: 'inline image peeks (sixel / kitty / iTerm2)' },
+  { group: 'libs', name: 'ratatui-image', href: 'https://crates.io/crates/ratatui-image', why: 'inline image peeks (sixel / kitty / iTerm2) — behind the image-peek feature' },
+  { group: 'libs', name: 'unicode-width', href: 'https://github.com/unicode-rs/unicode-width', why: 'column-exact TUI layout — wide glyphs, CJK, emoji stay inside their panes' },
+  { group: 'libs', name: 'arboard', href: 'https://github.com/1Password/arboard', why: 'system clipboard behind Ctrl+A/C/V/X and drag-select auto-copy' },
+  { group: 'libs', name: 'sha2', href: 'https://github.com/RustCrypto/hashes', why: 'install SHA-256 verification · hash-chained /receipt' },
+  { group: 'libs', name: 'tracing', href: 'https://github.com/tokio-rs/tracing', why: 'structured logs into ~/.nur/nur.log' },
+  { group: 'libs', name: 'toml', href: 'https://github.com/toml-rs/toml', why: 'config · permissions.toml · hooks.toml' },
   { group: 'libs', name: 'llama.cpp', href: 'https://github.com/ggerganov/llama.cpp', why: 'bundled local inference via /local' },
-  { group: 'libs', name: 'ripgrep', href: 'https://github.com/BurntSushi/ripgrep', why: 'fast workspace search under the hood' },
+  { group: 'libs', name: 'ripgrep', href: 'https://github.com/BurntSushi/ripgrep', why: 'fast workspace search under the hood — grep / glob shell out to rg when present' },
+  { group: 'libs', name: 'ignore', href: 'https://crates.io/crates/ignore', why: 'gitignore-aware parallel walk when no system ripgrep is on PATH' },
   { group: 'libs', name: 'tree-sitter', href: 'https://tree-sitter.github.io/tree-sitter/', why: 'local AST parsing behind Graphify code maps' },
   { group: 'libs', name: 'FFmpeg', href: 'https://ffmpeg.org', why: 'extract_frames sparse keyframe pipeline' },
   { group: 'stack', name: 'Graphify', href: 'https://github.com/Graphify-Labs/graphify', why: 'code knowledge graph — query / path / explain' },
+  { group: 'stack', name: 'GraphJin', href: 'https://graphjin.com/', why: 'governed live data behind the graphjin tool + /graphjin — detected, never auto-installed' },
   { group: 'stack', name: 'PLUR', href: 'https://plur.ai/', why: 'shared engram memory across agents & sessions' },
   { group: 'stack', name: 'Ruflo', href: 'https://github.com/ruvnet/ruflo', why: 'vector memory + swarm / hive-mind helpers' },
   { group: 'stack', name: 'Executor', href: 'https://executor.sh', why: 'MCP / OpenAPI gateway catalog' },
@@ -362,7 +385,15 @@ const INSPIRATIONS: Inspiration[] = [
   { group: 'plugins', name: 'Fable Method', href: 'https://github.com/Sahir619/fable-method', why: 'adversarial verify loop · fable-judge · fable-loop' },
   { group: 'plugins', name: 'Agent Skills', href: 'https://agentskills.io/home', why: 'open SKILL.md format · natural-language skill activation' },
   { group: 'plugins', name: 'Vercel Agent Skills', href: 'https://github.com/vercel-labs/agent-skills', why: 'Next.js / AI SDK / platform skill packs' },
+  { group: 'plugins', name: 'skills CLI', href: 'https://github.com/vercel-labs/skills', why: 'the installer nur ecosystem ensure drives to land packs into ~/.agents/skills' },
   { group: 'plugins', name: 'Emil design-eng', href: 'https://emilkowal.ski', why: 'UI polish & motion craft skill' },
+  { group: 'plugins', name: 'Emil Kowalski Skills', href: 'https://github.com/emilkowalski/skills', why: 'the design pack auto-provisioned on ecosystem ensure' },
+  { group: 'plugins', name: 'Builder.io Skills', href: 'https://github.com/BuilderIO/skills', why: 'agent efficiency — efficient-fable · plan-arbiter · stay-within-limits · visual-plan' },
+  { group: 'plugins', name: 'Matt Pocock Skills', href: 'https://github.com/mattpocock/skills', why: 'real-engineering pack — grill-me · triage · tdd · to-spec · handoff' },
+  { group: 'plugins', name: 'Addy Osmani Agent Skills', href: 'https://github.com/addyosmani/agent-skills', why: 'production engineering — context engineering · frontend UI · security · shipping' },
+  { group: 'plugins', name: 'Anthropic Official Skills', href: 'https://github.com/anthropics/skills', why: 'the public Agent Skills examples the format is read against' },
+  { group: 'plugins', name: 'clone-website', href: 'https://github.com/JCodesMore/ai-website-cloner-template', why: 'website reverse-engineering skill auto-provisioned with the packs' },
+  { group: 'plugins', name: 'GitHub Spec Kit', href: 'https://github.com/github/spec-kit', why: 'spec-before-code kit in the /plugins catalog' },
   { group: 'plugins', name: 'Firecrawl', href: 'https://www.firecrawl.dev', why: 'web crawl plugin for agent research' },
   { group: 'plugins', name: 'Chrome DevTools', href: 'https://developer.chrome.com/docs/devtools', why: 'browser debugging plugin surface' },
   { group: 'plugins', name: 'Anthropic Cybersecurity Skills', href: 'https://github.com/mukul975/Anthropic-Cybersecurity-Skills', why: '817 security playbooks mirrored into skills' },
@@ -937,7 +968,7 @@ export default function CliPage() {
 
         <ul className="cli-stats" aria-label="Highlights">
           <li><strong>61</strong><span>providers</span></li>
-          <li><strong>~85%</strong><span>token savings aim</span></li>
+          <li><strong>lean</strong><span>token spend by default</span></li>
           <li><strong>800+</strong><span>skills</span></li>
           <li>
             <strong className={verFlash ? 'cli-stat-ver cli-stat-ver--flash' : 'cli-stat-ver'}>
