@@ -8,13 +8,13 @@
 ## Index
 - [[#Faith, God & Surrender|Faith, God & Surrender]] (64)
 - [[#Reality, Manifestation & Abundance|Reality, Manifestation & Abundance]] (100)
-- [[#Self, Identity & Awakening|Self, Identity & Awakening]] (116)
+- [[#Self, Identity & Awakening|Self, Identity & Awakening]] (117)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (98)
 - [[#Relationships, Boundaries & Love|Relationships, Boundaries & Love]] (55)
-- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (21)
-- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (94)
+- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (22)
+- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (95)
 - [[#Wealth, Work & Value|Wealth, Work & Value]] (29)
-- [[#Unsorted Sparks|Unsorted Sparks]] (54)
+- [[#Unsorted Sparks|Unsorted Sparks]] (56)
 
 ## Faith, God & Surrender
 
@@ -886,6 +886,10 @@ _Ego, authenticity, self-concept, inner freedom, awakening, memory, and becoming
 
 > Your performance in any endeavor depends on what you think it depends on.
 
+> the person you'll become is already editing the person you were, probability reaching backward through time to ensure coherence with whatever you're about to calcify into, you never had a stable past, only a past that keeps reorganizing itself to accommodate who you're becoming
+> — @null_ropex
+
+
 ## Action, Discipline & Mastery
 
 _Doing the hard thing, skill, courage, habits, attention, decisions, and embodied momentum._
@@ -1381,6 +1385,10 @@ _Discernment, enemies, projection, manipulation, resentment, spiritual attack, a
 
 > I hate when I’m mad and people try to calm me down or make me choose peace. Anger inspired my most successful moments. Let me be mad.
 
+> I think this is super relevant and explains a lot of the “side effects” people experience with psychedelics and mindfulness: when you increase awareness too fast without increasing equaniminity you become overly sensitive and extremely disoriented. When you increase equaniminity without increasing awareness it’s like being a stoner who’s perpetually chill but has no desire to actively engage with the world around them. People who are high in both tend to be an amazing mix of non-neurotic yet truly motivated by what matters to them
+> — @noampomsky
+
+
 ## Body, Emotion & Nervous System
 
 _Health, breath, body intelligence, emotion, pain, stress, sleep, attention, and nervous-system state._
@@ -1631,6 +1639,12 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, attention, and
 > Advice from the young C.S. Lewis: "Keep clear of introspection, of brooding, of spiritualism, of everything eccentric. Keep to work and sanity and open air – to the cheerful & the matter of fact side of things. We hold our mental health by a thread: & nothing is worth risking for it. Above all beware of excessive day dreaming, of seeing yourself in the centre of a drama, of self pity, and, as far as possible, of fears.”
 > — @SuzanneSmith126
 
+> The quickest way to “get your spark back” is to literally light yourself on fire. You’ve got to burn baby. You’re depressed bc you’re not being insane enough. Double. Down. The world does not reward half ass. All in or out. You’re thinking too small. You’ve accepted your current reality as the only reality. Bullshit. You need to write a list of the most insane asks you could ever dream of. “I am a NYT best selling author. I am the founder of a Fortune 500 company. I paint for a living and I make a damn good living.” Ask and you shall receive. Embody and you become. Flip the fucking script. Your current ceiling is now the floor. Level up. 
+> 
+> You need to burn.
+> — @rachcorrine
+
+
 
 
 
@@ -1851,6 +1865,14 @@ _Good fragments that still belong here, but do not yet have a perfect home._
 > @DejaRu22 “Consider and fuck around with this mental model:
 > The only difference between people is what they say to themselves, and that accounts for nearly ALL results or lack thereof in life.”
 > — @nuroctane
+
+> Motherfuckers looking for the perfect shot instead of just learning how to shoot and shooting so often that taking some good shots is an inevitability, mathematical inevitability is what you need to work into your life.
+> — @avantprince_
+
+> you stop taking it personally once you understand the universe is not out to get you. sometimes it’s working for you in ways you can’t see yet, and sometimes it’s simply happening, indifferent, neither cruel nor kind. either way you can use it. either way you can stack it into your own growth if you refuse to be a victim of it.
+> — @josbjohnson
+
+
 
 
 
