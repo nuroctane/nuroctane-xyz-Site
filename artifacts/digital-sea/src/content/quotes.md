@@ -12,7 +12,7 @@
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (98)
 - [[#Relationships, Boundaries & Love|Relationships, Boundaries & Love]] (55)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (21)
-- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (93)
+- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (94)
 - [[#Wealth, Work & Value|Wealth, Work & Value]] (29)
 - [[#Unsorted Sparks|Unsorted Sparks]] (54)
 
@@ -1627,6 +1627,10 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, attention, and
 
 > The great work has never been done by a calm nervous system. the calm ones, the regulated breathers, the grounded ones, they produce nothing of value. because nothing of value was ever made by someone who was okay with being here. the stars were born from collapse. the best shit on this planet came out of people who were not functioning, whose nervous system was a mess, raw and misfiring. God does not give visions to the well rested.
 > — @lichthauch
+
+> Advice from the young C.S. Lewis: "Keep clear of introspection, of brooding, of spiritualism, of everything eccentric. Keep to work and sanity and open air – to the cheerful & the matter of fact side of things. We hold our mental health by a thread: & nothing is worth risking for it. Above all beware of excessive day dreaming, of seeing yourself in the centre of a drama, of self pity, and, as far as possible, of fears.”
+> — @SuzanneSmith126
+
 
 
 
