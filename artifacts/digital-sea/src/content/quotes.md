@@ -12,13 +12,15 @@
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (48)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (57)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (79)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (71)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (72)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (23)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (76)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (43)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (92)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (33)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (41)
+- [[#Unsorted Sparks|Unsorted Sparks]] (1)
+- [[#Reality, Manifestation & Abundance|Reality, Manifestation & Abundance]] (1)
 
 ## Faith, God & Surrender
 
@@ -999,6 +1001,10 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > Motherfuckers looking for the perfect shot instead of just learning how to shoot and shooting so often that taking some good shots is an inevitability, mathematical inevitability is what you need to work into your life.
 > — @avantprince_
 
+> get out of any “deciding what to build” phases as fast as you possibly can. follow the tendrils of light until you are out of the tunnel. don’t get distracted by moving shadows. remember.
+> — @nuroctane
+
+
 
 ## Creativity, Purpose & Expression
 
@@ -1876,3 +1882,25 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 
 > you stop taking it personally once you understand the universe is not out to get you. sometimes it’s working for you in ways you can’t see yet, and sometimes it’s simply happening, indifferent, neither cruel nor kind. either way you can use it. either way you can stack it into your own growth if you refuse to be a victim of it.
 > — @josbjohnson
+
+## Unsorted Sparks
+
+_Auto-created section._
+
+> One of my favourite lesson from Reality Transurfing is:
+> 
+> Wether you’re good or evil, if you feel guilt things WILL turn against you.
+> 
+> That’s why a lot of evil people don’t seem to have things turn against them, simply because they act without feeling shame nor fear against the consequences (no guilt).
+> 
+> Not evil advice.
+> — @QuantumRover
+
+
+## Reality, Manifestation & Abundance
+
+_Auto-created section._
+
+> one common trait I find in high achieving individuals is urgency. it looks almost like impatience until you understand it is closer to reverence, a deep refusal to waste the one thing they can’t buy more of. the alarm goes and they rise. the message is answered while it is still warm. the small task is done before it can find a shelf to hide on. they commit and move in a single motion. an idea sparks and they chase it that day, before the world talks them out of it. they run at their own lives like something is at stake, because they have decided something is.
+> — @josbjohnson
+
