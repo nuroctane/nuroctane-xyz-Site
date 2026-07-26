@@ -58,7 +58,7 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 
 > Faith in the flow of gifts constantly coming from the universe encourages us to enjoy simply and directly the fruits of existence.
 
-> Trust that you can turn down opportunities, collaborations, interviews, speaking engagements that do not feel aligned and more experiences that resonate with your heart and soul will always show up. I will tell you this first hand.
+> Trust that you can turn down opportunities, collaborations, interviews, speaking engagements that do not feel aligned and more experiences that resonate with your heart and soul will always show up. I will tell you this firsthand.
 
 > Whatever God gives me is enough. In fact, it is an abundance.
 
@@ -79,9 +79,9 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > I've never gotten anywhere I was destined to go through hard work. Only through intuition, going with the flow, and through Grace.
 
 > Identify a major life challenge.
-> Then connect it to how it helped you developed a particular divine virtue. This is an essential step in transcendence.
+> Then connect it to how it helped you develop a particular divine virtue. This is an essential step in transcendence.
 
-> Rather than comparing where you are on your journey to others, trust that everyone is exactly where they need to be for their souls lessons.
+> Rather than comparing where you are on your journey to others, trust that everyone is exactly where they need to be for their soul's lessons.
 
 > If ever you wake up in the middle of the night for 'no reason' There is a reason! A gate has opened up for you. Get out that bed and go meditate or pray. You didn't wake up for 'no reason'.
 
@@ -98,7 +98,7 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 
 > God does not tempt.
 
-> May the Creator gently remove anyone around me who secretly loathes and wishes me ill. May every evil, jealous, and resentful eye go blind. May only pure intent find it’s way to my path. May the protection of the Divine, Most High Source continue to cover me. And it is so.
+> May the Creator gently remove anyone around me who secretly loathes and wishes me ill. May every evil, jealous, and resentful eye go blind. May only pure intent find its way to my path. May the protection of the Divine, Most High Source continue to cover me. And it is so.
 
 > If you talk to any old priest who's actually been in the game forty years they're like yes the devil is real and he prefers intelligent people, don't pray when you're angry it opens the wrong door, some saints were terrifying in person and not in a good way, certain prayers work at certain times of night and we don't know why, and never let a possessed person know you're afraid
 > — @lichthauch
@@ -110,7 +110,7 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 
 > God gets offended when you don't believe in yourself. You're his creation. It's like you're insulting him directly. How dare you tell him that he failed?
 
-> The entire spiritual industry is a coward's invention, designed to package the most violent undertaking a human being can choose into something palatable for soft hands and weekend schedules. the actual practice, the original practice, before it was gutted and resold as self care, involves deliberately breaking your body down as an offering to something that will never confirm it's received the gift. fasting isn't intermittent caloric optimization, it's starving until something inside you cracks open that eating kept shut. prayer isn't meditation apps with bells, it's grinding the same fucking words into your teeth until they bypass your intellect entirely and enter the bloodstream. the desert fathers lived in holes in the ground eating insects, not because they were performing piety, but because they discovered that comfort is the single most efficient mechanism for keeping a man from encountering anything real about himself, or god, or both. every generation produces fewer thousands willing to pay the actual price, and more millions willing to purchase the aesthetic of having paid it
+> The entire spiritual industry is a coward's invention, designed to package the most violent undertaking a human being can choose into something palatable for soft hands and weekend schedules. the actual practice, the original practice, before it was gutted and resold as self-care, involves deliberately breaking your body down as an offering to something that will never confirm it's received the gift. fasting isn't intermittent caloric optimization, it's starving until something inside you cracks open that eating kept shut. prayer isn't meditation apps with bells, it's grinding the same fucking words into your teeth until they bypass your intellect entirely and enter the bloodstream. the desert fathers lived in holes in the ground eating insects, not because they were performing piety, but because they discovered that comfort is the single most efficient mechanism for keeping a man from encountering anything real about himself, or god, or both. every generation produces fewer thousands willing to pay the actual price, and more millions willing to purchase the aesthetic of having paid it
 > — @lichthauch
 
 > The considerationalist is a menace because God hates you when you try to do His job for Him.
@@ -163,11 +163,11 @@ _Consciousness, time, illusion, energy, synchronicity, metaphysics, and the arch
 
 > As Monad or recorder combines with word or music the body of thought, then word activating thought will clearly build physical matter.
 > And so creation precipitated through word power will activate and generate completely manifest forms and intention.
-> So the statement first the was the word will literally prove itself in Earthly manifestation.
+> So the statement "first there was the Word" will literally prove itself in Earthly manifestation.
 > as internet shows us
 > So creation and evolution are two sides of the growth of creator energetics in this physical Earth.
 
-> Not about predicting the future its about knowing how the universe will respond to energy.
+> Not about predicting the future; it's about knowing how the universe will respond to energy.
 
 > All of reality is programmable. You just have to figure out how. And the way to do that is to model it.
 
@@ -190,7 +190,7 @@ _Consciousness, time, illusion, energy, synchronicity, metaphysics, and the arch
 > All growth is from within. This is evident in all nature. Every plant, every animal, every human is a living testimony to this great law, and the error of the ages is in looking for strength or power from without. The world within is the Universal fountain of supply, and the world without is the outlet to the stream. Our ability to receive depends upon our recognition of this Universal Fountain, this Infinite Energy of which each individual is an outlet, and so is one with every other individual.
 > — Charles F. Haanel, *The Master Key System*
 
-> It's never too late because the only thing that is real is this now moment when infinite possibilities are available to chose from.
+> It's never too late because the only thing that is real is this now moment when infinite possibilities are available to choose from.
 
 > How comfortable are you in the space in-between the known and that which is waiting to be revealed.
 
@@ -228,7 +228,7 @@ _Imagination, intention, frequency, prosperity, timelines, desire, and allowing 
 > Surrender to what abundance looks like. Remember it’s a state of consciousness, a FEELING, a natural expression of the creative life force you are, which is entirely authentic to YOU.
 
 > Your every word communicates your root beliefs, thus manifesting more lack or more prosperity.
-> Tell the story everyday, word for word, about the success of your legacy.
+> Tell the story every day, word for word, about the success of your legacy.
 > Subtle energies of light emitted from your throat chakra interact with the quantum fabric of reality, arranging it how you've spelled it out.
 
 > Worrying is using your imagination to create what you do not want.
@@ -238,12 +238,12 @@ _Imagination, intention, frequency, prosperity, timelines, desire, and allowing 
 > When you breathe, you're not pulling air into your lungs
 > you're creating space and air naturally flows in
 > use this attitude when manifesting what you want
-> just create space for it and not force is necessary
+> just create space for it and no force is necessary
 > this is what it truly means to be.
 
 > It's important that you learn to envision your life unfolding with ease and peace. Otherwise you will be the one standing in your own way.
 > In general the idea of “fighting” for something feels out of tune for me. I prefer things that flow with ease and the feeling of divine orchestration.
-> Whenever it feels like I’m forcing something to happen its an indicator that it’s not vibrationally aligned for me.
+> Whenever it feels like I’m forcing something to happen it's an indicator that it’s not vibrationally aligned for me.
 
 > You know you’re working on some huge internal changes when the universe sends you opportunities to practice your new perspective and a test immediately.
 
@@ -260,7 +260,7 @@ _Imagination, intention, frequency, prosperity, timelines, desire, and allowing 
 > as you practice those thoughts and begin to consistently offer that
 > vibration, you will then be in the place of allowing that into your
 > experience. Now, by paying attention to the way you feel, you can easily
-> know if you are giving your attention to your desire or if you are giving it to the absence of your desire. When your thoughts are a vibrational match to your desire, you feel good-your emotional range would be from contentment to expectation to eagerness to joy. But if you are giving your attention to the lack, or absence, of your desire your emotions would range from feelings of pessimism to worry to discouragement to anger to insecurity to depression.
+> know if you are giving your attention to your desire or if you are giving it to the absence of your desire. When your thoughts are a vibrational match to your desire, you feel good; your emotional range would be from contentment to expectation to eagerness to joy. But if you are giving your attention to the lack, or absence, of your desire your emotions would range from feelings of pessimism to worry to discouragement to anger to insecurity to depression.
 > If there is something you desire that you currently do not
 > have, you need only put your attention upon it, and, by the Law
 > of Attraction, it will come to you, for as you think about this thing
@@ -326,7 +326,7 @@ _Imagination, intention, frequency, prosperity, timelines, desire, and allowing 
 > Visualize your ideal life for 5 min a day in the morning and before bed.
 > Make it a ritual.
 
-> Be generous even when others are not. do not create energetic blockages by clinging on to self serving principals that block the natural flow of abundance.
+> Be generous even when others are not. do not create energetic blockages by clinging on to self-serving principles that block the natural flow of abundance.
 
 > ==Strengthen your ability to attract your desires by never settling. some of the limitations that your ego provides are extremely crucial in protecting your reality with your intentions. don’t be afraid to want what you want just because you feel like it only exists in your world.==
 
@@ -344,19 +344,19 @@ _Imagination, intention, frequency, prosperity, timelines, desire, and allowing 
 > There is often an echo or a lag as I like to call it between when you have done the work and your physical reality catches up. This is why I say don’t give up right before the miracle happens.
 > HAVE THE COURAGE TO BE
 >  EXACTLY WHO YOU ARE
-> WITHOUT APOLOGY.ADMIT
+> WITHOUT APOLOGY. ADMIT
 > YOUR MISTAKES WITHOUT
 >  BEATING YOURSELF UP.
 >  RELEASE ALL SHAME!
-> RELEASE ALL GUILT!YOU
+> RELEASE ALL GUILT! YOU
 > CANNOT LIVE IF YOU ARE
 > HIDING BEHIND WHAT WAS.
-> FOCUS ON WHAT IS,RIGHT
-> NOW,AND THAT IS YOU!
+> FOCUS ON WHAT IS, RIGHT
+> NOW, AND THAT IS YOU!
 
 > Memorize that feeling you get when you know things are working.
 
-> Attraction isn’t about adding to the narrative of what you think you want. its about building upon your story. surprisingly, it is easy to chase, but much easier to attract. attraction stems from within. attraction is an inner calling. it pulls towards you what is already natural. it hones what you’re already good at until it becomes something completely new. attraction is powerful & magnetic. you don’t have to “try” to attract. you simply ask for better, but in a way that encompasses your full truth.
+> Attraction isn’t about adding to the narrative of what you think you want. it's about building upon your story. surprisingly, it is easy to chase, but much easier to attract. attraction stems from within. attraction is an inner calling. it pulls towards you what is already natural. it hones what you’re already good at until it becomes something completely new. attraction is powerful & magnetic. you don’t have to “try” to attract. you simply ask for better, but in a way that encompasses your full truth.
 
 > Always remember that people and situations will be brought in as distractions when you’re getting ready for a really significant timeline jump. These distractions will be targeted at your weaknesses. Your work is to stay out of survival energy and focused on what you are creating.
 
@@ -368,11 +368,11 @@ _Imagination, intention, frequency, prosperity, timelines, desire, and allowing 
 
 > Memorize that feeling of getting exactly what you need.
 
-> Abundance is a state of mind, a feeling, a lifestyle. It is has nothing to do with being attached to material items & experiences as being the source of happiness & everything to do with material items & experiences being the natural expression of the happiness you are.
+> Abundance is a state of mind, a feeling, a lifestyle. It has nothing to do with being attached to material items & experiences as being the source of happiness & everything to do with material items & experiences being the natural expression of the happiness you are.
 
-> Internalize all energy that comes your way. love/hate positive/negative. all of it. save it for later and redirect it toward what you are choosing to manifest. this is much more beneficial to your bigger picture then spending that energy on emotional reactions.
+> Internalize all energy that comes your way. love/hate positive/negative. all of it. save it for later and redirect it toward what you are choosing to manifest. this is much more beneficial to your bigger picture than spending that energy on emotional reactions.
 
-> The quickest way to “get your spark back” is to literally light yourself on fire. You’ve got to burn baby. You’re depressed bc you’re not being insane enough. Double. Down. The world does not reward half ass. All in or out. You’re thinking too small. You’ve accepted your current reality as the only reality. Bullshit. You need to write a list of the most insane asks you could ever dream of. “I am a NYT best selling author. I am the founder of a Fortune 500 company. I paint for a living and I make a damn good living.” Ask and you shall receive. Embody and you become. Flip the fucking script. Your current ceiling is now the floor. Level up. 
+> The quickest way to “get your spark back” is to literally light yourself on fire. You’ve got to burn baby. You’re depressed bc you’re not being insane enough. Double. Down. The world does not reward half ass. All in or out. You’re thinking too small. You’ve accepted your current reality as the only reality. Bullshit. You need to write a list of the most insane asks you could ever dream of. “I am a NYT best-selling author. I am the founder of a Fortune 500 company. I paint for a living and I make a damn good living.” Ask and you shall receive. Embody and you become. Flip the fucking script. Your current ceiling is now the floor. Level up. 
 > 
 > You need to burn.
 > — @rachcorrine
@@ -403,7 +403,7 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 
 > People who are most magnetically attractive are those whose energy is not split by trying to satisfy the opinion of others.
 
-> If you stick to your your true nature, stick to your core and stick to your own philosophy - you'll have zero desire to replicate or be like anybody else. There's no man that's more impressive than you when you stick to your true nature.
+> If you stick to your true nature, stick to your core and stick to your own philosophy - you'll have zero desire to replicate or be like anybody else. There's no man that's more impressive than you when you stick to your true nature.
 
 > Use your manifestation not just for manifesting a career or dream relationship but for the freedom and liberation of your own soul.
 
@@ -423,7 +423,7 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 
 > Do not become a recess or vestige of whatever someone else once was. embody your own might. always admire yourself first. the most disgusting part of narcissism is subconsciously rooted self-hate.
 
-> The first demon you will ever cast out is doubt, and its from yourself.
+> The first demon you will ever cast out is doubt, and it's from yourself.
 
 > "Even the wise man acts
 > in accordance with his inner nature.
@@ -467,7 +467,7 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 > Who judges me, where sits the jury too,
 > How skilled is the executioner of me?
 > Each step questions which way to go, it's true,
-> Each will forgets what could have been, left free.
+> Each will forget what could have been, left free.
 > The standards I have set may not align,
 > With what was meant for me in life's grand plan.
 > But in this moment, heart and soul are mine
@@ -499,7 +499,7 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 > Let people say and think whatever they want about you. Just keep opening and purifying your heart.
 > Trying to explain universal downloads to someone who has never consciously experienced one only makes you sound crazy.
 > Become your own person by letting go of the need to explain yourself to others.
-> Imagine if you took back all of the life force energy you have spent trying to explain yourself or get people to understand you.
+> Imagine if you took back all of the life-force energy you have spent trying to explain yourself or get people to understand you.
 
 > The path is simple. Don’t let anyone complicate it for you. Be confident. Be certain. Give yourself time to answer your own questions.
 
@@ -576,7 +576,7 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 > what if YOU were the source of your power?
 > what then?
 
-> You need to cultivate a sense of unceasing optimism. Unbridled sunshine in the face of darkness. A ironclad perspective of continuation. Unbreakable fortitude in the face of unfair numbers. And you’ll be okay.
+> You need to cultivate a sense of unceasing optimism. Unbridled sunshine in the face of darkness. An ironclad perspective of continuation. Unbreakable fortitude in the face of unfair numbers. And you’ll be okay.
 
 > You never know enough to worry. Live life as it comes.
 
@@ -607,10 +607,10 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 
 > ==The trick is to not get hooked into emotional and mental states while waiting for the unknown to manifest.==
 
-> What if I told you that you are "it". And the only reason that "it' isn't showing up in your reality is that you keep getting in your own way. Remember that the outside reality is a holographic representation of what we are broadcasting. This is the "secret" that ancient alchemists and mystery schools taught .Any time I want to change something in my life I always do the inner work along with taking action. When action is not rooted in the right vibration you simply find yourself unconsciously creating more of the same outcomes. Blocked manifestation can be based on a variety of things. Could be your broadcast isn't strong or clear enough. Perhaps your unconscious beliefs are sabotaging. The answer is not more effort but rather to release resistance.
+> What if I told you that you are "it". And the only reason that "it" isn't showing up in your reality is that you keep getting in your own way. Remember that the outside reality is a holographic representation of what we are broadcasting. This is the "secret" that ancient alchemists and mystery schools taught. Any time I want to change something in my life I always do the inner work along with taking action. When action is not rooted in the right vibration you simply find yourself unconsciously creating more of the same outcomes. Blocked manifestation can be based on a variety of things. Could be your broadcast isn't strong or clear enough. Perhaps your unconscious beliefs are sabotaging. The answer is not more effort but rather to release resistance.
 
 > Once you clear the program you have to remember to begin to also change the narrative. Change the way you tell the story of your life. You may have learned the lesson, even rewritten the program but be keeping it alive by talking about the past with a lot of emotion. The next step is to create opportunities to live in the new energy of the reality you are creating. This part can feel like "imposter
-> syndrome" but there is really no such thing. You have to teach your brain and your body anew pattern and state of being. You can teach your body what a future experience will feel like before it manifests. This is how you create miracles. Trust me it will not be from working harder but rather more intuition, allowing and flow.
+> syndrome" but there is really no such thing. You have to teach your brain and your body a new pattern and state of being. You can teach your body what a future experience will feel like before it manifests. This is how you create miracles. Trust me it will not be from working harder but rather more intuition, allowing and flow.
 
 > ==When you radiate your own frequency rather than absorbing the frequencies around you, everything changes.==
 
@@ -632,7 +632,7 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 > Joy comes from removing bad things, not adding good things
 > the bad things are craving, aversion, tension, selfing, tanha, etc. they are like clouds. joy and freedom are the sky.
 
-> Wake up everyday and write 10 things you're proud of yourself for and 10 things you're eternally grateful for.
+> Wake up every day and write 10 things you're proud of yourself for and 10 things you're eternally grateful for.
 
 > You can always determine your unconscious programs by looking at patterns of what is repeatedly reflected in your real life, then working backwards. Asking yourself, what would I have to unconsciously believe in order to be a match for this energy dynamic. Once you identify the unconscious program, beliefs and thoughts patterns then ask, what is it that I needed to learn from this lesson? Decide what you prefer to experience now and write the new program.
 
@@ -645,9 +645,9 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 
 > Are you still looking outside of you for a Source of happiness, validation, inspiration, wholeness, holiness, and simultaneously source of where/who/what to blame when circumstances don’t turn out how your mind thinks they should. Or are you remembering the world is a mirror?
 
-> Research says that 70% of the programs we are running from childhood are self sabotaging, limiting and disempowering.
+> Research says that 70% of the programs we are running from childhood are self-sabotaging, limiting and disempowering.
 > That means that until you clear out these old programs, beliefs, habits, ways of being, emotional content you aren't even living as yourself
-> Thinking is that the same thing is being conscious. When your brain is thinking you are actually running unconscious programs.
+> Thinking is not the same thing as being conscious. When your brain is thinking you are actually running unconscious programs.
 
 > Learn to observe every reflection that is showing up, even those things that are unwanted. Use everything as information rather than an excuse to judge and blame yourself. Be willing to see the pattern that is being revealed in order to learn how you are unconsciously creating.
 
@@ -668,9 +668,9 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 
 > Remaining positive through challenging situations is about so much more than lying to yourself but more so about setting the tone. you are setting the tone for yourself, setting the standard for healthy reactions.
 
-> “Remember that no limitation can be placed upon you by any one but yourself”.
+> “Remember that no limitation can be placed upon you by anyone but yourself”.
 
-> Try to look at the things you want to change in your life or about yourself image without any of the psychological self abuse or self attack. Instead through the lens of curiosity.
+> Try to look at the things you want to change in your life or about your self-image without any of the psychological self-abuse or self-attack. Instead through the lens of curiosity.
 > Simply ask, I wonder who I would be if this issue wasn’t happening. Memorize that and create it.
 
 > Don't let your mind change the story later. We can focus on the good and get nostalgic, or we can focus on the bad and demonize, but neither is the full truth. Don't let the ego hijack the story. Be honest.
@@ -692,7 +692,7 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 > “Learn to keep the door shut, keep out of your mind, out of your office, and out of your world, every element that seeks admittance with no definite helpful end in view.”
 
 > Here's a practice.
-> Next time your making a decision, about anything. Stop for a moment and listen to your thoughts.
+> Next time you're making a decision, about anything. Stop for a moment and listen to your thoughts.
 > For me, there are two different voices:
 > -One is soft, calm, gentle, and confident.
 > -The other is pressed, hasty, insecure.
@@ -759,7 +759,7 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 > Plot twist:
 > The advice you give to others is for you to take.
 
-> It's easier and faster to change your behaviour in order change your thoughts/beliefs
+> It's easier and faster to change your behaviour in order to change your thoughts/beliefs
 > than it is to change your thoughts in order to change your behaviour.
 
 > Until you make the unconscious, conscious, it will control your life and you will call it “fate”.
@@ -797,7 +797,7 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 
 > Life will shit test you 1000x harder than any person ever could. Never fold. Make reality respect your will.
 
-> The desire for shortcuts in life is not only arrogant in itself, but also undermines your potential for long term success. Attempting to skip lessons won’t help you.
+> The desire for shortcuts in life is not only arrogant in itself, but also undermines your potential for long-term success. Attempting to skip lessons won’t help you.
 
 > The future is made in the present
 > So long as your attention/actions are in alignment with your desired future
@@ -814,8 +814,8 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > what's meant for you does not always arrive instantly. sometimes life is preparing you mentally before it delivers what you asked for. sometimes the delay is building the version of you capable enough of handling the blessing properly once it arrives. "every version of you that suffered was shaping the version strong enough to receive what you asked for."
 > so stop acting like your dreams are impossible just because they haven't happened yet. keep believing. keep working. keep aligning yourself with the version of you that already has it. your future is responding to the energy you repeat every single day.
 
-> In good times- you prepare yourself.
-> In bad times- you display yourself.
+> In good times - you prepare yourself.
+> In bad times - you display yourself.
 > That's the way.
 
 > Be proud of yourself by being consistent.
@@ -868,14 +868,14 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > this allows the isolation of the relevant neurons so they can be grown = learning
 > lack of focus/concentration impedes this process.
 
-> Realize that your own self destructive behaviors you exhibit in the name of curing your boredom are the root causes for a lot of your internal issues. We become what we repeatedly do. Create healthy habits, not poisons. The secret of your success is found in your daily routine.
+> Realize that your own self-destructive behaviors you exhibit in the name of curing your boredom are the root causes for a lot of your internal issues. We become what we repeatedly do. Create healthy habits, not poisons. The secret of your success is found in your daily routine.
 
 > When we start something and do not complete it, or make a resolution and do not keep it, we are forming the habit of failure; absolute, ignominious failure
 > If you do not intend to do a thing, do not start; if you do start, see it through even if the heavens fall; if you make up your mind to do something, do it; let nothing, no one, interfere.
 
-> Look at your habits: Are they the product of innumerable little cowardices and laziness.or of your courage & inventive reason?
+> Look at your habits: Are they the product of innumerable little cowardices and laziness, or of your courage & inventive reason?
 
-> You gotta have a plan, everybody's got a dream, everybody's got a goal. What's the plan? And you plan has got to have something called the C5 complex. Your plan has got to be: Clear, Concise, Compelling, Consistent & Committed. When you're trying to do something that you're truly passionate about, there is no Plan B.
+> You gotta have a plan, everybody's got a dream, everybody's got a goal. What's the plan? And your plan has got to have something called the C5 complex. Your plan has got to be: Clear, Concise, Compelling, Consistent & Committed. When you're trying to do something that you're truly passionate about, there is no Plan B.
 
 > Work intuitively.
 > Not hard.
@@ -889,7 +889,7 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > If what you thought was right was leading along a wrong path
 > What will lead you along the right path will feel wrong.
 
-> Have goals but don’t focus on the them, focus on your actions.
+> Have goals but don’t focus on them, focus on your actions.
 > If you do this, you won't have any regrets because you'd have stayed in your locus of control
 > you can't ask of yourself more than that.
 
@@ -900,9 +900,9 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > Unsuccessful people make decisions based on their current situations. Successful people make decisions based on where they want to be.
 > You are safe to let go of.
 > - being a people pleaser
-> - enabling self destructive behavior
-> - doing others work for them
-> - being a martyr/scapegoat for others unresolved traumas
+> - enabling self-destructive behavior
+> - doing others' work for them
+> - being a martyr/scapegoat for others' unresolved traumas
 > - giving energy to others out of a sense of duty/guilt
 > - addiction to being a victim
 > - codependence
@@ -940,7 +940,7 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > important Yusuke, then commit to it all the way!"
 > -Genkai (Yu Yu Hakusho.)
 
-> Habit is far more dependable than inspiration. Make progress by making habits. Dont focus on getting into shape. Focus on becoming the kind of person who never misses a workout.
+> Habit is far more dependable than inspiration. Make progress by making habits. Don't focus on getting into shape. Focus on becoming the kind of person who never misses a workout.
 
 > Winning is a result of accumulated momentum in the right direction.
 
@@ -956,7 +956,7 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 
 > keep your foot down on the gas until it becomes who you are and then you can't take it off. that's the goal underneath the goal, driving the pressure so long it stops being a choice and starts being your nature, the thing your body does before your mind votes. the greats got there. they pressed past the point of deciding, into the place where relentless is just what they are now, and the outcome had no defense against a person built entirely out of not stopping. become that. keep pressing until stopping stops being possible.
 
-> My will is stronger then my circumstances.
+> My will is stronger than my circumstances.
 
 > You don't have to know how to do it, but you have to have the desire to figure it out. So figure it out.
 
@@ -970,12 +970,12 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > an idiot in motion goes further than a genius at rest
 > — @MachJustine
 
-> one common trait I find in high achieving individuals is urgency. it looks almost like impatience until you understand it is closer to reverence, a deep refusal to waste the one thing they can’t buy more of. the alarm goes and they rise. the message is answered while it is still warm. the small task is done before it can find a shelf to hide on. they commit and move in a single motion. an idea sparks and they chase it that day, before the world talks them out of it. they run at their own lives like something is at stake, because they have decided something is.
+> one common trait I find in high-achieving individuals is urgency. it looks almost like impatience until you understand it is closer to reverence, a deep refusal to waste the one thing they can’t buy more of. the alarm goes and they rise. the message is answered while it is still warm. the small task is done before it can find a shelf to hide on. they commit and move in a single motion. an idea sparks and they chase it that day, before the world talks them out of it. they run at their own lives like something is at stake, because they have decided something is.
 > — @josbjohnson
 
 > i like to think that problems want to be solved. and that they are waiting there for the right person to come along and figure out a solution
 > 
-> it follows that: if a problem seems inaccessible to you, that doesn't mean its unsolvable. it just means the problem doesn't want you to solve it yet. you are probably unworthy of solving it yet, because you haven't acquired the skills you need to do so
+> it follows that: if a problem seems inaccessible to you, that doesn't mean it's unsolvable. it just means the problem doesn't want you to solve it yet. you are probably unworthy of solving it yet, because you haven't acquired the skills you need to do so
 > 
 > but that's not rejection (literally nothing is rejection). it's just homework
 > — @AnikaSomaia
@@ -1010,7 +1010,7 @@ _Calling, craft, art, play, service, voice, vision, and making what only you can
 
 > You are simultaneously your most vulnerable but also possess the most creative potential when you are on the cusp of what is unknown.
 
-> There are so many other ways to facilitate your work reaching the people who would benefit from your services other than self promoting.
+> There are so many other ways to facilitate your work reaching the people who would benefit from your services other than self-promoting.
 > You can creatively visualize every project you are working on aligning with ease with other creative partners and possible clients.
 > Using this method you will find yourself being a magnet for people who want to support your projects.
 > I've attracted abundance by being authentically myself and only creating things I'm passionate about infused with a divine intention.
@@ -1042,13 +1042,13 @@ _Calling, craft, art, play, service, voice, vision, and making what only you can
 > And old souls you still have memories of being persecuted in the past for sharing your gifts. But it is time. It’s time to do what you came here to do. To be that bridge for consciousness while we walk toward reaching critical mass awakening.
 > Often people who will be most threatened by you and your gifts are actually feeling like you pose a threat to exposing the lie they are living.
 
-> When you dedicate yourself to a certain cause\path,
+> When you dedicate yourself to a certain cause/path,
 > you’ll start to realise optimising its success requires you to optimise everything else
-> you realise everything effects everything.
+> you realise everything affects everything.
 
 > So in any given moment when you need a compass for how to find your path, ask, what's the most exciting choice I can make right now.
 
-> No matter what anyone says if this is truly your passion don’t ever let them talk you out of it, and go full force into this, no half ass’ing and no quitting, you can’t lose unless you quit, keep mastering your art brother.
+> No matter what anyone says if this is truly your passion don’t ever let them talk you out of it, and go full force into this, no half-assing and no quitting, you can’t lose unless you quit, keep mastering your art brother.
 
 > Know that there are others who will be put into your path specifically because they need the exact medicine that you hold. They need your light. Do not play shy or aloof about your talents.
 
@@ -1067,7 +1067,7 @@ _Calling, craft, art, play, service, voice, vision, and making what only you can
 > The mission is nourishment. It feeds you, it gives your life, it breaks you apart, and puts you back together. It brings you supporters, relationships, love, power. People take care of you on the mission. A heroic mission is undeniable. People pay for you, they feed you, they give you a place to stay, they go out of their way to help you win. You can skip lines, break rules, cross all the red tape. Nobody mistakes a man on a mission. A man on a mission makes sense of his environment. The work of divine intuition. A complete and effortless flow of energy. A man on a mission utilizes all of his resources. He stays inventive. When he asks, he receives. The mission keeps you moving. Win or loss, it all creates forward motion. Flow is everything.
 
 > You’re not missing anything special when your friends go out all the time
-> feeling “fomo” especially as you get older is largely indicative of lacking a strong purpose you’re working towards
+> feeling “FOMO” especially as you get older is largely indicative of lacking a strong purpose you’re working towards
 > there’s a reason success is split between the 99% and the 1%
 > the 99% live like the 99%
 > STRUCTURE YOUR LIFE AROUND WHAT UNLOCKS THE MOST ENERGY FOR YOU, PERSONALLY.
@@ -1087,9 +1087,9 @@ _Calling, craft, art, play, service, voice, vision, and making what only you can
 
 _Love, friendship, projection, intimacy, standards, rejection, and who gets access._
 
-> And as much as we like to say give ppl grace. Adults do know better man. 9/10 times they’ve already been thru a life circumstance that should’ve taught them how to maneuver more honorably in life. They chose not to adhere to that lesson. Patterns negate grace.
+> And as much as we like to say give ppl grace. Adults do know better man. 9/10 times they’ve already been through a life circumstance that should’ve taught them how to maneuver more honorably in life. They chose not to adhere to that lesson. Patterns negate grace.
 
-> Relationships are their own spiritual path. They are a training for seeing/releasing what is not true to your souls nature.
+> Relationships are their own spiritual path. They are a training for seeing/releasing what is not true to your soul's nature.
 
 > Break up with the pattern not just the person. This is how you clear karmic agreements and their residue on a soul level.
 
@@ -1097,7 +1097,7 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 
 > Make sure you are helping for the right reasons. That it's not from a place of people pleasing, martyrdom or trying to prove you are good.
 
-> U can be into your 30’s/40’s and older and imagine you’ve reached adulthood, but being a real adult is the moment u decide to no longer manipulate other people into giving u what u feel u didn’t receive in childhood.
+> U can be into your 30s/40s and older and imagine you’ve reached adulthood, but being a real adult is the moment u decide to no longer manipulate other people into giving u what u feel u didn’t receive in childhood.
 
 > Lol when they said "you are the company you keep" I thought they meant "the people you hang out with have a big influence on you" not "your companions literally set the limits of who you can become."
 
@@ -1161,7 +1161,7 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 
 > As a man thinketh in his heart so he builds in the world, but the heart is a liar and the hands are prophets. build the table before you understand why you're hungry, love the woman before you understand her because understanding is what happens after you've already committed, after your hands have already made the choice your brain was too coward to make, and the men who wait to think it through first are the men who die having thought about everything and built nothing, while the men who let their hands lead discover that action births clarity and clarity births more action and suddenly they're living in a world they made instead of a world they merely observed. thinking is just another word for stalling, that your hands know more about what you need than your fear ever will.
 
-> People overwhelmingly tend to project and interpret things they way they would mean them if they were in your shoes. A passive aggressive person sees passive aggression. A cheater sees cheating. A liar sees duplicity.
+> People overwhelmingly tend to project and interpret things the way they would mean them if they were in your shoes. A passive-aggressive person sees passive aggression. A cheater sees cheating. A liar sees duplicity.
 
 > ==Almost all women will love you more in fantasy than they do in reality, because when her desires are projected and her capacity untested, it is easy to worship, dote, and yearn. But if she comes to love you *MORE* in reality than she did in fantasy? You must marry her. Very rare.==
 
@@ -1180,7 +1180,7 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > I live to have excuses to bring my family and friends together.
 
 > DON'T LEAN IN is the first thing we should teach young men about gaining a girl's respect & admiration
-> Don't lean into her physically, socially or emotionally. The last thing she wants is needy guy trying to get into her life
+> Don't lean into her physically, socially or emotionally. The last thing she wants is a needy guy trying to get into her life
 > Don't lean into her world. Pull her into your world
 > This is why you need to create your own impressive life –– because you need to be "inviting" girls into your world, not trying to get into their world
 > A woman needs to be curious about your accomplishments, interests, activities, lifestyle
@@ -1199,10 +1199,10 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 
 > Don't let your unmet childhood needs and desires ruin your relationships.
 
-> Someone will try to guilt you into friendship or relationship from a place of not even feeling worthy. Then accuse of you rejecting them or not being open to receive love.
+> Someone will try to guilt you into friendship or relationship from a place of not even feeling worthy. Then accuse you of rejecting them or not being open to receive love.
 > It’s like no I just see the unconscious game you’re playing and I’m not interested in engaging.
 
-> The idea of eliminating all “negative” people from your life is an oversimplified of how relationships work
+> The idea of eliminating all “negative” people from your life is an oversimplification of how relationships work
 > Know what you have the bandwidth for. If you have the capacity to have compassion and hold space for certain things do that. Not every unhealthy behavior is a deal breaker.
 
 > You’ll have to be careful, my otherness will spoil you.
@@ -1211,14 +1211,14 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 
 > You can't change anyone's unhealthy relationship patterns without changing your own. Yin & yang, always you are dancing together.
 
-> It's sad when the people who used to be closest to you got you fucked up but it's a true test of self love.
+> It's sad when the people who used to be closest to you got you fucked up but it's a true test of self-love.
 
 > The right relationships
 > keep you on the right track.
 > The wrong relationships distract.
 > That's how you'll know.
 
-> ==Anyone who does not treat me with sacredness, kindness, love, compassion, care, honesty, beauty and reverence gets put on a time out. If the behavior is chronic and there is no accountability they can get left behind. Family included.==
+> ==Anyone who does not treat me with sacredness, kindness, love, compassion, care, honesty, beauty and reverence gets put on a time-out. If the behavior is chronic and there is no accountability they can get left behind. Family included.==
 
 > ==You do not have to rebuild a relationship just because you have forgiven someone. forgiveness is a gift that you give yourself and sometimes it involves you loving yourself enough to walk away.==
 
@@ -1245,7 +1245,7 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > ==True love does not seek to control or manipulate. It does not ask you to give up your freedom or right to be. Fear does but love does not.==
 
 > It’s been said that when you meet the person for you that you won’t feel butterflies but instead a feeling of calm.
-> Ironically the ‘butterflies’ feeling is a part of the body’s fight or flight response when there’s a threat to survival.
+> Ironically the ‘butterflies’ feeling is a part of the body’s fight-or-flight response when there’s a threat to survival.
 
 > There’s a big difference between someone wanting you and someone just wanting to take your energy.
 
@@ -1303,13 +1303,13 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 
 > Wanting others to fail does not hinder their progress, it doesn’t affect them at all. By sending negative energy to others you only hurt yourself by creating success blockages and heavy lessons within your own journey to teach you about duality and oneness.
 
-> Best way to rid yourself of toxic people is by not reacting to what they say/do that will try and sway you away from yourself love journey. No reaction. No pettiness. Just humbleness and respect. Send them love and carry on. The universe will rid you of people w/ shady energy.
+> Best way to rid yourself of toxic people is by not reacting to what they say/do that will try and sway you away from your self-love journey. No reaction. No pettiness. Just humbleness and respect. Send them love and carry on. The universe will rid you of people w/ shady energy.
 
-> Evil has to announce itself before it tries to influence you, because it has to plant a seed in your subconscious that marries& resonates with the conscious once it tries to take over. Strategically use this to your advantage by being observant, sharp and take preventive measures.
+> Evil has to announce itself before it tries to influence you, because it has to plant a seed in your subconscious that marries & resonates with the conscious once it tries to take over. Strategically use this to your advantage by being observant, sharp and take preventive measures.
 
 > Virtue signaling is popular because it lets anyone, regardless of objective merit, go on an ego trip.
 
-> You can get back at everyone whoever wronged you, wanted you to fail, or held you down by simply being happy.
+> You can get back at everyone who ever wronged you, wanted you to fail, or held you down by simply being happy.
 > There is nothing that makes an adversary feel more powerless than you just continuing to live your life as though they never affected it, because they never did.
 
 > One of the worst traits of liberalism is not understanding the human shadow. Operating from an idealistic stance about human nature that disregards reality makes it so that their ideology is unmoored. This leads to absolutely destructive policy decisions.
@@ -1320,7 +1320,7 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 
 > If you're the kind of person who naturally questioned rules and hated blindly following them, be careful with who you show this trait around.
 > you'll notice some people harbour a deep dislike towards you
-> you won't have done anything to them directly, but you'll get a sly comment or a passive aggressive insult you didn't expect.
+> you won't have done anything to them directly, but you'll get a sly comment or a passive-aggressive insult you didn't expect.
 > you'll wonder why it feels so. personal.
 > they watch how you move through life.
 > how you're unbothered by the things they concern themselves with and panic over
@@ -1333,11 +1333,11 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 > DISCERNMENT is the ABILITY TO JUDGE WELL. And this is why this evil *** society uses all sorts of messages and distortions to teach you that all 'judging' is bad and you have fallen for it. All judging is not bad. People have lost their power to discern.
 > If people knew how to judge well they would be in better relationships. By being a good judge of character you avoid getting into relationships with characters.
 
-> When your in the presence of people who lack self love and self respect they will try to make you feel wrong, selfish and guilty for doing what’s right for you. Don’t play into this projection tactic. It’s manipulative and energetically abusive.
+> When you're in the presence of people who lack self-love and self-respect they will try to make you feel wrong, selfish and guilty for doing what’s right for you. Don’t play into this projection tactic. It’s manipulative and energetically abusive.
 
 > ==Be mindful of people who attempt to use “niceness” as a way to manipulate your boundaries.==
 
-> You will meet people who will seem light hearted, up until the point that you disagree with them. Then they move into competition with you because they only feel safe when they are right. And somehow you’ve broken their rules.
+> You will meet people who will seem lighthearted, up until the point that you disagree with them. Then they move into competition with you because they only feel safe when they are right. And somehow you’ve broken their rules.
 
 > There is a particular type of person that will love bomb you, project perfection onto you, put you on a pedestal, only to tear you down. The minute you show you're human their simulation starts to implode. Because they are stuck in that ‘holier than thou’ religion simulation.
 
@@ -1360,7 +1360,7 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 
 > The goal of ALL psychic attack is to paralyze your ability to say 'NO'.
 
-> Energy vampire or psychic vampire isn't a negative/ bad person. It's someone who is unable to develop their own energy so they turn outward.
+> Energy vampire or psychic vampire isn't a negative/bad person. It's someone who is unable to develop their own energy so they turn outward.
 
 > Many times we ignore our gut about someone when we don’t have any hard fact based evidence, then end up feeling crazy. But you’re not crazy.
 > Most manipulators are so skilled at exploiting others for their gain that you won’t see them taking advantage, you’ll only feel it.
@@ -1368,7 +1368,7 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 > ==My compassion for insanity landed me in dangerous situations. Please don’t ever feel responsible to be the light for someone, no matter how lost they are. Love does not ask you to compromise your own safety. You cannot be the light for those bent on putting yours out.==
 
 > When you encounter negative energy you have many courses of action.
-> You can dwell and recreate that negative energy in yourself(thats what feeling bad is).
+> You can dwell and recreate that negative energy in yourself (that's what feeling bad is).
 > You can judge, react and reflect more negativity.
 > You can observe/study it and learn how to respond with a solution.
 
@@ -1387,9 +1387,9 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 
 > If all the ‘facts’ point to a conclusion and your intuition says that conclusion is trash, trust your intuition. Time is ALWAYS on the side of your intuition. So be patient and the truth will be revealed in time.
 
-> One of my favourite lesson from Reality Transurfing is:
+> One of my favourite lessons from Reality Transurfing is:
 > 
-> Wether you’re good or evil, if you feel guilt things WILL turn against you.
+> Whether you’re good or evil, if you feel guilt things WILL turn against you.
 > 
 > That’s why a lot of evil people don’t seem to have things turn against them, simply because they act without feeling shame nor fear against the consequences (no guilt).
 > 
@@ -1416,10 +1416,10 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > Now, I move on with my day.
 > I hear you.
 > Anger is better than apathy.
-> Anger is better than depressed.
+> Anger is better than being depressed.
 > Anger can be fuel.
-> But if it doesn't make you feel good to be angry
-> Alchemize if into something that makes you feel good
+> But if it doesn't make you feel good to be angry.
+> Alchemize it into something that makes you feel good
 > Express it until you don't need to express it anymore
 > Sing it.
 
@@ -1427,7 +1427,7 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 
 > I think being lower in your body rather than in your head fixes like 70% of problems.
 
-> Don’t push yourself to be positive. If you feel angry, your allowed to feel angry. If you feel tired, your allowed to feel tired. Give yourself permission to feel your emotions. They are all justified.
+> Don’t push yourself to be positive. If you feel angry, you're allowed to feel angry. If you feel tired, you're allowed to feel tired. Give yourself permission to feel your emotions. They are all justified.
 
 > Work with the sound of your own voice as a tool for healing. Use your voice to wake yourself from whatever form of dreaming you've been in.
 
@@ -1468,7 +1468,7 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 
 > I hate when I’m mad and people try to calm me down or make me choose peace. Anger inspired my most successful moments. Let me be mad.
 
-> I think this is super relevant and explains a lot of the “side effects” people experience with psychedelics and mindfulness: when you increase awareness too fast without increasing equaniminity you become overly sensitive and extremely disoriented. When you increase equaniminity without increasing awareness it’s like being a stoner who’s perpetually chill but has no desire to actively engage with the world around them. People who are high in both tend to be an amazing mix of non-neurotic yet truly motivated by what matters to them
+> I think this is super relevant and explains a lot of the “side effects” people experience with psychedelics and mindfulness: when you increase awareness too fast without increasing equanimity you become overly sensitive and extremely disoriented. When you increase equanimity without increasing awareness it’s like being a stoner who’s perpetually chill but has no desire to actively engage with the world around them. People who are high in both tend to be an amazing mix of non-neurotic yet truly motivated by what matters to them
 > — @noampomsky
 
 > If you don't acknowledge negative feelings, they won't have any effect on you.
@@ -1497,11 +1497,11 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > Painful memories/emotions are like sharp stones
 > they cut at first but the more you nurture and explore them, the smoother they get until they no longer cut.
 
-> The more you meditate
+> The more you meditate,
 > the stronger your tolerance for boredom becomes
 > the stronger your tolerance for boredom,
 > the less you engage in harmful but instantly gratifying things
-> the better your long term health and happiness.
+> the better your long-term health and happiness.
 
 > Resisting thoughts/emotions is what causes anxiety/discomfort.
 
@@ -1510,7 +1510,7 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 
 > That feeling of bringing up hurt feelings/trapped emotions and then finally releasing them, is Life.
 
-> It is no measure of health to be well adjusted to a profoundly sick society.
+> It is no measure of health to be well-adjusted to a profoundly sick society.
 > — Jiddu Krishnamurti
 
 > You don’t really want the thing. You want the feeling you think the thing will give you.
@@ -1526,7 +1526,7 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > Most people fail from burnout, stress and fatigue, not from lack of funds.
 > You gotta make time for play.
 > The brain needs it.
-> Even when you love what you do the brain knows it’s work.
+> Even when you love what you do the brain knows its work.
 > So we all need relaxation time.
 > Time to just be.
 
@@ -1539,7 +1539,7 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > Avoid identifying your current situation during rapid growth because you are changing every day. When you fail to identify, this can cause some negative emotions. You can also resonate with a wide variety of people. So don't hold on to familiarity. Be present as much as possible.
 
 > Masculine & feminine energy is not entirely separate, it just operates from different means.
-> Masculine energy derives psychic ability through intense observation, pattern recognition & analysation.
+> Masculine energy derives psychic ability through intense observation, pattern recognition & analysis.
 > Feminine energy derives psychic ability from feeling, knowing, sensing.
 
 > You can very quickly change that overwhelming feeling of dread that comes from inaction make a few actions and it goes away depression/anxiety comes from not doing what you know you should do.
@@ -1573,7 +1573,7 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 
 > The emotion itself isn't what's painful, it's your resistance to it that makes it painful.
 
-> You unconsciously sabotage yourself everyday, when you repress your negative emotions.
+> You unconsciously sabotage yourself every day, when you repress your negative emotions.
 
 > When you avoid an emotion, you actually invite more of it in the exact way you try to avoid it.
 
@@ -1609,7 +1609,7 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 
 > It took me decades to learn how to take my emotions seriously without believing them.
 
-> I figured out how to do this when I was giving unconditional love to my 3-year old, who was yelling "I hate you daddy."
+> I figured out how to do this when I was giving unconditional love to my 3-year-old, who was yelling "I hate you daddy."
 
 > Even when your emotions aren't responding to reality, your body thinks it's real.
 
@@ -1635,11 +1635,11 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 
 > Knowing nothing does wonders for the nervous system. Don't check your emails. Don't ask your mom why any of it happened. Mute him on twitter. Ignore the nutrition label. Have notifications off for everything. Remove your eyes, ears, and nerve endings.
 
-> If you're an anxious person, just do everything for fun. Submit documents for fun. Start a blog for fun. Go to a job interview for fun. ANXIETY FEEDS ON IMPORTANCE. Do not make everything a matter of life and deaťh.
+> If you're an anxious person, just do everything for fun. Submit documents for fun. Start a blog for fun. Go to a job interview for fun. ANXIETY FEEDS ON IMPORTANCE. Do not make everything a matter of life and death.
 
-> The heart is intuitive; its holistic, its contextual, its relational. It doesn't have a win-lose orientation. It taps into the cosmic computer the field of pure potentiality, pure knowledge, and infinite organizing power and takes everything into account. At times it may not even seem rational, but the heart has a computing ability that is far more accurate and far more precise than anything within the limits of rational thought.
+> The heart is intuitive; it's holistic, it's contextual, it's relational. It doesn't have a win-lose orientation. It taps into the cosmic computer the field of pure potentiality, pure knowledge, and infinite organizing power and takes everything into account. At times it may not even seem rational, but the heart has a computing ability that is far more accurate and far more precise than anything within the limits of rational thought.
 
-> Advice from the young C.S. Lewis: "Keep clear of introspection, of brooding, of spiritualism, of everything eccentric. Keep to work and sanity and open air – to the cheerful & the matter of fact side of things. We hold our mental health by a thread: & nothing is worth risking for it. Above all beware of excessive day dreaming, of seeing yourself in the centre of a drama, of self pity, and, as far as possible, of fears.”
+> Advice from the young C.S. Lewis: "Keep clear of introspection, of brooding, of spiritualism, of everything eccentric. Keep to work and sanity and open air – to the cheerful & the matter of fact side of things. We hold our mental health by a thread: & nothing is worth risking for it. Above all beware of excessive daydreaming, of seeing yourself in the centre of a drama, of self-pity, and, as far as possible, of fears.”
 > — @SuzanneSmith126
 
 > When a flower doesn’t bloom, you fix the environment in which it grows, not the flower.
@@ -1703,7 +1703,7 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 
 > Never work for free (testimonial if new).
 
-> Ignore unsuccesful friends and family.
+> Ignore unsuccessful friends and family.
 
 > Hire talented people, the chance of you fixing a loser with a sob story is highly unlikely.
 
@@ -1721,15 +1721,15 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 
 > Find a niche where dumb people are getting rich.
 
-> Choose the simple money witb low risk.
+> Choose the simple money with low risk.
 
-> Cash flow over evertything.
+> Cash flow over everything.
 
 > Ignore criticisms over your business niche, no matter what niche it is people will mock it somehow, just follow the money
 
 > I recommend saving money before people know you're making money.
 
-> When you get in impulse to buy something,
+> When you get an impulse to buy something,
 > wait a few days before buying it,
 > most of the time you’ll realise you don’t even need that thing.
 
@@ -1760,7 +1760,7 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > 7) Smile. You don't own all
 > the problems in the world.
 
-> Be grateful that you get to wake up everyday, moving closer to what it is that will bring your soul the fulfillment you purely desire in this lifetime!
+> Be grateful that you get to wake up every day, moving closer to what it is that will bring your soul the fulfillment you purely desire in this lifetime!
 
 > Pause.
 > Notice.
@@ -1800,13 +1800,13 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > -surrender to the divine plan
 > -expect a benevolent outcome
 > -have faith that all is well
-> -chose kindness over being right
-> -forgive yourself
-> -release judgements
-> -honor others path.
-> -laugh
+> -choose kindness over being right
+> - forgive yourself
+> - release judgements
+> - honor others' paths.
+> - laugh
 
-> Sometimes it’s hard to celebrate when good things happen because we are use to everything being so difficult. Try to focus on your progress anyway.
+> Sometimes it’s hard to celebrate when good things happen because we are used to everything being so difficult. Try to focus on your progress anyway.
 > Don’t dismiss change when it finally shows up. Embrace the new flow. Reclaim your vitality. Grow brighter wings.
 
 > Next time you think you have it tough - visit a children's hospital.
@@ -1828,7 +1828,7 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > ==It's dark because you are trying too hard. Lightly child, lightly. Learn to do everything lightly. Yes, feel lightly even though you're feeling deeply. Just lightly let things happen and lightly cope with them. I was so preposterously serious in those days. Lightly, lightly - it's the best advice ever given me. to throw away your baggage and go forward. There are quicksands all about you, sucking at your feet, trying to suck you down into fear and self-pity and despair. That's why you must walk so lightly. Lightly my darling.==
 > — Aldous Huxley, *Island*
 
-> Its the simple obvious things that give us the uncommon returns:
+> It's the simple obvious things that give us the uncommon returns:
 > Eat less than you burn.
 > Save more than you spend.
 > Do more than you say.
@@ -1844,7 +1844,7 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 
 > You may think, "I did this work already, I shouldn't have to be here, doing it again," which makes it harder + more painful than it has to be. Some lessons are learned over + again w more depth + complexity each time. Maybe the work is 2 make peace w doing the work.
 
-> The father of seven has not finished a thought in four years. he is just moving. feeding. driving. wiping. his brain is soup and his back is finished and he has no opinions about civilization he is too tired for opinions. and meanwhile civilization is growing out of him like he is dirt and he doesnt even notice because there is milk on the floor again. the childfree man has read eleven books this year about the decline of the west and he is the decline and the books are the evidence and he will understand this at fifty eight in a room that is very clean and very quiet
+> The father of seven has not finished a thought in four years. he is just moving. feeding. driving. wiping. his brain is soup and his back is finished and he has no opinions about civilization he is too tired for opinions. and meanwhile civilization is growing out of him like he is dirt and he doesn't even notice because there is milk on the floor again. the childfree man has read eleven books this year about the decline of the west and he is the decline and the books are the evidence and he will understand this at fifty-eight in a room that is very clean and very quiet
 > — @lichthauch
 
 > Enjoying life is not free. Its price is the constant swallowing of human weakness and the various sufferings that life presents.
