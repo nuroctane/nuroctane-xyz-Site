@@ -12,7 +12,7 @@
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (48)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (57)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (79)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (72)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (73)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (23)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (76)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (43)
@@ -1003,6 +1003,10 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 
 > get out of any “deciding what to build” phases as fast as you possibly can. follow the tendrils of light until you are out of the tunnel. don’t get distracted by moving shadows. remember.
 > — @nuroctane
+
+> Game theory explains why working harder inside a broken system is the worst response to that system. Because a system is never truly broken. It's just producing exactly the outcomes its own incentive structures were designed to produce, whether intentional or not. Working harder inside this system increases your output in the payoff matrix, but it simply won't change the actual structure of the system's matrix. Thus, the correct response is not more effort. Instead, you must aim to identify whose interests the current structure serves and position yourself in favor of those interests rather than against them. Change the game, or play the game that is actually being played. Either way, you must stop optimizing for the game you wish it to be and start acting realistically.
+> — @incentivising
+
 
 
 
