@@ -138,8 +138,8 @@ History:
   notes updated to match (no Replit-required env or Git pane).
 - v0.99 (2026-07-09, retro): hidden /resume page ships the full CV (a66ee83).
 - v0.100 (2026-07-09, retro): Blackjack project node added + swim pathing fix (43b48e8).
-- v0.101 (2026-07-09, retro): AstroSleep node logo + GitHub badge (2e95c85).
-- v0.102 (2026-07-09, retro): AstroSleep quicknav logo + MODKEYS page chrome (c6aecf9).
+- v0.101 (2026-07-09, retro): StarSleep node logo + GitHub badge (2e95c85).
+- v0.102 (2026-07-09, retro): StarSleep quicknav logo + MODKEYS page chrome (c6aecf9).
 - v0.103 (2026-07-09, retro): analytics SPA route/event expansion incl. /resume (eda1795).
 - v0.104 (2026-07-09, retro): even node focus spacing along the swim (d274e9a).
 - v0.105 (2026-07-09, retro): project-zone camera band aligned with even mids (7492051).

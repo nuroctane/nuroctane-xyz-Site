@@ -91,7 +91,7 @@
 
 * **[ Blackjack — Odds-First Mobile Web3 Table ]** · [GitHub](https://github.com/nuroctane/blackjack)
   * Multi-deck blackjack engine with full rules, recursive dealer outcomes, exact bust probability, SIWE/GitHub authentication, and a Capacitor mobile shell.
-* **[ ASTROSleep — Dual-Native Sleep Application ]** · [GitHub](https://github.com/nuroctane/ASTROSleep)
+* **[ StarSleep — Dual-Native Sleep Application ]** · [GitHub](https://github.com/nuroctane/StarSleep)
   * SwiftUI and Jetpack Compose applications with on-device natal calculations, 12-dimension nightly scoring, and layered ambient audio.
 * **[ Milady Derivatives Intelligence ]** · [GitHub](https://github.com/nuroctane/milady-derivatives)
   * NFT collection intelligence pipeline with deterministic enrichment, lineage mapping, optimized imagery, open JSON APIs, and Firebase/GitHub Actions delivery.

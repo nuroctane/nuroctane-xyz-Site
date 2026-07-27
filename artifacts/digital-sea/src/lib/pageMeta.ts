@@ -129,7 +129,7 @@ const PAGES: Record<string, PageMeta> = {
   projects: {
     title: 'Projects — NUROCTANE',
     description:
-      'Creative and technical projects — MODKEYS, SnipOCR, ASTROSleep, Blackjack, and more.',
+      'Creative and technical projects — MODKEYS, SnipOCR, StarSleep, Blackjack, and more.',
     badge: 'PROJECTS',
     path: '/projects',
     favicon: '/assets/nodes/github-logo.png',
@@ -171,7 +171,7 @@ const CHILD_FAVICONS: Record<string, Record<string, string>> = {
     github: '/assets/nodes/github-logo.png',
     weatherguru: '/assets/nodes/weatherguru-logo.svg',
     sis: '/assets/nodes/sis-logo.svg',
-    astrosleep: '/assets/nodes/astrosleep-logo.png',
+    starsleep: '/assets/nodes/starsleep-logo.png',
     geoskin: '/assets/nodes/geoskin-logo.svg',
     miyamaker: '/assets/nodes/miyamaker-avatar.png',
     webutils: '/assets/nodes/wrench.png',

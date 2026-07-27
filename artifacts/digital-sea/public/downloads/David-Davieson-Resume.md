@@ -40,8 +40,8 @@ Product engineer and technical operator who ships agentic systems, local AI infr
 - Engineered a multi-deck blackjack simulator with full rules, side decisions, recursive dealer outcomes, and exact next-hit bust probability.
 - Shipped a Next.js/React/TypeScript shell with RainbowKit, WalletConnect, SIWE, GitHub authentication, and a Capacitor mobile wrapper.
 
-### ASTROSleep — Dual-native sleep application
-[github.com/nuroctane/ASTROSleep](https://github.com/nuroctane/ASTROSleep)
+### StarSleep — Dual-native sleep application
+[github.com/nuroctane/StarSleep](https://github.com/nuroctane/StarSleep)
 - Built iOS and Android applications with SwiftUI/AVFoundation/Core Data and Kotlin/Jetpack Compose/Media3/Room/Hilt.
 - Implemented on-device natal calculations, a 12-dimension nightly scoring engine, and layered ambient audio with no shared cross-platform UI shell.
 

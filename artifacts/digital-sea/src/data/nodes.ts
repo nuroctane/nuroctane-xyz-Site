@@ -233,12 +233,12 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     logo: '',
   },
   {
-    id: 'astrosleep', label: 'AstroSleep', handle: 'project',
-    url: 'https://github.com/nuroctane/ASTROSleep',
-    urlDisplay: 'github.com/nuroctane/ASTROSleep',
+    id: 'starsleep', label: 'StarSleep', handle: 'project',
+    url: 'https://github.com/nuroctane/StarSleep',
+    urlDisplay: 'github.com/nuroctane/StarSleep',
     subtitle: 'Sleep cycle optimization',
     description: "fun little astrology app i'm committed to finishing.",
-    avatar: '/assets/nodes/astrosleep-logo.png',
+    avatar: '/assets/nodes/starsleep-logo.png',
     logo: '/assets/nodes/github-logo.png',
   },
   {
@@ -312,7 +312,7 @@ const FLIP_X = new Set([
   // flip blackjack so it faces opposite snipocr at adjacent scroll slots
   'blackjack',
   // blackjack inserted after snipocr  -  nodes after it inverted vs pre-insert set
-  'atxtunerz', 'weatherguru', 'sis', 'astrosleep', 'miyamaker', 'webutils',
+  'atxtunerz', 'weatherguru', 'sis', 'starsleep', 'miyamaker', 'webutils',
   // github + geoskin were flipped pre-insert; inverted out after shift
 ]);
 
@@ -328,7 +328,7 @@ const WIDE_CARD: Record<string, number> = {
   github:      0.050,
   weatherguru: 0.056,
   sis:         0.054,
-  astrosleep:  0.056,
+  starsleep:  0.056,
   geoskin:     0.056,
   miyamaker:   0.058,
   // last card before portals  -  smooth entrance + room to pivot away

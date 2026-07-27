@@ -28,7 +28,7 @@ const LOGO_MAP: Record<string, string> = {
   miyamaker:  '/assets/nodes/miyamaker-avatar.png',
   webutils:   '/assets/nodes/wrench.png',
   // Project marks (same files as card avatars)
-  astrosleep: '/assets/nodes/astrosleep-logo.png',
+  starsleep: '/assets/nodes/starsleep-logo.png',
   blackjack:  '/assets/nodes/blackjack-logo.png',
   weatherguru: '/assets/nodes/weatherguru-logo.svg',
   sis:         '/assets/nodes/sis-logo.svg',
