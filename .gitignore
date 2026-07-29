@@ -60,3 +60,9 @@ AGENTS.md
 .casimir-research/
 
 .vercel
+
+# wrangler local dev secrets and generated state
+.dev.vars
+.wrangler/
+.wrangler-dryrun/
+.nur/*.log

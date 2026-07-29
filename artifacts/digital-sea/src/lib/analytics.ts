@@ -1,13 +1,13 @@
 /**
- * Vercel Web Analytics helpers for the Digital Sea SPA.
+ * Route and product-event analytics helpers for the Digital Sea SPA.
  *
- * Pageviews are attributed via <Analytics path route /> in main.tsx.
- * Use trackEvent for product interactions (modkeys already has its own shim).
+ * Pageviews are attributed by the PostHog Telemetry component in main.tsx.
+ * Use trackEvent for product interactions (modkeys also uses the same shim).
  */
 
 export type AnalyticsProps = Record<string, string | number | boolean | null | undefined>;
 
-/** Canonical top-level SPA surfaces reported in Vercel Top Pages. */
+/** Canonical top-level SPA surfaces reported in analytics. */
 export const ANALYTICS_TOP_ROUTES = [
   '/',
   '/socials',
@@ -35,8 +35,7 @@ export function normalizePath(location: string): string {
 }
 
 /**
- * Map a browser location to { path, route } for Vercel Analytics.
- * `route` is the pattern (for grouping); `path` is the concrete URL path.
+ * Map a browser location to the concrete PostHog path and grouping route.
  */
 export function resolveAnalytics(location: string): { path: string; route: string } {
   const path = normalizePath(location);
@@ -85,7 +84,7 @@ export function resolveAnalytics(location: string): { path: string; route: strin
   }
 }
 
-/** Build an absolute URL for beforeSend (Vercel intake prefers absolute). */
+/** Build an absolute analytics URL. */
 export function absoluteAnalyticsUrl(path: string, origin?: string): string {
   const base =
     origin ??
@@ -95,20 +94,19 @@ export function absoluteAnalyticsUrl(path: string, origin?: string): string {
 }
 
 /**
- * Fire a custom event. Queues until the Vercel script is ready (same pattern as modkeys).
- * Prefer this over importing track() when the script may not be mounted yet.
+ * Fire a custom event. Queues until PostHog is ready (same pattern as modkeys).
+ * window.__nurTrack is installed by initPostHog() in ./posthog.
  */
 export function trackEvent(name: string, properties?: AnalyticsProps): void {
   try {
     if (typeof window === 'undefined' || !name) return;
     const data = properties && typeof properties === 'object' ? properties : undefined;
-    const payload = data ? { name, data } : { name };
-    if (typeof window.va === 'function') {
-      window.va('event', payload);
+    if (typeof window.__nurTrack === 'function') {
+      window.__nurTrack(name, data as Record<string, unknown> | undefined);
       return;
     }
-    window.vaq = window.vaq || [];
-    window.vaq.push(['event', payload]);
+    window.__nurTrackQueue = window.__nurTrackQueue || [];
+    window.__nurTrackQueue.push([name, data as Record<string, unknown> | undefined]);
   } catch {
     /* analytics must never break the UI */
   }

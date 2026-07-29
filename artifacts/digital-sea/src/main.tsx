@@ -1,11 +1,10 @@
 import { Router, useLocation } from 'wouter';
 import { lazy, Suspense, useEffect, useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
-import { Analytics, type BeforeSendEvent } from '@vercel/analytics/react';
-import { SpeedInsights } from '@vercel/speed-insights/react';
 import App from './App';
 import { AudioProvider } from './hooks/AudioContext';
 import { resolveAnalytics } from './lib/analytics';
+import { initPostHog, capturePageview } from './lib/posthog';
 import { applyDocumentMeta, resolvePageMeta } from './lib/pageMeta';
 import './index.css';
 
@@ -21,68 +20,27 @@ function Fallback() {
 }
 
 /**
- * Strip share-hash noise and force the reported URL onto the resolved SPA path
- * so Top Pages groups by route (incl. /resume, /socials/:id, /blog/:slug, …).
+ * Reports one pageview per resolved SPA route (incl. /resume, /socials/:id,
+ * /blog/:slug, …) so Top Pages groups by route rather than raw URL.
+ *
+ * The Vercel integration needed two `beforeSend` hooks to rewrite the URL after
+ * the fact. resolveAnalytics() already yields the resolved path, and
+ * capturePageview() reports exactly that — so there is nothing left to rewrite.
  */
-function beforeSend(event: BeforeSendEvent): BeforeSendEvent | null {
-  try {
-    const origin =
-      typeof window !== 'undefined' ? window.location.origin : 'https://www.nuroctane.xyz';
-    const u = new URL(event.url, origin);
-    u.hash = '';
-    // Prefer live wouter path when available (client SPA navigations)
-    const live = typeof window !== 'undefined'
-      ? resolveAnalytics(window.location.pathname + window.location.search)
-      : resolveAnalytics(u.pathname);
-    u.pathname = live.path;
-    u.search = '';
-    return { ...event, url: u.href };
-  } catch {
-    return event;
-  }
-}
-
-/** Speed Insights v2 beforeSend — type must stay `vital`. */
-function speedBeforeSend(event: { type: 'vital'; url: string; route?: string }) {
-  try {
-    const origin =
-      typeof window !== 'undefined' ? window.location.origin : 'https://www.nuroctane.xyz';
-    const u = new URL(event.url, origin);
-    u.hash = '';
-    const live = typeof window !== 'undefined'
-      ? resolveAnalytics(window.location.pathname)
-      : resolveAnalytics(u.pathname);
-    u.pathname = live.path;
-    u.search = '';
-    return { ...event, type: 'vital' as const, url: u.href, route: live.route };
-  } catch {
-    return event;
-  }
-}
-
 function Telemetry() {
   const [location] = useLocation();
   const { path, route } = useMemo(() => resolveAnalytics(location), [location]);
 
-  // path + route keep SPA client navigations attributed (Wouter pushState).
-  // When Analytics `route` is set, auto-track is off — both path and route must be truthy.
-  // mode=production: Vite does not always expose NODE_ENV the way Next does.
-  return (
-    <>
-      <Analytics
-        path={path}
-        route={route}
-        framework="react"
-        mode="production"
-        beforeSend={beforeSend}
-      />
-      <SpeedInsights
-        route={route}
-        framework="react"
-        beforeSend={speedBeforeSend}
-      />
-    </>
-  );
+  useEffect(() => {
+    initPostHog();
+  }, []);
+
+  // Re-fires on wouter pushState navigations, keeping SPA routes attributed.
+  useEffect(() => {
+    capturePageview(path, route);
+  }, [path, route]);
+
+  return null;
 }
 
 /** Route-aware document chrome (title + OG/meta for SPA navigations). */

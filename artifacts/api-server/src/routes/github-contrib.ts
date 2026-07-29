@@ -1,21 +1,32 @@
 /* GitHub contribution calendar cache for the digital-sea GitHub secondary node.
  * GET  /api/github-contrib          — read KV (warm on miss)
- * POST /api/github-contrib/refresh  — cron / manual refresh
+ * POST /api/github-contrib/refresh  — manual refresh
  *
- * Hardened for Vercel Fluid CPU: timeouts, single-flight refresh, stale-serve.
+ * The daily refresh is a Workers Cron Trigger and calls refreshContributions()
+ * directly from the scheduled() handler in worker/index.ts, so it never touches
+ * this HTTP surface.
  */
-import { Router } from "express";
+import { Hono } from "hono";
+import type { Context } from "hono";
 import { kvGet, kvSet } from "@workspace/kv";
 import { logger } from "../lib/logger";
+import { readBody } from "../lib/body";
 
-const router = Router();
+const router = new Hono();
 
 const KV_KEY = "github:contrib:nuroctane";
-const USERNAME = process.env.GITHUB_CONTRIB_USER || "nuroctane";
 const MAX_AGE_MS = 26 * 60 * 60 * 1000; // 26h — slightly over daily cron
 const FETCH_TIMEOUT_MS = 6500;
 
-// Single-flight guard to avoid thundering herd when cache is stale
+const contribUser = (): string => process.env.GITHUB_CONTRIB_USER || "nuroctane";
+
+/* Single-flight guard: coalesces concurrent refreshes within an isolate.
+ *
+ * The Vercel version cleared this on a setTimeout to also coalesce a burst
+ * arriving just after completion. That is unsafe on Workers — timers queued
+ * after a response returns are not guaranteed to run, which would strand the
+ * guard permanently and freeze the cache for the life of the isolate. Clearing
+ * on settle keeps the thundering-herd protection that actually matters. */
 let refreshing: Promise<ContribPayload> | null = null;
 
 export type ContribDay = {
@@ -32,12 +43,10 @@ export type ContribPayload = {
   data: ContribDay[];
 };
 
-function authorized(req: { headers: Record<string, unknown>; body?: unknown }): boolean {
-  if (String(req.headers["x-vercel-cron"] || "") === "1") return true;
-  const auth = String(req.headers.authorization || "");
+function authorized(headers: Headers, body: { password?: string }): boolean {
+  const auth = headers.get("authorization") ?? "";
   const cron = process.env.CRON_SECRET || "";
   if (cron && auth === `Bearer ${cron}`) return true;
-  const body = (req.body || {}) as { password?: string };
   const admin = process.env.BOOKS_ADMIN_PASSWORD || "";
   if (admin && body.password === admin) return true;
   return false;
@@ -222,7 +231,7 @@ async function fetchFromGraphQL(username: string, token: string): Promise<Contri
   }
 }
 
-export async function refreshContributions(username = USERNAME): Promise<ContribPayload> {
+export async function refreshContributions(username = contribUser()): Promise<ContribPayload> {
   if (refreshing) return refreshing;
 
   const p = (async () => {
@@ -238,7 +247,7 @@ export async function refreshContributions(username = USERNAME): Promise<Contrib
     } else {
       payload = await fetchFromHtml(username);
     }
-    // kvSet has its own timeout+retry now
+    // kvSet has its own timeout+retry
     await kvSet(KV_KEY, payload).catch((e) => {
       logger.warn({ e }, "kvSet failed during refresh, still returning payload");
     });
@@ -247,13 +256,9 @@ export async function refreshContributions(username = USERNAME): Promise<Contrib
 
   refreshing = p;
   try {
-    const result = await p;
-    return result;
+    return await p;
   } finally {
-    // release after short debounce to coalesce burst
-    setTimeout(() => {
-      if (refreshing === p) refreshing = null;
-    }, 1000);
+    if (refreshing === p) refreshing = null;
   }
 }
 
@@ -264,7 +269,7 @@ function isStale(p: ContribPayload | null): boolean {
   return Date.now() - t > MAX_AGE_MS;
 }
 
-router.get("/github-contrib", async (_req, res) => {
+router.get("/github-contrib", async (c) => {
   try {
     let cached = (await kvGet<ContribPayload>(KV_KEY).catch(() => null)) as ContribPayload | null;
 
@@ -274,33 +279,36 @@ router.get("/github-contrib", async (_req, res) => {
         cached = await refreshContributions();
       } catch (err) {
         logger.error({ err }, "Failed to refresh github contrib on cold GET");
-        return res.status(502).json({ error: "Failed to load contributions" });
+        return c.json({ error: "Failed to load contributions" }, 502);
       }
     } else if (isStale(cached)) {
-      // Stale-while-serve: serve stale immediately, refresh in background
-      res.setHeader("Cache-Control", "public, s-maxage=60, stale-while-revalidate=600");
-      res.json({ ...cached, stale: true });
-      // background refresh (don't await, don't block Active CPU)
-      refreshContributions().catch((e) => logger.warn({ e }, "Background refresh failed"));
-      return;
+      // Stale-while-serve: return stale immediately, refresh in the background.
+      // waitUntil is required — a bare floating promise is killed when the
+      // response is returned, so on Vercel this refresh often never completed.
+      c.executionCtx.waitUntil(
+        refreshContributions().catch((e) => logger.warn({ e }, "Background refresh failed")),
+      );
+      c.header("Cache-Control", "public, s-maxage=60, stale-while-revalidate=600");
+      return c.json({ ...cached, stale: true });
     }
 
-    res.setHeader("Cache-Control", "public, s-maxage=3600, stale-while-revalidate=86400");
-    res.setHeader("CDN-Cache-Control", "public, s-maxage=3600, stale-while-revalidate=86400");
-    return res.json(cached);
+    c.header("Cache-Control", "public, s-maxage=3600, stale-while-revalidate=86400");
+    c.header("CDN-Cache-Control", "public, s-maxage=3600, stale-while-revalidate=86400");
+    return c.json(cached);
   } catch (err) {
     logger.error({ err }, "GET github-contrib failed");
-    return res.status(500).json({ error: "Internal error" });
+    return c.json({ error: "Internal error" }, 500);
   }
 });
 
-async function handleRefresh(req: { headers: Record<string, unknown>; body?: unknown }, res: import("express").Response) {
+async function handleRefresh(c: Context) {
   try {
-    if (!authorized(req as any)) {
-      return res.status(401).json({ error: "Unauthorized" });
+    const body = await readBody<{ password?: string }>(c);
+    if (!authorized(c.req.raw.headers, body)) {
+      return c.json({ error: "Unauthorized" }, 401);
     }
     const payload = await refreshContributions();
-    return res.json({
+    return c.json({
       ok: true,
       username: payload.username,
       totalContributions: payload.totalContributions,
@@ -309,11 +317,11 @@ async function handleRefresh(req: { headers: Record<string, unknown>; body?: unk
     });
   } catch (err) {
     logger.error({ err }, "github-contrib refresh failed");
-    return res.status(502).json({ error: "Refresh failed" });
+    return c.json({ error: "Refresh failed" }, 502);
   }
 }
 
-router.get("/github-contrib/refresh", (req, res) => handleRefresh(req as any, res));
-router.post("/github-contrib/refresh", (req, res) => handleRefresh(req as any, res));
+router.get("/github-contrib/refresh", handleRefresh);
+router.post("/github-contrib/refresh", handleRefresh);
 
 export default router;

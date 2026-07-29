@@ -9,7 +9,11 @@
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "smoke": "tsx src/smoke.ts"
   },
+  "dependencies": {
+    "@workspace/api-server": "workspace:*"
+  },
   "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260728.1",
     "@types/node": "catalog:",
     "tsx": "catalog:"
   }

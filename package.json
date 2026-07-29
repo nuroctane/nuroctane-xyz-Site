@@ -7,17 +7,23 @@
     "preinstall": "node -e \"var fs=require('fs');['package-lock.json','yarn.lock'].forEach(function(f){try{fs.unlinkSync(f)}catch(e){}});var ua=process.env.npm_config_user_agent||'';if(!/pnpm/.test(ua)){console.error('Use pnpm instead');process.exit(1)}\"",
     "build": "pnpm run typecheck && pnpm -r --if-present run build && pnpm run smoke && node artifacts/modkeys/check-spa-shell.mjs",
     "typecheck:libs": "tsc --build",
-    "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck",
+    "typecheck:worker": "tsc -p worker/tsconfig.json",
+    "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck && pnpm run typecheck:worker",
     "smoke": "pnpm --filter @workspace/scripts run smoke"
   },
   "private": true,
   "devDependencies": {
+    "@cloudflare/workers-types": "^5.20260728.1",
     "@rollup/rollup-win32-x64-msvc": "^4.62.2",
+    "@types/node": "catalog:",
     "prettier": "^3.8.3",
-    "typescript": "~5.9.3"
+    "typescript": "~5.9.3",
+    "wrangler": "^4.114.0"
   },
+  "//": "@vercel/og + react are consumed only by api/og.mjs, which remains deployed on Vercel and is proxied by the Worker. See worker/index.ts proxyOg().",
   "dependencies": {
     "@vercel/og": "^0.11.1",
+    "@workspace/api-server": "workspace:*",
     "react": "catalog:"
   }
 }

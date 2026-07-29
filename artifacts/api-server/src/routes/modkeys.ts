@@ -1,18 +1,23 @@
 /* CONTRACT-GUARDED FILE.
  * The response shapes and paths in this file are asserted by scripts/src/smoke.ts,
- * which runs inside the Vercel buildCommand. Changing shapes/paths without updating
- * the smoke test will fail every deploy. Do not weaken or bypass the smoke test. */
-import { Router, type Request, type Response } from "express";
+ * which runs inside the build. Changing shapes/paths without updating the smoke
+ * test will fail every deploy. Do not weaken or bypass the smoke test. */
+import { Hono } from "hono";
+import type { Context } from "hono";
 import { kvGet, kvSet } from "@workspace/kv";
 import { logger } from "../lib/logger";
+import { readBody } from "../lib/body";
 
-const router = Router();
+const router = new Hono();
 
 const GALLERY_KEY = "modkeys:gallery";
 const MAX_ENTRIES = 100;
+const MAX_SNAP_JSON_SIZE = 20 * 1024; // 20KB
+
 /* Same secret as the books page admin mode (BOOKS_ADMIN_PASSWORD).
-   MODKEYS_ADMIN_PASSWORD kept as fallback for older env configs / smoke. */
-const ADMIN_PASSWORD =
+   MODKEYS_ADMIN_PASSWORD kept as fallback for older env configs / smoke.
+   Read lazily — see the note in books.ts. */
+const adminPassword = (): string =>
   process.env.BOOKS_ADMIN_PASSWORD || process.env.MODKEYS_ADMIN_PASSWORD || "";
 
 interface GalleryEntry {
@@ -21,6 +26,14 @@ interface GalleryEntry {
   snap: Record<string, unknown>;
   layout: string;
   createdAt: string;
+}
+
+interface GalleryBody {
+  action?: string;
+  password?: string;
+  id?: string;
+  name?: string;
+  snap?: Record<string, unknown>;
 }
 
 function extractLayout(snap: Record<string, unknown>): string {
@@ -47,88 +60,89 @@ function sanitizeName(name: unknown): string {
   return name.replace(/<[^>]*>/g, "").slice(0, 40);
 }
 
-const MAX_SNAP_JSON_SIZE = 20 * 1024; // 20KB
-
 function checkAdmin(password: unknown): "ok" | "unset" | "bad" {
+  const ADMIN_PASSWORD = adminPassword();
   if (!ADMIN_PASSWORD) return "unset";
   if (password === ADMIN_PASSWORD) return "ok";
   return "bad";
 }
 
-async function handleVerifyAdmin(req: Request, res: Response) {
+async function handleVerifyAdmin(c: Context, body: GalleryBody) {
   try {
-    const status = checkAdmin(req.body?.password);
+    const status = checkAdmin(body?.password);
     if (status === "unset") {
-      return res.status(500).json({ error: "Admin password not configured" });
+      return c.json({ error: "Admin password not configured" }, 500);
     }
-    if (status === "ok") return res.json({ ok: true });
-    return res.status(403).json({ error: "Unauthorized" });
+    if (status === "ok") return c.json({ ok: true });
+    return c.json({ error: "Unauthorized" }, 403);
   } catch (err) {
     logger.error({ err }, "Failed to verify gallery admin");
-    return res.status(500).json({ error: "Internal server error" });
+    return c.json({ error: "Internal server error" }, 500);
   }
 }
 
-async function handleRename(req: Request, res: Response) {
+async function handleRename(c: Context, body: GalleryBody) {
   try {
-    const { password, id, name } = req.body ?? {};
+    const { password, id, name } = body ?? {};
     const status = checkAdmin(password);
     if (status !== "ok") {
-      return res.status(status === "unset" ? 500 : 403).json({
-        error: status === "unset" ? "Admin password not configured" : "Unauthorized",
-      });
+      return c.json(
+        { error: status === "unset" ? "Admin password not configured" : "Unauthorized" },
+        status === "unset" ? 500 : 403,
+      );
     }
     if (!id || typeof id !== "string") {
-      return res.status(400).json({ error: "Missing id" });
+      return c.json({ error: "Missing id" }, 400);
     }
     if (typeof name !== "string" || !name.trim()) {
-      return res.status(400).json({ error: "Missing name" });
+      return c.json({ error: "Missing name" }, 400);
     }
     const clean = sanitizeName(name);
 
     const gallery = (await kvGet<GalleryEntry[]>(GALLERY_KEY)) ?? [];
     const idx = gallery.findIndex((e) => e.id === id);
-    if (idx < 0) return res.status(404).json({ error: "Entry not found" });
+    if (idx < 0) return c.json({ error: "Entry not found" }, 404);
     gallery[idx] = { ...gallery[idx], name: clean };
     await kvSet(GALLERY_KEY, gallery);
-    return res.json({ ok: true, template: { id: gallery[idx].id, name: gallery[idx].name } });
+    return c.json({ ok: true, template: { id: gallery[idx].id, name: gallery[idx].name } });
   } catch (err) {
     logger.error({ err }, "Failed to rename gallery entry");
-    return res.status(500).json({ error: "Failed to rename" });
+    return c.json({ error: "Failed to rename" }, 500);
   }
 }
 
-async function handleDelete(req: Request, res: Response) {
+async function handleDelete(c: Context, body: GalleryBody) {
   try {
-    const { password, id } = req.body ?? {};
+    const { password, id } = body ?? {};
     const status = checkAdmin(password);
     if (status !== "ok") {
-      return res.status(status === "unset" ? 500 : 403).json({
-        error: status === "unset" ? "Admin password not configured" : "Unauthorized",
-      });
+      return c.json(
+        { error: status === "unset" ? "Admin password not configured" : "Unauthorized" },
+        status === "unset" ? 500 : 403,
+      );
     }
     if (!id || typeof id !== "string") {
-      return res.status(400).json({ error: "Missing id" });
+      return c.json({ error: "Missing id" }, 400);
     }
 
     const gallery = (await kvGet<GalleryEntry[]>(GALLERY_KEY)) ?? [];
     const filtered = gallery.filter((e) => e.id !== id);
     if (filtered.length === gallery.length) {
-      return res.status(404).json({ error: "Entry not found" });
+      return c.json({ error: "Entry not found" }, 404);
     }
     await kvSet(GALLERY_KEY, filtered);
-    return res.json({ ok: true });
+    return c.json({ ok: true });
   } catch (err) {
     logger.error({ err }, "Failed to delete gallery entry");
-    return res.status(500).json({ error: "Failed to delete" });
+    return c.json({ error: "Failed to delete" }, 500);
   }
 }
 
-async function handleCreate(req: Request, res: Response) {
+async function handleCreate(c: Context, body: GalleryBody) {
   try {
-    const { name, snap } = req.body ?? {};
+    const { name, snap } = body ?? {};
     if (!snap || typeof snap !== "object") {
-      return res.status(400).json({ error: "Missing snap" });
+      return c.json({ error: "Missing snap" }, 400);
     }
 
     // Strip imageData to keep KV small
@@ -137,7 +151,7 @@ async function handleCreate(req: Request, res: Response) {
 
     const snapJson = JSON.stringify(cleanSnap);
     if (snapJson.length > MAX_SNAP_JSON_SIZE) {
-      return res.status(413).json({ error: "Snap too large" });
+      return c.json({ error: "Snap too large" }, 413);
     }
 
     const id = crypto.randomUUID();
@@ -157,59 +171,61 @@ async function handleCreate(req: Request, res: Response) {
     }
     await kvSet(GALLERY_KEY, gallery);
 
-    return res.status(201).json({
-      template: {
-        id: entry.id,
-        name: entry.name,
-        layout: entry.layout,
-        createdAt: entry.createdAt,
+    return c.json(
+      {
+        template: {
+          id: entry.id,
+          name: entry.name,
+          layout: entry.layout,
+          createdAt: entry.createdAt,
+        },
       },
-    });
+      201,
+    );
   } catch (err) {
     logger.error({ err }, "Failed to save gallery entry");
-    return res.status(500).json({ error: "Failed to save gallery entry" });
+    return c.json({ error: "Failed to save gallery entry" }, 500);
   }
 }
 
-router.get("/modkeys/gallery", async (_req, res) => {
+router.get("/modkeys/gallery", async (c) => {
   try {
     const gallery = (await kvGet<GalleryEntry[]>(GALLERY_KEY)) ?? [];
     const templates = gallery.map(({ id, name, snap, layout, createdAt }) => ({
       id, name, snap, layout, createdAt,
     }));
-    res.setHeader("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300");
-    return res.json({ templates });
+    c.header("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300");
+    return c.json({ templates });
   } catch (err) {
     logger.error({ err }, "Failed to get gallery");
-    return res.status(500).json({ error: "Failed to get gallery" });
+    return c.json({ error: "Failed to get gallery" }, 500);
   }
 });
 
 /*
- * Vercel routes api/modkeys/[[...slug]] only reach Express for ONE path
- * segment after /api/modkeys (e.g. /gallery). Multi-segment paths like
- * /gallery/verify-admin return Vercel NOT_FOUND before Express runs.
- *
- * Admin ops therefore live as action: on POST /modkeys/gallery (books-style)
- * and as single-segment aliases. Multi-segment paths stay for local smoke
- * (full Express listen) and any non-Vercel host.
+ * On Vercel, api/modkeys/[[...slug]] only reached Express for ONE path segment
+ * after /api/modkeys, so the multi-segment forms below returned NOT_FOUND from
+ * the filesystem router before any application code ran. Workers has no
+ * filesystem routing — every route registered here is genuinely reachable, so
+ * the multi-segment aliases now work in production as well as in the smoke test.
  */
-router.post("/modkeys/gallery", async (req, res) => {
-  const action = req.body?.action;
-  if (action === "verifyAdmin") return handleVerifyAdmin(req, res);
-  if (action === "rename") return handleRename(req, res);
-  if (action === "delete") return handleDelete(req, res);
-  return handleCreate(req, res);
+router.post("/modkeys/gallery", async (c) => {
+  const body = await readBody<GalleryBody>(c);
+  const action = body?.action;
+  if (action === "verifyAdmin") return handleVerifyAdmin(c, body);
+  if (action === "rename") return handleRename(c, body);
+  if (action === "delete") return handleDelete(c, body);
+  return handleCreate(c, body);
 });
 
-/* Single-segment aliases — work on Vercel under api/modkeys/[[...slug]] */
-router.post("/modkeys/verify-admin", handleVerifyAdmin);
-router.post("/modkeys/rename", handleRename);
-router.post("/modkeys/delete", handleDelete);
+/* Single-segment aliases */
+router.post("/modkeys/verify-admin", async (c) => handleVerifyAdmin(c, await readBody<GalleryBody>(c)));
+router.post("/modkeys/rename", async (c) => handleRename(c, await readBody<GalleryBody>(c)));
+router.post("/modkeys/delete", async (c) => handleDelete(c, await readBody<GalleryBody>(c)));
 
-/* Multi-segment (Express listen / smoke); Vercel filesystem returns NOT_FOUND */
-router.post("/modkeys/gallery/verify-admin", handleVerifyAdmin);
-router.post("/modkeys/gallery/rename", handleRename);
-router.post("/modkeys/gallery/delete", handleDelete);
+/* Multi-segment forms */
+router.post("/modkeys/gallery/verify-admin", async (c) => handleVerifyAdmin(c, await readBody<GalleryBody>(c)));
+router.post("/modkeys/gallery/rename", async (c) => handleRename(c, await readBody<GalleryBody>(c)));
+router.post("/modkeys/gallery/delete", async (c) => handleDelete(c, await readBody<GalleryBody>(c)));
 
 export default router;

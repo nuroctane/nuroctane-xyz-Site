@@ -1,16 +1,18 @@
-import { Router } from "express";
+import { Hono } from "hono";
 import healthRouter from "./health";
 import authRouter from "./auth";
 import modkeysRouter from "./modkeys";
 import booksRouter from "./books";
 import githubContribRouter from "./github-contrib";
+import nurCliVersionRouter from "./nur-cli-version";
 
-const router = Router();
+const router = new Hono();
 
-router.use(healthRouter);
-router.use(authRouter);
-router.use(modkeysRouter);
-router.use(booksRouter);
-router.use(githubContribRouter);
+router.route("/", healthRouter);
+router.route("/", nurCliVersionRouter);
+router.route("/", authRouter);
+router.route("/", modkeysRouter);
+router.route("/", booksRouter);
+router.route("/", githubContribRouter);
 
 export default router;

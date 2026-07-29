@@ -1,9 +1,12 @@
 /**
- * Optional product analytics. No hard dependency on @vercel/analytics.
+ * Optional product analytics. Still no hard dependency on any analytics package.
  *
- * On the SPA, <Analytics /> injects the va script → events go to Vercel.
- * On standalone, inject() from the boot script does the same when present.
- * Elsewhere (local without inject, offline) this is a silent no-op.
+ * Two hosts, two sinks:
+ *   - SPA embed (nuroctane.xyz/modkeys, Cloudflare): lib/posthog.ts installs
+ *     window.__nurTrack once PostHog is live, and drains __nurTrackQueue.
+ *   - Standalone (modkeys.vercel.app, still on Vercel): the boot script in
+ *     index.html calls inject() from @vercel/analytics, which defines window.va.
+ * Elsewhere (local, offline) this is a silent no-op.
  */
 
 /**
@@ -14,14 +17,18 @@ export function trackEvent(name, properties) {
   try {
     if (typeof window === 'undefined' || !name) return;
     const data = properties && typeof properties === 'object' ? properties : undefined;
-    const payload = data ? { name, data } : { name };
-    if (typeof window.va === 'function') {
-      window.va('event', payload);
+
+    if (typeof window.__nurTrack === 'function') {
+      window.__nurTrack(name, data);
       return;
     }
-    // Script not ready yet — queue for when Analytics/inject loads
-    window.vaq = window.vaq || [];
-    window.vaq.push(['event', payload]);
+    if (typeof window.va === 'function') {
+      window.va('event', data ? { name, data } : { name });
+      return;
+    }
+    // Neither sink is up yet — queue for whichever loads first.
+    window.__nurTrackQueue = window.__nurTrackQueue || [];
+    window.__nurTrackQueue.push([name, data]);
   } catch {
     /* analytics must never break the configurator */
   }

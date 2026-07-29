@@ -34,31 +34,37 @@ The visual aesthetic draws inspiration from the French animated series **Code Ly
 |---|---|
 | **Site (digital-sea)** | React + Vite, TailwindCSS, Wouter |
 | **Modkeys** | Vanilla ES modules + Vite 6, Three.js (^0.184), GSAP, dual desktop/mobile shell (`shell.js` + `mobile.css`) |
-| **API** | Express 5 on Vercel serverless (`artifacts/api-server`) |
+| **API** | Hono on Cloudflare Workers (`artifacts/api-server`, bundled from source) |
 | **Storage** | Upstash Redis KV (visitor books, modkeys configs) |
 | **Export (modkeys)** | KLE JSON, SVG, spec JSON, PDF (jsPDF + svg2pdf.js) |
-| **Telemetry** | Vercel Web Analytics + Speed Insights (SPA routes + Modkeys product events) |
+| **Telemetry** | PostHog (SPA pageviews, product events, Core Web Vitals) + Cloudflare Workers Observability |
 | **Monorepo** | pnpm workspaces |
 
-### Analytics (Vercel)
+### Analytics and operations
 
-Code is wired (`mode: production` on the Vite SPA). Dashboard:
+The SPA reports route-aware pageviews, curated product events, and Core Web Vitals to **PostHog**. Set these build-time variables for the Digital Sea Vite build:
 
-1. Open the Vercel project for this repo → **Analytics** → **Enable** Web Analytics (script at `/_vercel/insights/script.js` must 200).
-2. Optionally enable **Speed Insights** in the same project (`@vercel/speed-insights` v2 + `<SpeedInsights />` in the SPA root).
-3. Redeploy after enable or code changes.
+```dotenv
+VITE_POSTHOG_KEY=phc_your_project_key
+VITE_POSTHOG_HOST=https://us.i.posthog.com
+```
 
-**Page routes (Top Pages):** `/`, `/socials`, `/socials/:id`, `/projects`, `/projects/:id`, `/blog`, `/blog/:slug`, `/fin`, `/books`, `/quotes`, `/resume`, `/modkeys`, `/cli`, `/orbit`. Home aliases `/home`, `/sea`, and `/identity` resolve to `/`; `/orbit-veil` remains a compatibility alias for `/orbit`.
+Use these dashboards going forward:
+
+1. **Cloudflare Dashboard → Workers & Pages → nuroctane-xyz** for production deployments, version history/rollback, request and error rates, CPU time, cron triggers, and live/retained Worker logs. Observability is enabled in `wrangler.jsonc`.
+2. **PostHog** for web/product analytics: `$pageview`, `$web_vitals`, route breakdowns, custom events, paths, funnels, retention, and optional dashboards/alerts.
+3. **Vercel** only for the residual `api/og.mjs` image renderer. Its deployment and function logs do not represent the main site or API after the Cloudflare cutover.
+4. **Upstash Console** for Redis usage, latency, and stored visitor-books/modkeys data.
+
+**Page routes:** `/`, `/socials`, `/socials/:id`, `/projects`, `/projects/:id`, `/blog`, `/blog/:slug`, `/fin`, `/books`, `/quotes`, `/resume`, `/modkeys`, `/cli`, `/observatory`. Home aliases `/home`, `/sea`, and `/identity` resolve to `/`; `/orbit` and `/orbit-veil` resolve to `/observatory`.
 
 Sea scroll + QuickNav update the URL (replace/push) so passive browsing still attributes to section routes. `/resume` is unlinked in nav (direct URL only) but still tracked.
 
 **Custom events:** `Modkeys Save` / `Export` / `Share`, `Sea Node Open`, `Mode Change`, `Fin Open`, `Quotes Section`, `Book Open`, `Resume View`, `Resume Contact`, `Booking Click`.
 
-**Standalone** `modkeys.vercel.app` (if a separate Vercel project) needs Analytics enabled there too — inject runs on boot.
+**Privacy / notes:** PostHog autocapture is disabled; only explicit events, pageviews, and performance data are sent. Anonymous events do not create person profiles. Ad blockers can hide traffic. Analytics is disabled when `VITE_POSTHOG_KEY` is absent.
 
-**Privacy / notes:** Cookieless Web Analytics. Share-link `#hash` is stripped; reported URLs stay absolute. Ad blockers can hide traffic. Local dev does not feed production dashboards.
-
-**Link embeds (Open Graph):** Edge `middleware.js` serves path-specific `og:*` HTML to crawlers/unfurlers (Discord, Slack, iMessage, X, …). Dynamic cards from `/api/og?page=…`. Humans still get the SPA. Home keeps `/opengraph.jpg`; other routes get branded cards + unique titles/descriptions.
+**Link embeds (Open Graph):** the Cloudflare Worker serves path-specific `og:*` HTML to crawlers/unfurlers (Discord, Slack, iMessage, X, …). Dynamic `/api/og?page=…` cards are proxied from the residual Vercel function; the Worker falls back to `/opengraph.jpg` if that origin is unavailable.
 
 ---
 
@@ -140,7 +146,7 @@ Purpose-built for phones and tablets — not a squeezed desktop layout:
 
 ```
 nuroctane-xyz-Site/
-├── api/                      # Vercel serverless entrypoints
+├── api/                      # Residual Vercel OG image function only
 ├── artifacts/
 │   ├── digital-sea/          # Main React SPA (Vite + TailwindCSS)
 │   │   ├── src/
@@ -149,11 +155,13 @@ nuroctane-xyz-Site/
 │   │   │   ├── content/      # Markdown content
 │   │   │   └── hooks/        # Custom React hooks
 │   │   └── public/           # Static assets
-│   ├── api-server/           # Express 5 API
+│   ├── api-server/           # Hono API bundled into the Worker
 │   └── modkeys/              # Keyboard configurator (Vanilla + Three.js)
 │       ├── .agents/docs/MOBILE_SHELL.md
 │       ├── check-shell-ids.mjs
 │       └── src/              # css/, js/ (core, data, ui, export)
+├── worker/                   # Cloudflare Worker entry point + crawler OG responses
+├── wrangler.jsonc            # Assets, routes, cron, and Worker deployment config
 ├── lib/                      # Shared packages (kv, db, api-zod, api-spec, …)
 └── scripts/                  # Build / utility scripts
 ```

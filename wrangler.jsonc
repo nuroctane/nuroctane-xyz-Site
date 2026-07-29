@@ -1,0 +1,85 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "nuroctane-xyz",
+  "main": "worker/index.ts",
+  "compatibility_date": "2026-06-01",
+
+  // nodejs_compat is needed for two things:
+  //   1. process.env — populated from vars and secrets automatically for any
+  //      compatibility_date on or after 2025-04-01, which is how lib/kv and the
+  //      route modules read their configuration without a rewrite.
+  //   2. Node globals pulled in transitively by zod / @workspace/api-zod.
+  "compatibility_flags": ["nodejs_compat"],
+
+  "workers_dev": true,
+  "routes": [
+    { "pattern": "nuroctane.xyz", "custom_domain": true },
+    { "pattern": "www.nuroctane.xyz", "custom_domain": true }
+  ],
+  "observability": { "enabled": true },
+
+  "assets": {
+    "directory": "artifacts/digital-sea/dist/public",
+    "binding": "ASSETS",
+
+    // The SPA is client-routed by wouter, so any path that is not a real file
+    // must return index.html rather than a 404.
+    "not_found_handling": "single-page-application",
+
+    // Direct translation of the `config.matcher` array from the old Vercel edge
+    // middleware. Only these paths invoke the Worker; every other asset request
+    // is served straight from the edge, free and unmetered.
+    //
+    // Keep this list in sync with the PAGES table in worker/og-meta.ts — a route
+    // missing here still renders for humans but loses its crawler OG card.
+    "run_worker_first": [
+      "/",
+      "/home",
+      "/sea",
+      "/identity",
+      "/quotes",
+      "/books",
+      "/resume",
+      "/modkeys",
+      "/cli",
+      "/orbit",
+      "/orbit-veil",
+      "/observatory",
+      "/blog",
+      "/blog/*",
+      "/socials",
+      "/socials/*",
+      "/projects",
+      "/projects/*",
+      "/fin",
+      "/api/*"
+    ]
+  },
+
+  // Was `crons` in vercel.json, hitting POST /api/github-contrib/refresh.
+  // Now dispatched to the scheduled() handler in worker/index.ts, which is not
+  // publicly reachable — so the old spoofable `x-vercel-cron` header check is gone.
+  "triggers": {
+    "crons": ["0 12 * * *"]
+  },
+
+  "vars": {
+    // Origin of the trimmed Vercel project that still serves api/og.mjs.
+    // Set to the real deployment URL before cutting DNS over; until then the
+    // Worker falls back to the static /opengraph.jpg card.
+    "OG_ORIGIN": "",
+    "SITE_ORIGIN": "https://nuroctane.xyz",
+    "GITHUB_CONTRIB_USER": "nuroctane"
+  }
+
+  // Secrets (set with `wrangler secret put`, never committed):
+  //   nuroctanesitestorage_KV_REST_API_URL
+  //   nuroctanesitestorage_KV_REST_API_TOKEN
+  //   BOOKS_ADMIN_PASSWORD
+  //   MODKEYS_ADMIN_PASSWORD   (legacy fallback)
+  //   GITHUB_CLIENT_ID
+  //   GITHUB_CLIENT_SECRET
+  //   JWT_SECRET
+  //   GITHUB_TOKEN
+  //   CRON_SECRET              (only for manual POST /api/github-contrib/refresh)
+}

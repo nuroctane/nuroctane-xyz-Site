@@ -1,21 +1,9 @@
 {
+  "$schema": "https://openapi.vercel.sh/vercel.json",
   "installCommand": "npx -y pnpm@10 install --no-frozen-lockfile",
-  "buildCommand": "pnpm run build",
-  "outputDirectory": "artifacts/digital-sea/dist/public",
-  "rewrites": [
-    { "source": "/((?!api/).*)", "destination": "/index.html" }
-  ],
-  "crons": [
-    {
-      "path": "/api/github-contrib/refresh",
-      "schedule": "0 12 * * *"
-    }
-  ],
+  "buildCommand": "",
+  "outputDirectory": "og-static",
   "functions": {
-    "api/og.mjs": { "maxDuration": 10 },
-    "api/nur-cli-version.mjs": { "maxDuration": 10 },
-    "api/[[...slug]].mjs": { "maxDuration": 10 },
-    "api/visitor-books.mjs": { "maxDuration": 10 },
-    "api/modkeys/[[...slug]].mjs": { "maxDuration": 10 }
+    "api/og.mjs": { "maxDuration": 10 }
   }
 }

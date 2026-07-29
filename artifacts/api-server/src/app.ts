@@ -1,51 +1,52 @@
-import express from "express";
-import cors from "cors";
-import cookieParser from "cookie-parser";
-import pinoHttp from "pino-http";
+import { Hono } from "hono";
+import { cors } from "hono/cors";
 import router from "./routes";
 import { logger } from "./lib/logger";
 
-const app = express();
+const app = new Hono();
+
+/* Previews are versioned Worker deploys (https://<version>-nuroctane-xyz.<sub>.workers.dev),
+ * which replaces the old /\.vercel\.app$/ preview pattern. */
+const ALLOWED_EXACT = new Set([
+  "https://nuroctane.xyz",
+  "https://www.nuroctane.xyz",
+]);
+const ALLOWED_PATTERNS = [
+  /^https:\/\/(?:[a-z0-9-]+-)?nuroctane-xyz\.[a-z0-9-]+\.workers\.dev$/,
+  /^https?:\/\/localhost(?::\d+)?$/,
+];
 
 app.use(
-  pinoHttp({
-    logger,
-    serializers: {
-      req(req) {
-        return {
-          id: req.id,
-          method: req.method,
-          url: req.url?.split("?")[0],
-        };
-      },
-      res(res) {
-        return {
-          statusCode: res.statusCode,
-        };
-      },
+  "*",
+  cors({
+    origin: (origin, c) => {
+      // The CLI version endpoint is deliberately public (it was Access-Control-
+      // Allow-Origin: * as a Vercel edge function, and the docs site embeds it).
+      if (c.req.path === "/api/nur-cli-version") return "*";
+      if (!origin) return undefined;
+      if (ALLOWED_EXACT.has(origin)) return origin;
+      if (ALLOWED_PATTERNS.some((re) => re.test(origin))) return origin;
+      return undefined;
     },
+    credentials: true,
   }),
 );
-app.use(cors({
-  origin: [
-    "https://nuroctane.xyz",
-    /^https:\/\/nuroctane-xyz(?:-site)?(?:-.*)?\.vercel\.app$/,
-    /^https?:\/\/localhost(?::\d+)?$/,
-  ],
-  credentials: true,
-}));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
-app.use(cookieParser());
 
-
-app.use((req, res, next) => {
-  // Default: no cache for auth routes, light cache elsewhere to protect free tier
-  if (req.path.includes('/auth/') || req.method !== 'GET') {
-    res.setHeader('Cache-Control', 'private, no-store');
+app.use("*", async (c, next) => {
+  // Default: no cache for auth routes and any mutation. Handlers that want a
+  // cacheable GET (books, gallery, contrib) set their own header afterwards,
+  // which wins.
+  if (c.req.path.includes("/auth/") || c.req.method !== "GET") {
+    c.header("Cache-Control", "private, no-store");
   }
-  next();
+  await next();
 });
-app.use("/api", router);
+
+app.onError((err, c) => {
+  logger.error({ err, path: c.req.path }, "Unhandled API error");
+  return c.json({ error: "Internal server error" }, 500);
+});
+
+app.route("/api", router);
 
 export default app;

@@ -1,3 +1,34 @@
+
+packages:
+  - artifacts/*
+  - lib/*
+  - lib/integrations/*
+  - scripts
+
+autoInstallPeers: false
+
+catalog:
+  '@tailwindcss/vite': ^4.1.14
+  '@tanstack/react-query': ^5.90.21
+  '@types/node': ^25.9.4
+  '@types/react': ^19.2.0
+  '@types/react-dom': ^19.2.0
+  '@vitejs/plugin-react': ^5.0.4
+  class-variance-authority: ^0.7.1
+  clsx: ^2.1.1
+  drizzle-orm: ^0.45.2
+  framer-motion: ^12.23.24
+  lucide-react: ^0.545.0
+  # Must be this exact version because expo requires it
+  react: 19.1.0
+  # Must be this exact version because expo requires it
+  react-dom: 19.1.0
+  tailwind-merge: ^3.3.1
+  tailwindcss: ^4.1.14
+  tsx: ^4.21.0
+  vite: ^7.3.5
+  wouter: ^3.3.5
+  zod: ^3.25.76
 # ============================================================================
 # SECURITY: Minimum release age for npm packages (supply-chain attack defense)
 # ============================================================================
@@ -29,37 +60,6 @@ minimumReleaseAge: 1440
 
 minimumReleaseAgeExclude: []
 
-packages:
-  - artifacts/*
-  - lib/*
-  - lib/integrations/*
-  - scripts
-
-catalog:
-  '@tailwindcss/vite': ^4.1.14
-  '@tanstack/react-query': ^5.90.21
-  '@types/node': ^25.3.3
-  '@types/react': ^19.2.0
-  '@types/react-dom': ^19.2.0
-  '@vitejs/plugin-react': ^5.0.4
-  class-variance-authority: ^0.7.1
-  clsx: ^2.1.1
-  drizzle-orm: ^0.45.2
-  framer-motion: ^12.23.24
-  lucide-react: ^0.545.0
-  # Must be this exact version because expo requires it
-  react: 19.1.0
-  # Must be this exact version because expo requires it
-  react-dom: 19.1.0
-  tailwind-merge: ^3.3.1
-  tailwindcss: ^4.1.14
-  tsx: ^4.21.0
-  vite: ^7.3.5
-  wouter: ^3.3.5
-  zod: ^3.25.76
-
-autoInstallPeers: false
-
 onlyBuiltDependencies:
   - '@swc/core'
   - esbuild
@@ -68,11 +68,11 @@ onlyBuiltDependencies:
 
 overrides:
   # drizzle-kit uses esbuild internally on an older version that's vulnerable
-  "@esbuild-kit/esm-loader": "npm:tsx@^4.21.0"
-  esbuild: "0.28.1"
-  # Security overrides for transitive dependencies
-  qs: ">=6.15.2"
-  js-yaml: ">=4.2.0"
-  markdown-it: ">=14.2.0"
   "@babel/core": "^7.29.6"
   "@babel/helpers": "^7.29.6"
+  "@esbuild-kit/esm-loader": "npm:tsx@^4.21.0"
+  esbuild: "0.28.1"
+  js-yaml: ">=4.2.0"
+  markdown-it: ">=14.2.0"
+  # Security overrides for transitive dependencies
+  qs: ">=6.15.2"

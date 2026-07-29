@@ -1,0 +1,18 @@
+<!doctype html>
+<meta charset="utf-8" />
+<title>nuroctane.xyz — OG card renderer</title>
+<p>
+  This Vercel deployment exists only to serve <code>/api/og</code>, the dynamic
+  Open Graph card renderer. It is not the website.
+</p>
+<p>
+  The site itself runs on Cloudflare Workers and proxies <code>/api/og</code>
+  here, so crawler meta tags keep pointing at
+  <a href="https://www.nuroctane.xyz">www.nuroctane.xyz</a>.
+</p>
+<p>
+  The card renderer stayed on Vercel because it uses Satori + resvg, which needs
+  more CPU per invocation than the Cloudflare Workers free plan allows (10 ms).
+  Moving it means enabling Workers Paid and swapping <code>@vercel/og</code> for
+  <code>workers-og</code>.
+</p>

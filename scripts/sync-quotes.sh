@@ -148,6 +148,19 @@ if [[ $SANITY -ne 0 ]]; then
     exit $SANITY
 fi
 
+# Verification mode: exercise the real source, transformation, and parser
+# without modifying the checkout or invoking git. This is safe to use from
+# deployment checks and while other work is uncommitted.
+if [[ "${SYNC_DRY_RUN:-0}" == "1" ]]; then
+    if cmp -s "$REINDEXED" "$DEST"; then
+        echo "[$(date)] DRY RUN: quotes are in sync"
+    else
+        echo "[$(date)] DRY RUN: quotes would be updated"
+    fi
+    rm -f "$STRIPPED" "$REINDEXED"
+    exit 0
+fi
+
 # 4. Commit + push only if something actually changed.
 if cmp -s "$REINDEXED" "$DEST"; then
     rm -f "$STRIPPED" "$REINDEXED"
