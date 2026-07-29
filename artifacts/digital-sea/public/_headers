@@ -6,22 +6,53 @@
 # media element cannot issue a byte-range request it has no way to resume
 # mid-file if a fetch is interrupted — so the song stops before the end.
 #
-# Giving media a real browser TTL means it is fetched once and then played from
-# the browser's own cache, which sidesteps both problems.
+# Rules here are scoped by extension, never by directory, because `*` matches
+# greedily across path segments AND Cloudflare *joins* duplicate headers with a
+# comma instead of overriding them. Two rules matching one file would emit
+# `Cache-Control: public, max-age=2592000, public, max-age=31536000, immutable`.
+# Every file below matches exactly one rule.
 
-# Stable, non-hashed filenames (audio, node art, textures). One month rather
-# than `immutable`, so replacing a file under the same name still propagates.
-/assets/nodes/*
-  Cache-Control: public, max-age=2592000
-
-# Vite emits content-hashed filenames for these, so the URL changes whenever the
-# bytes change and they are safe to pin indefinitely.
+# Vite content-hashes these, so the URL changes whenever the bytes do.
 /assets/*.js
   Cache-Control: public, max-age=31536000, immutable
 
 /assets/*.css
   Cache-Control: public, max-age=31536000, immutable
 
-# Cesium ships its own hashed/versioned bundle under this prefix.
+/assets/*.wasm
+  Cache-Control: public, max-age=31536000, immutable
+
+# Images and audio. Covers both the Vite-hashed files at the /assets root (~30 MB
+# of gif/png that were being revalidated on every visit) and the stable
+# filenames under /assets/nodes. One month rather than `immutable` because the
+# nodes files are NOT content-hashed — replacing a track or logo under the same
+# name still has to propagate.
+/assets/*.png
+  Cache-Control: public, max-age=2592000
+
+/assets/*.jpg
+  Cache-Control: public, max-age=2592000
+
+/assets/*.jpeg
+  Cache-Control: public, max-age=2592000
+
+/assets/*.webp
+  Cache-Control: public, max-age=2592000
+
+/assets/*.gif
+  Cache-Control: public, max-age=2592000
+
+/assets/*.svg
+  Cache-Control: public, max-age=2592000
+
+/assets/*.mp3
+  Cache-Control: public, max-age=2592000
+
+# Cesium ships its own versioned bundle (~14 MB of js/wasm/css) under this
+# prefix. Separate from /assets/*, so no rule above can also match it.
 /cesium/*
+  Cache-Control: public, max-age=2592000
+
+# Prebuilt nested SPA shipped verbatim as static assets.
+/orbit-veil-runtime/*
   Cache-Control: public, max-age=2592000
