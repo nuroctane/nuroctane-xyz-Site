@@ -1,0 +1,27 @@
+# Cloudflare Workers Static Assets serves everything with
+# `Cache-Control: public, max-age=0, must-revalidate` by default, and does not
+# honour Range requests (a `Range:` header returns 200 with the full body, and
+# there is no Accept-Ranges). For the main-page audio that combination breaks
+# playback: the 13.5 MB track is revalidated on every play, and because the
+# media element cannot issue a byte-range request it has no way to resume
+# mid-file if a fetch is interrupted — so the song stops before the end.
+#
+# Giving media a real browser TTL means it is fetched once and then played from
+# the browser's own cache, which sidesteps both problems.
+
+# Stable, non-hashed filenames (audio, node art, textures). One month rather
+# than `immutable`, so replacing a file under the same name still propagates.
+/assets/nodes/*
+  Cache-Control: public, max-age=2592000
+
+# Vite emits content-hashed filenames for these, so the URL changes whenever the
+# bytes change and they are safe to pin indefinitely.
+/assets/*.js
+  Cache-Control: public, max-age=31536000, immutable
+
+/assets/*.css
+  Cache-Control: public, max-age=31536000, immutable
+
+# Cesium ships its own hashed/versioned bundle under this prefix.
+/cesium/*
+  Cache-Control: public, max-age=2592000
