@@ -56,15 +56,31 @@ async function proxyOg(request: Request, env: Env, ctx: ExecutionContext): Promi
   let upstreamRes: Response;
   try {
     upstreamRes = await fetch(upstream.toString(), {
-      headers: { Accept: "image/*,*/*" },
+      headers: {
+        Accept: "image/*,*/*",
+        "User-Agent": "nuroctane.xyz-og-proxy/1.0",
+      },
       signal: AbortSignal.timeout(OG_TIMEOUT_MS),
     });
-  } catch {
-    return Response.redirect(`${SITE}/opengraph.jpg`, 302);
+  } catch (err) {
+    console.warn("OG upstream fetch failed", err);
+    return new Response(null, {
+      status: 302,
+      headers: {
+        Location: `${SITE}/opengraph.jpg`,
+        "X-OG-Fallback": "fetch-error",
+      },
+    });
   }
 
   if (!upstreamRes.ok) {
-    return Response.redirect(`${SITE}/opengraph.jpg`, 302);
+    return new Response(null, {
+      status: 302,
+      headers: {
+        Location: `${SITE}/opengraph.jpg`,
+        "X-OG-Fallback": `upstream-${upstreamRes.status}`,
+      },
+    });
   }
 
   const res = new Response(upstreamRes.body, upstreamRes);

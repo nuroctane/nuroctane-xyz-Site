@@ -53,7 +53,7 @@ Use these dashboards going forward:
 
 1. **Cloudflare Dashboard → Workers & Pages → nuroctane-xyz** for production deployments, version history/rollback, request and error rates, CPU time, cron triggers, and live/retained Worker logs. Observability is enabled in `wrangler.jsonc`.
 2. **PostHog** for web/product analytics: `$pageview`, `$web_vitals`, route breakdowns, custom events, paths, funnels, retention, and optional dashboards/alerts.
-3. **Vercel** for the residual `api/og.mjs` image renderer and the temporary custom-domain ingress shim. Cloudflare serves the website and APIs; Vercel currently forwards non-OG requests to the Worker because the existing Cloudflare DNS records are still DNS-only. Once those records are orange-cloud proxied, the Worker routes in `wrangler.jsonc` take traffic directly and the shim can be removed.
+3. **Vercel** only for the residual `api/og.mjs` image renderer at `nuroctane-og.vercel.app`. The apex and `www` domains route directly to Cloudflare Workers.
 4. **Upstash Console** for Redis usage, latency, and stored visitor-books/modkeys data.
 
 **Page routes:** `/`, `/socials`, `/socials/:id`, `/projects`, `/projects/:id`, `/blog`, `/blog/:slug`, `/fin`, `/books`, `/quotes`, `/resume`, `/modkeys`, `/cli`, `/observatory`. Home aliases `/home`, `/sea`, and `/identity` resolve to `/`; `/orbit` and `/orbit-veil` resolve to `/observatory`.
@@ -64,7 +64,7 @@ Sea scroll + QuickNav update the URL (replace/push) so passive browsing still at
 
 **Privacy / notes:** PostHog autocapture is disabled; only explicit events, pageviews, and performance data are sent. Anonymous events do not create person profiles. Ad blockers can hide traffic. Analytics is disabled when `VITE_POSTHOG_KEY` is absent.
 
-**Link embeds (Open Graph):** the Cloudflare Worker serves path-specific `og:*` HTML to crawlers/unfurlers (Discord, Slack, iMessage, X, …). Dynamic `/api/og?page=…` cards are proxied from the residual Vercel function; the Worker falls back to `/opengraph.jpg` if that origin is unavailable.
+**Link embeds (Open Graph):** the Cloudflare Worker serves path-specific `og:*` HTML to crawlers/unfurlers (Discord, Slack, iMessage, X, …). Dynamic `/api/og?page=…` cards are proxied from the residual Vercel function at `nuroctane-og.vercel.app`; the Worker falls back to `/opengraph.jpg` if that renderer is unavailable.
 
 ---
 

@@ -13,8 +13,8 @@
 
   "workers_dev": true,
   "routes": [
-    { "pattern": "nuroctane.xyz/*", "zone_name": "nuroctane.xyz" },
-    { "pattern": "www.nuroctane.xyz/*", "zone_name": "nuroctane.xyz" }
+    { "pattern": "nuroctane.xyz", "custom_domain": true },
+    { "pattern": "www.nuroctane.xyz", "custom_domain": true }
   ],
   "observability": { "enabled": true },
 
@@ -64,10 +64,10 @@
   },
 
   "vars": {
-    // Origin of the trimmed Vercel project that still serves api/og.mjs.
-    // Set to the real deployment URL before cutting DNS over; until then the
-    // Worker falls back to the static /opengraph.jpg card.
-    "OG_ORIGIN": "",
+    // Public *.vercel.app alias of the trimmed project that serves api/og.mjs.
+    // Apex/www route directly to this Worker; only dynamic image rendering
+    // remains on Vercel, with a static /opengraph.jpg fallback.
+    "OG_ORIGIN": "https://nuroctane-og.vercel.app",
     "SITE_ORIGIN": "https://nuroctane.xyz",
     "GITHUB_CONTRIB_USER": "nuroctane"
   }

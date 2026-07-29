@@ -22,7 +22,7 @@ const zFromMid = (s: number, e: number) => curve.getPoint((s + e) / 2).z;
 const AVATAR = '/assets/nodes/nuroctane-avatar.png';
 
 const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollEnd'>[] = [
-  // ─── SOCIAL (15) ──────────────────────────────────────────────────────────
+  // ─── SOCIAL (16) ──────────────────────────────────────────────────────────
   {
     id: 'instagram', label: 'Instagram', handle: '@nuroctane',
     url: 'https://www.instagram.com/nuroctane/',
@@ -158,6 +158,15 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     avatar: '/assets/nodes/nuroctane-reddit-avatar.png',
     logo: '/assets/nodes/reddit-logo.png',
   },
+  {
+    id: 'glasp', label: 'Glasp', handle: 'nuroctane',
+    url: 'https://glasp.co/nuroctane',
+    urlDisplay: 'glasp.co/nuroctane',
+    subtitle: 'online highlighter',
+    description: "this is where highlights for cool things i've read gets saved",
+    avatar: '/assets/nodes/nuroctane-github-avatar.png',
+    logo: '/assets/nodes/glasp-logo.png',
+  },
 
   // ─── CREATIVE PROJECTS (13)  -  NurCLI + MODKEYS first ─────────────────────
   {
@@ -289,7 +298,16 @@ const yPattern = [1.0, -0.4, 1.3, 0.2, -0.8, 0.9, 0.1, -0.5, 1.1, 0.5, -0.2, 0.8
 // Slightly wider than the old 0.075→0.875 start band so mid-to-mid gaps breathe.
 const FIRST_MID = 0.090;
 const LAST_MID  = 0.910;
-const MID_STEP  = (LAST_MID - FIRST_MID) / Math.max(1, raw.length - 1);
+
+// Glasp was inserted at the social→projects seam. Existing cards keep their
+// exact midpoint, side, height, and QuickLaunch landing target: layout indices
+// after Glasp are offset by one, while Glasp occupies the half-step between the
+// old Reddit and NurCLI anchors. This avoids a full-sea reflow for one new card.
+const INSERTED_NODE_ID = 'glasp';
+const INSERTED_INDEX = raw.findIndex(n => n.id === INSERTED_NODE_ID);
+const BASE_NODE_COUNT = raw.length - 1;
+const MID_STEP = (LAST_MID - FIRST_MID) / Math.max(1, BASE_NODE_COUNT - 1);
+const layoutIndexFor = (i: number) => i > INSERTED_INDEX ? i - 1 : i;
 
 // Attractor envelope (full width). Softly overlaps neighbors for magnetic
 // swimming; peak focus points remain MID_STEP apart so cards never stack.
@@ -320,6 +338,7 @@ const FLIP_X = new Set([
 // distance to frame them (esp. mobile). Widths stay well under ~1.6× MID_STEP
 // so neighboring peaks remain distinct; still centered on the even mid.
 const WIDE_CARD: Record<string, number> = {
+  glasp:       0.028,
   'nur-cli':   0.054,
   modkeys:     0.054,
   snipocr:     0.052,
@@ -342,15 +361,19 @@ const Z_OVERRIDE: Record<string, number> = {};
 const SOCIAL_COUNT = raw.findIndex(n => n.id === 'nur-cli');
 
 export const nodes: NodeData[] = raw.map((n, i) => {
-  const isEdge = i === 0 || i === raw.length - 1;
-  const mid = FIRST_MID + i * MID_STEP;
+  const layoutIndex = layoutIndexFor(i);
+  const isEdge = layoutIndex === 0 || layoutIndex === BASE_NODE_COUNT - 1;
+  const mid = n.id === INSERTED_NODE_ID
+    ? FIRST_MID + (layoutIndex - 0.5) * MID_STEP
+    : FIRST_MID + layoutIndex * MID_STEP;
   const cardWidth = WIDE_CARD[n.id] ?? (isEdge ? EDGE_CARD_WIDTH : CARD_WIDTH);
   const scrollStart = mid - cardWidth / 2;
   const scrollEnd   = mid + cardWidth / 2;
 
   // Determine which side to place the card.
   // Default alternates per node; FLIP_X nodes get the opposite side.
-  const defaultSide = i % 2 === 0 ? -1 : 1;
+  const visualIndex = n.id === INSERTED_NODE_ID ? i : layoutIndex;
+  const defaultSide = visualIndex % 2 === 0 ? -1 : 1;
   const side = FLIP_X.has(n.id) ? -defaultSide : defaultSide;
   const x = side * (isEdge ? 1.4 : 2.0);
 
@@ -361,11 +384,11 @@ export const nodes: NodeData[] = raw.map((n, i) => {
     ...n,
     scrollStart,
     scrollEnd,
-    position: new THREE.Vector3(x, yPattern[i % yPattern.length], z),
+    position: new THREE.Vector3(x, yPattern[visualIndex % yPattern.length], z),
     idleRotation: new THREE.Euler(
-      (i % 3 - 1) * 0.15,
+      (visualIndex % 3 - 1) * 0.15,
       x < 0 ? 0.55 : -0.55,
-      (i % 2 === 0 ? 1 : -1) * 0.08,
+      (visualIndex % 2 === 0 ? 1 : -1) * 0.08,
     ),
   };
 });

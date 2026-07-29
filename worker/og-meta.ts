@@ -171,6 +171,7 @@ const CHILD_FAVICONS: Record<string, Record<string, string>> = {
     steam: "/assets/nodes/steam-logo.png",
     discord: "/assets/nodes/discord-logo.png",
     reddit: "/assets/nodes/reddit-logo.png",
+    glasp: "/assets/nodes/glasp-logo.png",
   },
   projects: {
     "nur-cli": "/assets/nodes/nur-cli-logo.png",
