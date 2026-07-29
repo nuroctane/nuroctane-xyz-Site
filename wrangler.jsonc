@@ -13,8 +13,8 @@
 
   "workers_dev": true,
   "routes": [
-    { "pattern": "nuroctane.xyz", "custom_domain": true },
-    { "pattern": "www.nuroctane.xyz", "custom_domain": true }
+    { "pattern": "nuroctane.xyz/*", "zone_name": "nuroctane.xyz" },
+    { "pattern": "www.nuroctane.xyz/*", "zone_name": "nuroctane.xyz" }
   ],
   "observability": { "enabled": true },
 

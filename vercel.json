@@ -5,5 +5,12 @@
   "outputDirectory": "og-static",
   "functions": {
     "api/og.mjs": { "maxDuration": 10 }
-  }
+  },
+  "routes": [
+    { "handle": "filesystem" },
+    {
+      "src": "/(.*)",
+      "dest": "https://nuroctane-xyz.civetadeicollegium.workers.dev/$1"
+    }
+  ]
 }

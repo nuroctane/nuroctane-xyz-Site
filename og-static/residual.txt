@@ -1,0 +1,1 @@
+This deployment retains only the dynamic /api/og renderer. All website and API traffic is served by Cloudflare Workers.

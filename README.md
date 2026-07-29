@@ -53,7 +53,7 @@ Use these dashboards going forward:
 
 1. **Cloudflare Dashboard → Workers & Pages → nuroctane-xyz** for production deployments, version history/rollback, request and error rates, CPU time, cron triggers, and live/retained Worker logs. Observability is enabled in `wrangler.jsonc`.
 2. **PostHog** for web/product analytics: `$pageview`, `$web_vitals`, route breakdowns, custom events, paths, funnels, retention, and optional dashboards/alerts.
-3. **Vercel** only for the residual `api/og.mjs` image renderer. Its deployment and function logs do not represent the main site or API after the Cloudflare cutover.
+3. **Vercel** for the residual `api/og.mjs` image renderer and the temporary custom-domain ingress shim. Cloudflare serves the website and APIs; Vercel currently forwards non-OG requests to the Worker because the existing Cloudflare DNS records are still DNS-only. Once those records are orange-cloud proxied, the Worker routes in `wrangler.jsonc` take traffic directly and the shim can be removed.
 4. **Upstash Console** for Redis usage, latency, and stored visitor-books/modkeys data.
 
 **Page routes:** `/`, `/socials`, `/socials/:id`, `/projects`, `/projects/:id`, `/blog`, `/blog/:slug`, `/fin`, `/books`, `/quotes`, `/resume`, `/modkeys`, `/cli`, `/observatory`. Home aliases `/home`, `/sea`, and `/identity` resolve to `/`; `/orbit` and `/orbit-veil` resolve to `/observatory`.
