@@ -264,8 +264,11 @@ export default function BooksPage() {
       const ac = new AbortController();
       searchAbort.current = ac;
 
-      // Try Google Books first
+      // Try Google Books first — skipped entirely without a key, since the
+      // request would carry `key=undefined` and is guaranteed to 400 before
+      // falling through to Open Library anyway.
       try {
+        if (!GB_KEY) throw new Error('no Google Books key configured');
         const gbRes = await fetch(
           `${GB_BASE}?q=${encodeURIComponent(q)}&maxResults=8&printType=books&key=${GB_KEY}`,
           { signal: ac.signal },
@@ -324,8 +327,9 @@ export default function BooksPage() {
     const meta = bookMetaMap[cacheKey];
     if (meta?.cover) return meta.cover;
 
-    // Try Google Books
+    // Try Google Books — skipped without a key (see note in the search handler).
     try {
+      if (!GB_KEY) throw new Error('no Google Books key configured');
       const res = await fetch(
         `${GB_BASE}?q=${buildQuery(book)}&maxResults=1&fields=items(volumeInfo/imageLinks/thumbnail)&key=${GB_KEY}`,
       );
@@ -355,6 +359,9 @@ export default function BooksPage() {
     const cacheKey = bookKey(book);
     const meta = bookMetaMap[cacheKey];
     if (meta?.desc) return meta.desc;
+    // Google Books is the only description source, so without a key this
+    // resolves to null and the UI falls back to the prebuilt bookMeta cache.
+    if (!GB_KEY) return null;
     try {
       const res = await fetch(
         `${GB_BASE}?q=${buildQuery(book)}&maxResults=1&fields=items(volumeInfo/description)&key=${GB_KEY}`,
