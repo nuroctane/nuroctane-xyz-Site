@@ -3,6 +3,9 @@
   "installCommand": "npx -y pnpm@10 install --no-frozen-lockfile",
   "buildCommand": "",
   "outputDirectory": "og-static",
+
+  "//": "This project exists only to serve api/og.mjs; the site itself runs on Cloudflare Workers and proxies /api/og here. Without ignoreCommand, every push to main rebuilt it for nothing. Exit 0 skips the build, exit 1 builds — so `git diff --quiet` skips unless the OG function or this config actually changed.",
+  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- api/og.mjs vercel.json og-static",
   "functions": {
     "api/og.mjs": { "maxDuration": 10 }
   }
