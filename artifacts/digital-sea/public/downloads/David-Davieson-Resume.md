@@ -47,7 +47,7 @@ Product engineer and technical operator who ships agentic systems, local AI infr
 
 ## Professional Experience
 
-### Bank OZK
+### Capital One
 **B2B Loan Advisor | 2025–Present**
 - Orchestrate end-to-end commercial financing for SMEs across working-capital, private-credit-aligned, and growth facilities.
 - Facilitated $1.7M+ in capital deployment by matching borrower profiles to underwriting criteria and driving discovery through term-fit handoff.
