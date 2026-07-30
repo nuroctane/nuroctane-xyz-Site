@@ -299,15 +299,20 @@ const yPattern = [1.0, -0.4, 1.3, 0.2, -0.8, 0.9, 0.1, -0.5, 1.1, 0.5, -0.2, 0.8
 const FIRST_MID = 0.090;
 const LAST_MID  = 0.910;
 
-// Glasp was inserted at the social→projects seam. Existing cards keep their
-// exact midpoint, side, height, and QuickLaunch landing target: layout indices
-// after Glasp are offset by one, while Glasp occupies the half-step between the
-// old Reddit and NurCLI anchors. This avoids a full-sea reflow for one new card.
+// Glasp was inserted at the social→projects seam. It used to share NurCLI's
+// layout slot and get pulled back half a step so every other card kept its
+// exact pre-insertion midpoint (no full-sea reflow) — but that compressed the
+// Reddit → Glasp → NurCLI seam to half the normal spacing while every other
+// pair in the sea sat a full MID_STEP apart, which read as janky while
+// swimming through there. Every node now gets its own full, uniformly-spaced
+// slot (MID_STEP recomputed across the true node count) — the one thing this
+// deliberately still keeps from the old insertion is layoutIndexFor's parity
+// below, which drives left/right side + y-pattern/rotation and is a separate,
+// already-tuned concern from spacing.
 const INSERTED_NODE_ID = 'glasp';
 const INSERTED_INDEX = raw.findIndex(n => n.id === INSERTED_NODE_ID);
-const BASE_NODE_COUNT = raw.length - 1;
-const MID_STEP = (LAST_MID - FIRST_MID) / Math.max(1, BASE_NODE_COUNT - 1);
 const layoutIndexFor = (i: number) => i > INSERTED_INDEX ? i - 1 : i;
+const MID_STEP = (LAST_MID - FIRST_MID) / Math.max(1, raw.length - 1);
 
 // Attractor envelope (full width). Softly overlaps neighbors for magnetic
 // swimming; peak focus points remain MID_STEP apart so cards never stack.
@@ -337,8 +342,10 @@ const FLIP_X = new Set([
 // Late-path nodes get a slightly wider envelope so the camera has more scroll
 // distance to frame them (esp. mobile). Widths stay well under ~1.6× MID_STEP
 // so neighboring peaks remain distinct; still centered on the even mid.
+// Glasp used to have a narrowed 0.028 entry here to fit the half-step squeeze
+// removed above — it now gets a full uniform slot like any other non-wide,
+// non-edge node, so it just falls through to the default CARD_WIDTH.
 const WIDE_CARD: Record<string, number> = {
-  glasp:       0.028,
   'nur-cli':   0.054,
   modkeys:     0.054,
   snipocr:     0.052,
@@ -361,17 +368,21 @@ const Z_OVERRIDE: Record<string, number> = {};
 const SOCIAL_COUNT = raw.findIndex(n => n.id === 'nur-cli');
 
 export const nodes: NodeData[] = raw.map((n, i) => {
-  const layoutIndex = layoutIndexFor(i);
-  const isEdge = layoutIndex === 0 || layoutIndex === BASE_NODE_COUNT - 1;
-  const mid = n.id === INSERTED_NODE_ID
-    ? FIRST_MID + (layoutIndex - 0.5) * MID_STEP
-    : FIRST_MID + layoutIndex * MID_STEP;
+  const isEdge = i === 0 || i === raw.length - 1;
+  // Every node — Glasp included — gets its own full, uniformly-spaced slot.
+  // See the comment above MID_STEP for why this is no longer a special case.
+  const mid = FIRST_MID + i * MID_STEP;
   const cardWidth = WIDE_CARD[n.id] ?? (isEdge ? EDGE_CARD_WIDTH : CARD_WIDTH);
   const scrollStart = mid - cardWidth / 2;
   const scrollEnd   = mid + cardWidth / 2;
 
   // Determine which side to place the card.
   // Default alternates per node; FLIP_X nodes get the opposite side.
+  // visualIndex intentionally still uses layoutIndexFor's pre-Glasp-insertion
+  // parity — side/y-pattern/rotation are a separate, already-tuned concern
+  // from the spacing fix above; changing this would flip left/right for every
+  // node after Glasp for no reason.
+  const layoutIndex = layoutIndexFor(i);
   const visualIndex = n.id === INSERTED_NODE_ID ? i : layoutIndex;
   const defaultSide = visualIndex % 2 === 0 ? -1 : 1;
   const side = FLIP_X.has(n.id) ? -defaultSide : defaultSide;
