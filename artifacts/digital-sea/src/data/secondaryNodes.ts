@@ -15,7 +15,7 @@ export interface SecondaryMedia {
   link?: string;
   linkLabel?: string;
   /** Special secondary tile kinds (non-image). */
-  kind?: 'image' | 'link' | 'github-contrib';
+  kind?: 'image' | 'link' | 'github-contrib' | 'glasp-embed';
 }
 
 const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
@@ -79,6 +79,14 @@ export const secondaryMediaByNode: Record<string, SecondaryMedia[]> = buildMap()
   file: 'github-contrib-terrain',
   isGif: false,
   kind: 'github-contrib',
+});
+
+// Live Glasp highlights embed — the real iframe, not a static summary.
+(secondaryMediaByNode['glasp'] ??= []).unshift({
+  url: '',
+  file: 'glasp-highlights-embed',
+  isGif: false,
+  kind: 'glasp-embed',
 });
 
 if (import.meta.env.DEV) {

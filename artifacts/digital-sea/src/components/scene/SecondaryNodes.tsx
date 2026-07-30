@@ -56,6 +56,10 @@ export function SecondaryOrbit({ nodeId, media, centerRef, proximityRef }: Props
   // Per-tile CSS width: shrink slightly as count grows; contrib tile stays wider
   const cardWidth   = Math.max(72, 108 - count * 6);
   const contribWidth = Math.max(cardWidth + 28, 132);
+  // The Glasp embed carries real readable text (article highlights), unlike the
+  // purely visual contrib terrain, so it gets a noticeably larger tile.
+  const glaspWidth  = Math.max(cardWidth + 150, 260);
+  const glaspHeight = Math.round(glaspWidth * 1.3);
 
   const params = useMemo(() => {
     const rnd  = mulberry32(hashStr(nodeId));
@@ -112,7 +116,9 @@ export function SecondaryOrbit({ nodeId, media, centerRef, proximityRef }: Props
       const w = wrapRefs.current[i];
       if (w) {
         w.style.opacity = String(opacity);
-        if (items[i].link) {
+        // Link buttons and the Glasp embed are the only interactive tiles —
+        // everything else (images, the contrib terrain) is look-but-don't-touch.
+        if (items[i].link || items[i].kind === 'glasp-embed') {
           w.style.pointerEvents = opacity > 0.4 ? 'auto' : 'none';
         }
       }
@@ -131,15 +137,33 @@ export function SecondaryOrbit({ nodeId, media, centerRef, proximityRef }: Props
             <Html transform distanceFactor={4.5} zIndexRange={[30, 0]} prepend>
               <div
                 ref={(el) => { wrapRefs.current[i] = el; }}
-                className={`secondary-card${m.kind === 'github-contrib' ? ' secondary-card--contrib' : ''}`}
+                className={`secondary-card${
+                  m.kind === 'github-contrib' ? ' secondary-card--contrib'
+                  : m.kind === 'glasp-embed' ? ' secondary-card--glasp'
+                  : ''
+                }`}
                 style={{
                   opacity: 0,
                   pointerEvents: 'none',
-                  width: `${m.kind === 'github-contrib' ? contribWidth : cardWidth}px`,
+                  width: `${
+                    m.kind === 'github-contrib' ? contribWidth
+                    : m.kind === 'glasp-embed' ? glaspWidth
+                    : cardWidth
+                  }px`,
                 }}
               >
                 {m.kind === 'github-contrib' ? (
                   <GithubContribTerrain width={contribWidth - 8} />
+                ) : m.kind === 'glasp-embed' ? (
+                  <iframe
+                    className="secondary-card-glasp-embed"
+                    width="100%"
+                    height={glaspHeight}
+                    src="https://glasp.co/embed/?u=YQ7F8ILvqSaxw3lcPPCBB1uEjAz1&n=20"
+                    title="Glasp Article Highlights Embed"
+                    frameBorder={0}
+                    loading="lazy"
+                  />
                 ) : m.link ? (
                   <button
                     className="secondary-card-link"

@@ -1423,6 +1423,22 @@ html.standalone-active body {
   color: #e85d5d;
 }
 
+.secondary-card--glasp {
+  padding: 3px;
+  background: rgba(4, 14, 22, 0.82);
+  border-color: rgba(255, 200, 0, 0.45);
+  box-shadow: 0 0 16px rgba(0, 0, 0, 0.55), 0 0 12px rgba(255, 200, 0, 0.12);
+}
+
+.secondary-card-glasp-embed {
+  display: block;
+  width: 100%;
+  border: 0;
+  /* Card's own clip-path handles the chamfered-corner look; the iframe just
+     needs to not spill a rectangular edge past it. */
+  border-radius: 2px;
+}
+
 /* ═══════════════════════════════════════════════════════════════════════════
    BLOG CARDS
    ═══════════════════════════════════════════════════════════════════════════ */
