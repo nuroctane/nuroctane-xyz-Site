@@ -14,14 +14,19 @@ const router = new Hono();
 const SITE_ORIGIN = process.env.SITE_ORIGIN || "https://nuroctane.xyz";
 const REDIRECT_URI = `${SITE_ORIGIN}/api/auth/github/callback`;
 
+/* Trimmed deliberately. `wrangler secret put` reads its value from stdin, and
+ * piping to it from a shell appends a newline — so a secret set that way carries
+ * trailing whitespace. GitHub then rejects the token exchange with
+ * `incorrect_client_credentials`, which looks like a wrong secret rather than a
+ * stray byte. This exact bug already cost time on the tunerz push token. */
 function getClientId(): string {
-  const id = process.env.GITHUB_CLIENT_ID;
+  const id = process.env.GITHUB_CLIENT_ID?.trim();
   if (!id) throw new Error("GITHUB_CLIENT_ID must be set");
   return id;
 }
 
 function getClientSecret(): string {
-  const secret = process.env.GITHUB_CLIENT_SECRET;
+  const secret = process.env.GITHUB_CLIENT_SECRET?.trim();
   if (!secret) throw new Error("GITHUB_CLIENT_SECRET must be set");
   return secret;
 }
