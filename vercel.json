@@ -4,8 +4,7 @@
   "buildCommand": "",
   "outputDirectory": "og-static",
 
-  "//": "This project exists only to serve api/og.mjs; the site itself runs on Cloudflare Workers and proxies /api/og here. Without ignoreCommand, every push to main rebuilt it for nothing. Exit 0 skips the build, exit 1 builds — so `git diff --quiet` skips unless the OG function or this config actually changed.",
-  "ignoreCommand": "git diff --quiet HEAD^ HEAD -- api/og.mjs vercel.json og-static",
+  "//": "This project exists only to serve api/og.mjs; the site itself runs on Cloudflare Workers and proxies /api/og here. Git integration is deliberately DISCONNECTED (2026-07-30) — pushes to main no longer trigger a build at all. An ignoreCommand git-diff was tried first, but Vercel's build checkout has no HEAD^ (shallow clone), so the diff command itself errored on every push and Vercel treated that as 'proceed to build' — the opposite of the intent, and the actual cause of the repeated failed-deployment notifications. Disconnecting is simpler and cannot fail the same way. When api/og.mjs actually changes: `vercel --prod --yes --scope nuroctane-projects` from this repo root.",
   "functions": {
     "api/og.mjs": { "maxDuration": 10 }
   }
