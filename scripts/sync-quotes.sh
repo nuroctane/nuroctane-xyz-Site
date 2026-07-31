@@ -207,21 +207,33 @@ if [[ "${SYNC_DRY_RUN:-0}" == "1" ]]; then
     exit 0
 fi
 
-# 4. Commit + push only if something actually changed.
-if cmp -s "$REINDEXED" "$DEST"; then
+# 4. Commit + push only if git will see a real content change.
+# Compare against HEAD (not the working tree) so CRLF/LF noise on disk
+# does not look like a vault update.
+GIT_BLOB="$(mktemp)"
+if git show "HEAD:$REL_DEST" > "$GIT_BLOB" 2>/dev/null && cmp -s "$REINDEXED" "$GIT_BLOB"; then
+    # Refresh working tree so local disk matches the vault transform.
+    cp "$REINDEXED" "$DEST"
+    rm -f "$STRIPPED" "$REINDEXED" "$GIT_BLOB"
+    echo "[$(date)] Quotes unchanged vs origin/main, no sync needed"
+    exit 0
+fi
+rm -f "$GIT_BLOB"
+
+if [[ -f "$DEST" ]] && cmp -s "$REINDEXED" "$DEST"; then
     rm -f "$STRIPPED" "$REINDEXED"
-    echo "[$(date)] Quotes unchanged, no sync needed"
+    echo "[$(date)] Quotes unchanged on disk, no sync needed"
     exit 0
 fi
 
 mv "$REINDEXED" "$DEST"
 rm -f "$STRIPPED"
-git add "$REL_DEST"
+git add -- "$REL_DEST"
 
 # Commit-guard: if git-diff shows nothing staged (line endings normalized
 # by .gitattributes, etc.), skip the commit + push instead of pushing empty.
 if git diff --cached --quiet -- "$REL_DEST"; then
-    echo "[$(date)] File differs but git sees no staged changes (line endings normalized?), no push"
+    echo "[$(date)] Transformed quotes match git after line-ending normalize, no push"
     exit 0
 fi
 
