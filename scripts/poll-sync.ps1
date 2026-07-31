@@ -1,12 +1,11 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-  Windows entrypoint for the Obsidian quotes + books poller.
+  Fallback Windows entrypoint for the Obsidian quotes + books poller.
 
-  Scheduled Task "NuroctanePollSync" runs this every 15 minutes.
-  The bash poller always syncs quotes (Obsidian -> repo), periodically
-  pulls remote books.md updates, then mirrors books.md into the Obsidian
-  Book Wishlist (repo -> vault).
+  Preferred path: Scheduled Task "NuroctanePollSync" -> poll-sync.vbs ->
+  Hermes poll-sync.py (utterly silent; no powershell/cmd window).
+  This .ps1 is only used if the Hermes Python poller is missing.
 #>
 $ErrorActionPreference = 'Stop'
 $RepoRoot = 'C:\Users\david\Laboratory\nuroctane.xyz'

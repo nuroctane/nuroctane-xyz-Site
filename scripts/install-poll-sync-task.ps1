@@ -4,24 +4,27 @@
   Install / refresh the Windows Scheduled Task that runs Obsidian quotes sync.
 
   Task name: NuroctanePollSync
-  Schedule: every 15 minutes (quotes sync is cheap; books pull stays 90-min gated)
+  Schedule: every 15 minutes
+
+  Launches via wscript + poll-sync.vbs so no console window ever appears
+  (powershell.exe as the task action still flashes a cmd even with -WindowStyle Hidden).
 #>
 $ErrorActionPreference = 'Stop'
 $TaskName = 'NuroctanePollSync'
 $RepoRoot = 'C:\Users\david\Laboratory\nuroctane.xyz'
-$Script = Join-Path $RepoRoot 'scripts\poll-sync.ps1'
+$Vbs = Join-Path $RepoRoot 'scripts\poll-sync.vbs'
 
-if (-not (Test-Path -LiteralPath $Script)) {
-  throw "Missing $Script"
+if (-not (Test-Path -LiteralPath $Vbs)) {
+  throw "Missing $Vbs"
 }
 
+$wscript = Join-Path $env:SystemRoot 'System32\wscript.exe'
 $action = New-ScheduledTaskAction `
-  -Execute 'powershell.exe' `
-  -Argument "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$Script`"" `
+  -Execute $wscript `
+  -Argument "//B //Nologo `"$Vbs`"" `
   -WorkingDirectory $RepoRoot
 
 # Indefinite repetition: start once, repeat every 15 min for ~10 years
-# (TimeSpan.MaxValue is rejected by Task Scheduler XML).
 $trigger = New-ScheduledTaskTrigger -Once -At (Get-Date).AddMinutes(1) `
   -RepetitionInterval (New-TimeSpan -Minutes 15) `
   -RepetitionDuration (New-TimeSpan -Days 3650)
@@ -31,7 +34,8 @@ $settings = New-ScheduledTaskSettingsSet `
   -DontStopIfGoingOnBatteries `
   -StartWhenAvailable `
   -MultipleInstances IgnoreNew `
-  -ExecutionTimeLimit (New-TimeSpan -Hours 2)
+  -ExecutionTimeLimit (New-TimeSpan -Hours 2) `
+  -Hidden
 
 $principal = New-ScheduledTaskPrincipal -UserId $env:USERNAME -LogonType Interactive -RunLevel Limited
 
@@ -43,7 +47,7 @@ Register-ScheduledTask `
   -Principal $principal `
   -Force | Out-Null
 
-Write-Host "Installed Scheduled Task '$TaskName' (every 15 min)"
-Write-Host "  script: $Script"
-Write-Host "  log:    $RepoRoot\.nur\poll-sync.log"
+Write-Host "Installed Scheduled Task '$TaskName' (every 15 min, silent wscript)"
+Write-Host "  launcher: $Vbs"
+Write-Host "  log:      $RepoRoot\.nur\poll-sync.log"
 Write-Host "Run once now:  Start-ScheduledTask -TaskName $TaskName"
