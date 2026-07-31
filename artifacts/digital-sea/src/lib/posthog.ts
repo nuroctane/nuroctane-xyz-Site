@@ -18,8 +18,13 @@
 type PostHog = (typeof import('posthog-js'))['default'];
 
 const KEY = import.meta.env.VITE_POSTHOG_KEY;
-/** First-party proxy (e.nuroctane.xyz) resists ad blockers; falls back to US ingest. */
-const HOST = import.meta.env.VITE_POSTHOG_HOST ?? 'https://e.nuroctane.xyz';
+/**
+ * First-party proxy resists ad blockers. Workers Builds may still set
+ * VITE_POSTHOG_HOST to us.i.posthog.com - rewrite that to the relay.
+ */
+const PROXY_HOST = 'https://e.nuroctane.xyz';
+const RAW_HOST = import.meta.env.VITE_POSTHOG_HOST ?? PROXY_HOST;
+const HOST = /i\.posthog\.com/i.test(RAW_HOST) ? PROXY_HOST : RAW_HOST;
 const UI_HOST = import.meta.env.VITE_POSTHOG_UI_HOST ?? 'https://us.posthog.com';
 
 declare global {
