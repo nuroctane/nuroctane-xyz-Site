@@ -1,7 +1,9 @@
 #!/bin/bash
-# Unified poller: checks for remote changes to books.md, pulls if found
-# Also runs quotes sync (Obsidian → repo)
-# Tracks last run to enforce ~90 min interval between pulls
+# Unified poller:
+#   1) quotes: Obsidian Quotes.md → repo quotes.md (commit/push on change)
+#   2) books pull: when interval elapsed, ff-pull if remote books.md changed
+#   3) books mirror: repo books.md → Obsidian Book Wishlist.md
+# Tracks last run to enforce ~90 min interval between pulls.
 #
 # Windows entrypoint: scripts/poll-sync.ps1 (Scheduled Task NuroctanePollSync)
 
@@ -36,7 +38,7 @@ if [[ $SYNC_RC -ne 0 ]]; then
     # Still allow the books pull path below; do not abort the whole poller.
 fi
 
-# Conditional git pull for books (repo → local) when on a clean main.
+# Conditional git pull for books (repo → local working tree) when on a clean main.
 if (( SHOULD_PULL )); then
     git fetch origin main >/dev/null 2>&1
     if git diff HEAD origin/main --name-only | grep -q 'artifacts/digital-sea/src/content/books.md'; then
@@ -53,4 +55,14 @@ if (( SHOULD_PULL )); then
 else
     REMAIN=$(( (LAST_RUN + INTERVAL - NOW) / 60 ))
     echo "[$(date)] Skipping pull (next check in ~${REMAIN} min)"
+fi
+
+# Other direction: always mirror repo books.md into the Obsidian wishlist.
+# Cheap when identical; required after a pull (and recovers missed copies).
+set +e
+"$REPO_ROOT/scripts/sync-books.sh"
+BOOKS_RC=$?
+set -e
+if [[ $BOOKS_RC -ne 0 ]]; then
+    echo "[$(date)] books sync failed (exit $BOOKS_RC)"
 fi

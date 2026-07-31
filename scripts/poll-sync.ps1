@@ -4,8 +4,9 @@
   Windows entrypoint for the Obsidian quotes + books poller.
 
   Scheduled Task "NuroctanePollSync" runs this every 15 minutes.
-  The bash poller always syncs quotes (Obsidian -> repo) and periodically
-  pulls remote books.md updates.
+  The bash poller always syncs quotes (Obsidian -> repo), periodically
+  pulls remote books.md updates, then mirrors books.md into the Obsidian
+  Book Wishlist (repo -> vault).
 #>
 $ErrorActionPreference = 'Stop'
 $RepoRoot = 'C:\Users\david\Laboratory\nuroctane.xyz'
