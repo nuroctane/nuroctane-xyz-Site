@@ -19,12 +19,14 @@ type PostHog = (typeof import('posthog-js'))['default'];
 
 const KEY = import.meta.env.VITE_POSTHOG_KEY;
 /**
- * First-party proxy resists ad blockers. Workers Builds may still set
- * VITE_POSTHOG_HOST to us.i.posthog.com - rewrite that to the relay.
+ * Managed PostHog reverse proxy (i.nuroctane.xyz). Workers Builds may still
+ * inject us.i.posthog.com or the old Worker relay - rewrite those to the
+ * managed host.
  */
-const PROXY_HOST = 'https://e.nuroctane.xyz';
+const PROXY_HOST = 'https://i.nuroctane.xyz';
 const RAW_HOST = import.meta.env.VITE_POSTHOG_HOST ?? PROXY_HOST;
-const HOST = /i\.posthog\.com/i.test(RAW_HOST) ? PROXY_HOST : RAW_HOST;
+const HOST =
+  /i\.posthog\.com|e\.nuroctane\.xyz/i.test(RAW_HOST) ? PROXY_HOST : RAW_HOST;
 const UI_HOST = import.meta.env.VITE_POSTHOG_UI_HOST ?? 'https://us.posthog.com';
 
 declare global {
@@ -71,7 +73,7 @@ export function initPostHog(): void {
         // No user accounts outside the modkeys GitHub login, so don't build
         // person profiles for anonymous visitors: they are billed far cheaper.
         person_profiles: 'identified_only',
-        defaults: '2025-05-24',
+        defaults: '2026-05-30',
       });
       ph = p;
 
