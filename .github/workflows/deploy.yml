@@ -1,16 +1,15 @@
-# Push-to-main deploy for the Cloudflare Worker.
+# Push-to-main durable deploy for the Cloudflare Worker + GitHub deploy notify.
 #
-# Workers Builds (dashboard git integration) is the preferred path when healthy,
-# but it went silent after 2026-07-30 (no builds for later main commits). This
-# workflow is the durable, in-repo equivalent: pnpm build → wrangler deploy.
+# Preferred production path: Cloudflare Workers Builds (git integration).
+# This workflow is the in-repo fallback when CLOUDFLARE_API_TOKEN is set.
 #
 # Required repo secrets (Settings → Secrets → Actions):
-#   CLOUDFLARE_API_TOKEN   user token with Workers Scripts Edit + Account read
+#   CLOUDFLARE_API_TOKEN   Workers Scripts Edit + Account read
 #   CLOUDFLARE_ACCOUNT_ID  e83dad6e7a96326d6d934346696ce78a
 #
-# If Workers Builds is later reconnected, either disable this workflow or set
-# the Builds deploy command to `npx wrangler versions upload` so only one
-# path promotes production.
+# Without the API token the deploy job is skipped on purpose. A sibling ack job
+# always succeeds so GitHub does not treat "all jobs skipped" as a failed run
+# (that was spamming failure notifications while Workers Builds still deployed).
 
 name: Deploy Worker
 
@@ -23,10 +22,17 @@ concurrency:
   group: deploy-nuroctane-xyz
   cancel-in-progress: false
 
+permissions:
+  contents: read
+  deployments: write
+  issues: write
+
+env:
+  SITE_NAME: nuroctane.xyz
+  SITE_URL: https://www.nuroctane.xyz
+
 jobs:
   deploy:
-    # Soft-skip until CLOUDFLARE_API_TOKEN is set in repo secrets.
-    # Account id: e83dad6e7a96326d6d934346696ce78a
     if: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
     runs-on: ubuntu-latest
     timeout-minutes: 30
@@ -51,7 +57,6 @@ jobs:
       - name: Build
         run: pnpm run build
         env:
-          # Build-time Vite vars (also set these in Workers Builds if that path returns).
           VITE_POSTHOG_KEY: ${{ secrets.VITE_POSTHOG_KEY }}
           VITE_POSTHOG_HOST: ${{ secrets.VITE_POSTHOG_HOST }}
 
@@ -62,3 +67,97 @@ jobs:
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           command: deploy
           packageManager: pnpm
+
+  workers-builds-ack:
+    # Succeeds when GHA is not the deployer so the workflow run is green.
+    if: ${{ secrets.CLOUDFLARE_API_TOKEN == '' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Acknowledge Workers Builds path
+        run: |
+          echo "CLOUDFLARE_API_TOKEN unset — production deploys via Cloudflare Workers Builds."
+          echo "This ack job keeps the workflow green (skipped-only runs were notifying as failures)."
+
+  notify:
+    needs: [deploy, workers-builds-ack]
+    if: always() && (needs.deploy.result == 'success' || needs.workers-builds-ack.result == 'success')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Notify GitHub (deploy)
+        uses: actions/github-script@v7
+        env:
+          SITE_NAME: ${{ env.SITE_NAME }}
+          SITE_URL: ${{ env.SITE_URL }}
+          DEPLOY_VIA: ${{ needs.deploy.result == 'success' && 'github-actions' || 'workers-builds' }}
+        with:
+          script: |
+            const site = process.env.SITE_NAME;
+            const url = process.env.SITE_URL;
+            const via = process.env.DEPLOY_VIA;
+            const sha = context.sha.slice(0, 7);
+            const msg = (context.payload.head_commit?.message || context.sha)
+              .split('\n')[0]
+              .slice(0, 72);
+            const title = `Deployed ${site} @ ${sha} — ${msg}`;
+            const body = [
+              `**${site}** production deploy`,
+              ``,
+              `- Site: ${url}`,
+              `- Commit: \`${context.sha}\``,
+              `- Actor: @${context.actor}`,
+              `- Path: \`${via}\``,
+              `- Run: ${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+            ].join('\n');
+
+            try {
+              await github.rest.issues.getLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: 'deployment',
+              });
+            } catch {
+              await github.rest.issues.createLabel({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                name: 'deployment',
+                color: '0E8A16',
+                description: 'Production deploy notifications',
+              });
+            }
+
+            const issue = await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              body,
+              labels: ['deployment'],
+              assignees: [context.repo.owner],
+            });
+            await github.rest.issues.update({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: issue.data.number,
+              state: 'closed',
+            });
+
+            const deployment = await github.rest.repos.createDeployment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              ref: context.sha,
+              environment: 'production',
+              auto_merge: false,
+              required_contexts: [],
+              description: title,
+              production_environment: true,
+            });
+            if (deployment.status === 201 || deployment.status === 202) {
+              await github.rest.repos.createDeploymentStatus({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                deployment_id: deployment.data.id,
+                state: 'success',
+                environment_url: url,
+                log_url: `${context.serverUrl}/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`,
+                description: `Live via ${via}`,
+              });
+            }

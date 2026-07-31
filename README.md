@@ -102,11 +102,11 @@ SPA-only: `pnpm --filter digital-sea dev` (see package scripts).
 
 ## Deploy
 
-Pushing `main` should trigger **Workers Builds** (`pnpm run build` → `npx wrangler deploy`). Fallback: `.github/workflows/deploy.yml` (needs `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID`).
+Pushing `main` should trigger **Workers Builds** (`pnpm run build` → `npx wrangler deploy`). GitHub Actions `.github/workflows/deploy.yml` notifies each main push (and can wrangler-deploy only if `CLOUDFLARE_API_TOKEN` is set - leave it unset while Builds is healthy).
 
 ```bash
 git push origin main
-# Verify: Builds list / Actions green, and:
+# Verify: Builds list / Actions green + deployment issue notify, and:
 curl -sI https://www.nuroctane.xyz/ | grep -i server   # expect cloudflare
 ```
 
