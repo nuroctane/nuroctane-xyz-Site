@@ -1,3 +1,5 @@
+﻿> **HISTORICAL (2026-07-31):** Production is Cloudflare Worker `nuroctane-xyz`, not Vercel. Canonical routes and deploy steps live in root `README.md` and `AGENTS.md`. Prefer `docs/research/components/observatory.spec.md` over Orbit Veil for the live Observatory.
+
 # Foglamp Codebase Map Embed Implementation Plan
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.

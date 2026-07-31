@@ -1,3 +1,5 @@
+﻿> **HISTORICAL (2026-07-31):** Production is Cloudflare Worker `nuroctane-xyz`, not Vercel. Canonical routes and deploy steps live in root `README.md` and `AGENTS.md`. Prefer `docs/research/components/observatory.spec.md` over Orbit Veil for the live Observatory.
+
 ---
 name: Deploying digital-sea (Vite) to Vercel
 description: Monorepo build and serve contract for nuroctane.xyz (local + GitHub + Vercel).

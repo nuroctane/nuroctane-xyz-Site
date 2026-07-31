@@ -13,185 +13,174 @@
 
 </div>
 
-## 🧠 What is this?
+## What is this?
 
-This is my personal [digital sea](https://codelyoko.fandom.com/wiki/Digital_Sea) — a living portfolio that captures the different facets of my life:
+A personal [digital sea](https://codelyoko.fandom.com/wiki/Digital_Sea) - living portfolio and toolkit:
 
-- **📚 Books** — A curated library of books I've read, with community recommendations and live search via Google Books & Open Library APIs
-- **💭 Quotes** — A collection of thoughts, ideas, and quotes that have shaped my thinking, organized by theme
-- **⌨️ Modkeys** — A full 3D mechanical keyboard configurator (desktop + mobile shells), embedded at `/modkeys`
-- **🛰️ Orbit Veil** — A full-Earth, real-time satellite tracker using CelesTrak TLE sets and in-browser SGP4 propagation at `/orbit`
+| Surface | Route | What it is |
+|---|---|---|
+| **Digital Sea** | `/` | Interactive scroll identity / scene |
+| **Books** | `/books` | Kindle wishlist + community recommendations |
+| **Quotes** | `/quotes` | Themed quote bank synced from Obsidian |
+| **Modkeys** | `/modkeys` | 3D mechanical keyboard configurator |
+| **NurCLI** | `/cli` | Product page for the Rust coding agent |
+| **Observatory** | `/observatory` | Astrology, Cesium Earth, satellites, sky |
+| **Resume** | `/resume` | Direct URL only (unlinked in nav) |
 
-The site is built as a single-page application with a distinct aesthetic inspired by terminal interfaces and digital landscapes. It's not just a portfolio — it's an extension of my mind.
+Also: `/socials`, `/projects`, `/blog`, `/fin`. Home aliases `/home`, `/sea`, `/identity` → `/`. Legacy `/orbit` and `/orbit-veil` → `/observatory`.
 
-The visual aesthetic draws inspiration from the French animated series **Code Lyoko** (MoonScoop, 2003–2007, created by Thomas Romain and Tania Palumbo). [Wikipedia](https://en.wikipedia.org/wiki/Code_Lyoko)
+Aesthetic inspiration: **Code Lyoko** (MoonScoop, 2003–2007). [Wikipedia](https://en.wikipedia.org/wiki/Code_Lyoko)
 
 ---
 
-## 🛠️ Tech Stack
+## Tech stack
 
 | Area | Stack |
 |---|---|
-| **Site (digital-sea)** | React + Vite, TailwindCSS, Wouter |
-| **Modkeys** | Vanilla ES modules + Vite 6, Three.js (^0.184), GSAP, dual desktop/mobile shell (`shell.js` + `mobile.css`) |
-| **API** | Hono on Cloudflare Workers (`artifacts/api-server`, bundled from source) |
+| **SPA (digital-sea)** | React + Vite, TailwindCSS, Wouter |
+| **Modkeys** | Vanilla ES modules + Vite, Three.js, GSAP (desktop + mobile shell) |
+| **API** | Hono on Cloudflare Workers (`artifacts/api-server`, bundled into the Worker) |
 | **Storage** | Upstash Redis KV (visitor books, modkeys configs) |
-| **Export (modkeys)** | KLE JSON, SVG, spec JSON, PDF (jsPDF + svg2pdf.js) |
-| **Telemetry** | PostHog (SPA pageviews, product events, Core Web Vitals) + Cloudflare Workers Observability |
+| **Host** | Cloudflare Worker `nuroctane-xyz` (`worker/index.ts`, `wrangler.jsonc`) |
+| **OG cards** | Residual Vercel function `api/og.mjs` (proxied at `/api/og`) |
+| **Telemetry** | PostHog + Cloudflare Workers Observability |
 | **Monorepo** | pnpm workspaces |
 
-### Analytics and operations
+---
 
-The SPA reports route-aware pageviews, curated product events, and Core Web Vitals to **PostHog**. Set these build-time variables for the Digital Sea Vite build:
+## Features
 
-```dotenv
-VITE_POSTHOG_KEY=phc_your_project_key
-VITE_POSTHOG_HOST=https://us.i.posthog.com
-```
+### Books
+- Curated shelves + Kindle wishlist content (`artifacts/digital-sea/src/content/books.md`)
+- Live search via Google Books (Open Library fallback)
+- Community recommendations; admin mode for submissions
+- Cover caching and lazy loading
 
-Use these dashboards going forward:
+### Quotes
+- Narrow thematic sections (Faith, Reality, Manifestation, Shadow, …)
+- Markdown bank with Obsidian-compatible index
+- Synced from the local Obsidian vault (see [Content sync](#content-sync-obsidian--git))
 
-1. **Cloudflare Dashboard → Workers & Pages → nuroctane-xyz** for production deployments, version history/rollback, request and error rates, CPU time, cron triggers, and live/retained Worker logs. Observability is enabled in `wrangler.jsonc`.
-2. **PostHog** for web/product analytics: `$pageview`, `$web_vitals`, route breakdowns, custom events, paths, funnels, retention, and optional dashboards/alerts.
-3. **Vercel** only for the residual `api/og.mjs` image renderer at `nuroctane-og.vercel.app`. The apex and `www` domains route directly to Cloudflare Workers.
-4. **Upstash Console** for Redis usage, latency, and stored visitor-books/modkeys data.
+### Modkeys
+Full 3D keyboard configurator (desktop + mobile shells) at `/modkeys` - layouts, materials, switches, keycaps, lighting, per-key edits, KLE/SVG/PDF/spec export, shareable URL state. Details: `artifacts/modkeys/.agents/docs/MOBILE_SHELL.md`.
 
-**Page routes:** `/`, `/socials`, `/socials/:id`, `/projects`, `/projects/:id`, `/blog`, `/blog/:slug`, `/fin`, `/books`, `/quotes`, `/resume`, `/modkeys`, `/cli`, `/observatory`. Home aliases `/home`, `/sea`, and `/identity` resolve to `/`; `/orbit` and `/orbit-veil` resolve to `/observatory`.
+### NurCLI (`/cli`)
+Product page for [nur-cli](https://github.com/nuroctane/nur-cli): multi-provider Rust TUI agent, installers (Windows/macOS/Linux), live version polling, Foglamp codebase map embed, command reference. Page source: `artifacts/digital-sea/src/pages/CliPage.tsx`.
 
-Sea scroll + QuickNav update the URL (replace/push) so passive browsing still attributes to section routes. `/resume` is unlinked in nav (direct URL only) but still tracked.
-
-**Custom events:** `Modkeys Save` / `Export` / `Share`, `Sea Node Open`, `Mode Change`, `Fin Open`, `Quotes Section`, `Book Open`, `Resume View`, `Resume Contact`, `Booking Click`.
-
-**Privacy / notes:** PostHog autocapture is disabled; only explicit events, pageviews, and performance data are sent. Anonymous events do not create person profiles. Ad blockers can hide traffic. Analytics is disabled when `VITE_POSTHOG_KEY` is absent.
-
-**Link embeds (Open Graph):** the Cloudflare Worker serves path-specific `og:*` HTML to crawlers/unfurlers (Discord, Slack, iMessage, X, …). Dynamic `/api/og?page=…` cards are proxied from the residual Vercel function at `nuroctane-og.vercel.app`; the Worker falls back to `/opengraph.jpg` if that renderer is unavailable.
+### Observatory (`/observatory`)
+Swiss Ephemeris astrology, Cesium Earth exploration, CelesTrak satellites / SGP4, solar system, sky chart, missions, weather. Spec: `docs/research/components/observatory.spec.md`.
 
 ---
 
-## ✨ Features
+## Production architecture
 
-### 📖 Books Page
-- Curated reading lists organized by shelves
-- Live book search via Google Books API with Open Library fallback
-- Community recommendations (visitors can add books)
-- Cover image caching and lazy loading
-- Book descriptions and metadata
-- Admin mode for managing visitor submissions
+```
+Browser → Cloudflare Worker (nuroctane-xyz)
+            ├── ASSETS  → Vite SPA build
+            ├── /api/*  → Hono (api-server)
+            ├── crawler → path-specific og:* HTML
+            └── /api/og → proxy → nuroctane-og.vercel.app
+```
 
-### 💬 Quotes Page
-- Themed quote collections
-- Custom markdown rendering with highlights
-- Pagination for large collections
-- Clean, readable typography
-
-### ⌨️ Modkeys Keyboard Configurator
-A fully integrated mechanical keyboard customization tool — design and visualize builds in real-time 3D, on desktop and mobile.
-
-**Inspiration:** the original [modkeys](https://github.com/thebuggeddev/modkeys) project by [thebuggeddev](https://github.com/thebuggeddev) — this site’s configurator grew from that idea into a dual-shell (desktop + mobile), export-heavy, nuroctane-branded build.
-
-#### Features
-- **Complete customization**: Layout (60%, 65%, 75%), profile, material, switches, keycaps, case, plate, lighting, and extras
-- **Real-time 3D preview**: Three.js with realistic materials and lighting; orbit / pan / zoom (mouse or touch)
-- **Per-key customization**: Double-click any key for text, color, font size, glow, or image upload
-- **Theme system**: Light/dark mode with adjusted 3D lighting
-- **Export options**:
-  - KLE (Keyboard Layout Editor) JSON
-  - SVG layout template
-  - Detailed spec sheet with BOM
-  - PDF export
-  - Shareable URL with encoded state
-- **Built-in presets**: 15 designer-curated builds
-- **Extensive library**:
-  - 19 colorways (Claude, Gemini, Sakura, Verdant, Abyssal, Dune, Monochrome, Umbra, Moss, Contrast, Rosette, Noir, Embers, Matcha, Carbon, Vaporwave, Dracula, Blush, Honey)
-  - 16 case options (Porcelain, Clay, Space Gray, Midnight, Silver, Navy, Olive, E-White, Rose Gold, Burgundy, Forest, Lavender, Copper, Coral, Arctic, Sakura)
-  - 8 plate options (Aluminum, Brass, Polycarbonate, Carbon Fiber, Copper, Steel, POM, FR4)
-  - 10 switch types (Boba U4T, Holy Panda, Box Jade, Silent Ink, Cream, Teal, Sunset, Topaz, Emerald, Silver)
-  - 7 keycap profiles (Cherry, OEM, XDA, SA, DSA, MT3, ASA)
-  - 4 extras (Rotary Knob, Coiled Cable, Wrist Rest, Switch Lube Service)
-- **Interactive controls**:
-  - Orbit/pan with inertia
-  - View presets: 3D, Explode, Top, Side, Front
-  - Navigation: sidebar (desktop) / section tabs (mobile) across Layout → Keycaps → Switches → Case → Plate → Lighting → Extras
-  - Save and export (desktop toolbar; mobile fixed bar + export sheet)
-
-#### Technical Implementation
-Modkeys is embedded as an imperative Vanilla JS page (`/modkeys`) inside the Vite + React SPA. Key points:
-- **CSS scoping**: styles under `.modkeys-page` so they don’t fight the main site
-- **Theme independence**: own CSS variables (`--bg`, `--ink`, …) separate from Tailwind
-- **Bootstrapping**: modules mount on enter and tear down on leave (no React wrappers, no two-way binding)
-- **Dual-shell architecture**: dedicated mobile shell (`.mShell`) swaps in at boot via `matchMedia`; shared element IDs so core JS is shell-agnostic. ID parity via `check-shell-ids.mjs`; details in `artifacts/modkeys/.agents/docs/MOBILE_SHELL.md`
-- **Performance**: lazy-loaded (React.lazy + Suspense); Three.js loaded with the page
-- **State**: centralized mutable store with undo/redo (50 steps)
-- **Sharing / export**: URL-encoded state or KLE / SVG / PDF / spec files
-
-#### Mobile shell (v0.70+)
-Purpose-built for phones and tablets — not a squeezed desktop layout:
-- Portrait-first layout (+ landscape media query)
-- Icon view-pill bar on the stage (3D / Explode / Top / Side / Front)
-- Bottom section tabs for all config sections
-- Material-specific click sounds (PBT thock; ABS/Ceramic resonance layers)
-- Safe-area + `dvh` handling for notches and home bars
-- Breakpoint: `(max-width: 768px)` or coarse pointer up to `1024px` (reload on cross)
-
-### 🎨 Design System
-- Dark, terminal-inspired aesthetic
-- Smooth animations and transitions
-- Responsive design
-- Custom component library (shadcn/ui inspired)
-- Audio player integration
+- Apex + `www` are Cloudflare Custom Domains on the Worker.
+- Cron `0 12 * * *` refreshes GitHub contribution data only (not quotes).
+- **Do not** `vercel --prod` expecting to deploy the site. Vercel git integration for OG is disconnected on purpose; redeploy `api/og.mjs` by hand only when that file changes.
 
 ---
 
-## Project Structure
+## Local development
+
+```bash
+pnpm install
+pnpm run build          # typecheck + package builds + smoke + SPA shell checks
+npx wrangler dev        # local Worker (.dev.vars with KV_MEMORY=1)
+```
+
+SPA-only: `pnpm --filter digital-sea dev` (see package scripts).
+
+---
+
+## Deploy
+
+Pushing `main` should trigger **Workers Builds** (`pnpm run build` → `npx wrangler deploy`). Fallback: `.github/workflows/deploy.yml` (needs `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID`).
+
+```bash
+git push origin main
+# Verify: Builds list / Actions green, and:
+curl -sI https://www.nuroctane.xyz/ | grep -i server   # expect cloudflare
+```
+
+Manual deploy only if the push did not publish: `pnpm run deploy`.
+
+Full agent ship checklist: `C:\Users\david\.agents\SHIP.md` (nuroctane.xyz section) and repo `AGENTS.md`.
+
+---
+
+## Content sync (Obsidian ↔ git)
+
+| Direction | What | How |
+|---|---|---|
+| Vault → repo | `Quotes.md` → `artifacts/digital-sea/src/content/quotes.md` | `scripts/sync-quotes.sh` (also Hermes `sync-quotes.py`) |
+| Repo → vault | `books.md` → Obsidian `Books/Book Wishlist.md` | `scripts/sync-books.sh` / Hermes `poll-sync.py` |
+
+Windows task **`NuroctanePollSync`** (every 15 min) launches silent `scripts/poll-sync.vbs` → Hermes Python poller (no console window). Install: `powershell -File scripts/install-poll-sync-task.ps1`. Logs: `.nur/poll-sync.log`.
+
+Quotes sync strips Obsidian frontmatter, rebuilds `## Index`, parser-sanity-checks like `QuotesPage.tsx`, then commits/pushes on `main` only when content changes. Optional local deploy: `SYNC_DEPLOY=1`. Dry run: `SYNC_DRY_RUN=1`.
+
+---
+
+## Environment variables
+
+**Build-time** (`VITE_*` - Workers Builds → Build variables, and local `.env.local`):
+
+- `VITE_POSTHOG_KEY` / `VITE_POSTHOG_HOST` - analytics
+- `VITE_GOOGLE_BOOKS_API_KEY` - Books search (optional; Open Library fallback)
+- Observatory weather / traffic keys as consumed under `artifacts/digital-sea/src/observatory/`
+
+**Runtime** (Worker secrets via `wrangler secret put`): KV credentials, `JWT_SECRET`, GitHub OAuth, etc.
+
+See `artifacts/digital-sea/.env.example`. Adding a new `VITE_*` means updating `.env.local`, the example file, **and** Workers Builds vars.
+
+---
+
+## Analytics
+
+PostHog: route pageviews, Core Web Vitals, curated product events (`Modkeys Save` / `Export`, `Quotes Section`, `Book Open`, …). Autocapture off; no person profiles for anonymous events.
+
+Ops: Cloudflare Workers dashboard (deployments, logs, cron) + PostHog + Upstash console.
+
+---
+
+## Repository structure
 
 ```
-nuroctane-xyz-Site/
-├── api/                      # Residual Vercel OG image function only
+nuroctane.xyz/
+├── api/                      # Residual Vercel OG renderer only
 ├── artifacts/
-│   ├── digital-sea/          # Main React SPA (Vite + TailwindCSS)
-│   │   ├── src/
-│   │   │   ├── components/   # UI (HUD, panels, scene)
-│   │   │   ├── pages/        # Books, Quotes, Modkeys, Resume
-│   │   │   ├── content/      # Markdown content
-│   │   │   └── hooks/        # Custom React hooks
-│   │   └── public/           # Static assets
+│   ├── digital-sea/          # Main React SPA
 │   ├── api-server/           # Hono API bundled into the Worker
-│   └── modkeys/              # Keyboard configurator (Vanilla + Three.js)
-│       ├── .agents/docs/MOBILE_SHELL.md
-│       ├── check-shell-ids.mjs
-│       └── src/              # css/, js/ (core, data, ui, export)
-├── worker/                   # Cloudflare Worker entry point + crawler OG responses
-├── wrangler.jsonc            # Assets, routes, cron, and Worker deployment config
-├── lib/                      # Shared packages (kv, db, api-zod, api-spec, …)
-└── scripts/                  # Build / utility scripts
+│   └── modkeys/              # Keyboard configurator
+├── worker/                   # Cloudflare Worker entry + OG HTML
+├── scripts/                  # poll-sync, sync-quotes, sync-books, …
+├── docs/                     # Research specs + design notes
+├── wrangler.jsonc
+└── AGENTS.md                 # Agent ship + sync instructions
 ```
 
 ---
 
-## 🎯 Philosophy
+## Philosophy
 
-This site is designed to be:
-- **Minimal yet expressive** — Clean design that lets content shine
-- **Fast and responsive** — Optimized for performance (including a real mobile shell for Modkeys)
-- **Personal and authentic** — A true reflection of who I am
-- **Continuously evolving** — Like a digital sea, it grows over time
+Minimal yet expressive, fast, personal, continuously evolving - like a digital sea.
 
----
+## License
 
-## 📝 License
-
-MIT License — feel free to use this as inspiration for your own digital sea.
-
----
-
-## 🌊 Dive In
-
-Visit the live site at [nuroctane.xyz](https://nuroctane.xyz) or explore the code to see how it all works.
+MIT - use as inspiration for your own digital sea.
 
 ---
 
 <div align="center">
 
-*Built with curiosity and code*
+Visit [nuroctane.xyz](https://nuroctane.xyz) · *Built with curiosity and code*
 
 </div>
