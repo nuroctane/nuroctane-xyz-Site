@@ -12,15 +12,13 @@
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (48)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (57)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (79)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (73)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (74)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (23)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (76)
-- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (43)
+- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (44)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (92)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (33)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (41)
-- [[#Unsorted Sparks|Unsorted Sparks]] (2)
-- [[#Reality, Manifestation & Abundance|Reality, Manifestation & Abundance]] (1)
 
 ## Faith, God & Surrender
 
@@ -123,7 +121,6 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 
 > If it is meant for me I can never lose it. If it is not meant for me I don't want it.
 
-
 ## Reality, Consciousness & Perception
 
 _Consciousness, time, illusion, energy, synchronicity, metaphysics, and the architecture of experience._
@@ -202,7 +199,6 @@ _Consciousness, time, illusion, energy, synchronicity, metaphysics, and the arch
 > Life happens through you, never to you.
 
 > The teacher is the lesson, the medium is the message.
-
 
 ## Manifestation, Desire & Abundance
 
@@ -388,7 +384,6 @@ _Imagination, intention, frequency, prosperity, timelines, desire, and allowing 
 
 > It’s not about knowing when you’ll get there, it’s about knowing that you WILL get there—and you’ll get to experience it in all its goodness!
 
-
 ## Self, Identity & Awakening
 
 _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming real to yourself._
@@ -565,7 +560,6 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 > Refuse to believe in things that TAKE your power from you.
 
 > “It’s not what they call you, it’s what you answer to.”
-
 
 ## Mind, Belief & Inner Work
 
@@ -782,7 +776,6 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 > @DejaRu22 “Consider and fuck around with this mental model:
 > The only difference between people is what they say to themselves, and that accounts for nearly ALL results or lack thereof in life.”
 > — @nuroctane
-
 
 ## Action, Discipline & Mastery
 
@@ -1007,8 +1000,8 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > Game theory explains why working harder inside a broken system is the worst response to that system. Because a system is never truly broken. It's just producing exactly the outcomes its own incentive structures were designed to produce, whether intentional or not. Working harder inside this system increases your output in the payoff matrix, but it simply won't change the actual structure of the system's matrix. Thus, the correct response is not more effort. Instead, you must aim to identify whose interests the current structure serves and position yourself in favor of those interests rather than against them. Change the game, or play the game that is actually being played. Either way, you must stop optimizing for the game you wish it to be and start acting realistically.
 > — @incentivising
 
-
-
+> one common trait I find in high achieving individuals is urgency. it looks almost like impatience until you understand it is closer to reverence, a deep refusal to waste the one thing they can’t buy more of. the alarm goes and they rise. the message is answered while it is still warm. the small task is done before it can find a shelf to hide on. they commit and move in a single motion. an idea sparks and they chase it that day, before the world talks them out of it. they run at their own lives like something is at stake, because they have decided something is.
+> — @josbjohnson
 
 ## Creativity, Purpose & Expression
 
@@ -1091,7 +1084,6 @@ _Calling, craft, art, play, service, voice, vision, and making what only you can
 > — @lichthauch
 
 > Share the fruit, not the seed. If you share the seed you’ll have no fruit.
-
 
 ## Love, Relationships & Boundaries
 
@@ -1281,7 +1273,6 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > “you’re usually one phone call away from that mountain becoming a molehill”
 > — @nuroctane
 
-
 ## Shadow, Discernment & Protection
 
 _Enemies, manipulation, resentment, power, spiritual attack, discernment, and energetic hygiene._
@@ -1406,6 +1397,8 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 > Not evil advice.
 > — @QuantumRover
 
+> People most taken advantage of are out there thinking they’re taking advantage of.
+> — @MrE_mssg
 
 ## Body, Emotion & Nervous System
 
@@ -1654,7 +1647,6 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 
 > When a flower doesn’t bloom, you fix the environment in which it grows, not the flower.
 
-
 ## Work, Wealth & Value
 
 _Money, career, value creation, leverage, spending, wealth, and worldly stewardship._
@@ -1742,7 +1734,6 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 > When you get an impulse to buy something,
 > wait a few days before buying it,
 > most of the time you’ll realise you don’t even need that thing.
-
 
 ## Life, Joy & Meaning
 
@@ -1885,30 +1876,5 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > Your time and space are limited. Remove, give away, throw out things in your life that don't spark joy any longer in order to make room for those that do.
 
 > you stop taking it personally once you understand the universe is not out to get you. sometimes it’s working for you in ways you can’t see yet, and sometimes it’s simply happening, indifferent, neither cruel nor kind. either way you can use it. either way you can stack it into your own growth if you refuse to be a victim of it.
-> — @josbjohnson
-
-## Unsorted Sparks
-
-_Auto-created section._
-
-> One of my favourite lesson from Reality Transurfing is:
-> 
-> Wether you’re good or evil, if you feel guilt things WILL turn against you.
-> 
-> That’s why a lot of evil people don’t seem to have things turn against them, simply because they act without feeling shame nor fear against the consequences (no guilt).
-> 
-> Not evil advice.
-> — @QuantumRover
-
-> People most taken advantage of are out there thinking they’re taking advantage of.
-> — @MrE_mssg
-
-
-
-## Reality, Manifestation & Abundance
-
-_Auto-created section._
-
-> one common trait I find in high achieving individuals is urgency. it looks almost like impatience until you understand it is closer to reverence, a deep refusal to waste the one thing they can’t buy more of. the alarm goes and they rise. the message is answered while it is still warm. the small task is done before it can find a shelf to hide on. they commit and move in a single motion. an idea sparks and they chase it that day, before the world talks them out of it. they run at their own lives like something is at stake, because they have decided something is.
 > — @josbjohnson
 
