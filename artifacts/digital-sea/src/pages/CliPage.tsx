@@ -78,20 +78,23 @@ const FEATURE_TABS: FeatureTab[] = [
     blurb: 'Modes, providers, budgets, resume.',
     body: (
       <ul className="cli-feat-list">
-        <li><strong>Multi-provider</strong> via <code>/login</code> — 62 (OpenAI, Anthropic, Gemini, xAI, Groq, OpenRouter, Ollama, Meta Model API, Cursor, …)</li>
+        <li><strong>Multi-provider</strong> via <code>/login</code> — 62 (OpenAI, Anthropic, Gemini, xAI, Groq, OpenRouter, Ollama, Meta Model API, Cursor, OpenCode Zen/Go, …)</li>
         <li><strong>Signed into the vendor CLI = signed into nur</strong> — Claude Code, Codex, Grok, Kimi, Cursor, OpenCode, Antigravity/gcloud sessions are imported automatically, and refreshed when stale. No key to paste.</li>
+        <li><strong>OMP as universal credential fallback</strong> — saved nur keys/sessions always win first; only then vendor CLI, then Oh My Pi via <code>omp token &lt;provider&gt;</code> (<code>~/.omp/agent/agent.db</code>). Successful OMP imports are saved so the next resolve skips the shell-out. Same path feeds <code>/failover</code>, cross-provider subagents, and t3-style probes.</li>
+        <li><strong>Token-saving by default</strong> — <strong>Headroom</strong> inline tool-result compress · OptMem · OMP-style supersedeReads + dropUseless · contextPromotion · optional <code>/prewalk</code> (strong plans → smol at first edit) · optional remote compact endpoint · Anthropic prompt-cache · economy <code>omp</code> onto smol roles</li>
         <li><strong>Cursor as a first-class provider</strong> — <code>cursor-agent login</code> (no pasted API key). Chat runs through <code>cursor-agent -p</code>; nur keeps the tool loop, approvals, plan mode, and cross-provider subagents. Optional <code>NUR_CURSOR_NATIVE=1</code> for full Cursor Agent delegate.</li>
+        <li><strong>OpenCode Zen + Go</strong> — live model lists from both gateways; Go ids as <code>opencode-go/…</code>; <code>opencode auth login</code> / <code>OPENCODE_API_KEY</code> / <code>auth.json</code>.</li>
         <li>Permission modes: <strong>manual</strong> / <strong>plan</strong> / <strong>auto</strong> · Shift+Tab mid-turn</li>
-        <li>Tool loop · approvals · Esc cancel · subagents · todos · plan mode</li>
+        <li>Tool loop · approvals · Esc cancel · subagents · todos · plan mode · <code>bg</code> for long jobs off the turn</li>
         <li><strong>Cross-provider subagents</strong> — the <code>agent</code> tool takes an optional <code>provider</code> (and optional <code>model</code>), so a child can run on a different provider than the parent. Natural-language aliases resolve: claude / sonnet / opus → anthropic, grok → xai, gemini / flash / pro → google, cursor → cursor, <code>antigravity</code> stays its own provider.</li>
-        <li>A routed subagent uses <strong>that provider&apos;s</strong> stored credentials, and auto-imports a logged-in vendor CLI session when there is no key on disk. No credentials at all → the spawn is <strong>blocked</strong>, never silently re-run on the parent: <code>/login</code> opens pre-selected to that provider, and after sign-in nur injects the exact re-deploy call.</li>
+        <li>A routed subagent uses <strong>that provider&apos;s</strong> stored credentials, and auto-imports a logged-in vendor CLI or OMP session when there is no key on disk. No credentials at all → the spawn is <strong>blocked</strong>, never silently re-run on the parent: <code>/login</code> opens pre-selected to that provider, and after sign-in nur injects the exact re-deploy call.</li>
         <li><strong>Fan-out</strong> — several <code>agent</code> calls in one response run concurrently, <strong>up to 4 at a time</strong>; the rest queue behind the cap</li>
         <li><code>/swarm</code> subagent grid <strong>auto-surfaces</strong> the moment a subagent spawns, and every pane names the provider that child ran on — <code>hide</code> dismisses it for the turn, <code>off</code> freezes, <code>clear</code> drops finished runs, <code>detail</code> adds the status row</li>
-        <li>Session budgets · tool-result spill · smarter auto-compact</li>
+        <li>Session budgets · tool-result spill · smarter auto-compact · live <code>/theme</code></li>
         <li><code>/model</code> live model list · <code>/plugins</code> marketplace · <code>/fusion</code> multi-model debate</li>
         <li><code>/local</code> bundled llama.cpp · <code>/bench</code> worktree benchmarks (<code>/bench optimize</code> = GEPA) · <code>nur gateway</code> Telegram bot</li>
-        <li>Natural-language + slash skill activation — /skill-name or plain phrases</li>
-        <li>Take over other agents: Claude · Codex · Cursor · Grok · Nur</li>
+        <li>Natural-language + slash skill activation — /skill-name or plain phrases · <code>/factory-overnight</code> (Fractal-first, Unix preferred)</li>
+        <li>Take over other agents: Claude · Codex · Cursor · Grok</li>
         <li><strong>takeover</strong> <code>/takeover</code> · <code>/hijack</code> — migrate a Claude/Codex/Cursor/Grok session into nur & resume it; press <code>c</code> to switch between the sessions and takeover windows</li>
       </ul>
     ),
@@ -110,9 +113,10 @@ const FEATURE_TABS: FeatureTab[] = [
         <li><strong>browser</strong> — real default browser via agent-browser-cli</li>
         <li><strong>terminal-browser</strong> — <a href="https://terminal-browser.com/">terminal-browser.com</a> in-terminal Chromium (<code>terminal_browser</code> · <code>/tb</code>); Windows host fallback via agent-browser-cli</li>
         <li><strong>git</strong> — <code>git_status</code> · <code>git_diff</code></li>
-        <li><strong>knowledge</strong> — <code>graphify</code> · <code>graphjin</code> · <code>plur</code> · <code>ruflo</code> · <code>executor</code> · <code>skill</code> · <code>memory</code></li>
-        <li><strong>diagrams</strong> — <code>excalidraw</code> · <code>tldraw</code></li>
-        <li><strong>delegation</strong> — <code>agent</code> (optional <code>provider</code> / <code>model</code>, up to 4 concurrent) · <code>omp</code> · <code>fractal</code> · <code>penecho</code> · <code>t3code</code> · <code>akarso</code></li>
+        <li><strong>knowledge</strong> — <code>graphify</code> · <code>graphjin</code> · <code>plur</code> · <code>ruflo</code> · <code>executor</code> · <code>skill</code> · <code>memory</code> · <code>headroom</code> · <code>optmem</code></li>
+        <li><strong>diagrams</strong> — <code>excalidraw</code> · <code>tldraw</code> · <code>/diagram</code> router (architecture → Excalidraw · offline → tldraw · ink/math → penecho)</li>
+        <li><strong>delegation</strong> — <code>agent</code> (optional <code>provider</code> / <code>model</code>, up to 4 concurrent) · <code>omp</code> (economy/balanced · Oh My Pi + <code>omp token</code> bridge) · <code>fractal</code> · <code>penecho</code> · <code>t3code</code> · <code>akarso</code> · <code>bg</code></li>
+        <li><strong>egaki</strong> — image / video / speech CLI (<code>/egaki</code> · <code>/image</code>) · ChatGPT, xAI OAuth, Egaki plan, or BYOK</li>
         <li><strong>plan</strong> — <code>todo_write</code> · <code>submit_plan</code></li>
       </ul>
     ),
@@ -142,11 +146,16 @@ const FEATURE_TABS: FeatureTab[] = [
         <li><strong>PLUR</strong> — shared engram memory across tools/sessions</li>
         <li><strong>Ruflo</strong> — vector memory + swarm helpers</li>
         <li><strong>Executor</strong> — MCP / OpenAPI gateway</li>
-        <li><strong>omp</strong> — Oh My Pi coding-agent backend</li>
-        <li><strong>fractal</strong> — recursive agent trees in git worktrees via <code>/fractal</code> · <em>Unix only</em> — fractal 1.0.0 imports <code>fcntl</code>, so it does not run on Windows (use WSL or a Linux/macOS host) · Python 3.12–3.14, <code>pipx install plasma-fractal</code></li>
+        <li><strong>omp</strong> — Oh My Pi coding-agent backend + universal <code>omp token</code> auth fallback for every provider</li>
+        <li><strong>Headroom</strong> — inline tool-result compress <em>on by default</em> (<code>headroom</code> · <code>/headroom</code>)</li>
+        <li><strong>OptMem</strong> — permanent memory at <code>~/.optmem</code> (<code>optmem</code> · <code>/optmem</code> · <code>/memo</code>: wake · note · nap · recall · doctor)</li>
+        <li><strong>egaki</strong> — image / video / speech (<code>/egaki</code> · <code>/image</code>) · <code>egaki login --provider chatgpt</code> / xai-oauth / plan / BYOK</li>
+        <li><strong>fractal</strong> — recursive agent trees in git worktrees via <code>/fractal</code> · <em>Unix only</em> (use WSL or Linux/macOS; no Windows native) · Python 3.12–3.14, <code>pipx install plasma-fractal</code></li>
+        <li><strong>factory-overnight</strong> — Fractal-first overnight factory from <code>HANDOFF.md</code> (<code>/factory-overnight</code>, Unix preferred)</li>
         <li><strong>penecho</strong> — infinite-canvas sidecar bridged from nur auth (<code>/penecho</code>)</li>
         <li><strong>t3code</strong> — vendor-CLI auth delegation: driver probing, env isolation, pairing tokens</li>
         <li><strong>terminal-browser</strong> — ecosystem-wired Chromium for the TUI (<code>/tb</code> · <code>/terminal-browser</code>)</li>
+        <li><strong>bg</strong> — long-running jobs off the agent turn (<code>bg</code> tool · <code>/bg</code>)</li>
         <li><strong>Plugins</strong> — Superpowers, Vercel, Firecrawl, Fable, Chrome DevTools, …</li>
         <li><strong>AKM</strong> — skill package manager · 800+ cybersecurity / design packs</li>
         <li><strong>Cua</strong> — full-desktop computer-use driver</li>
@@ -160,10 +169,12 @@ const FEATURE_TABS: FeatureTab[] = [
     body: (
       <ul className="cli-feat-list">
         <li>Nur-gold streaming transcript · thought / tool cards · duration chips</li>
+        <li><strong>Queued follow-ups</strong> with send-now · <strong>green/red edit diffs</strong> in the transcript</li>
+        <li><strong>Prompt menu</strong> (right-click): fork · edit · revert · copy</li>
         <li>Peek · drag-select · scrollbar · sticky prompt</li>
         <li>Ctrl+A / C / V / X · reverse-search prompt history (Ctrl+R)</li>
-        <li>Approval mini-diff · y / a / n · sessions browser</li>
-        <li><code>/sidegraph</code> — the live query drawn on a <strong>2D canvas</strong>: parallel subagents fan out side by side and rejoin the trunk, a steer draws a real back-edge into the reasoning it re-enters. Click-drag pans both axes, Ctrl+wheel zooms, drag the left border to resize, right-click a box to peek its live subagent tool output (double/right-click empty canvas resets).</li>
+        <li>Approval mini-diff · y / a / n · sessions browser · <code>/theme</code> live color themes</li>
+        <li><code>/sidegraph</code> — right-panel live node-graph of the current query (parallel subagents fan out and rejoin; steers draw back-edges). Pan / zoom where supported, drag the border to resize, right-click a node to peek · <code>on</code> | <code>off</code> | <code>hide</code></li>
         <li><code>/swarm</code> panes are <strong>click-to-peek</strong> — the modal lists that child&apos;s tool trace, each entry unfolds in place to full args + output, <code>c</code> copies one entry, Ctrl+C copies the lot, <code>e</code> expands the modal</li>
         <li><strong>Ghost-cell recovery</strong> — full terminal clear on resize, focus regain, sidegraph open/close, peek close, theme change, and returning from foreground children (ConPTY-safe)</li>
         <li>Command palette spans the full window width — widen the terminal, read more of every tip</li>
@@ -193,8 +204,8 @@ const FEATURE_TABS: FeatureTab[] = [
 const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: '/help', desc: 'commands + keyboard shortcuts' },
   { cmd: '/commands', desc: 'commands + keyboard shortcuts  (alias of /help)' },
-  { cmd: '/login', desc: 'provider · API key or browser sign-in — /login <provider> pre-selects one (grok · gemini · antigravity …)' },
-  { cmd: '/logout', desc: 'clear the stored API key' },
+  { cmd: '/login', desc: 'provider · API key, browser, or CLI import (Claude/Codex/Cursor/OpenCode/OMP) - /login <provider> pre-selects' },
+  { cmd: '/logout', desc: 'sign out the active provider - clears auth.json + that provider\'s per-provider key/session copies' },
   { cmd: '/model', desc: 'show and switch models for the active provider' },
   { cmd: '/models', desc: 'show and switch models  (alias of /model)' },
   { cmd: '/plugins', desc: 'browse · install · enable marketplace plugins' },
@@ -208,10 +219,24 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: '/new', desc: 'start a fresh session' },
   { cmd: '/cd', desc: 'change working directory (tools sandbox here)' },
   { cmd: '/pwd', desc: 'print the current working directory' },
+  { cmd: '/theme', desc: 'choose a live color theme (/theme <name>)' },
   { cmd: '/sessions', desc: 'browse & open past sessions — press c to switch to takeover' },
   { cmd: '/resume', desc: 'browse & open past sessions (alias of /sessions)' },
   { cmd: '/takeover', desc: 'import a Claude/Codex/Cursor/Grok session & resume it — all workspaces, tab to narrow, c to switch to sessions' },
   { cmd: '/hijack', desc: 'take over a foreign agent session (alias of /takeover)' },
+  { cmd: '/optmem', desc: 'OptMem permanent memory (~/.optmem): wake | note | nap | recall | doctor' },
+  { cmd: '/memo', desc: 'OptMem permanent memory  (alias of /optmem)' },
+  { cmd: '/headroom', desc: 'context compression doctor — inline tool-result compress on by default' },
+  { cmd: '/prewalk', desc: 'OMP-style: strong model plans, then smol at first edit - on|off|status|into <model>|reset' },
+  { cmd: '/egaki', desc: 'image / video / speech via egaki — login --provider chatgpt | xai-oauth | plan | BYOK' },
+  { cmd: '/image', desc: 'egaki image gen  (alias of /egaki)' },
+  { cmd: '/bg', desc: 'background jobs: list | <id> result | cancel | run <cmd>' },
+  { cmd: '/jobs', desc: 'background jobs  (alias of /bg)' },
+  { cmd: '/excalidraw', desc: 'hand-drawn publishable diagrams' },
+  { cmd: '/diagram', desc: 'router: architecture→excalidraw · offline→tldraw · ink/math→penecho' },
+  { cmd: '/how-to-illustrate', desc: 'diagram-type + tool router' },
+  { cmd: '/illustrate', desc: 'diagram-type + tool router  (alias of /how-to-illustrate)' },
+  { cmd: '/factory-overnight', desc: 'fractal-first overnight factory from HANDOFF.md (Unix preferred)' },
   { cmd: '/akarso', desc: 'post/schedule/reply across 14 social platforms (native akarso tool)' },
   { cmd: '/openseo', desc: 'SEO research/audits via OpenSEO MCP (open-source Semrush/Ahrefs alt)' },
   { cmd: '/dialkit', desc: 'live-tune interface parameters — dials/sliders across React/Svelte/Vue/Solid' },
@@ -227,20 +252,20 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: '/fusion', desc: 'multi-model debate → one synthesized answer' },
   { cmd: '/local', desc: 'run a model locally via bundled llama.cpp' },
   { cmd: '/bench', desc: 'benchmark models on your tasks: add | list | run <name> [models] | remove | optimize (GEPA)' },
-  { cmd: '/failover', desc: 'cross-provider failover + privacy tiers' },
+  { cmd: '/failover', desc: 'cross-provider failover + privacy tiers · keys via env, /login, vendor CLI, or omp token' },
   { cmd: '/undo', desc: 'revert the last file edit this session' },
   { cmd: '/receipt', desc: 'session receipt — hash-chained verification' },
   { cmd: '/cua', desc: 'computer-use desktop driver on / off / status' },
   { cmd: '/graph', desc: 'inline live execution-graph card for the turn' },
-  { cmd: '/sidegraph', desc: '2D canvas graph of the current query — parallel subagents fan out, drag to pan, Ctrl+wheel to zoom, drag the border to resize, right-click a box to peek · on | off | hide | zoom | reset' },
-  { cmd: '/swarm', desc: 'inline subagent grid — auto-surfaces when a subagent spawns, each pane names the provider it ran on · detail | hide | off | clear' },
+  { cmd: '/sidegraph', desc: 'right-panel live node-graph — fan-out, steers, peek · on | off | hide' },
+  { cmd: '/swarm', desc: 'inline subagent grid — auto-surfaces when a subagent spawns, each pane names the provider · detail | hide | off | clear' },
   { cmd: '/subagents', desc: 'inline subagent grid  (alias of /swarm)' },
   { cmd: '/agents', desc: 'inline subagent grid  (alias of /swarm)' },
-  { cmd: '/fractal', desc: 'recursive agent tree in git worktrees: init | node list | node status <name> | node start <name> | attach <name> | open — Unix only, use WSL on Windows' },
-  { cmd: '/penecho', desc: 'skill: penecho infinite canvas — ink · MathJax · plots · animations' },
+  { cmd: '/fractal', desc: 'recursive agent tree in git worktrees — Unix only (use WSL on Windows)' },
+  { cmd: '/penecho', desc: 'penecho infinite canvas — ink · MathJax · plots · animations' },
   { cmd: '/pen', desc: 'penecho canvas  (alias of /penecho)' },
   { cmd: '/drawings', desc: 'penecho canvas  (alias of /penecho)' },
-  { cmd: '/t3code', desc: 'skill: vendor-CLI auth delegation — driver probing · delegate · pairing tokens' },
+  { cmd: '/t3code', desc: 'vendor-CLI auth delegation — driver probing · delegate · pairing tokens' },
   { cmd: '/tb', desc: 'terminal-browser: open | ls | action | setup (Windows host fallback via agent-browser-cli)' },
   { cmd: '/terminal-browser', desc: 'terminal-browser  (alias of /tb)' },
   { cmd: '/draw', desc: 'open / build interactive tldraw offline boards' },
@@ -296,17 +321,19 @@ const CLI_SUBCOMMANDS: { cmd: string; desc: string }[] = [
   { cmd: 'nur auth status', desc: 'auth status (never prints the full key)' },
   { cmd: 'nur auth logout', desc: 'remove the saved key / OAuth session' },
   { cmd: 'nur install', desc: 'one-stop stack install / repair' },
-  { cmd: 'nur update', desc: 'force the update now — GitHub release, else git pull + rebuild + reinstall' },
+  { cmd: 'nur update', desc: 'force the update now - GitHub release, else git pull + rebuild + reinstall' },
+  { cmd: 'nur update --check', desc: 'dry-run: report whether a newer release is available' },
   { cmd: 'nur doctor', desc: 'health check' },
   { cmd: 'nur ecosystem ensure', desc: 'install / repair knowledge packs' },
   { cmd: 'nur ecosystem status', desc: 'ecosystem readiness without touching anything' },
-  { cmd: 'nur plugins', desc: 'marketplace from the shell — list | install | enable | disable | uninstall' },
+  { cmd: 'nur plugins', desc: 'marketplace from the shell - list | install | enable | disable | uninstall' },
   { cmd: 'nur sessions', desc: 'list sessions' },
   { cmd: 'nur usage', desc: 'usage log' },
   { cmd: 'nur gateway', desc: 'Telegram bot mode' },
-  { cmd: 'nur local', desc: 'local llama.cpp server control — up | down | status | models' },
-  { cmd: 'nur bench', desc: 'benchmark harness — add | list | run | remove | optimize (GEPA)' },
+  { cmd: 'nur local', desc: 'local llama.cpp server control - up | down | status | models' },
+  { cmd: 'nur bench', desc: 'benchmark harness - add | list | run | remove | optimize (GEPA)' },
   { cmd: 'nur browser setup', desc: 'stage browser extension once' },
+  { cmd: 'nur browser status', desc: 'browser toolchain readiness' },
   { cmd: 'nur install-hook', desc: 'install the Orca agent hook for usage/status reporting' },
 ];
 
@@ -321,11 +348,12 @@ const INSPIRATIONS: Inspiration[] = [
   { group: 'agents', name: 'Claude Code', href: 'https://docs.anthropic.com/en/docs/claude-code', why: 'permission modes · Shift+Tab · skills shape · todos · subagents · session resume patterns' },
   { group: 'agents', name: 'OpenAI Codex CLI', href: 'https://github.com/openai/codex', why: 'CLI agent ergonomics · plan/auto practice · resume-codex bridge' },
   { group: 'agents', name: 'Cursor', href: 'https://cursor.com', why: 'cursor-agent CLI provider · /login without API key · resume-cursor · IDE density' },
-  { group: 'agents', name: 'OpenCode', href: 'https://opencode.ai', why: 'plugin catalog · DCP/context pruning ideas · Zen gateway provider' },
-  { group: 'agents', name: 'Oh My Pi', href: 'https://omp.sh', why: 'headless coding-agent backend delegated via the omp tool' },
+  { group: 'agents', name: 'OpenCode', href: 'https://opencode.ai', why: 'Zen + Go gateway · opencode auth login · DCP/context pruning · plugin catalog' },
+  { group: 'agents', name: 'Oh My Pi', href: 'https://omp.sh', why: 'omp token credential vault for all providers · economy delegate · supersedeReads / contextPromotion patterns' },
   { group: 'agents', name: 'Grok CLI', href: 'https://x.ai', why: 'resume-grok path · browser sign-in patterns for xAI' },
   { group: 'agents', name: 'Kimi Code', href: 'https://www.kimi.com/code/docs/en/', why: 'browser OAuth + coding-plan models via /login · Moonshot Kimi' },
   { group: 'agents', name: 'Antigravity', href: 'https://antigravity.google', why: 'agy CLI session imported by /login · its own provider id for cross-provider subagents' },
+  { group: 'agents', name: 'chagent', href: 'https://github.com/SirTenzin/chagent', why: 'takeover / session migration engine behind /takeover · /hijack' },
   { group: 'agents', name: 'Orca ADE', href: 'https://www.onorca.dev/', why: 'agent host panels · status/usage hooks · OSC state signaling · nur install-hook' },
   { group: 'agents', name: 'Aider', href: 'https://aider.chat', why: 'git-aware coding agent lineage · repo-as-context discipline' },
   { group: 'agents', name: 'Cline', href: 'https://github.com/cline/cline', why: 'tool-loop approval UX · autonomous coding agent patterns' },
@@ -371,6 +399,9 @@ const INSPIRATIONS: Inspiration[] = [
   { group: 'stack', name: 'fractal', href: 'https://github.com/plasma-ai/fractal', why: 'hierarchical recursive agent loops in git worktrees — theirs, driven by nur via /fractal and the fractal tool (Apache-2.0)' },
   { group: 'stack', name: 'penecho', href: 'https://github.com/penecho/penecho', why: 'think with AI beyond the chat box — infinite canvas run as a sidecar, nur only bridges auth + launches it (AGPL-3.0)' },
   { group: 'stack', name: 't3code', href: 'https://github.com/pingdotgg/t3code', why: 'vendor-CLI auth delegation — nur mirrors its driver-probing / no-secret-storage pattern in the t3code tool (MIT)' },
+  { group: 'stack', name: 'Headroom', href: 'https://github.com/headroomlabs-ai/headroom', why: 'inline tool-result compress · on by default · /headroom' },
+  { group: 'stack', name: 'OptMem', href: 'https://github.com/VictorTaelin/OptMem', why: 'permanent memory at ~/.optmem · /optmem · /memo' },
+  { group: 'stack', name: 'egaki', href: 'https://github.com/remorses/egaki', why: 'image / video / speech CLI · /egaki · /image' },
   { group: 'stack', name: 'agent-browser-cli', href: 'https://github.com/sleepinginsummer/agent-browser-cli', why: 'real default-browser perception + control' },
   { group: 'stack', name: 'terminal-browser', href: 'https://terminal-browser.com/', why: 'in-terminal Chromium · /tb · Windows host fallback via agent-browser-cli' },
   { group: 'stack', name: 'Cua', href: 'https://github.com/trycua/cua', why: 'computer-use desktop driver (/cua)' },
@@ -936,8 +967,9 @@ export default function CliPage() {
               </a>
             </div>
             <p className="cli-tagline">
-              Extremely efficient token spend. Custom Rust harness, dense gold TUI,
-              native vision, 62 providers, 800+ skills — your personal coding agent.
+              Extremely efficient token spend - Headroom on by default. Custom Rust
+              harness, dense gold TUI, native vision, 62 providers, 800+ skills -
+              your personal coding agent.
             </p>
             <div className="cli-hero-cta">
               <button
@@ -975,7 +1007,7 @@ export default function CliPage() {
 
         <ul className="cli-stats" aria-label="Highlights">
           <li><strong>62</strong><span>providers</span></li>
-          <li><strong>lean</strong><span>token spend by default</span></li>
+          <li><strong>Headroom</strong><span>compress on by default</span></li>
           <li><strong>800+</strong><span>skills</span></li>
           <li>
             <strong className={verFlash ? 'cli-stat-ver cli-stat-ver--flash' : 'cli-stat-ver'}>
