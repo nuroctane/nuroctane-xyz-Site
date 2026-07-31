@@ -19,7 +19,7 @@
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (92)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (33)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (41)
-- [[#Unsorted Sparks|Unsorted Sparks]] (1)
+- [[#Unsorted Sparks|Unsorted Sparks]] (2)
 - [[#Reality, Manifestation & Abundance|Reality, Manifestation & Abundance]] (1)
 
 ## Faith, God & Surrender
@@ -1899,6 +1899,10 @@ _Auto-created section._
 > 
 > Not evil advice.
 > — @QuantumRover
+
+> People most taken advantage of are out there thinking they’re taking advantage of.
+> — @MrE_mssg
+
 
 
 ## Reality, Manifestation & Abundance

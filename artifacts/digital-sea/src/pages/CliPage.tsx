@@ -78,11 +78,12 @@ const FEATURE_TABS: FeatureTab[] = [
     blurb: 'Modes, providers, budgets, resume.',
     body: (
       <ul className="cli-feat-list">
-        <li><strong>Multi-provider</strong> via <code>/login</code> — 61 (OpenAI, Anthropic, Gemini, xAI, Groq, OpenRouter, Ollama, Meta Model API, …)</li>
+        <li><strong>Multi-provider</strong> via <code>/login</code> — 62 (OpenAI, Anthropic, Gemini, xAI, Groq, OpenRouter, Ollama, Meta Model API, Cursor, …)</li>
         <li><strong>Signed into the vendor CLI = signed into nur</strong> — Claude Code, Codex, Grok, Kimi, Cursor, OpenCode, Antigravity/gcloud sessions are imported automatically, and refreshed when stale. No key to paste.</li>
+        <li><strong>Cursor as a first-class provider</strong> — <code>cursor-agent login</code> (no pasted API key). Chat runs through <code>cursor-agent -p</code>; nur keeps the tool loop, approvals, plan mode, and cross-provider subagents. Optional <code>NUR_CURSOR_NATIVE=1</code> for full Cursor Agent delegate.</li>
         <li>Permission modes: <strong>manual</strong> / <strong>plan</strong> / <strong>auto</strong> · Shift+Tab mid-turn</li>
         <li>Tool loop · approvals · Esc cancel · subagents · todos · plan mode</li>
-        <li><strong>Cross-provider subagents</strong> — the <code>agent</code> tool takes an optional <code>provider</code> (and optional <code>model</code>), so a child can run on a different provider than the parent. Natural-language aliases resolve: claude / sonnet / opus → anthropic, grok → xai, gemini / flash / pro → google, <code>antigravity</code> stays its own provider.</li>
+        <li><strong>Cross-provider subagents</strong> — the <code>agent</code> tool takes an optional <code>provider</code> (and optional <code>model</code>), so a child can run on a different provider than the parent. Natural-language aliases resolve: claude / sonnet / opus → anthropic, grok → xai, gemini / flash / pro → google, cursor → cursor, <code>antigravity</code> stays its own provider.</li>
         <li>A routed subagent uses <strong>that provider&apos;s</strong> stored credentials, and auto-imports a logged-in vendor CLI session when there is no key on disk. No credentials at all → the spawn is <strong>blocked</strong>, never silently re-run on the parent: <code>/login</code> opens pre-selected to that provider, and after sign-in nur injects the exact re-deploy call.</li>
         <li><strong>Fan-out</strong> — several <code>agent</code> calls in one response run concurrently, <strong>up to 4 at a time</strong>; the rest queue behind the cap</li>
         <li><code>/swarm</code> subagent grid <strong>auto-surfaces</strong> the moment a subagent spawns, and every pane names the provider that child ran on — <code>hide</code> dismisses it for the turn, <code>off</code> freezes, <code>clear</code> drops finished runs, <code>detail</code> adds the status row</li>
@@ -98,7 +99,7 @@ const FEATURE_TABS: FeatureTab[] = [
   {
     id: 'tools',
     label: 'Tools',
-    blurb: 'Read, edit, shell, web, browser, git.',
+    blurb: 'Read, edit, shell, web, browsers, git.',
     body: (
       <ul className="cli-feat-list">
         <li><strong>read</strong> — <code>read_file</code> · <code>list_dir</code> · <code>grep</code> · <code>glob</code></li>
@@ -107,6 +108,7 @@ const FEATURE_TABS: FeatureTab[] = [
         <li><strong>vision</strong> — <code>look</code> · <code>extract_frames</code> (sparse keyframes, not spam)</li>
         <li><strong>web</strong> — <code>web_search</code> · <code>web_fetch</code></li>
         <li><strong>browser</strong> — real default browser via agent-browser-cli</li>
+        <li><strong>terminal-browser</strong> — <a href="https://terminal-browser.com/">terminal-browser.com</a> in-terminal Chromium (<code>terminal_browser</code> · <code>/tb</code>); Windows host fallback via agent-browser-cli</li>
         <li><strong>git</strong> — <code>git_status</code> · <code>git_diff</code></li>
         <li><strong>knowledge</strong> — <code>graphify</code> · <code>graphjin</code> · <code>plur</code> · <code>ruflo</code> · <code>executor</code> · <code>skill</code> · <code>memory</code></li>
         <li><strong>diagrams</strong> — <code>excalidraw</code> · <code>tldraw</code></li>
@@ -144,6 +146,7 @@ const FEATURE_TABS: FeatureTab[] = [
         <li><strong>fractal</strong> — recursive agent trees in git worktrees via <code>/fractal</code> · <em>Unix only</em> — fractal 1.0.0 imports <code>fcntl</code>, so it does not run on Windows (use WSL or a Linux/macOS host) · Python 3.12–3.14, <code>pipx install plasma-fractal</code></li>
         <li><strong>penecho</strong> — infinite-canvas sidecar bridged from nur auth (<code>/penecho</code>)</li>
         <li><strong>t3code</strong> — vendor-CLI auth delegation: driver probing, env isolation, pairing tokens</li>
+        <li><strong>terminal-browser</strong> — ecosystem-wired Chromium for the TUI (<code>/tb</code> · <code>/terminal-browser</code>)</li>
         <li><strong>Plugins</strong> — Superpowers, Vercel, Firecrawl, Fable, Chrome DevTools, …</li>
         <li><strong>AKM</strong> — skill package manager · 800+ cybersecurity / design packs</li>
         <li><strong>Cua</strong> — full-desktop computer-use driver</li>
@@ -162,6 +165,7 @@ const FEATURE_TABS: FeatureTab[] = [
         <li>Approval mini-diff · y / a / n · sessions browser</li>
         <li><code>/sidegraph</code> — the live query drawn on a <strong>2D canvas</strong>: parallel subagents fan out side by side and rejoin the trunk, a steer draws a real back-edge into the reasoning it re-enters. Click-drag pans both axes, Ctrl+wheel zooms, drag the left border to resize, right-click a box to peek its live subagent tool output (double/right-click empty canvas resets).</li>
         <li><code>/swarm</code> panes are <strong>click-to-peek</strong> — the modal lists that child&apos;s tool trace, each entry unfolds in place to full args + output, <code>c</code> copies one entry, Ctrl+C copies the lot, <code>e</code> expands the modal</li>
+        <li><strong>Ghost-cell recovery</strong> — full terminal clear on resize, focus regain, sidegraph open/close, peek close, theme change, and returning from foreground children (ConPTY-safe)</li>
         <li>Command palette spans the full window width — widen the terminal, read more of every tip</li>
         <li>Splash: NUR logotype + active provider · lean banner</li>
       </ul>
@@ -237,6 +241,8 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: '/pen', desc: 'penecho canvas  (alias of /penecho)' },
   { cmd: '/drawings', desc: 'penecho canvas  (alias of /penecho)' },
   { cmd: '/t3code', desc: 'skill: vendor-CLI auth delegation — driver probing · delegate · pairing tokens' },
+  { cmd: '/tb', desc: 'terminal-browser: open | ls | action | setup (Windows host fallback via agent-browser-cli)' },
+  { cmd: '/terminal-browser', desc: 'terminal-browser  (alias of /tb)' },
   { cmd: '/draw', desc: 'open / build interactive tldraw offline boards' },
   { cmd: '/steer', desc: 'inject a message into the running turn (no cancel)' },
   { cmd: '/scan', desc: 'map the codebase → shareable foglamp scan' },
@@ -314,7 +320,7 @@ type Inspiration = {
 const INSPIRATIONS: Inspiration[] = [
   { group: 'agents', name: 'Claude Code', href: 'https://docs.anthropic.com/en/docs/claude-code', why: 'permission modes · Shift+Tab · skills shape · todos · subagents · session resume patterns' },
   { group: 'agents', name: 'OpenAI Codex CLI', href: 'https://github.com/openai/codex', why: 'CLI agent ergonomics · plan/auto practice · resume-codex bridge' },
-  { group: 'agents', name: 'Cursor', href: 'https://cursor.com', why: 'IDE-agent workflows · resume-cursor · multi-file edit density' },
+  { group: 'agents', name: 'Cursor', href: 'https://cursor.com', why: 'cursor-agent CLI provider · /login without API key · resume-cursor · IDE density' },
   { group: 'agents', name: 'OpenCode', href: 'https://opencode.ai', why: 'plugin catalog · DCP/context pruning ideas · Zen gateway provider' },
   { group: 'agents', name: 'Oh My Pi', href: 'https://omp.sh', why: 'headless coding-agent backend delegated via the omp tool' },
   { group: 'agents', name: 'Grok CLI', href: 'https://x.ai', why: 'resume-grok path · browser sign-in patterns for xAI' },
@@ -366,6 +372,7 @@ const INSPIRATIONS: Inspiration[] = [
   { group: 'stack', name: 'penecho', href: 'https://github.com/penecho/penecho', why: 'think with AI beyond the chat box — infinite canvas run as a sidecar, nur only bridges auth + launches it (AGPL-3.0)' },
   { group: 'stack', name: 't3code', href: 'https://github.com/pingdotgg/t3code', why: 'vendor-CLI auth delegation — nur mirrors its driver-probing / no-secret-storage pattern in the t3code tool (MIT)' },
   { group: 'stack', name: 'agent-browser-cli', href: 'https://github.com/sleepinginsummer/agent-browser-cli', why: 'real default-browser perception + control' },
+  { group: 'stack', name: 'terminal-browser', href: 'https://terminal-browser.com/', why: 'in-terminal Chromium · /tb · Windows host fallback via agent-browser-cli' },
   { group: 'stack', name: 'Cua', href: 'https://github.com/trycua/cua', why: 'computer-use desktop driver (/cua)' },
   { group: 'stack', name: 'AKM', href: 'https://www.npmjs.com/package/akm-cli', why: 'skill package manager across Claude / OpenCode / Cursor' },
   { group: 'stack', name: 'Excalidraw', href: 'https://excalidraw.com', why: 'hand-drawn architecture diagrams from the agent' },
@@ -930,7 +937,7 @@ export default function CliPage() {
             </div>
             <p className="cli-tagline">
               Extremely efficient token spend. Custom Rust harness, dense gold TUI,
-              native vision, 61 providers, 800+ skills — your personal coding agent.
+              native vision, 62 providers, 800+ skills — your personal coding agent.
             </p>
             <div className="cli-hero-cta">
               <button
@@ -967,7 +974,7 @@ export default function CliPage() {
         </div>
 
         <ul className="cli-stats" aria-label="Highlights">
-          <li><strong>61</strong><span>providers</span></li>
+          <li><strong>62</strong><span>providers</span></li>
           <li><strong>lean</strong><span>token spend by default</span></li>
           <li><strong>800+</strong><span>skills</span></li>
           <li>
@@ -1079,7 +1086,7 @@ export default function CliPage() {
             ))}
           </ol>
           <p className="cli-after-note">
-            Or run <code>nur</code> and use <code>/login</code> in the TUI — pick any of 61 providers,
+            Or run <code>nur</code> and use <code>/login</code> in the TUI — pick any of 62 providers,
             paste a key, or sign in with the browser where available.
             {' '}
             <a
