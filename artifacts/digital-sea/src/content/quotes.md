@@ -19,6 +19,7 @@
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (92)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (33)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (41)
+- [[#Unsorted Sparks|Unsorted Sparks]] (1)
 
 ## Faith, God & Surrender
 
@@ -1877,4 +1878,18 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 
 > you stop taking it personally once you understand the universe is not out to get you. sometimes it’s working for you in ways you can’t see yet, and sometimes it’s simply happening, indifferent, neither cruel nor kind. either way you can use it. either way you can stack it into your own growth if you refuse to be a victim of it.
 > — @josbjohnson
+
+
+## Unsorted Sparks
+
+_Auto-created section._
+
+> One of my favourite lesson from Reality Transurfing is:
+> 
+> Wether you’re good or evil, if you feel guilt things WILL turn against you.
+> 
+> That’s why a lot of evil people don’t seem to have things turn against them, simply because they act without feeling shame nor fear against the consequences (no guilt).
+> 
+> Not evil advice.
+> — @QuantumRover
 
