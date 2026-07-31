@@ -1,0 +1,64 @@
+# Push-to-main deploy for the Cloudflare Worker.
+#
+# Workers Builds (dashboard git integration) is the preferred path when healthy,
+# but it went silent after 2026-07-30 (no builds for later main commits). This
+# workflow is the durable, in-repo equivalent: pnpm build → wrangler deploy.
+#
+# Required repo secrets (Settings → Secrets → Actions):
+#   CLOUDFLARE_API_TOKEN   user token with Workers Scripts Edit + Account read
+#   CLOUDFLARE_ACCOUNT_ID  e83dad6e7a96326d6d934346696ce78a
+#
+# If Workers Builds is later reconnected, either disable this workflow or set
+# the Builds deploy command to `npx wrangler versions upload` so only one
+# path promotes production.
+
+name: Deploy Worker
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-nuroctane-xyz
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    # Soft-skip until CLOUDFLARE_API_TOKEN is set in repo secrets.
+    # Account id: e83dad6e7a96326d6d934346696ce78a
+    if: ${{ secrets.CLOUDFLARE_API_TOKEN != '' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.34.4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        run: pnpm run build
+        env:
+          # Build-time Vite vars (also set these in Workers Builds if that path returns).
+          VITE_POSTHOG_KEY: ${{ secrets.VITE_POSTHOG_KEY }}
+          VITE_POSTHOG_HOST: ${{ secrets.VITE_POSTHOG_HOST }}
+
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy
+          packageManager: pnpm

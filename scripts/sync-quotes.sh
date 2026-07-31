@@ -2,6 +2,7 @@
 # Sync quotes: Obsidian vault -> digital-sea repo (commits only on change).
 #
 # Steps:
+#   0. Ensure we are on origin/main (never commit on a detached HEAD / side branch)
 #   1. Strip YAML frontmatter (--- ... ---) from the source md
 #   2. Auto-refresh the "## Index" list from the actual "## " headings in the
 #      body (Obsidian index drifts when sections are added; the client reads
@@ -11,6 +12,8 @@
 #      blocking on soft issues (index/body count mismatch, callouts leaking
 #      into sections).
 #   4. Commit + push only if something actually changed after step 3.
+#   5. Deploy via wrangler when a push landed (Workers Builds webhook has been
+#      unreliable; local deploy keeps /quotes live). Set SYNC_DEPLOY=0 to skip.
 
 set -uo pipefail
 
@@ -18,9 +21,55 @@ REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || REPO_ROOT="/c/Users/
 SRC="${OBSIDIAN_VAULT:-$HOME/iCloudDrive/iCloud~md~obsidian/∞∞∞/Metaphysics/Quotes.md}"
 DEST="$REPO_ROOT/artifacts/digital-sea/src/content/quotes.md"
 REL_DEST="artifacts/digital-sea/src/content/quotes.md"
+LOG_DIR="$REPO_ROOT/.nur"
+mkdir -p "$LOG_DIR"
 
 [[ -f "$SRC" ]] || { echo "Source not found: $SRC"; exit 1; }
 [[ -d "$REPO_ROOT/.git" ]] || { echo "Repo root not found: $REPO_ROOT"; exit 1; }
+
+cd "$REPO_ROOT" || exit 1
+
+# --- 0. Land on main before any mutation ------------------------------------
+# A prior sync committed on a detached HEAD; `git push origin main` then no-oped
+# and quotes never reached production. Always reset to the production branch.
+ensure_main() {
+  # Refuse to clobber unrelated dirty work outside the quotes file.
+  local dirty
+  dirty="$(git status --porcelain --untracked-files=no | grep -vE 'quotes\.md$' || true)"
+  if [[ -n "$dirty" && "${SYNC_FORCE:-0}" != "1" ]]; then
+    echo "[$(date)] Repo has unrelated local changes - aborting quotes sync:"
+    echo "$dirty"
+    echo "  (set SYNC_FORCE=1 to stash them, sync, and restore)"
+    exit 3
+  fi
+  if [[ -n "$dirty" ]]; then
+    git stash push -u -m "poll-sync auto stash $(date +%s)" -- .
+  fi
+
+  git fetch origin main >/dev/null 2>&1 || true
+  local branch
+  branch="$(git rev-parse --abbrev-ref HEAD 2>/dev/null || echo HEAD)"
+  if [[ "$branch" != "main" ]]; then
+    echo "[$(date)] Checking out main (was: $branch)"
+    # Discard only quotes.md drift so checkout can proceed; other files were
+    # already gated above.
+    git checkout -- "$REL_DEST" 2>/dev/null || true
+    git checkout main || {
+      echo "[$(date)] FATAL: cannot checkout main"
+      exit 4
+    }
+  fi
+  if ! git pull --ff-only origin main; then
+    echo "[$(date)] FATAL: cannot fast-forward main from origin"
+    exit 4
+  fi
+}
+
+# Verification mode: exercise the real source, transformation, and parser
+# without modifying the checkout or invoking git.
+if [[ "${SYNC_DRY_RUN:-0}" != "1" ]]; then
+  ensure_main
+fi
 
 # 1. Strip frontmatter.
 STRIPPED="$(mktemp)"
@@ -148,9 +197,6 @@ if [[ $SANITY -ne 0 ]]; then
     exit $SANITY
 fi
 
-# Verification mode: exercise the real source, transformation, and parser
-# without modifying the checkout or invoking git. This is safe to use from
-# deployment checks and while other work is uncommitted.
 if [[ "${SYNC_DRY_RUN:-0}" == "1" ]]; then
     if cmp -s "$REINDEXED" "$DEST"; then
         echo "[$(date)] DRY RUN: quotes are in sync"
@@ -170,7 +216,6 @@ fi
 
 mv "$REINDEXED" "$DEST"
 rm -f "$STRIPPED"
-cd "$REPO_ROOT" || exit 1
 git add "$REL_DEST"
 
 # Commit-guard: if git-diff shows nothing staged (line endings normalized
@@ -181,5 +226,25 @@ if git diff --cached --quiet -- "$REL_DEST"; then
 fi
 
 git commit -m "chore: sync quotes from Obsidian vault [auto]"
-git push origin main
+# Push the commit we just made on main - never push a detached SHA as "main".
+if ! git push origin HEAD:main; then
+    echo "[$(date)] FATAL: git push origin HEAD:main failed"
+    exit 5
+fi
 echo "[$(date)] Quotes synced and pushed"
+
+# 5. Deploy. Workers Builds should fire on push; it has been silent since
+# 2026-07-30, so keep /quotes live with a local wrangler deploy when enabled.
+if [[ "${SYNC_DEPLOY:-1}" == "1" ]]; then
+    echo "[$(date)] Deploying Worker (SYNC_DEPLOY=1)…"
+    if command -v pnpm >/dev/null 2>&1; then
+        if pnpm run build && npx wrangler deploy; then
+            echo "[$(date)] Deploy OK"
+        else
+            echo "[$(date)] WARNING: deploy failed - quotes are on GitHub main; redeploy manually"
+            exit 6
+        fi
+    else
+        echo "[$(date)] WARNING: pnpm not on PATH - skipped deploy"
+    fi
+fi
