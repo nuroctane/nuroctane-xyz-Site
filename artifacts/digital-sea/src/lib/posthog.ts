@@ -18,7 +18,9 @@
 type PostHog = (typeof import('posthog-js'))['default'];
 
 const KEY = import.meta.env.VITE_POSTHOG_KEY;
-const HOST = import.meta.env.VITE_POSTHOG_HOST ?? 'https://us.i.posthog.com';
+/** First-party proxy (e.nuroctane.xyz) resists ad blockers; falls back to US ingest. */
+const HOST = import.meta.env.VITE_POSTHOG_HOST ?? 'https://e.nuroctane.xyz';
+const UI_HOST = import.meta.env.VITE_POSTHOG_UI_HOST ?? 'https://us.posthog.com';
 
 declare global {
   interface Window {
@@ -53,6 +55,7 @@ export function initPostHog(): void {
       const { default: p } = await import('posthog-js');
       p.init(KEY, {
         api_host: HOST,
+        ui_host: UI_HOST,
         // Pageviews are reported by hand from the resolved wouter route.
         capture_pageview: false,
         // The site fires a curated set of events via trackEvent(); autocapture

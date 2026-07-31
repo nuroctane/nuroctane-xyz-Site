@@ -133,7 +133,7 @@ Quotes sync strips Obsidian frontmatter, rebuilds `## Index`, parser-sanity-chec
 
 **Build-time** (`VITE_*` - Workers Builds → Build variables, and local `.env.local`):
 
-- `VITE_POSTHOG_KEY` / `VITE_POSTHOG_HOST` - analytics
+- `VITE_POSTHOG_KEY` / `VITE_POSTHOG_HOST` / `VITE_POSTHOG_UI_HOST` - analytics (host defaults to first-party proxy `https://e.nuroctane.xyz`; Worker in `workers/posthog-relay/`)
 - `VITE_GOOGLE_BOOKS_API_KEY` - Books search (optional; Open Library fallback)
 - Observatory weather / traffic keys as consumed under `artifacts/digital-sea/src/observatory/`
 

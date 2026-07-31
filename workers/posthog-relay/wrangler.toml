@@ -1,0 +1,14 @@
+# First-party PostHog reverse proxy (ad-blocker resistant).
+# Docs: https://posthog.com/docs/advanced/proxy/cloudflare
+#
+# Deploy: npx wrangler deploy -c workers/posthog-relay/wrangler.toml
+# Clients use: api_host=https://e.nuroctane.xyz  ui_host=https://us.posthog.com
+
+name = "nuroctane-ph-relay"
+main = "src/index.js"
+compatibility_date = "2026-06-01"
+workers_dev = true
+
+routes = [
+  { pattern = "e.nuroctane.xyz", custom_domain = true }
+]
