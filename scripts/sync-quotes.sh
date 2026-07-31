@@ -12,8 +12,9 @@
 #      blocking on soft issues (index/body count mismatch, callouts leaking
 #      into sections).
 #   4. Commit + push only if something actually changed after step 3.
-#   5. Deploy via wrangler when a push landed (Workers Builds webhook has been
-#      unreliable; local deploy keeps /quotes live). Set SYNC_DEPLOY=0 to skip.
+#   5. Optional local deploy after push (SYNC_DEPLOY=1). Default is off so a
+#      healthy Workers Builds run is the single promote path; set SYNC_DEPLOY=1
+#      only when Builds is silent.
 
 set -uo pipefail
 
@@ -245,9 +246,8 @@ if ! git push origin HEAD:main; then
 fi
 echo "[$(date)] Quotes synced and pushed"
 
-# 5. Deploy. Workers Builds should fire on push; it has been silent since
-# 2026-07-30, so keep /quotes live with a local wrangler deploy when enabled.
-if [[ "${SYNC_DEPLOY:-1}" == "1" ]]; then
+# 5. Optional local deploy. Prefer Workers Builds on push (see AGENTS.md).
+if [[ "${SYNC_DEPLOY:-0}" == "1" ]]; then
     echo "[$(date)] Deploying Worker (SYNC_DEPLOY=1)…"
     if command -v pnpm >/dev/null 2>&1; then
         if pnpm run build && npx wrangler deploy; then
