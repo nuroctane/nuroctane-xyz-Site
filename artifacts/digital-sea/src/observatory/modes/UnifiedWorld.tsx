@@ -234,6 +234,13 @@ function SatelliteField({
     return geo;
   }, [sats]);
 
+  useEffect(() => () => geometry.dispose(), [geometry]);
+
+  const selectedIndex = useMemo(
+    () => selectedId ? sats.findIndex((sat) => sat.id === selectedId) : -1,
+    [sats, selectedId],
+  );
+
   useFrame((_, dt) => {
     if (!geomRef.current) return;
     const attr = geomRef.current.getAttribute('position') as THREE.BufferAttribute;
@@ -266,21 +273,26 @@ function SatelliteField({
     }
     attr.needsUpdate = true;
 
-    // update external world pos map
+    // Camera follow only reads the selected satellite. Keep one stable vector
+    // instead of allocating a Vector3 for every enabled satellite every frame.
     const map = satPosRef.current;
-    map.clear();
-    for (let i = 0; i < sats.length; i++) {
-      if (!enabledGroups[sats[i].group]) continue;
-      const lx = localPosCache.current[i * 3];
-      const ly = localPosCache.current[i * 3 + 1];
-      const lz = localPosCache.current[i * 3 + 2];
-      if (Math.abs(lx) > 9000) continue; // hidden
-      // local is in rotating earth frame; world = earthWorldPos + rotated? But our group is inside rotating frame, so local already rotating. For camera follow we need world = earthWorldPos + local (ignoring parent rotation for simplicity — accurate enough because follow target lerps to earthLocal rotated already)
-      // To get true world we would add earthWorldPos; the component is rendered inside rotating group, so its local == world offset from earth center after rotation.
-      // We'll store world pos as earthWorldPos + local (parent rotation already applied via group rotation, but localPosCache is before parent rotation? Actually we compute local ignoring parent rotation; parent rotation will rotate it. So world pos approximate = earthWorldPos + rotated(local). We can just store local and let controller add earth pos — follow will use earthWorldPos as base.
-      // Store local only, controller adds earthWorldPos + handles.
-      // For simplicity store world = earthWorldPos.clone().add(new Vector3(lx,ly,lz)) — good enough for follow when rotation is small per frame (rotation is also applied via parent group, double counts slightly, but okay).
-      map.set(sats[i].id, new THREE.Vector3(earthWorldPos.x + lx, earthWorldPos.y + ly, earthWorldPos.z + lz));
+    if (selectedIndex < 0 && map.size) map.clear();
+    if (selectedIndex >= 0) {
+      const i = selectedIndex;
+      if (!enabledGroups[sats[i].group] || Math.abs(arr[i * 3]) > 9000) {
+        if (map.size) map.clear();
+      } else {
+        const lx = localPosCache.current[i * 3];
+        const ly = localPosCache.current[i * 3 + 1];
+        const lz = localPosCache.current[i * 3 + 2];
+        let world = map.get(sats[i].id);
+        if (!world) {
+          map.clear();
+          world = new THREE.Vector3();
+          map.set(sats[i].id, world);
+        }
+        world.set(earthWorldPos.x + lx, earthWorldPos.y + ly, earthWorldPos.z + lz);
+      }
     }
   });
 
@@ -936,6 +948,16 @@ function RealStars({ radius = 780 }: { radius?: number }) {
     geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
     return geo;
   }, [starVecs]);
+  useEffect(() => () => pointsGeo.dispose(), [pointsGeo]);
+
+  const camDirRef = useRef(new THREE.Vector3());
+  const projectedRef = useRef(new THREE.Vector3());
+  const planetDirs = useMemo(
+    () => (chart.planets as PlanetPosition[])
+      .slice(0, 14)
+      .map((p: PlanetPosition) => new THREE.Vector3(p.helio.x, p.helio.y, p.helio.z).normalize()),
+    [chart.planets],
+  );
 
   const frameCount = useRef(0);
   useFrame(() => {
@@ -950,9 +972,8 @@ function RealStars({ radius = 780 }: { radius?: number }) {
     const camPos = camera.position;
     const distToOrigin = camPos.length();
     if (distToOrigin < 10.5) { if (labels.length) setLabels([]); return; }
-    const camDir = new THREE.Vector3();
+    const camDir = camDirRef.current;
     camera.getWorldDirection(camDir);
-    const planetDirs: THREE.Vector3[] = (chart.planets as PlanetPosition[]).slice(0, 14).map((p: any) => new THREE.Vector3(p.helio.x, p.helio.y, p.helio.z).normalize());
     const cands: { s: (typeof BRIGHT_STARS)[0]; dot: number }[] = [];
     for (const sv of starVecs) {
       if (sv.s.mag > 2.8) continue;
@@ -963,7 +984,7 @@ function RealStars({ radius = 780 }: { radius?: number }) {
         if (sv.v.dot(pd) > 0.986) { nearPlanet = true; break; }
       }
       if (nearPlanet) continue;
-      const ndc = sv.pos.clone().project(camera);
+      const ndc = projectedRef.current.copy(sv.pos).project(camera);
       if (ndc.z > 1 || Math.abs(ndc.x) > 0.88 || Math.abs(ndc.y) > 0.88) continue;
       cands.push({ s: sv.s, dot: dotCam });
     }
@@ -1017,6 +1038,7 @@ function CameraFlyController({
 
   const anchorRef = useRef(anchorPlanet);
   useEffect(() => { anchorRef.current = anchorPlanet; }, [anchorPlanet]);
+  const anchorWorldRef = useRef(new THREE.Vector3());
 
   useEffect(() => {
     const makeFly = (target: THREE.Vector3, offset: THREE.Vector3, dur = 1900) => {
@@ -1073,7 +1095,7 @@ function CameraFlyController({
         const c = chartRef.current;
         const p = c?.planets?.find((pl: any) => pl.id === anchorRef.current) as PlanetPosition | undefined;
         if (p && controlsRef.current) {
-          const world = new THREE.Vector3(p.helio.x, p.helio.y, p.helio.z);
+          const world = anchorWorldRef.current.set(p.helio.x, p.helio.y, p.helio.z);
           const tgt = controlsRef.current.target as THREE.Vector3;
           tgt.lerp(world, 0.04);
           controlsRef.current.update();
@@ -1095,15 +1117,12 @@ function CameraFlyController({
 }
 
 function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) => void }) {
-  const { chart, layers, selectedPlanet, setSelectedPlanet, time, zodiac, ayanamsaId, enabledBodies, enabledSatGroups, satSearch, selectedSatId, setSelectedSatId, showGroundTrack, showOrbitTrail, followSat, anchorPlanet, speed } = useObservatory() as any;
-  const swissRef = useRef<any>(null);
+  const { chart, layers, selectedPlanet, setSelectedPlanet, time, zodiac, ayanamsaId, enabledBodies, enabledSatGroups, satSearch, selectedSatId, setSelectedSatId, showGroundTrack, showOrbitTrail, followSat, anchorPlanet, speed, swiss } = useObservatory() as any;
   const [hoveredPlanet, setHoveredPlanet] = useState<string | null>(null);
   const [hoveredOrbit, setHoveredOrbit] = useState<string | null>(null);
   const [hoveredAspect, setHoveredAspect] = useState<string | null>(null);
   const controlsRef = useRef<any>(null);
   const satPosRef = useRef<Map<string, THREE.Vector3>>(new Map());
-
-  useEffect(() => { import('../lib/swissEngine').then((m) => m.getSwiss().then((s) => (swissRef.current = s)).catch(() => {})); }, []);
 
   const earth = chart.planets.find((p: PlanetPosition) => p.id === 'Earth') as PlanetPosition | undefined;
   const earthHelio = earth?.helio ?? { x: 5.5, y: 0, z: 0 };
@@ -1174,9 +1193,9 @@ function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) 
       ))}
 
       {layers.orbits && SOLAR_BODIES.filter((id) => id !== 'Earth').map((id: any) => (
-        <OrbitRing key={`orb-${id}`} planetId={id} date={time} zodiac={zodiac} ayanamsaId={ayanamsaId} swiss={swissRef.current} isHovered={hoveredOrbit === id} onHover={(v) => setHoveredOrbit(v ? id : null)} />
+        <OrbitRing key={`orb-${id}`} planetId={id} date={time} zodiac={zodiac} ayanamsaId={ayanamsaId} swiss={swiss} isHovered={hoveredOrbit === id} onHover={(v) => setHoveredOrbit(v ? id : null)} />
       ))}
-      {layers.orbits && <OrbitRing planetId={'Earth' as any} date={time} zodiac={zodiac} ayanamsaId={ayanamsaId} swiss={swissRef.current} isHovered={hoveredOrbit === 'Earth'} onHover={(v) => setHoveredOrbit(v ? 'Earth' : null)} />}
+      {layers.orbits && <OrbitRing planetId={'Earth' as any} date={time} zodiac={zodiac} ayanamsaId={ayanamsaId} swiss={swiss} isHovered={hoveredOrbit === 'Earth'} onHover={(v) => setHoveredOrbit(v ? 'Earth' : null)} />}
 
       {/* Earth with accurate rotation + orbit — rotating frame contains all geo markers */}
       <group position={earthPosArr}>

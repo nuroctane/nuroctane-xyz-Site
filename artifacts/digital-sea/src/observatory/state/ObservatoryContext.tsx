@@ -4,7 +4,6 @@ import {
   useContext,
   useEffect,
   useMemo,
-  useRef,
   useState,
   type ReactNode,
 } from 'react';
@@ -88,6 +87,7 @@ interface ObservatoryState {
   setEarthSubmode: (m: 'satellites' | 'explore') => void;
   swissReady: boolean;
   swissVersion: string | null;
+  swiss: SwissReady | null;
   hudOpen: boolean;
   setHudOpen: (v: boolean) => void;
   systemsPanel: 'layers' | 'zodiac' | 'houses' | 'bodies' | 'aspects' | 'chart' | 'observer' | 'advanced' | 'satellites' | 'anchors';
@@ -135,6 +135,13 @@ const Ctx = createContext<ObservatoryState | null>(null);
 
 export const SPEEDS = [-86400, -3600, -240, -60, -10, -1, 0, 1, 10, 60, 240, 3600, 86400, 604800];
 
+// swisseph-wasm 0.0.5 resolves its binary/data files relative to the generated
+// JS chunk, while Vite fingerprints them under /assets. That makes its browser
+// initializer fetch the SPA shell as WASM and abort. Astronomy Engine already
+// provides the supported fallback, so avoid the failed allocation/download
+// path until the upstream loader accepts explicit asset URLs.
+const SWISS_WASM_BROWSER_ENABLED = false;
+
 export function ObservatoryProvider({ children }: { children: ReactNode }) {
   const [mode, setMode] = useState<ObservatoryMode>('sky');
   const [time, setTimeState] = useState(() => new Date());
@@ -164,9 +171,6 @@ export function ObservatoryProvider({ children }: { children: ReactNode }) {
   const [swissVersion, setSwissVersion] = useState<string | null>(null);
   const [hudOpen, setHudOpen] = useState(true);
   const [systemsPanel, setSystemsPanel] = useState<ObservatoryState['systemsPanel']>('zodiac');
-  const raf = useRef<number | null>(null);
-  const last = useRef<number>(performance.now());
-
   // Exhaustive toggles
   const [topocentric, setTopocentric] = useState(false);
   const [heliocentric, setHeliocentric] = useState(false);
@@ -184,6 +188,7 @@ export function ObservatoryProvider({ children }: { children: ReactNode }) {
   const [timezone, setTimezone] = useState<'utc' | 'local' | 'observer'>('utc');
 
   useEffect(() => {
+    if (!SWISS_WASM_BROWSER_ENABLED) return;
     let cancelled = false;
     getSwiss()
       .then((s) => {
@@ -268,52 +273,30 @@ export function ObservatoryProvider({ children }: { children: ReactNode }) {
   }, []);
 
   useEffect(() => {
-    last.current = performance.now();
-    const tick = (now: number) => {
-      const dt = (now - last.current) / 1000;
-      last.current = now;
-      if (live) setTimeState(new Date());
-      else if (speed !== 0) {
-        setTimeState((t) =>
-          clampDate(new Date(t.getTime() + dt * speed * 1000), EPHEMERIS_MIN, EPHEMERIS_MAX),
+    // The Three.js scene owns smooth frame animation. Publishing Observatory
+    // context at 60+ Hz made every orbit, chart, and HUD consumer rebuild on
+    // every frame. Wall-clock mode only needs one-second precision; accelerated
+    // simulation remains responsive at 10 Hz while retaining elapsed accuracy.
+    if (live) setTimeState(new Date());
+    if (!live && speed === 0) return;
+
+    let previous = performance.now();
+    const intervalMs = live ? 1_000 : 100;
+    const tick = () => {
+      const now = performance.now();
+      const dt = Math.max(0, Math.min((now - previous) / 1_000, 5));
+      previous = now;
+      if (live) {
+        setTimeState(new Date());
+      } else {
+        setTimeState((current) =>
+          clampDate(new Date(current.getTime() + dt * speed * 1_000), EPHEMERIS_MIN, EPHEMERIS_MAX),
         );
       }
-      raf.current = requestAnimationFrame(tick);
     };
-    raf.current = requestAnimationFrame(tick);
-    return () => {
-      if (raf.current) cancelAnimationFrame(raf.current);
-    };
+    const id = window.setInterval(tick, intervalMs);
+    return () => window.clearInterval(id);
   }, [live, speed]);
-
-  const [chartTick, setChartTick] = useState(0);
-  useEffect(() => {
-    if (!live) {
-      setChartTick((n) => n + 1);
-      return;
-    }
-    const id = window.setInterval(() => setChartTick((n) => n + 1), 1000);
-    return () => clearInterval(id);
-  }, [
-    live,
-    time,
-    zodiac,
-    ayanamsaId,
-    houseSystem,
-    enabledBodies,
-    enabledAspects,
-    chartType,
-    birthDate,
-    secondDate,
-    fortuneFormula,
-    orbScale,
-    observer,
-    swiss,
-    topocentric,
-    heliocentric,
-    nodeMode,
-    lilithMode,
-  ]);
 
   const chart = useMemo(
     () =>
@@ -336,8 +319,7 @@ export function ObservatoryProvider({ children }: { children: ReactNode }) {
         heliocentric,
         trueNode: nodeMode === 'true',
       }),
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    [chartTick, time, zodiac, ayanamsaId, houseSystem, observer, enabledBodies, enabledAspects, fortuneFormula, chartType, birthDate, secondDate, secondObserver, orbScale, swiss, topocentric, heliocentric, nodeMode, lilithMode],
+    [time, zodiac, ayanamsaId, houseSystem, observer, enabledBodies, enabledAspects, fortuneFormula, chartType, birthDate, secondDate, secondObserver, orbScale, swiss, topocentric, heliocentric, nodeMode, lilithMode],
   );
 
   const natalChart = useMemo<ChartSnapshot | null>(() => {
@@ -365,7 +347,7 @@ export function ObservatoryProvider({ children }: { children: ReactNode }) {
     } catch {
       return null;
     }
-  }, [birthDate, zodiac, ayanamsaId, houseSystem, observer, enabledBodies, enabledAspects, fortuneFormula, secondObserver, orbScale, swiss, topocentric, nodeMode, chartTick]);
+  }, [birthDate, zodiac, ayanamsaId, houseSystem, observer, enabledBodies, enabledAspects, fortuneFormula, secondObserver, orbScale, swiss, topocentric, nodeMode]);
 
   // Apply node/lilith mode side-effects to enabledBodies for UX (toggle shows which is active)
   useEffect(() => {
@@ -435,6 +417,7 @@ export function ObservatoryProvider({ children }: { children: ReactNode }) {
       setEarthSubmode,
       swissReady: !!swiss,
       swissVersion,
+      swiss,
       hudOpen,
       setHudOpen,
       systemsPanel,

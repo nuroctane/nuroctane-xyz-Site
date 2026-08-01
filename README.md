@@ -71,6 +71,8 @@ Product page for [nur-cli](https://github.com/nuroctane/nur-cli): multi-provider
 ### Observatory (`/observatory`)
 Swiss Ephemeris astrology, Cesium Earth exploration, CelesTrak satellites / SGP4, solar system, sky chart, missions, weather. Spec: `docs/research/components/observatory.spec.md`.
 
+The Three.js scene owns frame-by-frame visual motion. Shared ephemeris/chart state publishes at 1 Hz in live mode and 10 Hz during accelerated simulation; per-frame satellite code must mutate bounded buffers/objects rather than allocate one object per satellite. `pnpm run check:observatory` guards those stability contracts.
+
 ---
 
 ## Production architecture
