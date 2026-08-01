@@ -7,18 +7,13 @@ import type { Context } from "hono";
 import { kvGet, kvSet } from "@workspace/kv";
 import { logger } from "../lib/logger";
 import { readBody } from "../lib/body";
+import { checkAdminPassword } from "../lib/admin-password";
 
 const router = new Hono();
 
 const GALLERY_KEY = "modkeys:gallery";
 const MAX_ENTRIES = 100;
 const MAX_SNAP_JSON_SIZE = 20 * 1024; // 20KB
-
-/* Same secret as the books page admin mode (BOOKS_ADMIN_PASSWORD).
-   MODKEYS_ADMIN_PASSWORD kept as fallback for older env configs / smoke.
-   Read lazily — see the note in books.ts. */
-const adminPassword = (): string =>
-  process.env.BOOKS_ADMIN_PASSWORD || process.env.MODKEYS_ADMIN_PASSWORD || "";
 
 interface GalleryEntry {
   id: string;
@@ -61,10 +56,7 @@ function sanitizeName(name: unknown): string {
 }
 
 function checkAdmin(password: unknown): "ok" | "unset" | "bad" {
-  const ADMIN_PASSWORD = adminPassword();
-  if (!ADMIN_PASSWORD) return "unset";
-  if (password === ADMIN_PASSWORD) return "ok";
-  return "bad";
+  return checkAdminPassword(password);
 }
 
 async function handleVerifyAdmin(c: Context, body: GalleryBody) {

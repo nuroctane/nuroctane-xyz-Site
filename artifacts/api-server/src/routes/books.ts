@@ -6,16 +6,12 @@ import { Hono } from "hono";
 import { kvGet, kvSet } from "@workspace/kv";
 import { logger } from "../lib/logger";
 import { readBody } from "../lib/body";
+import { checkAdminPassword } from "../lib/admin-password";
 
 const router = new Hono();
 
 const BOOKS_KEY = "visitor-books";
 const OVERRIDES_KEY = "read-overrides";
-
-/* Read lazily rather than at module scope: on Workers, process.env is populated
- * on first access to `process`, and module top-level runs during isolate setup.
- * A function keeps the read inside the request lifecycle where env is settled. */
-const adminPassword = (): string => process.env.BOOKS_ADMIN_PASSWORD ?? "";
 
 interface Book {
   title: string;
@@ -50,11 +46,10 @@ router.post("/visitor-books", async (c) => {
       read?: boolean;
     }>(c);
     const { action } = body;
-    const ADMIN_PASSWORD = adminPassword();
-
     if (action === "verifyAdmin") {
-      if (!ADMIN_PASSWORD) return c.json({ error: "Admin password not configured" }, 500);
-      if (body.password === ADMIN_PASSWORD) return c.json({ ok: true });
+      const status = checkAdminPassword(body.password);
+      if (status === "unset") return c.json({ error: "Admin password not configured" }, 500);
+      if (status === "ok") return c.json({ ok: true });
       return c.json({ error: "Unauthorized" }, 403);
     }
 
@@ -90,8 +85,9 @@ router.post("/visitor-books", async (c) => {
 
       if (password) {
         // Admin delete via password
-        if (!ADMIN_PASSWORD) return c.json({ error: "Admin password not configured" }, 500);
-        if (password !== ADMIN_PASSWORD) return c.json({ error: "Unauthorized" }, 403);
+        const status = checkAdminPassword(password);
+        if (status === "unset") return c.json({ error: "Admin password not configured" }, 500);
+        if (status !== "ok") return c.json({ error: "Unauthorized" }, 403);
         idx = books.findIndex(
           (b) => b.title === book?.title && b.author === book?.author && b.dateAdded === book?.dateAdded,
         );
@@ -115,7 +111,7 @@ router.post("/visitor-books", async (c) => {
         const stored = books[idx];
         const isOwner = stored.sessionId && stored.sessionId === body.sessionId;
         const noOwner = !stored.sessionId;
-        if (!noOwner && !isOwner && (!ADMIN_PASSWORD || password !== ADMIN_PASSWORD)) {
+        if (!noOwner && !isOwner && checkAdminPassword(password) !== "ok") {
           return c.json({ error: "Unauthorized" }, 403);
         }
         books[idx].read = !books[idx].read;
@@ -126,7 +122,7 @@ router.post("/visitor-books", async (c) => {
 
     if (action === "toggleCuratedRead") {
       const { password, key, read } = body;
-      if (!ADMIN_PASSWORD || password !== ADMIN_PASSWORD) {
+      if (checkAdminPassword(password) !== "ok") {
         return c.json({ error: "Unauthorized" }, 403);
       }
       const overrides = (await kvGet<Record<string, boolean>>(OVERRIDES_KEY)) ?? {};

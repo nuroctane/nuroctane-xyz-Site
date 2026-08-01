@@ -153,12 +153,29 @@ async function smokeMisc(app: App): Promise<void> {
   ok(missing.status === 404, "unknown API path → 404");
 }
 
+async function smokeAdminSecretAliases(app: App): Promise<void> {
+  process.env.BOOKS_ADMIN_PASSWORD = "smoke-books-secret";
+  process.env.MODKEYS_ADMIN_PASSWORD = "smoke-modkeys-secret";
+
+  for (const [label, password] of [
+    ["BOOKS_ADMIN_PASSWORD", "smoke-books-secret"],
+    ["MODKEYS_ADMIN_PASSWORD", "smoke-modkeys-secret"],
+  ] as const) {
+    const books = await jfetch(app, "/api/visitor-books", { action: "verifyAdmin", password });
+    ok(books.status === 200 && books.json?.ok === true, `Books accepts ${label}`);
+
+    const modkeys = await jfetch(app, "/api/modkeys/gallery", { action: "verifyAdmin", password });
+    ok(modkeys.status === 200 && modkeys.json?.ok === true, `Modkeys accepts ${label}`);
+  }
+}
+
 (async () => {
   // Imported dynamically so the env assignments above are applied first.
   const app = (await import("@workspace/api-server")).default as App;
   await smokeBooks(app);
   await smokeModkeys(app);
   await smokeMisc(app);
+  await smokeAdminSecretAliases(app);
   console.log(`SMOKE OK (${passed} assertions)`);
   process.exit(0);
 })().catch((err) => {
