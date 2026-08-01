@@ -2,7 +2,7 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "nuroctane-xyz",
   "main": "worker/index.ts",
-  "compatibility_date": "2026-07-31",
+  "compatibility_date": "2026-06-01",
 
   // nodejs_compat is needed for two things:
   //   1. process.env — populated from vars and secrets automatically for any
@@ -17,12 +17,6 @@
     { "pattern": "www.nuroctane.xyz", "custom_domain": true }
   ],
   "observability": { "enabled": true },
-
-  // Put the Worker in front of Cloudflare's cache for the routes that opt into
-  // run_worker_first below. This is what gives large media normal HTTP byte
-  // ranges: Cloudflare fetches and caches the complete 200 response from the
-  // Worker, then answers the browser's Range request with 206 Partial Content.
-  "cache": { "enabled": true },
 
   "assets": {
     "directory": "artifacts/digital-sea/dist/public",

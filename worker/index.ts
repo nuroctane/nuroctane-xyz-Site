@@ -13,8 +13,8 @@
  *
  * Static assets are served by the ASSETS binding and never invoke this Worker
  * unless the path is listed in assets.run_worker_first (see wrangler.jsonc).
- * MP3s deliberately take that path so Workers Caching can satisfy browser byte
- * ranges with 206 responses instead of forcing a full 13.5 MB transfer.
+ * MP3s deliberately take that path so serveAudioAsset() can satisfy browser
+ * byte ranges instead of forcing a full 13.5 MB transfer.
  */
 import app from "@workspace/api-server";
 import { refreshContributions } from "@workspace/api-server/github-contrib";
@@ -28,6 +28,97 @@ export interface Env {
 
 const SITE = "https://www.nuroctane.xyz";
 const OG_TIMEOUT_MS = 10_000;
+
+interface ByteRange {
+  start: number;
+  end: number;
+}
+
+/** Parse the single byte range used by HTML media elements. */
+export function parseByteRange(value: string, size: number): ByteRange | null {
+  if (!value.startsWith("bytes=") || value.includes(",") || size <= 0) return null;
+
+  const match = /^bytes=(\d*)-(\d*)$/.exec(value);
+  if (!match || (!match[1] && !match[2])) return null;
+
+  let start: number;
+  let end: number;
+
+  if (!match[1]) {
+    const suffixLength = Number(match[2]);
+    if (!Number.isSafeInteger(suffixLength) || suffixLength <= 0) return null;
+    start = Math.max(0, size - suffixLength);
+    end = size - 1;
+  } else {
+    start = Number(match[1]);
+    end = match[2] ? Number(match[2]) : size - 1;
+    if (!Number.isSafeInteger(start) || !Number.isSafeInteger(end)) return null;
+    if (start >= size || end < start) return null;
+    end = Math.min(end, size - 1);
+  }
+
+  return { start, end };
+}
+
+/**
+ * Workers Static Assets currently ignores Range and returns the complete MP3.
+ * Convert that full, cached asset into the RFC 9110 single-range response that
+ * browsers expect. This fixes delivery; it does not pause, restart, or seek the
+ * audio element.
+ */
+async function serveAudioAsset(request: Request, env: Env): Promise<Response> {
+  const headers = new Headers(request.headers);
+  headers.delete("range");
+  headers.delete("if-range");
+  const assetRequest = new Request(request, { headers });
+  const asset = await env.ASSETS.fetch(assetRequest);
+
+  if (!asset.ok || (request.method !== "GET" && request.method !== "HEAD")) {
+    return asset;
+  }
+
+  const responseHeaders = new Headers(asset.headers);
+  responseHeaders.set("Accept-Ranges", "bytes");
+
+  const rangeHeader = request.headers.get("range");
+  const ifRange = request.headers.get("if-range");
+  const etag = asset.headers.get("etag");
+  if (!rangeHeader || (ifRange && etag && ifRange !== etag)) {
+    return new Response(request.method === "HEAD" ? null : asset.body, {
+      status: asset.status,
+      statusText: asset.statusText,
+      headers: responseHeaders,
+    });
+  }
+
+  const contentLength = asset.headers.get("content-length");
+  let size = contentLength === null ? Number.NaN : Number(contentLength);
+  let body: ArrayBuffer | null = null;
+  if (!Number.isSafeInteger(size) || size < 0) {
+    body = await asset.arrayBuffer();
+    size = body.byteLength;
+  }
+
+  const range = parseByteRange(rangeHeader, size);
+  if (!range) {
+    responseHeaders.set("Content-Range", `bytes */${size}`);
+    responseHeaders.set("Content-Length", "0");
+    return new Response(null, { status: 416, headers: responseHeaders });
+  }
+
+  responseHeaders.set("Content-Range", `bytes ${range.start}-${range.end}/${size}`);
+  responseHeaders.set("Content-Length", String(range.end - range.start + 1));
+
+  if (request.method === "HEAD") {
+    return new Response(null, { status: 206, headers: responseHeaders });
+  }
+
+  body ??= await asset.arrayBuffer();
+  return new Response(body.slice(range.start, range.end + 1), {
+    status: 206,
+    headers: responseHeaders,
+  });
+}
 
 /**
  * Serve /api/og from the residual Vercel deployment.
@@ -95,6 +186,10 @@ async function proxyOg(request: Request, env: Env, ctx: ExecutionContext): Promi
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
+
+    if (url.pathname.startsWith("/assets/nodes/") && url.pathname.endsWith(".mp3")) {
+      return serveAudioAsset(request, env);
+    }
 
     if (url.pathname === "/api/og" || url.pathname.startsWith("/api/og/")) {
       return proxyOg(request, env, ctx);

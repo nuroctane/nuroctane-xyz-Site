@@ -1,8 +1,8 @@
 # Cloudflare Workers Static Assets serves everything with
 # `Cache-Control: public, max-age=0, must-revalidate` by default. The MP3 route
-# is sent through Workers Caching by wrangler.jsonc so browser Range requests
-# receive 206 Partial Content; this TTL keeps the complete source response warm
-# at the edge and avoids unnecessary browser revalidation during normal play.
+# is sent through the Worker by wrangler.jsonc so browser Range requests receive
+# a standards-compliant 206 response; this TTL also avoids unnecessary browser
+# revalidation during normal play.
 #
 # Rules here are scoped by extension, never by directory, because `*` matches
 # greedily across path segments AND Cloudflare *joins* duplicate headers with a
