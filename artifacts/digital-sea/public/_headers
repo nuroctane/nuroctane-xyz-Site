@@ -1,10 +1,8 @@
 # Cloudflare Workers Static Assets serves everything with
-# `Cache-Control: public, max-age=0, must-revalidate` by default, and does not
-# honour Range requests (a `Range:` header returns 200 with the full body, and
-# there is no Accept-Ranges). For the main-page audio that combination breaks
-# playback: the 13.5 MB track is revalidated on every play, and because the
-# media element cannot issue a byte-range request it has no way to resume
-# mid-file if a fetch is interrupted — so the song stops before the end.
+# `Cache-Control: public, max-age=0, must-revalidate` by default. The MP3 route
+# is sent through Workers Caching by wrangler.jsonc so browser Range requests
+# receive 206 Partial Content; this TTL keeps the complete source response warm
+# at the edge and avoids unnecessary browser revalidation during normal play.
 #
 # Rules here are scoped by extension, never by directory, because `*` matches
 # greedily across path segments AND Cloudflare *joins* duplicate headers with a

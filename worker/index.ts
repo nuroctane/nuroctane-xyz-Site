@@ -13,6 +13,8 @@
  *
  * Static assets are served by the ASSETS binding and never invoke this Worker
  * unless the path is listed in assets.run_worker_first (see wrangler.jsonc).
+ * MP3s deliberately take that path so Workers Caching can satisfy browser byte
+ * ranges with 206 responses instead of forcing a full 13.5 MB transfer.
  */
 import app from "@workspace/api-server";
 import { refreshContributions } from "@workspace/api-server/github-contrib";
