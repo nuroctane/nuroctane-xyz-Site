@@ -52,9 +52,10 @@ Aesthetic inspiration: **Code Lyoko** (MoonScoop, 2003–2007). [Wikipedia](http
 
 ### Books
 - Curated shelves + Kindle wishlist content (`artifacts/digital-sea/src/content/books.md`)
-- Live search via Google Books (Open Library fallback)
-- Community recommendations; admin mode for submissions
-- Cover caching and lazy loading
+- Federated, deduplicated discovery across Google Books, Open Library, Crossref, Library of Congress, Internet Archive, and Project Gutenberg
+- Community recommendations plus independent manual title/author entry
+- Validated custom-cover uploads (exactly 600×900px; JPEG, PNG, or WebP; 300 KB max)
+- Cover caching, source provenance, descriptions, and lazy enrichment
 
 ### Quotes
 - Narrow thematic sections (Faith, Reality, Manifestation, Shadow, …)
@@ -134,10 +135,9 @@ Quotes sync strips Obsidian frontmatter, rebuilds `## Index`, parser-sanity-chec
 **Build-time** (`VITE_*` - Workers Builds → Build variables, and local `.env.local`):
 
 - `VITE_POSTHOG_KEY` / `VITE_POSTHOG_HOST` / `VITE_POSTHOG_UI_HOST` - analytics (host defaults to managed proxy `https://i.nuroctane.xyz`)
-- `VITE_GOOGLE_BOOKS_API_KEY` - Books search (optional; Open Library fallback)
 - Observatory weather / traffic keys as consumed under `artifacts/digital-sea/src/observatory/`
 
-**Runtime** (Worker secrets via `wrangler secret put`): KV credentials, `JWT_SECRET`, GitHub OAuth, etc.
+**Runtime** (Worker secrets via `wrangler secret put`): KV credentials, `JWT_SECRET`, GitHub OAuth, etc. `GOOGLE_BOOKS_API_KEY` is optional for higher Google Books quota; public volume search works without authentication and every other catalog remains available if Google rate-limits a request.
 
 See `artifacts/digital-sea/.env.example`. Adding a new `VITE_*` means updating `.env.local`, the example file, **and** Workers Builds vars.
 

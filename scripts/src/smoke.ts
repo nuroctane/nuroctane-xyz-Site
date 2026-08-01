@@ -64,9 +64,10 @@ async function smokeBooks(app: App): Promise<void> {
   ok(g.status === 200 && Array.isArray(g.json?.books) && typeof g.json?.overrides === "object",
     "GET /api/visitor-books shape {books[], overrides{}}");
 
-  const book = { title: "Smoke Title", author: "Smoke Author", dateAdded: "2026-01-01T00:00:00.000Z", sessionId: "smoke-session" };
-  const add = await jfetch(app, "/api/visitor-books", { action: "add", book });
-  ok(add.status === 200 && add.json?.ok === true, "POST add visitor book");
+  const submittedBook = { title: "Smoke Title", author: "Smoke Author", dateAdded: "2026-01-01T00:00:00.000Z", sessionId: "smoke-session" };
+  const add = await jfetch(app, "/api/visitor-books", { action: "add", book: submittedBook });
+  ok(add.status === 200 && add.json?.ok === true && add.json?.book?.title === "Smoke Title", "POST add visitor book");
+  const book = add.json.book;
 
   g = await jfetch(app, "/api/visitor-books");
   ok(g.json.books.some((b: any) => b.title === "Smoke Title"), "added book appears in GET");
@@ -83,6 +84,49 @@ async function smokeBooks(app: App): Promise<void> {
   ok(ownerDel.status === 200 && ownerDel.json?.ok === true, "owner delete via sessionId");
   g = await jfetch(app, "/api/visitor-books");
   ok(!g.json.books.some((b: any) => b.title === "Smoke Title"), "deleted book absent from GET");
+
+  const pngHeader = Uint8Array.from([
+    0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a,
+    0x00, 0x00, 0x00, 0x0d, 0x49, 0x48, 0x44, 0x52,
+    0x00, 0x00, 0x02, 0x58, // 600px
+    0x00, 0x00, 0x03, 0x84, // 900px
+    0x08, 0x06, 0x00, 0x00, 0x00,
+    0x00, 0x00, 0x00, 0x00,
+  ]);
+  const coverDataUrl = `data:image/png;base64,${Buffer.from(pngHeader).toString("base64")}`;
+  const coverAdd = await jfetch(app, "/api/visitor-books", {
+    action: "add",
+    book: { title: "Covered Smoke", author: "Manual Author", sessionId: "cover-session", source: "Manual entry" },
+    coverUpload: { dataUrl: coverDataUrl },
+  });
+  ok(coverAdd.status === 200 && /^\/api\/book-covers\/[0-9a-f-]+$/i.test(coverAdd.json?.book?.coverUrl),
+    "manual book stores bounded cover separately");
+
+  const coverPath = coverAdd.json.book.coverUrl as string;
+  const coverResponse = await app.fetch(new Request(BASE + coverPath), {}, ctx);
+  ok(coverResponse.status === 200 && coverResponse.headers.get("content-type") === "image/png",
+    "uploaded cover is retrievable with its validated MIME type");
+  ok((await coverResponse.arrayBuffer()).byteLength === pngHeader.byteLength,
+    "uploaded cover bytes round-trip intact");
+
+  const wrongSize = pngHeader.slice();
+  wrongSize[19] = 0x01; // width 513 rather than 600
+  const wrongSizeAdd = await jfetch(app, "/api/visitor-books", {
+    action: "add",
+    book: { title: "Wrong Cover Size", sessionId: "cover-session" },
+    coverUpload: { dataUrl: `data:image/png;base64,${Buffer.from(wrongSize).toString("base64")}` },
+  });
+  ok(wrongSizeAdd.status === 400 && /exactly 600/.test(wrongSizeAdd.json?.error),
+    "server rejects cover with non-contract dimensions");
+
+  const coverDelete = await jfetch(app, "/api/visitor-books", {
+    action: "delete",
+    book: coverAdd.json.book,
+    sessionId: "cover-session",
+  });
+  ok(coverDelete.status === 200, "owner can delete a manually covered book");
+  const deletedCover = await app.fetch(new Request(BASE + coverPath), {}, ctx);
+  ok(deletedCover.status === 404, "deleting a book also deletes its cover object");
 
   const badAdmin = await jfetch(app, "/api/visitor-books", { action: "verifyAdmin", password: "wrong" });
   ok(badAdmin.status === 403, "verifyAdmin wrong password → 403");
@@ -143,6 +187,9 @@ async function smokeModkeys(app: App): Promise<void> {
 async function smokeMisc(app: App): Promise<void> {
   const unknown = await jfetch(app, "/api/visitor-books", { action: "nope" });
   ok(unknown.status === 400 && unknown.json?.error === "Unknown action", "unknown books action → 400");
+
+  const missingSearch = await jfetch(app, "/api/book-search");
+  ok(missingSearch.status === 400, "book search requires a meaningful query");
 
   /* No cookie → { user: null } rather than a 401. The modkeys page relies on
      this to decide whether to show the sign-in prompt. */

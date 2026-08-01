@@ -2042,14 +2042,10 @@ html.standalone-active body {
 }
 
 .bs-search-dropdown {
-  position: absolute;
-  top: 100%;
-  left: 0;
-  right: 0;
+  position: relative;
   background: rgba(4, 14, 22, 0.98);
   border: 1px solid rgba(93, 232, 240, 0.2);
-  border-top: none;
-  max-height: 320px;
+  max-height: 380px;
   overflow-y: auto;
   z-index: 50;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
@@ -2116,7 +2112,32 @@ html.standalone-active body {
 .bs-search-year {
   font-size: 0.4rem;
   color: #3a6a72;
-  margin-top: 1px;
+}
+
+.bs-search-foot {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-top: 3px;
+  min-width: 0;
+}
+
+.bs-search-source {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #4a9aaa;
+  font-size: 0.38rem;
+  letter-spacing: 0.04em;
+}
+
+.bs-search-empty {
+  color: #4a9aaa;
+  font-size: 0.46rem;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid rgba(93, 232, 240, 0.08);
+  background: rgba(93, 232, 240, 0.025);
 }
 
 .bs-search-add {
@@ -2198,6 +2219,26 @@ html.standalone-active body {
   letter-spacing: 0.08em;
   color: #3a6a72;
   margin-top: 0.3rem;
+}
+
+.bs-modal-provenance {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.3rem 0.55rem;
+  margin-top: 0.35rem;
+  color: #3f7f89;
+  font-size: 0.4rem;
+  letter-spacing: 0.05em;
+}
+
+.bs-modal-provenance a {
+  color: #4a9aaa;
+  text-decoration: none;
+}
+
+.bs-modal-provenance a:hover {
+  color: #5de8f0;
 }
 
 .bs-date {
@@ -2425,6 +2466,13 @@ html.standalone-active body {
   color: #3a6a72;
 }
 
+.bs-confirm-source {
+  font-size: 0.4rem;
+  line-height: 1.35;
+  color: #4a9aaa;
+  letter-spacing: 0.04em;
+}
+
 .bs-confirm-synopsis {
   font-size: 0.5rem;
   line-height: 1.5;
@@ -2498,6 +2546,154 @@ html.standalone-active body {
 .bs-confirm-cancel:disabled {
   opacity: 0.4;
   cursor: default;
+}
+
+/* ── Manual book entry + bounded cover upload ── */
+
+.bs-manual-modal {
+  width: 480px;
+}
+
+.bs-manual-grid {
+  display: grid;
+  gap: 0.7rem;
+}
+
+.bs-manual-field {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.bs-manual-field > span,
+.bs-cover-upload-title {
+  color: #6aacb5;
+  font-size: 0.42rem;
+  letter-spacing: 0.11em;
+}
+
+.bs-manual-note {
+  min-height: 72px;
+  resize: vertical;
+  line-height: 1.45;
+}
+
+.bs-cover-upload {
+  display: grid;
+  grid-template-columns: 84px minmax(0, 1fr);
+  gap: 0.9rem;
+  align-items: center;
+  margin: 1rem 0;
+  padding: 0.75rem;
+  border: 1px solid rgba(93, 232, 240, 0.1);
+  background: rgba(93, 232, 240, 0.025);
+}
+
+.bs-cover-upload-preview {
+  width: 84px;
+  height: 126px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: rgba(93, 232, 240, 0.04);
+  border: 1px solid rgba(93, 232, 240, 0.12);
+  color: #4a9aaa;
+  font-size: 1.2rem;
+}
+
+.bs-cover-upload-preview img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
+
+.bs-cover-upload-copy {
+  min-width: 0;
+}
+
+.bs-cover-upload-rules {
+  margin: 0.35rem 0 0.7rem;
+  color: #3f7f89;
+  font-size: 0.43rem;
+  line-height: 1.5;
+}
+
+.bs-cover-file {
+  display: block;
+  width: 100%;
+  color: #6aacb5;
+  font: 0.45rem 'JetBrains Mono', monospace;
+}
+
+.bs-cover-file::file-selector-button {
+  margin-right: 0.55rem;
+  padding: 0.4rem 0.55rem;
+  border: 1px solid rgba(93, 232, 240, 0.18);
+  background: rgba(93, 232, 240, 0.06);
+  color: #5de8f0;
+  font: inherit;
+  cursor: pointer;
+}
+
+.bs-cover-upload-selected {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin-top: 0.6rem;
+  color: #8bcad0;
+  font-size: 0.4rem;
+}
+
+.bs-cover-upload-selected span {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.bs-cover-upload-selected button {
+  border: 0;
+  background: none;
+  color: #e85d5d;
+  font: 0.4rem 'JetBrains Mono', monospace;
+  cursor: pointer;
+}
+
+.bs-manual-error {
+  margin: -0.25rem 0 0.75rem;
+  padding: 0.5rem 0.6rem;
+  border: 1px solid rgba(232, 93, 93, 0.18);
+  background: rgba(232, 93, 93, 0.06);
+  color: #e85d5d;
+  font-size: 0.45rem;
+  line-height: 1.45;
+}
+
+@media (max-width: 520px) {
+  .bs-search-result {
+    align-items: flex-start;
+  }
+
+  .bs-search-add {
+    margin-top: 0.2rem;
+  }
+
+  .bs-cover-upload {
+    grid-template-columns: 68px minmax(0, 1fr);
+    gap: 0.65rem;
+    padding: 0.6rem;
+  }
+
+  .bs-cover-upload-preview {
+    width: 68px;
+    height: 102px;
+  }
+
+  .bs-confirm-actions {
+    flex-direction: column-reverse;
+  }
 }
 
 .bs-api-warning {

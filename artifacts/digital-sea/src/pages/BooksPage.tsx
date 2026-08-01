@@ -7,9 +7,10 @@ import raw from '../content/books.md?raw';
 import bookMeta from '../data/bookMeta.json';
 import { trackEvent } from '../lib/analytics';
 
-const GB_KEY = import.meta.env.VITE_GOOGLE_BOOKS_API_KEY;
-const GB_BASE = 'https://www.googleapis.com/books/v1/volumes';
-const OL_SEARCH = 'https://openlibrary.org/search.json';
+const COVER_WIDTH = 600;
+const COVER_HEIGHT = 900;
+const COVER_MAX_BYTES = 300 * 1024;
+const COVER_TYPES = new Set(['image/jpeg', 'image/png', 'image/webp']);
 
 interface Book {
   title: string;
@@ -18,6 +19,11 @@ interface Book {
   note?: string;
   visitor?: boolean;
   coverUrl?: string;
+  coverId?: string;
+  description?: string;
+  year?: string;
+  source?: string;
+  sourceUrl?: string;
   dateAdded?: string;
   sessionId?: string;
 }
@@ -25,29 +31,6 @@ interface Book {
 interface Shelf {
   name: string;
   books: Book[];
-}
-
-interface GBResult {
-  id: string;
-  volumeInfo: {
-    title: string;
-    authors?: string[];
-    imageLinks?: { thumbnail?: string; smallThumbnail?: string };
-    description?: string;
-    publishedDate?: string;
-  };
-}
-
-interface OLResult {
-  key: string;
-  title: string;
-  author_name?: string[];
-  cover_i?: number;
-  first_publish_year?: number;
-}
-
-interface OLWork {
-  description?: string | { value: string };
 }
 
 // Unified search result used by the dropdown + confirmation dialog
@@ -58,11 +41,25 @@ interface SearchResult {
   coverUrl: string | undefined;
   description: string | undefined;
   year: string | undefined;
+  source: string;
+  sources: string[];
+  sourceUrl: string | undefined;
 }
 
 interface APIResponse {
   books: Book[];
   overrides: Record<string, boolean>;
+}
+
+interface SearchAPIResponse {
+  results?: SearchResult[];
+  sources?: string[];
+}
+
+interface ManualCover {
+  dataUrl: string;
+  name: string;
+  bytes: number;
 }
 
 function parseBooks(src: string): Shelf[] {
@@ -102,15 +99,41 @@ function initial(name: string): string {
   return m ? m[0].toUpperCase() : '?';
 }
 
-function fixCoverUrl(url: string | undefined): string | undefined {
-  if (!url) return undefined;
-  return url.replace(/^http:/, 'https:');
-}
-
 function buildQuery(book: Book): string {
   return book.author
-    ? `${encodeURIComponent(book.title)} ${encodeURIComponent(book.author)}`
-    : encodeURIComponent(book.title);
+    ? `${book.title} ${book.author}`
+    : book.title;
+}
+
+async function readImageDimensions(file: File): Promise<{ width: number; height: number }> {
+  if ('createImageBitmap' in window) {
+    const bitmap = await createImageBitmap(file);
+    const dimensions = { width: bitmap.width, height: bitmap.height };
+    bitmap.close();
+    return dimensions;
+  }
+  const objectUrl = URL.createObjectURL(file);
+  try {
+    return await new Promise((resolve, reject) => {
+      const image = new Image();
+      image.onload = () => resolve({ width: image.naturalWidth, height: image.naturalHeight });
+      image.onerror = () => reject(new Error('The selected file is not a readable image'));
+      image.src = objectUrl;
+    });
+  } finally {
+    URL.revokeObjectURL(objectUrl);
+  }
+}
+
+async function readFileDataUrl(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => typeof reader.result === 'string'
+      ? resolve(reader.result)
+      : reject(new Error('Could not read the selected cover'));
+    reader.onerror = () => reject(new Error('Could not read the selected cover'));
+    reader.readAsDataURL(file);
+  });
 }
 
 function bookKey(b: Book): string {
@@ -142,6 +165,7 @@ export default function BooksPage() {
   const [readOverrides, setReadOverrides] = useState<Record<string, boolean>>({});
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
+  const [searchSources, setSearchSources] = useState<string[]>([]);
   const [searching, setSearching] = useState(false);
   const [detailCover, setDetailCover] = useState<string | null>(null);
   const [loadingCover, setLoadingCover] = useState(false);
@@ -157,9 +181,17 @@ export default function BooksPage() {
 
   const [pendingBook, setPendingBook] = useState<SearchResult | null>(null);
   const [pendingNote, setPendingNote] = useState('');
+  const [manualOpen, setManualOpen] = useState(false);
+  const [manualTitle, setManualTitle] = useState('');
+  const [manualAuthor, setManualAuthor] = useState('');
+  const [manualNote, setManualNote] = useState('');
+  const [manualCover, setManualCover] = useState<ManualCover | null>(null);
+  const [manualError, setManualError] = useState('');
 
   const searchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const searchAbort = useRef<AbortController | null>(null);
+  const enrichmentCache = useRef(new Map<string, Promise<SearchResult | null>>());
+  const manualFileRef = useRef<HTMLInputElement | null>(null);
   const adminPasswordRef = useRef(
     (() => {
       try { return sessionStorage.getItem(ADMIN_PW_KEY) || ''; }
@@ -247,7 +279,8 @@ export default function BooksPage() {
     }
   };
 
-  // Debounced search — tries Google Books first, falls back to Open Library
+  // Debounced federated search. The Worker queries every catalog concurrently,
+  // tolerates individual upstream failures, and returns merged provenance.
   useEffect(() => {
     if (searchTimer.current) clearTimeout(searchTimer.current);
     if (searchAbort.current) searchAbort.current.abort();
@@ -255,6 +288,7 @@ export default function BooksPage() {
     const q = searchQuery.trim();
     if (q.length < 2) {
       setSearchResults([]);
+      setSearchSources([]);
       setSearching(false);
       return;
     }
@@ -264,56 +298,21 @@ export default function BooksPage() {
       const ac = new AbortController();
       searchAbort.current = ac;
 
-      // Try Google Books first — skipped entirely without a key, since the
-      // request would carry `key=undefined` and is guaranteed to 400 before
-      // falling through to Open Library anyway.
       try {
-        if (!GB_KEY) throw new Error('no Google Books key configured');
-        const gbRes = await fetch(
-          `${GB_BASE}?q=${encodeURIComponent(q)}&maxResults=8&printType=books&key=${GB_KEY}`,
-          { signal: ac.signal },
-        );
-        if (gbRes.ok) {
-          const gbData = await gbRes.json();
-          if (gbData.items && gbData.items.length > 0) {
-            const results: SearchResult[] = gbData.items.map((item: GBResult) => ({
-              id: item.id,
-              title: item.volumeInfo.title,
-              author: item.volumeInfo.authors?.[0] ?? '',
-              coverUrl: fixCoverUrl(item.volumeInfo.imageLinks?.smallThumbnail),
-              description: item.volumeInfo.description,
-              year: item.volumeInfo.publishedDate,
-            }));
-            setSearchResults(results);
-            setSearching(false);
-            return;
-          }
+        const response = await fetch(`/api/book-search?q=${encodeURIComponent(q)}`, { signal: ac.signal });
+        if (!response.ok) throw new Error(`book search ${response.status}`);
+        const data = await response.json() as SearchAPIResponse;
+        setSearchResults(Array.isArray(data.results) ? data.results : []);
+        setSearchSources(Array.isArray(data.sources) ? data.sources : []);
+      } catch (err) {
+        if (!ac.signal.aborted) {
+          setSearchResults([]);
+          setSearchSources([]);
         }
-      } catch {
-        // Google Books failed, fall through to Open Library
-      }
-
-      // Fallback: Open Library
-      try {
-        const olRes = await fetch(
-          `${OL_SEARCH}?q=${encodeURIComponent(q)}&fields=key,title,author_name,cover_i,first_publish_year&limit=8`,
-          { signal: ac.signal },
-        );
-        const olData = await olRes.json();
-        const results: SearchResult[] = (olData.docs ?? []).map((d: OLResult) => ({
-          id: d.key,
-          title: d.title,
-          author: d.author_name?.[0] ?? '',
-          coverUrl: d.cover_i ? `https://covers.openlibrary.org/b/id/${d.cover_i}-S.jpg` : undefined,
-          description: undefined,
-          year: d.first_publish_year?.toString(),
-        }));
-        setSearchResults(results);
-      } catch {
       } finally {
-        setSearching(false);
+        if (!ac.signal.aborted) setSearching(false);
       }
-    }, 350);
+    }, 400);
 
     return () => {
       if (searchTimer.current) clearTimeout(searchTimer.current);
@@ -321,58 +320,43 @@ export default function BooksPage() {
     };
   }, [searchQuery]);
 
+  const fetchBookMatch = useCallback((book: Book): Promise<SearchResult | null> => {
+    const key = bookKey(book);
+    const cached = enrichmentCache.current.get(key);
+    if (cached) return cached;
+    const promise = fetch(`/api/book-search?q=${encodeURIComponent(buildQuery(book))}`)
+      .then(async (response) => {
+        if (!response.ok) return null;
+        const data = await response.json() as SearchAPIResponse;
+        const results = Array.isArray(data.results) ? data.results : [];
+        const title = book.title.toLowerCase();
+        const author = book.author.toLowerCase();
+        return results.find((result) =>
+          result.title.toLowerCase() === title &&
+          (!author || result.author.toLowerCase().includes(author)),
+        ) ?? results[0] ?? null;
+      })
+      .catch(() => null);
+    enrichmentCache.current.set(key, promise);
+    return promise;
+  }, []);
+
   // Cover fetch for visitor books with no cached data (rare path)
   const fetchCover = useCallback(async (book: Book): Promise<string | null> => {
     const cacheKey = bookKey(book);
     const meta = bookMetaMap[cacheKey];
     if (meta?.cover) return meta.cover;
 
-    // Try Google Books — skipped without a key (see note in the search handler).
-    try {
-      if (!GB_KEY) throw new Error('no Google Books key configured');
-      const res = await fetch(
-        `${GB_BASE}?q=${buildQuery(book)}&maxResults=1&fields=items(volumeInfo/imageLinks/thumbnail)&key=${GB_KEY}`,
-      );
-      if (res.ok) {
-        const data = await res.json();
-        const url = fixCoverUrl(data.items?.[0]?.volumeInfo?.imageLinks?.thumbnail) ?? null;
-        if (url) return url;
-      }
-    } catch {}
-
-    // Fallback: Open Library
-    try {
-      const res = await fetch(
-        `${OL_SEARCH}?q=${buildQuery(book)}&fields=cover_i&limit=1`,
-      );
-      if (!res.ok) throw new Error('OL status ' + res.status);
-      const data = await res.json();
-      const coverId = data.docs?.[0]?.cover_i;
-      if (coverId) return `https://covers.openlibrary.org/b/id/${coverId}-M.jpg`;
-    } catch {}
-
-    return null;
-  }, []);
+    return (await fetchBookMatch(book))?.coverUrl ?? null;
+  }, [fetchBookMatch]);
 
   // On-demand description fetch for visitor books (rare path)
   const fetchDescription = useCallback(async (book: Book): Promise<string | null> => {
     const cacheKey = bookKey(book);
     const meta = bookMetaMap[cacheKey];
     if (meta?.desc) return meta.desc;
-    // Google Books is the only description source, so without a key this
-    // resolves to null and the UI falls back to the prebuilt bookMeta cache.
-    if (!GB_KEY) return null;
-    try {
-      const res = await fetch(
-        `${GB_BASE}?q=${buildQuery(book)}&maxResults=1&fields=items(volumeInfo/description)&key=${GB_KEY}`,
-      );
-      if (!res.ok) throw new Error('GB status ' + res.status);
-      const data = await res.json();
-      const item = data.items?.[0]?.volumeInfo;
-      if (item?.description) return item.description;
-    } catch {}
-    return null;
-  }, []);
+    return (await fetchBookMatch(book))?.description ?? null;
+  }, [fetchBookMatch]);
 
   useEffect(() => {
     if (!detail) { setDetailCover(null); setLoadingCover(false); setDetailDescription(null); setLoadingDescription(false); return; }
@@ -391,8 +375,11 @@ export default function BooksPage() {
       fetchCover(detail).then(url => { if (!cancelled) { setDetailCover(url); setLoadingCover(false); } });
     }
 
-    // Description - check bookMeta first, then fetch for visitor books
-    if (meta?.desc) {
+    // Description - use stored catalog metadata first, then local build data,
+    // then federated enrichment for older visitor records.
+    if (detail.description) {
+      setDetailDescription(detail.description);
+    } else if (meta?.desc) {
       setDetailDescription(meta.desc);
     } else {
       setDetailDescription(null);
@@ -409,6 +396,7 @@ export default function BooksPage() {
     setPendingNote('');
     setSearchQuery('');
     setSearchResults([]);
+    setSearchSources([]);
   };
 
   const confirmAddBook = async () => {
@@ -422,6 +410,10 @@ export default function BooksPage() {
       coverUrl: pendingBook.coverUrl,
       dateAdded: new Date().toISOString(),
       note: pendingNote.trim() || undefined,
+      description: pendingBook.description,
+      year: pendingBook.year,
+      source: pendingBook.source,
+      sourceUrl: pendingBook.sourceUrl,
       sessionId: sessionId.current,
     };
 
@@ -432,7 +424,8 @@ export default function BooksPage() {
         body: JSON.stringify({ action: 'add', book }),
       });
       if (!res.ok) throw new Error('API error');
-      setVisitorBooks(prev => [...prev, book]);
+      const data = await res.json() as { book?: Book };
+      setVisitorBooks(prev => [...prev, data.book ?? book]);
     } catch {
       setVisitorBooks(prev => [...prev, book]);
     } finally {
@@ -442,16 +435,62 @@ export default function BooksPage() {
     }
   };
 
+  const openManualBook = () => {
+    setManualTitle(searchQuery.trim());
+    setManualAuthor('');
+    setManualNote('');
+    setManualCover(null);
+    setManualError('');
+    setManualOpen(true);
+    setSearchQuery('');
+    setSearchResults([]);
+    setSearchSources([]);
+  };
+
+  const selectManualCover = async (file: File | undefined) => {
+    setManualCover(null);
+    setManualError('');
+    if (!file) return;
+    if (!COVER_TYPES.has(file.type)) {
+      setManualError('Cover must be a JPEG, PNG, or WebP image.');
+      return;
+    }
+    if (file.size > COVER_MAX_BYTES) {
+      setManualError('Cover must be 300 KB or smaller.');
+      return;
+    }
+    try {
+      const dimensions = await readImageDimensions(file);
+      if (dimensions.width !== COVER_WIDTH || dimensions.height !== COVER_HEIGHT) {
+        setManualError(`Cover must be exactly ${COVER_WIDTH} × ${COVER_HEIGHT} pixels (selected: ${dimensions.width} × ${dimensions.height}).`);
+        return;
+      }
+      setManualCover({
+        dataUrl: await readFileDataUrl(file),
+        name: file.name,
+        bytes: file.size,
+      });
+    } catch (err) {
+      setManualError(err instanceof Error ? err.message : 'Could not read the selected cover.');
+    }
+  };
+
   const addManualBook = async () => {
-    const title = searchQuery.trim();
-    if (!title) return;
+    const title = manualTitle.trim();
+    if (!title) {
+      setManualError('Title is required.');
+      return;
+    }
+    setManualError('');
     setSubmitting(true);
     const book: Book = {
       title,
-      author: '',
+      author: manualAuthor.trim(),
       read: false,
       visitor: true,
       dateAdded: new Date().toISOString(),
+      note: manualNote.trim() || undefined,
+      source: 'Manual entry',
       sessionId: sessionId.current,
     };
 
@@ -459,15 +498,26 @@ export default function BooksPage() {
       const res = await fetch('/api/visitor-books', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'add', book }),
+        body: JSON.stringify({
+          action: 'add',
+          book,
+          coverUpload: manualCover ? { dataUrl: manualCover.dataUrl } : undefined,
+        }),
       });
-      if (!res.ok) throw new Error('API error');
-    } catch {
+      const data = await res.json() as { book?: Book; error?: string };
+      if (!res.ok || !data.book) throw new Error(data.error || 'Book could not be saved.');
+      setVisitorBooks(prev => [...prev, data.book as Book]);
+      setManualOpen(false);
+      setManualTitle('');
+      setManualAuthor('');
+      setManualNote('');
+      setManualCover(null);
+      if (manualFileRef.current) manualFileRef.current.value = '';
+      trackEvent('Book Added Manually', { hasAuthor: Boolean(book.author), hasCover: Boolean(manualCover) });
+    } catch (err) {
+      setManualError(err instanceof Error ? err.message : 'Book could not be saved.');
     } finally {
       setSubmitting(false);
-      setVisitorBooks(prev => [...prev, book]);
-      setSearchQuery('');
-      setSearchResults([]);
     }
   };
 
@@ -580,14 +630,19 @@ export default function BooksPage() {
           <input
             className="bs-add-input"
             type="text"
-            placeholder="Search Google Books to add a book..."
+            placeholder="Search 6 open book catalogs..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            onKeyDown={(e) => { if (e.key === 'Enter' && searchResults.length === 0) addManualBook(); }}
+            onKeyDown={(e) => { if (e.key === 'Enter' && searchResults.length === 0 && !searching) openManualBook(); }}
           />
         </div>
 
-        {searching && <div className="bs-search-status">Searching...</div>}
+        {searching && <div className="bs-search-status">Searching Google, Open Library, Crossref, LOC, Internet Archive, and Gutenberg...</div>}
+        {!searching && searchResults.length > 0 && (
+          <div className="bs-search-status">
+            {searchResults.length} merged results · {searchSources.length} catalogs responded
+          </div>
+        )}
 
         {searchResults.length > 0 && (
           <div className="bs-search-dropdown">
@@ -602,7 +657,10 @@ export default function BooksPage() {
                   <div className="bs-search-info">
                     <div className="bs-search-title">{r.title}</div>
                     {r.author && <div className="bs-search-author">{r.author}</div>}
-                    {r.year && <div className="bs-search-year">{r.year}</div>}
+                    <div className="bs-search-foot">
+                      {r.year && <span className="bs-search-year">{r.year}</span>}
+                      <span className="bs-search-source">{r.sources.join(' + ')}</span>
+                    </div>
                   </div>
                   <span className="bs-search-add">+ ADD</span>
                 </button>
@@ -612,10 +670,11 @@ export default function BooksPage() {
         )}
 
         {searchQuery.trim().length >= 2 && !searching && searchResults.length === 0 && (
-          <button className="bs-add-manual" onClick={addManualBook} disabled={submitting}>
-            No results — add "{searchQuery.trim()}" manually
-          </button>
+          <div className="bs-search-empty">No catalog match. You can still add exactly what you want.</div>
         )}
+        <button className="bs-add-manual" onClick={openManualBook} disabled={submitting}>
+          + {searchQuery.trim() ? `ADD “${searchQuery.trim()}” MANUALLY` : 'ADD A BOOK MANUALLY'}
+        </button>
       </div>
 
       <div className="bs-lib-search-wrap">
@@ -708,6 +767,14 @@ export default function BooksPage() {
             )}
             <div className="bs-modal-title">{detail.title}</div>
             {detail.author && <div className="bs-modal-author">{detail.author}</div>}
+            {(detail.year || detail.source) && (
+              <div className="bs-modal-provenance">
+                {detail.year && <span>{detail.year}</span>}
+                {detail.sourceUrl ? (
+                  <a href={detail.sourceUrl} target="_blank" rel="noreferrer">{detail.source || 'Catalog record'} ↗</a>
+                ) : detail.source ? <span>{detail.source}</span> : null}
+              </div>
+            )}
             <div className="bs-modal-status">{getEffectiveRead(detail) ? '✓ READ' : '○ UNREAD'}</div>
             {detail.note && <div className="bs-modal-note">{detail.note}</div>}
             {detail.dateAdded && <div className="bs-modal-date">Added {formatDate(detail.dateAdded)}</div>}
@@ -725,6 +792,99 @@ export default function BooksPage() {
                 onClick={() => removeVisitorBook(detail)}
               >DELETE (admin)</button>
             )}
+          </div>
+        </div>
+      )}
+
+      {manualOpen && (
+        <div className="bs-overlay" onClick={() => !submitting && setManualOpen(false)}>
+          <div className="bs-confirm-modal bs-manual-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="bs-modal-close" onClick={() => !submitting && setManualOpen(false)}>✕</button>
+            <div className="bs-confirm-header">ADD ANY BOOK</div>
+            <div className="bs-manual-grid">
+              <label className="bs-manual-field">
+                <span>TITLE *</span>
+                <input
+                  className="bs-add-input"
+                  type="text"
+                  maxLength={180}
+                  placeholder="Book title"
+                  value={manualTitle}
+                  onChange={(e) => { setManualTitle(e.target.value); setManualError(''); }}
+                  autoFocus
+                  disabled={submitting}
+                />
+              </label>
+              <label className="bs-manual-field">
+                <span>AUTHOR</span>
+                <input
+                  className="bs-add-input"
+                  type="text"
+                  maxLength={140}
+                  placeholder="Author or editor (optional)"
+                  value={manualAuthor}
+                  onChange={(e) => setManualAuthor(e.target.value)}
+                  disabled={submitting}
+                />
+              </label>
+              <label className="bs-manual-field">
+                <span>NOTE</span>
+                <textarea
+                  className="bs-add-input bs-manual-note"
+                  maxLength={500}
+                  placeholder="Why this belongs in the Sea Library (optional)"
+                  value={manualNote}
+                  onChange={(e) => setManualNote(e.target.value)}
+                  disabled={submitting}
+                />
+              </label>
+            </div>
+
+            <div className="bs-cover-upload">
+              <div className="bs-cover-upload-preview">
+                {manualCover ? (
+                  <img src={manualCover.dataUrl} alt="Selected book cover" />
+                ) : (
+                  <span>{initial(manualTitle || '?')}</span>
+                )}
+              </div>
+              <div className="bs-cover-upload-copy">
+                <div className="bs-cover-upload-title">CUSTOM COVER (OPTIONAL)</div>
+                <div className="bs-cover-upload-rules">
+                  Exactly {COVER_WIDTH} × {COVER_HEIGHT}px · JPEG, PNG, or WebP · 300 KB max
+                </div>
+                <input
+                  ref={manualFileRef}
+                  className="bs-cover-file"
+                  type="file"
+                  accept="image/jpeg,image/png,image/webp,.jpg,.jpeg,.png,.webp"
+                  onChange={(e) => void selectManualCover(e.target.files?.[0])}
+                  disabled={submitting}
+                />
+                {manualCover && (
+                  <div className="bs-cover-upload-selected">
+                    <span>{manualCover.name} · {Math.ceil(manualCover.bytes / 1024)} KB</span>
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setManualCover(null);
+                        if (manualFileRef.current) manualFileRef.current.value = '';
+                      }}
+                    >REMOVE</button>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {manualError && <div className="bs-manual-error">{manualError}</div>}
+            <div className="bs-confirm-actions">
+              <button className="bs-confirm-cancel" onClick={() => setManualOpen(false)} disabled={submitting}>
+                CANCEL
+              </button>
+              <button className="bs-confirm-btn" onClick={addManualBook} disabled={submitting || !manualTitle.trim()}>
+                {submitting ? 'SAVING...' : 'ADD TO LIBRARY'}
+              </button>
+            </div>
           </div>
         </div>
       )}
@@ -750,6 +910,7 @@ export default function BooksPage() {
                 {pendingBook.year && (
                   <div className="bs-confirm-year">{pendingBook.year}</div>
                 )}
+                <div className="bs-confirm-source">{pendingBook.sources.join(' + ')}</div>
               </div>
             </div>
             <div className="bs-confirm-synopsis">

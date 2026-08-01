@@ -83,4 +83,5 @@
   //   JWT_SECRET
   //   GITHUB_TOKEN
   //   CRON_SECRET              (only for manual POST /api/github-contrib/refresh)
+  //   GOOGLE_BOOKS_API_KEY     (optional; raises public book-search quota)
 }
