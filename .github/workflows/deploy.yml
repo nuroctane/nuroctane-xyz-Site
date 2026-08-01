@@ -2,8 +2,8 @@
 #
 # Preferred production path: Cloudflare Workers Builds.
 # Leave CLOUDFLARE_API_TOKEN unset while Builds is healthy (avoids double-deploy).
-# This workflow always stays green and opens a closed "deployment" issue so
-# GitHub notifies on every main push.
+# This workflow always stays green and comments on one persistent, assigned
+# "deployment" issue so GitHub reliably notifies on every main push.
 
 name: Deploy Worker
 
@@ -91,7 +91,7 @@ jobs:
             const msg = (context.payload.head_commit?.message || context.sha)
               .split('\n')[0]
               .slice(0, 72);
-            const title = `Deployed ${site} @ ${sha} - ${msg}`;
+            const deploymentTitle = `Deployed ${site} @ ${sha} - ${msg}`;
             const body = [
               `**${site}** production deploy`,
               ``,
@@ -118,19 +118,42 @@ jobs:
               });
             }
 
-            const issue = await github.rest.issues.create({
+            const notificationsTitle = `Deployment notifications - ${site}`;
+            const issues = await github.paginate(github.rest.issues.listForRepo, {
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title,
-              body,
-              labels: ['deployment'],
-              assignees: [context.repo.owner],
+              state: 'all',
+              labels: 'deployment',
+              per_page: 100,
             });
-            await github.rest.issues.update({
+            let issue = issues.find(item =>
+              !item.pull_request && item.title === notificationsTitle
+            );
+
+            if (issue) {
+              issue = (await github.rest.issues.update({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: issue.number,
+                state: 'open',
+                assignees: [context.repo.owner],
+              })).data;
+            } else {
+              issue = (await github.rest.issues.create({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                title: notificationsTitle,
+                body: `Persistent production deployment notifications for **${site}**. Keep this issue open and subscribed.`,
+                labels: ['deployment'],
+                assignees: [context.repo.owner],
+              })).data;
+            }
+
+            await github.rest.issues.createComment({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              issue_number: issue.data.number,
-              state: 'closed',
+              issue_number: issue.number,
+              body: `@${context.repo.owner}\n\n${body}`,
             });
 
             try {
@@ -141,7 +164,7 @@ jobs:
                 environment: 'production',
                 auto_merge: false,
                 required_contexts: [],
-                description: title,
+                description: deploymentTitle,
                 production_environment: true,
               });
               const id = deployment.data && deployment.data.id;
