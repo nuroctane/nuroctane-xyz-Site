@@ -19,7 +19,7 @@
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (92)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (33)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (41)
-- [[#Unsorted Sparks|Unsorted Sparks]] (1)
+- [[#Unsorted Sparks|Unsorted Sparks]] (2)
 
 ## Faith, God & Surrender
 
@@ -1892,4 +1892,10 @@ _Auto-created section._
 > 
 > Not evil advice.
 > — @QuantumRover
+
+> Eye-watering gains are drawn from the same distribution as wipeouts
+> 
+> Once you learn this fundamental truth, you win a lot more than you lose
+> — @iamgingertrash
+
 
