@@ -184,8 +184,8 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     urlDisplay: 'nuroctane.xyz/modkeys',
     subtitle: 'design your endgame board',
     description: '3D mechanical keyboard configurator. build it, color it, export it.',
-    avatar: '/assets/nodes/modkeys-logo.png',
-    logo: '/assets/nodes/github-logo.png',
+    avatar: '/assets/nodes/modkeys-logo.png?v=115',
+    logo: '/assets/nodes/modkeys-logo.png?v=115',
   },
   {
     id: 'snipocr', label: 'SnipOCR', handle: 'snipocr',
@@ -193,8 +193,8 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     urlDisplay: 'github.com/nuroctane/snipocr',
     subtitle: 'screenshot → text',
     description: 'Automatic local OCR for Windows Snipping Tool and macOS screenshots',
-    avatar: '/assets/nodes/snipocr-logo.png',
-    logo: '/assets/nodes/github-logo.png',
+    avatar: '/assets/nodes/snipocr-logo.png?v=115',
+    logo: '/assets/nodes/snipocr-logo.png?v=115',
   },
   {
     id: 'blackjack', label: 'Blackjack', handle: 'project',
@@ -202,8 +202,8 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     urlDisplay: 'github.com/nuroctane/blackjack',
     subtitle: 'Quiet table. Dense engine.',
     description: 'Blackjack - liquid glass UI, SIWE (RainbowKit + WalletConnect) + GitHub auth, Capacitor iOS/Android. Accurate shoe odds.',
-    avatar: '/assets/nodes/blackjack-logo.png',
-    logo: '/assets/nodes/github-logo.png',
+    avatar: '/assets/nodes/blackjack-logo.png?v=115',
+    logo: '/assets/nodes/blackjack-logo.png?v=115',
   },
   {
     id: 'atxtunerz', label: 'ATX Tunerz Society', handle: '@atx_tunerz_society',
@@ -283,8 +283,8 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     urlDisplay: 'nuroctane.xyz/observatory',
     subtitle: 'sky, system, satellites, time',
     description: 'Astrology-rooted 3D observatory: Swiss Ephemeris, every major house system and ayanamsa, full aspectarian, live Earth satellites (CelesTrak/SGP4), solar system, Cesium globe, and NASA Eyes/Horizons mission hooks.',
-    avatar: '/assets/nodes/observatory-logo.png',
-    logo: '/assets/nodes/observatory-logo.png',
+    avatar: '/assets/nodes/observatory-logo.png?v=115',
+    logo: '/assets/nodes/observatory-logo.png?v=115',
   },
 ];
 

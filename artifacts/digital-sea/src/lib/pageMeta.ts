@@ -50,7 +50,7 @@ const PAGES: Record<string, PageMeta> = {
       'Reading shelves, notes, and community recommendations — a living library inside the digital sea.',
     badge: 'BOOKS',
     path: '/books',
-    favicon: '/assets/nodes/books-logo.png',
+    favicon: '/assets/nodes/books-logo.png?v=115',
   },
   resume: {
     title: 'Resume — David Davieson · NUROCTANE',
@@ -67,7 +67,7 @@ const PAGES: Record<string, PageMeta> = {
       'Design a mechanical keyboard in the browser — 3D preview, dual desktop/mobile shells, shareable builds, KLE/SVG/PDF export.',
     badge: 'MODKEYS',
     path: '/modkeys',
-    favicon: '/assets/nodes/modkeys-logo.png',
+    favicon: '/assets/nodes/modkeys-logo.png?v=115',
   },
   cli: {
     title: 'NurCLI',
@@ -86,7 +86,7 @@ const PAGES: Record<string, PageMeta> = {
     badge: 'OBSERVATORY',
     path: '/observatory',
     siteName: 'Observatory',
-    favicon: '/assets/nodes/observatory-logo.png',
+    favicon: '/assets/nodes/observatory-logo.png?v=115',
     imagePath: '/api/og?page=observatory&v=2',
   },
   blog: {
@@ -95,7 +95,7 @@ const PAGES: Record<string, PageMeta> = {
       'Passages from the digital sea — sovereignty, the veil, the machine, and the attractor that pulls from the future.',
     badge: 'WRITINGS',
     path: '/blog',
-    favicon: '/assets/nodes/blog-logo.png',
+    favicon: '/assets/nodes/blog-logo.png?v=115',
   },
   socials: {
     title: 'Socials — NUROCTANE',
@@ -144,9 +144,9 @@ const CHILD_FAVICONS: Record<string, Record<string, string>> = {
   },
   projects: {
     'nur-cli': '/assets/nodes/nur-cli-logo.png',
-    modkeys: '/assets/nodes/modkeys-logo.png',
-    snipocr: '/assets/nodes/snipocr-logo.png',
-    blackjack: '/assets/nodes/blackjack-logo.png',
+    modkeys: '/assets/nodes/modkeys-logo.png?v=115',
+    snipocr: '/assets/nodes/snipocr-logo.png?v=115',
+    blackjack: '/assets/nodes/blackjack-logo.png?v=115',
     atxtunerz: '/assets/nodes/atx_tunerz_society-avatar.jpg',
     github: '/assets/nodes/github-logo.png',
     weatherguru: '/assets/nodes/weatherguru-logo.svg',
@@ -155,7 +155,7 @@ const CHILD_FAVICONS: Record<string, Record<string, string>> = {
     geoskin: '/assets/nodes/geoskin-logo.svg',
     miyamaker: '/assets/nodes/miyamaker-avatar.png',
     webutils: '/assets/nodes/wrench.png',
-    observatory: '/assets/nodes/observatory-logo.png',
+    observatory: '/assets/nodes/observatory-logo.png?v=115',
   },
 };
 

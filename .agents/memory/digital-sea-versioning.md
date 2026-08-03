@@ -177,4 +177,5 @@ non-shipping). The snap-back fix is v0.109; this hardening pass is v0.110.
   oldest/newest order toggle; repository hygiene and asset organization pass.
 - v0.115 (2026-08-03): Observatory naming consolidation and shared project-logo
   branding pass across nodes, navigation, document metadata, runtime chrome, and
-  the new Blackjack ASCII playing-card mark.
+  the new Blackjack ASCII playing-card mark. Cache-busted project marks and made
+  the Modkeys, SnipOCR, and Blackjack node badges use their own marks, not GitHub.

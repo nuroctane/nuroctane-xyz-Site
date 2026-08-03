@@ -22,19 +22,19 @@ const LOGO_MAP: Record<string, string> = {
   discord:    '/assets/nodes/discord-logo.png',
   reddit:     '/assets/nodes/reddit-logo.png',
   glasp:      '/assets/nodes/glasp-logo.png',
-  modkeys:    '/assets/nodes/modkeys-logo.png',
-  snipocr:    '/assets/nodes/snipocr-logo.png',
+  modkeys:    '/assets/nodes/modkeys-logo.png?v=115',
+  snipocr:    '/assets/nodes/snipocr-logo.png?v=115',
   atxtunerz:  '/assets/nodes/atx-tunerz-logo.png',
   github:     '/assets/nodes/github-logo.png',
   miyamaker:  '/assets/nodes/miyamaker-avatar.png',
   webutils:   '/assets/nodes/wrench.png',
   // Project marks (same files as card avatars)
   starsleep: '/assets/nodes/starsleep-logo.png',
-  blackjack:  '/assets/nodes/blackjack-logo.png',
+  blackjack:  '/assets/nodes/blackjack-logo.png?v=115',
   weatherguru: '/assets/nodes/weatherguru-logo.svg',
   sis:         '/assets/nodes/sis-logo.svg',
   geoskin:     '/assets/nodes/geoskin-logo.svg',
-  observatory: '/assets/nodes/observatory-logo.png',
+  observatory: '/assets/nodes/observatory-logo.png?v=115',
 };
 
 // Computed once at module load. Categorization + order derive from

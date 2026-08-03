@@ -102,7 +102,7 @@ const MOBILE_MQ = '(max-width: 768px), ((pointer: coarse) and (max-width: 1024px
 const MSHELL_HTML = `<div class="mShell">
       <header class="mHead">
         <div class="mBrand">
-          <img src="/assets/nodes/modkeys-logo.png" onerror="this.onerror=null;this.src='./assets/modkeys-logo.png'" alt="" draggable="false" />
+          <img src="/assets/nodes/modkeys-logo.png?v=115" onerror="this.onerror=null;this.src='./assets/modkeys-logo.png?v=115'" alt="" draggable="false" />
           <b>MODKEYS</b>
         </div>
         <nav class="tnav" id="tnav">
@@ -230,7 +230,7 @@ export default function ModkeysPage() {
     );
     const prevHrefs = iconLinks.map((el) => el.href);
     iconLinks.forEach((el) => {
-      el.href = '/assets/nodes/modkeys-logo.png';
+      el.href = '/assets/nodes/modkeys-logo.png?v=115';
       el.type = 'image/png';
     });
     // Ensure at least one favicon link exists
@@ -239,7 +239,7 @@ export default function ModkeysPage() {
       injected = document.createElement('link');
       injected.rel = 'icon';
       injected.type = 'image/png';
-      injected.href = '/assets/nodes/modkeys-logo.png';
+      injected.href = '/assets/nodes/modkeys-logo.png?v=115';
       document.head.appendChild(injected);
     }
 
@@ -306,7 +306,7 @@ export default function ModkeysPage() {
     <div className="modkeys-page">
       <div id="loader">
         <div className="lg">
-          <img src="/assets/nodes/modkeys-logo.png" alt="" style={{ height: 26, width: "auto" }} draggable={false} />
+          <img src="/assets/nodes/modkeys-logo.png?v=115" alt="" style={{ height: 26, width: "auto" }} draggable={false} />
           <b>MODKEYS</b>
         </div>
         <div className="bar"><i /></div>
@@ -321,7 +321,7 @@ export default function ModkeysPage() {
       <div className="app dShell" id="dShell">
         <aside className="side">
           <div className="logo">
-            <img src="/assets/nodes/modkeys-logo.png" alt="" style={{ height: 24, width: "auto" }} draggable={false} />
+            <img src="/assets/nodes/modkeys-logo.png?v=115" alt="" style={{ height: 24, width: "auto" }} draggable={false} />
             <b>MODKEYS</b>
           </div>
           <div className="sideLabel">CONFIGURE</div>
