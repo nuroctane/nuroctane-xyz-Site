@@ -12,7 +12,7 @@
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (48)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (57)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (79)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (74)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (75)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (23)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (76)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (44)
@@ -1003,6 +1003,40 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 
 > one common trait I find in high achieving individuals is urgency. it looks almost like impatience until you understand it is closer to reverence, a deep refusal to waste the one thing they can’t buy more of. the alarm goes and they rise. the message is answered while it is still warm. the small task is done before it can find a shelf to hide on. they commit and move in a single motion. an idea sparks and they chase it that day, before the world talks them out of it. they run at their own lives like something is at stake, because they have decided something is.
 > — @josbjohnson
+
+> advice for men, ages 23-29
+> 
+> this is the stage where life stops responding to motivation and starts responding to structure. intelligence alone is no longer enough. passion without direction turns into frustration, and potential without execution becomes another form of wasted time. excuses begin to expire and responsibility quietly takes their place.
+> 
+> you will rarely feel ready. waiting until you feel ready is how years disappear. most of your growth in this phase will come from acting while uncertain, learning while uncomfortable and moving before you have everything figured out.
+> 
+> the people getting ahead are not necessarily smarter or braver. they are simply willing to move while confused.
+> 
+> money becomes louder at this age. not because money suddenly becomes the meaning of life, but because life becomes expensive. your ideas, opinions and ambitions mean very little if you cannot sustain yourself financially. learn skills that solve real problems, create value and generate income. your ability to make yourself useful will become one of your greatest assets.
+> 
+> your friendships will change. some bros will grow with you, some will grow away from you and some will stop growing altogether. do not interpret every distance as betrayal. sometimes people simply become strangers because their lives are heading in different directions. let people evolve without resentment and do not force old relationships to survive new versions of you.
+> 
+> romantic choices also begin to carry consequences. loneliness can make you tolerate people who cost you peace, focus and years. do not confuse chemistry with compatibility or excitement with love. choose someone who brings enough clarity, stability and peace into your life.
+> 
+> love should complement your direction, not constantly compete with it.
+> 
+> discipline will now matter more than motivation. motivation is emotional and unreliable but discipline is quiet and repetitive. it is what keeps you moving when nobody is watching, nothing feels exciting and the results are still invisible.
+> 
+> comparison will try to consume you. social media will make it look like everyone is ahead, richer, happier and more accomplished. remember that you are comparing your full reality to carefully edited pieces of someone else's. you do not see their debts, advantages, support systems, failures or private struggles. build your life instead of competing with an illusion or pixel.
+> 
+> this is also the age when habits begin to become infrastructure. what you repeatedly do now will become increasingly difficult to change later. the things you neglect do not simply disappear, they compound. so do the things you build. your health, skills, relationships, finances, reputation and discipline are all quietly becoming your future.
+> 
+> ages 23-29 are not supposed to look impressive, they are supposed to be intentional. this is the season to build quietly, make mistakes cheaply, learn aggressively, protect your peace and become useful.
+> 
+> you are not behind just because your life has not taken shape yet.
+> 
+> your 20s are laying the foundation.
+> your 30s will reveal how well you built it.
+> 
+> save, bookmark and share. 
+> buena suerte.
+> — @eagleseyeinc
+
 
 ## Creativity, Purpose & Expression
 
