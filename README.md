@@ -123,10 +123,10 @@ Full agent ship checklist: `C:\Users\david\.agents\SHIP.md` (nuroctane.xyz secti
 
 | Direction | What | How |
 |---|---|---|
-| Vault → repo | `Quotes.md` → `artifacts/digital-sea/src/content/quotes.md` | `scripts/sync-quotes.sh` (also Hermes `sync-quotes.py`) |
+| Raindrop / vault → repo | Raindrop `#quotes` → `Quotes.md` → `artifacts/digital-sea/src/content/quotes.md` | `scripts/quotes-pipeline.py` (uses Hermes ingest + sync parsers) |
 | Repo → vault | `books.md` → Obsidian `Books/Book Wishlist.md` | `scripts/sync-books.sh` / Hermes `poll-sync.py` |
 
-Windows task **`NuroctanePollSync`** (every 15 min) launches silent `scripts/poll-sync.vbs` → Hermes Python poller (no console window). Install: `powershell -File scripts/install-poll-sync-task.ps1`. Logs: `.nur/poll-sync.log`.
+Windows task **`NuroctanePollSync`** (every 15 min) launches silent `scripts/poll-sync.vbs` → `scripts/quotes-pipeline.py` (no console window). Its ordered source of truth is **Raindrop `#quotes` first**, then new Obsidian `#quotes` notes; Raindrop additions are written to the canonical `Quotes.md`, which is copied to the site and pushed to `main`. Install: `powershell -File scripts/install-poll-sync-task.ps1`. Logs: `.nur/quotes-pipeline.log`.
 
 Quotes sync strips Obsidian frontmatter, rebuilds `## Index`, parser-sanity-checks like `QuotesPage.tsx`, then commits/pushes on `main` only when content changes. Optional local deploy: `SYNC_DEPLOY=1`. Dry run: `SYNC_DRY_RUN=1`.
 

@@ -5,24 +5,26 @@
 ' wscript.exe is a GUI-subsystem host (no console). .Run(..., 0, True) starts
 ' the child with SW_HIDE = 0 so nothing appears on screen.
 '
-' Prefer Hermes Python poller (CREATE_NO_WINDOW on git/python children).
-' Fall back to the repo PowerShell entrypoint only if that script is missing.
+' Prefer the repository-owned Raindrop-first quotes pipeline. It launches the
+' Hermes parsers with no visible console, but the scheduled contract itself is
+' versioned with this site. Fall back to the older PowerShell entrypoint only
+' when Hermes itself is unavailable.
 
 Option Explicit
 
-Dim fso, sh, hermesPy, hermesScript, repoRoot, ps1, cmd, rc
+Dim fso, sh, hermesPy, pipelineScript, repoRoot, ps1, cmd, rc
 
 Set fso = CreateObject("Scripting.FileSystemObject")
 Set sh  = CreateObject("WScript.Shell")
 
 repoRoot = "C:\Users\david\Laboratory\nuroctane.xyz"
 hermesPy = "C:\Users\david\AppData\Local\hermes\hermes-agent\venv\Scripts\python.exe"
-hermesScript = "C:\Users\david\AppData\Local\hermes\scripts\poll-sync.py"
+pipelineScript = repoRoot & "\scripts\quotes-pipeline.py"
 ps1 = repoRoot & "\scripts\poll-sync.ps1"
 
-If fso.FileExists(hermesPy) And fso.FileExists(hermesScript) Then
-  sh.CurrentDirectory = "C:\Users\david\AppData\Local\hermes\scripts"
-  cmd = """" & hermesPy & """ -u """ & hermesScript & """"
+If fso.FileExists(hermesPy) And fso.FileExists(pipelineScript) Then
+  sh.CurrentDirectory = repoRoot
+  cmd = """" & hermesPy & """ -u """ & pipelineScript & """"
   rc = sh.Run(cmd, 0, True)
   WScript.Quit rc
 End If

@@ -1,7 +1,8 @@
 #Requires -Version 5.1
 <#
 .SYNOPSIS
-  Install / refresh the Windows Scheduled Task that runs Obsidian quotes sync.
+  Install / refresh the Windows Scheduled Task that runs the Raindrop-first
+  quotes pipeline (Raindrop #quotes -> Obsidian -> site -> main).
 
   Task name: NuroctanePollSync
   Schedule: every 15 minutes
@@ -49,5 +50,5 @@ Register-ScheduledTask `
 
 Write-Host "Installed Scheduled Task '$TaskName' (every 15 min, silent wscript)"
 Write-Host "  launcher: $Vbs"
-Write-Host "  log:      $RepoRoot\.nur\poll-sync.log"
+Write-Host "  log:      $RepoRoot\.nur\quotes-pipeline.log"
 Write-Host "Run once now:  Start-ScheduledTask -TaskName $TaskName"
