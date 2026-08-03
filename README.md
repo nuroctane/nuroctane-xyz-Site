@@ -63,13 +63,16 @@ Aesthetic inspiration: **Code Lyoko** (MoonScoop, 2003–2007). [Wikipedia](http
 - Synced from the local Obsidian vault (see [Content sync](#content-sync-obsidian--git))
 
 ### Modkeys
-Full 3D keyboard configurator (desktop + mobile shells) at `/modkeys` - layouts, materials, switches, keycaps, lighting, per-key edits, KLE/SVG/PDF/spec export, shareable URL state. Details: `artifacts/modkeys/.agents/docs/MOBILE_SHELL.md`.
+Full 3D keyboard configurator (desktop + mobile shells) at `/modkeys` - layouts, materials, switches, keycaps, lighting, per-key edits, KLE/SVG/PDF/spec export, shareable URL state. Details: `artifacts/modkeys/.agents/docs/MOBILE_SHELL.md`. Brand mark: `artifacts/digital-sea/public/assets/nodes/modkeys-logo.png` (also `Laboratory/nur-modkeys/assets/`).
 
 ### NurCLI (`/cli`)
 Product page for [nur-cli](https://github.com/nuroctane/nur-cli): multi-provider Rust TUI agent, installers (Windows/macOS/Linux), live version polling, Foglamp codebase map embed, command reference. Page source: `artifacts/digital-sea/src/pages/CliPage.tsx`.
 
+### SnipOCR / Blackjack (sea nodes)
+Standalone repos with Digital Sea cards: [snipocr](https://github.com/nuroctane/snipocr) · [blackjack](https://github.com/nuroctane/blackjack). Marks live under `artifacts/digital-sea/public/assets/nodes/{snipocr,blackjack}-logo.png` and must stay synced with each repo’s `assets/` / `branding/`.
+
 ### Observatory (`/observatory`)
-Swiss Ephemeris astrology, Cesium Earth exploration, CelesTrak satellites / SGP4, solar system, sky chart, missions, weather. Spec: `docs/research/components/observatory.spec.md`.
+Swiss Ephemeris astrology, Cesium Earth exploration, CelesTrak satellites / SGP4, solar system, sky chart, missions, weather. Spec: `docs/research/components/observatory.spec.md`. Brand mark: `artifacts/digital-sea/public/assets/nodes/observatory-logo.png`.
 
 The Three.js scene owns frame-by-frame visual motion. Shared ephemeris/chart state publishes at 1 Hz in live mode and 10 Hz during accelerated simulation; per-frame satellite code must mutate bounded buffers/objects rather than allocate one object per satellite. `pnpm run check:observatory` guards those stability contracts.
 

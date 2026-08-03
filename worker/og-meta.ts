@@ -163,7 +163,7 @@ const CHILD_FAVICONS: Record<string, Record<string, string>> = {
     atxtunerz: "/assets/nodes/atx_tunerz_society-avatar.jpg",
     github: "/assets/nodes/github-logo.png",
     weatherguru: "/assets/nodes/weatherguru-logo.svg",
-    sis: "/assets/nodes/sis-logo.svg",
+    sis: "/assets/nodes/civeta-dei-research.png?v=116",
     starsleep: "/assets/nodes/starsleep-logo.png",
     geoskin: "/assets/nodes/geoskin-logo.svg",
     miyamaker: "/assets/nodes/miyamaker-avatar.png",

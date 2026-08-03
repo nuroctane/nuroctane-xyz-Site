@@ -32,7 +32,7 @@ const LOGO_MAP: Record<string, string> = {
   starsleep: '/assets/nodes/starsleep-logo.png',
   blackjack:  '/assets/nodes/blackjack-logo.png?v=115',
   weatherguru: '/assets/nodes/weatherguru-logo.svg',
-  sis:         '/assets/nodes/sis-logo.svg',
+  sis:         '/assets/nodes/civeta-dei-research.png?v=116',
   geoskin:     '/assets/nodes/geoskin-logo.svg',
   observatory: '/assets/nodes/observatory-logo.png?v=115',
 };
@@ -108,7 +108,7 @@ function NavItem({
           : <span className="qnav-item-acronym">{acronym}</span>
         }
       </span>
-      <span className="qnav-item-name">{node.label}</span>
+      <span className="qnav-item-name">{node.navLabel ?? node.label}</span>
       {isSoon && <span className="qnav-item-tag">SOON</span>}
     </button>
   );

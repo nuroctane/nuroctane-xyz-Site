@@ -11,6 +11,8 @@ export interface NodeData {
   description: string;
   avatar: string;
   logo: string;
+  /** Optional QuickNav label; falls back to `label` when omitted. */
+  navLabel?: string;
   scrollStart: number;
   scrollEnd: number;
   position: THREE.Vector3;
@@ -233,13 +235,14 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     logo: '',
   },
   {
-    id: 'sis', label: 'Sovereign Intelligence Systems', handle: 'SIS',
-    url: '#',
-    urlDisplay: 'sovereignintelligence.systems',
-    subtitle: 'Infrastructure for autonomous minds',
-    description: "local ai infrastructure project that probably has no moat but it's fun.",
-    avatar: '',
-    logo: '',
+    id: 'sis', label: 'Civeta Dei', handle: 'collegium',
+    url: 'https://civetadeicollegium.xyz',
+    urlDisplay: 'civetadeicollegium.xyz',
+    subtitle: '',
+    description: 'null',
+    navLabel: 'CD Collegium',
+    avatar: '/assets/nodes/civeta-dei-orchestration.png?v=116',
+    logo: '/assets/nodes/civeta-dei-fellowship.png?v=116',
   },
   {
     id: 'starsleep', label: 'StarSleep', handle: 'project',

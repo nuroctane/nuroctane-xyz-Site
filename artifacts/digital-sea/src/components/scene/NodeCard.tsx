@@ -3,7 +3,7 @@ import { useLocation } from 'wouter';
 import { NodeData, PROJECT_THRESHOLD, nodeMid } from '../../data/nodes';
 import { trackEvent } from '../../lib/analytics';
 
-const COMING_SOON_IDS = ['weatherguru', 'sis', 'starsleep', 'geoskin'];
+const COMING_SOON_IDS = ['weatherguru', 'starsleep', 'geoskin'];
 
 function ImgWithFallback({
   src, alt, className, fallback,
