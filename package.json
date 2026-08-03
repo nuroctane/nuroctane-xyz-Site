@@ -5,13 +5,14 @@
   "packageManager": "pnpm@10.34.4",
   "scripts": {
     "preinstall": "node -e \"var fs=require('fs');['package-lock.json','yarn.lock'].forEach(function(f){try{fs.unlinkSync(f)}catch(e){}});var ua=process.env.npm_config_user_agent||'';if(!/pnpm/.test(ua)){console.error('Use pnpm instead');process.exit(1)}\"",
-    "build": "pnpm run typecheck && pnpm -r --if-present run build && pnpm run smoke && node scripts/check-observatory-stability.mjs && node artifacts/modkeys/check-spa-shell.mjs",
+    "build": "pnpm run check:repo-hygiene && pnpm run typecheck && pnpm -r --if-present run build && pnpm run smoke && node scripts/check-observatory-stability.mjs && node artifacts/modkeys/check-spa-shell.mjs",
     "deploy": "pnpm run build && wrangler deploy",
     "typecheck:libs": "tsc --build",
     "typecheck:worker": "tsc -p worker/tsconfig.json",
     "typecheck": "pnpm run typecheck:libs && pnpm -r --filter \"./artifacts/**\" --filter \"./scripts\" --if-present run typecheck && pnpm run typecheck:worker",
     "smoke": "pnpm --filter @workspace/scripts run smoke",
-    "check:observatory": "node scripts/check-observatory-stability.mjs"
+    "check:observatory": "node scripts/check-observatory-stability.mjs",
+    "check:repo-hygiene": "node scripts/repo-hygiene.mjs"
   },
   "private": true,
   "devDependencies": {

@@ -53,16 +53,20 @@ Thumbs.db
 .vercel
 .sync-state
 
+# wrangler local dev secrets and generated state
+.dev.vars
+.wrangler/
+.wrangler-dryrun/
+
+# Local caches, pasted intake material, and machine-specific monitoring state.
+# These are not application source and may contain personal workspace context.
+/.nur/
+/attached_assets/
+/[0-9]*_Disk*.ini
+/scripts/__pycache__/
+
 # Local agent instructions only (never publish to main)
 AGENTS.md
 
 # local research only
 .casimir-research/
-
-.vercel
-
-# wrangler local dev secrets and generated state
-.dev.vars
-.wrangler/
-.wrangler-dryrun/
-.nur/*.log

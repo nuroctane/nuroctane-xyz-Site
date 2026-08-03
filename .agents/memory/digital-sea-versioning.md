@@ -15,7 +15,7 @@ environment changes.
 **Current:** check `WalletTag.tsx` (was **v0.98** as of snipocr macOS copy).
 
 Also related: scene cards in `data/nodes.ts` (25 nodes), modkeys dual-shell
-under `artifacts/modkeys`, analytics in `main.tsx`. See MEMORY.md index.
+under `artifacts/modkeys`, analytics in `main.tsx`.
 
 History:
 - v0.65 (2026-07-06): reddit + MODKEYS cards added (24 nodes, FLIP_X retuned,
@@ -173,3 +173,5 @@ non-shipping). The snap-back fix is v0.109; this hardening pass is v0.110.
   (worst on mobile). New lib/scrollMetrics caches scrollHeight-innerHeight,
   invalidating only on resize + DOM mutation (rAF-debounced); both hot
   readers now reflow-free. Behavior identical; jank reduced. Main page only.
+- v0.114 (2026-08-03): quotes now default to newest-first with an accessible
+  oldest/newest order toggle; repository hygiene and asset organization pass.

@@ -164,10 +164,12 @@ nuroctane.xyz/
 │   └── modkeys/              # Keyboard configurator
 ├── worker/                   # Cloudflare Worker entry + OG HTML
 ├── scripts/                  # poll-sync, sync-quotes, sync-books, …
-├── docs/                     # Research specs + design notes
+├── docs/                     # Current research, media, and archived planning notes
 ├── wrangler.jsonc
 └── AGENTS.md                 # Agent ship + sync instructions
 ```
+
+Run `pnpm run check:repo-hygiene` before a commit (it also runs in `pnpm run build`). It blocks common credential formats plus local caches, pasted intake, and machine-specific files from entering Git. Historical July 2026 planning notes live under `docs/archive/`; active component research stays under `docs/research/`.
 
 ---
 

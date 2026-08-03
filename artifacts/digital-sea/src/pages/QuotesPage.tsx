@@ -17,6 +17,8 @@ interface Section {
   quotes: Quote[];
 }
 
+type QuoteOrder = 'newest' | 'oldest';
+
 /** Contiguous `>` lines form one quote entry (blank `>` / `> ` keep the block together). */
 function isBlockquoteLine(l: string): boolean {
   return l.startsWith('>');
@@ -169,11 +171,18 @@ const PAGE_SIZE = 30;
 export default function QuotesPage() {
   const sections = useMemo(() => parseMD(raw), []);
   const [activeSec, setActiveSec] = useState(sections[0]?.name ?? '');
+  const [quoteOrder, setQuoteOrder] = useState<QuoteOrder>('newest');
   const [count, setCount] = useState(PAGE_SIZE);
   useStandaloneScroll();
 
   const active = sections.find(s => s.name === activeSec) ?? sections[0];
-  const shown = active?.quotes.slice(0, count) ?? [];
+  // The canonical markdown appends new entries so the local sync remains
+  // conflict-friendly. Reverse only the presentation by default.
+  const orderedQuotes = useMemo(() => {
+    const quotes = active?.quotes ?? [];
+    return quoteOrder === 'newest' ? [...quotes].reverse() : quotes;
+  }, [active, quoteOrder]);
+  const shown = orderedQuotes.slice(0, count);
 
   const handleLoadMore = () => setCount(c => c + PAGE_SIZE);
 
@@ -186,20 +195,36 @@ export default function QuotesPage() {
         <MiniAudio />
       </div>
 
-      <div className="qs-tabs">
-        {sections.map(s => (
-          <button
-            key={s.name}
-            className={`qs-tab${s.name === activeSec ? ' qs-tab--on' : ''}`}
-            onClick={() => {
-              setActiveSec(s.name);
-              setCount(PAGE_SIZE);
-              trackEvent('Quotes Section', { section: s.name });
-            }}
-          >
-            {s.name}
-          </button>
-        ))}
+      <div className="qs-controls">
+        <div className="qs-tabs" aria-label="Quote categories">
+          {sections.map(s => (
+            <button
+              key={s.name}
+              className={`qs-tab${s.name === activeSec ? ' qs-tab--on' : ''}`}
+              aria-pressed={s.name === activeSec}
+              onClick={() => {
+                setActiveSec(s.name);
+                setCount(PAGE_SIZE);
+                trackEvent('Quotes Section', { section: s.name });
+              }}
+            >
+              {s.name}
+            </button>
+          ))}
+        </div>
+        <button
+          type="button"
+          className="qs-order"
+          aria-pressed={quoteOrder === 'oldest'}
+          onClick={() => {
+            const nextOrder: QuoteOrder = quoteOrder === 'newest' ? 'oldest' : 'newest';
+            setQuoteOrder(nextOrder);
+            setCount(PAGE_SIZE);
+            trackEvent('Quotes Sort', { order: nextOrder });
+          }}
+        >
+          {quoteOrder === 'newest' ? 'NEWEST FIRST' : 'OLDEST FIRST'}
+        </button>
       </div>
 
       {active?.description && (
@@ -215,9 +240,9 @@ export default function QuotesPage() {
         ))}
       </div>
 
-      {active && count < active.quotes.length && (
+      {active && count < orderedQuotes.length && (
         <button className="qs-more" onClick={handleLoadMore}>
-          LOAD MORE ({active.quotes.length - count} remaining)
+          LOAD MORE ({orderedQuotes.length - count} remaining)
         </button>
       )}
     </div>

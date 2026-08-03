@@ -8,7 +8,7 @@ Everything else (DESIGN, bug reviews, architecture notes, memory, skills) goes u
 | Path | Purpose |
 |------|---------|
 | `skills/` | Agent skills |
-| `memory/` | Persistent agent memory / AGENTS.md |
+| `memory/` | Durable implementation notes; historical deployment notes live in `docs/archive/` |
 | `docs/` | Architecture and implementation notes |
 | `reviews/` | Bug reviews and audit writeups |
 | `DESIGN.md` | Design system SoT (when present) |
@@ -19,7 +19,7 @@ Everything else (DESIGN, bug reviews, architecture notes, memory, skills) goes u
 
 | Path | Purpose |
 |------|---------|
-| `memory/` | Long-lived agent notes, AGENTS.md, decisions |
+| `memory/` | Long-lived implementation notes and decisions |
 | `skills/` | Project-local skills / skill packs for agents |
 
 Keep secrets out of this tree.

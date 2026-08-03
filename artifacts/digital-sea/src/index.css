@@ -1753,11 +1753,18 @@ html.standalone-active body {
   }
 }
 
+.qs-controls {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  margin-bottom: 1.2rem;
+}
+
 .qs-tabs {
   display: flex;
   flex-wrap: wrap;
   gap: 0.35rem;
-  margin-bottom: 1.2rem;
+  flex: 1 1 0;
 }
 
 .qs-tab {
@@ -1781,6 +1788,32 @@ html.standalone-active body {
   border-color: #5de8f0;
   color: #bdeff2;
   background: rgba(93, 232, 240, 0.06);
+}
+
+.qs-order {
+  flex: 0 0 auto;
+  min-height: 32px;
+  background: rgba(93, 232, 240, 0.05);
+  border: 1px solid rgba(93, 232, 240, 0.38);
+  color: #bdeff2;
+  font: inherit;
+  font-size: 0.48rem;
+  letter-spacing: 0.12em;
+  padding: 0.3rem 0.55rem;
+  cursor: pointer;
+  transition: border-color 0.2s, background-color 0.2s, color 0.2s;
+}
+
+.qs-order:hover,
+.qs-order[aria-pressed="true"] {
+  border-color: #5de8f0;
+  background: rgba(93, 232, 240, 0.12);
+  color: #e8ffff;
+}
+
+.qs-order:focus-visible {
+  outline: 2px solid #bdeff2;
+  outline-offset: 2px;
 }
 
 .qs-desc {
@@ -1845,6 +1878,18 @@ html.standalone-active body {
 }
 
 /* ── Books page ── */
+
+@media (max-width: 560px) {
+  .qs-controls {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  .qs-order {
+    align-self: flex-start;
+    min-height: 36px;
+  }
+}
 
 .bs-shelf {
   margin-bottom: 2rem;
