@@ -27,7 +27,7 @@ A personal [digital sea](https://codelyoko.fandom.com/wiki/Digital_Sea) - living
 | **Observatory** | `/observatory` | Astrology, Cesium Earth, satellites, sky |
 | **Resume** | `/resume` | Direct URL only (unlinked in nav) |
 
-Also: `/socials`, `/projects`, `/blog`, `/fin`. Home aliases `/home`, `/sea`, `/identity` → `/`. Legacy `/orbit` and `/orbit-veil` → `/observatory`.
+Also: `/socials`, `/projects`, `/blog`, `/fin`. Home aliases `/home`, `/sea`, `/identity` → `/`.
 
 Aesthetic inspiration: **Code Lyoko** (MoonScoop, 2003–2007). [Wikipedia](https://en.wikipedia.org/wiki/Code_Lyoko)
 

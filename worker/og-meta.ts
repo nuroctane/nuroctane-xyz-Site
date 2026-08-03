@@ -65,7 +65,7 @@ const PAGES: Record<string, PageMeta> = {
       "Reading shelves, notes, and community recommendations — a living library inside the digital sea.",
     badge: "BOOKS",
     path: "/books",
-    favicon: "/assets/nodes/goodreads-logo.png",
+    favicon: "/assets/nodes/books-logo.png",
   },
   resume: {
     title: "Resume — David Davieson · NUROCTANE",
@@ -100,25 +100,7 @@ const PAGES: Record<string, PageMeta> = {
     badge: "OBSERVATORY",
     path: "/observatory",
     siteName: "Observatory",
-    favicon: "/assets/nodes/orbit-veil-logo.svg",
-  },
-  orbit: {
-    title: "Observatory",
-    description:
-      "Astrology-rooted 3D web observatory — Swiss Ephemeris, all house/ayanamsa systems, aspects, Earth satellites, solar system, Cesium globe, and NASA mission hooks.",
-    badge: "OBSERVATORY",
-    path: "/observatory",
-    siteName: "Observatory",
-    favicon: "/assets/nodes/orbit-veil-logo.svg",
-  },
-  "orbit-veil": {
-    title: "Observatory",
-    description:
-      "Astrology-rooted 3D web observatory — Swiss Ephemeris, all house/ayanamsa systems, aspects, Earth satellites, solar system, Cesium globe, and NASA mission hooks.",
-    badge: "OBSERVATORY",
-    path: "/observatory",
-    siteName: "Observatory",
-    favicon: "/assets/nodes/orbit-veil-logo.svg",
+    favicon: "/assets/nodes/observatory-logo.png",
   },
   blog: {
     title: "Writings — NUROCTANE",
@@ -126,7 +108,7 @@ const PAGES: Record<string, PageMeta> = {
       "Passages from the digital sea — sovereignty, the veil, the machine, and the attractor that pulls from the future.",
     badge: "WRITINGS",
     path: "/blog",
-    favicon: "/assets/nodes/substack-logo.png",
+    favicon: "/assets/nodes/blog-logo.png",
   },
   socials: {
     title: "Socials — NUROCTANE",
@@ -186,8 +168,7 @@ const CHILD_FAVICONS: Record<string, Record<string, string>> = {
     geoskin: "/assets/nodes/geoskin-logo.svg",
     miyamaker: "/assets/nodes/miyamaker-avatar.png",
     webutils: "/assets/nodes/wrench.png",
-    "orbit-veil": "/assets/nodes/orbit-veil-logo.svg",
-    observatory: "/assets/nodes/orbit-veil-logo.svg",
+    observatory: "/assets/nodes/observatory-logo.png",
   },
 };
 
@@ -202,8 +183,8 @@ function resolvePage(pathname: string): ResolvedMeta {
   const top = segs[0] || "home";
   const key = top === "" ? "home" : top;
   const base = PAGES[key] || PAGES.home;
-  const path = key === "orbit-veil" || key === "orbit" ? "/observatory" : clean === "/" ? "/" : clean;
-  const imageKey = key === "orbit-veil" || key === "orbit" ? "observatory" : key;
+  const path = clean === "/" ? "/" : clean;
+  const imageKey = key;
   let image =
     base.image ||
     `${SITE}/api/og?page=${encodeURIComponent(imageKey === "home" ? "home" : imageKey)}&title=${encodeURIComponent(base.badge)}`;

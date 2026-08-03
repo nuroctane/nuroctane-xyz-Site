@@ -62,13 +62,6 @@ function Root() {
   if (top === 'resume') return <Suspense fallback={<Fallback />}><ResumePage /></Suspense>;
   if (top === 'modkeys') return <Suspense fallback={<Fallback />}><ModkeysPage /></Suspense>;
   if (top === 'cli') return <Suspense fallback={<Fallback />}><CliPage /></Suspense>;
-  // Legacy /orbit and /orbit-veil permanently redirect to /observatory.
-  if (top === 'orbit' || top === 'orbit-veil') {
-    if (typeof window !== 'undefined' && window.location.pathname !== '/observatory') {
-      window.history.replaceState(null, '', '/observatory' + window.location.search + window.location.hash);
-    }
-    return <Suspense fallback={<Fallback />}><ObservatoryPage /></Suspense>;
-  }
   if (top === 'observatory') {
     return <Suspense fallback={<Fallback />}><ObservatoryPage /></Suspense>;
   }

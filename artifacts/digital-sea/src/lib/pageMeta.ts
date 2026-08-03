@@ -50,7 +50,7 @@ const PAGES: Record<string, PageMeta> = {
       'Reading shelves, notes, and community recommendations — a living library inside the digital sea.',
     badge: 'BOOKS',
     path: '/books',
-    favicon: '/assets/nodes/goodreads-logo.png',
+    favicon: '/assets/nodes/books-logo.png',
   },
   resume: {
     title: 'Resume — David Davieson · NUROCTANE',
@@ -86,28 +86,7 @@ const PAGES: Record<string, PageMeta> = {
     badge: 'OBSERVATORY',
     path: '/observatory',
     siteName: 'Observatory',
-    favicon: '/assets/nodes/orbit-veil-logo.svg',
-    imagePath: '/api/og?page=observatory&v=2',
-  },
-  // Legacy keys redirect metadata to /observatory
-  orbit: {
-    title: 'Observatory',
-    description:
-      'Astrology-rooted 3D web observatory — Swiss Ephemeris, all house/ayanamsa systems, aspects, Earth satellites, solar system, Cesium globe, and NASA mission hooks.',
-    badge: 'OBSERVATORY',
-    path: '/observatory',
-    siteName: 'Observatory',
-    favicon: '/assets/nodes/orbit-veil-logo.svg',
-    imagePath: '/api/og?page=observatory&v=2',
-  },
-  'orbit-veil': {
-    title: 'Observatory',
-    description:
-      'Astrology-rooted 3D web observatory — Swiss Ephemeris, all house/ayanamsa systems, aspects, Earth satellites, solar system, Cesium globe, and NASA mission hooks.',
-    badge: 'OBSERVATORY',
-    path: '/observatory',
-    siteName: 'Observatory',
-    favicon: '/assets/nodes/orbit-veil-logo.svg',
+    favicon: '/assets/nodes/observatory-logo.png',
     imagePath: '/api/og?page=observatory&v=2',
   },
   blog: {
@@ -116,7 +95,7 @@ const PAGES: Record<string, PageMeta> = {
       'Passages from the digital sea — sovereignty, the veil, the machine, and the attractor that pulls from the future.',
     badge: 'WRITINGS',
     path: '/blog',
-    favicon: '/assets/nodes/substack-logo.png',
+    favicon: '/assets/nodes/blog-logo.png',
   },
   socials: {
     title: 'Socials — NUROCTANE',
@@ -176,8 +155,7 @@ const CHILD_FAVICONS: Record<string, Record<string, string>> = {
     geoskin: '/assets/nodes/geoskin-logo.svg',
     miyamaker: '/assets/nodes/miyamaker-avatar.png',
     webutils: '/assets/nodes/wrench.png',
-    'orbit-veil': '/assets/nodes/orbit-veil-logo.svg',
-    observatory: '/assets/nodes/orbit-veil-logo.svg',
+    observatory: '/assets/nodes/observatory-logo.png',
   },
 };
 

@@ -34,8 +34,7 @@ const LOGO_MAP: Record<string, string> = {
   weatherguru: '/assets/nodes/weatherguru-logo.svg',
   sis:         '/assets/nodes/sis-logo.svg',
   geoskin:     '/assets/nodes/geoskin-logo.svg',
-  'orbit-veil': '/assets/nodes/orbit-veil-logo.svg',
-  observatory: '/assets/nodes/orbit-veil-logo.svg',
+  observatory: '/assets/nodes/observatory-logo.png',
 };
 
 // Computed once at module load. Categorization + order derive from

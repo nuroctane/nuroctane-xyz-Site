@@ -175,3 +175,6 @@ non-shipping). The snap-back fix is v0.109; this hardening pass is v0.110.
   readers now reflow-free. Behavior identical; jank reduced. Main page only.
 - v0.114 (2026-08-03): quotes now default to newest-first with an accessible
   oldest/newest order toggle; repository hygiene and asset organization pass.
+- v0.115 (2026-08-03): Observatory naming consolidation and shared project-logo
+  branding pass across nodes, navigation, document metadata, runtime chrome, and
+  the new Blackjack ASCII playing-card mark.

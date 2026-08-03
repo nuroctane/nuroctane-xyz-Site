@@ -283,8 +283,8 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     urlDisplay: 'nuroctane.xyz/observatory',
     subtitle: 'sky, system, satellites, time',
     description: 'Astrology-rooted 3D observatory: Swiss Ephemeris, every major house system and ayanamsa, full aspectarian, live Earth satellites (CelesTrak/SGP4), solar system, Cesium globe, and NASA Eyes/Horizons mission hooks.',
-    avatar: '/assets/nodes/orbit-veil-logo.svg',
-    logo: '/assets/nodes/orbit-veil-logo.svg',
+    avatar: '/assets/nodes/observatory-logo.png',
+    logo: '/assets/nodes/observatory-logo.png',
   },
 ];
 
@@ -360,7 +360,6 @@ const WIDE_CARD: Record<string, number> = {
   // last card before portals  -  smooth entrance + room to pivot away
   webutils:    0.056,
   observatory: 0.058,
-  'orbit-veil': 0.058,
 };
 
 const Z_OVERRIDE: Record<string, number> = {};

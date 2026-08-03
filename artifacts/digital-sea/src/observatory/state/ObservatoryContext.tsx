@@ -103,7 +103,7 @@ interface ObservatoryState {
   lilithMode: LilithMode;
   setLilithMode: (m: LilithMode) => void;
 
-  // Satellite field — orbit veil full capacity
+  // Satellite field — Observatory full capacity
   enabledSatGroups: Record<SatelliteGroupId, boolean>;
   setSatGroupEnabled: (id: SatelliteGroupId, on: boolean) => void;
   toggleSatGroup: (id: SatelliteGroupId) => void;
@@ -177,7 +177,7 @@ export function ObservatoryProvider({ children }: { children: ReactNode }) {
   const [nodeMode, setNodeMode] = useState<NodeMode>('mean');
   const [lilithMode, setLilithMode] = useState<LilithMode>('mean');
 
-  // Satellite field — orbit veil full features
+  // Satellite field — Observatory full features
   const [enabledSatGroups, setEnabledSatGroups] = useState(defaultSatelliteEnabled);
   const [selectedSatId, setSelectedSatId] = useState<string | null>(null);
   const [satSearch, setSatSearch] = useState('');

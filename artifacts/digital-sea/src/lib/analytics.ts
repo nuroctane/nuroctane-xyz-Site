@@ -56,8 +56,6 @@ export function resolveAnalytics(location: string): { path: string; route: strin
       return { path: '/modkeys', route: '/modkeys' };
     case 'cli':
       return { path: '/cli', route: '/cli' };
-    case 'orbit':
-    case 'orbit-veil':
     case 'observatory':
       return { path: '/observatory', route: '/observatory' };
     case 'fin':

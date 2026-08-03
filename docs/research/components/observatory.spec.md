@@ -1,12 +1,12 @@
 # Observatory — nuroctane.xyz/observatory
 
-Canonical route: `/observatory`. Legacy `/orbit` and `/orbit-veil` 308-equivalent client redirect via history.replaceState + server OG middleware.
+Canonical route: `/observatory`. The Observatory is the only satellite visualizer route.
 
 ## What it is
 
 A 3D astrology-rooted web observatory combining:
 
-- Earth satellites (sealed CelesTrak/SGP4 runtime at `/orbit-veil-runtime/`)
+- Earth satellites (sealed CelesTrak/SGP4 runtime at `/observatory-runtime/`)
 - Cesium globe with OSM/Esri imagery, Nominatim city search, Mapillary street-level deep links
 - Solar system & sky chart (Three.js + astronomy-engine fallback)
 - Full Swiss Ephemeris (WASM) for house/ayanamsa/positions
@@ -46,10 +46,9 @@ Engine lazy loads via `getSwiss()` (swisseph-wasm). Falls back to astronomy-engi
 
 ## Routes / Meta
 
-- SPA router: top=orbit/orbit-veil → replaceState to /observatory + render ObservatoryPage
-- Analytics: orbit + orbit-veil mapped to /observatory
-- pageMeta: observatory canonical, orbit aliases point to /observatory
-- middleware: PAGES orbit/orbit-veil resolve to /observatory imageKey, OG child favicons preserved
+- SPA router: top=observatory renders ObservatoryPage
+- Analytics: observatory is reported as `/observatory`
+- pageMeta and crawler OG metadata use the Observatory mark
 - nodes.ts: id observatory, url /observatory
 - StandaloneNav + QuickNav: href /observatory
 
@@ -70,8 +69,7 @@ Engine lazy loads via `getSwiss()` (swisseph-wasm). Falls back to astronomy-engi
 ## Verification
 
 - [x] /observatory renders
-- [x] /orbit → /observatory redirect
 - [x] Swiss loads, version shown in HUD
 - [x] All toggles wired
 - [x] Cesium globe loads, city search works, Mapillary link
-- [x] Satellites iframe still at /orbit-veil-runtime
+- [x] Satellites iframe still at /observatory-runtime
