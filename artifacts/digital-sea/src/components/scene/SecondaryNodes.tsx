@@ -20,7 +20,11 @@ const _euler      = new THREE.Euler();
 const _qRing      = new THREE.Quaternion();
 
 /** Local-space drop of a note tile under its parent logo (world units). */
-const NOTE_BELOW = -0.42;
+const NOTE_BELOW = -0.26;
+
+function isLogoSidecard(file: string) {
+  return /\blogo\b/i.test(file);
+}
 
 function mulberry32(seed: number) {
   return function () {
@@ -69,7 +73,7 @@ function ImageTile({
     <img
       src={media.url}
       alt={media.linkLabel || ''}
-      className={`secondary-card-img${/\blogo\b/i.test(media.file) ? ' secondary-card-img--logo' : ''}`}
+      className={`secondary-card-img${isLogoSidecard(media.file) ? ' secondary-card-img--logo' : ''}`}
       draggable={false}
     />
   );
@@ -163,7 +167,14 @@ export function SecondaryOrbit({ nodeId, media, centerRef, proximityRef }: Props
   // Per-tile CSS width: shrink slightly as count grows; contrib tile stays wider
   const cardWidth   = Math.max(72, 108 - count * 6);
   const contribWidth = Math.max(cardWidth + 28, 132);
-  const noteWidth   = Math.max(88, cardWidth + 12);
+  const logoWidth   = 48;
+  const noteWidth   = 64;
+
+  const widthFor = (m: SecondaryMedia) => {
+    if (m.kind === 'github-contrib') return contribWidth;
+    if (isLogoSidecard(m.file)) return logoWidth;
+    return cardWidth;
+  };
 
   const params = useMemo(() => {
     const rnd  = mulberry32(hashStr(nodeId));
@@ -250,11 +261,12 @@ export function SecondaryOrbit({ nodeId, media, centerRef, proximityRef }: Props
                 className={[
                   'secondary-card',
                   m.kind === 'github-contrib' ? 'secondary-card--contrib' : '',
+                  isLogoSidecard(m.file) ? 'secondary-card--logo' : '',
                 ].filter(Boolean).join(' ')}
                 style={{
                   opacity: 0,
                   pointerEvents: 'none',
-                  width: `${m.kind === 'github-contrib' ? contribWidth : cardWidth}px`,
+                  width: `${widthFor(m)}px`,
                 }}
               >
                 <TileBody
