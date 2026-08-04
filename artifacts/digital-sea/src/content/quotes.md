@@ -19,7 +19,7 @@
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (92)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (33)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (41)
-- [[#Unsorted Sparks|Unsorted Sparks]] (2)
+- [[#Unsorted Sparks|Unsorted Sparks]] (3)
 
 ## Faith, God & Surrender
 
@@ -1931,5 +1931,9 @@ _Auto-created section._
 > 
 > Once you learn this fundamental truth, you win a lot more than you lose
 > — @iamgingertrash
+
+> U realize it’s all a Schrodinger’s cat in the end.
+> — @MrE_mssg
+
 
 
