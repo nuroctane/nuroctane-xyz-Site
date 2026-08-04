@@ -28,6 +28,10 @@ Source of truth: `artifacts/digital-sea/src/data/nodes.ts`.
 - `avatar` = large mark (top); `logo` = small badge (bottom) — e.g. snipocr logo + github logo.
 - `description` is the summary body text on the 3D card.
 - Secondaries: `secondaryNodes.ts` + files under `src/assets/secondary-nodes/` (optional sidecards).
+  Naming: `<cardId>-<slug>-sidecard.<ext>`. Optional `link` / `note` metadata via
+  `SECONDARY_OVERRIDES` in `secondaryNodes.ts` (see folder `README.md`).
+  A `note` on an image tile spawns a child note card under the logo that shares
+  the parent tile’s orbit / lean / camera-face physics (AniList → MAL example).
 
 ## How to add a node
 1. Insert entry in `raw[]` at the desired scroll order.

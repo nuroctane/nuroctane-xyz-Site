@@ -1,4 +1,4 @@
-import { useMemo, useRef, type MutableRefObject } from 'react';
+import { useMemo, useRef, type MutableRefObject, type ReactNode } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Html } from '@react-three/drei';
 import { useLocation } from 'wouter';
@@ -18,6 +18,9 @@ const _qLean      = new THREE.Quaternion();
 const _zAxis      = new THREE.Vector3(0, 0, 1);
 const _euler      = new THREE.Euler();
 const _qRing      = new THREE.Quaternion();
+
+/** Local-space drop of a note tile under its parent logo (world units). */
+const NOTE_BELOW = -0.42;
 
 function mulberry32(seed: number) {
   return function () {
@@ -40,11 +43,115 @@ function hashStr(s: string) {
 
 const BASE_RADIUS = 1.75;
 
+function isExternalLink(link: string) {
+  return /^https?:\/\//i.test(link);
+}
+
 interface Props {
   nodeId: string;
   media: SecondaryMedia[];
   centerRef: MutableRefObject<THREE.Vector3>;
   proximityRef: MutableRefObject<number>;
+}
+
+function SecondaryNote({ text }: { text: string }) {
+  return <p className="secondary-card-note">{text}</p>;
+}
+
+function ImageTile({
+  media,
+  onInternalNav,
+}: {
+  media: SecondaryMedia;
+  onInternalNav: (path: string) => void;
+}) {
+  const img = (
+    <img
+      src={media.url}
+      alt={media.linkLabel || ''}
+      className={`secondary-card-img${/\blogo\b/i.test(media.file) ? ' secondary-card-img--logo' : ''}`}
+      draggable={false}
+    />
+  );
+
+  if (!media.link) return img;
+
+  if (isExternalLink(media.link)) {
+    return (
+      <a
+        className="secondary-card-anchor"
+        href={media.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        aria-label={media.linkLabel || 'Open link'}
+      >
+        {img}
+      </a>
+    );
+  }
+
+  return (
+    <button
+      type="button"
+      className="secondary-card-anchor"
+      onClick={(e) => {
+        e.preventDefault();
+        onInternalNav(media.link!);
+      }}
+      aria-label={media.linkLabel || 'Open'}
+    >
+      {img}
+    </button>
+  );
+}
+
+function TileBody({
+  media,
+  contribWidth,
+  onInternalNav,
+}: {
+  media: SecondaryMedia;
+  contribWidth: number;
+  onInternalNav: (path: string) => void;
+}): ReactNode {
+  if (media.kind === 'github-contrib') {
+    return <GithubContribTerrain width={contribWidth - 8} />;
+  }
+
+  if (media.kind === 'note' && media.note) {
+    return <SecondaryNote text={media.note} />;
+  }
+
+  if (media.kind === 'link' && media.link) {
+    if (isExternalLink(media.link)) {
+      return (
+        <a
+          className="secondary-card-link"
+          href={media.link}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <span className="secondary-card-link-prefix">SYS://</span>
+          <span className="secondary-card-link-label">{media.linkLabel}</span>
+        </a>
+      );
+    }
+    return (
+      <button
+        type="button"
+        className="secondary-card-link"
+        onClick={(e) => {
+          e.preventDefault();
+          onInternalNav(media.link!);
+        }}
+      >
+        <span className="secondary-card-link-prefix">SYS://</span>
+        <span className="secondary-card-link-label">{media.linkLabel}</span>
+      </button>
+    );
+  }
+
+  return <ImageTile media={media} onInternalNav={onInternalNav} />;
 }
 
 export function SecondaryOrbit({ nodeId, media, centerRef, proximityRef }: Props) {
@@ -56,6 +163,7 @@ export function SecondaryOrbit({ nodeId, media, centerRef, proximityRef }: Props
   // Per-tile CSS width: shrink slightly as count grows; contrib tile stays wider
   const cardWidth   = Math.max(72, 108 - count * 6);
   const contribWidth = Math.max(cardWidth + 28, 132);
+  const noteWidth   = Math.max(88, cardWidth + 12);
 
   const params = useMemo(() => {
     const rnd  = mulberry32(hashStr(nodeId));
@@ -78,6 +186,12 @@ export function SecondaryOrbit({ nodeId, media, centerRef, proximityRef }: Props
 
   const tileRefs = useRef<(THREE.Group | null)[]>([]);
   const wrapRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const noteWrapRefs = useRef<(HTMLDivElement | null)[]>([]);
+
+  const onInternalNav = (path: string) => {
+    markNavigationIntent();
+    setLocation(path);
+  };
 
   useFrame(({ camera, clock }) => {
     const p = proximityRef.current;
@@ -116,6 +230,8 @@ export function SecondaryOrbit({ nodeId, media, centerRef, proximityRef }: Props
           w.style.pointerEvents = opacity > 0.4 ? 'auto' : 'none';
         }
       }
+      const nw = noteWrapRefs.current[i];
+      if (nw) nw.style.opacity = String(opacity);
     }
   });
 
@@ -131,28 +247,42 @@ export function SecondaryOrbit({ nodeId, media, centerRef, proximityRef }: Props
             <Html transform distanceFactor={4.5} zIndexRange={[30, 0]} prepend>
               <div
                 ref={(el) => { wrapRefs.current[i] = el; }}
-                className={`secondary-card${m.kind === 'github-contrib' ? ' secondary-card--contrib' : ''}`}
+                className={[
+                  'secondary-card',
+                  m.kind === 'github-contrib' ? 'secondary-card--contrib' : '',
+                ].filter(Boolean).join(' ')}
                 style={{
                   opacity: 0,
                   pointerEvents: 'none',
                   width: `${m.kind === 'github-contrib' ? contribWidth : cardWidth}px`,
                 }}
               >
-                {m.kind === 'github-contrib' ? (
-                  <GithubContribTerrain width={contribWidth - 8} />
-                ) : m.link ? (
-                  <button
-                    className="secondary-card-link"
-                    onClick={(e) => { e.preventDefault(); markNavigationIntent(); setLocation(m.link!); }}
-                  >
-                    <span className="secondary-card-link-prefix">SYS://</span>
-                    <span className="secondary-card-link-label">{m.linkLabel}</span>
-                  </button>
-                ) : (
-                  <img src={m.url} alt="" className="secondary-card-img" draggable={false} />
-                )}
+                <TileBody
+                  media={m}
+                  contribWidth={contribWidth}
+                  onInternalNav={onInternalNav}
+                />
               </div>
             </Html>
+
+            {/* Note rides as a child of the logo tile — identical orbit/lean/face physics. */}
+            {m.note ? (
+              <group position={[0, NOTE_BELOW, 0]}>
+                <Html transform distanceFactor={4.5} zIndexRange={[29, 0]} prepend>
+                  <div
+                    ref={(el) => { noteWrapRefs.current[i] = el; }}
+                    className="secondary-card secondary-card--note"
+                    style={{
+                      opacity: 0,
+                      pointerEvents: 'none',
+                      width: `${noteWidth}px`,
+                    }}
+                  >
+                    <SecondaryNote text={m.note} />
+                  </div>
+                </Html>
+              </group>
+            ) : null}
           </group>
         ))}
     </group>

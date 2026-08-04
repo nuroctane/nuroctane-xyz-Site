@@ -3,6 +3,7 @@ import { nodes } from './nodes';
 // Secondary media live in src/assets/secondary-nodes/ so Vite emits each file
 // exactly once (the <img> only fetches when a tile actually renders). Drop a new
 // image/gif there named "<cardname>-whatever.ext" and it auto-attaches to that card.
+// Optional link/note/kind metadata: see SECONDARY_OVERRIDES below + the folder README.
 const modules = import.meta.glob(
   '../assets/secondary-nodes/*.{png,jpg,jpeg,webp,gif,PNG,JPG,JPEG,WEBP,GIF}',
   { eager: true, query: '?url', import: 'default' },
@@ -12,11 +13,23 @@ export interface SecondaryMedia {
   url: string;
   file: string;
   isGif: boolean;
+  /** Internal path (`/books`) or absolute external URL. */
   link?: string;
   linkLabel?: string;
+  /** Child note card parented under this tile (same orbit / lean / face). */
+  note?: string;
   /** Special secondary tile kinds (non-image). */
-  kind?: 'image' | 'link' | 'github-contrib';
+  kind?: 'image' | 'link' | 'github-contrib' | 'note';
 }
+
+/** Per-file metadata layered onto glob-discovered sidecards. */
+const SECONDARY_OVERRIDES: Record<string, Partial<SecondaryMedia>> = {
+  'anilist-mal-logo-sidecard.png': {
+    link: 'https://myanimelist.net/animelist/nuroctane',
+    linkLabel: 'MyAnimeList',
+    note: 'legacy anime listing site, still updated',
+  },
+};
 
 const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
 
@@ -52,7 +65,8 @@ function buildMap(): Record<string, SecondaryMedia[]> {
       }
       continue;
     }
-    (map[id] ??= []).push({ url, file, isGif: /\.gif$/i.test(file) });
+    const base: SecondaryMedia = { url, file, isGif: /\.gif$/i.test(file), kind: 'image' };
+    (map[id] ??= []).push({ ...base, ...SECONDARY_OVERRIDES[file] });
   }
   for (const id of Object.keys(map)) {
     map[id].sort((a, b) => a.file.localeCompare(b.file));
