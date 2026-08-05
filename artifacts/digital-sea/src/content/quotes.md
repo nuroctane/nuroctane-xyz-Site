@@ -19,7 +19,7 @@
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (93)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (33)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (41)
-- [[#Unsorted Sparks|Unsorted Sparks]] (4)
+- [[#Unsorted Sparks|Unsorted Sparks]] (5)
 
 ## Faith, God & Surrender
 
@@ -1941,6 +1941,10 @@ _Auto-created section._
 
 > The arrows that travel the greatest distance are pulled back the farthest.
 > — @dragonfluss
+
+> it truly takes something close to violence to leave a comfortable life on purpose. at least when you hit rock bottom, the climb out makes sense to everyone. but when you look at a life that works - one that looks good enough from the outside and you decide to burn it down because it is quietly suffocating you - people will call you insane and you have to be willing to be called insane because the alternative is a lifetime of comfortable regret.
+> — @josbjohnson
+
 
 
 
