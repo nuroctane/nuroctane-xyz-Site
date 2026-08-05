@@ -19,7 +19,7 @@
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (92)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (33)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (41)
-- [[#Unsorted Sparks|Unsorted Sparks]] (3)
+- [[#Unsorted Sparks|Unsorted Sparks]] (4)
 
 ## Faith, God & Surrender
 
@@ -1934,6 +1934,10 @@ _Auto-created section._
 
 > U realize it’s all a Schrodinger’s cat in the end.
 > — @MrE_mssg
+
+> The arrows that travel the greatest distance are pulled back the farthest.
+> — @dragonfluss
+
 
 
 
