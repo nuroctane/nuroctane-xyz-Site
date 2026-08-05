@@ -16,7 +16,7 @@
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (23)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (76)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (44)
-- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (92)
+- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (93)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (33)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (41)
 - [[#Unsorted Sparks|Unsorted Sparks]] (4)
@@ -1681,6 +1681,10 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > — @SuzanneSmith126
 
 > When a flower doesn’t bloom, you fix the environment in which it grows, not the flower.
+
+> The entire spiritual industry is a coward's invention, designed to package the most violent undertaking a human being can choose into something palatable for soft hands and weekend schedules. the actual practice, the original practice, before it was gutted and resold as self
+> — @lichthauch
+
 
 ## Work, Wealth & Value
 
