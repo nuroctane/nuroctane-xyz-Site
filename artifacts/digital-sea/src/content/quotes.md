@@ -20,6 +20,7 @@
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (33)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (41)
 - [[#Unsorted Sparks|Unsorted Sparks]] (5)
+- [[#Reality, Manifestation & Abundance|Reality, Manifestation & Abundance]] (1)
 
 ## Faith, God & Surrender
 
@@ -1948,4 +1949,12 @@ _Auto-created section._
 
 
 
+
+
+## Reality, Manifestation & Abundance
+
+_Auto-created section._
+
+> If you're feeling stuck, remember this: Every time you chase certainty, you create paralysis
+> — @fu_joehudson
 
