@@ -12,14 +12,14 @@
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (48)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (57)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (79)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (75)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (76)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (23)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (76)
-- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (44)
+- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (45)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (93)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (33)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (41)
-- [[#Unsorted Sparks|Unsorted Sparks]] (5)
+- [[#Unsorted Sparks|Unsorted Sparks]] (8)
 - [[#Reality, Manifestation & Abundance|Reality, Manifestation & Abundance]] (1)
 
 ## Faith, God & Surrender
@@ -1038,6 +1038,26 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > buena suerte.
 > — @eagleseyeinc
 
+> every great technology starts out noble and ends up looking "sinful" at the consumer layer
+> 
+> we built the internet and most of it went to brainrot
+> 
+> we built superintelligence and most of it went to making ai slop
+> 
+> we built high-frequency blockchains and most of it went to trading memecoins
+> 
+> are consumer builders inherently more evil? or are they just the ones building the end products people actually want?
+> 
+> i see a lot of infrastructure builders, safely one or two layers removed from the end consumer, frown on these kinds of use cases, but at the end of the day the revenue to fund deep research and innovation needs to come from somewhere
+> 
+> the closer you are to the real average consumer, the closer you get to a reflection of what humans actually want. not what they say they want, or what smart people think they should want
+> 
+> and sometimes humanity’s reflection just isn’t that flattering
+> 
+> that doesn’t make the mirror evil
+> — @j0hnwang
+
+
 
 ## Creativity, Purpose & Expression
 
@@ -1435,6 +1455,14 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 
 > People most taken advantage of are out there thinking they’re taking advantage of.
 > — @MrE_mssg
+
+> If you’re someone with a lot to offer others, you have to think VERY INTENTIONALLY about *who needs what you’re offering* because that’s the kind of person who will rapidly fill up your life 
+> 
+> Maybe you’re smart and sexy and honest and patient and kind. If you lead with the patience (aka offer it conspicuously to people) the people most incentivized to be around you will be those who have a hard time getting patience. If you lead with your sex appeal you incentivize for people who are lustful. If you lead with your ideas you incentivize people who most need intellectual connection. 
+> 
+> Everyone *wants* everything but what you offer most readily fills your life with those who need it. Reveal your gifts wisely
+> — @divya_venn
+
 
 ## Body, Emotion & Nervous System
 
@@ -1945,6 +1973,18 @@ _Auto-created section._
 
 > it truly takes something close to violence to leave a comfortable life on purpose. at least when you hit rock bottom, the climb out makes sense to everyone. but when you look at a life that works - one that looks good enough from the outside and you decide to burn it down because it is quietly suffocating you - people will call you insane and you have to be willing to be called insane because the alternative is a lifetime of comfortable regret.
 > — @josbjohnson
+
+> Don't judge a book by its cover might be the worst generalized advice ever told
+> — @simulaxion
+
+> people will paint you with the colors they have
+> — @jia_seed
+
+> it gets easier to flip the switch with each passing year
+> — @nuroctane
+
+
+
 
 
 
