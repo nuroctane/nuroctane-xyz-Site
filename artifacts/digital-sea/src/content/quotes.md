@@ -19,7 +19,7 @@
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (93)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (33)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (41)
-- [[#Unsorted Sparks|Unsorted Sparks]] (8)
+- [[#Unsorted Sparks|Unsorted Sparks]] (9)
 - [[#Reality, Manifestation & Abundance|Reality, Manifestation & Abundance]] (1)
 
 ## Faith, God & Surrender
@@ -1982,6 +1982,14 @@ _Auto-created section._
 
 > it gets easier to flip the switch with each passing year
 > — @nuroctane
+
+> Never attribute to difficulty what is adequately explained by novelty.
+> 
+> No thing is hard. It is only new.
+> 
+> The sooner you internalize this, the sooner you start.
+> — @BowTiedPhys
+
 
 
 
