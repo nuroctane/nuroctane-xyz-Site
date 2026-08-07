@@ -7,20 +7,22 @@
 > File new entries directly under the narrowest matching category; choose by primary subject, not one matching keyword. Do not recreate an unsorted section.
 
 ## Index
-- [[#Faith, God & Surrender|Faith, God & Surrender]] (41)
+- [[#Faith, God & Surrender|Faith, God & Surrender]] (42)
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (30)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (48)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (57)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (79)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (76)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (77)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (23)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (76)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (45)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (93)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (33)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (41)
-- [[#Unsorted Sparks|Unsorted Sparks]] (9)
+- [[#Unsorted Sparks|Unsorted Sparks]] (11)
 - [[#Reality, Manifestation & Abundance|Reality, Manifestation & Abundance]] (1)
+- [[#Relationships, Boundaries & Love|Relationships, Boundaries & Love]] (1)
+- [[#Wealth, Work & Value|Wealth, Work & Value]] (1)
 
 ## Faith, God & Surrender
 
@@ -122,6 +124,14 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > Thus, therefore, to whom he will, he hath mercy; and whom he will, he hardeneth.
 
 > If it is meant for me I can never lose it. If it is not meant for me I don't want it.
+
+> Knowing in the troughs of your life that God has unfathomable good in store for you, will carry you steady through every possible storm - even those that persist for months. The reassurance He provides to those He calls cannot be disturbed. There's no harm that can be done unto you which He cannot heal in a second.
+> 
+> Often what happens though, is that He allows you first to stumble, venture off the path, and flirt with danger so that at your lowest His protection becomes clearer- since even then, you are held and guided well beyond your comprehension, and merely the recognition of it marks the inflection point of mulling blindly to moving forward with courage
+> 
+> A single momentary encounter with God - no matter how slight or small- will allow for a lifetime of faith and zeal. Once you *know* He is there, listens, and wills your good, all changes. Life begins. Heaven beckons. You transform
+> — @AugustusDelano
+
 
 ## Reality, Consciousness & Perception
 
@@ -1057,6 +1067,10 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > that doesn’t make the mirror evil
 > — @j0hnwang
 
+> You feel lost in life because you've been trained to think fake and gay things are important. Scared of what others think (they don't have original thoughts btw). Afraid of losing something in the world (you die = it's gone anyway). The only thing you "keep" (continually experience) is YOUR SPIRIT but you cuck yourself by letting institutionalised thought structures FUCK your experience upside down with fake rules. Almost everything you've been told is a lie or half truth. If you stopped giving a fuck right now about the retarded reasons of what you "have to do". You'd have nothing to do at first. GREAT! first step = Boredom. In that boredom is where your curiosity comes in, whatever triggers the deepest excitement in you. SPRINT TOWARDS IT. Move country, run up a biz, have a blast with your friends, pilgram through Tibet. It doesn't matter. When you can finally break free from the bounds of what you "have to do" life magically works in your favour and pulls you into an experience more deeply enjoyable than any conjured up, logical plan. The best part is the uncertainty lived from outside the "rules".
+> — @verritass
+
+
 
 
 ## Creativity, Purpose & Expression
@@ -1990,6 +2004,14 @@ _Auto-created section._
 > The sooner you internalize this, the sooner you start.
 > — @BowTiedPhys
 
+> To be taken seriously you have to truly believe you are the best and your opinions are correct. No one is rewarded for having half-held opinions. Keep searching for the truth until you feel it in your bones and the people around you have no choice but to accept your force on the world.
+> — @not_ellington
+
+> No advice from the defeated person. Ever.
+> — @BonesawMD
+
+
+
 
 
 
@@ -2005,4 +2027,20 @@ _Auto-created section._
 
 > If you're feeling stuck, remember this: Every time you chase certainty, you create paralysis
 > — @fu_joehudson
+
+
+## Relationships, Boundaries & Love
+
+_Auto-created section._
+
+> The task of man is to labor with joy, love with sincerity, give with pleasure, see with reverence, listen with affection, speak with prudence, and pray with every breath
+> — @augustusdelano
+
+
+## Wealth, Work & Value
+
+_Auto-created section._
+
+> Most of the old timers I respect (the successful happy and healthy ones I wouldn’t mind being like someday) seem to all give the same advice. It applies across the board to getting the life you actually want. Could be starting a business, hitting a certain liquid net worth, bagging the one girl you HAVE to have.. etc. The advice is to APPLY PRESSURE. Never let your current circumstances define what is possible for you. Go towards everything you want until either you get it, or God definitively reroutes you towards something better. All of their stories of conquest in business and personal dealings involve massive volatility, ups and downs, falling and getting back up etc. over and over again. The old timers with regrets, on the other hand, just let one or two failures convince them to stop trying. Go get exactly what you want.
+> — @dezgoldie
 
