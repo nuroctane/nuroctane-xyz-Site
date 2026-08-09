@@ -72,6 +72,19 @@ if [[ "${SYNC_DRY_RUN:-0}" != "1" ]]; then
   ensure_main
 fi
 
+# Merge any legacy sections before copying the canonical bank to the site.
+# The normalizer is intentionally run after ingest so new entries cannot leave
+# the old category names in the published bank.
+NORMALIZER="$REPO_ROOT/scripts/normalize-quotes-categories.py"
+if command -v python3 >/dev/null 2>&1; then
+  python3 "$NORMALIZER" || exit $?
+elif command -v python >/dev/null 2>&1; then
+  python "$NORMALIZER" || exit $?
+else
+  echo "Python is required for quote category normalization"
+  exit 1
+fi
+
 # 1. Strip frontmatter.
 STRIPPED="$(mktemp)"
 awk '

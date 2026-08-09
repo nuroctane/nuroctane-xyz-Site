@@ -186,6 +186,14 @@ def main() -> int:
         # and writes any Raindrop additions into the canonical vault bank.
         ingest_rc = run("raindrop-first ingest", [str(HERMES_PYTHON), "-u", str(ingest), "--pipeline"])
 
+        normalize = REPO_ROOT / "scripts" / "normalize-quotes-categories.py"
+        normalize_rc = run(
+            "canonicalize quote categories",
+            [str(HERMES_PYTHON), "-u", str(normalize)],
+        )
+        if normalize_rc:
+            return normalize_rc
+
         # Even a partial Raindrop failure must not strand a real Obsidian edit.
         # sync-quotes.py publishes the final canonical bank to the site and main.
         sync_rc = run("obsidian-to-site sync", [str(HERMES_PYTHON), "-u", str(sync)])
