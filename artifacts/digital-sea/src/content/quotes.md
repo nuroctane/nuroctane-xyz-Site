@@ -12,7 +12,7 @@
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (48)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (57)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (79)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (77)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (78)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (23)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (76)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (45)
@@ -1069,6 +1069,18 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 
 > You feel lost in life because you've been trained to think fake and gay things are important. Scared of what others think (they don't have original thoughts btw). Afraid of losing something in the world (you die = it's gone anyway). The only thing you "keep" (continually experience) is YOUR SPIRIT but you cuck yourself by letting institutionalised thought structures FUCK your experience upside down with fake rules. Almost everything you've been told is a lie or half truth. If you stopped giving a fuck right now about the retarded reasons of what you "have to do". You'd have nothing to do at first. GREAT! first step = Boredom. In that boredom is where your curiosity comes in, whatever triggers the deepest excitement in you. SPRINT TOWARDS IT. Move country, run up a biz, have a blast with your friends, pilgram through Tibet. It doesn't matter. When you can finally break free from the bounds of what you "have to do" life magically works in your favour and pulls you into an experience more deeply enjoyable than any conjured up, logical plan. The best part is the uncertainty lived from outside the "rules".
 > — @verritass
+
+> I think ambitious people should treat life in “seasons” rather than trying to balance everything every day.
+> 
+> A few years massively overallocated to work. A period getting seriously fit. A year or two nomading. Then family takes priority for a while. Then maybe at 35 you go completely insane again and spend four years building a new company, and so on.
+> 
+> The mistake is thinking every metric needs to stay green all the time. Most great outcomes (building a company, writing sth serious, training for an event) need uninterrupted runs, not daily moderation. Sometimes work should suffer cause you’re travelling, sometimes your social life should suffer cause you’re building, sometimes career progression should slow cause family matters more. That’s fine.
+> 
+> And tbh it probably makes life more fun too. You get actual chapters and completely different versions of yourself instead of spending 40 years maintaining the same perfectly optimised routine. A few intense years in one city, a weird nomad phase, an obsession that takes over your life, then something completely different. Probably much more memorable than one very long well-optimised Tuesday.
+> 
+> It's why I encourage everyone to think of balance in years, not days. A good life can look horribly unbalanced on some random Tuesday and still be very balanced over 10 years.
+> — @aporia9n
+
 
 
 
