@@ -53,7 +53,7 @@ const FOGLAMP_DESKTOP_QUERY = "(min-width: 721px)";
 const AFTER = [
   {
     cmd: "nur auth login",
-    note: "key → ~/.nur/auth.json  (or set NUR_API_KEY)",
+    note: "save API, OAuth, CLI, or OMP credentials locally",
   },
   { cmd: "nur", note: "open the gold TUI" },
   { cmd: "nur doctor", note: "health check" },
@@ -86,39 +86,46 @@ const TOKEN_PATH = [
   },
   {
     id: "03",
-    label: "ROUTE",
-    title: "Translate once for the active backend",
-    body: "Responses, Chat Completions, Anthropic Messages, native Gemini, Cursor Agent, and local servers share one agent loop.",
-    meta: "62 catalog routes",
+    label: "PREFLIGHT",
+    title: "Reserve the answer before dispatch",
+    body: "Nur estimates the assembled input, reserves output room, checks the session budget, and prices eligible failovers before any request leaves the machine.",
+    meta: "8,192 output reserve · budget gate",
   },
   {
     id: "04",
-    label: "INFER",
-    title: "The provider does the expensive work",
-    body: "Nur sends the full current round, streams output back, and keeps provider storage disabled where the protocol supports it.",
-    meta: "store=false · stream · cancel",
+    label: "ROUTE",
+    title: "Select a protocol, not just a model name",
+    body: "Capabilities choose Responses, Chat Completions, Anthropic Messages, native Gemini, Cursor Agent, or a local server. OpenCode routes each model through its documented native protocol.",
+    meta: "62 routes · capability checked",
   },
   {
     id: "05",
-    label: "METER",
-    title: "Record what the backend reports",
-    body: "Input, output, reasoning, cached tokens, serving route, and list-price estimates land in session status, usage JSONL, and receipts.",
-    meta: "observed usage · not an invoice",
+    label: "INFER",
+    title: "The provider does the expensive work",
+    body: "Every attempt is opened in an append-only ledger before dispatch. Idempotency keys protect supported routes, streamed bytes are never blindly replayed, and cancellation stays attached to the turn.",
+    meta: "attempt id · stream · cancel",
   },
   {
     id: "06",
-    label: "CONTINUE",
-    title: "Compact before the window becomes the failure",
-    body: "Reserve-based compaction keeps the recent working edge while durable memory, backups, and exact spilled results stay local.",
-    meta: "summary · recent tail · deep state",
+    label: "ACCOUNT",
+    title: "Label what is known and what is inferred",
+    body: "Input, output, reasoning, cache reads and writes, native cost, upstream route, and failed or ambiguous attempts are recorded as observed, estimated, or unknown.",
+    meta: "provider reported · catalog · unknown",
+  },
+  {
+    id: "07",
+    label: "PERSIST",
+    title: "Return a smaller, resumable working state",
+    body: "Stable compaction keeps the recent edge while exact spilled results, content-addressed blobs, memory indexes, usage, and receipts remain local and reload across sessions.",
+    meta: "compact tail · durable local state",
   },
 ] as const;
 
 const EFFICIENCY_SIGNALS = [
   {
-    value: "ON",
-    label: "Headroom default",
-    body: "Successful tool results are compressed inline when headroom-ai is present.",
+    value: "LAZY",
+    label: "tool schema loading",
+    body: "The root tool profile starts task-shaped and expands only when the work requires more surface area.",
   },
   {
     value: "12K",
@@ -126,14 +133,14 @@ const EFFICIENCY_SIGNALS = [
     body: "Oversized tool output spills to disk and returns as a compact recoverable pointer.",
   },
   {
-    value: "15%",
-    label: "large-window reserve",
-    body: "Auto-compaction protects response and tool room instead of filling the last token.",
+    value: "8K",
+    label: "output reserved first",
+    body: "The default 8,192-token answer reserve is budgeted before primary, failover, fusion, compaction, or memory inference.",
   },
   {
-    value: "0",
-    label: "provider storage request",
-    body: "The internal request asks supported backends not to retain a server-side response object.",
+    value: "3",
+    label: "accounting truth states",
+    body: "Observed, estimated, and unknown keep provider telemetry distinct from local math and subscription-backed usage.",
   },
 ] as const;
 
@@ -149,7 +156,7 @@ const MEMORY_LAYERS = [
     code: "L1",
     title: "Context store",
     path: "~/.nur/context-store/",
-    body: "Large exact documents and tool results stay addressable through peek, slice, and search.",
+    body: "Large exact documents and tool results share content-addressed blobs, a persisted session index, byte quotas, retention, peek, slice, and search.",
     mode: "LOCAL POINTER",
   },
   {
@@ -175,9 +182,9 @@ const MEMORY_LAYERS = [
   },
   {
     code: "L5",
-    title: "Audit trail",
-    path: "~/.nur/usage.jsonl · receipts/",
-    body: "Observed provider usage and hash-chained request/tool evidence remain inspectable after the turn.",
+    title: "Accounting + audit",
+    path: "usage.jsonl · usage-attempts.jsonl · receipts/",
+    body: "Attempt starts, outcomes, native or estimated usage, upstream routes, auxiliary inference, data boundaries, and hash-chained evidence remain inspectable.",
     mode: "LOCAL APPEND",
   },
 ] as const;
@@ -197,22 +204,24 @@ const FEATURE_TABS: FeatureTab[] = [
     body: (
       <ul className="cli-feat-list">
         <li>
-          <strong>Multi-provider</strong> via <code>/login</code> — 62 (OpenAI,
-          Anthropic, Gemini, xAI, Groq, OpenRouter, Ollama, Meta Model API,
-          Cursor, OpenCode Zen/Go, …)
+          <strong>One credential control plane</strong> — <code>/auth</code>
+          opens a scrollable provider vault for API keys, OAuth sessions, vendor
+          CLIs, and OMP credentials across all 62 routes. Save, replace, or
+          delete without editing a JSON file.
         </li>
         <li>
-          <strong>Signed into the vendor CLI = signed into nur</strong> — Claude
-          Code, Codex, Grok, Kimi, Cursor, OpenCode, Antigravity/gcloud sessions
-          are imported automatically, and refreshed when stale. No key to paste.
+          <strong>Saved choice is law</strong> — the credential explicitly
+          selected in the vault wins. Only when it is absent does Nur try the
+          existing T3 chain: environment, vendor CLI, then Oh My Pi. A deletion
+          creates a tombstone so an unwanted credential is not silently
+          re-imported.
         </li>
         <li>
-          <strong>OMP as universal credential fallback</strong> — saved nur
-          keys/sessions always win first; only then vendor CLI, then Oh My Pi
-          via <code>omp token &lt;provider&gt;</code> (
-          <code>~/.omp/agent/agent.db</code>). Successful OMP imports are saved
-          so the next resolve skips the shell-out. Same path feeds{" "}
-          <code>/failover</code>, cross-provider subagents, and t3-style probes.
+          <strong>Auth follows the route</strong> — <code>/provider</code>,
+          <code>/fusion &lt;provider&gt;</code>, failover, and cross-provider
+          subagents resolve the named provider with the same policy. Missing
+          auth opens the vault already focused on that provider, then retries
+          the exact blocked operation after sign-in.
         </li>
         <li>
           <strong>Token-saving by default</strong> — <strong>Headroom</strong>{" "}
@@ -225,14 +234,18 @@ const FEATURE_TABS: FeatureTab[] = [
           <strong>Cursor as a first-class provider</strong> —{" "}
           <code>cursor-agent login</code> (no pasted API key). Chat runs through{" "}
           <code>cursor-agent -p</code>; nur keeps the tool loop, approvals, plan
-          mode, and cross-provider subagents. Optional{" "}
-          <code>NUR_CURSOR_NATIVE=1</code> for full Cursor Agent delegate.
+          mode, and cross-provider subagents. Silent Windows pipes are drained
+          without blocking turn one, and subscription usage is labeled unknown
+          instead of invented. Optional <code>NUR_CURSOR_NATIVE=1</code> for
+          full Cursor Agent delegate.
         </li>
         <li>
           <strong>OpenCode Zen + Go</strong> — live model lists from both
-          gateways; Go ids as <code>opencode-go/…</code>;{" "}
-          <code>opencode auth login</code> / <code>OPENCODE_API_KEY</code> /{" "}
-          <code>auth.json</code>.
+          gateways and per-model native transport: GPT/Grok use Responses,
+          Claude and Qwen 3.5+ use Messages, Gemini uses GenerateContent, and
+          compatible models use Chat Completions. Go ids remain{" "}
+          <code>opencode-go/…</code>; <code>opencode auth login</code> /{" "}
+          <code>OPENCODE_API_KEY</code> / <code>auth.json</code>.
         </li>
         <li>
           Permission modes: <strong>manual</strong> / <strong>plan</strong> /{" "}
@@ -251,12 +264,12 @@ const FEATURE_TABS: FeatureTab[] = [
           <code>antigravity</code> stays its own provider.
         </li>
         <li>
-          A routed subagent uses <strong>that provider&apos;s</strong> stored
-          credentials, and auto-imports a logged-in vendor CLI or OMP session
-          when there is no key on disk. No credentials at all → the spawn is{" "}
-          <strong>blocked</strong>, never silently re-run on the parent:{" "}
-          <code>/login</code> opens pre-selected to that provider, and after
-          sign-in nur injects the exact re-deploy call.
+          A routed subagent uses <strong>that provider&apos;s</strong>{" "}
+          credential and receives a bounded cross-session context snapshot with
+          provider/model provenance. No credentials at all → the spawn is{" "}
+          <strong>blocked</strong>, never silently re-run on the parent;{" "}
+          <code>/auth</code> opens on the missing provider and the original
+          deployment resumes after sign-in.
         </li>
         <li>
           <strong>Fan-out</strong> — several <code>agent</code> calls in one
@@ -276,11 +289,13 @@ const FEATURE_TABS: FeatureTab[] = [
         </li>
         <li>
           <code>/model</code> live model list · <code>/plugins</code>{" "}
-          marketplace · <code>/fusion</code> multi-model debate
+          marketplace · <code>/fusion</code> multi-model debate with per-panel
+          route attribution and fan-out budget reservations
         </li>
         <li>
-          <code>/local</code> bundled llama.cpp · <code>/bench</code> worktree
-          benchmarks (<code>/bench optimize</code> = GEPA) ·{" "}
+          <code>/local</code> bundled llama.cpp plus Ollama, LM Studio,
+          llama.cpp, vLLM, and Jan-compatible local routes · <code>/bench</code>{" "}
+          worktree benchmarks (<code>/bench optimize</code> = GEPA) ·{" "}
           <code>nur gateway</code> Telegram bot
         </li>
         <li>
@@ -530,8 +545,9 @@ const FEATURE_TABS: FeatureTab[] = [
     body: (
       <ul className="cli-feat-list">
         <li>
-          Secrets only in <code>~/.nur/auth.json</code> (or env) — never in the
-          repo
+          Credentials stay in the local vault or approved vendor stores — never
+          in the repo; provider tombstones prevent surprise re-import after
+          deletion
         </li>
         <li>
           Atomic writes under <code>~/.nur/</code> · session + compaction
@@ -539,7 +555,8 @@ const FEATURE_TABS: FeatureTab[] = [
         </li>
         <li>Sandbox · denylist · SSRF blocks · permissions / hooks TOML</li>
         <li>
-          API retries · install SHA-256 · <code>nur doctor</code>
+          Attempt ledger · idempotency on supported APIs · no blind replay after
+          streamed bytes · install SHA-256 · <code>nur doctor</code>
         </li>
         <li>
           <strong>Auto-update</strong> — nur checks GitHub Releases on launch
@@ -555,8 +572,9 @@ const FEATURE_TABS: FeatureTab[] = [
           with backoff instead of dying on one 429
         </li>
         <li>
-          <strong>No hidden turn caps</strong> — subagents inherit the parent
-          budget verbatim
+          <strong>Budgets cover the whole task graph</strong> — primaries,
+          retries, failovers, fusion panels, subagents, compaction, memory, and
+          embedding work reserve before dispatch
         </li>
         <li>
           Logs: <code>~/.nur/nur.log</code>
@@ -571,7 +589,11 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: "/commands", desc: "commands + keyboard shortcuts  (alias of /help)" },
   {
     cmd: "/login",
-    desc: "provider · API key, browser, or CLI import (Claude/Codex/Cursor/OpenCode/OMP) - /login <provider> pre-selects",
+    desc: "open the provider auth vault (legacy alias of /auth)",
+  },
+  {
+    cmd: "/auth",
+    desc: "scrollable all-provider vault · save, replace, or delete API, OAuth, CLI, and OMP credentials",
   },
   {
     cmd: "/logout",
@@ -668,7 +690,10 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: "/doctor", desc: "health check: version · auth · ecosystem · shell" },
   { cmd: "/effort", desc: "reasoning effort: minimal → xhigh" },
   { cmd: "/turns", desc: "per-session agent-turn ceiling (0 = unlimited)" },
-  { cmd: "/fusion", desc: "multi-model debate → one synthesized answer" },
+  {
+    cmd: "/fusion",
+    desc: "context-aware multi-provider debate · missing route auth opens /auth and resumes",
+  },
   { cmd: "/local", desc: "run a model locally via bundled llama.cpp" },
   {
     cmd: "/bench",
@@ -676,7 +701,7 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   },
   {
     cmd: "/failover",
-    desc: "cross-provider failover + privacy tiers · keys via env, /login, vendor CLI, or omp token",
+    desc: "capability, context, cost, and privacy-aware failover · credentials resolve through /auth",
   },
   { cmd: "/undo", desc: "revert the last file edit this session" },
   { cmd: "/receipt", desc: "session receipt — hash-chained verification" },
@@ -829,10 +854,94 @@ type Inspiration = {
   name: string;
   href: string;
   why: string;
-  group: "agents" | "research" | "libs" | "stack" | "plugins";
+  group: "agents" | "research" | "libs" | "stack" | "protocols" | "plugins";
 };
 
 const INSPIRATIONS: Inspiration[] = [
+  {
+    group: "protocols",
+    name: "OpenAI Responses protocol",
+    href: "https://platform.openai.com/docs/api-reference/responses",
+    why: "native Responses tools · reasoning items · output caps · prompt cache affinity · idempotent request shape",
+  },
+  {
+    group: "protocols",
+    name: "Anthropic Messages protocol",
+    href: "https://docs.anthropic.com/en/api/messages",
+    why: "content-block streaming · tool use/result pairing · extended thinking · explicit max_tokens",
+  },
+  {
+    group: "protocols",
+    name: "Gemini GenerateContent",
+    href: "https://ai.google.dev/api/generate-content",
+    why: "native Gemini tools · function-response names · thought signatures · generation output limits",
+  },
+  {
+    group: "protocols",
+    name: "DeepSeek API",
+    href: "https://api-docs.deepseek.com/",
+    why: "multi-round tool replay · reasoning_content handling · cache-hit and cache-miss telemetry",
+  },
+  {
+    group: "protocols",
+    name: "OpenRouter routing",
+    href: "https://openrouter.ai/docs/features/provider-routing",
+    why: "gateway provider controls · upstream attribution · native cost and cache metadata · failover boundary",
+  },
+  {
+    group: "protocols",
+    name: "Cursor Agent CLI",
+    href: "https://docs.cursor.com/en/cli/overview",
+    why: "headless authenticated agent transport · non-interactive approvals · subscription-backed usage semantics",
+  },
+  {
+    group: "protocols",
+    name: "OpenCode Zen models",
+    href: "https://opencode.ai/docs/zen/",
+    why: "model-specific native endpoint selection across Responses, Messages, Gemini, and Chat Completions",
+  },
+  {
+    group: "protocols",
+    name: "Moonshot / Kimi API",
+    href: "https://platform.moonshot.ai/docs/intro",
+    why: "Kimi reasoning and tool-call replay · direct provider credential and model setup",
+  },
+  {
+    group: "protocols",
+    name: "MiniMax API",
+    href: "https://platform.minimax.io/docs/api-reference/text-openai-api",
+    why: "current OpenAI-compatible endpoint and MiniMax-M2.7 provider defaults",
+  },
+  {
+    group: "protocols",
+    name: "Alibaba Model Studio",
+    href: "https://www.alibabacloud.com/help/en/model-studio/getting-started/models",
+    why: "Qwen model families, tool capabilities, and DashScope-compatible routing",
+  },
+  {
+    group: "protocols",
+    name: "Ollama API",
+    href: "https://docs.ollama.com/api/introduction",
+    why: "local model discovery and OpenAI-compatible inference without mandatory credentials",
+  },
+  {
+    group: "protocols",
+    name: "LM Studio local server",
+    href: "https://lmstudio.ai/docs/developer/openai-compat",
+    why: "desktop-local OpenAI-compatible models, tools, and model-list discovery",
+  },
+  {
+    group: "protocols",
+    name: "llama.cpp server",
+    href: "https://github.com/ggml-org/llama.cpp/tree/master/tools/server",
+    why: "bundled local inference server · GGUF runtime · OpenAI-compatible endpoint",
+  },
+  {
+    group: "protocols",
+    name: "vLLM server",
+    href: "https://docs.vllm.ai/en/latest/serving/openai_compatible_server.html",
+    why: "high-throughput local or private OpenAI-compatible serving path",
+  },
   {
     group: "agents",
     name: "Claude Code",
@@ -1488,6 +1597,7 @@ const INSP_GROUPS: { id: Inspiration["group"]; label: string }[] = [
   { id: "research", label: "Research & architecture sources" },
   { id: "libs", label: "Libraries & runtimes" },
   { id: "stack", label: "Knowledge stack" },
+  { id: "protocols", label: "Provider protocols · official docs" },
   { id: "plugins", label: "Plugins · methods · protocols" },
 ];
 
@@ -1802,7 +1912,7 @@ function FoglampMap() {
           <i />
           <i />
         </span>
-        <span className="cli-term-title">foglamp · NurCLI architecture</span>
+        <span className="cli-term-title">foglamp · inference return path</span>
         <span className="cli-map-actions">
           <span className="cli-map-status">
             <i aria-hidden /> interactive
@@ -1842,8 +1952,8 @@ function FoglampMap() {
             <div className="cli-map-preview-copy">
               <span>// living architecture</span>
               <p>
-                Trace the systems, tools, providers, and memory layers behind
-                NurCLI.
+                Trace auth resolution, provider protocols, attempt accounting,
+                local memory, and cache boundaries behind NurCLI.
               </p>
               <button
                 type="button"
@@ -1862,7 +1972,7 @@ function FoglampMap() {
       </div>
 
       <div className="cli-map-foot">
-        <span>Drag to pan · scroll to zoom</span>
+        <span>Pan · zoom · follow request edges end to end</span>
         <a
           href={FOGLAMP_SCAN_URL}
           target="_blank"
@@ -2039,10 +2149,10 @@ export default function CliPage() {
             </div>
             <p className="cli-display-line">SPEND CONTEXT LIKE IT MATTERS.</p>
             <p className="cli-tagline">
-              A Rust agent harness built to keep paid context working: compress
-              tool noise, preserve exact results locally, route across 62
-              backends, meter observed usage, and compact before the window
-              becomes the failure.
+              A Rust agent harness built to keep paid context working: load
+              tools lazily, compress noise, reserve the answer before dispatch,
+              preserve exact results locally, and account for every primary,
+              retry, failover, and auxiliary inference attempt.
             </p>
             <div className="cli-hero-cta">
               <button
@@ -2084,8 +2194,8 @@ export default function CliPage() {
             <span>provider routes</span>
           </li>
           <li>
-            <strong>ON</strong>
-            <span>inline compression</span>
+            <strong>3-STATE</strong>
+            <span>usage provenance</span>
           </li>
           <li>
             <strong>LOCAL</strong>
@@ -2156,12 +2266,13 @@ export default function CliPage() {
         <div className="cli-honesty-strip">
           <span className="cli-honesty-mark">!</span>
           <div>
-            <strong>Observed usage, not a provider invoice.</strong>
+            <strong>Accounting states are explicit, not blended.</strong>
             <p>
-              Nur records the tokens a backend reports and estimates cost from
-              model catalogs. Retries, subscription credits, gateway markups,
-              and backends without usage telemetry can differ from the provider
-              dashboard.
+              Nur accepts provider-reported usage and native cost when present,
+              otherwise records a local estimate or unknown. Subscription
+              credits, gateway markups, and ambiguous streamed attempts can
+              still differ from the provider dashboard, so provenance travels
+              with every number.
             </p>
           </div>
           <a
@@ -2334,9 +2445,10 @@ export default function CliPage() {
             ))}
           </ol>
           <p className="cli-after-note">
-            Or run <code>nur</code> and use <code>/login</code> in the TUI —
-            pick any of 62 providers, paste a key, or sign in with the browser
-            where available.{" "}
+            Or run <code>nur</code> and use <code>/auth</code> in the TUI —
+            inspect all 62 provider routes in one scrollable vault, then save,
+            replace, or delete an API key, OAuth session, vendor CLI login, or
+            OMP credential.{" "}
             <a
               href="https://nuroctane.github.io/nur-cli/"
               target="_blank"
@@ -2356,8 +2468,9 @@ export default function CliPage() {
             <span className="cli-h2-num">04</span> See the machine
           </h2>
           <p className="cli-lead">
-            The gold TUI is the control surface. Foglamp is the live
-            architecture underneath it.
+            The gold TUI is the control surface. This rebuilt Foglamp brief
+            shows the current request, credential, memory, and accounting planes
+            underneath it; the embed remains the explorable source map.
           </p>
         </div>
         <figure className="cli-demo">
@@ -2377,6 +2490,46 @@ export default function CliPage() {
             decoding="async"
           />
         </figure>
+
+        <div className="cli-map-intro">
+          <div className="cli-map-heading">
+            <span>FOGLAMP / REBUILT BRIEF</span>
+            <strong>Trace one turn across four planes.</strong>
+            <p>
+              Start at the agent loop, follow the capability-selected adapter to
+              inference, then trace streamed output into accounting, receipts,
+              compaction, and durable local state.
+            </p>
+          </div>
+          <ol className="cli-map-legend">
+            <li>
+              <b>01</b>
+              <span>
+                <strong>Request</strong>assemble → prune → reserve → route
+              </span>
+            </li>
+            <li>
+              <b>02</b>
+              <span>
+                <strong>Identity</strong>vault choice → T3 fallback → exact
+                retry
+              </span>
+            </li>
+            <li>
+              <b>03</b>
+              <span>
+                <strong>Inference</strong>primary → streamed attempt → eligible
+                failover
+              </span>
+            </li>
+            <li>
+              <b>04</b>
+              <span>
+                <strong>Return</strong>meter → receipt → compact → persist
+              </span>
+            </li>
+          </ol>
+        </div>
 
         <FoglampMap />
       </section>
