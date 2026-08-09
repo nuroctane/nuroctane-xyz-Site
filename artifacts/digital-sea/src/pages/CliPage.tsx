@@ -2231,9 +2231,8 @@ export default function CliPage() {
             </h2>
           </div>
           <p className="cli-lead">
-            The useful unit is not a chat bubble. It is the entire round trip
-            from local working state to inference and back into a smaller,
-            resumable state.
+            Nur carries local working state through inference and returns a
+            smaller, resumable working set.
           </p>
         </div>
 
@@ -2490,46 +2489,6 @@ export default function CliPage() {
             decoding="async"
           />
         </figure>
-
-        <div className="cli-map-intro">
-          <div className="cli-map-heading">
-            <span>FOGLAMP / REBUILT BRIEF</span>
-            <strong>Trace one turn across four planes.</strong>
-            <p>
-              Start at the agent loop, follow the capability-selected adapter to
-              inference, then trace streamed output into accounting, receipts,
-              compaction, and durable local state.
-            </p>
-          </div>
-          <ol className="cli-map-legend">
-            <li>
-              <b>01</b>
-              <span>
-                <strong>Request</strong>assemble → prune → reserve → route
-              </span>
-            </li>
-            <li>
-              <b>02</b>
-              <span>
-                <strong>Identity</strong>vault choice → T3 fallback → exact
-                retry
-              </span>
-            </li>
-            <li>
-              <b>03</b>
-              <span>
-                <strong>Inference</strong>primary → streamed attempt → eligible
-                failover
-              </span>
-            </li>
-            <li>
-              <b>04</b>
-              <span>
-                <strong>Return</strong>meter → receipt → compact → persist
-              </span>
-            </li>
-          </ol>
-        </div>
 
         <FoglampMap />
       </section>
