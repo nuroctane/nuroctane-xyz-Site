@@ -1,28 +1,17 @@
-# Quotes
-
-> [!note] Maintenance
-> **One entry = one contiguous blockquote run.** Multi-paragraph quotes stay in the same block:
-> use a blank `> ` line between paragraphs (never a plain empty line). End with `— Author` or `— @handle` on the last line when known.
-> Do not split one Raindrop/X post into multiple `>` blocks — title + description + attribution are one entry.
-> File new entries directly under the narrowest matching category; choose by primary subject, not one matching keyword. Do not recreate an unsorted section.
-
 ## Index
 - [[#Faith, God & Surrender|Faith, God & Surrender]] (42)
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (30)
-- [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (48)
+- [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (49)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (57)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (79)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (78)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (23)
-- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (76)
+- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (77)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (45)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (93)
-- [[#Work, Wealth & Value|Work, Wealth & Value]] (33)
+- [[#Work, Wealth & Value|Work, Wealth & Value]] (34)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (41)
 - [[#Unsorted Sparks|Unsorted Sparks]] (11)
-- [[#Reality, Manifestation & Abundance|Reality, Manifestation & Abundance]] (1)
-- [[#Relationships, Boundaries & Love|Relationships, Boundaries & Love]] (1)
-- [[#Wealth, Work & Value|Wealth, Work & Value]] (1)
 
 ## Faith, God & Surrender
 
@@ -131,7 +120,6 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > 
 > A single momentary encounter with God - no matter how slight or small- will allow for a lifetime of faith and zeal. Once you *know* He is there, listens, and wills your good, all changes. Life begins. Heaven beckons. You transform
 > — @AugustusDelano
-
 
 ## Reality, Consciousness & Perception
 
@@ -395,6 +383,9 @@ _Imagination, intention, frequency, prosperity, timelines, desire, and allowing 
 > If I don’t have it yet, that only means I don’t believe I deserve it.
 
 > It’s not about knowing when you’ll get there, it’s about knowing that you WILL get there—and you’ll get to experience it in all its goodness!
+
+> If you're feeling stuck, remember this: Every time you chase certainty, you create paralysis
+> — @fu_joehudson
 
 ## Self, Identity & Awakening
 
@@ -1081,10 +1072,6 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > It's why I encourage everyone to think of balance in years, not days. A good life can look horribly unbalanced on some random Tuesday and still be very balanced over 10 years.
 > — @aporia9n
 
-
-
-
-
 ## Creativity, Purpose & Expression
 
 _Calling, craft, art, play, service, voice, vision, and making what only you can make._
@@ -1355,6 +1342,9 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > “you’re usually one phone call away from that mountain becoming a molehill”
 > — @nuroctane
 
+> The task of man is to labor with joy, love with sincerity, give with pleasure, see with reverence, listen with affection, speak with prudence, and pray with every breath
+> — @augustusdelano
+
 ## Shadow, Discernment & Protection
 
 _Enemies, manipulation, resentment, power, spiritual attack, discernment, and energetic hygiene._
@@ -1488,7 +1478,6 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 > 
 > Everyone *wants* everything but what you offer most readily fills your life with those who need it. Reveal your gifts wisely
 > — @divya_venn
-
 
 ## Body, Emotion & Nervous System
 
@@ -1740,7 +1729,6 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > The entire spiritual industry is a coward's invention, designed to package the most violent undertaking a human being can choose into something palatable for soft hands and weekend schedules. the actual practice, the original practice, before it was gutted and resold as self
 > — @lichthauch
 
-
 ## Work, Wealth & Value
 
 _Money, career, value creation, leverage, spending, wealth, and worldly stewardship._
@@ -1828,6 +1816,9 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 > When you get an impulse to buy something,
 > wait a few days before buying it,
 > most of the time you’ll realise you don’t even need that thing.
+
+> Most of the old timers I respect (the successful happy and healthy ones I wouldn’t mind being like someday) seem to all give the same advice. It applies across the board to getting the life you actually want. Could be starting a business, hitting a certain liquid net worth, bagging the one girl you HAVE to have.. etc. The advice is to APPLY PRESSURE. Never let your current circumstances define what is possible for you. Go towards everything you want until either you get it, or God definitively reroutes you towards something better. All of their stories of conquest in business and personal dealings involve massive volatility, ups and downs, falling and getting back up etc. over and over again. The old timers with regrets, on the other hand, just let one or two failures convince them to stop trying. Go get exactly what you want.
+> — @dezgoldie
 
 ## Life, Joy & Meaning
 
@@ -1972,7 +1963,6 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > you stop taking it personally once you understand the universe is not out to get you. sometimes it’s working for you in ways you can’t see yet, and sometimes it’s simply happening, indifferent, neither cruel nor kind. either way you can use it. either way you can stack it into your own growth if you refuse to be a victim of it.
 > — @josbjohnson
 
-
 ## Unsorted Sparks
 
 _Auto-created section._
@@ -2021,38 +2011,3 @@ _Auto-created section._
 
 > No advice from the defeated person. Ever.
 > — @BonesawMD
-
-
-
-
-
-
-
-
-
-
-
-
-## Reality, Manifestation & Abundance
-
-_Auto-created section._
-
-> If you're feeling stuck, remember this: Every time you chase certainty, you create paralysis
-> — @fu_joehudson
-
-
-## Relationships, Boundaries & Love
-
-_Auto-created section._
-
-> The task of man is to labor with joy, love with sincerity, give with pleasure, see with reverence, listen with affection, speak with prudence, and pray with every breath
-> — @augustusdelano
-
-
-## Wealth, Work & Value
-
-_Auto-created section._
-
-> Most of the old timers I respect (the successful happy and healthy ones I wouldn’t mind being like someday) seem to all give the same advice. It applies across the board to getting the life you actually want. Could be starting a business, hitting a certain liquid net worth, bagging the one girl you HAVE to have.. etc. The advice is to APPLY PRESSURE. Never let your current circumstances define what is possible for you. Go towards everything you want until either you get it, or God definitively reroutes you towards something better. All of their stories of conquest in business and personal dealings involve massive volatility, ups and downs, falling and getting back up etc. over and over again. The old timers with regrets, on the other hand, just let one or two failures convince them to stop trying. Go get exactly what you want.
-> — @dezgoldie
-
