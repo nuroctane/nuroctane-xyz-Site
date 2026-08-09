@@ -2378,17 +2378,6 @@ export default function CliPage() {
           />
         </figure>
 
-        <div className="cli-map-intro">
-          <h3 className="cli-map-heading">
-            <span aria-hidden>[04.B]</span> Foglamp codebase map
-          </h3>
-          <p>
-            Trace the actual Rust modules from prompt assembly into provider
-            adapters, tool execution, usage accounting, memory, and persistence.
-            The embed stays interactive; mobile waits for an explicit load to
-            protect bandwidth.
-          </p>
-        </div>
         <FoglampMap />
       </section>
 
