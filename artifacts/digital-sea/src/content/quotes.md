@@ -11,7 +11,7 @@
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (93)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (34)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (41)
-- [[#Unsorted Sparks|Unsorted Sparks]] (11)
+- [[#Unsorted Sparks|Unsorted Sparks]] (12)
 
 ## Faith, God & Surrender
 
@@ -2011,3 +2011,7 @@ _Auto-created section._
 
 > No advice from the defeated person. Ever.
 > — @BonesawMD
+
+> even at 1 hp, you can do 200 damage
+> — @Clix
+
