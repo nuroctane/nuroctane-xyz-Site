@@ -51,6 +51,13 @@ def run(label: str, args: list[str]) -> int:
     # UTF-8 even when an operator launches this script from an old CP1252 shell.
     child_env["PYTHONIOENCODING"] = "utf-8"
     child_env["PYTHONUNBUFFERED"] = "1"
+    repo_scripts = str(REPO_ROOT / "scripts")
+    existing_pythonpath = child_env.get("PYTHONPATH", "")
+    child_env["PYTHONPATH"] = (
+        repo_scripts
+        if not existing_pythonpath
+        else os.pathsep.join((repo_scripts, existing_pythonpath))
+    )
     completed = subprocess.run(
         args,
         cwd=str(REPO_ROOT),
@@ -174,17 +181,32 @@ def main() -> int:
             return 1
         ingest = HERMES_SCRIPTS / "ingest-quotes.py"
         sync = HERMES_SCRIPTS / "sync-quotes.py"
+        ingest_adapter = REPO_ROOT / "scripts" / "run_hermes_quote_ingest.py"
         if not ingest.is_file() or not sync.is_file():
             log("Hermes quote scripts are missing; cannot run Raindrop pipeline")
+            return 1
+        if not ingest_adapter.is_file():
+            log("Canonical Hermes quote adapter is missing; refusing legacy categorization")
             return 1
 
         ready = preflight_git()
         if ready:
             return ready
 
+        category_tests = REPO_ROOT / "scripts" / "test_quote_categories.py"
+        category_rc = run(
+            "validate twelve-category classifier",
+            [str(HERMES_PYTHON), "-u", str(category_tests)],
+        )
+        if category_rc:
+            return category_rc
+
         # `--pipeline` performs Raindrop first, then secondary Obsidian notes,
         # and writes any Raindrop additions into the canonical vault bank.
-        ingest_rc = run("raindrop-first ingest", [str(HERMES_PYTHON), "-u", str(ingest), "--pipeline"])
+        ingest_rc = run(
+            "raindrop-first ingest",
+            [str(HERMES_PYTHON), "-u", str(ingest_adapter), "--pipeline"],
+        )
 
         normalize = REPO_ROOT / "scripts" / "normalize-quotes-categories.py"
         normalize_rc = run(

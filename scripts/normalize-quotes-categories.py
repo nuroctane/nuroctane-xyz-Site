@@ -6,16 +6,12 @@ import argparse
 import re
 from pathlib import Path
 
+from quote_categories import LEGACY_TO_CANONICAL, SECTION_DESCRIPTIONS, categorize
+
 
 DEFAULT_SOURCE = Path(
     r"C:\Users\david\iCloudDrive\iCloud~md~obsidian\∞∞∞\Metaphysics\Quotes.md"
 )
-
-LEGACY_TO_CANONICAL = {
-    "Reality, Manifestation & Abundance": "Manifestation, Desire & Abundance",
-    "Relationships, Boundaries & Love": "Love, Relationships & Boundaries",
-    "Wealth, Work & Value": "Work, Wealth & Value",
-}
 
 SECTION_RE = re.compile(
     r"(?ms)^## (?P<name>[^\r\n]+)\r?\n(?P<body>.*?)(?=^## |\Z)"
@@ -75,11 +71,18 @@ def normalize(text: str) -> tuple[str, bool]:
         if destination:
             additions.setdefault(destination, []).extend(quote_blocks(match.group("body")))
             removals.add(name)
+        elif name == "Unsorted Sparks":
+            for block in quote_blocks(match.group("body")):
+                destination = categorize(block)
+                additions.setdefault(destination, []).append(block)
+            # Empty or populated, Unsorted is never a public category.
+            removals.add(name)
 
     if not removals:
         return text, False
 
     rebuilt: list[str] = []
+    emitted: set[str] = set()
     for match in sections:
         name = match.group("name").strip()
         if name == "Index" or name in removals:
@@ -88,6 +91,15 @@ def normalize(text: str) -> tuple[str, bool]:
         if name in additions:
             section += "\n\n" + "\n\n".join(additions[name])
         rebuilt.append(section)
+        emitted.add(name)
+
+    for name, blocks in additions.items():
+        if name in emitted or not blocks:
+            continue
+        description = SECTION_DESCRIPTIONS[name]
+        rebuilt.append(
+            f"## {name}\n\n_{description}_\n\n" + "\n\n".join(blocks)
+        )
 
     normalized_body = "## Index\n\n" + "\n\n".join(rebuilt) + "\n"
     normalized_body = rebuild_index(normalized_body)
