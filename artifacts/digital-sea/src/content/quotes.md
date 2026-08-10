@@ -8,7 +8,7 @@
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (23)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (77)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (45)
-- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (93)
+- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (94)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (34)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (41)
 - [[#Unsorted Sparks|Unsorted Sparks]] (12)
@@ -1728,6 +1728,11 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 
 > The entire spiritual industry is a coward's invention, designed to package the most violent undertaking a human being can choose into something palatable for soft hands and weekend schedules. the actual practice, the original practice, before it was gutted and resold as self
 > — @lichthauch
+
+> Your body was not made for luxuries. It sickens, sinks, and dies beneath them. Much of what you do to ‘rest’ will unrelax you; you can only tolerate so much pampering.
+> 
+> Motion is your meditation; movement is your sanity, your serenity, your ease.
+
 
 ## Work, Wealth & Value
 
