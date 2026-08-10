@@ -46,7 +46,7 @@ const BINARY = {
   name: "nur-windows-x86_64.exe",
 };
 
-const FOGLAMP_SCAN_URL = "https://www.foglamp.dev/scan/nurcli-oxpatc";
+const FOGLAMP_SCAN_URL = "https://www.foglamp.dev/scan/nurcli-wou3gm";
 const FOGLAMP_PREVIEW_URL = `${FOGLAMP_SCAN_URL}/opengraph-image`;
 const FOGLAMP_DESKTOP_QUERY = "(min-width: 721px)";
 
@@ -2467,9 +2467,9 @@ export default function CliPage() {
             <span className="cli-h2-num">04</span> See the machine
           </h2>
           <p className="cli-lead">
-            The gold TUI is the control surface. This rebuilt Foglamp brief
-            shows the current request, credential, memory, and accounting planes
-            underneath it; the embed remains the explorable source map.
+            The gold TUI is the control surface. This Foglamp map follows the
+            Rust request path from prompt assembly through provider adapters,
+            tools, usage accounting, memory, and durable state.
           </p>
         </div>
         <figure className="cli-demo">
