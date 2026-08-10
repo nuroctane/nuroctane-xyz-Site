@@ -1,7 +1,7 @@
 ## Index
 - [[#Faith, God & Surrender|Faith, God & Surrender]] (36)
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (26)
-- [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
+- [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (57)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (73)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (47)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (78)
@@ -11,6 +11,7 @@
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (91)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (36)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (52)
+- [[#Unsorted Sparks|Unsorted Sparks]] (1)
 
 ## Faith, God & Surrender
 
@@ -371,6 +372,9 @@ _Imagination, intention, frequency, prosperity, timelines, desire, and allowing 
 > Unimaginable self-rewards are yours if you should invest in working out this creative self-practice.
 
 > Visualize your heart opening, your path being golden or whatever you need for your journey already being yours.
+
+> one common trait I find in high achieving individuals is urgency. it looks almost like impatience until you understand it is closer to reverence, a deep refusal to waste the one thing they can’t buy more of. the alarm goes and they rise. the message is answered while it is still warm. the small task is done before it can find a shelf to hide on. they commit and move in a single motion. an idea sparks and they chase it that day, before the world talks them out of it. they run at their own lives like something is at stake, because they have decided something is.
+> — @josbjohnson
 
 ## Self, Identity & Awakening
 
@@ -2001,3 +2005,16 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 
 > The task of man is to labor with joy, love with sincerity, give with pleasure, see with reverence, listen with affection, speak with prudence, and pray with every breath
 > — @augustusdelano
+
+## Unsorted Sparks
+
+_Auto-created section._
+
+> One of my favourite lesson from Reality Transurfing is:
+> 
+> Wether you’re good or evil, if you feel guilt things WILL turn against you.
+> 
+> That’s why a lot of evil people don’t seem to have things turn against them, simply because they act without feeling shame nor fear against the consequences (no guilt).
+> 
+> Not evil advice.
+> — @QuantumRover
