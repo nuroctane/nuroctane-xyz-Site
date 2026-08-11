@@ -8,7 +8,7 @@
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (29)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (83)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (55)
-- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (91)
+- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (92)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (36)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (52)
 
@@ -1720,6 +1720,10 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > • Is this worth my energy?
 > • If yes, why is it worth it?
 > • If no, replace your response with a breath.==
+
+> We need to talk about how many believe they are channeling feminine rage and wrath when they are really just channeling unhealed masculine energy.
+> — @Maryamhasnaa
+
 
 ## Work, Wealth & Value
 
