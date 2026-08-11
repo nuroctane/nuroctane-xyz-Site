@@ -2,16 +2,21 @@
 """Regression tests for the canonical twelve-category quote classifier."""
 from __future__ import annotations
 
+import argparse
 import importlib.util
+import math
 from pathlib import Path
 
 from quote_categories import (
     LEGACY_TO_CANONICAL,
     SECTIONS,
     categorize,
+    classify_quote,
     find_labeled_match,
     labeled_examples,
+    score_quote,
 )
+from quote_semantic import leave_one_out_semantic_scores, semantic_healthcheck
 
 
 CASES = [
@@ -74,7 +79,29 @@ CASES = [
 ]
 
 
+# These are deliberately paraphrastic rather than copies of bank entries. They
+# exercise the cold semantic path and encode the distinctions established by
+# the Sol reorganization pass.
+COLD_CASES = [
+    ("Faith, God & Surrender", "Some doors open only after you stop forcing them and trust what is larger than you."),
+    ("Reality, Consciousness & Perception", "The witness changes the world it believes it merely observes."),
+    ("Manifestation, Desire & Abundance", "Become emotionally familiar with the future you intend to inhabit."),
+    ("Self, Identity & Awakening", "You are not the role you learned to perform for applause."),
+    ("Mind, Belief & Inner Work", "A repeated interpretation becomes the lens through which every event is read."),
+    ("Action, Discipline & Mastery", "Do the next difficult repetition before motivation arrives."),
+    ("Creativity, Purpose & Expression", "The blank page needs your particular voice, not another person's permission."),
+    ("Love, Relationships & Boundaries", "Someone's access to you should match the care they bring."),
+    ("Shadow, Discernment & Protection", "Charm without conscience is a warning, not a compliment."),
+    ("Body, Emotion & Nervous System", "The jaw tightens long before the intellect admits it feels unsafe."),
+    ("Work, Wealth & Value", "Income expands when useful problems are solved at scale."),
+    ("Life, Joy & Meaning", "An ordinary afternoon becomes precious once you remember it will not return."),
+]
+
+
 def main() -> int:
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--deep", action="store_true")
+    args = parser.parse_args()
     failures = 0
     if len(SECTIONS) != 12 or len(set(SECTIONS)) != 12 or "Unsorted Sparks" in SECTIONS:
         print(f"FAIL taxonomy must contain exactly 12 unique public categories: {SECTIONS}")
@@ -93,6 +120,19 @@ def main() -> int:
     else:
         print("OK   legacy category aliases are canonical")
 
+    try:
+        health = semantic_healthcheck()
+    except Exception as exc:
+        print(f"FAIL pinned semantic model healthcheck: {type(exc).__name__}: {exc}")
+        failures += 1
+    else:
+        dimensions = health.get("dimensions")
+        if dimensions != 384:
+            print(f"FAIL semantic model dimension drift: {dimensions}")
+            failures += 1
+        else:
+            print(f"OK   pinned local semantic model is healthy ({dimensions} dimensions)")
+
     for expected, quote in CASES:
         actual = categorize(quote)
         if actual != expected:
@@ -100,6 +140,17 @@ def main() -> int:
             failures += 1
         else:
             print(f"OK   {expected}: {quote[:54]}")
+
+    cold_failures = []
+    for expected, quote in COLD_CASES:
+        result = classify_quote(quote, use_labeled_memory=False)
+        if result.section != expected:
+            cold_failures.append((expected, result.section, quote))
+    if cold_failures:
+        print(f"FAIL cold semantic distinctions: {cold_failures}")
+        failures += 1
+    else:
+        print("OK   cold semantic paraphrases cover all 12 categories")
 
     fallback = categorize("Entropy over ennui…")
     if fallback != "Life, Joy & Meaning":
@@ -168,6 +219,40 @@ def main() -> int:
         failures += 1
     else:
         print("OK   normalizer migrates legacy names and eliminates Unsorted")
+
+    if args.deep:
+        semantic_rows = leave_one_out_semantic_scores(SECTIONS, examples)
+        correct = 0
+        for (expected, body), (semantic_scores, neighbor_scores) in zip(examples, semantic_rows):
+            values = list(semantic_scores.values())
+            mean = sum(values) / len(values)
+            variance = sum((value - mean) ** 2 for value in values) / len(values)
+            deviation = max(math.sqrt(variance), 1e-9)
+            neighbor_values = list(neighbor_scores.values())
+            neighbor_mean = sum(neighbor_values) / len(neighbor_values)
+            neighbor_variance = sum(
+                (value - neighbor_mean) ** 2 for value in neighbor_values
+            ) / len(neighbor_values)
+            neighbor_deviation = max(math.sqrt(neighbor_variance), 1e-9)
+            lexical = score_quote(body)
+            hybrid = {
+                section: ((semantic_scores[section] - mean) / deviation)
+                + math.log1p(lexical[section])
+                + 0.5
+                * ((neighbor_scores[section] - neighbor_mean) / neighbor_deviation)
+                for section in SECTIONS
+            }
+            predicted = max(SECTIONS, key=lambda section: hybrid[section])
+            correct += predicted == expected
+        accuracy = correct / len(examples)
+        if accuracy < 0.58:
+            print(f"FAIL leave-one-out semantic alignment regressed: {accuracy:.1%} < 58.0%")
+            failures += 1
+        else:
+            print(
+                f"OK   leave-one-out semantic alignment: {correct}/{len(examples)} "
+                f"({accuracy:.1%}, 12-way baseline 8.3%)"
+            )
 
     print(f"\n{failures} failure(s)" if failures else "\nAll category tests passed.")
     return 1 if failures else 0

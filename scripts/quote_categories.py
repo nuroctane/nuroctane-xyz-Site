@@ -9,10 +9,14 @@ creating a thirteenth ``Unsorted`` section that can leak into production.
 from __future__ import annotations
 
 from collections.abc import Iterable
+from dataclasses import dataclass
 from difflib import SequenceMatcher
 from functools import lru_cache
+import math
 from pathlib import Path
 import re
+
+from quote_semantic import semantic_result
 
 
 SECTIONS = [
@@ -62,6 +66,15 @@ LEGACY_TO_CANONICAL = {
 }
 
 
+@dataclass(frozen=True)
+class Classification:
+    section: str
+    source: str
+    lexical_scores: dict[str, int]
+    semantic_scores: dict[str, float]
+    semantic_margin: float
+
+
 # Phrases carry the classification.  Keywords resolve shorter captures and
 # reinforce phrases, but are deliberately less influential.
 PHRASE_RULES: dict[str, tuple[str, ...]] = {
@@ -70,6 +83,7 @@ PHRASE_RULES: dict[str, tuple[str, ...]] = {
         "in prayer", "divine timing", "holy spirit", "divine plan",
         "let go and let god", "child of god", "ask and it shall",
         "spiritual practice", "spiritual industry", "sacred responsibility",
+        "trust what is larger than you", "larger than yourself",
     ),
     "Reality, Consciousness & Perception": (
         "nature of reality", "level of consciousness", "linear time",
@@ -86,6 +100,7 @@ PHRASE_RULES: dict[str, tuple[str, ...]] = {
         "vibrational alignment", "vibrational harmony", "desired timeline",
         "quantum leap", "count your blessings", "ask and you shall receive",
         "what you desire", "getting what you want", "state your intent",
+        "future you intend", "emotionally familiar with the future",
     ),
     "Self, Identity & Awakening": (
         "who you are", "be yourself", "true self", "higher self",
@@ -94,6 +109,7 @@ PHRASE_RULES: dict[str, tuple[str, ...]] = {
         "approval of others", "people's opinions", "people’s opinions",
         "taken seriously", "false self", "wearing a mask", "your mask",
         "honor who you", "choose yourself", "trust yourself", "trust your intuition",
+        "role you learned to perform", "perform for applause", "borrowed identity",
     ),
     "Mind, Belief & Inner Work": (
         "subconscious mind", "unconscious program", "limiting belief",
@@ -102,6 +118,7 @@ PHRASE_RULES: dict[str, tuple[str, ...]] = {
         "change your perspective", "mental model", "overthinking",
         "thoughts keep looping", "story in your mind", "belief is",
         "focus your attention", "make the unconscious conscious",
+        "repeated interpretation", "lens through which", "interpret the world",
     ),
     "Action, Discipline & Mastery": (
         "stay in the game", "in motion", "at rest", "keep going", "never fold",
@@ -136,6 +153,7 @@ PHRASE_RULES: dict[str, tuple[str, ...]] = {
         "projection tactic", "passive-aggressive", "secretly loathes",
         "wishes me ill", "judge a book", "no advice from the defeated",
         "advice from the defeated", "taken advantage of", "protect your energy",
+        "charm without conscience", "without conscience", "warning sign",
     ),
     "Body, Emotion & Nervous System": (
         "nervous system", "take a breath", "mental health", "emotional capacity",
@@ -183,7 +201,7 @@ KEYWORD_RULES: dict[str, tuple[str, ...]] = {
     "Mind, Belief & Inner Work": (
         "thought", "belief", "mindset", "subconscious", "unconscious", "narrative",
         "perspective", "attention", "focus", "worry", "thinking", "story",
-        "programming", "judgment", "decision", "awareness",
+        "programming", "judgment", "decision", "awareness", "interpretation", "lens",
     ),
     "Action, Discipline & Mastery": (
         "discipline", "willpower", "mastery", "practice", "consistency", "pressure",
@@ -205,6 +223,7 @@ KEYWORD_RULES: dict[str, tuple[str, ...]] = {
         "psychic", "vampire", "enemy", "manipulation", "discernment", "protection",
         "resentment", "narcissist", "cruel", "toxic", "evil", "attack", "predator",
         "deceive", "liar", "projection", "hatred", "jealousy", "guilt", "curse",
+        "conscience", "warning",
     ),
     "Body, Emotion & Nervous System": (
         "nervous", "anxiety", "anxious", "emotion", "breath", "breathe", "sleep",
@@ -369,17 +388,85 @@ def score_quote(text: str, path_str: str = "", folder_hint: str = "") -> dict[st
     return scores
 
 
-def categorize(text: str, path_str: str = "", folder_hint: str = "") -> str:
-    """Return exactly one of the twelve canonical public categories."""
-    labeled = find_labeled_match(text)
+def classify_quote(
+    text: str,
+    path_str: str = "",
+    folder_hint: str = "",
+    *,
+    use_labeled_memory: bool = True,
+) -> Classification:
+    """Classify with curated memory, local semantics, and explicit rules.
+
+    Existing captures first inherit their human-curated placement.  Novel
+    captures are compared with semantic centroids learned from every category
+    in that bank, then phrase/keyword/folder evidence breaks nuanced ties.
+    The classifier fails closed if its pinned local model is unavailable: a
+    scheduled run must never silently revert to the older arbitrary rules.
+    """
+    labeled = find_labeled_match(text) if use_labeled_memory else None
     if labeled:
-        return labeled
-    scores = score_quote(text, path_str, folder_hint)
-    best = max(scores.values(), default=0)
-    if best < 2:
-        return FALLBACK_SECTION
-    # Stable tie-breaking follows the intentional public taxonomy order.
-    return next(section for section in SECTIONS if scores[section] == best)
+        return Classification(labeled, "curated-memory", {}, {}, 1.0)
+
+    lexical = score_quote(text, path_str, folder_hint)
+    lexical_best = max(lexical.values(), default=0)
+    normalized = _similarity_text(text)
+    token_count = len(normalized.split())
+
+    # Preserve the intentional weak-aphorism policy. Strong explicit phrases
+    # and folder context can still place a short capture precisely.
+    if token_count < 4 and lexical_best < 2:
+        return Classification(FALLBACK_SECTION, "weak-fallback", lexical, {}, 0.0)
+
+    semantic = semantic_result(normalized, SECTIONS, labeled_examples())
+    values = list(semantic.scores.values())
+    mean = sum(values) / len(values)
+    variance = sum((value - mean) ** 2 for value in values) / len(values)
+    deviation = max(math.sqrt(variance), 1e-9)
+    neighbor_values = list(semantic.neighbor_scores.values())
+    neighbor_mean = sum(neighbor_values) / len(neighbor_values)
+    neighbor_variance = sum(
+        (value - neighbor_mean) ** 2 for value in neighbor_values
+    ) / len(neighbor_values)
+    neighbor_deviation = max(math.sqrt(neighbor_variance), 1e-9)
+    hybrid = {
+        section: (
+            ((semantic.scores[section] - mean) / deviation)
+            + math.log1p(lexical[section])
+            + 0.5
+            * ((semantic.neighbor_scores[section] - neighbor_mean) / neighbor_deviation)
+        )
+        for section in SECTIONS
+    }
+    best = max(hybrid.values())
+    section = next(section for section in SECTIONS if hybrid[section] == best)
+
+    # Extremely flat semantic output with no lexical evidence is not enough to
+    # invent a specific subject for a tiny fragment.
+    if token_count < 7 and lexical_best == 0 and semantic.margin < 0.015:
+        return Classification(
+            FALLBACK_SECTION,
+            "low-confidence-fallback",
+            lexical,
+            semantic.scores,
+            semantic.margin,
+        )
+    return Classification(section, "semantic-ensemble", lexical, semantic.scores, semantic.margin)
+
+
+def categorize(
+    text: str,
+    path_str: str = "",
+    folder_hint: str = "",
+    *,
+    use_labeled_memory: bool = True,
+) -> str:
+    """Return exactly one of the twelve canonical public categories."""
+    return classify_quote(
+        text,
+        path_str,
+        folder_hint,
+        use_labeled_memory=use_labeled_memory,
+    ).section
 
 
 def validate_taxonomy() -> None:

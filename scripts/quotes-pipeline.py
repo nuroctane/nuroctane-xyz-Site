@@ -196,7 +196,7 @@ def main() -> int:
         category_tests = REPO_ROOT / "scripts" / "test_quote_categories.py"
         category_rc = run(
             "validate twelve-category classifier",
-            [str(HERMES_PYTHON), "-u", str(category_tests)],
+            [str(HERMES_PYTHON), "-u", str(category_tests), "--deep"],
         )
         if category_rc:
             return category_rc
