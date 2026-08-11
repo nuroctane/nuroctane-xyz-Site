@@ -144,6 +144,60 @@ const EFFICIENCY_SIGNALS = [
   },
 ] as const;
 
+const RETRIEVAL_METRICS = [
+  {
+    value: "25.92",
+    unit: "ms",
+    label: "routed recall p50",
+    detail: "53.8% faster than the 56.07 ms baseline",
+  },
+  {
+    value: "35.72",
+    unit: "ms",
+    label: "routed recall p95",
+    detail: "37.4% faster than the 57.04 ms baseline",
+  },
+  {
+    value: "20.34",
+    unit: "ms",
+    label: "direct Helix p50",
+    detail: "24.24 ms p95 for tenant-scoped retrieval",
+  },
+  {
+    value: "59.6",
+    unit: "%",
+    label: "smaller memory payload",
+    detail: "493 to 199 characters after ID deduplication",
+  },
+] as const;
+
+const RETRIEVAL_COMPARISON = [
+  {
+    path: "Full routed recall · p50",
+    before: "56.07 ms",
+    after: "25.92 ms",
+    delta: "-53.8%",
+  },
+  {
+    path: "Full routed recall · p95",
+    before: "57.04 ms",
+    after: "35.72 ms",
+    delta: "-37.4%",
+  },
+  {
+    path: "Returned one-fact payload",
+    before: "493 chars",
+    after: "199 chars",
+    delta: "-59.6%",
+  },
+  {
+    path: "Explicit-read query embeddings",
+    before: "2 calls",
+    after: "1 shared call",
+    delta: "-50%",
+  },
+] as const;
+
 const MEMORY_LAYERS = [
   {
     code: "L0",
@@ -169,9 +223,9 @@ const MEMORY_LAYERS = [
   {
     code: "L3",
     title: "Routed memory",
-    path: "~/.nur/native-memory/",
-    body: "Hierarchical entries, vectors, and graph relations retrieved through one central memory router.",
-    mode: "LOCAL INDEXED",
+    path: "~/.nur/native-memory/ · HelixDB",
+    body: "Hierarchical entries, local vectors, Helix graph-vector search, and graph reranking share one query embedding and deduplicate by memory ID before prompt injection.",
+    mode: "HYBRID DEFAULT",
   },
   {
     code: "L4",
@@ -473,6 +527,19 @@ const FEATURE_TABS: FeatureTab[] = [
           TUI (<code>/tb</code> · <code>/terminal-browser</code>)
         </li>
         <li>
+          <strong>HelixDB</strong> - graph-vector memory resident with one
+          shared query embedding and ID deduplication across recall paths
+        </li>
+        <li>
+          <strong>Text-to-CAD</strong> - 11 STEP-first CAD, fabrication, and
+          robot-description skills, provisioned with their scripts and
+          references
+        </li>
+        <li>
+          <strong>mobile-harness</strong> - Android, iOS, and cloud-phone
+          operating procedures over capability-gated <code>mobilerun-core</code>
+        </li>
+        <li>
           <strong>bg</strong> — long-running jobs off the agent turn (
           <code>bg</code> tool · <code>/bg</code>)
         </li>
@@ -506,6 +573,11 @@ const FEATURE_TABS: FeatureTab[] = [
         <li>
           <strong>Prompt menu</strong> (right-click): fork · edit · revert ·
           copy
+        </li>
+        <li>
+          <strong>Incremental prompt layout</strong> caches visual rows and
+          invalidates only changed text or width, keeping cursor movement,
+          wrapping, and selection smooth as the editor grows
         </li>
         <li>Peek · drag-select · scrollbar · sticky prompt</li>
         <li>Ctrl+A / C / V / X · reverse-search prompt history (Ctrl+R)</li>
@@ -788,6 +860,14 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: "/gj", desc: "governed live data  (alias of /graphjin)" },
   { cmd: "/plur", desc: "shared engram memory" },
   { cmd: "/ruflo", desc: "vector memory / swarm" },
+  {
+    cmd: "/cad",
+    desc: "STEP-first CAD workflow with geometry validation and visual review",
+  },
+  {
+    cmd: "/mobile-harness",
+    desc: "Android, iOS, emulator, and cloud-phone operating harness",
+  },
   { cmd: "/ecosystem", desc: "ecosystem readiness" },
   { cmd: "/todos", desc: "show session task list" },
   { cmd: "/init", desc: "generate a NUR.md project guide" },
@@ -1349,6 +1429,30 @@ const INSPIRATIONS: Inspiration[] = [
     name: "terminal-browser",
     href: "https://terminal-browser.com/",
     why: "in-terminal Chromium · /tb · Windows host fallback via agent-browser-cli",
+  },
+  {
+    group: "stack",
+    name: "HelixDB",
+    href: "https://github.com/HelixDB/helix-db",
+    why: "tenant-partitioned graph-vector memory resident · durable local outbox · explicit-read acceleration",
+  },
+  {
+    group: "libs",
+    name: "Pretext",
+    href: "https://github.com/chenglou/pretext",
+    why: "incremental text layout and cached visual-row computation that informed smoother TUI input",
+  },
+  {
+    group: "plugins",
+    name: "Text-to-CAD",
+    href: "https://github.com/earthtojake/text-to-cad",
+    why: "11 auto-provisioned STEP-first CAD, fabrication, and robot-description skills with scripts + validation",
+  },
+  {
+    group: "plugins",
+    name: "DroidRun Mobile Harness",
+    href: "https://github.com/droidrun/mobile-harness",
+    why: "portable Android, iOS, emulator, and cloud-phone operating harness over mobilerun-core",
   },
   {
     group: "stack",
@@ -2198,8 +2302,8 @@ export default function CliPage() {
             <span>usage provenance</span>
           </li>
           <li>
-            <strong>LOCAL</strong>
-            <span>sessions + deep memory</span>
+            <strong>25.92ms</strong>
+            <span>routed memory p50</span>
           </li>
           <li>
             <strong
@@ -2260,6 +2364,68 @@ export default function CliPage() {
               <p>{signal.body}</p>
             </article>
           ))}
+        </div>
+
+        <div
+          className="cli-benchmark"
+          aria-labelledby="retrieval-benchmark-title"
+        >
+          <div className="cli-benchmark-hd">
+            <div>
+              <p className="cli-section-code">LAB.TRACE / MEMORY-HOT-PATH</p>
+              <h3 id="retrieval-benchmark-title">
+                One embedding. Every resident.
+              </h3>
+            </div>
+            <p>
+              Shared embedding and memory-ID deduplication are baked into the
+              default router. Local vector, configured Helix, and graph
+              reranking fan out from the same query vector.
+            </p>
+          </div>
+
+          <div className="cli-benchmark-grid">
+            {RETRIEVAL_METRICS.map((metric) => (
+              <article key={metric.label}>
+                <div>
+                  <strong>{metric.value}</strong>
+                  <span>{metric.unit}</span>
+                </div>
+                <h4>{metric.label}</h4>
+                <p>{metric.detail}</p>
+              </article>
+            ))}
+          </div>
+
+          <div
+            className="cli-benchmark-table"
+            role="table"
+            aria-label="Memory retrieval before and after"
+          >
+            <div
+              className="cli-benchmark-row cli-benchmark-row--head"
+              role="row"
+            >
+              <span role="columnheader">path</span>
+              <span role="columnheader">before</span>
+              <span role="columnheader">now</span>
+              <span role="columnheader">delta</span>
+            </div>
+            {RETRIEVAL_COMPARISON.map((metric) => (
+              <div className="cli-benchmark-row" role="row" key={metric.path}>
+                <span role="cell">{metric.path}</span>
+                <samp role="cell">{metric.before}</samp>
+                <samp role="cell">{metric.after}</samp>
+                <strong role="cell">{metric.delta}</strong>
+              </div>
+            ))}
+          </div>
+
+          <p className="cli-benchmark-note">
+            Measured on Windows against localhost HelixDB with a debug Nur
+            build, local-first embeddings, one stored fact, and 10 warm routed
+            reads. These are lab measurements, not a production SLA.
+          </p>
         </div>
 
         <div className="cli-honesty-strip">
