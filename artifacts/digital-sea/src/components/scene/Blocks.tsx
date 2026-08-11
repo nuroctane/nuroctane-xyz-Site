@@ -1,7 +1,8 @@
-import { useRef, useMemo, useEffect } from 'react';
-import * as THREE from 'three';
-import { curve } from '../../data/path';
-import { WORLD_Z_MIN, WORLD_Z_MAX, WORLD_X_HALF } from '../../constants';
+import { useRef, useMemo, useEffect } from "react";
+import * as THREE from "three";
+import { curve } from "../../data/path";
+import { WORLD_Z_MIN, WORLD_Z_MAX, WORLD_X_HALF } from "../../constants";
+import { SEA_SCENE } from "../../theme/seaTheme";
 
 export function mkRand(seed: number) {
   let s = seed;
@@ -11,28 +12,39 @@ export function mkRand(seed: number) {
   };
 }
 
-export function makeMat(color: string, opacity: number, emissive = '#061418') {
+export function makeMat(color: string, opacity: number, emissive = "#061418") {
   return new THREE.MeshStandardMaterial({
-    color:             new THREE.Color(color),
-    emissive:          new THREE.Color(emissive),
+    color: new THREE.Color(color),
+    emissive: new THREE.Color(emissive),
     emissiveIntensity: 0.28,
-    metalness:         0.06,
-    roughness:         0.35,
-    transparent:       true,
+    metalness: 0.06,
+    roughness: 0.35,
+    transparent: true,
     opacity,
     side: THREE.FrontSide,
   });
 }
 
 export interface BlockSpec {
-  x: number; y: number; z: number;
-  w: number; h: number; d: number;
-  rotY: number; rotX: number;
+  x: number;
+  y: number;
+  z: number;
+  w: number;
+  h: number;
+  d: number;
+  rotY: number;
+  rotX: number;
 }
 
-export function InstanceGroup({ specs, mat }: { specs: BlockSpec[]; mat: THREE.Material }) {
+export function InstanceGroup({
+  specs,
+  mat,
+}: {
+  specs: BlockSpec[];
+  mat: THREE.Material;
+}) {
   const meshRef = useRef<THREE.InstancedMesh>(null);
-  const dummy   = useMemo(() => new THREE.Object3D(), []);
+  const dummy = useMemo(() => new THREE.Object3D(), []);
   useEffect(() => {
     const mesh = meshRef.current;
     if (!mesh) return;
@@ -59,11 +71,14 @@ export function InstanceGroup({ specs, mat }: { specs: BlockSpec[]; mat: THREE.M
 
 // ── Tall thin pillars ─────────────────────────────────────────────────────────
 function Pillars() {
-  const mat   = useMemo(() => makeMat('#1c5f70', 0.80, '#071c24'), []);
+  const mat = useMemo(
+    () => makeMat(SEA_SCENE.structures.teal, 0.8, SEA_SCENE.emissive.teal),
+    [],
+  );
   const specs = useMemo<BlockSpec[]>(() => {
     const rand = mkRand(7);
     const pathPillars = Array.from({ length: 90 }, (_, i) => {
-      const t  = 0.005 + (i / 90) * 0.99;
+      const t = 0.005 + (i / 90) * 0.99;
       const pt = curve.getPoint(t);
       const side = rand() > 0.5 ? 1 : -1;
       const h = 5 + rand() * 20;
@@ -72,8 +87,11 @@ function Pillars() {
         x: pt.x + side * (4.5 + rand() * 12),
         y: pt.y + (rand() - 0.5) * 10 - h * 0.1,
         z: pt.z + (rand() - 0.5) * 6,
-        w, h, d: w * (0.5 + rand() * 1.0),
-        rotY: (rand() - 0.5) * 0.5, rotX: (rand() - 0.5) * 0.05,
+        w,
+        h,
+        d: w * (0.5 + rand() * 1.0),
+        rotY: (rand() - 0.5) * 0.5,
+        rotX: (rand() - 0.5) * 0.05,
       };
     });
     const worldPillars = Array.from({ length: 160 }, () => {
@@ -83,8 +101,11 @@ function Pillars() {
         x: (rand() - 0.5) * WORLD_X_HALF * 2,
         y: (rand() - 0.5) * 14 - h * 0.1,
         z: WORLD_Z_MAX + rand() * (WORLD_Z_MIN - WORLD_Z_MAX),
-        w, h, d: w * (0.4 + rand() * 1.1),
-        rotY: (rand() - 0.5) * 0.5, rotX: (rand() - 0.5) * 0.06,
+        w,
+        h,
+        d: w * (0.4 + rand() * 1.1),
+        rotY: (rand() - 0.5) * 0.5,
+        rotX: (rand() - 0.5) * 0.06,
       };
     });
     return [...pathPillars, ...worldPillars];
@@ -94,11 +115,14 @@ function Pillars() {
 
 // ── Wide flat platforms ───────────────────────────────────────────────────────
 function Platforms() {
-  const mat   = useMemo(() => makeMat('#0d4a5a', 0.72, '#050f14'), []);
+  const mat = useMemo(
+    () => makeMat(SEA_SCENE.structures.moss, 0.72, SEA_SCENE.emissive.moss),
+    [],
+  );
   const specs = useMemo<BlockSpec[]>(() => {
     const rand = mkRand(13);
     const pathPlatforms = Array.from({ length: 60 }, (_, i) => {
-      const t  = 0.005 + (i / 60) * 0.99;
+      const t = 0.005 + (i / 60) * 0.99;
       const pt = curve.getPoint(t);
       const side = rand() > 0.5 ? 1 : -1;
       return {
@@ -108,7 +132,8 @@ function Platforms() {
         w: 1.5 + rand() * 7.0,
         h: 0.12 + rand() * 0.7,
         d: 0.8 + rand() * 4.5,
-        rotY: (rand() - 0.5) * 0.6, rotX: (rand() - 0.5) * 0.07,
+        rotY: (rand() - 0.5) * 0.6,
+        rotX: (rand() - 0.5) * 0.07,
       };
     });
     const worldPlatforms = Array.from({ length: 90 }, () => ({
@@ -118,7 +143,8 @@ function Platforms() {
       w: 1.5 + rand() * 9.0,
       h: 0.1 + rand() * 0.65,
       d: 0.8 + rand() * 5.0,
-      rotY: (rand() - 0.5) * 0.7, rotX: (rand() - 0.5) * 0.08,
+      rotY: (rand() - 0.5) * 0.7,
+      rotX: (rand() - 0.5) * 0.08,
     }));
     return [...pathPlatforms, ...worldPlatforms];
   }, []);
@@ -127,11 +153,14 @@ function Platforms() {
 
 // ── Medium cubic blocks ───────────────────────────────────────────────────────
 function MediumBlocks() {
-  const mat   = useMemo(() => makeMat('#175870', 0.84, '#060e1c'), []);
+  const mat = useMemo(
+    () => makeMat(SEA_SCENE.turquoiseDeep, 0.84, SEA_SCENE.emissive.teal),
+    [],
+  );
   const specs = useMemo<BlockSpec[]>(() => {
     const rand = mkRand(29);
     const pathBlocks = Array.from({ length: 80 }, (_, i) => {
-      const t  = 0.005 + (i / 80) * 0.99;
+      const t = 0.005 + (i / 80) * 0.99;
       const pt = curve.getPoint(t);
       const side = rand() > 0.5 ? 1 : -1;
       return {
@@ -141,7 +170,8 @@ function MediumBlocks() {
         w: 0.4 + rand() * 2.8,
         h: 0.6 + rand() * 6.0,
         d: 0.3 + rand() * 2.5,
-        rotY: (rand() - 0.5) * Math.PI * 0.35, rotX: (rand() - 0.5) * 0.09,
+        rotY: (rand() - 0.5) * Math.PI * 0.35,
+        rotX: (rand() - 0.5) * 0.09,
       };
     });
     const worldBlocks = Array.from({ length: 120 }, () => ({
@@ -151,7 +181,8 @@ function MediumBlocks() {
       w: 0.4 + rand() * 3.5,
       h: 0.6 + rand() * 7.0,
       d: 0.3 + rand() * 3.0,
-      rotY: (rand() - 0.5) * Math.PI * 0.4, rotX: (rand() - 0.5) * 0.1,
+      rotY: (rand() - 0.5) * Math.PI * 0.4,
+      rotX: (rand() - 0.5) * 0.1,
     }));
     return [...pathBlocks, ...worldBlocks];
   }, []);
@@ -160,14 +191,17 @@ function MediumBlocks() {
 
 // ── Massive background monoliths ──────────────────────────────────────────────
 function Monoliths() {
-  const mat   = useMemo(() => makeMat('#0b3040', 0.60, '#030a10'), []);
+  const mat = useMemo(
+    () => makeMat(SEA_SCENE.structures.brown, 0.64, SEA_SCENE.emissive.brown),
+    [],
+  );
   const specs = useMemo<BlockSpec[]>(() => {
     const rand = mkRand(61);
     const pathMonoliths = Array.from({ length: 30 }, (_, i) => {
-      const t  = 0.01 + (i / 30) * 0.98;
+      const t = 0.01 + (i / 30) * 0.98;
       const pt = curve.getPoint(t);
       const side = rand() > 0.5 ? 1 : -1;
-      const h  = 12 + rand() * 28;
+      const h = 12 + rand() * 28;
       return {
         x: pt.x + side * (8 + rand() * 16),
         y: pt.y - h * 0.3 + (rand() - 0.5) * 6,
@@ -175,7 +209,8 @@ function Monoliths() {
         w: 0.9 + rand() * 3.0,
         h,
         d: 0.2 + rand() * 1.5,
-        rotY: (rand() - 0.5) * 0.2, rotX: 0,
+        rotY: (rand() - 0.5) * 0.2,
+        rotX: 0,
       };
     });
     const worldMonoliths = Array.from({ length: 50 }, () => {
@@ -187,7 +222,8 @@ function Monoliths() {
         w: 0.7 + rand() * 3.5,
         h,
         d: 0.2 + rand() * 1.8,
-        rotY: (rand() - 0.5) * 0.25, rotX: 0,
+        rotY: (rand() - 0.5) * 0.25,
+        rotX: 0,
       };
     });
     return [...pathMonoliths, ...worldMonoliths];
@@ -197,7 +233,10 @@ function Monoliths() {
 
 // ── Far background tower spires ───────────────────────────────────────────────
 function TowerSpires() {
-  const mat   = useMemo(() => makeMat('#082030', 0.45, '#020810'), []);
+  const mat = useMemo(
+    () => makeMat(SEA_SCENE.structures.plum, 0.46, SEA_SCENE.emissive.plum),
+    [],
+  );
   const specs = useMemo<BlockSpec[]>(() => {
     const rand = mkRand(97);
     return Array.from({ length: 80 }, () => {
@@ -207,8 +246,11 @@ function TowerSpires() {
         x: (rand() - 0.5) * 90,
         y: -h * 0.4,
         z: WORLD_Z_MAX + rand() * (WORLD_Z_MIN - WORLD_Z_MAX),
-        w, h, d: w * (0.5 + rand() * 0.8),
-        rotY: rand() * Math.PI, rotX: 0,
+        w,
+        h,
+        d: w * (0.5 + rand() * 0.8),
+        rotY: rand() * Math.PI,
+        rotX: 0,
       };
     });
   }, []);
@@ -217,7 +259,10 @@ function TowerSpires() {
 
 // ── Floating horizontal slabs ─────────────────────────────────────────────────
 function FloatingSlabs() {
-  const mat   = useMemo(() => makeMat('#104858', 0.55, '#040e14'), []);
+  const mat = useMemo(
+    () => makeMat(SEA_SCENE.structures.deep, 0.58, SEA_SCENE.emissive.deep),
+    [],
+  );
   const specs = useMemo<BlockSpec[]>(() => {
     const rand = mkRand(43);
     return Array.from({ length: 70 }, () => ({

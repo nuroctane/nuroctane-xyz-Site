@@ -1,20 +1,20 @@
-import { EffectComposer, Bloom, Vignette } from '@react-three/postprocessing';
-import { BlendFunction } from 'postprocessing';
-import type { PerformanceTier } from '../../hooks/usePerformanceTier';
+import { EffectComposer, Bloom, Vignette } from "@react-three/postprocessing";
+import { BlendFunction } from "postprocessing";
+import type { PerformanceTier } from "../../hooks/usePerformanceTier";
 
 interface Props {
   tier: PerformanceTier;
 }
 
 export function Effects({ tier }: Props) {
-  if (tier === 'low' || tier === 'minimal') return null;
+  if (tier === "low" || tier === "minimal") return null;
 
   return (
     <EffectComposer>
       <Bloom
-        intensity={1.1}
-        luminanceThreshold={0.3}
-        luminanceSmoothing={0.75}
+        intensity={1.15}
+        luminanceThreshold={0.24}
+        luminanceSmoothing={0.8}
         mipmapBlur
         radius={0.65}
       />

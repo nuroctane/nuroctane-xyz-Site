@@ -1,31 +1,48 @@
-import React from 'react';
-import { useLocation } from 'wouter';
-import { NodeData, PROJECT_THRESHOLD, nodeMid } from '../../data/nodes';
-import { trackEvent } from '../../lib/analytics';
+import React from "react";
+import { useLocation } from "wouter";
+import { NodeData, PROJECT_THRESHOLD, nodeMid } from "../../data/nodes";
+import { trackEvent } from "../../lib/analytics";
 
-const COMING_SOON_IDS = ['weatherguru', 'starsleep', 'geoskin'];
+const COMING_SOON_IDS = ["weatherguru", "starsleep", "geoskin"];
 
 function ImgWithFallback({
-  src, alt, className, fallback,
+  src,
+  alt,
+  className,
+  fallback,
 }: {
-  src: string; alt: string; className: string; fallback: React.ReactNode;
+  src: string;
+  alt: string;
+  className: string;
+  fallback: React.ReactNode;
 }) {
   const [failed, setFailed] = React.useState(false);
   if (!src || failed) return <>{fallback}</>;
-  return <img src={src} alt={alt} className={className} draggable={false} onError={() => setFailed(true)} />;
+  return (
+    <img
+      src={src}
+      alt={alt}
+      className={className}
+      draggable={false}
+      onError={() => setFailed(true)}
+    />
+  );
 }
 
 export function NodeCard({ node }: { node: NodeData }) {
   const [exploding, setExploding] = React.useState(false);
   const [, setLocation] = useLocation();
   const isComingSoon = COMING_SOON_IDS.includes(node.id);
-  const hasLink      = Boolean(node.url && node.url !== '#');
-  const isInternal   = Boolean(node.url?.startsWith('/'));
+  const hasLink = Boolean(node.url && node.url !== "#");
+  const isInternal = Boolean(node.url?.startsWith("/"));
 
   const handleClick = (e: React.MouseEvent) => {
-    if (!hasLink || exploding) { e.preventDefault(); return; }
-    const section = nodeMid(node) < PROJECT_THRESHOLD ? 'socials' : 'projects';
-    trackEvent('Sea Node Open', { id: node.id, section, label: node.label });
+    if (!hasLink || exploding) {
+      e.preventDefault();
+      return;
+    }
+    const section = nodeMid(node) < PROJECT_THRESHOLD ? "socials" : "projects";
+    trackEvent("Sea Node Open", { id: node.id, section, label: node.label });
     setExploding(true);
     setTimeout(() => setExploding(false), 420);
     if (isInternal && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
@@ -36,20 +53,26 @@ export function NodeCard({ node }: { node: NodeData }) {
 
   // Native <a> tags open reliably in every context (including iframes)
   // where window.open may be blocked as a popup.
-  const Tag = hasLink ? 'a' : 'div';
+  const Tag = hasLink ? "a" : "div";
   const linkProps = hasLink
     ? isInternal
       ? { href: node.url }
-      : { href: node.url, target: '_blank', rel: 'noopener noreferrer' }
+      : { href: node.url, target: "_blank", rel: "noopener noreferrer" }
     : {};
 
   return (
     <Tag
       {...linkProps}
       draggable={false}
-      className={`node-card${exploding ? ' node-card--exploding' : ''}`}
+      className={`node-card${exploding ? " node-card--exploding" : ""}`}
+      data-tone={nodeMid(node) < PROJECT_THRESHOLD ? "teal" : "gold"}
       onClick={handleClick}
-      style={{ cursor: hasLink ? 'pointer' : 'default', display: 'block', textDecoration: 'none', color: 'inherit' }}
+      style={{
+        cursor: hasLink ? "pointer" : "default",
+        display: "block",
+        textDecoration: "none",
+        color: "inherit",
+      }}
     >
       <span className="corner tl" />
       <span className="corner tr" />
@@ -62,7 +85,11 @@ export function NodeCard({ node }: { node: NodeData }) {
             src={node.avatar}
             alt={node.handle}
             className="avatar-img"
-            fallback={<span className="avatar-fallback">{node.label.charAt(0).toUpperCase()}</span>}
+            fallback={
+              <span className="avatar-fallback">
+                {node.label.charAt(0).toUpperCase()}
+              </span>
+            }
           />
         </div>
         {node.logo && (
@@ -71,7 +98,11 @@ export function NodeCard({ node }: { node: NodeData }) {
               src={node.logo}
               alt={node.label}
               className="logo-img"
-              fallback={<span className="logo-fallback-char">{node.label.charAt(0)}</span>}
+              fallback={
+                <span className="logo-fallback-char">
+                  {node.label.charAt(0)}
+                </span>
+              }
             />
           </div>
         )}

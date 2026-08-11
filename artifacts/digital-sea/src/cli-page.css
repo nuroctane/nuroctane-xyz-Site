@@ -260,6 +260,12 @@ html.standalone-active.cli-theme body {
 .cli-jump-item:active {
   transform: scale(0.97);
 }
+.cli-jump-item:focus-visible {
+  position: relative;
+  z-index: 1;
+  outline: 2px solid var(--nur-gold-bright);
+  outline-offset: -2px;
+}
 .cli-jump-item--on {
   color: #1a1408;
   border-color: transparent;
@@ -1849,7 +1855,7 @@ html.standalone-active.cli-theme body {
 }
 
 .cli-jump-item {
-  min-height: 2.55rem;
+  min-height: 2.75rem;
   border-right: 1px solid var(--nur-border);
   text-transform: uppercase;
   letter-spacing: 0.09em;
@@ -1984,9 +1990,42 @@ html.standalone-active.cli-theme body {
 
 .cli-version {
   margin-top: 0.2rem;
-  border-color: var(--nur-border);
-  background: #0b0e12;
-  box-shadow: none;
+  min-height: 2.75rem;
+  color: var(--nur-gold-sky);
+  border-color: rgba(232, 185, 35, 0.52);
+  background: linear-gradient(180deg, #15181d 0%, #0b0e12 100%);
+  box-shadow: inset 3px 0 0 var(--nur-gold);
+  clip-path: none;
+  animation: none;
+}
+
+.cli-version:hover {
+  color: #fff8b4;
+  border-color: var(--nur-gold);
+  background: #171a1f;
+  box-shadow:
+    inset 3px 0 0 var(--nur-gold-bright),
+    0 0 20px rgba(232, 185, 35, 0.12);
+  filter: none;
+}
+
+.cli-version--live .cli-version-dot {
+  background: var(--nur-success);
+}
+
+.cli-version-live {
+  color: #73e6a8;
+  background: rgba(52, 199, 123, 0.08);
+  border-color: rgba(52, 199, 123, 0.38);
+}
+
+.cli-version--err {
+  color: var(--nur-warn);
+  border-color: rgba(255, 186, 73, 0.52);
+}
+
+.cli-version--err .cli-version-dot {
+  background: var(--nur-warn);
 }
 
 .cli-hero-cta {
@@ -2044,7 +2083,9 @@ html.standalone-active.cli-theme body {
 
 .cli-stats span {
   margin-top: auto;
+  color: #9d9688;
   font-size: 0.66rem;
+  line-height: 1.45;
   letter-spacing: 0.1em;
   text-transform: uppercase;
 }

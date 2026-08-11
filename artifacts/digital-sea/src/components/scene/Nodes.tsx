@@ -1,23 +1,24 @@
-import { useRef, useMemo, useEffect, MutableRefObject } from 'react';
-import { useFrame } from '@react-three/fiber';
-import { Html } from '@react-three/drei';
-import * as THREE from 'three';
-import { nodes, NodeData } from '../../data/nodes';
-import { NodeCard } from './NodeCard';
-import { useCardDrag } from '../../hooks/useCardDrag';
-import { DragWake } from './DragWake';
-import { secondaryMediaByNode } from '../../data/secondaryNodes';
-import { SecondaryOrbit } from './SecondaryNodes';
-import type { Mode, Track } from '../../types';
-import type { PerformanceTier } from '../../hooks/usePerformanceTier';
+import { useRef, useMemo, useEffect, MutableRefObject } from "react";
+import { useFrame } from "@react-three/fiber";
+import { Html } from "@react-three/drei";
+import * as THREE from "three";
+import { nodes, NodeData } from "../../data/nodes";
+import { NodeCard } from "./NodeCard";
+import { useCardDrag } from "../../hooks/useCardDrag";
+import { DragWake } from "./DragWake";
+import { secondaryMediaByNode } from "../../data/secondaryNodes";
+import { SecondaryOrbit } from "./SecondaryNodes";
+import type { Mode, Track } from "../../types";
+import type { PerformanceTier } from "../../hooks/usePerformanceTier";
+import { SEA_SCENE } from "../../theme/seaTheme";
 
-const _mat4    = new THREE.Matrix4();
-const _up      = new THREE.Vector3(0, 1, 0);
-const _qIdle   = new THREE.Quaternion();
-const _qFace   = new THREE.Quaternion();
+const _mat4 = new THREE.Matrix4();
+const _up = new THREE.Vector3(0, 1, 0);
+const _qIdle = new THREE.Quaternion();
+const _qFace = new THREE.Quaternion();
 const _qResult = new THREE.Quaternion();
-const _euler   = new THREE.Euler();
-const _flipQ   = new THREE.Quaternion(0, 1, 0, 0);
+const _euler = new THREE.Euler();
+const _flipQ = new THREE.Quaternion(0, 1, 0, 0);
 
 function computeProximity(node: NodeData, t: number): number {
   const mid = (node.scrollStart + node.scrollEnd) / 2;
@@ -40,26 +41,33 @@ function descOffset(index: number): [number, number, number] {
 }
 
 interface SingleNodeProps {
-  node:           NodeData;
+  node: NodeData;
   scrollProgress: MutableRefObject<number>;
-  index:          number;
-  mode:           Mode;
-  activeTrack:    Track;
-  tier:           PerformanceTier;
+  index: number;
+  mode: Mode;
+  activeTrack: Track;
+  tier: PerformanceTier;
 }
 
-function SingleNode({ node, scrollProgress, index, mode, activeTrack, tier }: SingleNodeProps) {
-  const groupRef          = useRef<THREE.Group>(null);
-  const wrapperRef        = useRef<HTMLDivElement>(null);
-  const descWrapperRef    = useRef<HTMLDivElement>(null);
-  const hoverRef          = useRef(false);
-  const ringRef           = useRef<THREE.Mesh>(null);
+function SingleNode({
+  node,
+  scrollProgress,
+  index,
+  mode,
+  activeTrack,
+  tier,
+}: SingleNodeProps) {
+  const groupRef = useRef<THREE.Group>(null);
+  const wrapperRef = useRef<HTMLDivElement>(null);
+  const descWrapperRef = useRef<HTMLDivElement>(null);
+  const hoverRef = useRef(false);
+  const ringRef = useRef<THREE.Mesh>(null);
   const hoverParticlesRef = useRef<THREE.Points>(null);
-  const _frame            = useRef(0);
+  const _frame = useRef(0);
 
-  const centerRef    = useRef(new THREE.Vector3());
+  const centerRef = useRef(new THREE.Vector3());
   const proximityRef = useRef(0);
-  const media        = secondaryMediaByNode[node.id];
+  const media = secondaryMediaByNode[node.id];
 
   const modeRef = useRef(mode);
   modeRef.current = mode;
@@ -67,47 +75,61 @@ function SingleNode({ node, scrollProgress, index, mode, activeTrack, tier }: Si
   activeTrackRef.current = activeTrack;
   const hiddenRef = useRef(false);
 
-  const drag        = useCardDrag(mode);
+  const drag = useCardDrag(mode);
   const dragWrapRef = useRef<HTMLDivElement>(null);
 
-  const phase  = index * 1.374;
+  const phase = index * 1.374;
   const offset = descOffset(index);
 
   const hoverGeo = useMemo(() => {
     const count = 36;
-    const pos   = new Float32Array(count * 3);
+    const pos = new Float32Array(count * 3);
     for (let i = 0; i < count; i++) {
-      const angle     = (i / count) * Math.PI * 2;
-      const r         = 0.7 + Math.random() * 0.6;
+      const angle = (i / count) * Math.PI * 2;
+      const r = 0.7 + Math.random() * 0.6;
       pos[i * 3 + 0] = Math.cos(angle) * r;
       pos[i * 3 + 1] = (Math.random() - 0.5) * 2.0;
       pos[i * 3 + 2] = Math.sin(angle) * r * 0.25;
     }
     const g = new THREE.BufferGeometry();
-    g.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    g.setAttribute("position", new THREE.BufferAttribute(pos, 3));
     return g;
   }, []);
 
-  const hoverMat = useMemo(() => new THREE.PointsMaterial({
-    color: new THREE.Color('#bdeff2'),
-    size: 0.04, sizeAttenuation: true,
-    transparent: true, opacity: 0,
-    blending: THREE.AdditiveBlending, depthWrite: false,
-  }), []);
+  const hoverMat = useMemo(
+    () =>
+      new THREE.PointsMaterial({
+        color: new THREE.Color(SEA_SCENE.goldBright),
+        size: 0.04,
+        sizeAttenuation: true,
+        transparent: true,
+        opacity: 0,
+        blending: THREE.AdditiveBlending,
+        depthWrite: false,
+      }),
+    [],
+  );
 
-  useEffect(() => () => { hoverGeo.dispose(); hoverMat.dispose(); }, [hoverGeo, hoverMat]);
+  useEffect(
+    () => () => {
+      hoverGeo.dispose();
+      hoverMat.dispose();
+    },
+    [hoverGeo, hoverMat],
+  );
 
   useFrame(({ camera: cam, clock }) => {
     const group = groupRef.current;
     if (!group) return;
 
     _frame.current++;
-    const step = tier === 'high' || tier === 'medium' ? 1 : tier === 'low' ? 2 : 4;
+    const step =
+      tier === "high" || tier === "medium" ? 1 : tier === "low" ? 2 : 4;
     if (_frame.current % step !== 0) return;
 
     const onMainTrack =
-      modeRef.current === 'scroll' ||
-      (modeRef.current === 'camera' && activeTrackRef.current === 'main');
+      modeRef.current === "scroll" ||
+      (modeRef.current === "camera" && activeTrackRef.current === "main");
 
     if (!onMainTrack) {
       if (hiddenRef.current) return; // already hidden — skip all work
@@ -116,10 +138,13 @@ function SingleNode({ node, scrollProgress, index, mode, activeTrack, tier }: Si
       proximityRef.current = 0;
 
       const el = wrapperRef.current;
-      if (el) { el.style.opacity = '0'; el.style.pointerEvents = 'none'; }
+      if (el) {
+        el.style.opacity = "0";
+        el.style.pointerEvents = "none";
+      }
 
       const descEl = descWrapperRef.current;
-      if (descEl) descEl.style.opacity = '0';
+      if (descEl) descEl.style.opacity = "0";
 
       const ring = ringRef.current;
       if (ring) (ring.material as THREE.MeshBasicMaterial).opacity = 0;
@@ -130,34 +155,49 @@ function SingleNode({ node, scrollProgress, index, mode, activeTrack, tier }: Si
       return;
     }
 
-    const rawT    = scrollProgress.current;
-    const p       = computeProximity(node, rawT);
+    const rawT = scrollProgress.current;
+    const p = computeProximity(node, rawT);
 
-    if (modeRef.current !== 'camera' && p < 0.001 && proximityRef.current < 0.001) return;
+    if (
+      modeRef.current !== "camera" &&
+      p < 0.001 &&
+      proximityRef.current < 0.001
+    )
+      return;
 
     hiddenRef.current = false;
     const elapsed = clock.elapsedTime;
 
-    const wobScale = tier === 'low' ? 0.5 : tier === 'minimal' ? 0.25 : 1;
-    const wobFreq  = tier === 'minimal' ? 0.5 : 1;
-    const wobble   = (1 - p * 0.80) * wobScale;
-    const wobX     = Math.sin(elapsed * 0.52 * wobFreq + phase) * 0.18 * wobble;
-    const wobZ     = Math.cos(elapsed * 0.38 * wobFreq + phase * 1.21) * 0.12 * wobble;
-    const floatY   = Math.sin(elapsed * 0.31 * wobFreq + phase * 0.88) * 0.35 * wobble;
+    const wobScale = tier === "low" ? 0.5 : tier === "minimal" ? 0.25 : 1;
+    const wobFreq = tier === "minimal" ? 0.5 : 1;
+    const wobble = (1 - p * 0.8) * wobScale;
+    const wobX = Math.sin(elapsed * 0.52 * wobFreq + phase) * 0.18 * wobble;
+    const wobZ =
+      Math.cos(elapsed * 0.38 * wobFreq + phase * 1.21) * 0.12 * wobble;
+    const floatY =
+      Math.sin(elapsed * 0.31 * wobFreq + phase * 0.88) * 0.35 * wobble;
 
     const ox = drag.offset.current.x;
     const oy = drag.offset.current.y;
     const oz = drag.offset.current.z;
-    group.position.set(node.position.x + ox, node.position.y + floatY + oy, node.position.z + oz);
+    group.position.set(
+      node.position.x + ox,
+      node.position.y + floatY + oy,
+      node.position.z + oz,
+    );
     centerRef.current.copy(group.position);
 
-    _euler.set(node.idleRotation.x + wobX, node.idleRotation.y, node.idleRotation.z + wobZ);
+    _euler.set(
+      node.idleRotation.x + wobX,
+      node.idleRotation.y,
+      node.idleRotation.z + wobZ,
+    );
     _qIdle.setFromEuler(_euler);
 
     _mat4.lookAt(group.position, cam.position, _up);
     _qFace.setFromRotationMatrix(_mat4);
 
-    const isCam   = modeRef.current === 'camera';
+    const isCam = modeRef.current === "camera";
     const faceAmt = Math.max(Math.pow(p, 0.55), 0.9);
     _qResult.slerpQuaternions(_qIdle, _qFace, faceAmt);
     _qResult.multiply(_flipQ);
@@ -165,7 +205,7 @@ function SingleNode({ node, scrollProgress, index, mode, activeTrack, tier }: Si
 
     // endFadeMultiplier only fires in the last 0.8% of scroll — no impact on
     // normal backward scrolling or portal zone navigation.
-    const eFade      = isCam ? 1 : endFadeMultiplier(rawT);
+    const eFade = isCam ? 1 : endFadeMultiplier(rawT);
     const effectiveP = (isCam ? Math.max(p, 0.62) : p) * eFade;
     proximityRef.current = effectiveP;
     group.scale.setScalar(0.5 + effectiveP * 0.5);
@@ -175,7 +215,11 @@ function SingleNode({ node, scrollProgress, index, mode, activeTrack, tier }: Si
       el.style.opacity = String(effectiveP);
       // Threshold 0.22 keeps the last creative card clickable through its full
       // scroll window; effectiveP ensures it disables once end-fade kicks in.
-      el.style.pointerEvents = isCam ? 'auto' : (effectiveP > 0.22 ? 'auto' : 'none');
+      el.style.pointerEvents = isCam
+        ? "auto"
+        : effectiveP > 0.22
+          ? "auto"
+          : "none";
     }
 
     const descEl = descWrapperRef.current;
@@ -186,24 +230,24 @@ function SingleNode({ node, scrollProgress, index, mode, activeTrack, tier }: Si
     }
 
     if (dragWrapRef.current && !drag.isDragging.current) {
-      dragWrapRef.current.style.cursor = isCam ? 'grab' : '';
+      dragWrapRef.current.style.cursor = isCam ? "grab" : "";
     }
 
     const ring = ringRef.current;
-    if (ring && (tier === 'high' || tier === 'medium')) {
-      const mat    = ring.material as THREE.MeshBasicMaterial;
+    if (ring && (tier === "high" || tier === "medium")) {
+      const mat = ring.material as THREE.MeshBasicMaterial;
       const target = hoverRef.current ? 0.75 * effectiveP : 0;
-      mat.opacity += (target - mat.opacity) * 0.10;
+      mat.opacity += (target - mat.opacity) * 0.1;
     } else if (ring) {
       (ring.material as THREE.MeshBasicMaterial).opacity = 0;
     }
 
     const hp = hoverParticlesRef.current;
-    if (hp && (tier === 'high' || tier === 'medium')) {
-      const mat           = hp.material as THREE.PointsMaterial;
+    if (hp && (tier === "high" || tier === "medium")) {
+      const mat = hp.material as THREE.PointsMaterial;
       const targetOpacity = hoverRef.current ? 0.85 * effectiveP : 0;
-      mat.opacity        += (targetOpacity - mat.opacity) * 0.12;
-      hp.rotation.z      += 0.008;
+      mat.opacity += (targetOpacity - mat.opacity) * 0.12;
+      hp.rotation.z += 0.008;
     } else if (hp) {
       (hp.material as THREE.PointsMaterial).opacity = 0;
     }
@@ -215,26 +259,41 @@ function SingleNode({ node, scrollProgress, index, mode, activeTrack, tier }: Si
         <mesh ref={ringRef} rotation={[Math.PI / 2, 0, 0]}>
           <torusGeometry args={[0.88, 0.022, 8, 64]} />
           <meshBasicMaterial
-            color="#5de8f0" transparent opacity={0}
-            depthWrite={false} blending={THREE.AdditiveBlending}
+            color={SEA_SCENE.turquoise}
+            transparent
+            opacity={0}
+            depthWrite={false}
+            blending={THREE.AdditiveBlending}
           />
         </mesh>
 
-        <points ref={hoverParticlesRef} geometry={hoverGeo} material={hoverMat} />
+        <points
+          ref={hoverParticlesRef}
+          geometry={hoverGeo}
+          material={hoverMat}
+        />
 
-        <DragWake dirRef={drag.dragDir} activeRef={drag.dragActive} velRef={drag.dragVel} />
+        <DragWake
+          dirRef={drag.dragDir}
+          activeRef={drag.dragActive}
+          velRef={drag.dragVel}
+        />
 
         <Html transform distanceFactor={4.5} zIndexRange={[100, 0]}>
           <div
             ref={dragWrapRef}
             {...drag.handlers}
-            style={{ userSelect: 'none', WebkitUserSelect: 'none' }}
+            style={{ userSelect: "none", WebkitUserSelect: "none" }}
           >
             <div
               ref={wrapperRef}
-              style={{ opacity: 0, pointerEvents: 'none' }}
-              onMouseEnter={() => { hoverRef.current = true; }}
-              onMouseLeave={() => { hoverRef.current = false; }}
+              style={{ opacity: 0, pointerEvents: "none" }}
+              onMouseEnter={() => {
+                hoverRef.current = true;
+              }}
+              onMouseLeave={() => {
+                hoverRef.current = false;
+              }}
             >
               <NodeCard node={node} />
             </div>
@@ -248,7 +307,10 @@ function SingleNode({ node, scrollProgress, index, mode, activeTrack, tier }: Si
             zIndexRange={[90, 0]}
             position={offset}
           >
-            <div ref={descWrapperRef} style={{ opacity: 0, pointerEvents: 'none' }}>
+            <div
+              ref={descWrapperRef}
+              style={{ opacity: 0, pointerEvents: "none" }}
+            >
               <div className="node-desc-card">
                 <p className="node-desc-text">{node.description}</p>
               </div>

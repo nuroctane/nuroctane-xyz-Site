@@ -1,23 +1,27 @@
-import { useMemo, useRef, useEffect } from 'react';
-import * as THREE from 'three';
+import { useMemo, useRef, useEffect } from "react";
+import * as THREE from "three";
+import { SEA_SCENE } from "../../theme/seaTheme";
 
 export function LightShafts() {
   const meshRef = useRef<THREE.InstancedMesh>(null);
-  const dummy   = useMemo(() => new THREE.Object3D(), []);
+  const dummy = useMemo(() => new THREE.Object3D(), []);
 
   const { specs, geo, material } = useMemo(() => {
     const rand = (s: number) => {
       let n = s;
-      return () => { n = (n * 1664525 + 1013904223) & 0xffffffff; return (n >>> 0) / 0xffffffff; };
+      return () => {
+        n = (n * 1664525 + 1013904223) & 0xffffffff;
+        return (n >>> 0) / 0xffffffff;
+      };
     };
     const r = rand(42);
     const specs = Array.from({ length: 28 }, (_, i) => ({
-      x:      (r() - 0.5) * 70,
-      y:      9 + r() * 9,
-      z:      20 - i * 8,
+      x: (r() - 0.5) * 70,
+      y: 9 + r() * 9,
+      z: 20 - i * 8,
       height: 18 + r() * 16,
       radius: 0.05 + r() * 0.22,
-      rotY:   r() * Math.PI,
+      rotY: r() * Math.PI,
     }));
 
     // Unit cylinder (top=1, bottom=1, height=1) — per-instance scale shapes
@@ -25,12 +29,12 @@ export function LightShafts() {
     const geo = new THREE.CylinderGeometry(1, 1, 1, 6, 1, true);
 
     const material = new THREE.MeshBasicMaterial({
-      color:       new THREE.Color('#2ad0c8'),
+      color: new THREE.Color(SEA_SCENE.goldBright),
       transparent: true,
-      opacity:     0.032,
-      side:        THREE.DoubleSide,
-      depthWrite:  false,
-      blending:    THREE.AdditiveBlending,
+      opacity: 0.026,
+      side: THREE.DoubleSide,
+      depthWrite: false,
+      blending: THREE.AdditiveBlending,
     });
 
     return { specs, geo, material };
@@ -54,7 +58,13 @@ export function LightShafts() {
     mesh.instanceMatrix.needsUpdate = true;
   }, [specs, dummy]);
 
-  useEffect(() => () => { geo.dispose(); material.dispose(); }, [geo, material]);
+  useEffect(
+    () => () => {
+      geo.dispose();
+      material.dispose();
+    },
+    [geo, material],
+  );
 
   return (
     <instancedMesh
