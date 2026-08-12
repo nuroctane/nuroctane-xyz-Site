@@ -2,15 +2,15 @@
 - [[#Faith, God & Surrender|Faith, God & Surrender]] (36)
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (26)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
-- [[#Self, Identity & Awakening|Self, Identity & Awakening]] (73)
+- [[#Self, Identity & Awakening|Self, Identity & Awakening]] (74)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (47)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (79)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (29)
-- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (83)
+- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (84)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (55)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (92)
-- [[#Work, Wealth & Value|Work, Wealth & Value]] (36)
-- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (52)
+- [[#Work, Wealth & Value|Work, Wealth & Value]] (38)
+- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (53)
 
 ## Faith, God & Surrender
 
@@ -612,6 +612,14 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 
 > To be taken seriously you have to truly believe you are the best and your opinions are correct. No one is rewarded for having half-held opinions. Keep searching for the truth until you feel it in your bones and the people around you have no choice but to accept your force on the world.
 > — @not_ellington
+
+> Good shadow work:
+> 
+> Allow yourself to feel completely and utterly ordinary. Not special, nor ascended. Not exceptionally intelligent, attractive, talented, conscious, or good at anything.
+> 
+> If you can sit with that possibility without trying to prove otherwise, your deepest insecurities will come up loudly - then you can surrender the parts of you that need to feel better than everyone else to be worthy of love.
+> — @theralkia
+
 
 ## Mind, Belief & Inner Work
 
@@ -1327,6 +1335,10 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > people will paint you with the colors they have
 > — @jia_seed
 
+> You should be envious of someone who is living a life that is more exciting than yours and represents the values that are important to you.  If you are not envious then you don't care enough to do it yourself.
+> — @spookyh8r
+
+
 ## Shadow, Discernment & Protection
 
 _Enemies, manipulation, resentment, power, spiritual attack, discernment, and energetic hygiene._
@@ -1839,6 +1851,20 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 > Once you learn this fundamental truth, you win a lot more than you lose
 > — @iamgingertrash
 
+> Reality:
+> 
+> If someone steals your idea it means the market wanted more and you didnt supply it.
+> 
+> The only way to beat copy cats is do so much volume so fast you’ve squeezed every drop out the idea before they even got a chance.
+> 
+> Relying on lawyers is always too little too late.
+> — @AlexHormozi
+
+> To me one important aspect of intergenerational wealth is to help my child build timelines.
+> — @Maryamhasnaa
+
+
+
 ## Life, Joy & Meaning
 
 _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a life worth living._
@@ -2017,3 +2043,7 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 
 > The task of man is to labor with joy, love with sincerity, give with pleasure, see with reverence, listen with affection, speak with prudence, and pray with every breath
 > — @augustusdelano
+
+> Money is infinite and you can make it all back. Embarrassment is temporary and everyone will forget in a week. There's literally nothing to worry about.
+> — @NewMentalities
+
