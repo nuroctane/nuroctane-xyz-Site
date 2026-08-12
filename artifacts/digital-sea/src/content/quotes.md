@@ -28,6 +28,7 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > — G. K. Chesterton, *Orthodoxy*
 
 > Everything you do today, every decision you make every day, reverberates infinitely in the immortal soul, persisting through all your descendants—that soul inherited from all your ancestors, who all watch over you, paying spiritual earned in their life to influence fortune in yours. If you choose to be a cringe and sinful loser today, you curse not just your life, but a thousand lives, both before and after you.
+> — Charlotte Fang (@CharlotteFang77)
 
 > If you're going through a tough time, don't ask God to change the situation you're in
 > Instead, ask God to change how you see the situation you're in
@@ -38,6 +39,7 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 
 > Whoever decides to commit a sin but does not end up doing it, Allah will write one good deed for him - saying he only left it because of Me
 > • صحيح مسلم ١٢٩.
+> — Prophet Muhammad ﷺ, Sahih Muslim 129
 
 > The more you put your life on the line, the more interesting God finds you, the more likely your virtues to be rewarded (and vices punished.)
 
@@ -45,6 +47,7 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > when the Most High gives, you cherish.
 
 > Every blessing ignored becomes a curse.
+> — Paulo Coelho, *The Alchemist*
 
 > Whatever God gives me is enough. In fact, it is an abundance.
 
@@ -53,6 +56,7 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > Consider how precious a soul is when both God and the devil are after it. Your mission is to keep your mind and heart pure and remove bad thoughts, bad aesthetics and bad people from your life. You can learn to laugh like a child again and hope like a virgin again. There is so much room for love. Simply walk away from the hate. Turn around and walk away.
 
 > When you take one step towards the angels, heaven, Spirit, the Divine. they take ten towards you.
+> — Sathya Sai Baba (paraphrase of a hadith qudsi)
 
 > You are the bridge between heaven and earth. On a subtle level you are one with all things. Establish your daily communication with the universe. It’s as simple as if you are talking to a dear old friend.
 
@@ -75,6 +79,7 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > You are an instrument of god so u better stay in tune.
 
 > God does not tempt.
+> — James 1:13
 
 > May the Creator gently remove anyone around me who secretly loathes and wishes me ill. May every evil, jealous, and resentful eye go blind. May only pure intent find its way to my path. May the protection of the Divine, Most High Source continue to cover me. And it is so.
 
@@ -92,12 +97,15 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > — @lichthauch
 
 > The considerationalist is a menace because God hates you when you try to do His job for Him.
+> — @Scearpo
 
 > A pattern that you will notice time and time again in your life: Right before a huge level up THAT is where you’ll be hit with the most difficult tests challenges and trials. Higher powers want to test: “How bad you actually want this, mufucka?”
 
 > Thus, therefore, to whom he will, he hath mercy; and whom he will, he hardeneth.
+> — Romans 9:18
 
 > If it is meant for me I can never lose it. If it is not meant for me I don't want it.
+> — Imam al-Shafiʿi
 
 > Knowing in the troughs of your life that God has unfathomable good in store for you, will carry you steady through every possible storm - even those that persist for months. The reassurance He provides to those He calls cannot be disturbed. There's no harm that can be done unto you which He cannot heal in a second.
 > 
@@ -128,6 +136,7 @@ _Consciousness, time, illusion, energy, synchronicity, metaphysics, and the arch
 > In every situation that occurs in your physical reality ask yourself: why would I create this person in my reality acting in this exact way?
 
 > The idea that no problem can be solved from the same level of consciousness that created it, is literally metaphysics meets neuroscience.
+> — Often attributed to Albert Einstein; earliest similar phrasing via Ram Dass quoting Einstein (c. 1970)
 
 > If you feel the universe is testing, rewarding or punishing you that means you are the one doing it.
 > You are not separate from your universe, in fact it’s your creation.
@@ -152,6 +161,7 @@ _Consciousness, time, illusion, energy, synchronicity, metaphysics, and the arch
 > All of reality is programmable. You just have to figure out how. And the way to do that is to model it.
 
 > "Once again I had gotten caught in the melodrama and had forgotten to remember the illusion and behind it, the love."
+> — Ram Dass
 
 > We are freedom itself, asleep in a dream where we believe we need to somehow become free. Do you see the game?
 
@@ -182,6 +192,7 @@ _Imagination, intention, frequency, prosperity, timelines, desire, and allowing 
 > Serendipity's zenith kismet's crown abundant providence eudaimonic glory fortunae filius auspicio caelesti prosperitatis incarnatio aeterna felicitas opulentia infinita divine favoris receptaculum mirifica ubertas.
 
 > Neville Goddard spoke on Millikan. His affirmation was "I have lavish, steady, dependable income, consistent with integrity and mutual benefit."
+> — Robert A. Millikan (via Neville Goddard)
 
 > Most ppl make a negative application of their great power of faith by thinking about & believing in poverty, ill health, fear, failure, and defeat.
 
@@ -203,6 +214,7 @@ _Imagination, intention, frequency, prosperity, timelines, desire, and allowing 
 > Subtle energies of light emitted from your throat chakra interact with the quantum fabric of reality, arranging it how you've spelled it out.
 
 > Worrying is using your imagination to create what you do not want.
+> — Abraham (Esther Hicks)
 
 > You can teach your body what a future experience will feel like before it manifests. This is how you create miracles.
 
@@ -240,6 +252,7 @@ _Imagination, intention, frequency, prosperity, timelines, desire, and allowing 
 > of not having it, then Law of Attraction will continue to match that
 > not having it vibration, so you will continue to not have that which
 > you desire. It is Law.
+> — Abraham (Esther Hicks), *Ask and It Is Given*
 
 > When you are thinking about something that you have been
 > wanting for a very long time, and, in this moment, you are noticing
@@ -253,6 +266,7 @@ _Imagination, intention, frequency, prosperity, timelines, desire, and allowing 
 > moment, you are a match to your desire or a match to its absence;
 > whether you are allowing or resisting your desire, or whether you
 > are, in this moment, helping or hindering.
+> — Abraham (Esther Hicks), *Ask and It Is Given*
 
 > One of the greatest things that can change your vibration is the sound of your own voice.
 
@@ -271,6 +285,7 @@ _Imagination, intention, frequency, prosperity, timelines, desire, and allowing 
 > the universe responds with,
 > how can I serve you.
 > This is universal law.
+> — Wayne Dyer
 
 > Identify the timeline you desire.
 > Shift your vibration to match the timeline.
@@ -303,6 +318,7 @@ _Imagination, intention, frequency, prosperity, timelines, desire, and allowing 
 > Don't think about your lack of them. Think of
 > them as yours, as belonging to you, as already in
 > your possession.
+> — Robert Collier
 
 > There is often an echo or a lag as I like to call it between when you have done the work and your physical reality catches up. This is why I say don’t give up right before the miracle happens.
 
@@ -352,6 +368,7 @@ _Imagination, intention, frequency, prosperity, timelines, desire, and allowing 
 > ==Ease and perfection depend entirely upon the degree in which we cease to depend upon the consciousness.==
 > ==by plainly stating to the subconscious mind certain specific things to be accomplished, forces are set in operation that lead to the result desired==
 > ==it is not necessary to outline the method by which the subconscious will produce the results you desire. The finite can not inform the Infinite. You are simply to say what you desire, not how you are to obtain it.==
+> — Charles F. Haanel, *The Master Key System*
 
 > Man wants what he does not have
 > And ignores that which he has.
@@ -489,6 +506,7 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 > back.
 
 > Surrender is letting go of who you think you are supposed to be so that you can become who you really are, a being of infinite possibility.
+> — Brené Brown, *The Gifts of Imperfection* (paraphrase)
 
 > I outgrow so many of my ideas. what I hold onto is how much I trusted myself at the peak of each one. never underestimate how far allowing yourself to be proud of yourself will get you. each step counts.
 
@@ -499,6 +517,7 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 > If people can’t see you it’s not because you’re invisible but because they can’t see beyond themselves, so to look towards you is a strain, but a mountain at a distance is still a mountain.
 
 > To be a man is to bear the responsibility of all things.
+> — Antoine de Saint-Exupéry, *Wind, Sand and Stars* (paraphrase)
 
 > I love people deeply but I simultaneously don't care what anyone thinks.
 
@@ -506,6 +525,7 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 > I work on my relationship with self and everything else is transformed through this.
 
 > If you care about people’s opinions, you become their prisoner.
+> — Stephen Mitchell's translation of Laozi, *Tao Te Ching* ch. 9
 
 > An important stage in your journey is grieving the life you lost to fantasy, escapism, false beliefs, denial and the lies you believed about yourself, relationships, spirituality, the nature of reality and what it means to be human.
 > — @Maryamhasnaa
@@ -519,6 +539,7 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 > Walk through the door that was never closed.
 
 > “It’s not what they call you, it’s what you answer to.”
+> — W. C. Fields (commonly attributed)
 
 > Do not become confused by letting people tell you what tactics are needed to actualize a reality. your soul knows exactly what it needs. just go within. I beg of you.
 
@@ -558,6 +579,7 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 > Are you still looking outside of you for a Source of happiness, validation, inspiration, wholeness, holiness, and simultaneously source of where/who/what to blame when circumstances don’t turn out how your mind thinks they should. Or are you remembering the world is a mirror?
 
 > “Remember that no limitation can be placed upon you by anyone but yourself”.
+> — Charles F. Haanel, *The Master Key System*
 
 > Try to look at the things you want to change in your life or about your self-image without any of the psychological self-abuse or self-attack. Instead through the lens of curiosity.
 > Simply ask, I wonder who I would be if this issue wasn’t happening. Memorize that and create it.
@@ -628,6 +650,7 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 > It was powerful for me to realize that I can't miss out on anything. I will experience the entirety of my life. Anything I imagine I'm missing out on is a mental construction. And, since I produced the mental construction, I experienced it.
 
 > You never know enough to worry. Live life as it comes.
+> — Terence McKenna
 
 > Clairvoyancy is far more beneficial and necessary than discipline.
 > Discipline is rudimentary and far too simple of a concept to grab hold of the subconscious.
@@ -648,6 +671,7 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 > syndrome" but there is really no such thing. You have to teach your brain and your body a new pattern and state of being. You can teach your body what a future experience will feel like before it manifests. This is how you create miracles. Trust me it will not be from working harder but rather more intuition, allowing and flow.
 
 > If something is upsetting you or making you afraid, you ask yourself: Is it true? Beyond any reasonable doubt? Can you know beyond any doubt that it is true?
+> — Byron Katie, *Loving What Is*
 
 > You can always determine your unconscious programs by looking at patterns of what is repeatedly reflected in your real life, then working backwards. Asking yourself, what would I have to unconsciously believe in order to be a match for this energy dynamic. Once you identify the unconscious program, beliefs and thoughts patterns then ask, what is it that I needed to learn from this lesson? Decide what you prefer to experience now and write the new program.
 
@@ -656,6 +680,7 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 > Research says that 70% of the programs we are running from childhood are self-sabotaging, limiting and disempowering.
 > That means that until you clear out these old programs, beliefs, habits, ways of being, emotional content you aren't even living as yourself
 > Thinking is not the same thing as being conscious. When your brain is thinking you are actually running unconscious programs.
+> — Bruce Lipton, *The Biology of Belief*
 
 > Learn to observe every reflection that is showing up, even those things that are unwanted. Use everything as information rather than an excuse to judge and blame yourself. Be willing to see the pattern that is being revealed in order to learn how you are unconsciously creating.
 
@@ -672,6 +697,7 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 > Are you being motivated by fear or love?
 
 > A wise man said, “Before you speak, let your words pass through three gates. At the first gate, ask yourself, “Is it true?” At the second gate ask, “Is it necessary?” At the third gate ask, “Is it kind?”
+> — Beth Day, *Three Gates* (1835)
 
 > Your performance in any endeavor depends on what you think it depends on.
 
@@ -707,6 +733,7 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 > — Charles F. Haanel, *The Master Key System*
 
 > Always take the same room, the same chair, and the same position, if possible. In some cases it is not convenient to take the same room, in this case simply make the best use of such conditions as may be available. Now be perfectly still as before, but inhibit all thought; this will give you control over all thoughts of care, worry and fear, and will enable you to entertain only the kind of thoughts you desire. Continue this exercise until you gain complete mastery.
+> — Charles F. Haanel, *The Master Key System*
 
 > ==You say you don’t like something and yet you keep focusing on it, talking about it, getting emotional and giving it your creative energy. How is that working out for you?==
 
@@ -720,8 +747,10 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 > — C. G. Jung
 
 > If you realized how powerful your thoughts are, you would never think a negative thought again.
+> — Peace Pilgrim
 
 > Wisdom is avoiding all thoughts that weaken you.
+> — Wayne Dyer, *10 Secrets for Success and Inner Peace*
 
 > @DejaRu22 “Consider and fuck around with this mental model:
 > The only difference between people is what they say to themselves, and that accounts for nearly ALL results or lack thereof in life.”
@@ -812,10 +841,12 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > Do not waste any minute of your life to be against anything, something or anyone but waste as many hours of your life as it allows to build what you want to see.
 
 > Action will delineate and define you.
+> — Witold Gombrowicz, *Diary* Vol. 2
 
 > Success is not discrete function but a continuous one but do you know what is/can be discrete? LEGIBILITY!! It’s not that they achieved overnight success is that their success became legible to ya!!
 
 > The Samurai handbook Hagakure ("In the Shadow of Leaves") states that in order for a decision to be good, it must be made within seven breaths. Only two human types are capable of making decisions like this: the warrior and the religious fanatic.
+> — Yamamoto Tsunetomo, *Hagakure*
 
 > Satan loves it and laughs at you when you - you procrastinate - sleep in - Being a coward -Gossip - booze and get drunk all day - watch porn -simp - skip training - consume goyslop in excess; are you gonna let him win bro?
 
@@ -831,10 +862,13 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 
 > When we start something and do not complete it, or make a resolution and do not keep it, we are forming the habit of failure; absolute, ignominious failure
 > If you do not intend to do a thing, do not start; if you do start, see it through even if the heavens fall; if you make up your mind to do something, do it; let nothing, no one, interfere.
+> — Charles F. Haanel, *The Master Key System*
 
 > Look at your habits: Are they the product of innumerable little cowardices and laziness, or of your courage & inventive reason?
+> — Friedrich Nietzsche, *The Gay Science* §308
 
 > You gotta have a plan, everybody's got a dream, everybody's got a goal. What's the plan? And your plan has got to have something called the C5 complex. Your plan has got to be: Clear, Concise, Compelling, Consistent & Committed. When you're trying to do something that you're truly passionate about, there is no Plan B.
+> — Chris Gardner
 
 > Those who never take risks can only see other people’s mistakes.
 
@@ -873,6 +907,7 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > case it doesn't work out. Concentrate on what's
 > important Yusuke, then commit to it all the way!"
 > -Genkai (Yu Yu Hakusho.)
+> — Genkai, *Yu Yu Hakusho*
 
 > Habit is far more dependable than inspiration. Make progress by making habits. Don't focus on getting into shape. Focus on becoming the kind of person who never misses a workout.
 
@@ -975,6 +1010,7 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > You know what’s more powerful than being aware of blind spots, gaps in self perception, negativity and dysfunctional behavior patterns, is when you move from just being aware to actually changing them.
 
 > “Learn to keep the door shut, keep out of your mind, out of your office, and out of your world, every element that seeks admittance with no definite helpful end in view.”
+> — George Matthews Adams
 
 > If you see your decisions not as attempts at getting something, but rather as experiments on the path to figuring out the optimal course of action, there's no "success" or "failure" anymore, just varying rates of learning efficiency.
 
@@ -982,10 +1018,12 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > than it is to change your thoughts in order to change your behaviour.
 
 > When you’re not sure, flip a coin, cause while the coin is in the air, you realize which one you’re actually hoping for.
+> — Piet Hein, *A Psychological Tip*
 
 > You don't think your way to a new
 > way of living. You live your
 > way to a new way of thinking.
+> — Henri Nouwen
 
 > Most of the old timers I respect (the successful happy and healthy ones I wouldn’t mind being like someday) seem to all give the same advice. It applies across the board to getting the life you actually want. Could be starting a business, hitting a certain liquid net worth, bagging the one girl you HAVE to have.. etc. The advice is to APPLY PRESSURE. Never let your current circumstances define what is possible for you. Go towards everything you want until either you get it, or God definitively reroutes you towards something better. All of their stories of conquest in business and personal dealings involve massive volatility, ups and downs, falling and getting back up etc. over and over again. The old timers with regrets, on the other hand, just let one or two failures convince them to stop trying. Go get exactly what you want.
 > — @dezgoldie
@@ -1112,6 +1150,7 @@ _Calling, craft, art, play, service, voice, vision, and making what only you can
 > “You should be more afraid
 >  of avoiding your path,
 >  than walking it.”
+> — Jeff Brown, *Humanifestations*
 
 > i like to think that problems want to be solved. and that they are waiting there for the right person to come along and figure out a solution
 > 
@@ -1214,6 +1253,7 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 
 > Don't try to change, control or convert anyone. Allow people to be exactly who they are.
 > Your part is to see if who they are meets your standard for relational intelligence, connection, care, respect, intimacy and love. And then provide or deny access accordingly.
+> — @Maryamhasnaa
 
 > Never share your plans or anything worthy with women and with men who lose their control when with women.
 
@@ -1230,12 +1270,14 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 
 > The No.1 reason people fail in life is because they listen
 > to their friends, family, and neighbors.
+> — Napoleon Hill, *Think and Grow Rich*
 
 > No matter how ridiculous people's boundaries may seem to you
 > they're important to them for a good, reason respect them
 > I'm glad I learnt this early, unfortunately it was the hard way.
 
 > Expectations in relationships are just premeditated resentments.
+> — Alcoholics Anonymous (common saying)
 
 > Don't let your unmet childhood needs and desires ruin your relationships.
 
@@ -1248,6 +1290,7 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > You’ll have to be careful, my otherness will spoil you.
 > Ruin you.
 > After me all else will taste redundant.
+> — Warsan Shire
 
 > You can't change anyone's unhealthy relationship patterns without changing your own. Yin & yang, always you are dancing together.
 
@@ -1269,6 +1312,7 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > The healing remedy for rejection, betrayal or abandonment is calling your energy home and choosing yourself.
 
 > “You know how it goes: at some point in your life, you fell in love with someone and had a glimpse of God. Then you abandoned lover and started celebrating your love for God”.
+> — Kamand Kojouri
 
 > With maturity you stop worrying about if you have the wrong people around you and instead start evaluating if you have them in the wrong role. Some people you try to be close with are better as casual acquaintances. And others you know casually may be ready for closer intimacy.
 
@@ -1422,6 +1466,7 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 > Are you going to keep being a loser?
 
 > "How ridiculous were the attentions the weak paid one another in the shadow of the strong!”
+> — V. S. Naipaul, *A House for Mr Biswas*
 
 > The main defining characteristic of hate is a feeling of helpless trappedness.
 
@@ -1444,6 +1489,7 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 > Don’t fall for the energy traps that come for you.
 
 > Never think of pain or danger or enemies a moment longer than is necessary to fight them.
+> — Ayn Rand, *Atlas Shrugged*
 
 > Your aura is not a bubble of "protection". At its best it's a filter for energy. When healthy it allows things in and out.
 
@@ -1485,6 +1531,7 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 > That is universal law.
 
 > =="Do not converse with one talking in their sleep.".==
+> — Yuki Urushibara, *Mushishi*
 
 > I don’t talk to people who say things like “what if you’re not successful, what if you fail”. People who walk around with that question in their minds are already losers and their failure is contagious.
 
@@ -1510,6 +1557,7 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > When we are clearing a lot of dense energy and our mind, body and soul is under construction we can become thrown off and annoyed by every little thing. This is a sign you need quiet and rest. Temple time, stay in your sacred space as much as you can. Let yourself heal.
 
 > I think being lower in your body rather than in your head fixes like 70% of problems.
+> — @nickcammarata
 
 > Don’t push yourself to be positive. If you feel angry, you're allowed to feel angry. If you feel tired, you're allowed to feel tired. Give yourself permission to feel your emotions. They are all justified.
 
@@ -1529,6 +1577,7 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > ==If you care about your emotional release more than creating spaces for understanding, you will lose yourself emotionally as soon as the opportunity presents itself.==
 
 > You can't heal in the same environment that hurt you because the more healing you do, the more sensitive you become to the negative energy around you. The day you remove yourself from the emotional minefield is the day your life begins. It always seems impossible until it's done.
+> — @TheOracleReadsU
 
 > Blown away by the realization that I don’t have to motivate myself to do anything.
 > I just have to make myself feel safe enough to do it, and I’ll just start doing it.
@@ -1549,6 +1598,7 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > We are all being shown that the feeling of safety, stability, security does not come from outside.
 
 > Where there is no movement, there is pain. Where there is movement, there is no pain.
+> — Huangdi Neijing
 
 > I hate when I’m mad and people try to calm me down or make me choose peace. Anger inspired my most successful moments. Let me be mad.
 
@@ -1566,6 +1616,7 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > Health is when you set the pace, sickness is when you get dragged along.
 
 > “Before you heal someone, ask him if he's willing to give up the things that make him sick.”
+> — attributed to Hippocrates
 
 > If your body creates the pain, your mind has to solve it. If your mind creates the pain, your body will have to solve it.
 
@@ -1631,97 +1682,139 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > — Chace Chambers (@ChamberofFit), X, 2025-02-23
 
 > Joy is the matriarch of a family of emotions. She won't come into a house where her children aren't welcome.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > Every emotion is like a young child. Ignore it, and it will find a louder way to be known.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > Treat it like it's bad, and it grows defiant and confrontational.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > Shun its nature and it turns stagnant, then sinks into depression.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > Let it go unchecked, and it will act wild until it runs the home.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > Give it attention and connection and it will always, eventually, turn back to you in love.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > Fear of sadness is sadness. Fear of anger is anger. Fear of shame is shame.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > Avoidance doesn't protect you from the feeling.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > The emotion itself isn't what's painful, it's your resistance to it that makes it painful.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > You unconsciously sabotage yourself every day, when you repress your negative emotions.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > When you avoid an emotion, you actually invite more of it in the exact way you try to avoid it.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > Avoid failure → Play it safe → Feel like a failure.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > Avoid conflict → People-please → Inner conflict.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > Avoid losing → Dominates people → Loses trust.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > When your thoughts keep looping, you're avoiding an emotion.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > 95% of "overthinking" is unprocessed emotion wearing a rational disguise.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > Every time you judge somebody or yourself, there's an emotional experience you're avoiding.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > Judging others for showing off often means you're struggling with a desire to be seen.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > A "hard" decision is one where you think about it.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > Every time you think you have to make a big decision, there's an emotion you don't want to feel.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > Wrestling with whether to end a relationship usually means avoiding your own pain and/or your partner's pain.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > Don't believe your emotions.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > Your emotions control you when you believe their stories.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > When you're triggered, your nervous system isn't reacting to what's actually happening. It's reacting to what it expects based on old emotional data.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > This data, which is encoded in your limbic system, hijacks your rational brain under stress.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > Take your emotions seriously, not literally.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > It took me decades to learn how to take my emotions seriously without believing them.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > I figured out how to do this when I was giving unconditional love to my 3-year-old, who was yelling "I hate you daddy."
+> — Joe Hudson, *How to actually feel your emotions*
 
 > Even when your emotions aren't responding to reality, your body thinks it's real.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > Your heart rate increases, your muscles tense, your gut tightens.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > The trick is to welcome them without identifying with them.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > An actor always knows it's not their emotion.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > Even if they fully embody the feeling of hurt, anger, etc., they know they're playing a part.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > They're not identified with the emotion.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > Resisting your resistance is just more resistance.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > Put your attention on the part of you that's resisting.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > Be in wonder, not judgement.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > Allow it to express itself without judgement.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > Be with the resistance the way you'd sit with a scared child. Patiently, lovingly, without rushing it to change or "not" be resistant.
+> — Joe Hudson, *How to actually feel your emotions*
 
 > Knowing nothing does wonders for the nervous system. Don't check your emails. Don't ask your mom why any of it happened. Mute him on twitter. Ignore the nutrition label. Have notifications off for everything. Remove your eyes, ears, and nerve endings.
 
 > If you're an anxious person, just do everything for fun. Submit documents for fun. Start a blog for fun. Go to a job interview for fun. ANXIETY FEEDS ON IMPORTANCE. Do not make everything a matter of life and death.
 
 > The heart is intuitive; it's holistic, it's contextual, it's relational. It doesn't have a win-lose orientation. It taps into the cosmic computer the field of pure potentiality, pure knowledge, and infinite organizing power and takes everything into account. At times it may not even seem rational, but the heart has a computing ability that is far more accurate and far more precise than anything within the limits of rational thought.
+> — Deepak Chopra
 
 > Advice from the young C.S. Lewis: "Keep clear of introspection, of brooding, of spiritualism, of everything eccentric. Keep to work and sanity and open air – to the cheerful & the matter of fact side of things. We hold our mental health by a thread: & nothing is worth risking for it. Above all beware of excessive daydreaming, of seeing yourself in the centre of a drama, of self-pity, and, as far as possible, of fears.”
 > — @SuzanneSmith126
 
 > When a flower doesn’t bloom, you fix the environment in which it grows, not the flower.
+> — Alexander Den Heijer
 
 > Your body was not made for luxuries. It sickens, sinks, and dies beneath them. Much of what you do to ‘rest’ will unrelax you; you can only tolerate so much pampering.
 > 
 > Motion is your meditation; movement is your sanity, your serenity, your ease.
+> — @BonesawMD
 
 > Serotonin is an emergency mask over your consciousness which is raised in ugly environments. It lowers your standards for what you expect out of life by hiding you from the idea of better conditions.
 
@@ -1783,6 +1876,7 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 > -Learn skills that earn money
 
 > Your best job will be one that you were unqualified for because it stretches you. In fact only apply to jobs you are unqualified for.
+> — Kevin Kelly, *Excellent Advice for Living*
 
 > Money is usually attracted, not pursued. Controlling your time is the highest dividend money pays. Earn with your mind, not your time. Value your time poorly and you will be poor. The real measure of your wealth is how much you'd be worth if you lost all your money.
 
@@ -1890,6 +1984,7 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > happiness, except you.
 > 7) Smile. You don't own all
 > the problems in the world.
+> — Regina Brett
 
 > Be grateful that you get to wake up every day, moving closer to what it is that will bring your soul the fulfillment you purely desire in this lifetime!
 
@@ -1905,14 +2000,17 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > It’s ok to not always be creating. For the norms, it’s ok to not always be working. Take a break. Enjoy your life. That’s the most important shit. I know we live in a hyperspeed reality where everybody wants to chase a bag, but your bag is patiently waiting. Find your peace.
 
 > Don't trust tomorrow's bough for fruit. Pluck here, now.
+> — Horace, *Odes* 1.11
 
 > The universe doesn't let you act like you got it all figured out. It will always humble you real quick. If you think that you’ve got it all figured out, you will remain stagnant. With stagnancy comes pain, with stagnancy comes death.
 
 > I’m in a dream rn that contains a lot of fog and instead of it blinding the road it just adds a great detail to the story. Very magical I tell you.
 
 > The only constant is change, over-planning for the future can make you unprepared for it.
+> — Heraclitus (paraphrase)
 
 > Ask anyone you admire: Their lucky breaks happened on a detour from their main goal. So embrace detours. Life is not a straight line for anyone.
+> — Kevin Kelly, *Excellent Advice for Living*
 
 > The paradox of life is that we often receive what we aren't obsessed with.
 
@@ -1983,6 +2081,7 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > The game to play is a continual swapping of lower pleasures for higher pleasures. Not sex, but love; not intoxication, but acceptance of the moment; not attention, but recognition. Replace each plank of the ship with a finer material, and you'll travel much farther than the shore.
 
 > When each day is the same as the next, it's because people fail to recognize the good things that happen in their lives every day that the sun rises. There's always a silver lining, if you look for it.
+> — Paulo Coelho, *The Alchemist*
 
 > every enlargement of life makes you partially incompetent again, revealing exactly where you have room to grow
 > — @augustusdelano
@@ -1996,14 +2095,17 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > Every second not dedicated to the exaltation of joy is sabotage.
 
 > There is no paradise to escape to, there are only different battlefields.
+> — Kentaro Miura, *Berserk*
 
 > Before your life shifts it's going to fall apart first.
 
 > Anything that makes you happy is productive.
 
 > Don’t wait for the storm to pass; dance in the rain.
+> — Vivian Greene
 
 > Your time and space are limited. Remove, give away, throw out things in your life that don't spark joy any longer in order to make room for those that do.
+> — Marie Kondo, *The Life-Changing Magic of Tidying Up*
 
 > you stop taking it personally once you understand the universe is not out to get you. sometimes it’s working for you in ways you can’t see yet, and sometimes it’s simply happening, indifferent, neither cruel nor kind. either way you can use it. either way you can stack it into your own growth if you refuse to be a victim of it.
 > — @josbjohnson
