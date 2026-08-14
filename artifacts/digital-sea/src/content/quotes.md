@@ -10,7 +10,7 @@
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (55)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (92)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (38)
-- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (53)
+- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (54)
 
 ## Faith, God & Surrender
 
@@ -2148,4 +2148,7 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 
 > Money is infinite and you can make it all back. Embarrassment is temporary and everyone will forget in a week. There's literally nothing to worry about.
 > — @NewMentalities
+
+> When I look back on my past and think how much time I wasted on nothing, how much time has been lost in futilities, errors, laziness, incapacity to live; how little I appreciated it, how many times I sinned against my heart and soul—then my heart bleeds. Life is a gift, life is happiness, every minute can be an eternity of happiness!
+> — Fyodor Dostoevsky
 
