@@ -1,16 +1,16 @@
 ## Index
-- [[#Faith, God & Surrender|Faith, God & Surrender]] (36)
-- [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (26)
+- [[#Faith, God & Surrender|Faith, God & Surrender]] (38)
+- [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (27)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (74)
-- [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (47)
+- [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (49)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (79)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (29)
-- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (84)
-- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (55)
-- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (92)
+- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (85)
+- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (56)
+- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (93)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (38)
-- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (54)
+- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (56)
 
 ## Faith, God & Surrender
 
@@ -116,6 +116,14 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 
 > The mark of a leader is someone who succeeds not by pushing hard or fighting for change but by wisely going with the universal flow.
 
+> I would only tell a mans son one thing, that the weight you feel, the dull excruciating heft of being alive, thats it. that is the entire inheritance. i dont have land or money or wisdom worth a rotten penny but i know this, god gives weight to the men he has not forgotten. the light ones, the untouched ones, gliding through with their clean hands and empty smiles, they were never burdened because they were never chosen, and that is a sentence far worse than yours. so when it gets heavy, and it will, remember your father said that was the honor, the only one that mattered
+> — @lichthauch
+
+> the unforgivable sin is refusing forgiveness. https://t.co/ICHArluHm0
+> — @0xSero
+
+
+
 ## Reality, Consciousness & Perception
 
 _Consciousness, time, illusion, energy, synchronicity, metaphysics, and the architecture of experience._
@@ -184,6 +192,10 @@ _Consciousness, time, illusion, energy, synchronicity, metaphysics, and the arch
 
 > U realize it’s all a Schrodinger’s cat in the end.
 > — @MrE_mssg
+
+> @gargi_kand you need to flirt with the universe
+> — @ellaaborating
+
 
 ## Manifestation, Desire & Abundance
 
@@ -777,6 +789,18 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 
 > Private eye friend told me that if you lose a small object around the house, the best way to find it is to stand for 2 minutes in the four corners of the room. He claims that if you've spent too much time living in or looking at a space, your mind burns a lot of spatial information in the background. But you almost never observe the room from a corner, and that could give you a physical shift in perspective and maybe jog your memory.
 > — Hyde (@BreatheLesss), X, 2025-02-18
+
+> Lean into everything that causes stress so that you may be able to get to the root of it
+> 
+> Avoidance is the real issue -- not what you think the external problem might be
+> 
+> You remove friction by sanding it off
+> — @augustusdelano
+
+> Remember what happened the last time you didn’t listen to your intuition.
+> — @Maryamhasnaa
+
+
 
 ## Action, Discipline & Mastery
 
@@ -1382,6 +1406,10 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > You should be envious of someone who is living a life that is more exciting than yours and represents the values that are important to you.  If you are not envious then you don't care enough to do it yourself.
 > — @spookyh8r
 
+> Women are like if you mix 10 year year old and a psychopath.
+> — @DeletedAcc3573
+
+
 
 ## Shadow, Discernment & Protection
 
@@ -1549,6 +1577,10 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 > 
 > Not evil advice.
 > — @QuantumRover
+
+> Discernment is also a huge theme. The ways that we have allowed both overt and subtle forms of abuse, ignored our intuition, ignored red flags and chosen to be willfully ignorant will all need self forgiveness at this time.
+> — @Maryamhasnaa
+
 
 ## Body, Emotion & Nervous System
 
@@ -1828,6 +1860,10 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 
 > We need to talk about how many believe they are channeling feminine rage and wrath when they are really just channeling unhealed masculine energy.
 > — @Maryamhasnaa
+
+> Are you still confusing trauma responses for actual intuition?
+> — @Maryamhasnaa
+
 
 
 ## Work, Wealth & Value
@@ -2151,4 +2187,12 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 
 > When I look back on my past and think how much time I wasted on nothing, how much time has been lost in futilities, errors, laziness, incapacity to live; how little I appreciated it, how many times I sinned against my heart and soul—then my heart bleeds. Life is a gift, life is happiness, every minute can be an eternity of happiness!
 > — Fyodor Dostoevsky
+
+> The Reverse Gratitude Journal: The most life-changing daily habit you have never heard of.
+> — @PromptLLM
+
+> We can lowkey start again tomorrow btw
+> — @34rths
+
+
 
