@@ -7,18 +7,18 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
-  <meta name="description" content="A 90-day world models curriculum: one research paper per day, from a car dreaming to the frontier. Model-based RL, JEPA, generative interactive environments, world foundation models, robots, and evaluation." />
+  <meta name="description" content="A 90-day world models curriculum: one research paper per day, from Ha and Schmidhuber (2018) to the August 2026 frontier. Model-based RL, JEPA, generative interactive environments, world foundation models, robots, and evaluation." />
   <link rel="canonical" href="https://nuroctane.xyz/curriculum" />
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <meta property="og:type" content="website" />
   <meta property="og:site_name" content="nuroctane.xyz" />
   <meta property="og:title" content="World Models: A Daily Series" />
-  <meta property="og:description" content="90 days, one paper a day: from a car dreaming to the frontier." />
+  <meta property="og:description" content="90 days, one paper a day: from Ha &amp; Schmidhuber to the August 2026 frontier." />
   <meta property="og:url" content="https://nuroctane.xyz/curriculum" />
   <meta property="og:image" content="https://www.nuroctane.xyz/opengraph.jpg" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="World Models: A Daily Series" />
-  <meta name="twitter:description" content="90 days, one paper a day: from a car dreaming to the frontier." />
+  <meta name="twitter:description" content="90 days, one paper a day: from Ha &amp; Schmidhuber to the August 2026 frontier." />
   <meta name="twitter:image" content="https://www.nuroctane.xyz/opengraph.jpg" />
   <script type="module">
     import posthog from "https://cdn.jsdelivr.net/npm/posthog-js@1/dist/module.min.js";
@@ -75,7 +75,7 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 18px 0 12px;
+      padding: 64px 0 12px;
       z-index: 40;
       overflow-y: auto;
       overflow-x: hidden;
@@ -355,6 +355,10 @@
       background: var(--line);
     }
 
+    body:not(.is-admin) .step { cursor: default; }
+    body:not(.is-admin) .step:hover { background: var(--bg-elev); }
+    body:not(.is-admin) .step input[type="checkbox"] { cursor: default; }
+
     .step {
       display: grid;
       grid-template-columns: 36px 1fr;
@@ -529,8 +533,165 @@
       margin-top: 18px;
     }
 
+    .qnav {
+      position: fixed;
+      top: 1.1rem;
+      left: 1.1rem;
+      z-index: 1000;
+      font-family: "IBM Plex Mono", monospace;
+    }
+    .qnav-trigger {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 5px;
+      width: 40px;
+      height: 40px;
+      padding: 8px 7px;
+      background: rgba(5, 18, 26, 0.9);
+      border: 1px solid rgba(93, 232, 240, 0.22);
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
+      cursor: pointer;
+      box-shadow: 0 0 12px rgba(93, 232, 240, 0.15);
+    }
+    .qnav-trigger:hover { border-color: rgba(93, 232, 240, 0.55); }
+    .qnav-bar {
+      display: block;
+      height: 2.5px;
+      background: #bdeff2;
+      transform-origin: left center;
+      transition: transform 0.22s ease, opacity 0.22s ease, width 0.22s ease;
+    }
+    .qnav-bar--1 { width: 22px; }
+    .qnav-bar--2 { width: 15px; }
+    .qnav-bar--3 { width: 10px; }
+    .qnav-trigger--open .qnav-bar--1 { width: 22px; transform: rotate(40deg) translateY(2px); }
+    .qnav-trigger--open .qnav-bar--2 { opacity: 0; transform: scaleX(0); }
+    .qnav-trigger--open .qnav-bar--3 { width: 22px; transform: rotate(-40deg) translateY(-2px); }
+    .qnav-panel {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 230px;
+      max-height: calc(100vh - 2rem);
+      background: rgba(4, 14, 22, 0.97);
+      border: 1px solid rgba(93, 232, 240, 0.18);
+      border-left: 2px solid #5de8f0;
+      clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%);
+      box-shadow: 0 0 60px rgba(0, 0, 0, 0.85);
+      overflow: hidden;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateX(-12px);
+      transition: opacity 0.18s ease, transform 0.18s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    .qnav-panel--open { opacity: 1; pointer-events: auto; transform: translateX(0); }
+    .qnav-hd {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 14px 10px;
+      border-bottom: 1px solid rgba(93, 232, 240, 0.12);
+    }
+    .qnav-logo { width: 22px; height: 22px; border-radius: 3px; object-fit: cover; }
+    .qnav-hd-text { font-size: 0.6rem; letter-spacing: 0.22em; color: #5de8f0; opacity: 0.75; text-transform: uppercase; flex: 1; }
+    .qnav-close { background: none; border: none; color: #4a8a99; font-size: 0.65rem; cursor: pointer; }
+    .qnav-close:hover { color: #bdeff2; }
+    .qnav-body { flex: 1; overflow-y: auto; padding: 6px 0 12px; }
+    .qnav-item {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 5px 8px;
+      background: none;
+      border: none;
+      color: #8accd4;
+      cursor: pointer;
+      text-align: left;
+      font: inherit;
+      font-size: 0.54rem;
+      letter-spacing: 0.06em;
+    }
+    .qnav-item:hover, .qnav-item--active { background: rgba(93, 232, 240, 0.1); color: #eafcff; }
+    .qnav-item-badge { width: 18px; height: 18px; display: flex; align-items: center; justify-content: center; }
+    .qnav-item-img { width: 18px; height: 18px; object-fit: contain; border-radius: 3px; }
+    .qnav-item-name { flex: 1; }
+    .qnav-item-ext { color: #2a6a7a; }
+
+    .bs-admin-badge {
+      display: none;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      color: #e85d5d;
+      border: 1px solid rgba(232, 93, 93, 0.3);
+      padding: 2px 6px;
+    }
+    body.is-admin .bs-admin-badge { display: inline-block; }
+    .bs-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 1100;
+      background: rgba(5, 18, 26, 0.92);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .bs-admin-prompt {
+      background: rgba(4, 14, 22, 0.98);
+      border: 1px solid rgba(232, 93, 93, 0.25);
+      padding: 1.5rem 1.5rem 1.2rem;
+      width: 260px;
+      text-align: center;
+      position: relative;
+    }
+    .bs-admin-prompt-label {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      color: #e85d5d;
+      margin-bottom: 0.8rem;
+    }
+    .bs-admin-prompt-input {
+      width: 100%;
+      background: #0a0a0a;
+      border: 1px solid rgba(232, 93, 93, 0.15);
+      color: #f2f2f2;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 13px;
+      padding: 0.5rem 0.6rem;
+      outline: none;
+      text-align: center;
+    }
+    .bs-admin-prompt-error { font-size: 11px; color: #e85d5d; margin-top: 0.4rem; }
+    .bs-admin-prompt-btn {
+      margin-top: 0.8rem;
+      background: transparent;
+      border: 1px solid rgba(232, 93, 93, 0.2);
+      color: #e85d5d;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      padding: 0.5rem 1.2rem;
+      cursor: pointer;
+    }
+    .bs-modal-close {
+      position: absolute;
+      top: 0.4rem;
+      right: 0.5rem;
+      background: none;
+      border: none;
+      color: #888;
+      cursor: pointer;
+    }
+
     @media print {
-      .rail, .progress-dock, .btn-ghost { display: none !important; }
+      .rail, .progress-dock, .btn-ghost, .qnav { display: none !important; }
       main { margin-left: 0; }
       body { background: #fff; color: #111; }
       .hero, .phase, .step, .sequence-map { background: #fff; color: #111; }
@@ -554,6 +715,22 @@
   </style>
 </head>
 <body>
+  <div class="qnav" id="qnav">
+    <button class="qnav-trigger" id="qnavTrigger" type="button" aria-label="Open navigation" aria-expanded="false">
+      <span class="qnav-bar qnav-bar--1"></span>
+      <span class="qnav-bar qnav-bar--2"></span>
+      <span class="qnav-bar qnav-bar--3"></span>
+    </button>
+    <div class="qnav-panel" id="qnavPanel" role="navigation" aria-label="Site navigation">
+      <div class="qnav-hd">
+        <img src="/assets/nodes/site-logo.png" alt="nuroctane" class="qnav-logo" />
+        <span class="qnav-hd-text">// NAV</span>
+        <button class="qnav-close" id="qnavClose" type="button" aria-label="Close">✕</button>
+      </div>
+      <div class="qnav-body" id="qnavBody"></div>
+    </div>
+  </div>
+
   <nav class="rail" aria-label="Unit index" id="rail">
     <div class="mark">WM·90</div>
   </nav>
@@ -562,7 +739,7 @@
     <div class="wrap">
       <header class="hero">
         <p class="eyebrow">World Models: A Daily Series</p>
-        <h1>World Models: <strong>Day 1 to Day 90</strong> <span class="h1-sub">· from a car dreaming to the frontier</span></h1>
+        <h1>World Models: <strong>Day 1 to Day 90</strong> <span class="h1-sub">· from Ha &amp; Schmidhuber to the August 2026 frontier</span></h1>
       </header>
 
       <div class="progress-dock">
@@ -571,7 +748,8 @@
           <div class="bar-fill" id="barFill"></div>
         </div>
         <span class="count" id="progCount">0/0</span>
-        <button type="button" class="btn-ghost" id="resetChecks">Reset</button>
+        <span class="bs-admin-badge" id="adminBadge">ADMIN</span>
+        <button type="button" class="btn-ghost" id="resetChecks" hidden>Reset</button>
       </div>
 
       <nav class="sequence-map" aria-label="Full sequence">
@@ -1774,9 +1952,9 @@
 
       <footer>
         <p>
-          90 days, 12 units, one paper per day, from a car dreaming to the frontier. Every
-          daily link verified against arXiv or its publisher. Checkboxes persist in this
-          browser.
+          90 days, 12 units, one paper per day, from Ha and Schmidhuber (2018) to the August
+          2026 frontier. Checkboxes are the series log. Every daily link verified against
+          arXiv or its publisher.
         </p>
         <p class="mono">WORLD MODELS · A DAILY SERIES · DAY 1 TO 90</p>
       </footer>
@@ -1787,7 +1965,22 @@
     (function () {
       "use strict";
 
-      var STORAGE_KEY = "wm-curriculum-v3";
+      var ADMIN_FLAG = "book-admin";
+      var ADMIN_PW = "book-admin-pw";
+      var DESTINATIONS = [
+        { href: "/", label: "Home", logo: "/assets/nodes/site-logo.png" },
+        { href: "/socials", label: "Socials", logo: "/assets/nodes/nuroctane-avatar.png" },
+        { href: "/projects", label: "Projects", logo: "/assets/nodes/github-logo.png" },
+        { href: "/blog", label: "Blog", logo: "/assets/nodes/blog-logo.png?v=115" },
+        { href: "/quotes", label: "Quotes", logo: "/assets/nodes/nuroctane-animated-avatar.gif" },
+        { href: "/books", label: "Books", logo: "/assets/nodes/books-logo.png?v=115" },
+        { href: "/modkeys", label: "MODKEYS", logo: "/assets/nodes/modkeys-logo.png?v=115" },
+        { href: "/cli", label: "NurCLI", logo: "/assets/nodes/nur-cli-logo.png" },
+        { href: "/curriculum", label: "Curriculum", logo: "/favicon.svg" },
+        { href: "/observatory", label: "Observatory", logo: "/assets/nodes/observatory-logo.png?v=115" },
+        { href: "https://tunerzsociety.site", label: "ATX Tunerz", logo: "/assets/nodes/atx-tunerz-logo.png", external: true },
+        { href: "/fin", label: "Fin", logo: "/assets/nodes/venmo-logo.png" }
+      ];
 
       function boot() {
         var rail = document.getElementById("rail");
@@ -1828,18 +2021,184 @@
         }
 
         var state = {};
+        var isAdmin = false;
         try {
-          state = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}") || {};
+          isAdmin = sessionStorage.getItem(ADMIN_FLAG) === "1";
         } catch (_) {
-          state = {};
+          isAdmin = false;
         }
 
-        function save() {
+        function adminPassword() {
           try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+            return sessionStorage.getItem(ADMIN_PW) || "";
           } catch (_) {
-            /* private mode / blocked storage: UI still works */
+            return "";
           }
+        }
+
+        function setAdmin(on, password) {
+          isAdmin = !!on;
+          document.body.classList.toggle("is-admin", isAdmin);
+          if (resetBtn) resetBtn.hidden = !isAdmin;
+          checks.forEach(function (c) {
+            c.disabled = !isAdmin;
+          });
+          try {
+            if (isAdmin) {
+              sessionStorage.setItem(ADMIN_FLAG, "1");
+              if (password) sessionStorage.setItem(ADMIN_PW, password);
+            } else {
+              sessionStorage.removeItem(ADMIN_FLAG);
+              sessionStorage.removeItem(ADMIN_PW);
+            }
+          } catch (_) {
+            /* sessionStorage blocked */
+          }
+        }
+
+        function applyState(next) {
+          state = next && typeof next === "object" ? next : {};
+          checks.forEach(function (c) {
+            var on = !!state[c.dataset.key];
+            c.checked = on;
+            var step = c.closest(".step");
+            if (step) step.classList.toggle("done", on);
+          });
+          updateProgress();
+        }
+
+        function loadChecks() {
+          return fetch("/api/curriculum")
+            .then(function (res) {
+              if (!res.ok) throw new Error("curriculum " + res.status);
+              return res.json();
+            })
+            .then(function (data) {
+              applyState(data.checks || {});
+            })
+            .catch(function () {
+              applyState({});
+            });
+        }
+
+        function persistToggle(key, checked) {
+          return fetch("/api/curriculum", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              action: "toggle",
+              password: adminPassword(),
+              key: key,
+              checked: checked
+            })
+          }).then(function (res) {
+            if (!res.ok) throw new Error("toggle " + res.status);
+            return res.json();
+          }).then(function (data) {
+            if (data.checks) applyState(data.checks);
+          });
+        }
+
+        function closeAdminPrompt() {
+          var overlay = document.getElementById("wmAdminOverlay");
+          if (overlay) overlay.remove();
+        }
+
+        function promptAdmin() {
+          closeAdminPrompt();
+          var root = document.createElement("div");
+          root.id = "wmAdminOverlay";
+          root.className = "bs-overlay";
+          root.innerHTML =
+            '<div class="bs-admin-prompt" role="dialog" aria-label="Admin access">' +
+            '<button type="button" class="bs-modal-close" data-x>✕</button>' +
+            '<div class="bs-admin-prompt-label">ADMIN ACCESS</div>' +
+            '<input class="bs-admin-prompt-input" type="password" placeholder="Password" autocomplete="current-password" data-pass />' +
+            '<div class="bs-admin-prompt-error" data-err style="display:none">Incorrect password</div>' +
+            '<button type="button" class="bs-admin-prompt-btn" data-go>UNLOCK</button>' +
+            "</div>";
+          document.body.appendChild(root);
+          var input = root.querySelector("[data-pass]");
+          var err = root.querySelector("[data-err]");
+          var finish = function () { closeAdminPrompt(); };
+          root.addEventListener("click", function (e) {
+            if (e.target === root) finish();
+          });
+          root.querySelector("[data-x]").addEventListener("click", finish);
+          var submit = function () {
+            var password = (input && input.value) || "";
+            if (!password) {
+              if (err) { err.style.display = "block"; err.textContent = "Enter password"; }
+              return;
+            }
+            fetch("/api/curriculum", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ action: "verifyAdmin", password: password })
+            }).then(function (res) {
+              if (!res.ok) throw new Error("bad");
+              setAdmin(true, password);
+              finish();
+            }).catch(function () {
+              if (err) { err.style.display = "block"; err.textContent = "Incorrect password"; }
+              if (input) input.select();
+            });
+          };
+          root.querySelector("[data-go]").addEventListener("click", submit);
+          input.addEventListener("keydown", function (e) {
+            if (e.key === "Enter") submit();
+            if (e.key === "Escape") finish();
+          });
+          input.focus();
+        }
+
+        function bootNav() {
+          var wrap = document.getElementById("qnav");
+          var trigger = document.getElementById("qnavTrigger");
+          var panel = document.getElementById("qnavPanel");
+          var body = document.getElementById("qnavBody");
+          var closeBtn = document.getElementById("qnavClose");
+          if (!wrap || !trigger || !panel || !body) return;
+
+          DESTINATIONS.forEach(function (item) {
+            var btn = document.createElement("button");
+            var external = !!item.external || /^https?:\/\//.test(item.href);
+            btn.type = "button";
+            btn.className = "qnav-item" + (item.href === "/curriculum" ? " qnav-item--active" : "");
+            btn.innerHTML =
+              '<span class="qnav-item-badge"><img src="' + item.logo + '" alt="" class="qnav-item-img" /></span>' +
+              '<span class="qnav-item-name">' + item.label + "</span>" +
+              (external ? '<span class="qnav-item-ext" aria-hidden="true">↗</span>' : "");
+            btn.addEventListener("click", function () {
+              if (external) {
+                window.open(item.href, "_blank", "noopener,noreferrer");
+                return;
+              }
+              window.location.assign(item.href);
+            });
+            body.appendChild(btn);
+          });
+
+          function setOpen(open) {
+            trigger.classList.toggle("qnav-trigger--open", open);
+            panel.classList.toggle("qnav-panel--open", open);
+            trigger.setAttribute("aria-expanded", open ? "true" : "false");
+            trigger.setAttribute("aria-label", open ? "Close navigation" : "Open navigation");
+          }
+
+          trigger.addEventListener("click", function () {
+            setOpen(!panel.classList.contains("qnav-panel--open"));
+          });
+          if (closeBtn) closeBtn.addEventListener("click", function () { setOpen(false); });
+          document.addEventListener("mousedown", function (e) {
+            if (!wrap.contains(e.target)) setOpen(false);
+          });
+          document.addEventListener("keydown", function (e) {
+            if (e.key === "Escape") {
+              setOpen(false);
+              closeAdminPrompt();
+            }
+          });
         }
 
         function updateProgress() {
@@ -1874,35 +2233,37 @@
         }
 
         function setChecked(input, value) {
+          if (!isAdmin) return;
+          var key = input.dataset.key;
           input.checked = value;
-          state[input.dataset.key] = value;
+          if (value) state[key] = true;
+          else delete state[key];
           var step = input.closest(".step");
           if (step) step.classList.toggle("done", value);
-          save();
           updateProgress();
+          persistToggle(key, value).catch(function () {
+            loadChecks();
+          });
         }
 
         checks.forEach(function (c) {
-          var key = c.dataset.key;
-          if (state[key]) {
-            c.checked = true;
-            var step = c.closest(".step");
-            if (step) step.classList.add("done");
-          }
           c.addEventListener("click", function (e) {
             e.stopPropagation();
+            if (!isAdmin) e.preventDefault();
           });
-          c.addEventListener("change", function () {
-            state[key] = c.checked;
-            var step = c.closest(".step");
-            if (step) step.classList.toggle("done", c.checked);
-            save();
-            updateProgress();
+          c.addEventListener("change", function (e) {
+            if (!isAdmin) {
+              e.preventDefault();
+              c.checked = !!state[c.dataset.key];
+              return;
+            }
+            setChecked(c, c.checked);
           });
         });
 
         document.querySelectorAll(".step").forEach(function (step) {
           step.addEventListener("click", function (e) {
+            if (!isAdmin) return;
             if (e.target.closest("a, button, input, label")) return;
             var input = step.querySelector('input[type="checkbox"][data-key]');
             if (!input) return;
@@ -1912,15 +2273,20 @@
 
         if (resetBtn) {
           resetBtn.addEventListener("click", function () {
-            if (!confirm("Clear all checkmarks on this device?")) return;
-            state = {};
-            checks.forEach(function (c) {
-              c.checked = false;
-              var step = c.closest(".step");
-              if (step) step.classList.remove("done");
+            if (!isAdmin) return;
+            if (!confirm("Clear every published checkmark?")) return;
+            fetch("/api/curriculum", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ action: "reset", password: adminPassword() })
+            }).then(function (res) {
+              if (!res.ok) throw new Error("reset");
+              return res.json();
+            }).then(function (data) {
+              applyState(data.checks || {});
+            }).catch(function () {
+              /* keep current published state */
             });
-            save();
-            updateProgress();
           });
         }
 
@@ -1942,7 +2308,16 @@
           });
         }
 
-        updateProgress();
+        bootNav();
+        setAdmin(isAdmin);
+        window.addEventListener("keydown", function (e) {
+          if (e.ctrlKey && e.shiftKey && (e.code === "KeyA" || e.key === "A" || e.key === "a")) {
+            e.preventDefault();
+            if (isAdmin) setAdmin(false);
+            else promptAdmin();
+          }
+        });
+        loadChecks();
       }
 
       if (document.readyState === "loading") {

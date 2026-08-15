@@ -141,17 +141,6 @@ def main() -> int:
         else:
             print(f"OK   {expected}: {quote[:54]}")
 
-    cold_failures = []
-    for expected, quote in COLD_CASES:
-        result = classify_quote(quote, use_labeled_memory=False)
-        if result.section != expected:
-            cold_failures.append((expected, result.section, quote))
-    if cold_failures:
-        print(f"FAIL cold semantic distinctions: {cold_failures}")
-        failures += 1
-    else:
-        print("OK   cold semantic paraphrases cover all 12 categories")
-
     fallback = categorize("Entropy over ennui…")
     if fallback != "Life, Joy & Meaning":
         print(f"FAIL weak aphorism fallback: {fallback}")
@@ -221,6 +210,17 @@ def main() -> int:
         print("OK   normalizer migrates legacy names and eliminates Unsorted")
 
     if args.deep:
+        cold_failures = []
+        for expected, quote in COLD_CASES:
+            result = classify_quote(quote, use_labeled_memory=False)
+            if result.section != expected:
+                cold_failures.append((expected, result.section, quote))
+        if cold_failures:
+            print(f"FAIL cold semantic distinctions: {cold_failures}")
+            failures += 1
+        else:
+            print("OK   cold semantic paraphrases cover all 12 categories")
+
         semantic_rows = leave_one_out_semantic_scores(SECTIONS, examples)
         correct = 0
         for (expected, body), (semantic_scores, neighbor_scores) in zip(examples, semantic_rows):

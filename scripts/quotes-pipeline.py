@@ -3,10 +3,12 @@
 
 The Windows task owns the schedule.  Each run is intentionally ordered:
 
-1. Read the user's Raindrop ``#quotes`` tag first.
-2. Fold in any new Obsidian ``#quotes`` notes as a secondary source.
-3. Write the canonical Obsidian Quotes.md bank (Raindrop additions land here).
-4. Copy that bank to the site's quotes.md, commit only that file, and push main.
+1. Validate the twelve-category classifier (required tests, not --deep).
+2. Read the user's Raindrop ``#quotes`` tag first (text + image OCR).
+3. Fold in any new Obsidian ``#quotes`` notes as a secondary source.
+4. Write the canonical Obsidian Quotes.md bank (Raindrop additions land here).
+5. Copy that bank to the site's quotes.md, commit only that file, and push main.
+6. Rewrite the vault bank so it matches the published copy.
 
 The source-specific parser stays in Hermes because it owns the Raindrop token and
 the durable de-duplication sidecar.  This small, versioned runner makes the
@@ -111,6 +113,15 @@ def release_lock() -> None:
         log(f"could not remove pipeline lock: {exc}")
 
 
+def _blocks_quotes_publish(line: str) -> bool:
+    path = line[3:].split(" -> ")[-1].strip().strip('"')
+    if REL_QUOTES in path or path.endswith("quotes.md"):
+        return False
+    if path.replace("\\", "/").startswith("scripts/"):
+        return False
+    return True
+
+
 def preflight_git() -> int:
     """Keep scheduled work from committing a user's unrelated tracked edits."""
     status = subprocess.run(
@@ -125,7 +136,7 @@ def preflight_git() -> int:
     if status.returncode:
         log("git preflight failed: could not read repository status")
         return status.returncode
-    unrelated = [line for line in status.stdout.splitlines() if REL_QUOTES not in line]
+    unrelated = [line for line in status.stdout.splitlines() if _blocks_quotes_publish(line)]
     if unrelated:
         log("git preflight deferred: unrelated tracked work is present")
         for line in unrelated:
@@ -189,20 +200,16 @@ def main() -> int:
             log("Canonical Hermes quote adapter is missing; refusing legacy categorization")
             return 1
 
-        ready = preflight_git()
-        if ready:
-            return ready
-
         category_tests = REPO_ROOT / "scripts" / "test_quote_categories.py"
         category_rc = run(
             "validate twelve-category classifier",
-            [str(HERMES_PYTHON), "-u", str(category_tests), "--deep"],
+            [str(HERMES_PYTHON), "-u", str(category_tests)],
         )
         if category_rc:
             return category_rc
 
-        # `--pipeline` performs Raindrop first, then secondary Obsidian notes,
-        # and writes any Raindrop additions into the canonical vault bank.
+        # Raindrop first, then secondary Obsidian notes. Always write the vault
+        # bank even if git later refuses to publish.
         ingest_rc = run(
             "raindrop-first ingest",
             [str(HERMES_PYTHON), "-u", str(ingest_adapter), "--pipeline"],
@@ -216,8 +223,13 @@ def main() -> int:
         if normalize_rc:
             return normalize_rc
 
-        # Even a partial Raindrop failure must not strand a real Obsidian edit.
-        # sync-quotes.py publishes the final canonical bank to the site and main.
+        ready = preflight_git()
+        if ready:
+            log("vault ingest finished; site publish deferred until git is clean")
+            return ingest_rc or ready
+
+        # Publish the canonical bank to the site and main, then mirror that
+        # exact reindexed copy back into Obsidian.
         sync_rc = run("obsidian-to-site sync", [str(HERMES_PYTHON), "-u", str(sync)])
         if sync_rc:
             return sync_rc

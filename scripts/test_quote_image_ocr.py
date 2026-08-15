@@ -1,0 +1,103 @@
+#!/usr/bin/env python3
+"""Unit tests for Raindrop image-quote OCR helpers (no network)."""
+from __future__ import annotations
+
+from quote_image_ocr import (
+    author_from_raindrop_note,
+    format_credit,
+    image_url_from_item,
+    is_image_raindrop,
+    looks_like_image_url,
+)
+
+
+def main() -> int:
+    fails = 0
+
+    def check(cond: bool, msg: str) -> None:
+        nonlocal fails
+        if cond:
+            print(f"  OK  {msg}")
+        else:
+            print(f"  FAIL {msg}")
+            fails += 1
+
+    check(looks_like_image_url("https://pbs.twimg.com/media/HPlwchDXsAAOOY6.jpg"), "twimg media is image")
+    check(
+        looks_like_image_url("https://pbs.twimg.com/media/HPi-rjVXUAAlYuN.jpg:large"),
+        "twimg :large is image",
+    )
+    check(looks_like_image_url("https://i.imgur.com/abc.png"), "imgur png is image")
+    check(not looks_like_image_url("https://x.com/foo/status/123"), "status url is not image")
+    check(not looks_like_image_url("https://rdl.ink/render/https%3A%2F%2Fx.com%2Ffoo"), "raindrop render is not image")
+
+    image_item = {
+        "type": "image",
+        "link": "https://pbs.twimg.com/media/HPlwchDXsAAOOY6.jpg",
+        "title": "HPlwchDXsAAOOY6.jpg",
+        "excerpt": "",
+        "note": "Fyodor Dostoevsky",
+    }
+    check(is_image_raindrop(image_item), "type=image is an image raindrop")
+    check(
+        image_url_from_item(image_item) == "https://pbs.twimg.com/media/HPlwchDXsAAOOY6.jpg",
+        "image url taken from link",
+    )
+
+    jpg_link = {
+        "type": "link",
+        "link": "https://cdn.example.com/quote.jpeg?name=1",
+        "note": "Marcus Aurelius",
+    }
+    check(is_image_raindrop(jpg_link), "direct jpeg link is an image raindrop")
+
+    tweet = {
+        "type": "link",
+        "link": "https://x.com/augustusdelano/status/2088032973983551938?s=12",
+        "cover": "https://rdl.ink/render/https%3A%2F%2Fx.com%2Faugustusdelano",
+        "note": "",
+    }
+    check(not is_image_raindrop(tweet), "plain X status is not an image raindrop")
+
+    tweet_with_author_and_photo = {
+        "type": "link",
+        "link": "https://x.com/promptllm/status/2087628100284584383?s=12",
+        "cover": "https://pbs.twimg.com/media/HPi-rjVXUAAlYuN.jpg:large",
+        "note": "Unknown",
+    }
+    check(
+        is_image_raindrop(tweet_with_author_and_photo),
+        "X status with media image + author note is an image raindrop",
+    )
+    check(
+        image_url_from_item(tweet_with_author_and_photo)
+        == "https://pbs.twimg.com/media/HPi-rjVXUAAlYuN.jpg:large",
+        "cover used when tweet link is not a file",
+    )
+
+    check(author_from_raindrop_note("Fyodor Dostoevsky") == "Fyodor Dostoevsky", "plain author")
+    check(author_from_raindrop_note("  — Fyodor Dostoevsky  ") == "Fyodor Dostoevsky", "emdash author")
+    check(author_from_raindrop_note("Author: Fyodor Dostoevsky") == "Fyodor Dostoevsky", "Author: prefix")
+    check(author_from_raindrop_note("by G. K. Chesterton, Orthodoxy") == "G. K. Chesterton, Orthodoxy", "by prefix")
+    check(author_from_raindrop_note("@lichthauch") == "@lichthauch", "keeps @handle")
+    check(author_from_raindrop_note("") is None, "empty note")
+    long_note = (
+        "When I look back on my past and think how much time I wasted on nothing, "
+        "how much time has been lost in futilities, errors, laziness"
+    )
+    check(author_from_raindrop_note(long_note) is None, "long note is not an author")
+
+    check(format_credit(author="Fyodor Dostoevsky") == "Fyodor Dostoevsky", "literary credit has no @")
+    check(format_credit(handle="augustusdelano") == "@augustusdelano", "social handle gets @")
+    check(format_credit(author="@lichthauch") == "@lichthauch", "author handle keeps one @")
+    check(
+        format_credit(handle="augustusdelano", author="Fyodor Dostoevsky") == "Fyodor Dostoevsky",
+        "explicit author wins over handle",
+    )
+
+    print(f"\n{fails} failure(s)" if fails else "\nAll image-ocr helper tests passed.")
+    return 1 if fails else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())

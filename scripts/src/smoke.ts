@@ -139,6 +139,31 @@ async function smokeBooks(app: App): Promise<void> {
   ok(g.json.overrides["T|A"] === true, "curated override present in GET");
 }
 
+async function smokeCurriculum(app: App): Promise<void> {
+  let g = await jfetch(app, "/api/curriculum");
+  ok(g.status === 200 && g.json?.checks && typeof g.json.checks === "object",
+    "GET /api/curriculum shape {checks{}}");
+
+  const bad = await jfetch(app, "/api/curriculum", { action: "toggle", password: "wrong", key: "01-1", checked: true });
+  ok(bad.status === 403, "curriculum toggle wrong password → 403");
+
+  const badKey = await jfetch(app, "/api/curriculum", { action: "toggle", password: "smoke-admin", key: "../x", checked: true });
+  ok(badKey.status === 400, "curriculum toggle invalid key → 400");
+
+  const tog = await jfetch(app, "/api/curriculum", { action: "toggle", password: "smoke-admin", key: "01-1", checked: true });
+  ok(tog.status === 200 && tog.json?.checks?.["01-1"] === true, "curriculum toggle as admin");
+  g = await jfetch(app, "/api/curriculum");
+  ok(g.json.checks["01-1"] === true, "curriculum check persists in GET");
+
+  const verify = await jfetch(app, "/api/curriculum", { action: "verifyAdmin", password: "smoke-admin" });
+  ok(verify.status === 200 && verify.json?.ok === true, "curriculum verifyAdmin ok");
+
+  const reset = await jfetch(app, "/api/curriculum", { action: "reset", password: "smoke-admin" });
+  ok(reset.status === 200 && Object.keys(reset.json?.checks ?? { x: 1 }).length === 0, "curriculum reset as admin");
+  g = await jfetch(app, "/api/curriculum");
+  ok(!g.json.checks["01-1"], "curriculum empty after reset");
+}
+
 async function smokeModkeys(app: App): Promise<void> {
   let g = await jfetch(app, "/api/modkeys/gallery");
   ok(g.status === 200 && Array.isArray(g.json?.templates), "GET /api/modkeys/gallery shape {templates[]}");
@@ -211,6 +236,9 @@ async function smokeAdminSecretAliases(app: App): Promise<void> {
     const books = await jfetch(app, "/api/visitor-books", { action: "verifyAdmin", password });
     ok(books.status === 200 && books.json?.ok === true, `Books accepts ${label}`);
 
+    const curriculum = await jfetch(app, "/api/curriculum", { action: "verifyAdmin", password });
+    ok(curriculum.status === 200 && curriculum.json?.ok === true, `Curriculum accepts ${label}`);
+
     const modkeys = await jfetch(app, "/api/modkeys/gallery", { action: "verifyAdmin", password });
     ok(modkeys.status === 200 && modkeys.json?.ok === true, `Modkeys accepts ${label}`);
   }
@@ -220,6 +248,7 @@ async function smokeAdminSecretAliases(app: App): Promise<void> {
   // Imported dynamically so the env assignments above are applied first.
   const app = (await import("@workspace/api-server")).default as App;
   await smokeBooks(app);
+  await smokeCurriculum(app);
   await smokeModkeys(app);
   await smokeMisc(app);
   await smokeAdminSecretAliases(app);
