@@ -39,6 +39,10 @@ IMAGE_HOST_MARKERS = (
 )
 # Raindrop's website screenshot proxy is not a quote image.
 RENDER_HOST_MARKERS = ("rdl.ink/render",)
+RAINDROP_FILE_RE = re.compile(
+    r"api\.raindrop\.io/(?:v2|rest/v1)/raindrop/(\d+)/file",
+    re.I,
+)
 AUTHOR_PREFIX_RE = re.compile(
     r"^(?:(?:author|credit|source|attr(?:ibution)?)\s*[:\-—–]\s*|by\s+)",
     re.I,
@@ -61,6 +65,8 @@ def looks_like_image_url(url: str) -> bool:
     if any(marker in lower for marker in RENDER_HOST_MARKERS):
         return False
     if any(marker in lower for marker in IMAGE_HOST_MARKERS):
+        return True
+    if RAINDROP_FILE_RE.search(raw) or "up.raindrop.io/raindrop/files/" in lower:
         return True
     path = urlparse(raw).path
     stem_ext = Path(path).suffix.lower()
@@ -94,10 +100,32 @@ def is_image_raindrop(item: dict[str, Any]) -> bool:
     return _note_looks_like_author(str(item.get("note") or ""))
 
 
+def _raindrop_hosted_file_url(item: dict[str, Any]) -> Optional[str]:
+    """Raindrop file uploads are not public CDNs.
+
+    The item ``link`` is often ``api.raindrop.io/v2/.../file`` (an HTML
+    interstitial). The bytes live at the authenticated REST file endpoint.
+    """
+    rid = item.get("_id") or item.get("id")
+    file_meta = item.get("file") if isinstance(item.get("file"), dict) else {}
+    file_is_image = str(file_meta.get("type") or "").lower().startswith("image/")
+    type_is_image = str(item.get("type") or "").lower() == "image"
+    link = str(item.get("link") or item.get("url") or "")
+    match = RAINDROP_FILE_RE.search(link)
+    if rid not in (None, "") and (type_is_image or file_is_image or match):
+        return f"https://api.raindrop.io/rest/v1/raindrop/{rid}/file"
+    if match:
+        return f"https://api.raindrop.io/rest/v1/raindrop/{match.group(1)}/file"
+    return None
+
+
 def image_url_from_item(item: dict[str, Any]) -> Optional[str]:
     link = str(item.get("link") or item.get("url") or "").strip()
-    if looks_like_image_url(link):
+    if looks_like_image_url(link) and "api.raindrop.io" not in link.lower():
         return link
+    hosted = _raindrop_hosted_file_url(item)
+    if hosted:
+        return hosted
     media = item.get("media") or []
     if isinstance(media, list):
         for entry in media:
@@ -155,19 +183,62 @@ def format_credit(*, handle: Optional[str] = None, author: Optional[str] = None)
     return None
 
 
+def _raindrop_token() -> Optional[str]:
+    for key in ("RAINDROP_TOKEN", "RAINDROP_API_TOKEN", "RAINDROP_ACCESS_TOKEN"):
+        val = (os.environ.get(key) or "").strip()
+        if val:
+            return val
+    env_paths = (
+        Path(os.environ.get("LOCALAPPDATA", "")) / "hermes" / ".env",
+        Path(os.environ.get("LOCALAPPDATA", "")) / "hermes" / "scripts" / ".env",
+        Path(os.environ.get("LOCALAPPDATA", "")) / "hermes" / "scripts" / "raindrop.token",
+    )
+    for path in env_paths:
+        if not path.is_file():
+            continue
+        try:
+            raw = path.read_text(encoding="utf-8", errors="replace")
+        except OSError:
+            continue
+        if path.name == "raindrop.token":
+            tok = raw.strip()
+            if tok:
+                return tok
+            continue
+        for line in raw.splitlines():
+            s = line.strip()
+            if not s or s.startswith("#") or "=" not in s:
+                continue
+            key, value = s.split("=", 1)
+            if key.strip() in ("RAINDROP_TOKEN", "RAINDROP_API_TOKEN", "RAINDROP_ACCESS_TOKEN"):
+                value = value.strip().strip('"').strip("'")
+                if value:
+                    return value
+    return None
+
+
 def download_image(url: str, opener: Callable[..., Any] | None = None) -> bytes:
+    headers = {
+        "User-Agent": USER_AGENT,
+        "Accept": "image/avif,image/webp,image/apng,image/*,*/*;q=0.8",
+    }
+    if "api.raindrop.io" in (url or "").lower():
+        token = _raindrop_token()
+        if not token:
+            raise RuntimeError("Raindrop file URL needs RAINDROP_TOKEN")
+        headers["Authorization"] = f"Bearer {token}"
+        headers["User-Agent"] = "quotes-ingest/1.3"
     req = urllib.request.Request(
         url,
-        headers={
-            "User-Agent": USER_AGENT,
-            "Accept": "image/avif,image/webp,image/apng,image/*,*/*;q=0.8",
-        },
+        headers=headers,
     )
     open_fn = opener or urllib.request.urlopen
     with open_fn(req, timeout=30) as resp:
         data = resp.read()
     if not data:
         raise RuntimeError(f"empty image body from {url}")
+    if data.lstrip().startswith(b"<!DOCTYPE") or data.lstrip()[:1] == b"<":
+        raise RuntimeError(f"image URL returned HTML, not bytes: {url}")
     return data
 
 
@@ -258,6 +329,18 @@ def ocr_image_url(url: str) -> str:
     return ocr_image_bytes(download_image(url))
 
 
+def clean_ocr_quote(text: str) -> str:
+    """Drop leading index-only lines (book § numbers) from OCR text."""
+    lines = [ln.rstrip() for ln in (text or "").replace("\r\n", "\n").split("\n")]
+    while lines and re.fullmatch(r"\d{1,6}", lines[0].strip()):
+        lines.pop(0)
+    while lines and not lines[0].strip():
+        lines.pop(0)
+    while lines and not lines[-1].strip():
+        lines.pop()
+    return "\n".join(lines).strip()
+
+
 def quote_from_image_item(
     item: dict[str, Any],
     *,
@@ -267,8 +350,8 @@ def quote_from_image_item(
     url = image_url_from_item(item)
     if not url:
         raise RuntimeError("image raindrop has no image URL")
-    text = (ocr_fn or ocr_image_url)(url)
+    text = clean_ocr_quote((ocr_fn or ocr_image_url)(url))
     if not (text or "").strip():
         raise RuntimeError("image OCR returned empty text")
     author = author_from_raindrop_note(str(item.get("note") or ""))
-    return text.strip(), author
+    return text, author

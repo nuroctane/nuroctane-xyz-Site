@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from quote_image_ocr import (
     author_from_raindrop_note,
+    clean_ocr_quote,
     format_credit,
     image_url_from_item,
     is_image_raindrop,
@@ -73,6 +74,34 @@ def main() -> int:
         image_url_from_item(tweet_with_author_and_photo)
         == "https://pbs.twimg.com/media/HPi-rjVXUAAlYuN.jpg:large",
         "cover used when tweet link is not a file",
+    )
+
+    raindrop_file = {
+        "_id": 1820755259,
+        "type": "image",
+        "title": "C3816F74-5B8D-43DF-B72B-A570D9ED4294.png",
+        "link": "https://api.raindrop.io/v2/raindrop/1820755259/file?type=image/png",
+        "cover": "https://rdl.ink/render/https%3A%2F%2Fup.raindrop.io%2Fraindrop%2Ffiles%2F182%2F075%2F525%2F9%2Fquote.png",
+        "file": {"name": "C3816F74-5B8D-43DF-B72B-A570D9ED4294.png", "type": "image/png", "size": 45147},
+        "note": "Luc de Clapiers, marquis de Vauvenargues",
+        "media": [],
+    }
+    check(is_image_raindrop(raindrop_file), "raindrop file upload is an image raindrop")
+    check(
+        image_url_from_item(raindrop_file)
+        == "https://api.raindrop.io/rest/v1/raindrop/1820755259/file",
+        "raindrop file uses authenticated REST file URL, not the v2 HTML link",
+    )
+    check(
+        author_from_raindrop_note(raindrop_file["note"])
+        == "Luc de Clapiers, marquis de Vauvenargues",
+        "literary raindrop note is the author",
+    )
+
+    check(
+        clean_ocr_quote("644\nWhen I see a man infatuated with logic, I wager\nat once that he is not logical.")
+        == "When I see a man infatuated with logic, I wager\nat once that he is not logical.",
+        "leading book index is stripped from OCR",
     )
 
     check(author_from_raindrop_note("Fyodor Dostoevsky") == "Fyodor Dostoevsky", "plain author")

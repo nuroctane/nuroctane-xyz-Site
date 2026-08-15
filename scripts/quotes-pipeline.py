@@ -36,7 +36,10 @@ REL_QUOTES = "artifacts/digital-sea/src/content/quotes.md"
 
 def log(message: str) -> None:
     line = f"[{datetime.now().isoformat(timespec='seconds')}] {message}"
-    print(line, flush=True)
+    try:
+        print(line, flush=True)
+    except UnicodeEncodeError:
+        print(line.encode("ascii", "replace").decode("ascii"), flush=True)
     LOG_FILE.parent.mkdir(parents=True, exist_ok=True)
     with LOG_FILE.open("a", encoding="utf-8") as stream:
         stream.write(line + "\n")
