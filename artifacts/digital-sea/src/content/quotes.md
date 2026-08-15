@@ -3,7 +3,7 @@
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (27)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (74)
-- [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (49)
+- [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (50)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (79)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (29)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (85)
@@ -799,6 +799,11 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 
 > Remember what happened the last time you didn’t listen to your intuition.
 > — @Maryamhasnaa
+
+> When I see a man infatuated with logic, I wager
+> at once that he is not logical.
+> — Luc de Clapiers, marquis de Vauvenargues
+
 
 
 
