@@ -7,7 +7,7 @@
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (79)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (29)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (85)
-- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (56)
+- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (57)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (93)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (38)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (56)
@@ -1580,6 +1580,10 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 
 > Discernment is also a huge theme. The ways that we have allowed both overt and subtle forms of abuse, ignored our intuition, ignored red flags and chosen to be willfully ignorant will all need self forgiveness at this time.
 > — @Maryamhasnaa
+
+> if you tell the truth, you'd better be funny, or they'll hate you.
+> — @signulll
+
 
 
 ## Body, Emotion & Nervous System
