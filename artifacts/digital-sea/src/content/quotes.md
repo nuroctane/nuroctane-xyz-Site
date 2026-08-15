@@ -4,7 +4,7 @@
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (74)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (50)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (79)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (80)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (29)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (85)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (57)
@@ -1078,6 +1078,10 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 
 > one common trait I find in high achieving individuals is urgency. it looks almost like impatience until you understand it is closer to reverence, a deep refusal to waste the one thing they can’t buy more of. the alarm goes and they rise. the message is answered while it is still warm. the small task is done before it can find a shelf to hide on. they commit and move in a single motion. an idea sparks and they chase it that day, before the world talks them out of it. they run at their own lives like something is at stake, because they have decided something is.
 > — @josbjohnson
+
+> Men love games. This is why sports and video games are popular among men. Successful men gamify their ambitions. For example, exercise can be a game. Learning skills can be a game. Growing social media is a game. The key is to prefer playing games with real world rewards and not wasting time in games with no real world rewards. Gamify ambition.
+> — @jerr_rrej
+
 
 ## Creativity, Purpose & Expression
 
