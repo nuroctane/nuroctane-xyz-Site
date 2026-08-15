@@ -1,10 +1,10 @@
 ## Index
 - [[#Faith, God & Surrender|Faith, God & Surrender]] (38)
-- [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (27)
+- [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (28)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (74)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (50)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (80)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (81)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (29)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (85)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (57)
@@ -195,6 +195,10 @@ _Consciousness, time, illusion, energy, synchronicity, metaphysics, and the arch
 
 > @gargi_kand you need to flirt with the universe
 > — @ellaaborating
+
+> Reality is gooey. Keep pushing and it gives.
+> — @dhh
+
 
 
 ## Manifestation, Desire & Abundance
@@ -1081,6 +1085,10 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 
 > Men love games. This is why sports and video games are popular among men. Successful men gamify their ambitions. For example, exercise can be a game. Learning skills can be a game. Growing social media is a game. The key is to prefer playing games with real world rewards and not wasting time in games with no real world rewards. Gamify ambition.
 > — @jerr_rrej
+
+> If you simply choose one goal, use all your free time to pursue that, never give up, and visualise success, you will inevitably reach that goal. It's as simple as that, and you’ll get there often a lot quicker than you thought.
+> — @SolBrah
+
 
 
 ## Creativity, Purpose & Expression
