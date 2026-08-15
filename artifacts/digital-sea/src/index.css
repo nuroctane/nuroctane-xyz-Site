@@ -700,7 +700,7 @@ html.standalone-active body {
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   QUICK NAV — Code Lyoko style
+   QUICK NAV — oxidized metal. This is the only QuickNav. Do not fork it.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 .qnav {
@@ -718,31 +718,42 @@ html.standalone-active body {
   justify-content: center;
   align-items: flex-start;
   gap: 5px;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   padding: 8px 7px;
-  background: rgba(5, 18, 26, 0.9);
-  border: 1px solid rgba(93, 232, 240, 0.22);
-  /* Angular cut: top-right corner */
+  background:
+    radial-gradient(
+      circle at 90% 10%,
+      rgba(var(--sea-purple-rgb), 0.13),
+      transparent 48%
+    ),
+    rgba(8, 22, 19, 0.94);
+  border: 1px solid rgba(var(--sea-gold-rgb), 0.48);
   clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 0 100%);
   cursor: pointer;
   transition:
     border-color 0.2s,
     background 0.2s;
   outline: none;
-  box-shadow: 0 0 12px rgba(93, 232, 240, 0.15);
+  box-shadow:
+    0 0 16px rgba(var(--sea-gold-rgb), 0.12),
+    inset 0 0 18px rgba(var(--sea-teal-rgb), 0.04);
 }
 
 .qnav-trigger:hover {
-  border-color: rgba(93, 232, 240, 0.55);
-  background: rgba(7, 28, 40, 0.95);
+  border-color: var(--sea-gold-bright);
+  background: rgba(15, 37, 31, 0.97);
+}
+
+.qnav-trigger:focus-visible {
+  outline: 2px solid var(--sea-gold-bright);
+  outline-offset: -3px;
 }
 
 /* The three bars */
 .qnav-bar {
   display: block;
   height: 2.5px;
-  background: #bdeff2;
   border-radius: 0;
   transform-origin: left center;
   transition:
@@ -753,12 +764,15 @@ html.standalone-active body {
 
 .qnav-bar--1 {
   width: 22px;
+  background: var(--sea-teal-soft);
 }
 .qnav-bar--2 {
   width: 15px;
+  background: var(--sea-gold-bright);
 }
 .qnav-bar--3 {
   width: 10px;
+  background: var(--sea-purple);
 }
 
 /* Open state: morphs to X */
@@ -783,15 +797,25 @@ html.standalone-active body {
   left: 0;
   width: 230px;
   max-height: calc(100vh - 2rem);
-  background: rgba(4, 14, 22, 0.97);
-  border: 1px solid rgba(93, 232, 240, 0.18);
-  border-left: 2px solid #5de8f0;
-  /* Top-right corner cut — Code Lyoko signature */
+  background:
+    radial-gradient(
+      circle at 92% 8%,
+      rgba(var(--sea-purple-rgb), 0.13),
+      transparent 46%
+    ),
+    radial-gradient(
+      circle at 8% 92%,
+      rgba(var(--sea-gold-rgb), 0.1),
+      transparent 48%
+    ),
+    rgba(7, 20, 17, 0.98);
+  border: 1px solid rgba(var(--sea-teal-rgb), 0.26);
+  border-left: 2px solid var(--sea-gold);
   clip-path: polygon(0 0, calc(100% - 18px) 0, 100% 18px, 100% 100%, 0 100%);
   box-shadow:
-    0 0 60px rgba(0, 0, 0, 0.85),
-    inset 0 0 40px rgba(93, 232, 240, 0.03),
-    0 0 20px rgba(93, 232, 240, 0.06);
+    0 0 60px rgba(0, 0, 0, 0.82),
+    inset 0 0 44px rgba(var(--sea-teal-rgb), 0.035),
+    0 0 24px rgba(var(--sea-gold-rgb), 0.07);
   overflow: hidden;
   /* Hidden state */
   opacity: 0;
@@ -820,7 +844,9 @@ html.standalone-active body {
   background: linear-gradient(
     to right,
     transparent,
-    rgba(93, 232, 240, 0.4),
+    rgba(var(--sea-gold-rgb), 0.18),
+    rgba(var(--sea-teal-rgb), 0.48),
+    rgba(var(--sea-purple-rgb), 0.18),
     transparent
   );
   pointer-events: none;
@@ -852,7 +878,7 @@ html.standalone-active body {
   align-items: center;
   gap: 8px;
   padding: 12px 14px 10px;
-  border-bottom: 1px solid rgba(93, 232, 240, 0.12);
+  border-bottom: 1px solid rgba(var(--sea-gold-rgb), 0.22);
   flex-shrink: 0;
 }
 
@@ -868,7 +894,7 @@ html.standalone-active body {
 .qnav-hd-text {
   font-size: 0.6rem;
   letter-spacing: 0.22em;
-  color: #5de8f0;
+  color: var(--sea-gold-bright);
   opacity: 0.75;
   text-transform: uppercase;
   flex: 1;
@@ -877,7 +903,7 @@ html.standalone-active body {
 .qnav-close {
   background: none;
   border: none;
-  color: #4a8a99;
+  color: var(--sea-dim);
   font-size: 0.65rem;
   cursor: pointer;
   padding: 2px 4px;
@@ -887,7 +913,7 @@ html.standalone-active body {
 }
 
 .qnav-close:hover {
-  color: #bdeff2;
+  color: var(--sea-ink-bright);
 }
 
 /* ── Scrollable body ── */
@@ -899,7 +925,7 @@ html.standalone-active body {
   padding: 6px 0 12px;
   /* Custom thin scrollbar */
   scrollbar-width: thin;
-  scrollbar-color: rgba(93, 232, 240, 0.25) transparent;
+  scrollbar-color: rgba(var(--sea-teal-rgb), 0.25) transparent;
 }
 
 .qnav-body::-webkit-scrollbar {
@@ -909,7 +935,7 @@ html.standalone-active body {
   background: transparent;
 }
 .qnav-body::-webkit-scrollbar-thumb {
-  background: rgba(93, 232, 240, 0.22);
+  background: rgba(var(--sea-teal-rgb), 0.22);
   border-radius: 2px;
 }
 
@@ -926,13 +952,14 @@ html.standalone-active body {
   align-items: center;
   gap: 8px;
   padding: 7px 10px;
+  min-height: 44px;
   background: none;
   border: none;
-  color: #bdeff2;
+  color: var(--sea-teal-soft);
   cursor: pointer;
   text-align: left;
   font-family: inherit;
-  font-size: 0.58rem;
+  font-size: 0.7rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   transition:
@@ -942,9 +969,9 @@ html.standalone-active body {
 }
 
 .qnav-cat-hd:hover {
-  background: rgba(93, 232, 240, 0.06);
-  border-left-color: rgba(93, 232, 240, 0.4);
-  color: #eafcff;
+  background: rgba(var(--sea-gold-rgb), 0.085);
+  border-left-color: rgba(var(--sea-gold-rgb), 0.72);
+  color: var(--sea-ink-bright);
 }
 
 /* Non-interactive section label (e.g. IDENTITY) — no nav, no dropdown */
@@ -955,13 +982,13 @@ html.standalone-active body {
 .qnav-cat-hd--static:hover {
   background: none;
   border-left-color: transparent;
-  color: #bdeff2;
+  color: var(--sea-teal-soft);
 }
 
 .qnav-cat-ico {
   width: 16px;
   height: 16px;
-  color: #5de8f0;
+  color: var(--sea-gold-bright);
   opacity: 0.75;
   flex-shrink: 0;
   display: flex;
@@ -980,14 +1007,14 @@ html.standalone-active body {
 
 .qnav-cat-cnt {
   font-size: 0.5rem;
-  color: #3a7a88;
+  color: var(--sea-dim);
   letter-spacing: 0;
   margin-right: 2px;
 }
 
 .qnav-cat-chev {
   font-size: 0.55rem;
-  color: #3a7a88;
+  color: var(--sea-dim);
   transition: transform 0.18s ease;
   display: inline-block;
 }
@@ -1000,7 +1027,7 @@ html.standalone-active body {
 
 .qnav-items {
   padding: 2px 0 4px 8px;
-  border-left: 1px solid rgba(93, 232, 240, 0.08);
+  border-left: 1px solid rgba(var(--sea-teal-rgb), 0.16);
   margin-left: 18px;
 }
 
@@ -1012,13 +1039,14 @@ html.standalone-active body {
   align-items: center;
   gap: 8px;
   padding: 5px 8px;
+  min-height: 36px;
   background: none;
   border: none;
-  color: #8accd4;
+  color: var(--sea-muted);
   cursor: pointer;
   text-align: left;
   font-family: inherit;
-  font-size: 0.54rem;
+  font-size: 0.66rem;
   letter-spacing: 0.06em;
   transition:
     background 0.12s,
@@ -1029,15 +1057,15 @@ html.standalone-active body {
 }
 
 .qnav-item:hover {
-  background: rgba(93, 232, 240, 0.07);
-  color: #eafcff;
+  background: rgba(var(--sea-gold-rgb), 0.085);
+  color: var(--sea-ink-bright);
   padding-left: 12px;
 }
 
 .qnav-item--active {
-  color: #eafcff;
-  background: rgba(93, 232, 240, 0.1);
-  border-left: 1px solid rgba(93, 232, 240, 0.55);
+  color: var(--sea-ink-bright);
+  background: rgba(var(--sea-gold-rgb), 0.085);
+  border-left: 1px solid rgba(var(--sea-gold-rgb), 0.72);
 }
 
 .qnav-item--soon {
@@ -1073,9 +1101,9 @@ html.standalone-active body {
   font-size: 0.38rem;
   font-weight: 700;
   letter-spacing: 0.06em;
-  color: #5de8f0;
-  background: rgba(93, 232, 240, 0.1);
-  border: 1px solid rgba(93, 232, 240, 0.22);
+  color: var(--sea-gold-bright);
+  background: rgba(var(--sea-gold-rgb), 0.1);
+  border: 1px solid rgba(var(--sea-gold-rgb), 0.22);
   width: 18px;
   height: 18px;
   display: flex;
@@ -1093,7 +1121,7 @@ html.standalone-active body {
 .qnav-item-ext {
   font-size: 0.6rem;
   line-height: 1;
-  color: #2a6a7a;
+  color: var(--sea-dim);
   flex-shrink: 0;
   opacity: 0.7;
 }
@@ -1105,10 +1133,17 @@ html.standalone-active body {
 .qnav-item-tag {
   font-size: 0.38rem;
   letter-spacing: 0.18em;
-  color: #2a6a7a;
-  border: 1px solid rgba(42, 106, 122, 0.4);
+  color: var(--sea-dim);
+  border: 1px solid rgba(var(--sea-gold-rgb), 0.28);
   padding: 1px 4px;
   flex-shrink: 0;
+}
+
+.qnav-cat-hd:focus-visible,
+.qnav-item:focus-visible,
+.qnav-close:focus-visible {
+  outline: 2px solid var(--sea-gold-bright);
+  outline-offset: 2px;
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -2080,6 +2115,18 @@ html.standalone-active body {
   padding: 4rem 1.5rem 4rem;
   max-width: 800px;
   margin: 0 auto;
+}
+
+.curriculum-page {
+  height: 100vh;
+  background: #0a0a0a;
+}
+
+.curriculum-frame {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
 }
 
 .standalone-header {
@@ -4386,126 +4433,6 @@ body {
 
 .secondary-card-link-label {
   text-shadow: 0 0 10px rgba(var(--artifact-accent-rgb), 0.22);
-}
-
-/* Quicknav: oxidized metal, with a three-color hamburger signal. */
-.qnav-trigger {
-  width: 44px;
-  height: 44px;
-  background:
-    radial-gradient(
-      circle at 90% 10%,
-      rgba(var(--sea-purple-rgb), 0.13),
-      transparent 48%
-    ),
-    rgba(8, 22, 19, 0.94);
-  border-color: rgba(var(--sea-gold-rgb), 0.48);
-  box-shadow:
-    0 0 16px rgba(var(--sea-gold-rgb), 0.12),
-    inset 0 0 18px rgba(var(--sea-teal-rgb), 0.04);
-}
-
-.qnav-trigger:hover {
-  border-color: var(--sea-gold-bright);
-  background: rgba(15, 37, 31, 0.97);
-}
-
-.qnav-bar--1 {
-  background: var(--sea-teal-soft);
-}
-
-.qnav-bar--2 {
-  background: var(--sea-gold-bright);
-}
-
-.qnav-bar--3 {
-  background: var(--sea-purple);
-}
-
-.qnav-panel {
-  background:
-    radial-gradient(
-      circle at 92% 8%,
-      rgba(var(--sea-purple-rgb), 0.13),
-      transparent 46%
-    ),
-    radial-gradient(
-      circle at 8% 92%,
-      rgba(var(--sea-gold-rgb), 0.1),
-      transparent 48%
-    ),
-    rgba(7, 20, 17, 0.98);
-  border-color: rgba(var(--sea-teal-rgb), 0.26);
-  border-left-color: var(--sea-gold);
-  box-shadow:
-    0 0 60px rgba(0, 0, 0, 0.82),
-    inset 0 0 44px rgba(var(--sea-teal-rgb), 0.035),
-    0 0 24px rgba(var(--sea-gold-rgb), 0.07);
-}
-
-.qnav-scan {
-  background: linear-gradient(
-    to right,
-    transparent,
-    rgba(var(--sea-gold-rgb), 0.18),
-    rgba(var(--sea-teal-rgb), 0.48),
-    rgba(var(--sea-purple-rgb), 0.18),
-    transparent
-  );
-}
-
-.qnav-hd {
-  border-bottom-color: rgba(var(--sea-gold-rgb), 0.22);
-}
-
-.qnav-hd-text,
-.qnav-cat-ico,
-.qnav-item-acronym {
-  color: var(--sea-gold-bright);
-}
-
-.qnav-cat-hd {
-  min-height: 44px;
-  color: var(--sea-teal-soft);
-  font-size: 0.7rem;
-}
-
-.qnav-cat-hd:hover,
-.qnav-item:hover,
-.qnav-item--active {
-  color: var(--sea-ink-bright);
-  background: rgba(var(--sea-gold-rgb), 0.085);
-  border-left-color: rgba(var(--sea-gold-rgb), 0.72);
-}
-
-.qnav-item {
-  min-height: 36px;
-  color: var(--sea-muted);
-  font-size: 0.66rem;
-}
-
-.qnav-items {
-  border-left-color: rgba(var(--sea-teal-rgb), 0.16);
-}
-
-.qnav-cat-cnt,
-.qnav-cat-chev,
-.qnav-item-ext,
-.qnav-item-tag,
-.qnav-close {
-  color: var(--sea-dim);
-}
-
-.qnav-cat-hd:focus-visible,
-.qnav-item:focus-visible,
-.qnav-close:focus-visible {
-  outline: 2px solid var(--sea-gold-bright);
-  outline-offset: 2px;
-}
-
-.qnav-trigger:focus-visible {
-  outline: 2px solid var(--sea-gold-bright);
-  outline-offset: -3px;
 }
 
 /* HUD and hints stay quiet, readable, and visibly related to Quicknav. */

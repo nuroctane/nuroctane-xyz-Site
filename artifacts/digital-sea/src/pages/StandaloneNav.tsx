@@ -11,7 +11,7 @@ const DESTINATIONS = [
   { href: '/books', label: 'Books', logo: '/assets/nodes/books-logo.png?v=115' },
   { href: '/modkeys', label: 'MODKEYS', logo: '/assets/nodes/modkeys-logo.png?v=115' },
   { href: '/cli', label: 'NurCLI', logo: '/assets/nodes/nur-cli-logo.png' },
-  { href: '/curriculum', label: 'Curriculum', logo: '/favicon.svg' },
+  { href: '/curriculum', label: 'Curriculum', logo: '/assets/nodes/site-logo.png' },
   { href: '/observatory', label: 'Observatory', logo: '/assets/nodes/observatory-logo.png?v=115' },
   { href: 'https://tunerzsociety.site', label: 'ATX Tunerz', logo: '/assets/nodes/atx-tunerz-logo.png', external: true },
   { href: '/fin', label: 'Fin', logo: '/assets/nodes/venmo-logo.png' },
@@ -46,10 +46,6 @@ export function StandaloneNav() {
     setOpen(false);
     if (isExternal(href)) {
       window.open(href, '_blank', 'noopener,noreferrer');
-      return;
-    }
-    if (href === '/curriculum') {
-      window.location.assign(href);
       return;
     }
     markNavigationIntent();

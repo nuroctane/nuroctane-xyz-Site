@@ -125,11 +125,11 @@ const PAGES: Record<string, PageMeta> = {
   curriculum: {
     title: "World Models: A Daily Series",
     description:
-      "90 days, one paper a day: from Ha & Schmidhuber to the August 2026 frontier. Model-based RL, JEPA, generative interactive environments, world foundation models, robots, and evaluation.",
+      "90 days, one paper a day: from Ha & Schmidhuber to the frontier. Model-based RL, JEPA, generative interactive environments, world foundation models, robots, and evaluation.",
     badge: "CURRICULUM",
     path: "/curriculum",
-    image: `${SITE}/opengraph.jpg`,
-    favicon: "/favicon.svg",
+    image: `${SITE}/assets/nodes/site-logo.png`,
+    favicon: "/assets/nodes/site-logo.png",
   },
   observatory: {
     title: "Observatory",

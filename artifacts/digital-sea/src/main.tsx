@@ -14,6 +14,7 @@ const ResumePage = lazy(() => import('./pages/ResumePage'));
 const ModkeysPage = lazy(() => import('./pages/ModkeysPage'));
 const CliPage    = lazy(() => import('./pages/CliPage'));
 const ObservatoryPage = lazy(() => import('./pages/ObservatoryPage'));
+const CurriculumPage = lazy(() => import('./pages/CurriculumPage'));
 
 function Fallback() {
   return <div className="page-loading"><div className="page-loading-dot" /></div>;
@@ -64,6 +65,9 @@ function Root() {
   if (top === 'cli') return <Suspense fallback={<Fallback />}><CliPage /></Suspense>;
   if (top === 'observatory') {
     return <Suspense fallback={<Fallback />}><ObservatoryPage /></Suspense>;
+  }
+  if (top === 'curriculum') {
+    return <Suspense fallback={<Fallback />}><CurriculumPage /></Suspense>;
   }
 
   return <App />;
