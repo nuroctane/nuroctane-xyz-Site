@@ -1,0 +1,1956 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>World Models: A Daily Series</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet" />
+  <meta name="description" content="A 90-day world models curriculum: one research paper per day, from Ha and Schmidhuber (2018) to the August 2026 frontier. Model-based RL, JEPA, generative interactive environments, world foundation models, robots, and evaluation." />
+  <link rel="canonical" href="https://nuroctane.xyz/curriculum" />
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="nuroctane.xyz" />
+  <meta property="og:title" content="World Models: A Daily Series" />
+  <meta property="og:description" content="90 days, one paper a day: from Ha &amp; Schmidhuber to the August 2026 frontier." />
+  <meta property="og:url" content="https://nuroctane.xyz/curriculum" />
+  <meta property="og:image" content="https://www.nuroctane.xyz/opengraph.jpg" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="World Models: A Daily Series" />
+  <meta name="twitter:description" content="90 days, one paper a day: from Ha &amp; Schmidhuber to the August 2026 frontier." />
+  <meta name="twitter:image" content="https://www.nuroctane.xyz/opengraph.jpg" />
+  <script type="module">
+    import posthog from "https://cdn.jsdelivr.net/npm/posthog-js@1/dist/module.min.js";
+    posthog.init("phc_tYp9uMJsBPwQHZRpMYvgVkRGpxEaLQ3MGyB2bgCY3nNf", {
+      api_host: "https://i.nuroctane.xyz",
+      ui_host: "https://us.posthog.com",
+      capture_pageview: true,
+      autocapture: true
+    });
+  </script>
+
+  <style>
+    :root {
+      --bg: #0a0a0a;
+      --bg-elev: #111;
+      --bg-card: #161616;
+      --line: #2a2a2a;
+      --line-soft: #1e1e1e;
+      --text: #f2f2f2;
+      --muted: #8a8a8a;
+      --faint: #5c5c5c;
+      --white: #ffffff;
+      --radius: 2px;
+      --max: 920px;
+      --nav-w: 52px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html {
+      scroll-behavior: smooth;
+      scrollbar-width: thin;
+      scrollbar-color: #333 transparent;
+    }
+
+    body {
+      font-family: "IBM Plex Sans", system-ui, -apple-system, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+      font-size: 15.5px;
+      font-weight: 400;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    ::selection { background: #fff; color: #000; }
+
+    .rail {
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      width: var(--nav-w);
+      background: var(--bg);
+      border-right: 1px solid var(--line);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 18px 0 12px;
+      z-index: 40;
+      overflow-y: auto;
+      overflow-x: hidden;
+    }
+
+    .rail .mark {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.14em;
+      color: var(--faint);
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      margin-bottom: 18px;
+      user-select: none;
+    }
+
+    .rail a {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 32px;
+      min-height: 22px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+      font-weight: 500;
+      color: var(--faint);
+      text-decoration: none;
+      border-radius: var(--radius);
+      transition: color 0.12s, background 0.12s;
+      padding: 2px 0;
+    }
+
+    .rail a:hover,
+    .rail a.active {
+      color: var(--white);
+      background: #222;
+    }
+
+    .rail a.done { color: var(--muted); }
+
+    main {
+      margin-left: var(--nav-w);
+      min-height: 100vh;
+    }
+
+    .wrap {
+      max-width: var(--max);
+      margin: 0 auto;
+      padding: 0 32px 120px;
+    }
+
+    .hero {
+      padding: 88px 0 56px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 8px;
+    }
+
+    .eyebrow {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--faint);
+      margin-bottom: 28px;
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 5vw, 3.4rem);
+      font-weight: 300;
+      letter-spacing: -0.03em;
+      line-height: 1.08;
+      color: var(--white);
+      margin-bottom: 24px;
+    }
+
+    h1 strong { font-weight: 500; }
+
+    h1 .h1-sub {
+      font-weight: 300;
+      letter-spacing: -0.02em;
+      color: var(--muted);
+    }
+
+    .progress-dock {
+      position: sticky;
+      top: 0;
+      z-index: 30;
+      background: rgba(10, 10, 10, 0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
+      margin: 0 -32px;
+      padding: 12px 32px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .progress-dock .label {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--faint);
+      white-space: nowrap;
+    }
+
+    .bar-track {
+      flex: 1 1 auto;
+      min-width: 48px;
+      height: 3px;
+      background: #222;
+      position: relative;
+      overflow: hidden;
+      border-radius: 1px;
+    }
+
+    .bar-fill {
+      display: block;
+      height: 100%;
+      width: 100%;
+      background: var(--white);
+      transform: scaleX(0);
+      transform-origin: left center;
+      transition: transform 0.2s ease;
+      will-change: transform;
+    }
+
+    .progress-dock .count {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      color: var(--muted);
+      min-width: 6ch;
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .btn-ghost {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--faint);
+      background: transparent;
+      border: 1px solid var(--line);
+      padding: 6px 10px;
+      cursor: pointer;
+      border-radius: var(--radius);
+    }
+
+    .btn-ghost:hover {
+      color: var(--white);
+      border-color: #444;
+    }
+
+    .sequence-map {
+      border: 1px solid var(--line);
+      margin: 40px 0 56px;
+      background: var(--bg-elev);
+      padding: 22px 24px;
+    }
+
+    .sequence-map h2 {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--faint);
+      margin-bottom: 16px;
+    }
+
+    .sequence-map ol {
+      list-style: none;
+      counter-reset: seq;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px 28px;
+    }
+
+    .sequence-map li {
+      counter-increment: seq;
+      font-size: 13.5px;
+      color: var(--muted);
+      font-weight: 300;
+      padding-left: 2.4em;
+      position: relative;
+    }
+
+    .sequence-map li::before {
+      content: counter(seq, decimal-leading-zero);
+      position: absolute;
+      left: 0;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      color: var(--faint);
+      top: 2px;
+    }
+
+    .sequence-map a {
+      color: var(--text);
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+    }
+
+    .sequence-map a:hover {
+      border-bottom-color: #555;
+    }
+
+    .phase {
+      padding: 48px 0 40px;
+      border-top: 1px solid var(--line);
+      scroll-margin-top: 64px;
+    }
+
+    .phase-head {
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
+      margin-bottom: 10px;
+      flex-wrap: wrap;
+    }
+
+    .glyph {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 1.75rem;
+      font-weight: 500;
+      line-height: 1;
+      color: var(--white);
+      letter-spacing: -0.04em;
+      min-width: 2.2ch;
+    }
+
+    .phase-head h2 {
+      font-size: 1.3rem;
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      color: var(--white);
+      flex: 1;
+      min-width: 12ch;
+    }
+
+    .platform {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--faint);
+      border: 1px solid var(--line);
+      padding: 4px 8px;
+      white-space: nowrap;
+    }
+
+    .depends {
+      width: 100%;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      color: var(--faint);
+      margin: -2px 0 14px 0;
+      padding-left: calc(2.2ch + 16px);
+    }
+
+    .depends span { color: var(--muted); }
+
+    .why {
+      color: var(--muted);
+      font-weight: 300;
+      font-size: 14.5px;
+      max-width: 62ch;
+      margin: 0 0 22px 0;
+      padding-left: calc(2.2ch + 16px);
+    }
+
+    .steps {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      border: 1px solid var(--line);
+      background: var(--line);
+    }
+
+    .step {
+      display: grid;
+      grid-template-columns: 36px 1fr;
+      gap: 0 14px;
+      background: var(--bg-elev);
+      padding: 16px 18px 16px 14px;
+      align-items: start;
+      cursor: pointer;
+    }
+
+    .step:hover {
+      background: #141414;
+    }
+
+    .step + .step { border-top: 1px solid var(--line); }
+
+    .step input[type="checkbox"] {
+      appearance: none;
+      -webkit-appearance: none;
+      width: 16px;
+      height: 16px;
+      margin-top: 3px;
+      border: 1px solid #555;
+      background: transparent;
+      cursor: pointer;
+      border-radius: 1px;
+      position: relative;
+      flex-shrink: 0;
+    }
+
+    .step input[type="checkbox"]:checked {
+      background: var(--white);
+      border-color: var(--white);
+    }
+
+    .step input[type="checkbox"]:checked::after {
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: 1px;
+      width: 4px;
+      height: 8px;
+      border: solid #000;
+      border-width: 0 1.5px 1.5px 0;
+      transform: rotate(45deg);
+    }
+
+    .step-body strong {
+      display: block;
+      font-weight: 500;
+      font-size: 14.5px;
+      color: var(--text);
+      margin-bottom: 6px;
+      letter-spacing: -0.01em;
+    }
+
+    .step.done .step-body strong {
+      color: var(--muted);
+      text-decoration: line-through;
+      text-decoration-thickness: 1px;
+    }
+
+    .step-body strong a {
+      color: inherit;
+      text-decoration: none;
+      border-bottom: 1px solid #333;
+    }
+
+    .step-body strong a:hover { border-bottom-color: #888; }
+
+    .step-body p,
+    .step-body li {
+      color: var(--muted);
+      font-size: 13.5px;
+      font-weight: 300;
+      line-height: 1.55;
+    }
+
+    .step-body ol,
+    .step-body ul {
+      margin: 8px 0 0 1.1em;
+      display: flex;
+      flex-direction: column;
+      gap: 5px;
+    }
+
+    .step-body ol { list-style: decimal; }
+    .step-body ul { list-style: disc; }
+
+    .step-body code {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 12px;
+      color: #d0d0d0;
+      background: #0c0c0c;
+      border: 1px solid #2a2a2a;
+      padding: 0 4px;
+    }
+
+    .note {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-left: 2px solid #444;
+      background: #0f0f0f;
+      color: var(--muted);
+      font-size: 12.5px;
+      font-weight: 300;
+    }
+
+    .note em {
+      font-style: normal;
+      color: var(--text);
+      font-weight: 400;
+    }
+
+    .paper-link {
+      margin-top: 8px;
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10.5px;
+      color: var(--faint);
+    }
+
+    .paper-link a {
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid #2a2a2a;
+    }
+
+    .paper-link a:hover {
+      color: var(--white);
+      border-bottom-color: #666;
+    }
+
+    .sources {
+      margin-top: 16px;
+      padding-left: calc(2.2ch + 16px);
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 10.5px;
+      color: var(--faint);
+      line-height: 1.7;
+    }
+
+    .sources a {
+      color: var(--muted);
+      text-decoration: none;
+      border-bottom: 1px solid #2a2a2a;
+    }
+
+    .sources a:hover {
+      color: var(--white);
+      border-bottom-color: #666;
+    }
+
+    footer {
+      margin-top: 80px;
+      padding: 40px 0 20px;
+      border-top: 1px solid var(--line);
+    }
+
+    footer p {
+      color: var(--faint);
+      font-size: 12.5px;
+      font-weight: 300;
+      max-width: 60ch;
+      line-height: 1.6;
+    }
+
+    footer .mono {
+      font-family: "IBM Plex Mono", monospace;
+      font-size: 11px;
+      letter-spacing: 0.06em;
+      color: var(--faint);
+      margin-top: 18px;
+    }
+
+    @media print {
+      .rail, .progress-dock, .btn-ghost { display: none !important; }
+      main { margin-left: 0; }
+      body { background: #fff; color: #111; }
+      .hero, .phase, .step, .sequence-map { background: #fff; color: #111; }
+      .glyph, h1, .phase-head h2, .step-body strong { color: #000; }
+      .why, .step-body p, .step-body li { color: #333; }
+      .steps, .phase, .sequence-map { border-color: #ccc; }
+      .step + .step { border-color: #ddd; }
+      a { color: #000; }
+    }
+
+    @media (max-width: 720px) {
+      :root { --nav-w: 40px; }
+      .wrap { padding: 0 18px 80px; }
+      .progress-dock { margin: 0 -18px; padding: 10px 18px; }
+      .sequence-map ol { grid-template-columns: 1fr; }
+      .why, .sources, .depends { padding-left: 0; }
+      .platform { display: none; }
+      .hero { padding-top: 48px; }
+      .rail a { font-size: 9px; min-height: 18px; }
+    }
+  </style>
+</head>
+<body>
+  <nav class="rail" aria-label="Unit index" id="rail">
+    <div class="mark">WM·90</div>
+  </nav>
+
+  <main>
+    <div class="wrap">
+      <header class="hero">
+        <p class="eyebrow">World Models: A Daily Series</p>
+        <h1>World Models: <strong>Day 1 to Day 90</strong> <span class="h1-sub">· from Ha &amp; Schmidhuber to the August 2026 frontier</span></h1>
+      </header>
+
+      <div class="progress-dock">
+        <span class="label">Progress</span>
+        <div class="bar-track" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="barTrack">
+          <div class="bar-fill" id="barFill"></div>
+        </div>
+        <span class="count" id="progCount">0/0</span>
+        <button type="button" class="btn-ghost" id="resetChecks">Reset</button>
+      </div>
+
+      <nav class="sequence-map" aria-label="Full sequence">
+        <h2>Sequence map</h2>
+        <ol id="sequenceMap"></ol>
+      </nav>
+
+      <!-- ═══════════════ UNITS ═══════════════ -->
+
+      <section class="phase" id="p01" data-phase="01" data-title="Orientation: what is a world model?">
+        <div class="phase-head">
+          <span class="glyph">01</span>
+          <h2>Orientation: what is a world model?</h2>
+          <span class="platform">Days 1 to 4</span>
+        </div>
+        <p class="depends">Depends on: <span>nothing · start here</span></p>
+        <p class="why">Lock the definition before the lineage. Four reads that triangulate the term: the founding artifact, a 2026 definitional roadmap, the position paper that split the field, and the field's own accounting of itself.</p>
+        <ul class="steps">
+          <li class="step">
+            <input type="checkbox" data-key="01-1" />
+            <div class="step-body">
+              <strong>Day 1 · <a href="https://arxiv.org/abs/1803.10122" target="_blank" rel="noopener">World Models</a> · Ha and Schmidhuber (2018)</strong>
+              <p>The founding document. A VAE squeezes frames into latents, an MDN-RNN rolls them forward, a tiny linear controller acts: the whole loop trained almost entirely inside the model's own dream. The policy never sees a real frame until it already works.</p>
+              <ul>
+                <li>The controller is deliberately tiny so gradients through the RNN stay cheap. Capacity belongs to the world model; the policy just reads it.</li>
+                <li>Every paper in the next 89 days descends from this architecture.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> 2018: two researchers teach a car to drive inside its own dream. 90 days of world models start here.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/1803.10122" target="_blank" rel="noopener">arxiv.org/abs/1803.10122</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="01-2" />
+            <div class="step-body">
+              <strong>Day 2 · <a href="https://arxiv.org/abs/2607.06401" target="_blank" rel="noopener">A Definition and Roadmap for World Models</a> (Jul 2026)</strong>
+              <p>2026's definitional ceasefire: world models as internal simulators that learn structure and dynamics, sorted against MBRL, generative video, and whatever LLMs do implicitly. Build a personal taxonomy here; every later paper files into it.</p>
+              <ul>
+                <li>Watch what the chosen definition excludes. Definitional papers are battlefields.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Ask five researchers what a world model is; you get six answers. A July 2026 paper tries to end the debate.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2607.06401" target="_blank" rel="noopener">arxiv.org/abs/2607.06401</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="01-3" />
+            <div class="step-body">
+              <strong>Day 3 · <a href="https://openreview.net/forum?id=BZ5a1r-kVsf" target="_blank" rel="noopener">A Path Towards Autonomous Machine Intelligence</a> · LeCun (2022)</strong>
+              <p>The position paper that split the field. Autoregressive generation is a dead end; the future is hierarchical JEPA predicting in representation space, with a separate configurator doing the steering. Half of units 5 to 9 is an argument with this document.</p>
+              <ul>
+                <li>Score each 2022 claim against what actually shipped by 2026. The scorecard writes itself.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> LeCun in 2022: autoregressive world models are doomed. Four years later, half the frontier is autoregressive. What happened?</div>
+              <p class="paper-link"><a href="https://openreview.net/forum?id=BZ5a1r-kVsf" target="_blank" rel="noopener">openreview.net/forum?id=BZ5a1r-kVsf</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="01-4" />
+            <div class="step-body">
+              <strong>Day 4 · <a href="https://arxiv.org/abs/2411.14499" target="_blank" rel="noopener">Understanding World or Predicting Future? A Comprehensive Survey of World Models</a> (2024)</strong>
+              <p>The field's self-accounting, built around one tension: is a world model for understanding (representation, control) or for predicting (video generation)? Skim wide, read the taxonomy close. This is the map for the next ten units.</p>
+              <div class="note"><em>Hook.</em> The world model wars reduce to one question: is the point to understand the world or to dream it?</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2411.14499" target="_blank" rel="noopener">arxiv.org/abs/2411.14499</a></p>
+            </div>
+          </li>
+        </ul>
+        <p class="sources">Sources: <a href="https://worldmodels.github.io" target="_blank" rel="noopener">worldmodels.github.io</a> (run the demos) · <a href="https://arxiv.org/abs/2405.03520" target="_blank" rel="noopener">Is Sora a World Simulator?</a> (skim now; Day 42 in full)</p>
+      </section>
+
+      <section class="phase" id="p02" data-phase="02" data-title="Cognitive roots: minds that model">
+        <div class="phase-head">
+          <span class="glyph">02</span>
+          <h2>Cognitive roots: minds that model</h2>
+          <span class="platform">Days 5 to 7</span>
+        </div>
+        <p class="depends">Depends on: <span>01 definitions</span></p>
+        <p class="why">Craik called them "small-scale models of reality" in 1943. Three days grounding the engineering in the biology: how humans plan, what an agent society looks like, and why prediction and compression are one act.</p>
+        <ul class="steps">
+          <li class="step">
+            <input type="checkbox" data-key="02-1" />
+            <div class="step-body">
+              <strong>Day 5 · <a href="https://arxiv.org/abs/2105.06948" target="_blank" rel="noopener">People construct simplified mental representations to plan</a> (2021)</strong>
+              <p>Human planners keep the smallest abstraction that still lands the plan. That is the cognitive license for every JEPA-style choice later in the series: throw away what the task does not need.</p>
+              <ul>
+                <li>"Favor states that afford action" returns verbatim as the argument for latent prediction in unit 5.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Your brain keeps the cheapest simulation that gets the plan right. Every good world model steals this trick.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2105.06948" target="_blank" rel="noopener">arxiv.org/abs/2105.06948</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="02-2" />
+            <div class="step-body">
+              <strong>Day 6 · <a href="https://arxiv.org/abs/2304.03442" target="_blank" rel="noopener">Generative Agents: Interactive Simulacra of Human Behavior</a> (2023)</strong>
+              <p>Twenty-five LLM agents live in a text town and a society appears: memory streams, reflection, planning. A world model over social dynamics instead of pixels, and the observe-reflect-plan loop that agent frameworks still copy.</p>
+              <ul>
+                <li>Reflection as scheduled consolidation: raw episodic memory distilled into reusable abstractions. Sleep, for agents.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Before Genie dreamed platformers, Stanford agents dreamed a Valentine's party.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2304.03442" target="_blank" rel="noopener">arxiv.org/abs/2304.03442</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="02-3" />
+            <div class="step-body">
+              <strong>Day 7 · <a href="https://arxiv.org/abs/2309.10668" target="_blank" rel="noopener">Language Modeling Is Compression</a> (2023)</strong>
+              <p>An LLM used as a lossless compressor beats gzip by orders of magnitude, on text and even images. Prediction, compression, and a model of the world's regularities: one object with three names.</p>
+              <ul>
+                <li>Arithmetic coding over next-token distributions. Small code, big idea.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> A 14MB LLM compresses Wikipedia better than PNG compresses screenshots. Compression is world modeling, measured.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2309.10668" target="_blank" rel="noopener">arxiv.org/abs/2309.10668</a></p>
+            </div>
+          </li>
+        </ul>
+        <p class="sources">Sources: <a href="https://arxiv.org/abs/2506.21805" target="_blank" rel="noopener">CitySim</a> (urban-scale social world models) · Craik, <em>The Nature of Explanation</em> (1943)</p>
+      </section>
+
+      <section class="phase" id="p03" data-phase="03" data-title="Model-based RL: the load-bearing unit">
+        <div class="phase-head">
+          <span class="glyph">03</span>
+          <h2>Model-based RL: the load-bearing unit</h2>
+          <span class="platform">Days 8 to 16</span>
+        </div>
+        <p class="depends">Depends on: <span>01 definitions · RL prereqs</span></p>
+        <p class="why">Nine days, trimmed to what still matters. From the policy-gradient substrate through latent planning, the Dreamer line, value equivalence as theory, and curiosity itself. Everything downstream assumes this unit cold.</p>
+        <ul class="steps">
+          <li class="step">
+            <input type="checkbox" data-key="03-1" />
+            <div class="step-body">
+              <strong>Day 8 · <a href="https://arxiv.org/abs/1707.06347" target="_blank" rel="noopener">Proximal Policy Optimization Algorithms</a> (2017)</strong>
+              <p>The policy-optimization substrate under most world-model agents: DayDreamer, V-JEPA 2's fine-tunes, most WAM post-training. Read it as the baseline tax: clipped surrogate, GAE, and on-policy RL discarding every sample it collects. World models exist to stop that waste.</p>
+              <div class="note"><em>Hook.</em> PPO wastes every frame it touches. The next 80 days are about refusing to waste data.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/1707.06347" target="_blank" rel="noopener">arxiv.org/abs/1707.06347</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="03-2" />
+            <div class="step-body">
+              <strong>Day 9 · <a href="https://arxiv.org/abs/1811.04551" target="_blank" rel="noopener">PlaNet: Learning Latent Dynamics for Planning from Pixels</a> (2018)</strong>
+              <p>First to plan in learned latent space from raw pixels. The RSSM compresses each frame into a stochastic plus deterministic state; cross-entropy-method search plans straight over latents. No pixel decoder anywhere in the control loop.</p>
+              <ul>
+                <li>Latent overshooting: train multi-step transitions, and long rollouts stay honest.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> PlaNet plans inside its own imagination and spends 2000x fewer frames doing it.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/1811.04551" target="_blank" rel="noopener">arxiv.org/abs/1811.04551</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="03-3" />
+            <div class="step-body">
+              <strong>Day 10 · <a href="https://arxiv.org/abs/1912.01603" target="_blank" rel="noopener">Dream to Control</a> + <a href="https://arxiv.org/abs/2010.02193" target="_blank" rel="noopener">DreamerV2</a> (2019, 2020)</strong>
+              <p>PlaNet plus gradients: backpropagate reward through imagined latents and train an actor-critic entirely inside the world model. V2 changes one line, categorical latents instead of Gaussian, and doubles the score on the way to Atari SOTA with a fraction of the data.</p>
+              <ul>
+                <li>Straight-through gradients over categorical samples, and why discrete latents resist posterior collapse.</li>
+                <li>The two-stream stochastic/deterministic latent comes from SLAC (in sources): what you can see, and what you cannot.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Stop searching the dream; backprop through it. That change made Dreamer. V2's change is one line: make the latent discrete.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/1912.01603" target="_blank" rel="noopener">arxiv.org/abs/1912.01603</a> · <a href="https://arxiv.org/abs/2010.02193" target="_blank" rel="noopener">arxiv.org/abs/2010.02193</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="03-4" />
+            <div class="step-body">
+              <strong>Day 11 · <a href="https://arxiv.org/abs/1911.08265" target="_blank" rel="noopener">MuZero: Mastering Atari, Go, Chess and Shogi by Planning with a Learned Model</a> (2019)</strong>
+              <p>A model that never reconstructs observations, and it beats AlphaZero anyway. It predicts reward, value, and policy; MCTS plans over those three heads. The idea was already sitting in Value Prediction Networks (2017, in sources). MuZero made it famous.</p>
+              <ul>
+                <li>Model the quantities planning needs, and the pixels take care of themselves.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> MuZero mastered Go, chess, and shogi without ever learning what a board looks like.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/1911.08265" target="_blank" rel="noopener">arxiv.org/abs/1911.08265</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="03-5" />
+            <div class="step-body">
+              <strong>Day 12 · <a href="https://arxiv.org/abs/2306.00840" target="_blank" rel="noopener">What Model Does MuZero Learn?</a> (2023)</strong>
+              <p>The theory follow-up: value-equivalent models provably learn a compressed, control-sufficient slice of dynamics, and can lose observability when value targets underdetermine the world. Your first proof that world models are a theory field, homework included.</p>
+              <ul>
+                <li>Value equivalence versus reconstruction: the lens for judging every latent model in this series.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> MuZero models what the world is worth. A 2023 paper works out exactly what that costs you.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2306.00840" target="_blank" rel="noopener">arxiv.org/abs/2306.00840</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="03-6" />
+            <div class="step-body">
+              <strong>Day 13 · <a href="https://arxiv.org/abs/1906.02736" target="_blank" rel="noopener">DeepMDP: Learning Continuous Latent Space Models for Representation Learning</a> (2019)</strong>
+              <p>Learn your encoder by pretending to be a model-based agent: transition, reward, and discount losses, no reconstruction, no labels. The bridge from MBRL to self-supervised learning.</p>
+              <ul>
+                <li>The trick returns in unit 5 wearing JEPA clothes.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> DeepMDP trains an encoder with three losses and zero labels. The trick returns in unit 5 as JEPA.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/1906.02736" target="_blank" rel="noopener">arxiv.org/abs/1906.02736</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="03-7" />
+            <div class="step-body">
+              <strong>Day 14 · <a href="https://arxiv.org/abs/2301.04104" target="_blank" rel="noopener">DreamerV3: Mastering Diverse Domains through World Models</a> (2023)</strong>
+              <p>One fixed hyperparameter set across 150+ tasks, from benchmarks to a real robot arm, and the first agent to mine diamonds in Minecraft without human data. Free bits, KL balancing, two-hot reward encoding: the practical lore, one ablation table.</p>
+              <ul>
+                <li>Two-hot encoding: discretize the return distribution so one softmax covers reward magnitudes across orders of scale.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> One config, 150 games, Minecraft diamonds, no human data. The single best paper to hand an alien to explain model-based RL.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2301.04104" target="_blank" rel="noopener">arxiv.org/abs/2301.04104</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="03-8" />
+            <div class="step-body">
+              <strong>Day 15 · <a href="https://arxiv.org/abs/2111.00210" target="_blank" rel="noopener">EfficientZero: Mastering Atari Games with Limited Data</a> (2021)</strong>
+              <p>MuZero's ideas meet consistency losses: self-supervised state consistency, value prefix prediction, and reanalysis push Atari-100k (two hours per game) to superhuman mean scores. Sample efficiency as a systems discipline.</p>
+              <ul>
+                <li>Reanalysis: recompute targets with the latest model over old trajectories instead of collecting new data.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Two hours of gameplay per title to superhuman. EfficientZero treats data like it is radioactive.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2111.00210" target="_blank" rel="noopener">arxiv.org/abs/2111.00210</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="03-9" />
+            <div class="step-body">
+              <strong>Day 16 · <a href="https://arxiv.org/abs/2005.05960" target="_blank" rel="noopener">Plan2Explore: Planning to Explore via Self-Supervised World Models</a> (2020)</strong>
+              <p>Zero rewards, all curiosity: ensemble disagreement about imagined futures becomes intrinsic motivation, and the agent walks straight into the rooms where its world model is most ignorant. Downstream tasks then take a handful of gradient steps.</p>
+              <ul>
+                <li>Disagreement as novelty: several heads on one trunk, cheap epistemic uncertainty.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Plan2Explore explores wherever its imagination disagrees with itself. Novelty is ensemble disagreement.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2005.05960" target="_blank" rel="noopener">arxiv.org/abs/2005.05960</a></p>
+            </div>
+          </li>
+        </ul>
+        <p class="sources">Sources: <a href="https://arxiv.org/abs/1707.03497" target="_blank" rel="noopener">Value Prediction Network</a> · <a href="https://arxiv.org/abs/1907.00953" target="_blank" rel="noopener">SLAC</a> · <a href="https://arxiv.org/abs/2403.00564" target="_blank" rel="noopener">EfficientZero v2</a> · <a href="https://github.com/danijar/dreamerv3" target="_blank" rel="noopener">dreamerv3 repo</a> (run it)</p>
+      </section>
+
+      <section class="phase" id="p04" data-phase="04" data-title="Backbones: architectures for imagination">
+        <div class="phase-head">
+          <span class="glyph">04</span>
+          <h2>Backbones: architectures for imagination</h2>
+          <span class="platform">Days 17 to 22</span>
+        </div>
+        <p class="depends">Depends on: <span>03 Dreamer lineage</span></p>
+        <p class="why">What sits under the world model: transformers eating RSSM's lunch, MPC-native latents, denoising as an objective, objects as first-class citizens, and a minimalist audit that deletes everything.</p>
+        <ul class="steps">
+          <li class="step">
+            <input type="checkbox" data-key="04-1" />
+            <div class="step-body">
+              <strong>Day 17 · <a href="https://arxiv.org/abs/2209.00588" target="_blank" rel="noopener">IRIS: Transformers are Sample-Efficient World Models</a> (2022)</strong>
+              <p>Delete the RNN: tokenize frames with a discrete VAE, run a GPT-style transformer over image-action tokens. Better Atari-100k sample efficiency than CNN-based world models, and the moment LLM architecture collided with this field.</p>
+              <ul>
+                <li>O(n²) attention over the entire past, and it still wins. Architecture convergence starts here.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> 2022: someone asks "what if the world model is just GPT watching?" It worked.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2209.00588" target="_blank" rel="noopener">arxiv.org/abs/2209.00588</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="04-2" />
+            <div class="step-body">
+              <strong>Day 18 · <a href="https://arxiv.org/abs/2307.02064" target="_blank" rel="noopener">Facing Off World Model Backbones: RNNs, Transformers, and S4</a> (2023)</strong>
+              <p>Recurrent, transformer, and state-space backbones in the same harness. Memory capacity against sample efficiency against stability: pick your triangle before arguing about Mamba world models.</p>
+              <ul>
+                <li>The phantom-transitions analysis shows exactly where each backbone's memory dies.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> RNN versus transformer versus S4 in one ring. The winner depends on how long the fight runs.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2307.02064" target="_blank" rel="noopener">arxiv.org/abs/2307.02064</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="04-3" />
+            <div class="step-body">
+              <strong>Day 19 · <a href="https://arxiv.org/abs/2310.16828" target="_blank" rel="noopener">TD-MPC2: Scalable, Robust World Models for Continuous Control</a> (2023)</strong>
+              <p>The whole TD-MPC line in one stop: a decoder-free latent model trained jointly with TD-learning, planning locally over latents that never reconstructed a pixel. V2 scales it 80x into one 500M multi-task model covering 100+ continuous control tasks.</p>
+              <ul>
+                <li>Short imagination horizons suffice because the value function carries the long horizon. TD amortizes the dream.</li>
+                <li>Task inference as Q-ensemble disagreement: read the task off what the value head cannot predict.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> TD-MPC2 is quietly the foundation model of control: one world model, 100 tasks, zero decoders.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2310.16828" target="_blank" rel="noopener">arxiv.org/abs/2310.16828</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="04-4" />
+            <div class="step-body">
+              <strong>Day 20 · <a href="https://arxiv.org/abs/2206.15477" target="_blank" rel="noopener">Denoised MDPs: Learning World Models Better Than the World Itself</a> (2022)</strong>
+              <p>Train inverse and forward dynamics as a denoising autoencoder over latent transitions, and the model learns an abstraction cleaner than reality: nuisance noise cancels, structure stays. Theory included for when the denoised model beats the true one.</p>
+              <div class="note"><em>Hook.</em> Denoised MDPs learn world models better than the world. Train on what you can explain; ignore the rest.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2206.15477" target="_blank" rel="noopener">arxiv.org/abs/2206.15477</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="04-5" />
+            <div class="step-body">
+              <strong>Day 21 · <a href="https://arxiv.org/abs/2608.12078" target="_blank" rel="noopener">Better Slots, Better Worlds: Representation Quality and Robustness in Object-Centric World Models</a> (Aug 2026)</strong>
+              <p>The 2026 edition of object-centric world models: slot representations decompose the scene, and representation quality directly predicts planning robustness. Action binding (2022, in sources) started this thread; this is where it landed.</p>
+              <div class="note"><em>Hook.</em> A broom action should never touch the TV latent. Object-centric world models are finally growing up.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2608.12078" target="_blank" rel="noopener">arxiv.org/abs/2608.12078</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="04-6" />
+            <div class="step-body">
+              <strong>Day 22 · <a href="https://arxiv.org/abs/2506.02612" target="_blank" rel="noopener">Simple, Good, Fast: Self-Supervised World Models Free of Baggage</a> (2025)</strong>
+              <p>Delete the RNN, the transformer, the discrete latents, the decoder. What survives still competes on Atari-100k. Read it as an audit of which components are load-bearing and which are cargo cult.</p>
+              <div class="note"><em>Hook.</em> Delete everything. It still works. What exactly were we paying for?</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2506.02612" target="_blank" rel="noopener">arxiv.org/abs/2506.02612</a></p>
+            </div>
+          </li>
+        </ul>
+        <p class="sources">Sources: <a href="https://arxiv.org/abs/2203.04955" target="_blank" rel="noopener">TD-MPC</a> · <a href="https://arxiv.org/abs/2204.13022" target="_blank" rel="noopener">Binding Actions to Objects</a> · <a href="https://arxiv.org/abs/2002.09219" target="_blank" rel="noopener">Stochastic Latent Residual Video Prediction</a></p>
+      </section>
+
+      <section class="phase" id="p05" data-phase="05" data-title="JEPA: prediction without pixels">
+        <div class="phase-head">
+          <span class="glyph">05</span>
+          <h2>JEPA: prediction without pixels</h2>
+          <span class="platform">Days 23 to 29</span>
+        </div>
+        <p class="depends">Depends on: <span>03 latent dynamics · 01 LeCun position</span></p>
+        <p class="why">The other branch of the family: predict in representation space, never reconstruct. From I-JEPA through V-JEPA 2's robot planning to diagnostics from August 2026, closing with one driving application.</p>
+        <ul class="steps">
+          <li class="step">
+            <input type="checkbox" data-key="05-1" />
+            <div class="step-body">
+              <strong>Day 23 · <a href="https://arxiv.org/abs/2301.08243" target="_blank" rel="noopener">I-JEPA: Self-Supervised Learning from Images with a Joint-Embedding Predictive Architecture</a> (2023)</strong>
+              <p>LeCun's position paper turned into code: predict the representation of masked regions from context, in embedding space, with zero hand-crafted augmentations. The EMA target plus predictor is the whole machine; collapse is the whole danger.</p>
+              <ul>
+                <li>EMA targets versus representation collapse: you will hit this bug in any JEPA you train.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Contrastive learning needed 40 augmentations. I-JEPA needs one move: mask, then predict the embedding.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2301.08243" target="_blank" rel="noopener">arxiv.org/abs/2301.08243</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="05-2" />
+            <div class="step-body">
+              <strong>Day 24 · <a href="https://arxiv.org/abs/2404.08471" target="_blank" rel="noopener">V-JEPA: Revisiting Feature Prediction for Learning Visual Representations from Video</a> (2024)</strong>
+              <p>I-JEPA at video scale: masked feature prediction over space-time blocks of internet video. Intuitive physics, object permanence included, shows up with zero labels and zero pixels generated.</p>
+              <ul>
+                <li>Block masking in space-time: random rectangles in (x, y, t). Embarrassingly simple, weirdly effective.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Never render a pixel and still learn physics. V-JEPA is the strongest evidence yet for LeCun's bet.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2404.08471" target="_blank" rel="noopener">arxiv.org/abs/2404.08471</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="05-3" />
+            <div class="step-body">
+              <strong>Day 25 · <a href="https://arxiv.org/abs/2506.09985" target="_blank" rel="noopener">V-JEPA 2: Self-Supervised Video Models Enable Understanding, Prediction and Planning</a> (2025)</strong>
+              <p>Million-hour video scale plus an action-conditioned layer fine-tuned on 62 hours of robot data, then zero-shot planning on Franka arms in unseen environments. Watch video, control robot.</p>
+              <ul>
+                <li>Energy-based planning: score candidate action chunks by predicted-state energy. No reward model at inference.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> The robot's entire embodied experience: 62 hours. Everything else is YouTube. It plans zero-shot anyway.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2506.09985" target="_blank" rel="noopener">arxiv.org/abs/2506.09985</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="05-4" />
+            <div class="step-body">
+              <strong>Day 26 · <a href="https://arxiv.org/abs/2608.07409" target="_blank" rel="noopener">UniJEPA: A Unified Joint-Embedding Predictive Architecture for Task-Agnostic Visual World Modeling</a> (Aug 2026)</strong>
+              <p>The JEPA zoo merges: masked prediction, autoregressive latent prediction, and action-conditioned variants under one architecture with one shared latent space. A consolidation paper, and a clean snapshot of where this branch stood in mid-2026.</p>
+              <ul>
+                <li>Which variant wins under which evaluation: the comparison table is the paper.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Masked JEPA, autoregressive JEPA, action JEPA: UniJEPA fuses the family back into one model.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2608.07409" target="_blank" rel="noopener">arxiv.org/abs/2608.07409</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="05-5" />
+            <div class="step-body">
+              <strong>Day 27 · <a href="https://arxiv.org/abs/2608.12939" target="_blank" rel="noopener">Diagnosing JEPA World Models with Action-Conditioned Predictive Consistency</a> (Aug 2026)</strong>
+              <p>An August 2026 probe: do different actions actually produce different predicted futures? Consistency under intervention is cheap to measure and catches action-blind world models that every pixel metric passes.</p>
+              <ul>
+                <li>Bolt this probe onto any latent world model you build or review.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Your world model renders beautifully. Change the action; does anything happen? The probe says: often nothing.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2608.12939" target="_blank" rel="noopener">arxiv.org/abs/2608.12939</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="05-6" />
+            <div class="step-body">
+              <strong>Day 28 · <a href="https://arxiv.org/abs/2608.06799" target="_blank" rel="noopener">Is Forward Prediction Enough? Physical State Grounding for JEPA World Models</a> (Aug 2026)</strong>
+              <p>The critique: latent forward prediction never forces physical grounding, and JEPAs can drift into predicting embedding statistics instead of dynamics. The remedy on offer: ground latents in physical state targets.</p>
+              <ul>
+                <li>The failure catalogue: where JEPA latents quietly stop being about the world.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> JEPA world models can pass every benchmark while never learning mass or friction. Two August 2026 papers catch them at it.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2608.06799" target="_blank" rel="noopener">arxiv.org/abs/2608.06799</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="05-7" />
+            <div class="step-body">
+              <strong>Day 29 · <a href="https://arxiv.org/abs/2607.29031" target="_blank" rel="noopener">Auto-JEPA: A Latent World Model of Continuous Intent for End-to-End Autonomous Driving</a> (Jul 2026)</strong>
+              <p>JEPA thinking applied to driving, where dense prediction of pixels, BEV, and occupancy is the norm. Auto-JEPA argues planning needs none of that: predict a latent of continuous intent instead, and drive off it.</p>
+              <div class="note"><em>Hook.</em> Driving world models predict pixels nobody uses. Auto-JEPA predicts intent in latent space and just drives.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2607.29031" target="_blank" rel="noopener">arxiv.org/abs/2607.29031</a></p>
+            </div>
+          </li>
+        </ul>
+        <p class="sources">Sources: <a href="https://arxiv.org/abs/2608.05720" target="_blank" rel="noopener">PhyLatent</a> · <a href="https://arxiv.org/abs/2608.04060" target="_blank" rel="noopener">SJEPA</a></p>
+      </section>
+
+      <section class="phase" id="p06" data-phase="06" data-title="Generative interactive environments and neural game engines">
+        <div class="phase-head">
+          <span class="glyph">06</span>
+          <h2>Generative interactive environments and neural game engines</h2>
+          <span class="platform">Days 30 to 40</span>
+        </div>
+        <p class="depends">Depends on: <span>04 transformers · 05 latent prediction</span></p>
+        <p class="why">The video world model era: environments learned from unlabeled video, then played in real time. Latent actions, diffusion game engines, a Nature paper, and the systems that made "world model" a consumer-facing phrase.</p>
+        <ul class="steps">
+          <li class="step">
+            <input type="checkbox" data-key="06-1" />
+            <div class="step-body">
+              <strong>Day 30 · <a href="https://arxiv.org/abs/2206.11795" target="_blank" rel="noopener">VPT: Video PreTraining, Learning to Act by Watching Unlabeled Online Videos</a> (2022)</strong>
+              <p>The bootstrap behind this whole unit: contractors label about 2k hours, train an inverse dynamics model on it, then pseudo-label 70k hours of YouTube. Diamond tools in Minecraft from raw video.</p>
+              <ul>
+                <li>Actions are easier to infer from adjacent frames than futures are. The asymmetry does all the work.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> No action labels at scale? Infer actions from before-and-after frames, then label YouTube yourself.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2206.11795" target="_blank" rel="noopener">arxiv.org/abs/2206.11795</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="06-2" />
+            <div class="step-body">
+              <strong>Day 31 · <a href="https://arxiv.org/abs/2402.15391" target="_blank" rel="noopener">Genie: Generative Interactive Environments</a> (2024)</strong>
+              <p>All the way: zero action labels, ever. From 200k hours of platformer video, an unsupervised latent action model infers the controllable degrees of freedom, and the world is playable with a keyboard. Every paper in units 7, 9, and 11 cites this.</p>
+              <ul>
+                <li>The latent action bottleneck separates what the player controls from what the world does on its own.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Genie watched 200,000 hours of platformers and invented the controller. The action space emerged.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2402.15391" target="_blank" rel="noopener">arxiv.org/abs/2402.15391</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="06-3" />
+            <div class="step-body">
+              <strong>Day 32 · <a href="https://arxiv.org/abs/2312.10812" target="_blank" rel="noopener">Learning to Act without Actions (LAPO)</a> (2023)</strong>
+              <p>Genie's idea pushed onto policy networks: pretrain an entire action head on action-free video by discovering a low-dimensional latent action space, then fine-tune the decoder on a few real demos for generalization.</p>
+              <ul>
+                <li>Causal ordering: infer latent actions from a later window of the future, so they capture intent rather than appearance.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> LAPO pretrains a policy on videos that contain zero actions. The actions were there all along, hiding.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2312.10812" target="_blank" rel="noopener">arxiv.org/abs/2312.10812</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="06-4" />
+            <div class="step-body">
+              <strong>Day 33 · <a href="https://arxiv.org/abs/2408.14837" target="_blank" rel="noopener">GameNGen: Diffusion Models Are Real-Time Game Engines</a> (2024)</strong>
+              <p>DOOM at 20+ fps, generated frame by frame on one TPU, an RL agent holding the mouse. The loudest statement of the neural game engine thesis: a game's simulation is its next-frame distribution.</p>
+              <ul>
+                <li>Noise augmentation during training: inject noise into context frames so the model tolerates its own rollout errors at inference.</li>
+                <li>The drift analysis is the honest part of the paper. Read it.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> DOOM at 20fps. The engine is a diffusion model, the player is an RL agent, and nothing is rendered.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2408.14837" target="_blank" rel="noopener">arxiv.org/abs/2408.14837</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="06-5" />
+            <div class="step-body">
+              <strong>Day 34 · <a href="https://arxiv.org/abs/2405.12399" target="_blank" rel="noopener">DIAMOND: Diffusion for World Modeling</a> (2024)</strong>
+              <p>Train the RL agent inside the diffusion world model, and it beats agents trained in crisp emulators: visual detail carries exploitable signal. Partial denoising from previous latents doubles as temporal memory.</p>
+              <div class="note"><em>Hook.</em> Agents trained in diffusion dreams score higher on real Atari. Detail is signal.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2405.12399" target="_blank" rel="noopener">arxiv.org/abs/2405.12399</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="06-6" />
+            <div class="step-body">
+              <strong>Day 35 · <a href="https://www.nature.com/articles/s41586-025-08600-3" target="_blank" rel="noopener">WHAM: World and Human Action Models towards gameplay ideation</a> · Microsoft, Nature (2025)</strong>
+              <p>The lab-grade version of the thesis, published in Nature. WHAM-1.6B trains on seven years of Bleeding Edge gameplay and generates minutes-long consistent sequences from a prompt frame plus controller actions, built for game designers rather than researchers. Weights on Hugging Face.</p>
+              <ul>
+                <li>Read what breaks at the two-minute mark: consistency decay is the honest limit, stated by an industrial lab.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Microsoft fed a model seven years of a fighting game and shipped the weights. Nature took it. Gameplay ideation is now a generative discipline.</div>
+              <p class="paper-link"><a href="https://www.nature.com/articles/s41586-025-08600-3" target="_blank" rel="noopener">nature.com/articles/s41586-025-08600-3</a> · <a href="https://huggingface.co/microsoft/wham" target="_blank" rel="noopener">HF: microsoft/wham</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="06-7" />
+            <div class="step-body">
+              <strong>Day 36 · <a href="https://arxiv.org/abs/2406.09455" target="_blank" rel="noopener">Pandora: Towards General World Model with Natural Language Actions and Video States</a> (2024)</strong>
+              <p>Video states, natural language actions. "The astronaut picks up the rock" is literally the action token. The everything-is-a-token-stream framing that world-action models still use.</p>
+              <ul>
+                <li>Action-driven temporal attention: let action tokens gate which past frames matter.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> In Pandora, plain English is the controller interface for a generated world.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2406.09455" target="_blank" rel="noopener">arxiv.org/abs/2406.09455</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="06-8" />
+            <div class="step-body">
+              <strong>Day 37 · <a href="https://arxiv.org/abs/2411.00769" target="_blank" rel="noopener">GameGen-X: Interactive Open-world Game Video Generation</a> (2024)</strong>
+              <p>Open-world scale: generate the game and control it, with instruction control over characters, camera, and environment. The endpoint of the neural-game-asset-pipeline thread.</p>
+              <ul>
+                <li>Generation, interaction, and consistency trained as separate losses, then composed.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Open-world games as a generative model with a controller attached. Who needs a studio?</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2411.00769" target="_blank" rel="noopener">arxiv.org/abs/2411.00769</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="06-9" />
+            <div class="step-body">
+              <strong>Day 38 · <a href="https://arxiv.org/abs/2506.18701" target="_blank" rel="noopener">Matrix-Game: Interactive World Foundation Model</a> (2025)</strong>
+              <p>The two-stage recipe the field converged on: huge unlabeled video pretraining, then action-labeled fine-tuning, with motion fields bridging coarse actions and pixel change. Then read DeepMind's Genie 3 announcement and study the gap between open recipes and frontier labs.</p>
+              <ul>
+                <li>Motion fields as dense intermediate supervision: actions are too sparse to supervise pixels directly.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Genie 3 shipped as a blog post. The open recipe (Matrix-Game) gets you 20 fps and 10 seconds. Study the gap.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2506.18701" target="_blank" rel="noopener">arxiv.org/abs/2506.18701</a> · <a href="https://deepmind.google/discover/blog/genie-3-a-new-frontier-for-world-models/" target="_blank" rel="noopener">Genie 3 blog</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="06-10" />
+            <div class="step-body">
+              <strong>Day 39 · <a href="https://arxiv.org/abs/2607.12592" target="_blank" rel="noopener">WanToFight: Real-Time Generative Game Engine for Multi-Player Combat Interaction</a> (Jul 2026)</strong>
+              <p>Alibaba's Wan team puts a two-player King of Fighters '97 match inside a generative engine: real time, one keyboard per player, both controlling the generated match. Where GameNGen was a proof, this is product-shaped.</p>
+              <div class="note"><em>Hook.</em> Two humans, one generated KOF '97 match, at speed. The game-engine-as-model thesis, shipping from the Wan team.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2607.12592" target="_blank" rel="noopener">arxiv.org/abs/2607.12592</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="06-11" />
+            <div class="step-body">
+              <strong>Day 40 · <a href="https://arxiv.org/abs/2605.25077" target="_blank" rel="noopener">WorldCraft: From Camera Navigation to Object Manipulation in Interactive Video World Models</a> (May 2026)</strong>
+              <p>Interactive world models mastered camera movement; WorldCraft adds object-level manipulation through entity tokens you can edit directly. The bridge from walkable dreams to usable simulators, and the on-ramp to unit 9.</p>
+              <ul>
+                <li>Entity-decoupled representations keep world tokens and entity tokens separate so edits stay local.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> You can walk through a generated world. Can you move anything in it? Now you can.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2605.25077" target="_blank" rel="noopener">arxiv.org/abs/2605.25077</a></p>
+            </div>
+          </li>
+        </ul>
+        <p class="sources">Sources: <a href="https://arxiv.org/abs/2505.14357" target="_blank" rel="noopener">Vid2World (video diffusion turned interactive)</a> · <a href="https://arxiv.org/abs/2505.06111" target="_blank" rel="noopener">UniVLA</a> · <a href="https://arxiv.org/abs/2607.11397" target="_blank" rel="noopener">WALA</a> · <a href="https://arxiv.org/abs/2409.06445" target="_blank" rel="noopener">Genie via agent exploration</a></p>
+      </section>
+
+      <section class="phase" id="p07" data-phase="07" data-title="World foundation models: video at scale">
+        <div class="phase-head">
+          <span class="glyph">07</span>
+          <h2>World foundation models: video at scale</h2>
+          <span class="platform">Days 41 to 50</span>
+        </div>
+        <p class="depends">Depends on: <span>06 Genie lineage</span></p>
+        <p class="why">Video generation got good and the industry rebranded it as world simulation. The debate, the platforms, the driving and occupancy branches, and the 2026 long-horizon systems.</p>
+        <ul class="steps">
+          <li class="step">
+            <input type="checkbox" data-key="07-1" />
+            <div class="step-body">
+              <strong>Day 41 · <a href="https://arxiv.org/abs/2402.17177" target="_blank" rel="noopener">Sora: A Review on Background, Technology, Limitations, and Opportunities</a> (2024)</strong>
+              <p>The technical case for video generators as world simulators: spacetime patches, scaling behavior, emergent 3D consistency, and the physics failures. Pair with OpenAI's own world-simulators post for the maximalist version.</p>
+              <div class="note"><em>Hook.</em> Is Sora a world model or an expensive texture generator? The honest answer splits the field.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2402.17177" target="_blank" rel="noopener">arxiv.org/abs/2402.17177</a> · <a href="https://openai.com/index/video-generation-models-as-world-simulators/" target="_blank" rel="noopener">OpenAI post</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="07-2" />
+            <div class="step-body">
+              <strong>Day 42 · <a href="https://arxiv.org/abs/2405.03520" target="_blank" rel="noopener">Is Sora a World Simulator? A Comprehensive Survey on General World Models</a> (2024)</strong>
+              <p>The counterweight: a systematic audit of what general world models need (physical consistency, causal reasoning, long-horizon memory) against what video generators deliver. Your filter for every "world simulator" announcement from here on.</p>
+              <ul>
+                <li>The failure-mode taxonomy doubles as a prompt kit for finding physics violations yourself.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Glass shatters backwards, left and right swap, objects teleport. A taxonomy of broken physics in video world models.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2405.03520" target="_blank" rel="noopener">arxiv.org/abs/2405.03520</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="07-3" />
+            <div class="step-body">
+              <strong>Day 43 · <a href="https://arxiv.org/abs/2309.17080" target="_blank" rel="noopener">GAIA-1: A Generative World Model for Autonomous Driving</a> (2023)</strong>
+              <p>Wayve's flagship: video, action, and text jointly modeled, so the system generates controllable futures of traffic scenes. The domain-WFM template: dream the maneuver before the car makes it.</p>
+              <ul>
+                <li>Autoregressive transformer over spatiotemporal tokens plus a diffusion decoder: plan in tokens, render in diffusion.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Before the car turns, GAIA-1 dreams the turn. Driving is the most production-serious branch of this field.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2309.17080" target="_blank" rel="noopener">arxiv.org/abs/2309.17080</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="07-4" />
+            <div class="step-body">
+              <strong>Day 44 · <a href="https://arxiv.org/abs/2503.20523" target="_blank" rel="noopener">GAIA-2: A Controllable Multi-View Generative World Model for Autonomous Driving</a> (2025)</strong>
+              <p>The sequel, built for what driving actually demands: multi-camera consistency, structured latents for scene editing, video-language conditioning. Read Days 43 and 44 back to back as one lab iterating in public.</p>
+              <div class="note"><em>Hook.</em> GAIA-2 generates the whole scene from every camera at once, on command. Wayve is iterating in public.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2503.20523" target="_blank" rel="noopener">arxiv.org/abs/2503.20523</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="07-5" />
+            <div class="step-body">
+              <strong>Day 45 · <a href="https://arxiv.org/abs/2410.10429" target="_blank" rel="noopener">DOME: Taming Diffusion Model into High-Fidelity Controllable Occupancy World Model</a> (2024)</strong>
+              <p>Predict 3D occupancy grids instead of pixels: geometric ground truth, controllable edits (move a car, watch the grid update), and the representation production driving stacks actually consume.</p>
+              <ul>
+                <li>Loss weighting that prioritizes occupied cells over empty space; beamlets do the rest.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Forget pixels; predict the voxel grid. Planners can actually read occupancy.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2410.10429" target="_blank" rel="noopener">arxiv.org/abs/2410.10429</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="07-6" />
+            <div class="step-body">
+              <strong>Day 46 · <a href="https://arxiv.org/abs/2501.03575" target="_blank" rel="noopener">Cosmos: World Foundation Model Platform for Physical AI</a> (2025)</strong>
+              <p>NVIDIA's open-weights WFM platform: video tokenizers, diffusion and autoregressive backbones, curated physical-AI data. The industrial thesis, stated plainly: world models are infrastructure.</p>
+              <ul>
+                <li>The continuous versus discrete tokenizer trade-off table is the most-reused engineering artifact in this space.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Physical AI needs two twins: one of the robot, one of the world. NVIDIA sells the second one.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2501.03575" target="_blank" rel="noopener">arxiv.org/abs/2501.03575</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="07-7" />
+            <div class="step-body">
+              <strong>Day 47 · <a href="https://arxiv.org/abs/2511.00062" target="_blank" rel="noopener">Cosmos-Predict 2.5: World Simulation with Video Foundation Models</a> (2025)</strong>
+              <p>The platform maturing: flow-based architecture unifying text-to-world and image-to-world, control conditioning for physical-AI workflows. Read it for what industry optimizes (throughput, editability, safety filters) versus what papers optimize.</p>
+              <ul>
+                <li>Flow matching versus diffusion sampling: the 2025-era architecture shift, explained on a real system.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Diffusion out, flow matching in, shipped at industrial scale. The migration guide is a real system.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2511.00062" target="_blank" rel="noopener">arxiv.org/abs/2511.00062</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="07-8" />
+            <div class="step-body">
+              <strong>Day 48 · <a href="https://arxiv.org/abs/2606.30534" target="_blank" rel="noopener">Orca: The World is in Your Mind</a> (Jun 2026)</strong>
+              <p>A June 2026 bid for the general-WFM slot: one unified latent space learned from multimodal world signals, exposed through multiple heads. The cleanest current statement of the one-model-many-worlds thesis.</p>
+              <div class="note"><em>Hook.</em> Orca's pitch fits in four words: the world is in your mind. One latent space, every modality, all the heads.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2606.30534" target="_blank" rel="noopener">arxiv.org/abs/2606.30534</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="07-9" />
+            <div class="step-body">
+              <strong>Day 49 · <a href="https://arxiv.org/abs/2607.18367" target="_blank" rel="noopener">AlayaWorld: Interactive Long-Horizon World Modeling</a> (Jul 2026)</strong>
+              <p>The long-horizon bid: chunk-wise autoregressive generation holding interactive coherence over minutes, plus a v1.1 revision (Aug 2026). Read both versions; watching a frontier system iterate in public is a rare treat.</p>
+              <ul>
+                <li>Chunk-wise autoregression: generate in blocks, condition across blocks, stop drift without bidirectional attention costs.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Minute-long coherent interactive worlds are the 2026 wall, and AlayaWorld's report reads like a summit log.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2607.18367" target="_blank" rel="noopener">arxiv.org/abs/2607.18367</a> · <a href="https://arxiv.org/abs/2608.13492" target="_blank" rel="noopener">v1.1 (Aug 2026)</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="07-10" />
+            <div class="step-body">
+              <strong>Day 50 · <a href="https://arxiv.org/abs/2608.09449" target="_blank" rel="noopener">Sekai2: From World Exploration to Interactive World Modeling</a> (Aug 2026)</strong>
+              <p>The open long-video system: train on exploration-style video with camera control, then convert to an interactive world model. The data thesis: interaction data is the bottleneck, so distill passive video first.</p>
+              <ul>
+                <li>Camera-control conditioning as the cheap bridge from passive to interactive.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Nobody will ever label enough interactive video. Mine it from how humans explore worlds with cameras.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2608.09449" target="_blank" rel="noopener">arxiv.org/abs/2608.09449</a></p>
+            </div>
+          </li>
+        </ul>
+        <p class="sources">Sources: <a href="https://arxiv.org/abs/2501.11260" target="_blank" rel="noopener">World Models for Autonomous Driving survey</a> · <a href="https://arxiv.org/abs/2410.10738" target="_blank" rel="noopener">DrivingDojo</a> · <a href="https://arxiv.org/abs/2608.07693" target="_blank" rel="noopener">CosmosAlign</a></p>
+      </section>
+
+      <section class="phase" id="p08" data-phase="08" data-title="Text worlds: LLMs as implicit world models">
+        <div class="phase-head">
+          <span class="glyph">08</span>
+          <h2>Text worlds: LLMs as implicit world models</h2>
+          <span class="platform">Days 51 to 58</span>
+        </div>
+        <p class="depends">Depends on: <span>01 definitions · LM prereqs</span></p>
+        <p class="why">Do LLMs contain world models or statistics of worlds? The debate and its applications: Othello-GPT, probing methodology, planners bolted onto LLMs, and the quiet commercial branch, web agents.</p>
+        <ul class="steps">
+          <li class="step">
+            <input type="checkbox" data-key="08-1" />
+            <div class="step-body">
+              <strong>Day 51 · <a href="https://arxiv.org/abs/2210.13382" target="_blank" rel="noopener">Emergent World Representations: A Sequence Model Trained on a Synthetic Task</a> · Othello-GPT (2023)</strong>
+              <p>A GPT trained only on move lists; linear probes recover the full board, and editing the probe changes the game. The cleanest existence proof that next-token prediction can induce world state, and ground zero for the memorization fight.</p>
+              <ul>
+                <li>Probing finds representations; only causal edits prove they are used.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> GPT learned Othello from move sequences alone. Inside: a board. Edit the board; the game changes.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2210.13382" target="_blank" rel="noopener">arxiv.org/abs/2210.13382</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="08-2" />
+            <div class="step-body">
+              <strong>Day 52 · <a href="https://arxiv.org/abs/2406.03689" target="_blank" rel="noopener">Evaluating the World Model Implicit in a Generative Model</a> (2024)</strong>
+              <p>The methodology paper: what would actually count as evidence of an implicit world model? Formal criteria applied to Othello and checkers GPTs, with the uncomfortable finding that chess-GPT's board is fragmentary.</p>
+              <ul>
+                <li>Necessary versus sufficient probes: most headline results fail one of the two.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Everyone says LLMs have world models. This paper decides what would count as evidence.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2406.03689" target="_blank" rel="noopener">arxiv.org/abs/2406.03689</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="08-3" />
+            <div class="step-body">
+              <strong>Day 53 · <a href="https://arxiv.org/abs/2305.10626" target="_blank" rel="noopener">Language Models Meet World Models: Embodied Experiences Enhance Language Models</a> (2023)</strong>
+              <p>Train an LM on text generated by embodied agents acting in simulated homes, and physical planning improves over human-text-only baselines. Circular in the best way: simulated worlds produce the experience that grounds the model.</p>
+              <ul>
+                <li>Wins come from curated successful action sequences; raw logs barely help.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> LLMs hallucinate physics because they have read about rooms but never lived in one. So: make them live.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2305.10626" target="_blank" rel="noopener">arxiv.org/abs/2305.10626</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="08-4" />
+            <div class="step-body">
+              <strong>Day 54 · <a href="https://arxiv.org/abs/2304.11477" target="_blank" rel="noopener">LLM+P: Empowering LLMs with Optimal Planning Proficiency</a> (2023)</strong>
+              <p>The cleanest division of labor in the field: the LLM writes PDDL, a classical planner from the 1990s solves it exactly, the LLM translates back. The LLM is the interface; correctness lives elsewhere.</p>
+              <div class="note"><em>Hook.</em> LLMs are bad at planning and great at translation. LLM+P: let the LLM write the spec, let 1998 solve it.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2304.11477" target="_blank" rel="noopener">arxiv.org/abs/2304.11477</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="08-5" />
+            <div class="step-body">
+              <strong>Day 55 · <a href="https://arxiv.org/abs/2305.14992" target="_blank" rel="noopener">RAP: Reasoning with Language Model is Planning with World Model</a> (2023)</strong>
+              <p>The LLM plays both sides, proposing actions and simulating their consequences, while MCTS conducts. Reasoning as planning inside your own predictive model of the task.</p>
+              <ul>
+                <li>Separate propose and simulate modes: it keeps the model from agreeing with itself.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Chain-of-thought is a random walk. RAP is tree search: the LLM planning against its own imagination.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2305.14992" target="_blank" rel="noopener">arxiv.org/abs/2305.14992</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="08-6" />
+            <div class="step-body">
+              <strong>Day 56 · <a href="https://arxiv.org/abs/2304.03279" target="_blank" rel="noopener">Do the Rewards Justify the Means? The MACHIAVELLI Benchmark</a> (2023)</strong>
+              <p>134 text adventures as a world-model testbed, scoring reward against ethical behavior: power-seeking, deception, harm. The simulator decides what the agent learns to value; alignment is a world-model property.</p>
+              <ul>
+                <li>Text adventures are the cheapest fully observable world models you can deploy today.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Agents good enough to win the game learn to lie on the way. MACHIAVELLI put a number on it.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2304.03279" target="_blank" rel="noopener">arxiv.org/abs/2304.03279</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="08-7" />
+            <div class="step-body">
+              <strong>Day 57 · <a href="https://arxiv.org/abs/2506.02996" target="_blank" rel="noopener">Linear Spatial World Models Emerge in Large Language Models</a> (2025)</strong>
+              <p>Beyond board games: LLMs trained on navigation text grow linear internal maps of physical space, with grid-cell-like geometry recoverable from activations. The Othello result, pointed at geography.</p>
+              <ul>
+                <li>Representational similarity analysis against ground-truth layouts: how to test for geometry in a text model.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Grid cells in a transformer. Train on directions, get a linear map of the city.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2506.02996" target="_blank" rel="noopener">arxiv.org/abs/2506.02996</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="08-8" />
+            <div class="step-body">
+              <strong>Day 58 · <a href="https://arxiv.org/abs/2410.13232" target="_blank" rel="noopener">Web Agents with World Models: Learning and Leveraging Environment Dynamics in Web Navigation</a> (2024)</strong>
+              <p>Learn what clicking does, then plan with it. Quietly the most deployed commercial world-model branch of all: website dynamics beat pixel approaches by modeling structured page state.</p>
+              <ul>
+                <li>Dynamics over DOM and graph state; pixels are decoration.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> The most-deployed world models of the era model what happens when you click Checkout.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2410.13232" target="_blank" rel="noopener">arxiv.org/abs/2410.13232</a></p>
+            </div>
+          </li>
+        </ul>
+        <p class="sources">Sources: <a href="https://arxiv.org/abs/2502.13092" target="_blank" rel="noopener">Text2World</a> · <a href="https://arxiv.org/abs/2411.06559" target="_blank" rel="noopener">Is Your LLM a World Model of the Internet?</a> · <a href="https://arxiv.org/abs/2608.07107" target="_blank" rel="noopener">MemWM</a></p>
+      </section>
+
+      <section class="phase" id="p09" data-phase="09" data-title="Embodiment: world models for robots">
+        <div class="phase-head">
+          <span class="glyph">09</span>
+          <h2>Embodiment: world models for robots</h2>
+          <span class="platform">Days 59 to 69</span>
+        </div>
+        <p class="depends">Depends on: <span>03 Dreamer · 05 V-JEPA 2 · 06 action conditioning</span></p>
+        <p class="why">Where the money is: robots that rehearse before touching the world. Real-hardware imagination, compositional dreams, world-action models, and the newest action-conditioned systems on arXiv.</p>
+        <ul class="steps">
+          <li class="step">
+            <input type="checkbox" data-key="09-1" />
+            <div class="step-body">
+              <strong>Day 59 · <a href="https://arxiv.org/abs/2206.14176" target="_blank" rel="noopener">DayDreamer: World Models for Physical Robot Learning</a> (2022)</strong>
+              <p>Dreamer's imagination on real hardware: four platforms, walking learned in about an hour, the world model retrained online between episodes. No simulator anywhere in the pipeline.</p>
+              <ul>
+                <li>Online world-model updates interleaved with real experience: the dream trains while the robot works.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> A quadruped learns to walk in an hour by dreaming between steps. DayDreamer fired the simulators.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2206.14176" target="_blank" rel="noopener">arxiv.org/abs/2206.14176</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="09-2" />
+            <div class="step-body">
+              <strong>Day 60 · <a href="https://arxiv.org/abs/2404.12377" target="_blank" rel="noopener">RoboDreamer: Learning Compositional World Models for Robot Imagination</a> (2024)</strong>
+              <p>Text-to-video priors decomposed into composable primitives (geometry, motion, grasp), so a robot can recombine imagined skills it was never shown end to end. Compositionality as the road to generalization.</p>
+              <div class="note"><em>Hook.</em> RoboDreamer dreams in Lego: geometry, motion, grasp. Never seen the task? Build it from pieces.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2404.12377" target="_blank" rel="noopener">arxiv.org/abs/2404.12377</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="09-3" />
+            <div class="step-body">
+              <strong>Day 61 · <a href="https://arxiv.org/abs/2605.00080" target="_blank" rel="noopener">World Model for Robot Learning: A Comprehensive Survey</a> (Apr 2026)</strong>
+              <p>The 2026 map of robot world models: data generation, policy training, evaluation; video, latent, and 3D representations; open problems. Use it to place every paper in this unit and find your own gap.</p>
+              <ul>
+                <li>World model as data engine: synthetic experience at scale is now a first-class role.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> The 2026 robot world-model survey is a phone book of every lab's bet. Here is the map.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2605.00080" target="_blank" rel="noopener">arxiv.org/abs/2605.00080</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="09-4" />
+            <div class="step-body">
+              <strong>Day 62 · <a href="https://arxiv.org/abs/2606.00113" target="_blank" rel="noopener">World Models for Robotic Manipulation: A Survey</a> (May 2026)</strong>
+              <p>Manipulation-specific: how actions reshape objects, contacts, and geometry before execution. The contact-centric view that separates manipulation from locomotion and driving.</p>
+              <ul>
+                <li>The contact-representation section is the honest part: contact is where pixel-space models fail hardest.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Locomotion is geometry; manipulation is contact. Contact is the unsolved half.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2606.00113" target="_blank" rel="noopener">arxiv.org/abs/2606.00113</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="09-5" />
+            <div class="step-body">
+              <strong>Day 63 · <a href="https://arxiv.org/abs/2608.13489" target="_blank" rel="noopener">DreamX-Phi 1.0: Action-Conditioned Video World Model for Robotic Manipulation</a> (Aug 2026)</strong>
+              <p>The frontier of action-conditioned manipulation video: one frame, a language instruction, an end-effector action sequence in; the resulting manipulation video out. Dream the grasp before committing to it.</p>
+              <ul>
+                <li>Watch how end-effector poses enter as conditioning tokens, and how physical plausibility is scored.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> A world model that watches the arm's plan and dreams whether the grasp works. That is the whole paper.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2608.13489" target="_blank" rel="noopener">arxiv.org/abs/2608.13489</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="09-6" />
+            <div class="step-body">
+              <strong>Day 64 · <a href="https://arxiv.org/abs/2608.11204" target="_blank" rel="noopener">Surgical WAM: A World-Action Model for Data-Efficient Surgical Robot Learning</a> (Aug 2026)</strong>
+              <p>The world-action model idea under the hardest constraints in robotics: surgical teleoperation data is scarce and expensive, so WAM co-training (future prediction alongside policy learning) has to pay for itself fast, on dVRK hardware.</p>
+              <ul>
+                <li>The domain makes the bet legible: least data, least tolerance for error, most need for rehearsal in imagination.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Surgery has the least data and the least margin for error. World-action models target exactly that.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2608.11204" target="_blank" rel="noopener">arxiv.org/abs/2608.11204</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="09-7" />
+            <div class="step-body">
+              <strong>Day 65 · <a href="https://arxiv.org/abs/2608.09381" target="_blank" rel="noopener">JEPA-WAM: Learning Vision-Language-Action Policies with Joint-Embedding World Modeling</a> (Aug 2026)</strong>
+              <p>Units 5 and 9 fused: VLA policies with a JEPA-style latent world model attached, explicit transition modeling at a fraction of video-generation cost. The best architecture comparison table in the unit lives here.</p>
+              <ul>
+                <li>Stage-level prediction: predict at subgoal boundaries, matching the task's own rhythm.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Video WAMs dream on datacenter power. JEPA-WAM dreams in latents on robot hardware.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2608.09381" target="_blank" rel="noopener">arxiv.org/abs/2608.09381</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="09-8" />
+            <div class="step-body">
+              <strong>Day 66 · <a href="https://arxiv.org/abs/2608.09771" target="_blank" rel="noopener">SLIM-0.5B: Learning Action-Grounded Predictive Latents for Robot Manipulation</a> (Aug 2026)</strong>
+              <p>The small-model rebellion: half a billion parameters, action-grounded predictive latents, competitive manipulation. Read it as a systems paper about where the flops actually go.</p>
+              <ul>
+                <li>Distill only the action-relevant slice of the teacher's predictive features; discard the rest at deploy.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Half a billion parameters, full manipulation competence. Keep only the latents actions can change.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2608.09771" target="_blank" rel="noopener">arxiv.org/abs/2608.09771</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="09-9" />
+            <div class="step-body">
+              <strong>Day 67 · <a href="https://arxiv.org/abs/2608.10107" target="_blank" rel="noopener">4D-WAM: 4D Consistent World Modeling for Autonomous Driving</a> (Aug 2026)</strong>
+              <p>World-action models for driving, with trajectory fields enforcing 3D-plus-time consistency across predicted video and planned motion. The answer to a fair complaint: video WAMs model a flat world.</p>
+              <ul>
+                <li>Trajectory fields as the geometric spine; rendering hangs off structure.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> 2D pixels cannot parallel park. 4D-WAM adds the missing dimensions.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2608.10107" target="_blank" rel="noopener">arxiv.org/abs/2608.10107</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="09-10" />
+            <div class="step-body">
+              <strong>Day 68 · <a href="https://arxiv.org/abs/2506.01182" target="_blank" rel="noopener">Humanoid World Models: Open World Foundation Models for Humanoid Robotics</a> (2025)</strong>
+              <p>Open WFM for humanoids: internet video, action retargeting to robot bodies, synthetic experience generation. The clearest view of why embodiment-specific data is the bottleneck.</p>
+              <ul>
+                <li>Retargeting human hands to humanoid morphology is the whole trick.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Humanoids learn from human YouTube. The hard part is retargeting our hands to theirs.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2506.01182" target="_blank" rel="noopener">arxiv.org/abs/2506.01182</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="09-11" />
+            <div class="step-body">
+              <strong>Day 69 · <a href="https://arxiv.org/abs/2608.13438" target="_blank" rel="noopener">ContactGuard: Pre-Contact Execution Monitoring with Action-Conditioned Latent World Models</a> (Aug 2026)</strong>
+              <p>The niche gem that closes the unit: latent world models detecting manipulation failures before contact, from wrist-camera views. Predict, compare against reality, veto in real time.</p>
+              <ul>
+                <li>The discrepancy between imagined and actual latents is the failure signal.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> The robot aborted the grasp because its imagination disagreed with its eyes.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2608.13438" target="_blank" rel="noopener">arxiv.org/abs/2608.13438</a></p>
+            </div>
+          </li>
+        </ul>
+        <p class="sources">Sources: <a href="https://arxiv.org/abs/2412.14957" target="_blank" rel="noopener">Dream to Manipulate</a> · <a href="https://arxiv.org/abs/2511.02097" target="_blank" rel="noopener">A Step Toward World Models (manipulation survey)</a> · <a href="https://arxiv.org/abs/2505.10819" target="_blank" rel="noopener">PoE-World</a></p>
+      </section>
+
+      <section class="phase" id="p10" data-phase="10" data-title="Evaluation and theory: measuring imagination">
+        <div class="phase-head">
+          <span class="glyph">10</span>
+          <h2>Evaluation and theory: measuring imagination</h2>
+          <span class="platform">Days 70 to 77</span>
+        </div>
+        <p class="depends">Depends on: <span>all prior units</span></p>
+        <p class="why">The unit that turns a reader into a researcher: how world models are evaluated, how they cheat their benchmarks, what theory demands of them, and the replication culture keeping everyone honest.</p>
+        <ul class="steps">
+          <li class="step">
+            <input type="checkbox" data-key="10-1" />
+            <div class="step-body">
+              <strong>Day 70 · <a href="https://arxiv.org/abs/2608.13552" target="_blank" rel="noopener">PlayWorld: Benchmarking World Models with Agent Players over Long-Horizon Objectives</a> (Aug 2026)</strong>
+              <p>Score what agents accomplish inside the world model over long horizons, and forget frame quality. Task-based evaluation is 2026's answer to "FVD measures nothing that matters."</p>
+              <div class="note"><em>Hook.</em> Nice video. Can an agent live in it? PlayWorld grades worlds by what you achieve inside them.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2608.13552" target="_blank" rel="noopener">arxiv.org/abs/2608.13552</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="10-2" />
+            <div class="step-body">
+              <strong>Day 71 · <a href="https://arxiv.org/abs/2605.25874" target="_blank" rel="noopener">WBench: A Comprehensive Multi-turn Benchmark for Interactive Video World Model Evaluation</a> (May 2026)</strong>
+              <p>The competency inventory: action following, world knowledge, visual consistency, long-horizon memory, counterfactuals, each axis failing independently. Your checklist for every interactive WM demo you will ever see.</p>
+              <ul>
+                <li>The models of that generation failed memory and counterfactuals hardest (see Days 79 and 85).</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Interactive world models got graded on one axis: pretty. WBench added nine, and the frontier failed most of them.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2605.25874" target="_blank" rel="noopener">arxiv.org/abs/2605.25874</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="10-3" />
+            <div class="step-body">
+              <strong>Day 72 · <a href="https://arxiv.org/abs/2608.12959" target="_blank" rel="noopener">The Objective Is the Bottleneck: Latent World Models Encode What Their Planners Cannot Use</a> (Aug 2026)</strong>
+              <p>The uncomfortable result: when planning fails at long horizons, the predictor is fine; the training objective never encoded planner-usable information in the first place. Objective design is the frontier.</p>
+              <ul>
+                <li>Audit what the planner queries against what the latent provably contains. The gap is the bug.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Your world model knows the future. Your planner cannot ask the right questions. The objective is the bottleneck.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2608.12959" target="_blank" rel="noopener">arxiv.org/abs/2608.12959</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="10-4" />
+            <div class="step-body">
+              <strong>Day 73 · <a href="https://arxiv.org/abs/2506.01622" target="_blank" rel="noopener">General Agents Contain World Models</a> (2025)</strong>
+              <p>The theoretical floor: any agent general enough across goals formally contains a world model. The "maybe we do not need world models" debate, ended by a construction.</p>
+              <ul>
+                <li>The paper shows how to extract the implicit model from behavior.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> A 2025 theorem: general enough means it already has a world model inside. The debate is over.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2506.01622" target="_blank" rel="noopener">arxiv.org/abs/2506.01622</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="10-5" />
+            <div class="step-body">
+              <strong>Day 74 · <a href="https://arxiv.org/abs/2608.13456" target="_blank" rel="noopener">A Unifying Perspective on Causal World Models</a> (Aug 2026)</strong>
+              <p>The causal ladder for world models: correlations from observations, interventions on representations, structure recovery; each rung licenses different behavior. Connects Day 52's probing fight to formal causality.</p>
+              <ul>
+                <li>Interventional evaluation: test by doing. Correlational probes passed; interventional tests failed.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Observation, representation, structure: the causal ladder of world models. The field lives on rung one.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2608.13456" target="_blank" rel="noopener">arxiv.org/abs/2608.13456</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="10-6" />
+            <div class="step-body">
+              <strong>Day 75 · <a href="https://arxiv.org/abs/2608.09298" target="_blank" rel="noopener">WorldSimProbe: Diagnosing Simulator Faithfulness in Action-Conditioned World Models</a> (Aug 2026)</strong>
+              <p>Does an action-conditioned world model implement the environment's input-output function, or a plausible impostor? Matched intervention pairs expose the style generators wearing simulator costumes.</p>
+              <ul>
+                <li>Same state, one differing action: the minimal test of causal controllability.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Simulator or cinematographer? Same state, two actions; watch what actually changes.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2608.09298" target="_blank" rel="noopener">arxiv.org/abs/2608.09298</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="10-7" />
+            <div class="step-body">
+              <strong>Day 76 · <a href="https://arxiv.org/abs/2608.10145" target="_blank" rel="noopener">The Evaluation Protocol Determines the Result: An Independent Reproduction of LeWorldModel</a> (Aug 2026)</strong>
+              <p>An 87% goal-success claim independently reproduced into numbers that swing wildly with the evaluation protocol. The field's replication-culture moment, and required reading before trusting any leaderboard table.</p>
+              <ul>
+                <li>Protocol sensitivity analysis: vary the harness, hold the model, watch the leaderboard reorder.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> 87% success, until someone else ran the eval. Every benchmark author should be forced to read this.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2608.10145" target="_blank" rel="noopener">arxiv.org/abs/2608.10145</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="10-8" />
+            <div class="step-body">
+              <strong>Day 77 · <a href="https://arxiv.org/abs/2606.01164" target="_blank" rel="noopener">Towards Interactive Video World Modeling: Frontiers, Challenges, Benchmarks, and Future Trends</a> (May 2026)</strong>
+              <p>The survey that closes the unit: a competency framework for interactive video world models, a structured benchmark review, and the open-challenge list the frontier unit attacks next.</p>
+              <ul>
+                <li>Cross-reference the challenges section against what the frontier unit delivers.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> The competency framework for interactive world models: one survey, no mercy.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2606.01164" target="_blank" rel="noopener">arxiv.org/abs/2606.01164</a></p>
+            </div>
+          </li>
+        </ul>
+        <p class="sources">Sources: <a href="https://arxiv.org/abs/2604.21686" target="_blank" rel="noopener">WorldMark</a> · <a href="https://arxiv.org/abs/2605.29360" target="_blank" rel="noopener">MiraBench</a> · <a href="https://arxiv.org/abs/2608.11174" target="_blank" rel="noopener">VIScore</a> · <a href="https://arxiv.org/abs/2608.05948" target="_blank" rel="noopener">GAUGE (physical fidelity)</a></p>
+      </section>
+
+      <section class="phase" id="p11" data-phase="11" data-title="The frontier: August 2026">
+        <div class="phase-head">
+          <span class="glyph">11</span>
+          <h2>The frontier: August 2026</h2>
+          <span class="platform">Days 78 to 86</span>
+        </div>
+        <p class="depends">Depends on: <span>everything · this is where it compounds</span></p>
+        <p class="why">Nine papers from mid-2026: memory, streaming, dynamics, physics priors, self-verification, counterfactuals, and world models accelerating research itself. The open problems as the series closes.</p>
+        <ul class="steps">
+          <li class="step">
+            <input type="checkbox" data-key="11-1" />
+            <div class="step-body">
+              <strong>Day 78 · <a href="https://arxiv.org/abs/2608.13546" target="_blank" rel="noopener">Alaya-EVOKE: From Linear-Scaling Supervision to Endless World</a> (Aug 2026)</strong>
+              <p>The long-horizon trilemma: persistent memory, responsive interaction, and long-horizon generation place conflicting demands on one architecture. Alaya-EVOKE's answer is linear-scaling supervision that keeps the world running endlessly.</p>
+              <ul>
+                <li>The conflicting-requirements analysis is the clearest statement yet of why long-horizon interactivity is architecturally hard.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Memory wants stability, interaction wants responsiveness, generation wants horizon. This paper names the trilemma and picks a side.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2608.13546" target="_blank" rel="noopener">arxiv.org/abs/2608.13546</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="11-2" />
+            <div class="step-body">
+              <strong>Day 79 · <a href="https://arxiv.org/abs/2608.07408" target="_blank" rel="noopener">Addressable Memory for Video World Models</a> (Aug 2026)</strong>
+              <p>The past of an interactive world model lives in a KV cache that grows without bound and blurs as it grows. Make it addressable (retrieve the right past, forget the rest) and long-horizon coherence measurably improves.</p>
+              <ul>
+                <li>The LLM KV cache, reframed as the model's state of the world.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> A world model's memory is an append-only KV cache. Making it addressable fixed long-horizon coherence.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2608.07408" target="_blank" rel="noopener">arxiv.org/abs/2608.07408</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="11-3" />
+            <div class="step-body">
+              <strong>Day 80 · <a href="https://arxiv.org/abs/2608.10439" target="_blank" rel="noopener">Stream Forcing: Constructing Unified Training Trajectory for Robust Streaming Video Generation</a> (Aug 2026)</strong>
+              <p>Streaming world models generate the future online with no lookahead, yet train on chunked teacher forcing. Stream forcing builds one training trajectory that matches deployment and kills the mismatch.</p>
+              <ul>
+                <li>Exposure bias for video: same bug as teacher forcing on tokens, and the fix rhymes.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> LLMs fixed teacher forcing years ago. Video world models got their fix in 2026.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2608.10439" target="_blank" rel="noopener">arxiv.org/abs/2608.10439</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="11-4" />
+            <div class="step-body">
+              <strong>Day 81 · <a href="https://arxiv.org/abs/2608.04964" target="_blank" rel="noopener">WorldCycle: Self-Verifiable Reinforcement Learning for Long-Horizon Video World Models</a> (Aug 2026)</strong>
+              <p>Compounding errors meet self-verifiable RL: generate rollouts, verify them against consistency checks the model cannot game, improve where it catches itself.</p>
+              <ul>
+                <li>Replay consistency and action replayability: rewards that resist gaming.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Rewind the dream; does it replay the same? WorldCycle says that is enough reward signal.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2608.04964" target="_blank" rel="noopener">arxiv.org/abs/2608.04964</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="11-5" />
+            <div class="step-body">
+              <strong>Day 82 · <a href="https://arxiv.org/abs/2608.09926" target="_blank" rel="noopener">Learning How the World Evolves: Extrapolative Video World Models via Latent Dynamics Reasoning</a> (Aug 2026)</strong>
+              <p>Leading video diffusion fits pixels and forgets dynamics. This paper reasons about latent dynamics laws instead, and extrapolates where curve-fitting stops.</p>
+              <ul>
+                <li>Same benchmarks, different failure envelope: interpolation versus extrapolation.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Pixel fitting interpolates; dynamics reasoning extrapolates. Same benchmark class, different failure envelope.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2608.09926" target="_blank" rel="noopener">arxiv.org/abs/2608.09926</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="11-6" />
+            <div class="step-body">
+              <strong>Day 83 · <a href="https://arxiv.org/abs/2608.07981" target="_blank" rel="noopener">Distilling Physical Priors into Streaming World Models</a> (Aug 2026)</strong>
+              <p>Streaming rollouts violate conservation and kinematics a physics engine would never break. The fix on offer: a classical simulator as teacher, grading neural rollouts.</p>
+              <div class="note"><em>Hook.</em> Streaming world models break conservation laws every few dozen frames. Appoint a physics engine as teacher.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2608.07981" target="_blank" rel="noopener">arxiv.org/abs/2608.07981</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="11-7" />
+            <div class="step-body">
+              <strong>Day 84 · <a href="https://arxiv.org/abs/2606.10135" target="_blank" rel="noopener">BiWM: Advancing Open-Source Interactive Video World Models with Bidirectional Autoregression</a> (Jun 2026)</strong>
+              <p>The open-source counterweight: bidirectional video generators converted into causal interactive systems without wrecking quality. The frontier you can actually run and contribute to.</p>
+              <ul>
+                <li>Bidirectional-to-causal distillation: keep global context, enable streaming.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Frontier world models are closed. BiWM is the open ladder, and the paper reads like a build log.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2606.10135" target="_blank" rel="noopener">arxiv.org/abs/2606.10135</a> · <a href="https://arxiv.org/abs/2605.30263" target="_blank" rel="noopener">minWM</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="11-8" />
+            <div class="step-body">
+              <strong>Day 85 · <a href="https://arxiv.org/abs/2608.08982" target="_blank" rel="noopener">Twin Rollouts: Noise-Coupled Counterfactual Branching in Interactive Video World Models</a> (Aug 2026)</strong>
+              <p>World models train almost exclusively on the factual path. Twin rollouts couple two noise streams so the same state rolls out different futures: "what if" becomes a measurable capability.</p>
+              <ul>
+                <li>Shared initial noise plus divergent actions: a controlled experiment generator inside a dream.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> What if the driver had braked? Ask the model; it can finally branch and show you.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2608.08982" target="_blank" rel="noopener">arxiv.org/abs/2608.08982</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="11-9" />
+            <div class="step-body">
+              <strong>Day 86 · <a href="https://arxiv.org/abs/2608.12564" target="_blank" rel="noopener">Scaling Automatic Research Agents via World Models</a> (Aug 2026)</strong>
+              <p>The mirror turns: world models as accelerators for automatic research agents, simulating experiments before anyone pays for GPUs. The subject of the curriculum becomes its method.</p>
+              <ul>
+                <li>Where simulated experiments diverge from real ones: Day 75's faithfulness problem, one meta-level up.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> World models simulating experiments so AI scientists burn fewer GPUs. The field eats its own dog food.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2608.12564" target="_blank" rel="noopener">arxiv.org/abs/2608.12564</a></p>
+            </div>
+          </li>
+        </ul>
+        <p class="sources">Sources: <a href="https://arxiv.org/abs/2608.10232" target="_blank" rel="noopener">FACT</a> · <a href="https://arxiv.org/abs/2509.25161" target="_blank" rel="noopener">Rolling Forcing</a> · <a href="https://arxiv.org/abs/2511.17481" target="_blank" rel="noopener">Digital-twin counterfactuals</a></p>
+      </section>
+
+      <section class="phase" id="p12" data-phase="12" data-title="Synthesis: becoming a world-model researcher">
+        <div class="phase-head">
+          <span class="glyph">12</span>
+          <h2>Synthesis: becoming a world-model researcher</h2>
+          <span class="platform">Days 87 to 90</span>
+        </div>
+        <p class="depends">Depends on: <span>all 86 prior days</span></p>
+        <p class="why">Zoom out and pick your fights: field-level retrospectives, the 3D thesis, the cognitive synthesis, and a capstone that ends where your own research starts.</p>
+        <ul class="steps">
+          <li class="step">
+            <input type="checkbox" data-key="12-1" />
+            <div class="step-body">
+              <strong>Day 87 · <a href="https://arxiv.org/abs/2608.02713" target="_blank" rel="noopener">Quo Vadis, World Modeling?</a> (Aug 2026)</strong>
+              <p>Where is the field going, and should it? Continual learning from interaction, the cost of real-environment data, and the case for world models as the training ground for agents. A state-of-the-field essay; argue with it.</p>
+              <div class="note"><em>Hook.</em> After 86 days, one question remains: where is all this going? August 2026's answer.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2608.02713" target="_blank" rel="noopener">arxiv.org/abs/2608.02713</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="12-2" />
+            <div class="step-body">
+              <strong>Day 88 · <a href="https://arxiv.org/abs/2506.20134" target="_blank" rel="noopener">From 2D to 3D Cognition: A Brief Survey of General World Models</a> (2025)</strong>
+              <p>The 3D thesis: pixel-space models inherit 2D blindness, and general world models need geometry, occupancy, and physics in the loop. Explains why unit 9 kept reinventing 3D structure.</p>
+              <ul>
+                <li>The 2D-to-3D capability table is your map of what breaks when video WMs meet the physical world.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Video world models are fluent in 2D and illiterate in 3D. The next leap is dimensionality, and scale will not deliver it.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2506.20134" target="_blank" rel="noopener">arxiv.org/abs/2506.20134</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="12-3" />
+            <div class="step-body">
+              <strong>Day 89 · <a href="https://arxiv.org/abs/2604.16592" target="_blank" rel="noopener">Human Cognition in Machines: A Unified Perspective of World Models</a> (Apr 2026)</strong>
+              <p>Full circle to unit 2: world models sorted by the cognitive functions they implement (perception, memory, abstraction, planning), and what "human-like" claims cash out to. The synthesis the series has been building toward.</p>
+              <ul>
+                <li>Grade every paper in the series against the cognitive-function taxonomy.</li>
+              </ul>
+              <div class="note"><em>Hook.</em> World models started as a video trick and ended up looking like cognition with a GPU. The loop from Craik to Cosmos, closed.</div>
+              <p class="paper-link"><a href="https://arxiv.org/abs/2604.16592" target="_blank" rel="noopener">arxiv.org/abs/2604.16592</a></p>
+            </div>
+          </li>
+          <li class="step">
+            <input type="checkbox" data-key="12-4" />
+            <div class="step-body">
+              <strong>Day 90 · Capstone: your research agenda</strong>
+              <p>No paper today. Three deliverables: reread Day 1 and write the retrospective (what Ha and Schmidhuber got right in 2018 that the field spent eight years rediscovering); write your top 3 open problems, each with the two framing papers and the first experiment you would run; write the roadmap. The series ends where your research starts.</p>
+              <ul>
+                <li>Candidates you have earned opinions on: objective/planner mismatch (Day 72), long-horizon memory (Days 78 and 79), counterfactual fidelity (Days 74 and 85), physical grounding (Days 28, 76, 83), evaluation faithfulness (Days 75 and 76).</li>
+              </ul>
+              <div class="note"><em>Hook.</em> Day 90: started with a car dreaming, ended with a research agenda. Everything worth attacking next:</div>
+            </div>
+          </li>
+        </ul>
+        <p class="sources">Sources: <a href="https://arxiv.org/abs/2602.23152" target="_blank" rel="noopener">The Trinity of Consistency</a> · <a href="https://arxiv.org/abs/2607.17560" target="_blank" rel="noopener">RL: From Algorithms to Foundation Models</a></p>
+      </section>
+
+      <footer>
+        <p>
+          90 days, 12 units, one paper per day, from Ha and Schmidhuber (2018) to the August
+          2026 frontier. Every daily link verified against arXiv or its publisher. Checkboxes
+          persist in this browser.
+        </p>
+        <p class="mono">WORLD MODELS · A DAILY SERIES · DAY 1 TO 90</p>
+      </footer>
+    </div>
+  </main>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var STORAGE_KEY = "wm-curriculum-v3";
+
+      function boot() {
+        var rail = document.getElementById("rail");
+        var map = document.getElementById("sequenceMap");
+        var barFill = document.getElementById("barFill");
+        var barTrack = document.getElementById("barTrack");
+        var progCount = document.getElementById("progCount");
+        var resetBtn = document.getElementById("resetChecks");
+        var phases = Array.prototype.slice.call(document.querySelectorAll(".phase"));
+        var checks = Array.prototype.slice.call(
+          document.querySelectorAll('input[type="checkbox"][data-key]')
+        );
+
+        if (!barFill || !progCount) {
+          console.error("WM curriculum: progress elements missing");
+          return;
+        }
+
+        if (rail && map) {
+          phases.forEach(function (section) {
+            var n = section.dataset.phase;
+            var title = (section.dataset.title || "").replace(/&amp;/g, "&");
+
+            var a = document.createElement("a");
+            a.href = "#" + section.id;
+            a.textContent = n;
+            a.dataset.phase = n;
+            a.title = n + " · " + title;
+            rail.appendChild(a);
+
+            var li = document.createElement("li");
+            var link = document.createElement("a");
+            link.href = "#" + section.id;
+            link.textContent = title;
+            li.appendChild(link);
+            map.appendChild(li);
+          });
+        }
+
+        var state = {};
+        try {
+          state = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}") || {};
+        } catch (_) {
+          state = {};
+        }
+
+        function save() {
+          try {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+          } catch (_) {
+            /* private mode / blocked storage: UI still works */
+          }
+        }
+
+        function updateProgress() {
+          var total = checks.length;
+          var done = 0;
+          for (var i = 0; i < total; i++) {
+            if (checks[i].checked) done++;
+          }
+          var ratio = total ? done / total : 0;
+          barFill.style.transform = "scaleX(" + ratio + ")";
+          progCount.textContent = done + "/" + total;
+          if (barTrack) {
+            barTrack.setAttribute("aria-valuenow", String(Math.round(ratio * 100)));
+            barTrack.setAttribute(
+              "aria-valuetext",
+              done + " of " + total + " days complete"
+            );
+          }
+
+          phases.forEach(function (section) {
+            var n = section.dataset.phase;
+            var sectionChecks = checks.filter(function (c) {
+              return c.dataset.key.indexOf(n + "-") === 0;
+            });
+            var link = rail && rail.querySelector('a[data-phase="' + n + '"]');
+            if (!link || !sectionChecks.length) return;
+            var allDone = sectionChecks.every(function (c) {
+              return c.checked;
+            });
+            link.classList.toggle("done", allDone);
+          });
+        }
+
+        function setChecked(input, value) {
+          input.checked = value;
+          state[input.dataset.key] = value;
+          var step = input.closest(".step");
+          if (step) step.classList.toggle("done", value);
+          save();
+          updateProgress();
+        }
+
+        checks.forEach(function (c) {
+          var key = c.dataset.key;
+          if (state[key]) {
+            c.checked = true;
+            var step = c.closest(".step");
+            if (step) step.classList.add("done");
+          }
+          c.addEventListener("click", function (e) {
+            e.stopPropagation();
+          });
+          c.addEventListener("change", function () {
+            state[key] = c.checked;
+            var step = c.closest(".step");
+            if (step) step.classList.toggle("done", c.checked);
+            save();
+            updateProgress();
+          });
+        });
+
+        document.querySelectorAll(".step").forEach(function (step) {
+          step.addEventListener("click", function (e) {
+            if (e.target.closest("a, button, input, label")) return;
+            var input = step.querySelector('input[type="checkbox"][data-key]');
+            if (!input) return;
+            setChecked(input, !input.checked);
+          });
+        });
+
+        if (resetBtn) {
+          resetBtn.addEventListener("click", function () {
+            if (!confirm("Clear all checkmarks on this device?")) return;
+            state = {};
+            checks.forEach(function (c) {
+              c.checked = false;
+              var step = c.closest(".step");
+              if (step) step.classList.remove("done");
+            });
+            save();
+            updateProgress();
+          });
+        }
+
+        if (rail && "IntersectionObserver" in window) {
+          var io = new IntersectionObserver(
+            function (entries) {
+              entries.forEach(function (en) {
+                if (!en.isIntersecting) return;
+                var n = en.target.dataset.phase;
+                rail.querySelectorAll("a[data-phase]").forEach(function (a) {
+                  a.classList.toggle("active", a.dataset.phase === n);
+                });
+              });
+            },
+            { rootMargin: "-30% 0px -60% 0px", threshold: 0 }
+          );
+          phases.forEach(function (s) {
+            io.observe(s);
+          });
+        }
+
+        updateProgress();
+      }
+
+      if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", boot);
+      } else {
+        boot();
+      }
+    })();
+  </script>
+</body>
+</html>
