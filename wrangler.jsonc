@@ -42,6 +42,8 @@
       "/resume",
       "/modkeys",
       "/cli",
+      "/curriculum",
+      "/curriculum/",
       "/observatory",
       "/blog",
       "/blog/*",

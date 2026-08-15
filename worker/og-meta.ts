@@ -122,6 +122,15 @@ const PAGES: Record<string, PageMeta> = {
     siteName: "NurCLI",
     favicon: "/assets/nodes/nur-cli-logo.png",
   },
+  curriculum: {
+    title: "World Models: A Daily Series",
+    description:
+      "90 days, one paper a day: from a car dreaming to the frontier. Model-based RL, JEPA, generative interactive environments, world foundation models, robots, and evaluation.",
+    badge: "CURRICULUM",
+    path: "/curriculum",
+    image: `${SITE}/opengraph.jpg`,
+    favicon: "/favicon.svg",
+  },
   observatory: {
     title: "Observatory",
     description:

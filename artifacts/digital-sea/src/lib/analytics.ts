@@ -19,6 +19,7 @@ export const ANALYTICS_TOP_ROUTES = [
   '/resume',
   '/modkeys',
   '/cli',
+  '/curriculum',
   '/observatory',
 ] as const;
 
@@ -56,6 +57,8 @@ export function resolveAnalytics(location: string): { path: string; route: strin
       return { path: '/modkeys', route: '/modkeys' };
     case 'cli':
       return { path: '/cli', route: '/cli' };
+    case 'curriculum':
+      return { path: '/curriculum', route: '/curriculum' };
     case 'observatory':
       return { path: '/observatory', route: '/observatory' };
     case 'fin':
