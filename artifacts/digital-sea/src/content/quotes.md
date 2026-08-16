@@ -10,7 +10,7 @@
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (57)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (93)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (38)
-- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (56)
+- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (57)
 
 ## Faith, God & Surrender
 
@@ -2214,6 +2214,12 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 
 > We can lowkey start again tomorrow btw
 > — @34rths
+
+> Treat days with good sleep score like gold.
+> 
+> Lift heavy, think hard, run far.
+> — @beffjezos
+
 
 
 
