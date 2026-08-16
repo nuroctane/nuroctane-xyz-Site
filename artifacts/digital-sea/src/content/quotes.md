@@ -4,7 +4,7 @@
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (74)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (50)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (81)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (82)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (29)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (85)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (57)
@@ -1088,6 +1088,20 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 
 > If you simply choose one goal, use all your free time to pursue that, never give up, and visualise success, you will inevitably reach that goal. It's as simple as that, and you’ll get there often a lot quicker than you thought.
 > — @SolBrah
+
+> e
+> brute de force
+> @brutedeforce
+> Why are you as a grown man getting nice
+> shit so you can have even less fun?
+> Freak out if someone spills a drink in ur car,
+> anxiety about ashing your nice clothes,
+> scuffing ur watch, can't take ur nice SUV off
+> road?
+> Beyond soy
+> 11:39 AM • 8/27/22
+> — @brutedeforce
+
 
 
 
