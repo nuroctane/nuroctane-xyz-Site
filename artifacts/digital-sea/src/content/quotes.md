@@ -10,7 +10,7 @@
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (57)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (94)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (38)
-- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (57)
+- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (58)
 
 ## Faith, God & Surrender
 
@@ -2251,6 +2251,14 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > 
 > Lift heavy, think hard, run far.
 > — @beffjezos
+
+> "Ah, who will save
+> me from existing? It's
+> neither death nor life
+> that I want."
+> — Fernando Pessoa
+> — Fernando Pessoa
+
 
 
 
