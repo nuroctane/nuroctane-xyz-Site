@@ -5,7 +5,7 @@
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (74)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (50)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (82)
-- [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (29)
+- [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (30)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (85)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (57)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (94)
@@ -1216,6 +1216,10 @@ _Calling, craft, art, play, service, voice, vision, and making what only you can
 
 > get out of any “deciding what to build” phases as fast as you possibly can. follow the tendrils of light until you are out of the tunnel. don’t get distracted by moving shadows. remember.
 > — @nuroctane
+
+> kubrick has this quote about how it’s not great to try to directly teach or transfer an idea to anyone. he says something like, you need to give people an experience where they can arrive at the truth for themselves. something about doing that anchors the experience from a conceptual one to an embodied one. I get that it’s a sneaky way to teach but it’s the only real way.
+> — @hahacomputer
+
 
 ## Love, Relationships & Boundaries
 
