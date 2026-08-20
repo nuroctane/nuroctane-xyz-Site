@@ -6,10 +6,10 @@
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (50)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (82)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (30)
-- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (85)
-- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (57)
+- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (86)
+- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (58)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (94)
-- [[#Work, Wealth & Value|Work, Wealth & Value]] (38)
+- [[#Work, Wealth & Value|Work, Wealth & Value]] (39)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (58)
 
 ## Faith, God & Surrender
@@ -1448,6 +1448,42 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > Women are like if you mix 10 year year old and a psychopath.
 > — @DeletedAcc3573
 
+> When I was a junior I took an upper division course on medieval literature, and I studied together with a married Mormon woman who was 15 years older than me that I had a brief sexual fling with.
+> 
+> We swapped our final essays and had each other edit them to make them as good as we could, and both of our essays got eviscerated. The marginalia from the professor in my essay was shockingly mean and insulting, especially since the man had been more or less my mentor for about a year and a half and always so gentle and kind. But, my god, the feedback was gruesome.
+> 
+> For her essay, there was one comment that I still remember although this happened in 1998.
+> 
+> I do not remember exactly what it was about, but she was comparing two writers and said how something in their texts was "equalized". He underlined the word and said, "this is something I do to my stereo."
+> 
+> Such an unbelievably harsh and cruel bit of feedback, I thought at the time, and I've gone back to this bit of feedback several times over the decades since it happened.
+> 
+> He was right.
+> 
+> That feedback was not harsh at all. He was properly policing a boundary: diction should be appropriate to the subject matter.
+> 
+> Why does this matter?
+> 
+> Because if you talk about an LLM as a computer program, you have a very clear head about what it is, what your relationship to it is, how it will develop as a piece of technology, and how that technology will impact the world.
+> 
+> But if you talk about an LLM as a machine god, you'll end up making really dumb moves that end in your boss sticking a pager on your belt that you need to check every half hour.
+> 
+> So when you read a blog post talking about anime as a natural kind (apparently this is a real Gwern post?), you are doing the exact opposite and the end result will be a very, very confused mind.
+> 
+> You won't think you're confused--how could you be? You're rich, you're well paid, you're on the cutting edge of the most important transformative technology on Earth--you're the modern Prometheus building the replacement for humanity.
+> 
+> Except you aren't. You've metaphysically inflated your position in life, and now you're paying the cost because you've been outsmarted by someone who understands social reality much, much better than you.
+> 
+> This is what happens when you mix domains and discourses uncritically, unconsciously, unawares of what you are doing.
+> 
+> Picasso painted hyperrealistic masterpieces before turning to Cubism.
+> 
+> Master the craft before experimenting, or you're not a craftsman at all--you're just an overpaid hacker. And now you've got a pager.
+> 
+> "Cum doceas artes, sit sermo domesticus arti: Quaelibet ars gaudet propriis" - Geoffrey de Vinsauf
+> — @47fucb4r8c69323
+
+
 
 
 ## Shadow, Discernment & Protection
@@ -1622,6 +1658,12 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 
 > if you tell the truth, you'd better be funny, or they'll hate you.
 > — @signulll
+
+> Captain Newman, M.D.
+> I learned that it is the weak who are cruel, and that
+> gentleness is to be expected only from the strong.
+> — Captain Newman, MD.
+
 
 
 
@@ -2053,6 +2095,24 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 
 > To me one important aspect of intergenerational wealth is to help my child build timelines.
 > — @Maryamhasnaa
+
+> no crying in the casino
+> 
+> if you are an entrepreneur that is grinding expect to win massively. then lose it all. hit rock bottom. and get it all back
+> 
+> don't be naive enough to think everything is going to work from the jump
+> 
+> you will get scammed. backdoored by partners. hit roadblocks and go 0 to 100, 100 to 0 and so on
+> 
+> this is the price you pay for the freedom to move and think freely
+> 
+> if you thought this was some linear path to success you chose the wrong life
+> 
+> and remember… the ones still standing after all of it are the ones who were never playing for the exit
+> 
+> they do this shit for LOVE of the game
+> — @justineliaa
+
 
 
 
