@@ -9,6 +9,8 @@ from quote_image_ocr import (
     image_url_from_item,
     is_image_raindrop,
     looks_like_image_url,
+    peel_ocr_attribution,
+    quote_from_image_item,
 )
 
 
@@ -99,9 +101,90 @@ def main() -> int:
     )
 
     check(
-        clean_ocr_quote("644\nWhen I see a man infatuated with logic, I wager\nat once that he is not logical.")
-        == "When I see a man infatuated with logic, I wager\nat once that he is not logical.",
-        "leading book index is stripped from OCR",
+        clean_ocr_quote(
+            "644\nWhen I see a man infatuated with logic, I wager\nat once that he is not logical."
+        )
+        == "When I see a man infatuated with logic, I wager at once that he is not logical.",
+        "leading book index is stripped and wrap is joined",
+    )
+
+    pessoa_ocr = (
+        '"Ah, who will save\n'
+        "me from existing? It's\n"
+        "neither death nor life\n"
+        'that I want."\n'
+        "— Fernando Pessoa"
+    )
+    check(
+        clean_ocr_quote(pessoa_ocr, author="Fernando Pessoa")
+        == '"Ah, who will save me from existing? It\'s neither death nor life that I want."',
+        "Pessoa wrap joined and duplicate credit peeled",
+    )
+    body, attr = peel_ocr_attribution(pessoa_ocr)
+    check(attr == "Fernando Pessoa", "Pessoa OCR attribution peeled")
+    check("Fernando Pessoa" not in body, "peeled body has no credit line")
+
+    newman_ocr = (
+        "Captain Newman, M.D.\n"
+        "I learned that it is the weak who are cruel, and that\n"
+        "gentleness is to be expected only from the strong."
+    )
+    check(
+        clean_ocr_quote(newman_ocr, author="Captain Newman, MD.")
+        == "I learned that it is the weak who are cruel, and that gentleness is to be expected only from the strong.",
+        "title matching the credit is stripped and wrap joined",
+    )
+
+    brute_ocr = (
+        "e\n"
+        "brute de force\n"
+        "@brutedeforce\n"
+        "Why are you as a grown man getting nice\n"
+        "shit so you can have even less fun?\n"
+        "Freak out if someone spills a drink in ur car,\n"
+        "anxiety about ashing your nice clothes,\n"
+        "scuffing ur watch, can't take ur nice SUV off\n"
+        "road?\n"
+        "Beyond soy\n"
+        "11:39 AM • 8/27/22"
+    )
+    check(
+        clean_ocr_quote(brute_ocr, author="@brutedeforce")
+        == (
+            "Why are you as a grown man getting nice shit so you can have even less fun?\n"
+            "Freak out if someone spills a drink in ur car, anxiety about ashing your nice clothes, "
+            "scuffing ur watch, can't take ur nice SUV off road?\n"
+            "Beyond soy"
+        ),
+        "tweet screenshot chrome is stripped and wraps joined",
+    )
+
+    caps_poster = (
+        "HAVE THE COURAGE TO BE\n"
+        "EXACTLY WHO YOU ARE\n"
+        "WITHOUT APOLOGY."
+    )
+    check(
+        clean_ocr_quote(caps_poster) == caps_poster,
+        "intentional all-caps line breaks are kept",
+    )
+
+    pessoa_item = {
+        "type": "image",
+        "link": "https://pbs.twimg.com/media/pessoa.jpg",
+        "note": "Fernando Pessoa",
+    }
+    text, author = quote_from_image_item(
+        pessoa_item, ocr_fn=lambda _url: pessoa_ocr
+    )
+    check(
+        text == '"Ah, who will save me from existing? It\'s neither death nor life that I want."',
+        "image item OCR is cleaned before ingest",
+    )
+    check(author == "Fernando Pessoa", "raindrop note remains the credit")
+    check(
+        format_credit(author=author) == "Fernando Pessoa",
+        "cleaned Pessoa credit is attached once",
     )
 
     check(author_from_raindrop_note("Fyodor Dostoevsky") == "Fyodor Dostoevsky", "plain author")

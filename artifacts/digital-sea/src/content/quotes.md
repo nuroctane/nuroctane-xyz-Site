@@ -1,5 +1,5 @@
 ## Index
-- [[#Faith, God & Surrender|Faith, God & Surrender]] (39)
+- [[#Faith, God & Surrender|Faith, God & Surrender]] (38)
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (28)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (74)
@@ -121,9 +121,6 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 
 > the unforgivable sin is refusing forgiveness. https://t.co/ICHArluHm0
 > — @0xSero
-
-> The entire spiritual industry is a coward's invention, designed to package the most violent undertaking a human being can choose into something palatable for soft hands and weekend schedules. the actual practice, the original practice, before it was gutted and resold as self
-> — @lichthauch
 
 
 
@@ -808,8 +805,7 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 > Remember what happened the last time you didn’t listen to your intuition.
 > — @Maryamhasnaa
 
-> When I see a man infatuated with logic, I wager
-> at once that he is not logical.
+> When I see a man infatuated with logic, I wager at once that he is not logical.
 > — Luc de Clapiers, marquis de Vauvenargues
 
 
@@ -1093,17 +1089,9 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > If you simply choose one goal, use all your free time to pursue that, never give up, and visualise success, you will inevitably reach that goal. It's as simple as that, and you’ll get there often a lot quicker than you thought.
 > — @SolBrah
 
-> e
-> brute de force
-> @brutedeforce
-> Why are you as a grown man getting nice
-> shit so you can have even less fun?
-> Freak out if someone spills a drink in ur car,
-> anxiety about ashing your nice clothes,
-> scuffing ur watch, can't take ur nice SUV off
-> road?
+> Why are you as a grown man getting nice shit so you can have even less fun?
+> Freak out if someone spills a drink in ur car, anxiety about ashing your nice clothes, scuffing ur watch, can't take ur nice SUV off road?
 > Beyond soy
-> 11:39 AM • 8/27/22
 > — @brutedeforce
 
 
@@ -1659,10 +1647,8 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 > if you tell the truth, you'd better be funny, or they'll hate you.
 > — @signulll
 
-> Captain Newman, M.D.
-> I learned that it is the weak who are cruel, and that
-> gentleness is to be expected only from the strong.
-> — Captain Newman, MD.
+> I learned that it is the weak who are cruel, and that gentleness is to be expected only from the strong.
+> — Leo Rosten, *Captain Newman, M.D.*
 
 
 
@@ -2320,12 +2306,8 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > Lift heavy, think hard, run far.
 > — @beffjezos
 
-> "Ah, who will save
-> me from existing? It's
-> neither death nor life
-> that I want."
-> — Fernando Pessoa
-> — Fernando Pessoa
+> Ah, who will save me from existing? It's neither death nor life that I want.
+> — Fernando Pessoa, *The Book of Disquiet*
 
 
 

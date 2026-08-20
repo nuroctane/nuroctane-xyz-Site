@@ -49,6 +49,22 @@ AUTHOR_PREFIX_RE = re.compile(
 )
 LEADING_DASH_RE = re.compile(r"^[\-—–]+\s*")
 SOCIAL_HANDLE_RE = re.compile(r"^@?[\w.]{1,30}$")
+OCR_INDEX_RE = re.compile(r"^\d{1,6}$")
+OCR_ATTR_RE = re.compile(r"^(?:—|--|–|-)\s+(.+)$")
+OCR_TIMESTAMP_RE = re.compile(
+    r"^\d{1,2}:\d{2}(?:\s*[AP]M)\b.*$",
+    re.I,
+)
+OCR_HANDLE_LINE_RE = re.compile(r"^@[\w.]{1,30}$")
+OCR_ENGAGEMENT_RE = re.compile(
+    r"^(?:[\d,.]+[KMB]?\s+)?(?:likes?|reposts?|retweets?|quotes?|views?|replies|bookmarks?)\s*$",
+    re.I,
+)
+OCR_UI_CHROME_RE = re.compile(
+    r"^(?:show more|show this thread|translate(?:\s+to\s+\w+)?|read more|view (?:post|tweet|image))$",
+    re.I,
+)
+OCR_SENTENCE_END_RE = re.compile(r"""[.!?…]["'”’)]*$""")
 DEFAULT_SNIPOCR_PYTHON = Path(r"C:\Users\david\Laboratory\snipocr\.venv\Scripts\python.exe")
 HELPER_NAME = "_ocr_windows_helper.py"
 USER_AGENT = (
@@ -329,15 +345,114 @@ def ocr_image_url(url: str) -> str:
     return ocr_image_bytes(download_image(url))
 
 
-def clean_ocr_quote(text: str) -> str:
-    """Drop leading index-only lines (book § numbers) from OCR text."""
+def _name_key(value: str) -> str:
+    return re.sub(r"[^a-z0-9]+", "", (value or "").lower())
+
+
+def _names_match(left: str, right: str) -> bool:
+    a = _name_key(left.lstrip("@"))
+    b = _name_key(right.lstrip("@"))
+    if not a or not b:
+        return False
+    if a == b:
+        return True
+    shorter, longer = (a, b) if len(a) <= len(b) else (b, a)
+    return len(shorter) >= 8 and shorter in longer
+
+
+def _is_chrome_line(line: str) -> bool:
+    text = line.strip()
+    if not text:
+        return False
+    if OCR_TIMESTAMP_RE.match(text):
+        return True
+    if OCR_HANDLE_LINE_RE.match(text):
+        return True
+    if OCR_ENGAGEMENT_RE.match(text):
+        return True
+    if OCR_UI_CHROME_RE.match(text):
+        return True
+    return False
+
+
+def _is_leading_chrome(line: str, author: Optional[str]) -> bool:
+    text = line.strip()
+    if not text:
+        return True
+    if OCR_INDEX_RE.fullmatch(text):
+        return True
+    if len(text) == 1:
+        return True
+    if author and _names_match(text, author):
+        return True
+    return False
+
+
+def peel_ocr_attribution(text: str) -> tuple[str, Optional[str]]:
+    """Split a trailing em-dash credit out of OCR text so ingest can re-attach it once."""
     lines = [ln.rstrip() for ln in (text or "").replace("\r\n", "\n").split("\n")]
-    while lines and re.fullmatch(r"\d{1,6}", lines[0].strip()):
-        lines.pop(0)
-    while lines and not lines[0].strip():
+    while lines and not lines[-1].strip():
+        lines.pop()
+    if not lines:
+        return "", None
+    match = OCR_ATTR_RE.match(lines[-1].strip())
+    if not match:
+        return "\n".join(lines).strip(), None
+    attr = match.group(1).strip() or None
+    lines.pop()
+    while lines and not lines[-1].strip():
+        lines.pop()
+    return "\n".join(lines).strip(), attr
+
+
+def _should_join_ocr_lines(prev: str, nxt: str) -> bool:
+    prev_s = prev.rstrip()
+    nxt_s = nxt.lstrip()
+    if not prev_s or not nxt_s:
+        return False
+    if OCR_SENTENCE_END_RE.search(prev_s):
+        return False
+    first = nxt_s[:1]
+    if first.islower() or first.isdigit():
+        return True
+    if prev_s.endswith((",", ";", ":", "—", "–")):
+        return True
+    return False
+
+
+def _unwrap_ocr_lines(lines: list[str]) -> list[str]:
+    out: list[str] = []
+    for raw in lines:
+        stripped = raw.strip()
+        if not stripped:
+            if out and out[-1] != "":
+                out.append("")
+            continue
+        if out and out[-1] and _should_join_ocr_lines(out[-1], stripped):
+            out[-1] = out[-1].rstrip() + " " + stripped
+        else:
+            out.append(stripped)
+    while out and not out[0]:
+        out.pop(0)
+    while out and not out[-1]:
+        out.pop()
+    return out
+
+
+def clean_ocr_quote(text: str, *, author: Optional[str] = None) -> str:
+    """Strip screenshot chrome, duplicate credits, and hard-wrapped OCR lines."""
+    body, _peeled = peel_ocr_attribution(text)
+    lines = [ln.rstrip() for ln in (body or "").split("\n")]
+    lines = [ln for ln in lines if not _is_chrome_line(ln)]
+    while lines and _is_leading_chrome(lines[0], author):
         lines.pop(0)
     while lines and not lines[-1].strip():
         lines.pop()
+    if lines and author and _names_match(lines[-1], author):
+        lines.pop()
+        while lines and not lines[-1].strip():
+            lines.pop()
+    lines = _unwrap_ocr_lines(lines)
     return "\n".join(lines).strip()
 
 
@@ -350,8 +465,12 @@ def quote_from_image_item(
     url = image_url_from_item(item)
     if not url:
         raise RuntimeError("image raindrop has no image URL")
-    text = clean_ocr_quote((ocr_fn or ocr_image_url)(url))
+    raw = (ocr_fn or ocr_image_url)(url)
+    body, ocr_attr = peel_ocr_attribution(raw)
+    author = author_from_raindrop_note(str(item.get("note") or ""))
+    if not author and ocr_attr:
+        author = author_from_raindrop_note(ocr_attr) or ocr_attr
+    text = clean_ocr_quote(body, author=author)
     if not (text or "").strip():
         raise RuntimeError("image OCR returned empty text")
-    author = author_from_raindrop_note(str(item.get("note") or ""))
     return text, author
