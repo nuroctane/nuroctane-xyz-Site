@@ -1,5 +1,5 @@
 ## Index
-- [[#Faith, God & Surrender|Faith, God & Surrender]] (38)
+- [[#Faith, God & Surrender|Faith, God & Surrender]] (39)
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (28)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (74)
@@ -121,6 +121,10 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 
 > the unforgivable sin is refusing forgiveness. https://t.co/ICHArluHm0
 > — @0xSero
+
+> The entire spiritual industry is a coward's invention, designed to package the most violent undertaking a human being can choose into something palatable for soft hands and weekend schedules. the actual practice, the original practice, before it was gutted and resold as self
+> — @lichthauch
+
 
 
 
