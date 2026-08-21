@@ -1,5 +1,5 @@
 ## Index
-- [[#Faith, God & Surrender|Faith, God & Surrender]] (38)
+- [[#Faith, God & Surrender|Faith, God & Surrender]] (39)
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (28)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (74)
@@ -121,6 +121,10 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 
 > the unforgivable sin is refusing forgiveness. https://t.co/ICHArluHm0
 > — @0xSero
+
+> God Enters Through The Wound
+> — @sullen11111
+
 
 
 
