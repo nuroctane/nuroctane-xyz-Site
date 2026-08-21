@@ -25,17 +25,17 @@ const INSTALL: Record<
   { label: string; badge: string; cmd: string; hint: string; prompt: string }
 > = {
   windows: {
-    label: "Windows",
+    label: "Windows (source)",
     badge: "PS",
     cmd: "irm https://raw.githubusercontent.com/nuroctane/nur-cli/main/install.ps1 | iex",
-    hint: "PowerShell · builds + PATH + full stack",
+    hint: "PowerShell · installs Rust, builds from source, PATH + full stack. Prefer prebuilt? Use npx above.",
     prompt: "PS>",
   },
   unix: {
-    label: "macOS / Linux",
+    label: "macOS / Linux (source)",
     badge: "SH",
     cmd: "curl -fsSL https://raw.githubusercontent.com/nuroctane/nur-cli/main/install.sh | bash",
-    hint: "Terminal · builds from source + full stack",
+    hint: "Terminal · installs Rust, builds from source, PATH + full stack. Prefer prebuilt? Use npx above.",
     prompt: "$",
   },
 };
@@ -387,7 +387,8 @@ const FEATURE_TABS: FeatureTab[] = [
         </li>
         <li>
           <strong>vision</strong> — <code>look</code> ·{" "}
-          <code>extract_frames</code> (sparse keyframes, not spam)
+          <code>extract_frames</code> · inline images in the TUI (kitty
+          graphics protocol, sixel, iTerm2)
         </li>
         <li>
           <strong>web</strong> — <code>web_search</code> ·{" "}
@@ -438,9 +439,18 @@ const FEATURE_TABS: FeatureTab[] = [
   {
     id: "vision",
     label: "Vision",
-    blurb: "Images, video, design-from-ref.",
+    blurb: "Inline images (kitty/sixel), video, design-from-ref.",
     body: (
       <ul className="cli-feat-list">
+        <li>
+          <strong>Ctrl+V a screenshot</strong> — it renders inline in the
+          transcript via the kitty graphics protocol / sixel / iTerm2 and is
+          queued for model vision at once
+        </li>
+        <li>
+          <code>/image &lt;path&gt;</code> — show any workspace image inline +
+          attach it for vision
+        </li>
         <li>
           <code>look</code> — attach workspace images or short video so the
           model sees them
@@ -451,11 +461,8 @@ const FEATURE_TABS: FeatureTab[] = [
         </li>
         <li>Media paths in prompts auto-attach when the file exists</li>
         <li>
-          Design-from-video workflow: frames → inspect → design tokens →
-          implement
-        </li>
-        <li>
-          mp4 under ~20&nbsp;MB can go direct; longer clips prefer sparse frames
+          Theme accents: <code>[theme] accent = "#…"</code> layers a personal
+          color over every <code>/theme</code> pick
         </li>
       </ul>
     ),
@@ -2502,9 +2509,58 @@ export default function CliPage() {
             <span className="cli-h2-num">03</span> Install
           </h2>
           <p className="cli-lead">
-            One shot. Drops <code>nur</code> on your PATH, pulls runtime deps it
-            can, wires the full agent stack — then you open the TUI.
+            One command. Drops the prebuilt binary on your PATH, pulls runtime
+            deps it can, wires the full agent stack — then you open the TUI.
           </p>
+        </div>
+
+        <div className="cli-install-primary">
+          <div
+            className="cli-term cli-term--hot"
+            role="group"
+            aria-label="npx install (every OS)"
+          >
+            <div className="cli-term-bar">
+              <span className="cli-term-dots" aria-hidden>
+                <i />
+                <i />
+                <i />
+              </span>
+              <span className="cli-term-title">
+                <span className="cli-term-badge">NPX</span>
+                Every OS · prebuilt binary · no toolchain
+                <span className="cli-pill">fastest</span>
+              </span>
+              <CopyBtn
+                text={"npx nur-cli"}
+                eventLabel="install-npx"
+                label="Copy"
+              />
+            </div>
+            <button
+              type="button"
+              className="cli-term-body-btn"
+              onClick={async () => {
+                if (await copyText("npx nur-cli")) {
+                  trackEvent("Cli Copy", { label: "install-card-npx" });
+                }
+              }}
+              aria-label="Copy npx nur-cli install command"
+            >
+              <pre className="cli-term-body">
+                <code>
+                  <span className="cli-prompt">$</span>{" "}
+                  <span className="cli-cmd-text">npx nur-cli</span>
+                </code>
+              </pre>
+              <span className="cli-term-tap">click command to copy</span>
+            </button>
+            <p className="cli-term-hint">
+              Downloads the native binary from GitHub Releases (no Rust, no
+              build), installs to ~/.local/bin, runs the full stack setup. Keep
+              it: <code>npm i -g nur-cli</code>
+            </p>
+          </div>
         </div>
 
         <div
@@ -2532,7 +2588,7 @@ export default function CliPage() {
           ))}
         </div>
 
-        <div className="cli-install-primary">
+        <div className="cli-install-os">
           <InstallCard
             osKey={preferredOs}
             recommended={preferredOs === detected}
@@ -2547,7 +2603,8 @@ export default function CliPage() {
             </div>
             <p className="cli-binary-body">
               Download the prebuilt Windows binary → double-click → same full
-              install (PATH, prereqs, ecosystem), then NurCLI opens.
+              install (PATH, prereqs, ecosystem), then NurCLI opens. No npm
+              needed — or use <code>npx nur-cli</code> above.
             </p>
             <div className="cli-binary-actions">
               <a

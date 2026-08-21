@@ -648,6 +648,10 @@ html.standalone-active.cli-theme body {
   margin-bottom: 0.85rem;
 }
 
+.cli-install-os {
+  margin-bottom: 0.85rem;
+}
+
 /* terminal cards */
 .cli-term {
   border: 1px solid var(--nur-border);
