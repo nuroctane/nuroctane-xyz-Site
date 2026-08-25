@@ -4,7 +4,7 @@
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (74)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (50)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (82)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (83)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (30)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (86)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (58)
@@ -1101,6 +1101,13 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > Freak out if someone spills a drink in ur car, anxiety about ashing your nice clothes, scuffing ur watch, can't take ur nice SUV off road?
 > Beyond soy
 > — @brutedeforce
+
+> All urges are contraindicators.
+> 
+> When u get the urge to flee, that means ur standing an inch away from the finish line. Ur at the Gates of Troy. But to push through that last 1% is gonna take more out of u than the first 99%. And u subconsciously know that.
+> So close yet so far.
+> — @MrE_mssg
+
 
 
 
