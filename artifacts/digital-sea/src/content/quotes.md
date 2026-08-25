@@ -9,7 +9,7 @@
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (86)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (58)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (94)
-- [[#Work, Wealth & Value|Work, Wealth & Value]] (39)
+- [[#Work, Wealth & Value|Work, Wealth & Value]] (40)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (58)
 
 ## Faith, God & Surrender
@@ -2117,6 +2117,24 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 > 
 > they do this shit for LOVE of the game
 > — @justineliaa
+
+> I went 30k in personal CC debt over the last 2 years in pursuit of "making it" in a high risk industry while happily paying the $500 - 1k interest monthly payments all bc I knew one good ad or one good month will rinse all of that out
+> 
+> Never was frugal, travelled better than some rich phags, took care of my girl and my ppl, never skimped out, lived better than 90% of nerds on here, and always knew Id make it happen one way or another, was just a matter of time
+> 
+> Also ran the # s - what's an avg of $6k a year in interest payments to be able to spend freely with a CC? Multiply that for 2 years - $12k? Okay and? You could make that in a month, week, even a day once you have motion - and I knew this when I was making maybe $2 - 4k/mo
+> 
+> Zero limiting beliefs or scarcity mindset
+> 
+> Thats why I cant relate to brokes and poors who laments about x y or z, you were meant to be cattle
+> 
+> Meant to be a cog, doesnt concern me - and no this isnt DR copy to sell you bizopp course - straight iced coffee flow letting you know shts very obviously possible and it almost 100% a mindset issue my nigga
+> 
+> Toughen up, grab your nuts, get a beautiful girl BEFORE YOU TRY TO MAKE IT (assuming youre broke rn), and relentlessly pursue whatever goals you have (do not place physical objects as your primary goal please... all these guys are fucking tasteless lames I promise you your fav ex-bh ecom guru twitter homo is not your ideal role model)
+> 
+> Dont forget to live every week, maybe even day if you can - lastly dont be entitled. Have some self awareness ffs, youre all heathens in this category. Father shouldve raised you better but now its on you, you got this dawg
+> — @rawknuckle
+
 
 
 
