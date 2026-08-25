@@ -1,6 +1,6 @@
 ## Index
 - [[#Faith, God & Surrender|Faith, God & Surrender]] (40)
-- [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (28)
+- [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (29)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (74)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (50)
@@ -207,6 +207,10 @@ _Consciousness, time, illusion, energy, synchronicity, metaphysics, and the arch
 
 > Reality is gooey. Keep pushing and it gives.
 > — @dhh
+
+> A compiler can inject a backdoor into itself and into every future compilation of itself which is invisible in the source, i.e. the trusting trust problem (Ken Thompson, 1984).
+> — @abdimoalim_
+
 
 
 
