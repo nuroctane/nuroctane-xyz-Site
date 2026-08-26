@@ -4,7 +4,7 @@
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (74)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (50)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (84)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (85)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (30)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (86)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (58)
@@ -1114,6 +1114,10 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 
 > if you have trouble getting things done, try doing them in a hurry. you should be doing things in a hurry. if you're not engaged, you're just not being urgent enough. if you're not urgent you're not trying
 > — @yacinemtb
+
+> There is no dilemma of safe vs risky path; Assume the worst for both and pick whichever u would then regret the least.
+> — @MrE_mssg
+
 
 
 
