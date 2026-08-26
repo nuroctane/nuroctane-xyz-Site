@@ -4,7 +4,7 @@
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (74)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (50)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (83)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (84)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (30)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (86)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (58)
@@ -1111,6 +1111,10 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > When u get the urge to flee, that means ur standing an inch away from the finish line. Ur at the Gates of Troy. But to push through that last 1% is gonna take more out of u than the first 99%. And u subconsciously know that.
 > So close yet so far.
 > — @MrE_mssg
+
+> if you have trouble getting things done, try doing them in a hurry. you should be doing things in a hurry. if you're not engaged, you're just not being urgent enough. if you're not urgent you're not trying
+> — @yacinemtb
+
 
 
 
