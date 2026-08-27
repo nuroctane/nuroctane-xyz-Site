@@ -4,11 +4,11 @@
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (74)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (52)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (85)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (86)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (30)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (87)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
-- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (96)
+- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (97)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (41)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (59)
 
@@ -1162,6 +1162,10 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > There is no dilemma of safe vs risky path; Assume the worst for both and pick whichever u would then regret the least.
 > — @MrE_mssg
 
+> winning takes an ungodly, single minded appetite that never turns off. you have to invite the raw ache into your chest and let it burn away every distraction. you have to lock into the task and demand absolute victory out of yourself every single second of the day.
+> — @josbjohnson
+
+
 
 
 
@@ -2042,6 +2046,10 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 
 > Fear makes you stupid
 > — @lichthauch
+
+> Breaking promises to yourself is the most insidious form of self-mutilation in existence. you just wake up with swollen joints or your skin starts rejecting sunlight or your hair comes out in clumps in the shower and some dumb doctor tells you its genetics or its stress. but honestly, its the accumulated rot of a thousand broken oaths fermenting inside your gut lining
+> — @lichthauch
+
 
 
 
