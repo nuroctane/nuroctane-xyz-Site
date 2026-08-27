@@ -9,7 +9,7 @@
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (87)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (97)
-- [[#Work, Wealth & Value|Work, Wealth & Value]] (41)
+- [[#Work, Wealth & Value|Work, Wealth & Value]] (42)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (59)
 
 ## Faith, God & Surrender
@@ -2227,6 +2227,10 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 > 
 > i acknowledge that selling some runners too early is part of my job. it is part of the contract i signed and it is necessary and crucial for the environment where i can do my job to exist in the first place. if dreamers would not be rewarded from time to time there would be nothing to scalp for me. its a symbiotic relationship. dreamers must stomach frequent roundtrips and getting their lunch eaten by scalpers in order to catch a huge multiple from time to time, and scalpers must accept selling a giga runner too early from time to time in exchange for no roundtrips. these are the contracts we signed.
 > — @real_y22
+
+> People get pissed. When I say this, I have a lot of wealthy friends and I also have a lot of broke friends. Broke, friends often spend time watching a lot of sports, Netflix scrolling a lot, complaining a lot, consuming a lot of news, wealthy friends spend time working out, working on their business, working on their relationships, spending time with their families, their kids. I find that my wealthy friends only consume news that's relevant to their industry or the thing that they're passionate about. Broke friends consume news from every disaster ever, even if it's not relevant to them, everything going wrong and are really in that echo chamber of going wrong. Wealthy friends, they talk about their self development, concept of living and life. My broke friends talk a lot more about politics. My wealthy friends are very much in a victor. I am responsible for everything mentality. My broke friends are often really stuck in the victim mentality. It's a super interesting dichotomy. Another thing is I think a lot of broke people will talk about the past  and a lot of wealthy people talk about the future.
+> — @sunnkssdseraph
+
 
 
 
