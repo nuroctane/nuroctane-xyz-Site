@@ -1,16 +1,16 @@
 ## Index
-- [[#Faith, God & Surrender|Faith, God & Surrender]] (40)
+- [[#Faith, God & Surrender|Faith, God & Surrender]] (42)
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (29)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (74)
-- [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (50)
+- [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (52)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (85)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (30)
-- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (86)
-- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (58)
-- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (94)
-- [[#Work, Wealth & Value|Work, Wealth & Value]] (40)
-- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (58)
+- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (87)
+- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
+- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (96)
+- [[#Work, Wealth & Value|Work, Wealth & Value]] (41)
+- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (59)
 
 ## Faith, God & Surrender
 
@@ -127,6 +127,28 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 
 > The entire spiritual industry is a coward's invention, designed to package the most violent undertaking a human being can choose into something palatable for soft hands and weekend schedules. the actual practice, the original practice, before it was gutted and resold as self
 > — @lichthauch
+
+> Disrespecting yourself is disrespecting God.
+> 
+> Not believing in yourself is not believing in God.
+> 
+> You and him are one. 
+> 
+> This does not mean you are God, in case you have a double digit IQ.
+> 
+> Stop externalizing everything and asking an old man in the sky from a state of desperation.
+> 
+> You only get what you are. State precedes truth. 
+> 
+> The way you age is a reflection of your inner state, physiognomy is real because of the mind-body connection. 
+> 
+> You must look good for God.
+> — @selfmaxxer
+
+> The pure hearted simple man is not idiot. he does not lack knowledge, merely lacks the vanity of knowledge. he is not impressed by the convolutions of that which refuses to state itself plainly, and when something is stated plain he will not pretend it is complex to flatter his own cleverness. this is the only mind God can really do anything with. that can water, grow things, like the plant drinking from the childs hand. this is the mind that listens because it is not so besotted with its own voice that it cannot be quiet and learn from what is above it. the mind that will grow the garden because it is not too busy being a garden unto itself
+> — @lichthauch
+
+
 
 
 
@@ -820,6 +842,28 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 > When I see a man infatuated with logic, I wager at once that he is not logical.
 > — Luc de Clapiers, marquis de Vauvenargues
 
+> Some of you clearly didn’t pay attention reading The Great Gatsby in high school…
+> 
+> You can’t recreate the past.
+> 
+> It’s gone forever.
+> 
+> If you desperately miss certain feelings or moments in time;
+> 
+> You’re going to be insane.
+> 
+> Because you’re longing for something that doesn’t exist.
+> — @fastrlife
+
+> stop paying attention to the distractions
+> 
+> theyre trying to get us to manifest the reality they desire
+> 
+> manifest the reality you desire & block out everything else
+> — @the_cia_hacker
+
+
+
 
 
 
@@ -1498,6 +1542,14 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > "Cum doceas artes, sit sermo domesticus arti: Quaelibet ars gaudet propriis" - Geoffrey de Vinsauf
 > — @47fucb4r8c69323
 
+> If you want to marry someone, remember this. It comes from personal experience, and it also has no a scientific basis:
+> 
+> Your first intuition about that person is the true one. Do not twist divine signs so they go your way. That is one of the biggest mistakes people make. Do not try to change the person either. You cannot turn someone into a new version of themselves. You can only change yourself.
+> 
+> Do not waste your precious time trying to fix someone else. What is truly yours will come to you in an effortless, natural, easy way. The most valuable things are often the cheapest: water, air, the sun, and so on.
+> — @alphaman_111
+
+
 
 
 
@@ -1676,6 +1728,10 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 
 > I learned that it is the weak who are cruel, and that gentleness is to be expected only from the strong.
 > — Leo Rosten, *Captain Newman, M.D.*
+
+> people will draw conclusions and make me out to be terrible for the rest of my life. i’ve learned by now. just LET them. release the urge to prove literal retards wrong. just be. chill. breathe. your oxygen tastes better than theirs.
+> — @nuroctane
+
 
 
 
@@ -1979,6 +2035,16 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > No electricity, no authenticity
 > — @Tanimal
 
+> There has been 2 women i've met in my life that i'd consider were in their "divine feminine". There are many women that *claim* they are in their divine feminine - but it is astronomically rare. It is essentially when they lead with their queen energy but keep their girlish playfulness alive. It is a very calm, capable, nourishing & competent energy - but it *stays* perfectly feminine & allows you to naturally operate as a man. It doesn't PULL you away, or nag you, or make you feel like you have to avoid it or pour energy into it so it doesn't emotionally explode on it's own. It's very soft & self-contained, yet still firm & effective. it sort of just *there*, and you are fully free to 'leave it if you'd like' (not the person, but the energy), and when you come back to it, it is naturally receptive. it replenishes on its own. And this energy inspires genuine & natural leadership within you. You can quite literally *feel* the inspiration get sparked, as well as the strength get added. It feels like you can take more hits, and be okay, knowing you'll have additional replenishment & understanding if need be. The way your body interprets it as a man is essentially a subconscious/energetic "wow - i need to reciprocate the favor", and it sort of imbues your steps with a newfound electricity, and transforms regular 'ambition' (which is usually of the mind) into a god-infused typed of duty, but it's a duty you look forward to pouring yourself into. The prize is 'real', and the foundation is 'real'. It's a power-up in a real a way. You could even say it's 'divinely designed'.
+> 
+> But again - this is astronomically rare. you will usually run into feminine women who are too chaotic / needy / clingy (and they drain you or don't *give* anything in return spiritually), and the man thinks "ah, she's not really worth the effort", or you will run into women who have disowned a large part of their feminine in either circumstantial survival mode (failed father) or the pursuit of competence. These women can do things, but in a sharp/jagged way - and have trouble relaxing into their feminine - even with a fully competent / masculine man. The man thinks "she's still holding up walls after i've displayed the natural key, this isn't worth it". The "natural way" doesn't unfold with all other types of women due to different reasons, the way it does with the woman in her 'divine feminine'. But you as a man also have to be in your 'divine masculine' for this to work. If you're not, she will basically son you on accident - as her energy will just son your energy. But if you're both there - it creates a wild push/pull exchange of spiritual energy - and each party gets the nourishment they need. Usually very seamless, ton of fun, able to do a bunch of shit - whereas all other pairings will have trouble doing outcome-based things together
+> — @retirementkeys
+
+> Fear makes you stupid
+> — @lichthauch
+
+
+
 
 
 
@@ -2142,6 +2208,18 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 > 
 > Dont forget to live every week, maybe even day if you can - lastly dont be entitled. Have some self awareness ffs, youre all heathens in this category. Father shouldve raised you better but now its on you, you got this dawg
 > — @rawknuckle
+
+> this is how i trade. what i do is scalping attention. that is my job. believing in smth is not my job. mapping out possibilities of exchange listings, crime team twaps or industry leaders liking tweets is not my job.
+> 
+> my work is gauging if smth is capable of achieving a certain attention threshold. if the verdict is yes and said attention threshold is not reached yet, i am buying. when the attention threshold is reached i am selling. that does not involve speculating if peak attention is reached. 
+> 
+> example is my $AI trade today. i bought when there was not much talk about it yesterday and i sold when half the timeline talked about it today. the attention threshold is reached. my work is done. my edge is exhausted. can it go much higher from here? absolutely. one Vlad twitter interaction will send it flying, but i have no edge in mapping out possibilities of such an event occurring. that is not my job. 
+> 
+> i am not in the business of dreaming and i am not in the business of gauging ceilings. i am in the business of scalping attention. and by doing this it is only natural that from time to time i will sell an asset that does many multiples after my exit. and that is totally fine. i do not feel pain about it anymore(i did in the past, and it is a hard habit to get rid off). 
+> 
+> i acknowledge that selling some runners too early is part of my job. it is part of the contract i signed and it is necessary and crucial for the environment where i can do my job to exist in the first place. if dreamers would not be rewarded from time to time there would be nothing to scalp for me. its a symbiotic relationship. dreamers must stomach frequent roundtrips and getting their lunch eaten by scalpers in order to catch a huge multiple from time to time, and scalpers must accept selling a giga runner too early from time to time in exchange for no roundtrips. these are the contracts we signed.
+> — @real_y22
+
 
 
 
@@ -2353,6 +2431,10 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 
 > Ah, who will save me from existing? It's neither death nor life that I want.
 > — Fernando Pessoa, *The Book of Disquiet*
+
+> people will let small problems persist in their life for forever not realizing that 5 minutes a day for a lifetime (60yrs) costs you 1825 hours. do you want 1825 hours of toil or annoyance in your life? can you solve the problem in less than 1825 hours? then you fucking should
+> — @satellitedown
+
 
 
 
