@@ -4101,8 +4101,24 @@ html.standalone-active body {
   .resume-page .standalone-nav,
   .resume-page .mini-audio,
   .resume-page .resume-downloads,
-  .resume-page .scroll-top-btn {
+  .resume-page .scroll-top-btn,
+  .qnav {
     display: none !important;
+  }
+
+  /* Printed resumes keep the SYS:// label; only the audio widget hides. */
+  .resume-page .standalone-header {
+    display: flex !important;
+  }
+
+  /* Never strand a card heading at the bottom of a printed page. */
+  .resume-page .resume-list > li,
+  .resume-page .resume-job {
+    break-inside: avoid;
+  }
+
+  .resume-page .resume-heading {
+    break-after: avoid;
   }
 }
 
