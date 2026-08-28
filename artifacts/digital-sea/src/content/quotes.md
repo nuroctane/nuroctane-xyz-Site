@@ -1,15 +1,15 @@
 ## Index
-- [[#Faith, God & Surrender|Faith, God & Surrender]] (42)
+- [[#Faith, God & Surrender|Faith, God & Surrender]] (43)
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (29)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
-- [[#Self, Identity & Awakening|Self, Identity & Awakening]] (74)
+- [[#Self, Identity & Awakening|Self, Identity & Awakening]] (75)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (52)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (86)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (30)
-- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (87)
+- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (90)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
-- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (97)
-- [[#Work, Wealth & Value|Work, Wealth & Value]] (42)
+- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (98)
+- [[#Work, Wealth & Value|Work, Wealth & Value]] (43)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (59)
 
 ## Faith, God & Surrender
@@ -147,6 +147,12 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 
 > The pure hearted simple man is not idiot. he does not lack knowledge, merely lacks the vanity of knowledge. he is not impressed by the convolutions of that which refuses to state itself plainly, and when something is stated plain he will not pretend it is complex to flatter his own cleverness. this is the only mind God can really do anything with. that can water, grow things, like the plant drinking from the childs hand. this is the mind that listens because it is not so besotted with its own voice that it cannot be quiet and learn from what is above it. the mind that will grow the garden because it is not too busy being a garden unto itself
 > — @lichthauch
+
+> It is said that when the dark magician finally corrupts his very soul and peers into the deepest depths of the abyss, he finds there not some hidden Necronomicon of power, nor some twisted, malformed manuscript - but something far more terrifying.
+> 
+> He finds, among its absolute lifelessness and horror, at the boiling heart of hell itself - the Book of Love.
+> — @JackOfFaces
+
 
 
 
@@ -692,6 +698,14 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 > 
 > If you can sit with that possibility without trying to prove otherwise, your deepest insecurities will come up loudly - then you can surrender the parts of you that need to feel better than everyone else to be worthy of love.
 > — @theralkia
+
+> i fucking love having nothing to prove
+> 
+> i literally don't have to spend my day trying to be someone else anymore. i can go out and do whatever the fuck i actually want to do. i don't have to explain myself, ask permission, or wait for everyone else to approve. i got comfortable being disliked. i got comfortable with silence. i just go where i want, talk to who i want, and leave when i don't want to be there anymore.
+> 
+> life is fucking amazing when you stop living from the outside in.
+> — @PathOfMen_
+
 
 
 ## Mind, Belief & Inner Work
@@ -1553,6 +1567,26 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > Do not waste your precious time trying to fix someone else. What is truly yours will come to you in an effortless, natural, easy way. The most valuable things are often the cheapest: water, air, the sun, and so on.
 > — @alphaman_111
 
+> No amount of sex or kisses can replace the absolution of an honest embrace from someone who genuinely cares for you. A hug is perhaps the most profound and innocent expression of care we have for one another, creature to creature
+> — @graveair
+
+> The key to holding frame is to simply not judge yourself, even if you perceive that people are judging you. They will yield to your reality and this will unarmour them… they will likely apologize for judging, or joke alongside you, realizing it is safe to finally release the parts of themselves they have judged. A form of true love.
+> — @anomalie_blue
+
+> Once when I was young I was at a dive bar joking around with some women, and after I had finished this older  Mexican guy comes up at taps me on the shoulder. 
+> 
+> He’s like :” Ayy Amigo, you shouldn’t ever Joo dat” 
+> 
+> “what are you talking about it ?” I said. 
+> 
+> With a thick Mexican accent He said:  “da Joking amigo, don’t Joke with women. They never forget, and they don’t understand jokes. They think is real, and they will bring dat shit up later.” 
+> 
+> I kinda laughed it off, but now that I’m old that Mexican dude was actually cooking and I wish I listened to him.
+> — @123skely
+
+
+
+
 
 
 
@@ -2050,6 +2084,14 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > Breaking promises to yourself is the most insidious form of self-mutilation in existence. you just wake up with swollen joints or your skin starts rejecting sunlight or your hair comes out in clumps in the shower and some dumb doctor tells you its genetics or its stress. but honestly, its the accumulated rot of a thousand broken oaths fermenting inside your gut lining
 > — @lichthauch
 
+> tantum
+> In the ancient Greek city Of Miletus, there was a high-profile suicide by a young woman. And
+> (because depression and suicide are psychogenic illnesses) some other Milesian maiden saw the attention she got, and committed suicide herself, and pretty soon they had a suicide epidemic.
+> How did it end, you ask? Well, they tried everything, but the young women affected by this epidemic Of madness seemed immune to reason. And then the leader of the city decreed that the next suicide would be stripped naked and left hanging in the city center to be leered at, and then rot.
+> "How humiliating!" , you say. "HOW cruel! How inhuman!" But that was the last suicide in Miletus.
+> 0 81 8.8K
+
+
 
 
 
@@ -2230,6 +2272,15 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 
 > People get pissed. When I say this, I have a lot of wealthy friends and I also have a lot of broke friends. Broke, friends often spend time watching a lot of sports, Netflix scrolling a lot, complaining a lot, consuming a lot of news, wealthy friends spend time working out, working on their business, working on their relationships, spending time with their families, their kids. I find that my wealthy friends only consume news that's relevant to their industry or the thing that they're passionate about. Broke friends consume news from every disaster ever, even if it's not relevant to them, everything going wrong and are really in that echo chamber of going wrong. Wealthy friends, they talk about their self development, concept of living and life. My broke friends talk a lot more about politics. My wealthy friends are very much in a victor. I am responsible for everything mentality. My broke friends are often really stuck in the victim mentality. It's a super interesting dichotomy. Another thing is I think a lot of broke people will talk about the past  and a lot of wealthy people talk about the future.
 > — @sunnkssdseraph
+
+> When you show off wealth there's only 2 outcomes:
+> 1. They get jealous.
+> 2. They are wealthier than you and now you revealed yourself as nouveau riche.
+> 
+> Either way you lose.
+> Don't show off.
+> — @samuraix
+
 
 
 
