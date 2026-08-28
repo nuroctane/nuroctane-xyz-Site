@@ -1,12 +1,12 @@
 ## Index
 - [[#Faith, God & Surrender|Faith, God & Surrender]] (43)
-- [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (29)
+- [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (30)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (75)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (52)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (86)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (30)
-- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (91)
+- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (92)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (98)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (43)
@@ -28,7 +28,7 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > — G. K. Chesterton, *Orthodoxy*
 
 > Everything you do today, every decision you make every day, reverberates infinitely in the immortal soul, persisting through all your descendants—that soul inherited from all your ancestors, who all watch over you, paying spiritual earned in their life to influence fortune in yours. If you choose to be a cringe and sinful loser today, you curse not just your life, but a thousand lives, both before and after you.
-> — Charlotte Fang (@CharlotteFang77)
+> — @CharlotteFang77
 
 > If you're going through a tough time, don't ask God to change the situation you're in
 > Instead, ask God to change how you see the situation you're in
@@ -56,7 +56,7 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > Consider how precious a soul is when both God and the devil are after it. Your mission is to keep your mind and heart pure and remove bad thoughts, bad aesthetics and bad people from your life. You can learn to laugh like a child again and hope like a virgin again. There is so much room for love. Simply walk away from the hate. Turn around and walk away.
 
 > When you take one step towards the angels, heaven, Spirit, the Divine. they take ten towards you.
-> — Sathya Sai Baba (paraphrase of a hadith qudsi)
+> — Sathya Sai Baba
 
 > You are the bridge between heaven and earth. On a subtle level you are one with all things. Establish your daily communication with the universe. It’s as simple as if you are talking to a dear old friend.
 
@@ -119,14 +119,11 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > I would only tell a mans son one thing, that the weight you feel, the dull excruciating heft of being alive, thats it. that is the entire inheritance. i dont have land or money or wisdom worth a rotten penny but i know this, god gives weight to the men he has not forgotten. the light ones, the untouched ones, gliding through with their clean hands and empty smiles, they were never burdened because they were never chosen, and that is a sentence far worse than yours. so when it gets heavy, and it will, remember your father said that was the honor, the only one that mattered
 > — @lichthauch
 
-> the unforgivable sin is refusing forgiveness. https://t.co/ICHArluHm0
+> the unforgivable sin is refusing forgiveness.
 > — @0xSero
 
 > God Enters Through The Wound
 > — @sullen11111
-
-> The entire spiritual industry is a coward's invention, designed to package the most violent undertaking a human being can choose into something palatable for soft hands and weekend schedules. the actual practice, the original practice, before it was gutted and resold as self
-> — @lichthauch
 
 > Disrespecting yourself is disrespecting God.
 > 
@@ -152,6 +149,10 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > 
 > He finds, among its absolute lifelessness and horror, at the boiling heart of hell itself - the Book of Love.
 > — @JackOfFaces
+
+> the unforgivable sin is refusing forgiveness. https://t.co/ICHArluHm0
+> — @0xSero
+
 
 
 
@@ -181,7 +182,7 @@ _Consciousness, time, illusion, energy, synchronicity, metaphysics, and the arch
 > In every situation that occurs in your physical reality ask yourself: why would I create this person in my reality acting in this exact way?
 
 > The idea that no problem can be solved from the same level of consciousness that created it, is literally metaphysics meets neuroscience.
-> — Often attributed to Albert Einstein; earliest similar phrasing via Ram Dass quoting Einstein (c. 1970)
+> — Albert Einstein
 
 > If you feel the universe is testing, rewarding or punishing you that means you are the one doing it.
 > You are not separate from your universe, in fact it’s your creation.
@@ -230,7 +231,7 @@ _Consciousness, time, illusion, energy, synchronicity, metaphysics, and the arch
 > U realize it’s all a Schrodinger’s cat in the end.
 > — @MrE_mssg
 
-> @gargi_kand you need to flirt with the universe
+> you need to flirt with the universe
 > — @ellaaborating
 
 > Reality is gooey. Keep pushing and it gives.
@@ -238,6 +239,10 @@ _Consciousness, time, illusion, energy, synchronicity, metaphysics, and the arch
 
 > A compiler can inject a backdoor into itself and into every future compilation of itself which is invisible in the source, i.e. the trusting trust problem (Ken Thompson, 1984).
 > — @abdimoalim_
+
+> @gargi_kand you need to flirt with the universe
+> — @ellaaborating
+
 
 
 
@@ -249,7 +254,7 @@ _Imagination, intention, frequency, prosperity, timelines, desire, and allowing 
 > Serendipity's zenith kismet's crown abundant providence eudaimonic glory fortunae filius auspicio caelesti prosperitatis incarnatio aeterna felicitas opulentia infinita divine favoris receptaculum mirifica ubertas.
 
 > Neville Goddard spoke on Millikan. His affirmation was "I have lavish, steady, dependable income, consistent with integrity and mutual benefit."
-> — Robert A. Millikan (via Neville Goddard)
+> — Robert A. Millikan
 
 > Most ppl make a negative application of their great power of faith by thinking about & believing in poverty, ill health, fear, failure, and defeat.
 
@@ -563,7 +568,7 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 > back.
 
 > Surrender is letting go of who you think you are supposed to be so that you can become who you really are, a being of infinite possibility.
-> — Brené Brown, *The Gifts of Imperfection* (paraphrase)
+> — Brené Brown, *The Gifts of Imperfection*
 
 > I outgrow so many of my ideas. what I hold onto is how much I trusted myself at the peak of each one. never underestimate how far allowing yourself to be proud of yourself will get you. each step counts.
 
@@ -574,7 +579,7 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 > If people can’t see you it’s not because you’re invisible but because they can’t see beyond themselves, so to look towards you is a strain, but a mountain at a distance is still a mountain.
 
 > To be a man is to bear the responsibility of all things.
-> — Antoine de Saint-Exupéry, *Wind, Sand and Stars* (paraphrase)
+> — Antoine de Saint-Exupéry, *Wind, Sand and Stars*
 
 > I love people deeply but I simultaneously don't care what anyone thinks.
 
@@ -596,7 +601,7 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 > Walk through the door that was never closed.
 
 > “It’s not what they call you, it’s what you answer to.”
-> — W. C. Fields (commonly attributed)
+> — W. C. Fields
 
 > Do not become confused by letting people tell you what tactics are needed to actualize a reality. your soul knows exactly what it needs. just go within. I beg of you.
 
@@ -817,8 +822,8 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 > Wisdom is avoiding all thoughts that weaken you.
 > — Wayne Dyer, *10 Secrets for Success and Inner Peace*
 
-> @DejaRu22 “Consider and fuck around with this mental model:
-> The only difference between people is what they say to themselves, and that accounts for nearly ALL results or lack thereof in life.”
+> Consider and fuck around with this mental model:
+> The only difference between people is what they say to themselves, and that accounts for nearly ALL results or lack thereof in life.
 > — @nuroctane
 
 > You know you’re working on some huge internal changes when the universe sends you opportunities to practice your new perspective and a test immediately.
@@ -841,7 +846,7 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 > What will lead you along the right path will feel wrong.
 
 > Private eye friend told me that if you lose a small object around the house, the best way to find it is to stand for 2 minutes in the four corners of the room. He claims that if you've spent too much time living in or looking at a space, your mind burns a lot of spatial information in the background. But you almost never observe the room from a corner, and that could give you a physical shift in perspective and maybe jog your memory.
-> — Hyde (@BreatheLesss), X, 2025-02-18
+> — @BreatheLesss
 
 > Lean into everything that causes stress so that you may be able to get to the root of it
 > 
@@ -886,7 +891,7 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied momentum._
 
 > The great men of the centuries past were never in a hurry, and that is why the world will not forget them in a hurry.
-> — fishybusiness. (@KruseYouri), X, 2025-02-19
+> — @KruseYouri
 
 > Why quantum leap when you can just live your life by taking the next obvious step?
 
@@ -1417,7 +1422,7 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > I'm glad I learnt this early, unfortunately it was the hard way.
 
 > Expectations in relationships are just premeditated resentments.
-> — Alcoholics Anonymous (common saying)
+> — Alcoholics Anonymous
 
 > Don't let your unmet childhood needs and desires ruin your relationships.
 
@@ -1586,6 +1591,10 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 
 > If a man loses his job, mind, hair or sexual function, good chance he loses his girl. Romantic love is conditional love. Men who don’t meet expectations are abandoned for new options. Only childish men think women love them unconditionally. The relationship is held together by the man’s masculine frame.  A man can lose everything but his frame and keep the woman. Power begins and ends in the mind. Stay on top or be eaten alive.
 > — @jerr_rrej
+
+> Women are designed to test men. Women are designed to punish weakness in men. Hating women is hating the design. Don’t hate the game, play it. Women are designed to respect and submit to masculine frame. Strong men create feminine women. Understand polarity.
+> — @jerr_rrej
+
 
 
 
@@ -1844,7 +1853,7 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > Health is when you set the pace, sickness is when you get dragged along.
 
 > “Before you heal someone, ask him if he's willing to give up the things that make him sick.”
-> — attributed to Hippocrates
+> — Hippocrates
 
 > If your body creates the pain, your mind has to solve it. If your mind creates the pain, your body will have to solve it.
 
@@ -1904,10 +1913,10 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > In the late 20th century, Russian scientists Dr. Peter Gariaev and Dr. Vladimir Poponin conducted a series of experiments that led them to a hypothesis: human DNA is not just a biological blueprint; it vibrates, resonates, and even "sings" in a way that influences our health and consciousness.
 > Their research, which has been largely ignored or dismissed by mainstream science, suggests that DNA operates on a wave-like principle, transmitting and receiving information through frequencies much like a radio station.
 > According to Gariaev and Poponin, this means that our DNA responds to sound, light, and even words, making the human body a living symphony of vibrational energy.
-> — Jason Wilde (@JasonWilde108), X, 2025-03-04
+> — @JasonWilde108
 
 > One of the most powerful shifts you can make for your health is viewing food as fuel rather than only a source of pleasure.
-> — Chace Chambers (@ChamberofFit), X, 2025-02-23
+> — @ChamberofFit
 
 > Joy is the matriarch of a family of emotions. She won't come into a house where her children aren't welcome.
 > — Joe Hudson, *How to actually feel your emotions*
@@ -2340,7 +2349,7 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > I’m in a dream rn that contains a lot of fog and instead of it blinding the road it just adds a great detail to the story. Very magical I tell you.
 
 > The only constant is change, over-planning for the future can make you unprepared for it.
-> — Heraclitus (paraphrase)
+> — Heraclitus
 
 > Ask anyone you admire: Their lucky breaks happened on a detour from their main goal. So embrace detours. Life is not a straight line for anyone.
 > — Kevin Kelly, *Excellent Advice for Living*
