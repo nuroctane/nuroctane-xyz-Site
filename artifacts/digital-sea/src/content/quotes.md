@@ -6,7 +6,7 @@
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (52)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (86)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (30)
-- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (90)
+- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (91)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (98)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (43)
@@ -1583,6 +1583,10 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > 
 > I kinda laughed it off, but now that I’m old that Mexican dude was actually cooking and I wish I listened to him.
 > — @123skely
+
+> If a man loses his job, mind, hair or sexual function, good chance he loses his girl. Romantic love is conditional love. Men who don’t meet expectations are abandoned for new options. Only childish men think women love them unconditionally. The relationship is held together by the man’s masculine frame.  A man can lose everything but his frame and keep the woman. Power begins and ends in the mind. Stay on top or be eaten alive.
+> — @jerr_rrej
+
 
 
 
