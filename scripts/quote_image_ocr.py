@@ -65,6 +65,8 @@ OCR_UI_CHROME_RE = re.compile(
     re.I,
 )
 OCR_SENTENCE_END_RE = re.compile(r"""[.!?…]["'”’)]*$""")
+TCO_URL_RE = re.compile(r"(?:https?://)?t\.co/\S+", re.I)
+LEADING_REPLY_HANDLE_RE = re.compile(r"^@[A-Za-z0-9_]{1,30}\s+")
 DEFAULT_SNIPOCR_PYTHON = Path(r"C:\Users\david\Laboratory\snipocr\.venv\Scripts\python.exe")
 HELPER_NAME = "_ocr_windows_helper.py"
 USER_AGENT = (
@@ -439,6 +441,26 @@ def _unwrap_ocr_lines(lines: list[str]) -> list[str]:
     return out
 
 
+def clean_social_quote_body(text: str) -> str:
+    """Strip tweet chrome that survives expand: t.co links and leading reply handles."""
+    cleaned = (text or "").replace("\r\n", "\n").replace("\r", "\n").strip()
+    if not cleaned:
+        return ""
+    cleaned = TCO_URL_RE.sub("", cleaned)
+    cleaned = re.sub(r"[ \t]+\n", "\n", cleaned)
+    cleaned = re.sub(r"[ \t]{2,}", " ", cleaned)
+    cleaned = cleaned.strip(" \t")
+    lines = cleaned.split("\n")
+    if lines:
+        first = lines[0].strip()
+        remainder = LEADING_REPLY_HANDLE_RE.sub("", first, count=1).strip()
+        if remainder and remainder != first and len(remainder) >= 12:
+            lines[0] = remainder
+    cleaned = "\n".join(lines).strip()
+    cleaned = re.sub(r"\n{3,}", "\n\n", cleaned)
+    return cleaned.strip()
+
+
 def clean_ocr_quote(text: str, *, author: Optional[str] = None) -> str:
     """Strip screenshot chrome, duplicate credits, and hard-wrapped OCR lines."""
     body, _peeled = peel_ocr_attribution(text)
@@ -453,7 +475,7 @@ def clean_ocr_quote(text: str, *, author: Optional[str] = None) -> str:
         while lines and not lines[-1].strip():
             lines.pop()
     lines = _unwrap_ocr_lines(lines)
-    return "\n".join(lines).strip()
+    return clean_social_quote_body("\n".join(lines).strip())
 
 
 def quote_from_image_item(

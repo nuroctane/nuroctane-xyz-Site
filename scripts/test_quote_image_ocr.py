@@ -5,6 +5,7 @@ from __future__ import annotations
 from quote_image_ocr import (
     author_from_raindrop_note,
     clean_ocr_quote,
+    clean_social_quote_body,
     format_credit,
     image_url_from_item,
     is_image_raindrop,
@@ -185,6 +186,23 @@ def main() -> int:
     check(
         format_credit(author=author) == "Fernando Pessoa",
         "cleaned Pessoa credit is attached once",
+    )
+
+    check(
+        clean_social_quote_body(
+            "the unforgivable sin is refusing forgiveness. https://t.co/ICHArluHm0"
+        )
+        == "the unforgivable sin is refusing forgiveness.",
+        "strips trailing t.co media url",
+    )
+    check(
+        clean_social_quote_body("@gargi_kand you need to flirt with the universe")
+        == "you need to flirt with the universe",
+        "strips leading reply handle",
+    )
+    check(
+        clean_social_quote_body("@nuroctane") == "@nuroctane",
+        "keeps a body that is only a handle",
     )
 
     check(author_from_raindrop_note("Fyodor Dostoevsky") == "Fyodor Dostoevsky", "plain author")

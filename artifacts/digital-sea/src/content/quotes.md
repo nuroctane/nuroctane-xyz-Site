@@ -1,6 +1,6 @@
 ## Index
-- [[#Faith, God & Surrender|Faith, God & Surrender]] (43)
-- [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (30)
+- [[#Faith, God & Surrender|Faith, God & Surrender]] (42)
+- [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (29)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (75)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (52)
@@ -150,9 +150,6 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > He finds, among its absolute lifelessness and horror, at the boiling heart of hell itself - the Book of Love.
 > — @JackOfFaces
 
-> the unforgivable sin is refusing forgiveness. https://t.co/ICHArluHm0
-> — @0xSero
-
 
 
 
@@ -239,9 +236,6 @@ _Consciousness, time, illusion, energy, synchronicity, metaphysics, and the arch
 
 > A compiler can inject a backdoor into itself and into every future compilation of itself which is invisible in the source, i.e. the trusting trust problem (Ken Thompson, 1984).
 > — @abdimoalim_
-
-> @gargi_kand you need to flirt with the universe
-> — @ellaaborating
 
 
 
