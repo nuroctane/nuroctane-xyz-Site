@@ -4,7 +4,7 @@
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (75)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (52)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (86)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (87)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (30)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (92)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
@@ -1177,6 +1177,23 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 
 > winning takes an ungodly, single minded appetite that never turns off. you have to invite the raw ache into your chest and let it burn away every distraction. you have to lock into the task and demand absolute victory out of yourself every single second of the day.
 > — @josbjohnson
+
+> There's a mental space you can find that i call 'beyond the win and loss'
+> 
+> Your journey right now, in your mind, probably 'ends' in some grandiose victory. You go through the wars, and grab the W's
+> 
+> But in reality, there is also a story beyond that - beyond the losses, beyond the wins, beyond it all
+> 
+> And *that* story is the 'continuity of you'. And IMO that is what you want to hitch yourself onto. The river of life. You are not just a win/loss, you are multiple, in each direction
+> 
+> You may delay taking action because you're scared of the conclusion
+> 
+> But what if there actually wasn't a conclusion, in either direction? What if what you CURRENTLY view as the conclusion - is actually just the first little step of many, along the way of a life grander & more beautiful than you can currently conceptualize?
+> 
+> an L can't define you
+> But a W can make you shine
+> — @retirementkeys
+
 
 
 
