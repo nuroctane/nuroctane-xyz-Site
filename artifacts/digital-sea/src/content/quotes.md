@@ -2,14 +2,14 @@
 - [[#Faith, God & Surrender|Faith, God & Surrender]] (42)
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (29)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
-- [[#Self, Identity & Awakening|Self, Identity & Awakening]] (75)
-- [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (52)
+- [[#Self, Identity & Awakening|Self, Identity & Awakening]] (76)
+- [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (53)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (87)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (30)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (92)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (98)
-- [[#Work, Wealth & Value|Work, Wealth & Value]] (43)
+- [[#Work, Wealth & Value|Work, Wealth & Value]] (44)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (59)
 
 ## Faith, God & Surrender
@@ -705,6 +705,10 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 > life is fucking amazing when you stop living from the outside in.
 > — @PathOfMen_
 
+> Nobody actually cares. Nobody sees you and has sympathy for you or wonders why you turned out how you did. They just see you as a monster.
+> — @melanchol1ck
+
+
 
 
 ## Mind, Belief & Inner Work
@@ -874,6 +878,10 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 > 
 > manifest the reality you desire & block out everything else
 > — @the_cia_hacker
+
+> They say making mistakes is part of being human. I'd say making mistakes is part of being intelligent
+> — @uzairname1
+
 
 
 
@@ -2304,6 +2312,10 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 > Either way you lose.
 > Don't show off.
 > — @samuraix
+
+> Getting married bc u very much want to have sex with the man or are enjoying current great sex with the man is an excellent reason to get married, perhaps the best. Trust me. You’re gonna be together a long time. Money’s easy to make, starting a fire with the wrong fuel is hard
+> — @frailskeleton
+
 
 
 
