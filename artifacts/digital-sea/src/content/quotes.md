@@ -10,7 +10,7 @@
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (98)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (44)
-- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (59)
+- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (60)
 
 ## Faith, God & Surrender
 
@@ -2533,6 +2533,16 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 
 > people will let small problems persist in their life for forever not realizing that 5 minutes a day for a lifetime (60yrs) costs you 1825 hours. do you want 1825 hours of toil or annoyance in your life? can you solve the problem in less than 1825 hours? then you fucking should
 > — @satellitedown
+
+> I used to be very against having a routine. I thought routine and discipline was the death of Life. I wanted to wake up every day and do whatever I felt like doing, "going with the flow," and acting on the whims of my desires. I never made plans. I refused calendars. I already have a chaotic and layabout disposition with low motivation, and this kind of lifestyle aggravated that more. I was lazy, unhappy, and depressed, despite affording myself this "freedom" of choice and time.
+> 
+> This past year I have cultivated a daily routine. Good habits. Exercise. Discipline. I've become a calendar person. I plan my weeks in advance. And becoming a routined and disciplined person is what has saved me from the self-destructive nature of my past self.
+> 
+> I have never felt happier, healthier, more embodied, and more in control of my life, while still enjoying spontaneity and pleasure. I no longer over-indulge myself into a state of mindless passivity. I enjoy life's pleasures more now that I limit my time with them. I have cultivated an appreciation that was not there before.
+> 
+> If you're a Dionysian chaos freak, try implementing a calendar. Watch your life change for the better. Maybe the Apollonians were right about some things.
+> — @bronzeageshawty
+
 
 
 
