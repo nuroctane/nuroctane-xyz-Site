@@ -4,7 +4,7 @@
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (76)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (53)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (87)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (88)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (30)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (92)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
@@ -1201,6 +1201,10 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > an L can't define you
 > But a W can make you shine
 > — @retirementkeys
+
+> do things that make you feel like you deserve to win
+> — @networkdeity
+
 
 
 
