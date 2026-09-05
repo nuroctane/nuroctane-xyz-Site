@@ -10,7 +10,7 @@
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (98)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (44)
-- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (60)
+- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (61)
 
 ## Faith, God & Surrender
 
@@ -2546,6 +2546,10 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > 
 > If you're a Dionysian chaos freak, try implementing a calendar. Watch your life change for the better. Maybe the Apollonians were right about some things.
 > — @bronzeageshawty
+
+> xykrhgr on X: "everything exists for your benefit" / X
+> — @xykrhgr
+
 
 
 
