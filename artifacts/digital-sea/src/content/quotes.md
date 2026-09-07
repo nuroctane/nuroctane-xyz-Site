@@ -1,10 +1,10 @@
 ## Index
-- [[#Faith, God & Surrender|Faith, God & Surrender]] (42)
+- [[#Faith, God & Surrender|Faith, God & Surrender]] (43)
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (29)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (76)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (53)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (88)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (89)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (30)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (92)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
@@ -149,6 +149,10 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > 
 > He finds, among its absolute lifelessness and horror, at the boiling heart of hell itself - the Book of Love.
 > — @JackOfFaces
+
+> The greatest sacrifice a man can make is to remain exactly where God asked him to be while everyone he loved and served walks away from him. to see everyone you poured your life into turn their backs on you and still wake up every day and keep pouring. to feel the sting of betrayal. to be haunted by the ghosts of companionship and still extend your hand in friendship. to hold the line alone when you once stood shoulder to shoulder with an army, and choose to become a statue of unshakeable conviction while the world erodes around you. this is how a man proves his integrity to heaven and earns the respect of hell itself
+> — @lichthauch
+
 
 
 
@@ -1204,6 +1208,10 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 
 > do things that make you feel like you deserve to win
 > — @networkdeity
+
+> In the context of portfolio theory, the longer the measurement window, the more your sharpe ratio dominates your returns, the less luck does.
+> — @mostlymonkey
+
 
 
 
