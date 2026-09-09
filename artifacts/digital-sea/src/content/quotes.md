@@ -1,5 +1,5 @@
 ## Index
-- [[#Faith, God & Surrender|Faith, God & Surrender]] (43)
+- [[#Faith, God & Surrender|Faith, God & Surrender]] (44)
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (29)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (76)
@@ -152,6 +152,10 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 
 > The greatest sacrifice a man can make is to remain exactly where God asked him to be while everyone he loved and served walks away from him. to see everyone you poured your life into turn their backs on you and still wake up every day and keep pouring. to feel the sting of betrayal. to be haunted by the ghosts of companionship and still extend your hand in friendship. to hold the line alone when you once stood shoulder to shoulder with an army, and choose to become a statue of unshakeable conviction while the world erodes around you. this is how a man proves his integrity to heaven and earns the respect of hell itself
 > — @lichthauch
+
+> The entire spiritual industry is a coward's invention, designed to package the most violent undertaking a human being can choose into something palatable for soft hands and weekend schedules. the actual practice, the original practice, before it was gutted and resold as self
+> — @lichthauch
+
 
 
 
