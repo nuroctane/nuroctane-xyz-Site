@@ -6,7 +6,7 @@
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (53)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (89)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (30)
-- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (92)
+- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (93)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (98)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (44)
@@ -1629,6 +1629,10 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 
 > Women are designed to test men. Women are designed to punish weakness in men. Hating women is hating the design. Don’t hate the game, play it. Women are designed to respect and submit to masculine frame. Strong men create feminine women. Understand polarity.
 > — @jerr_rrej
+
+> The most naive and innocent get cheated on and stepped over. Bambi gets shot and fileted. Theres no room for naivete and innocence in a man - flowers get trampled and thorns get revered. Its always the callous and rugged who end up sprouting among the debris - you have no chance to be a soft little doe as a man because women and other sharks alike will leave your bones for the worms. Always the softest dudes who exclusively talk up women and white knightingly talk down on cheating who are literally the ones getting cheated on - the nice guy businessman getting fucked over in some deal. You have zero clue how reality operates and your delusions blind you until the shows over, and the only one in the audience is your past self deceased and covered in bottom feeders. I understand being like this in your teens and early 20s but it also reminds me life is vicious and rightfully so when I see a grown man thinking his gay little morality will defend him from reality - get trampled early and learn life before it happens to you at a point of no return. And kill your arrogance - chances of you being a part of the clueless majority is very high. Hate me but thank me much later - no room for monks and gardeners in the game of love and war
+> — @rawknuckle
+
 
 
 
