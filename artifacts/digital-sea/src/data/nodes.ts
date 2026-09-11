@@ -226,13 +226,13 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     logo: '/assets/nodes/github-logo.png',
   },
   {
-    id: 'weatherguru', label: 'WeatherGuru', handle: 'project',
-    url: '#',
-    urlDisplay: 'weatherguru.app',
-    subtitle: 'Hyperlocal weather intelligence',
-    description: "i wanted to make a framework for prediction markets. not a bot. infrastructure. may get inspired to work on this again, or i'll just scrap it and throw the code i have up on Github. who knows.",
-    avatar: '',
-    logo: '',
+    id: 'hoodstock', label: 'HoodStock', handle: 'project',
+    url: 'https://github.com/nuroctane/HoodStock',
+    urlDisplay: 'github.com/nuroctane/HoodStock',
+    subtitle: 'hold memecoins, earn stocks',
+    description: 'permissionless launchpad on Robinhood Chain where a launch\u2019s creator fees automatically buy tokenized stocks for its holders. immutable splits, coverage-proof payouts, no owner key. production candidate \u2014 contracts, web app, keeper, runbooks \u2014 pre-audit, not on mainnet yet.',
+    avatar: '/assets/nodes/hoodstock-avatar.jpg',
+    logo: '/assets/nodes/hoodstock-logo.png',
   },
   {
     id: 'sis', label: 'Civeta Dei', handle: 'collegium',
@@ -338,7 +338,7 @@ const FLIP_X = new Set([
   // flip blackjack so it faces opposite snipocr at adjacent scroll slots
   'blackjack',
   // blackjack inserted after snipocr  -  nodes after it inverted vs pre-insert set
-  'atxtunerz', 'weatherguru', 'sis', 'starsleep', 'miyamaker', 'webutils',
+  'atxtunerz', 'hoodstock', 'sis', 'starsleep', 'miyamaker', 'webutils',
   // github + geoskin were flipped pre-insert; inverted out after shift
 ]);
 
@@ -355,7 +355,7 @@ const WIDE_CARD: Record<string, number> = {
   blackjack:   0.052,
   atxtunerz:   0.054,
   github:      0.050,
-  weatherguru: 0.056,
+  hoodstock:   0.056,
   sis:         0.054,
   starsleep:  0.056,
   geoskin:     0.056,

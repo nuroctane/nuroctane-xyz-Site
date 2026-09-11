@@ -128,7 +128,7 @@ const PAGES: Record<string, PageMeta> = {
       "End of the digital sea — identity, contact, and a place to book time with nuroctane.",
     badge: "FIN",
     path: "/fin",
-    favicon: "/assets/nodes/venmo-logo.png",
+    favicon: "/assets/nodes/site-logo.png",
   },
 };
 
@@ -158,7 +158,7 @@ const CHILD_FAVICONS: Record<string, Record<string, string>> = {
     blackjack: "/assets/nodes/blackjack-logo.png?v=115",
     atxtunerz: "/assets/nodes/atx_tunerz_society-avatar.jpg",
     github: "/assets/nodes/github-logo.png",
-    weatherguru: "/assets/nodes/weatherguru-logo.svg",
+    hoodstock: "/assets/nodes/hoodstock-logo.png",
     sis: "/assets/nodes/civeta-dei-research.png?v=116",
     starsleep: "/assets/nodes/starsleep-logo.png",
     geoskin: "/assets/nodes/geoskin-logo.svg",

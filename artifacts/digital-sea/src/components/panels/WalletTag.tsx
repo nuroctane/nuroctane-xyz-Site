@@ -63,15 +63,6 @@ export function WalletTag({ mode, finUnlocked }: Props) {
 
   return (
     <div ref={ref} className="wallet-tag" style={{ opacity: 0, pointerEvents: 'none' }}>
-      <a
-        className="wallet-venmo"
-        href="https://venmo.com/u/nuroctane"
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="Venmo · nuroctane"
-      >
-        <img src="/assets/nodes/venmo-logo.png" alt="Venmo" />
-      </a>
       <div className="wallet-addrs">
         <div className="wallet-addr">
           <span className="wallet-addr-k">BTC</span>
