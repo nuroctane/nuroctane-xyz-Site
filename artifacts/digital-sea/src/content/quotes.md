@@ -8,7 +8,7 @@
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (30)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (93)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
-- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (98)
+- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (99)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (44)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (61)
 
@@ -2142,6 +2142,12 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > How did it end, you ask? Well, they tried everything, but the young women affected by this epidemic Of madness seemed immune to reason. And then the leader of the city decreed that the next suicide would be stripped naked and left hanging in the city center to be leered at, and then rot.
 > "How humiliating!" , you say. "HOW cruel! How inhuman!" But that was the last suicide in Miletus.
 > 0 81 8.8K
+
+> By far the most brutal Occams Razor of wealth is central nervous system stability, this is one of those honest signals that cannot be faked, impossible across time. There is immense power in becoming LIGHTER as you become more capable. Less tension in the face, less desperation in the voice, less attachment to individual outcomes, more fluidity between environments, more calmness when plans change, more charm when circumstances become difficult. Smile easily. Move slowly. Listen deeply. Make people laugh. Let silence breathe. Do not turn every disagreement into war or every ambition into visible strain. The highest competence eventually begins to look like ease because the machinery underneath it has become so sophisticated and battle tested through reps. Heavy men make every room feel like work. The rare spiritual outlier man carries enormous responsibility while somehow making life around him feel more beautiful. This is the king touch or the midas touch with full contextual flow, the fact this account is free is generational. Calm nervous system, light touch, smooth voice, simple smile, flow heavy movement light
+> 
+> https://x.com/AvantPrince_/status/2067680014200410375
+> — @AvantPrince_
+
 
 
 
