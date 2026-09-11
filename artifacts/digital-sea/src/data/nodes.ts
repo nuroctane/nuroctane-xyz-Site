@@ -227,8 +227,8 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
   },
   {
     id: 'hoodstock', label: 'HoodStock', handle: 'project',
-    url: 'https://github.com/nuroctane/HoodStock',
-    urlDisplay: 'github.com/nuroctane/HoodStock',
+    url: 'https://hoodstock.family',
+    urlDisplay: 'hoodstock.family',
     subtitle: 'hold memecoins, earn stocks',
     description: 'permissionless launchpad on Robinhood Chain where a launch\u2019s creator fees automatically buy tokenized stocks for its holders. immutable splits, coverage-proof payouts, no owner key. production candidate \u2014 contracts, web app, keeper, runbooks \u2014 pre-audit, not on mainnet yet.',
     avatar: '/assets/nodes/hoodstock-avatar.jpg',
