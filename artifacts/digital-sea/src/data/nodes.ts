@@ -230,7 +230,7 @@ const raw: Omit<NodeData, 'position' | 'idleRotation' | 'scrollStart' | 'scrollE
     url: 'https://hoodstock.family',
     urlDisplay: 'hoodstock.family',
     subtitle: 'hold memecoins, earn stocks',
-    description: 'permissionless launchpad on Robinhood Chain where a launch\u2019s creator fees automatically buy tokenized stocks for its holders. immutable splits, coverage-proof payouts, no owner key. production candidate \u2014 contracts, web app, keeper, runbooks \u2014 pre-audit, not on mainnet yet.',
+    description: 'launchpad on Robinhood Chain turning creator fees into tokenized stock payouts for holders. immutable, ownerless, coverage-proven. production candidate \u2014 pre-audit, not on mainnet yet.',
     avatar: '/assets/nodes/hoodstock-avatar.jpg',
     logo: '/assets/nodes/hoodstock-logo.png',
   },
