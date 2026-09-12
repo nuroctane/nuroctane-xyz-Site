@@ -9,8 +9,8 @@
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (93)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (99)
-- [[#Work, Wealth & Value|Work, Wealth & Value]] (44)
-- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (61)
+- [[#Work, Wealth & Value|Work, Wealth & Value]] (45)
+- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (62)
 
 ## Faith, God & Surrender
 
@@ -2342,6 +2342,10 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 > Getting married bc u very much want to have sex with the man or are enjoying current great sex with the man is an excellent reason to get married, perhaps the best. Trust me. You’re gonna be together a long time. Money’s easy to make, starting a fire with the wrong fuel is hard
 > — @frailskeleton
 
+> the love we sacrificed for money will be desperately clawed back when money changes.
+> — @networkfaggot
+
+
 
 
 
@@ -2571,6 +2575,10 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 
 > xykrhgr on X: "everything exists for your benefit" / X
 > — @xykrhgr
+
+> the underworld is best romanticized from a distance
+> — @networkfaggot
+
 
 
 
