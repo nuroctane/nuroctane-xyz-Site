@@ -4,11 +4,11 @@
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (76)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (53)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (90)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (91)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (30)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (93)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
-- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (99)
+- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (100)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (45)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (63)
 
@@ -1242,6 +1242,14 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > do the work. be nice. never give up. you are perfect.
 > — @nicoletteduclar
 
+> Stop being a coward. Commit to the goals that scare you and bet heavily on yourself.
+> 
+> Every day you hesitate is another day of your short life wasted. All because you don't have faith in yourself to truly "do the thing".
+> 
+> Stop playing not to lose.... It'll be too late soon.
+> — @ZssBecker
+
+
 
 
 
@@ -2175,6 +2183,10 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 >
 > https://x.com/AvantPrince_/status/2067680014200410375
 > — @AvantPrince_
+
+> Mood follows motion far more often than motion follows mood. You don't wait to feel like going for the walk. You go for the walk and the feeling shows up halfway, slightly late, slightly apologetic.
+> — @Kpaxs
+
 
 
 
