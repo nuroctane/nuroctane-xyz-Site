@@ -314,7 +314,8 @@ export function BlackboardWallpaper() {
     const resize = () => {
       const mobile = window.matchMedia(MOBILE_QUERY).matches;
       const renderScale = Math.min(window.devicePixelRatio || 1, 1.5) * 0.7 * (mobile ? 0.8 : 1);
-      gl.uniform1f(uMotion, mobile ? 2.8 : 1);
+      // Keep the stronger ripple and cloud drift consistent across screen sizes.
+      gl.uniform1f(uMotion, 2.8);
       const width = Math.max(1, Math.round(canvas.clientWidth * renderScale));
       const height = Math.max(1, Math.round(canvas.clientHeight * renderScale));
       if (canvas.width !== width || canvas.height !== height) {
