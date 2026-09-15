@@ -21,11 +21,21 @@ export function BlackboardPlayer() {
   const { track, playing, currentTime, duration, volume, blocked, setTrack, play, pause, seek, setVolume } = useAudioCtx();
   const titleViewportRef = useRef<HTMLSpanElement>(null);
   const titleRef = useRef<HTMLElement>(null);
+  const autoplayAttemptedRef = useRef(false);
+  const lastAudibleVolumeRef = useRef(0.5);
   const [marquee, setMarquee] = useState(false);
 
   useEffect(() => {
-    if (track !== 'main') setTrack('main');
-  }, [track, setTrack]);
+    if (track !== 'main') {
+      setTrack('main');
+      return;
+    }
+    if (autoplayAttemptedRef.current) return;
+    autoplayAttemptedRef.current = true;
+    // Try immediately on page load. Browsers that reject audible autoplay set
+    // `blocked`; AudioContext retries on the first real interaction.
+    play();
+  }, [track, setTrack, play]);
 
   useLayoutEffect(() => {
     const viewport = titleViewportRef.current;
@@ -42,6 +52,15 @@ export function BlackboardPlayer() {
   const onPlayPause = () => {
     if (playing) pause();
     else play();
+  };
+
+  const onVolumeToggle = () => {
+    if (volume > 0) {
+      lastAudibleVolumeRef.current = volume;
+      setVolume(0);
+    } else {
+      setVolume(lastAudibleVolumeRef.current || 0.5);
+    }
   };
 
   const progress = duration > 0 ? Math.min(100, Math.max(0, (currentTime / duration) * 100)) : 0;
@@ -76,10 +95,12 @@ export function BlackboardPlayer() {
       <button type="button" className="bb-player-play" onClick={onPlayPause} aria-label={playing ? 'Pause audio' : 'Play audio'}>
         {playing ? <Pause aria-hidden="true" /> : <Play aria-hidden="true" />}
       </button>
-      <label className="bb-player-volume">
-        {volume === 0 ? <VolumeX aria-hidden="true" /> : <Volume2 aria-hidden="true" />}
-        <input type="range" min="0" max="1" step="0.01" value={volume} onChange={event => setVolume(Number(event.target.value))} aria-label="Volume" />
-      </label>
+      <div className="bb-player-volume">
+        <button type="button" className="bb-player-volume-button" onClick={onVolumeToggle} aria-label={volume === 0 ? 'Unmute audio' : 'Mute audio'}>
+          {volume === 0 ? <VolumeX aria-hidden="true" /> : <Volume2 aria-hidden="true" />}
+        </button>
+        <input type="range" min="0" max="1" step="0.01" value={volume} onChange={event => { const next = Number(event.target.value); if (next > 0) lastAudibleVolumeRef.current = next; setVolume(next); }} aria-label="Volume" />
+      </div>
       <span className="bb-player-state" role="status">{blocked ? 'TAP TO PLAY' : playing ? 'PLAYING' : 'PAUSED'}</span>
     </div>
   </section>;

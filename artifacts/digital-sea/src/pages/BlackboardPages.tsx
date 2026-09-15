@@ -1,6 +1,6 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { BookOpen, FileText, Quote, Search } from 'lucide-react';
-import { useLocation } from 'wouter';
+import { Link, useLocation } from 'wouter';
 import booksRaw from '../content/books.md?raw';
 import quotesRaw from '../content/quotes.md?raw';
 import bookMeta from '../data/bookMeta.json';
@@ -17,6 +17,22 @@ const metaMap = bookMeta.books as Record<string, { cover: string | null; desc: s
 const keyOf = (book: Book) => `${book.title}|${book.author}`;
 const initial = (title: string) => title.match(/\p{L}/u)?.[0]?.toUpperCase() ?? '?';
 const dateLabel = (iso?: string) => iso ? new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '';
+const ADMIN_KEY = 'book-admin';
+const ADMIN_PW_KEY = 'book-admin-pw';
+const SESSION_KEY = 'book-session-id';
+
+function getSessionId() {
+  try {
+    let id = sessionStorage.getItem(SESSION_KEY);
+    if (!id) {
+      id = `${Math.random().toString(36).slice(2)}${Date.now().toString(36)}`;
+      sessionStorage.setItem(SESSION_KEY, id);
+    }
+    return id;
+  } catch {
+    return '';
+  }
+}
 
 function parseBooks(raw: string): Shelf[] {
   const shelves: Shelf[] = []; let current: Shelf | undefined;
@@ -39,23 +55,138 @@ function parseQuotes(raw: string) {
 
 function LibraryChrome({ active, children }: { active: 'books' | 'quotes' | 'blog'; children: React.ReactNode }) {
   useStandaloneScroll();
-  return <main className="bb-library"><ScrollToTop /><header className="bb-library-header"><a className="bb-library-home" href="/" aria-label="Back to Blackboard"><img src="/assets/nodes/site-logo.png" alt="" width="42" height="48" /></a><nav className="bb-library-tabs" aria-label="Library navigation"><a className={active === 'books' ? 'is-active' : ''} href="/books"><BookOpen aria-hidden="true" /> Books</a><a className={active === 'quotes' ? 'is-active' : ''} href="/quotes"><Quote aria-hidden="true" /> Quotes</a><a className={active === 'blog' ? 'is-active' : ''} href="/blog"><FileText aria-hidden="true" /> Blog</a></nav></header><section className="bb-library-content">{children}</section></main>;
+  return <main className="bb-library"><ScrollToTop /><header className="bb-library-header"><Link className="bb-library-home" href="/" aria-label="Back to Blackboard"><img src="/assets/nodes/site-logo.png" alt="" width="42" height="48" /></Link><nav className="bb-library-tabs" aria-label="Library navigation"><Link className={active === 'books' ? 'is-active' : ''} href="/books"><BookOpen aria-hidden="true" /> Books</Link><Link className={active === 'quotes' ? 'is-active' : ''} href="/quotes"><Quote aria-hidden="true" /> Quotes</Link><Link className={active === 'blog' ? 'is-active' : ''} href="/blog"><FileText aria-hidden="true" /> Blog</Link></nav></header><section className="bb-library-content">{children}</section></main>;
 }
 
-function BookModal({ book, onClose, onToggle }: { book: Book; onClose: () => void; onToggle?: () => void }) {
+function BookModal({ book, onClose, onToggle, onDelete }: { book: Book; onClose: () => void; onToggle?: () => void; onDelete?: () => void }) {
   const meta = metaMap[keyOf(book)]; const [cover, setCover] = useState(book.coverUrl ?? meta?.cover ?? null); const [description, setDescription] = useState(book.description ?? meta?.desc ?? null);
   useEffect(() => { if (cover && description) return; fetch(`/api/book-search?q=${encodeURIComponent(`${book.title} ${book.author}`)}`).then(r => r.ok ? r.json() : null).then(data => { const result = data?.results?.[0]; if (result) { if (!cover) setCover(result.coverUrl ?? null); if (!description) setDescription(result.description ?? null); } }).catch(() => undefined); }, [book, cover, description]);
-  return <div className="bb-modal-overlay" onClick={onClose}><article className="bb-book-modal" onClick={event => event.stopPropagation()}><button className="bb-modal-close" onClick={onClose} aria-label="Close">×</button><div className="bb-modal-cover">{cover ? <img src={cover} alt="" /> : initial(book.title)}</div><div className="bb-modal-copy">{description && <p className="bb-modal-synopsis">{description.length > 600 ? `${description.slice(0, 600)}…` : description}</p>}<h2>{book.title}</h2>{book.author && <p className="bb-modal-author">{book.author}</p>}<div className="bb-modal-meta">{book.year && <span>{book.year}</span>}{book.source && (book.sourceUrl ? <a href={book.sourceUrl} target="_blank" rel="noreferrer">{book.source} ↗</a> : <span>{book.source}</span>)}</div><p className="bb-modal-status">{book.read ? '✓ READ' : '○ UNREAD'}{book.dateAdded && ` · Added ${dateLabel(book.dateAdded)}`}</p>{book.note && <p className="bb-modal-note">{book.note}</p>}{onToggle && <button className="bb-modal-action" onClick={onToggle}>{book.read ? 'MARK AS UNREAD' : 'MARK AS READ'}</button>}</div></article></div>;
+  return <div className="bb-modal-overlay" onClick={onClose}><article className="bb-book-modal" onClick={event => event.stopPropagation()}><button className="bb-modal-close" onClick={onClose} aria-label="Close">×</button><div className="bb-modal-cover">{cover ? <img src={cover} alt="" /> : initial(book.title)}</div><div className="bb-modal-copy">{description && <p className="bb-modal-synopsis">{description.length > 600 ? `${description.slice(0, 600)}…` : description}</p>}<h2>{book.title}</h2>{book.author && <p className="bb-modal-author">{book.author}</p>}<div className="bb-modal-meta">{book.year && <span>{book.year}</span>}{book.source && (book.sourceUrl ? <a href={book.sourceUrl} target="_blank" rel="noreferrer">{book.source} ↗</a> : <span>{book.source}</span>)}</div><p className="bb-modal-status">{book.read ? '✓ READ' : '○ UNREAD'}{book.dateAdded && ` · Added ${dateLabel(book.dateAdded)}`}</p>{book.note && <p className="bb-modal-note">{book.note}</p>}<div className="bb-modal-actions">{onToggle && <button className="bb-modal-action" onClick={onToggle}>{book.read ? 'MARK AS UNREAD' : 'MARK AS READ'}</button>}{onDelete && <button className="bb-modal-action bb-modal-action--danger" onClick={onDelete}>DELETE RECOMMENDATION</button>}</div></div></article></div>;
 }
 
 export function BlackboardBooksPage() {
-  const shelves = useMemo(() => parseBooks(booksRaw), []); const [query, setQuery] = useState(''); const [recommendQuery, setRecommendQuery] = useState(''); const [recommendResults, setRecommendResults] = useState<SearchResult[]>([]); const [community, setCommunity] = useState<Book[]>([]); const [selected, setSelected] = useState<Book | null>(null); const [apiOnline, setApiOnline] = useState(true); const [, setLocation] = useLocation();
-  useEffect(() => { fetch('/api/visitor-books').then(response => { if (!response.ok) throw new Error(); return response.json(); }).then(data => { setCommunity(data.books ?? []); setApiOnline(true); }).catch(() => setApiOnline(false)); }, []);
-  useEffect(() => { const q = recommendQuery.trim(); if (q.length < 2) { setRecommendResults([]); return; } const timer = window.setTimeout(() => { fetch(`/api/book-search?q=${encodeURIComponent(q)}`).then(response => response.ok ? response.json() : null).then(data => setRecommendResults(data?.results ?? [])).catch(() => setRecommendResults([])); }, 400); return () => window.clearTimeout(timer); }, [recommendQuery]);
-  const addRecommendation = async (result: SearchResult) => { const book: Book = { title: result.title, author: result.author, read: false, visitor: true, coverUrl: result.coverUrl, description: result.description, year: result.year, source: result.source, sourceUrl: result.sourceUrl, dateAdded: new Date().toISOString(), sessionId: sessionStorage.getItem('book-session-id') ?? undefined }; try { const response = await fetch('/api/visitor-books', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'add', book }) }); const data = await response.json(); setCommunity(items => [...items, data.book ?? book]); } catch { setCommunity(items => [...items, book]); } setRecommendQuery(''); setRecommendResults([]); };
-  const normalized = query.toLowerCase().trim(); const merged = [{ name: 'Community Recommendations', books: community }, ...shelves].map(shelf => ({ ...shelf, books: shelf.books.filter(book => !normalized || `${book.title} ${book.author}`.toLowerCase().includes(normalized)) })).filter(shelf => shelf.books.length);
-  const toggleRead = async () => { if (!selected) return; const next = { ...selected, read: !selected.read }; setCommunity(items => items.map(item => item === selected ? next : item)); setSelected(next); try { await fetch('/api/visitor-books', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'toggleVisitorRead', sessionId: sessionStorage.getItem('book-session-id'), book: selected }) }); } catch {} };
-  return <LibraryChrome active="books"><div className="bb-library-intro"><p className="bb-kicker">Library</p><h1>Books</h1></div><label className="bb-search"><Search aria-hidden="true" /><span className="sr-only">Search books</span><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Search title or author" /></label><div className="bb-recommend"><label htmlFor="bb-recommend-input">Recommend a book</label><input id="bb-recommend-input" value={recommendQuery} onChange={event => setRecommendQuery(event.target.value)} placeholder="Search Public Libraries" />{recommendResults.length > 0 && <div className="bb-recommend-results">{recommendResults.slice(0, 5).map(result => <button key={result.id} onClick={() => addRecommendation(result)}><strong>{result.title}</strong><small>{result.author}{result.year && ` · ${result.year}`} · Add</small></button>)}</div>}</div>{!apiOnline && <p className="bb-api-note">Community sync is unavailable locally; it will reconnect when deployed.</p>}<div className="bb-shelf-grid">{merged.map(shelf => <section className={`bb-shelf${shelf.name === 'Community Recommendations' ? ' bb-shelf--community' : ''}`} key={shelf.name}><div className="bb-shelf-heading"><h2>{shelf.name}</h2><span>{String(shelf.books.length).padStart(2, '0')}</span></div><ul>{shelf.books.map(book => { const cover = book.coverUrl ?? metaMap[keyOf(book)]?.cover; return <li key={`${shelf.name}-${keyOf(book)}`}><button className="bb-book-row" onClick={() => { setSelected(book); trackEvent('Book Open', { title: book.title, author: book.author, visitor: Boolean(book.visitor) }); }}><span className={book.read ? 'bb-read' : 'bb-unread'} aria-hidden="true" />{cover ? <img className="bb-book-thumb" src={cover} alt="" /> : <span className="bb-book-thumb bb-book-thumb--empty" aria-hidden="true">{initial(book.title)}</span>}<span><strong>{book.title}</strong><small>{book.author}{book.dateAdded && ` · ${dateLabel(book.dateAdded)}`}</small></span></button></li>; })}</ul></section>)}</div>{selected && <BookModal book={selected} onClose={() => setSelected(null)} onToggle={selected.visitor ? toggleRead : undefined} />}<button className="bb-library-backlink" onClick={() => setLocation('/')}>Return to Blackboard</button></LibraryChrome>;
+  const shelves = useMemo(() => parseBooks(booksRaw), []);
+  const sessionId = useRef(getSessionId());
+  const adminPasswordRef = useRef('');
+  const [query, setQuery] = useState('');
+  const [recommendQuery, setRecommendQuery] = useState('');
+  const [recommendResults, setRecommendResults] = useState<SearchResult[]>([]);
+  const [community, setCommunity] = useState<Book[]>([]);
+  const [readOverrides, setReadOverrides] = useState<Record<string, boolean>>({});
+  const [selected, setSelected] = useState<Book | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState<Book | null>(null);
+  const [apiOnline, setApiOnline] = useState(true);
+  const [isAdmin, setIsAdmin] = useState(false);
+  const [adminPrompt, setAdminPrompt] = useState(false);
+  const [adminPass, setAdminPass] = useState('');
+  const [adminError, setAdminError] = useState('');
+  const [, setLocation] = useLocation();
+
+  useEffect(() => {
+    try {
+      const storedPassword = sessionStorage.getItem(ADMIN_PW_KEY) ?? '';
+      adminPasswordRef.current = storedPassword;
+      setIsAdmin(sessionStorage.getItem(ADMIN_KEY) === '1' && Boolean(storedPassword));
+    } catch { /* storage may be blocked */ }
+    fetch('/api/visitor-books').then(response => {
+      if (!response.ok) throw new Error();
+      return response.json();
+    }).then(data => {
+      setCommunity(data.books ?? []);
+      setReadOverrides(data.overrides ?? {});
+      setApiOnline(true);
+    }).catch(() => setApiOnline(false));
+  }, []);
+
+  useEffect(() => {
+    const onKey = (event: KeyboardEvent) => {
+      if (!event.ctrlKey || !event.shiftKey || !['KeyA', 'A'].includes(event.code) && !['A', 'a'].includes(event.key)) return;
+      event.preventDefault();
+      if (isAdmin) {
+        setIsAdmin(false);
+        adminPasswordRef.current = '';
+        sessionStorage.removeItem(ADMIN_KEY);
+        sessionStorage.removeItem(ADMIN_PW_KEY);
+      } else {
+        setAdminPass('');
+        setAdminError('');
+        setAdminPrompt(true);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [isAdmin]);
+
+  useEffect(() => {
+    const q = recommendQuery.trim();
+    if (q.length < 2) { setRecommendResults([]); return; }
+    const timer = window.setTimeout(() => {
+      fetch(`/api/book-search?q=${encodeURIComponent(q)}`).then(response => response.ok ? response.json() : null).then(data => setRecommendResults(data?.results ?? [])).catch(() => setRecommendResults([]));
+    }, 400);
+    return () => window.clearTimeout(timer);
+  }, [recommendQuery]);
+
+  const submitAdminPass = async () => {
+    if (!adminPass.trim()) { setAdminError('Enter password'); return; }
+    try {
+      const response = await fetch('/api/visitor-books', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'verifyAdmin', password: adminPass }) });
+      if (!response.ok) { setAdminError(response.status === 500 ? 'Admin password is not configured' : 'Incorrect password'); return; }
+      adminPasswordRef.current = adminPass;
+      setIsAdmin(true);
+      sessionStorage.setItem(ADMIN_KEY, '1');
+      sessionStorage.setItem(ADMIN_PW_KEY, adminPass);
+      setAdminPrompt(false);
+      setAdminPass('');
+      setAdminError('');
+    } catch { setAdminError('Network error'); }
+  };
+
+  const effectiveRead = (book: Book) => book.visitor ? Boolean(book.read) : (readOverrides[keyOf(book)] ?? Boolean(book.read));
+  const canToggle = (book: Book) => Boolean(book.visitor ? (isAdmin || !book.sessionId || book.sessionId === sessionId.current) : isAdmin);
+  const canDelete = (book: Book) => Boolean(book.visitor && (isAdmin || !book.sessionId || book.sessionId === sessionId.current));
+
+  const addRecommendation = async (result: SearchResult) => {
+    const book: Book = { title: result.title, author: result.author, read: false, visitor: true, coverUrl: result.coverUrl, description: result.description, year: result.year, source: result.source, sourceUrl: result.sourceUrl, dateAdded: new Date().toISOString(), sessionId: sessionId.current };
+    try {
+      const response = await fetch('/api/visitor-books', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'add', book }) });
+      const data = await response.json();
+      setCommunity(items => [...items, data.book ?? book]);
+    } catch { setCommunity(items => [...items, book]); }
+    setRecommendQuery('');
+    setRecommendResults([]);
+  };
+
+  const toggleRead = async (book: Book) => {
+    if (!canToggle(book)) return;
+    const nextRead = !effectiveRead(book);
+    const next = { ...book, read: nextRead };
+    if (book.visitor) {
+      setCommunity(items => items.map(item => item.title === book.title && item.author === book.author && item.dateAdded === book.dateAdded ? next : item));
+    } else {
+      setReadOverrides(values => ({ ...values, [keyOf(book)]: nextRead }));
+    }
+    setSelected(next);
+    try {
+      await fetch('/api/visitor-books', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(book.visitor ? { action: 'toggleVisitorRead', password: adminPasswordRef.current, sessionId: sessionId.current, book } : { action: 'toggleCuratedRead', password: adminPasswordRef.current, key: keyOf(book), read: nextRead }) });
+    } catch { /* optimistic UI remains usable offline */ }
+  };
+
+  const deleteRecommendation = async (book: Book) => {
+    if (!canDelete(book)) return;
+    try {
+      await fetch('/api/visitor-books', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(isAdmin ? { action: 'delete', password: adminPasswordRef.current, book } : { action: 'delete', sessionId: sessionId.current, book }) });
+    } catch { /* remove locally so the action remains responsive offline */ }
+    setCommunity(items => items.filter(item => !(item.title === book.title && item.author === book.author && item.dateAdded === book.dateAdded)));
+    setSelected(null);
+    setConfirmDelete(null);
+  };
+
+  const normalized = query.toLowerCase().trim();
+  const merged = [{ name: 'Community Recommendations', books: community }, ...shelves]
+    .map(shelf => ({ ...shelf, books: shelf.books.filter(book => !normalized || `${book.title} ${book.author}`.toLowerCase().includes(normalized)) }))
+    .filter(shelf => shelf.books.length);
+
+  return <LibraryChrome active="books"><div className="bb-library-intro"><p className="bb-kicker">Library{isAdmin && <span className="bb-admin-badge">ADMIN</span>}</p><h1>Books</h1></div><label className="bb-search"><Search aria-hidden="true" /><span className="sr-only">Search books</span><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Search title or author" /></label><div className="bb-recommend"><label htmlFor="bb-recommend-input">Recommend a book</label><input id="bb-recommend-input" value={recommendQuery} onChange={event => setRecommendQuery(event.target.value)} placeholder="Search Public Libraries" />{recommendResults.length > 0 && <div className="bb-recommend-results">{recommendResults.slice(0, 5).map(result => <button key={result.id} onClick={() => addRecommendation(result)}><strong>{result.title}</strong><small>{result.author}{result.year && ` · ${result.year}`} · Add</small></button>)}</div>}</div>{!apiOnline && <p className="bb-api-note">Community sync is unavailable locally; it will reconnect when deployed.</p>}<div className="bb-shelf-grid">{merged.map(shelf => <section className={`bb-shelf${shelf.name === 'Community Recommendations' ? ' bb-shelf--community' : ''}`} key={shelf.name}><div className="bb-shelf-heading"><h2>{shelf.name}</h2><span>{String(shelf.books.length).padStart(2, '0')}</span></div><ul>{shelf.books.map(book => { const displayBook = { ...book, read: effectiveRead(book) }; const cover = book.coverUrl ?? metaMap[keyOf(book)]?.cover; return <li key={`${shelf.name}-${keyOf(book)}`}><button className="bb-book-row" onClick={() => { setSelected(displayBook); trackEvent('Book Open', { title: book.title, author: book.author, visitor: Boolean(book.visitor) }); }}><span className={displayBook.read ? 'bb-read' : 'bb-unread'} aria-hidden="true" />{cover ? <img className="bb-book-thumb" src={cover} alt="" /> : <span className="bb-book-thumb bb-book-thumb--empty" aria-hidden="true">{initial(book.title)}</span>}<span><strong>{book.title}</strong><small>{book.author}{book.dateAdded && ` · ${dateLabel(book.dateAdded)}`}</small></span></button></li>; })}</ul></section>)}</div>{selected && <BookModal book={selected} onClose={() => setSelected(null)} onToggle={canToggle(selected) ? () => toggleRead(selected) : undefined} onDelete={canDelete(selected) ? () => setConfirmDelete(selected) : undefined} />}{confirmDelete && <div className="bb-modal-overlay" onClick={() => setConfirmDelete(null)}><article className="bb-admin-modal" onClick={event => event.stopPropagation()}><button className="bb-modal-close" onClick={() => setConfirmDelete(null)} aria-label="Close">×</button><span className="bb-admin-modal-kicker">ADMIN / COMMUNITY</span><h2>Delete recommendation?</h2><p>This removes <strong>{confirmDelete.title}</strong> from the shared library.</p><div className="bb-admin-modal-actions"><button className="bb-modal-action" onClick={() => setConfirmDelete(null)}>CANCEL</button><button className="bb-modal-action bb-modal-action--danger" onClick={() => deleteRecommendation(confirmDelete)}>DELETE</button></div></article></div>}{adminPrompt && <div className="bb-modal-overlay" onClick={() => setAdminPrompt(false)}><article className="bb-admin-modal" role="dialog" aria-label="Admin access" onClick={event => event.stopPropagation()}><button className="bb-modal-close" onClick={() => setAdminPrompt(false)} aria-label="Close">×</button><span className="bb-admin-modal-kicker">BLACKBOARD / ADMIN</span><h2>Unlock admin controls</h2><p>Use the shared admin password to manage community books and read states.</p><input className="bb-admin-input" type="password" autoFocus placeholder="Password" autoComplete="current-password" value={adminPass} onChange={event => { setAdminPass(event.target.value); setAdminError(''); }} onKeyDown={event => { if (event.key === 'Enter') void submitAdminPass(); if (event.key === 'Escape') setAdminPrompt(false); }} />{adminError && <p className="bb-admin-error">{adminError}</p>}<button className="bb-modal-action bb-admin-submit" onClick={() => void submitAdminPass()}>UNLOCK</button></article></div>}<button className="bb-library-backlink" onClick={() => setLocation('/')}>Return to Blackboard</button></LibraryChrome>;
 }
 
 export function BlackboardQuotesPage() {

@@ -1,5 +1,6 @@
 import { useRef, useState } from 'react';
 import { BookOpen, FileText, Quote } from 'lucide-react';
+import { Link } from 'wouter';
 import { LOGO_MAP } from '../data/navLogos';
 import { BlackboardQuickNav } from './BlackboardQuickNav';
 import { BlackboardPlayer } from './BlackboardPlayer';
@@ -44,9 +45,9 @@ export default function Blackboard() {
     <header className="bb-header">
       <div className="bb-header-row">
         <div className="bb-identity">
-          <a href="/" className="bb-avatar" aria-label="Nuroctane home">
+          <Link href="/" className="bb-avatar" aria-label="Nuroctane home">
             <img src="/assets/nodes/site-logo.png" alt="" width="56" height="64" fetchPriority="high" />
-          </a>
+          </Link>
           <a className="bb-cal" href="https://cal.com/nuroctane/meeting-nuroctane" target="_blank" rel="noreferrer" aria-label="Book a meeting on Cal.com">
             <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
               <rect x="1.5" y="3" width="13" height="11.5" rx="1.5" stroke="currentColor" strokeWidth="1.2" />
@@ -64,9 +65,9 @@ export default function Blackboard() {
           </div>
         </div>
         <div className="bb-top-tabs" aria-label="Library links">
-          <a href="/books"><BookOpen aria-hidden="true" /><span>Books</span></a>
-          <a href="/quotes"><Quote aria-hidden="true" /><span>Quotes</span></a>
-          <a href="/blog"><FileText aria-hidden="true" /><span>Blog</span></a>
+          <Link href="/books"><BookOpen aria-hidden="true" /><span>Books</span></Link>
+          <Link href="/quotes"><Quote aria-hidden="true" /><span>Quotes</span></Link>
+          <Link href="/blog"><FileText aria-hidden="true" /><span>Blog</span></Link>
         </div>
       </div>
     </header>

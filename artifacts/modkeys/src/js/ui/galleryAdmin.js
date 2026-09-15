@@ -1,7 +1,7 @@
 /**
  * Community gallery admin (desktop SPA).
  * Password = BOOKS_ADMIN_PASSWORD (same as /books).
- * Dialog chrome reuses digital-sea `.bs-*` classes from index.css.
+ * Dialog chrome reuses Blackboard's shared monochrome glass classes.
  */
 
 const ADMIN_FLAG = 'book-admin';
@@ -54,7 +54,7 @@ function removeOverlay() {
 }
 
 /**
- * Books-page-identical admin password dialogue (digital-sea chrome).
+ * Blackboard admin password dialogue shared by the community surfaces.
  * @returns {Promise<string|null>} password or null if cancelled
  */
 export function promptAdminPassword() {
@@ -62,14 +62,16 @@ export function promptAdminPassword() {
     removeOverlay();
     const root = document.createElement('div');
     root.id = 'mkAdminOverlay';
-    root.className = 'bs-overlay';
+    root.className = 'bb-modal-overlay';
     root.innerHTML = `
-      <div class="bs-admin-prompt" role="dialog" aria-label="Admin access">
-        <button type="button" class="bs-modal-close" data-mk-admin-x>✕</button>
-        <div class="bs-admin-prompt-label">ADMIN ACCESS</div>
-        <input class="bs-admin-prompt-input" type="password" placeholder="Password" autocomplete="current-password" data-mk-admin-pass />
-        <div class="bs-admin-prompt-error" data-mk-admin-err style="display:none">Incorrect password</div>
-        <button type="button" class="bs-admin-prompt-btn" data-mk-admin-go>UNLOCK</button>
+      <div class="bb-admin-modal" role="dialog" aria-label="Admin access">
+        <button type="button" class="bb-modal-close" data-mk-admin-x>✕</button>
+        <span class="bb-admin-modal-kicker">BLACKBOARD / ADMIN</span>
+        <h2>Unlock admin controls</h2>
+        <p>Use the shared admin password to manage community builds.</p>
+        <input class="bb-admin-input" type="password" placeholder="Password" autocomplete="current-password" data-mk-admin-pass />
+        <div class="bb-admin-error" data-mk-admin-err style="display:none"></div>
+        <button type="button" class="bb-modal-action bb-admin-submit" data-mk-admin-go>UNLOCK</button>
       </div>`;
     document.body.appendChild(root);
 
@@ -124,7 +126,7 @@ export function promptAdminPassword() {
 }
 
 /**
- * Books-style rename dialogue for a community build.
+ * Blackboard-styled rename dialogue for a community build.
  * @returns {Promise<string|null>}
  */
 export function promptRename(currentName) {
@@ -132,14 +134,15 @@ export function promptRename(currentName) {
     removeOverlay();
     const root = document.createElement('div');
     root.id = 'mkAdminOverlay';
-    root.className = 'bs-overlay';
+    root.className = 'bb-modal-overlay';
     root.innerHTML = `
-      <div class="bs-admin-prompt" role="dialog" aria-label="Rename build">
-        <button type="button" class="bs-modal-close" data-mk-admin-x>✕</button>
-        <div class="bs-admin-prompt-label">RENAME BUILD</div>
-        <input class="bs-admin-prompt-input" type="text" maxlength="40" value="${esc(currentName)}" data-mk-admin-pass />
-        <div class="bs-admin-prompt-error" data-mk-admin-err style="display:none"></div>
-        <button type="button" class="bs-admin-prompt-btn" data-mk-admin-go>SAVE NAME</button>
+      <div class="bb-admin-modal" role="dialog" aria-label="Rename build">
+        <button type="button" class="bb-modal-close" data-mk-admin-x>✕</button>
+        <span class="bb-admin-modal-kicker">COMMUNITY / BUILD</span>
+        <h2>Rename build</h2>
+        <input class="bb-admin-input" type="text" maxlength="40" value="${esc(currentName)}" data-mk-admin-pass />
+        <div class="bb-admin-error" data-mk-admin-err style="display:none"></div>
+        <button type="button" class="bb-modal-action bb-admin-submit" data-mk-admin-go>SAVE NAME</button>
       </div>`;
     document.body.appendChild(root);
     const input = root.querySelector('[data-mk-admin-pass]');
@@ -169,7 +172,7 @@ export function promptRename(currentName) {
 }
 
 /**
- * Books-style confirm delete dialogue.
+ * Blackboard-styled confirm delete dialogue.
  * @returns {Promise<boolean>}
  */
 export function promptDeleteConfirm(name) {
@@ -177,15 +180,16 @@ export function promptDeleteConfirm(name) {
     removeOverlay();
     const root = document.createElement('div');
     root.id = 'mkAdminOverlay';
-    root.className = 'bs-overlay';
+    root.className = 'bb-modal-overlay';
     root.innerHTML = `
-      <div class="bs-admin-prompt" role="dialog" aria-label="Delete build">
-        <button type="button" class="bs-modal-close" data-mk-admin-x>✕</button>
-        <div class="bs-admin-prompt-label">DELETE BUILD</div>
+      <div class="bb-admin-modal" role="dialog" aria-label="Delete build">
+        <button type="button" class="bb-modal-close" data-mk-admin-x>✕</button>
+        <span class="bb-admin-modal-kicker">COMMUNITY / ADMIN</span>
+        <h2>Delete build?</h2>
         <div style="font-family:'JetBrains Mono',monospace;font-size:0.55rem;color:#bdeff2;margin:0.4rem 0 0.8rem;line-height:1.45;opacity:0.9">
           Remove <strong style="color:#e85d5d">${esc(name)}</strong> from the community gallery? This cannot be undone.
         </div>
-        <button type="button" class="bs-admin-prompt-btn" data-mk-admin-go style="border-color:rgba(232,93,93,0.35)">DELETE</button>
+        <button type="button" class="bb-modal-action bb-modal-action--danger bb-admin-submit" data-mk-admin-go>DELETE</button>
       </div>`;
     document.body.appendChild(root);
     const finish = (val) => {

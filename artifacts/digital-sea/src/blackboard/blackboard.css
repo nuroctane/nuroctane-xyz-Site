@@ -82,8 +82,10 @@
 .bb-player-play:hover { border-color: rgb(255 255 255 / 35%); background: rgb(255 255 255 / 14%); }
 .bb-player-play:active { transform: scale(.96); }
 .bb-player-play svg { width: 14px; height: 14px; }
-.bb-player-volume { display: flex; align-items: center; gap: 8px; color: #a0a0a0; }
-.bb-player-volume svg { width: 15px; height: 15px; flex: 0 0 auto; }
+.bb-player-volume { display: flex; align-items: center; gap: 6px; color: #a0a0a0; min-width: 0; }
+.bb-player-volume-button { display: grid; place-items: center; width: 24px; height: 28px; padding: 0; border: 0; border-radius: 5px; color: inherit; background: transparent; cursor: pointer; }
+.bb-player-volume-button:hover, .bb-player-volume-button:focus-visible { color: var(--bb-ink); background: rgb(255 255 255 / 8%); }
+.bb-player-volume-button svg { width: 15px; height: 15px; flex: 0 0 auto; }
 .bb-player-volume input { --bb-progress: 100%; }
 .bb-player-state { color: #858585; font-size: .6rem; letter-spacing: .08em; text-align: right; white-space: nowrap; }
 .bb-copy-toast { position: absolute; left: 50%; bottom: calc(max(var(--bb-margin), env(safe-area-inset-bottom)) + 4.5rem); z-index: 3; padding: 6px 10px; border: 1px solid var(--bb-edge); border-radius: 7px; background: rgb(20 20 20 / 92%); box-shadow: inset 0 1px 0 var(--bb-sheen), 0 8px 24px rgb(0 0 0 / 24%); color: var(--bb-ink); font-size: .625rem; letter-spacing: .02em; opacity: 0; pointer-events: none; transform: translate(-50%, 6px); transition: opacity 140ms ease, transform 180ms var(--bb-ease); }

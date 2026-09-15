@@ -6,6 +6,7 @@ import modkeysVars from '../../../modkeys/src/css/variables.css?raw';
 import modkeysLayout from '../../../modkeys/src/css/layout.css?raw';
 import modkeysComponents from '../../../modkeys/src/css/components.css?raw';
 import modkeysMobile from '../../../modkeys/src/css/mobile.css?raw';
+import './blackboard-pages.css';
 
 function useModkeysStyles() {
   const styleRef = useRef<HTMLStyleElement | null>(null);

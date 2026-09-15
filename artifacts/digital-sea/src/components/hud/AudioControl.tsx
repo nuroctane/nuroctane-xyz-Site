@@ -60,8 +60,7 @@ export function AudioControl({ mini = false }: Props) {
           </svg>
         </button>
 
-        {!isMobile && (
-          <div className={`audio-slider-wrap${expanded ? ' audio-expanded' : ''}`}>
+        <div className={`audio-slider-wrap${isMobile || expanded ? ' audio-expanded' : ''}`}>
             <input
               type="range"
               min={0}
@@ -71,10 +70,9 @@ export function AudioControl({ mini = false }: Props) {
               onChange={(e) => setVolume(parseFloat(e.target.value))}
               className="audio-slider"
               aria-label="Background audio volume"
-              tabIndex={expanded ? 0 : -1}
+              tabIndex={isMobile || expanded ? 0 : -1}
             />
-          </div>
-        )}
+        </div>
       </div>
       <div className="audio-label">{label}</div>
     </div>

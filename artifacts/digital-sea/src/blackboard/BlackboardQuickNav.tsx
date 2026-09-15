@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { ArrowDownRight, ArrowUpRight, ChevronUp, Grid2X2, Network } from 'lucide-react';
+import { Link } from 'wouter';
 import { directoryEntries } from '../data/directory';
 import { LOGO_MAP } from '../data/navLogos';
 import malLogo from '../assets/secondary-nodes/anilist-mal-logo-sidecard.png';
@@ -38,9 +39,9 @@ function DestinationLink({ entry }: { entry: Destination }) {
     <span className="bb-link-label">{entry.label}</span>
     {entry.url === '#' ? <span className="bb-soon">Soon</span> : entry.url.startsWith('/') ? <ArrowDownRight aria-hidden="true" /> : <ArrowUpRight aria-hidden="true" />}
   </>;
-  return entry.url === '#'
-    ? <span className="bb-link bb-link--disabled" aria-disabled="true">{content}</span>
-    : <a className="bb-link" href={entry.url}>{content}</a>;
+  if (entry.url === '#') return <span className="bb-link bb-link--disabled" aria-disabled="true">{content}</span>;
+  if (entry.url.startsWith('/')) return <Link className="bb-link" href={entry.url}>{content}</Link>;
+  return <a className="bb-link" href={entry.url}>{content}</a>;
 }
 
 function DestinationRow({ entry }: { entry: Destination }) {
