@@ -72,12 +72,12 @@ interface PageMeta {
 
 const PAGES: Record<string, PageMeta> = {
   home: {
-    title: "NUROCTANE — Digital Sea",
+    title: "NUROCTANE",
     description:
-      "A 3D interactive scroll experience through nuroctane's digital network — socials, creative projects, writings, and more.",
-    badge: "DIGITAL SEA",
+      "Nuroctane's Blackboard. Projects, socials, books, and quotes.",
+    badge: "BLACKBOARD",
     path: "/",
-    image: `${SITE}/opengraph.jpg`,
+    image: `${SITE}/assets/nodes/site-logo.png`,
     favicon: "/assets/nodes/site-logo.png",
   },
   quotes: {

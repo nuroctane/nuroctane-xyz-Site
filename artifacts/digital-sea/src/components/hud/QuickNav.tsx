@@ -5,37 +5,8 @@ import { blogPosts, BlogPost } from '../../data/blogPosts';
 import type { Mode } from '../../types';
 import { markNavigationIntent } from '../../lib/navIntent';
 
-const LOGO_MAP: Record<string, string> = {
-  instagram:  '/assets/nodes/instagram-logo.png',
-  tiktok:     '/assets/nodes/tiktok-logo.png',
-  x:          '/assets/nodes/x-logo.png',
-  substack:   '/assets/nodes/substack-logo.png',
-  soundcloud: '/assets/nodes/soundcloud-logo.png',
-  twitch:     '/assets/nodes/twitch-logo.png',
-  youtube:    '/assets/nodes/youtube-logo.png',
-  kick:       '/assets/nodes/kick-logo.png',
-  anilist:    '/assets/nodes/anilist-logo.png',
-  letterboxd: '/assets/nodes/letterboxd-logo.png',
-  goodreads:  '/assets/nodes/goodreads-logo.png',
-  remilia:    '/assets/nodes/remilia-quicklaunch-logo.png',
-  steam:      '/assets/nodes/steam-logo.png',
-  discord:    '/assets/nodes/discord-logo.png',
-  reddit:     '/assets/nodes/reddit-logo.png',
-  glasp:      '/assets/nodes/glasp-logo.png',
-  modkeys:    '/assets/nodes/modkeys-logo.png?v=115',
-  snipocr:    '/assets/nodes/snipocr-logo.png?v=115',
-  atxtunerz:  '/assets/nodes/atx-tunerz-logo.png',
-  github:     '/assets/nodes/github-logo.png',
-  miyamaker:  '/assets/nodes/miyamaker-avatar.png',
-  webutils:   '/assets/nodes/wrench.png',
-  // Project marks (same files as card avatars)
-  starsleep: '/assets/nodes/starsleep-logo.png',
-  blackjack:  '/assets/nodes/blackjack-logo.png?v=115',
-  hoodstock:  '/assets/nodes/hoodstock-logo.png',
-  sis:         '/assets/nodes/civeta-dei-research.png?v=116',
-  geoskin:     '/assets/nodes/geoskin-logo.svg',
-  observatory: '/assets/nodes/observatory-logo.png?v=115',
-};
+import { LOGO_MAP } from '../../data/navLogos';
+
 
 // Computed once at module load. Categorization + order derive from
 // nodes.ts (scroll order), so adding/reordering a card there automatically

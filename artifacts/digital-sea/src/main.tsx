@@ -1,7 +1,8 @@
 import { Router, useLocation } from 'wouter';
 import { lazy, Suspense, useEffect, useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
-import App from './App';
+import Blackboard from './blackboard/Blackboard';
+import { SITE_MODE } from './config/siteMode';
 import { AudioProvider } from './hooks/AudioContext';
 import { resolveAnalytics } from './lib/analytics';
 import { initPostHog, capturePageview } from './lib/posthog';
@@ -15,9 +16,17 @@ const ModkeysPage = lazy(() => import('./pages/ModkeysPage'));
 const CliPage    = lazy(() => import('./pages/CliPage'));
 const ObservatoryPage = lazy(() => import('./pages/ObservatoryPage'));
 const CurriculumPage = lazy(() => import('./pages/CurriculumPage'));
+const BlackboardBooksPage = lazy(() => import('./pages/BlackboardPages').then(module => ({ default: module.BlackboardBooksPage })));
+const BlackboardQuotesPage = lazy(() => import('./pages/BlackboardPages').then(module => ({ default: module.BlackboardQuotesPage })));
+// Retain the Digital Sea and its deep links without loading it on the Blackboard.
+const App = lazy(() => import('./App'));
 
 function Fallback() {
   return <div className="page-loading"><div className="page-loading-dot" /></div>;
+}
+
+function BlackboardFallback() {
+  return <div className="bb-loading" role="status" aria-label="Loading Blackboard"><span className="bb-loading-mark"><img src="/assets/nodes/site-logo.png" alt="" /></span><span className="bb-loading-line" /></div>;
 }
 
 /**
@@ -58,19 +67,22 @@ function Root() {
 
   const top = path === '/' ? '' : path.slice(1).split('/')[0];
 
-  if (top === 'quotes') return <Suspense fallback={<Fallback />}><QuotesPage /></Suspense>;
-  if (top === 'books')  return <Suspense fallback={<Fallback />}><BooksPage /></Suspense>;
-  if (top === 'resume') return <Suspense fallback={<Fallback />}><ResumePage /></Suspense>;
-  if (top === 'modkeys') return <Suspense fallback={<Fallback />}><ModkeysPage /></Suspense>;
-  if (top === 'cli') return <Suspense fallback={<Fallback />}><CliPage /></Suspense>;
+  const fallback = SITE_MODE === 'blackboard' && top !== 'sea' ? <BlackboardFallback /> : <Fallback />;
+  if (top === 'quotes') return <Suspense fallback={fallback}>{SITE_MODE === 'blackboard' ? <BlackboardQuotesPage /> : <QuotesPage />}</Suspense>;
+  if (top === 'books')  return <Suspense fallback={fallback}>{SITE_MODE === 'blackboard' ? <BlackboardBooksPage /> : <BooksPage />}</Suspense>;
+  if (top === 'resume') return <Suspense fallback={fallback}><ResumePage /></Suspense>;
+  if (top === 'modkeys') return <Suspense fallback={fallback}><ModkeysPage /></Suspense>;
+  if (top === 'cli') return <Suspense fallback={fallback}><CliPage /></Suspense>;
   if (top === 'observatory') {
-    return <Suspense fallback={<Fallback />}><ObservatoryPage /></Suspense>;
+    return <Suspense fallback={fallback}><ObservatoryPage /></Suspense>;
   }
   if (top === 'curriculum') {
-    return <Suspense fallback={<Fallback />}><CurriculumPage /></Suspense>;
+    return <Suspense fallback={fallback}><CurriculumPage /></Suspense>;
   }
 
-  return <App />;
+  if (!top && SITE_MODE === 'blackboard') return <Blackboard />;
+  if (top === 'sea' && SITE_MODE === 'blackboard') return <Suspense fallback={<Fallback />}><App /></Suspense>;
+  return <Suspense fallback={fallback}><App /></Suspense>;
 }
 
 createRoot(document.getElementById('root')!).render(

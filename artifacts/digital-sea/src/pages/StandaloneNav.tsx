@@ -1,6 +1,7 @@
 import { useLocation } from 'wouter';
 import { useState, useEffect, useRef } from 'react';
 import { markNavigationIntent } from '../lib/navIntent';
+import { SITE_MODE } from '../config/siteMode';
 
 const DESTINATIONS = [
   { href: '/', label: 'Home', logo: '/assets/nodes/site-logo.png' },
@@ -52,7 +53,7 @@ export function StandaloneNav() {
   };
 
   return (
-    <div className="qnav" ref={panelRef}>
+    <div className={`qnav${SITE_MODE === 'blackboard' ? ' qnav--blackboard' : ''}`} ref={panelRef}>
       <button
         className={`qnav-trigger${open ? ' qnav-trigger--open' : ''}`}
         onClick={() => setOpen(v => !v)}

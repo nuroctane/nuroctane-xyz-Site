@@ -23,12 +23,12 @@ export interface PageMeta {
 }
 
 const DEFAULT: PageMeta = {
-  title: "NUROCTANE — Digital Sea",
+  title: "NUROCTANE",
   description:
-    "A 3D interactive scroll experience through nuroctane’s digital network — socials, creative projects, writings, and more.",
-  badge: "DIGITAL SEA",
+    "Nuroctane's Blackboard. Projects, socials, books, and quotes.",
+  badge: "BLACKBOARD",
   path: "/",
-  imagePath: "/opengraph.jpg",
+  imagePath: "/assets/nodes/site-logo.png",
 };
 
 const PAGES: Record<string, PageMeta> = {
@@ -231,7 +231,7 @@ export function applyDocumentMeta(meta: PageMeta, origin?: string): void {
       ? window.location.origin
       : "https://www.nuroctane.xyz");
 
-  document.title = meta.title;
+  document.title = "NUROCTANE";
 
   const setMeta = (selector: string, attr: string, value: string) => {
     let el = document.querySelector(selector) as HTMLMetaElement | null;
