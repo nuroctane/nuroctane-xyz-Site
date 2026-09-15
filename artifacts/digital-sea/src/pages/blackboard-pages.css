@@ -1,4 +1,7 @@
-.bb-library { min-height: 100dvh; overflow-x: clip; background: #050505; color: #f2f2f2; color-scheme: dark; font: 400 0.8125rem/1.55 'JetBrains Mono', ui-monospace, monospace; }
+.bb-library { position: relative; min-height: 100dvh; overflow-x: clip; background: #050505; color: #f2f2f2; color-scheme: dark; font: 400 0.8125rem/1.55 'JetBrains Mono', ui-monospace, monospace; isolation: isolate; }
+.bb-library::before { position: fixed; inset: -6%; z-index: -2; content: ''; background: url('https://images.steamusercontent.com/ugc/1488957328905586689/20F659EABD9A841B8003E36A83AE5141BEFBD756/?imw=2500&imh=1406&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false') center / cover no-repeat; filter: grayscale(1) contrast(1.15) brightness(.42); opacity: .42; transform: scale(1.06); animation: bb-abstract-drift 28s ease-in-out infinite alternate; pointer-events: none; }
+.bb-library::after { position: fixed; inset: 0; z-index: -1; content: ''; background: radial-gradient(ellipse at 50% 42%, rgb(0 0 0 / 8%), rgb(0 0 0 / 62%) 72%), linear-gradient(180deg, rgb(0 0 0 / 16%), rgb(0 0 0 / 48%)); pointer-events: none; }
+@keyframes bb-abstract-drift { from { transform: scale(1.06) translate3d(-1.2%, -0.8%, 0); } to { transform: scale(1.14) translate3d(1.2%, 0.9%, 0); } }
 .bb-library-header { position: sticky; top: 0; z-index: 2; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 1rem; min-height: 72px; padding: 12px clamp(1rem, 4vw, 4rem); background: rgb(5 5 5 / 78%); border-bottom: 1px solid rgb(255 255 255 / 10%); backdrop-filter: blur(18px) saturate(120%); }
 .bb-library-home, .bb-library-sea { display: inline-flex; align-items: center; justify-self: start; min-height: 44px; padding: 10px 12px; border: 1px solid transparent; border-radius: 8px; color: #a0a0a0; background: transparent; font: inherit; cursor: pointer; }
 .bb-library-home { width: 58px; height: 58px; padding: 5px; }
@@ -78,3 +81,4 @@
 .bb-modal-action { min-height: 40px; padding: 8px 12px; border: 1px solid rgb(255 255 255 / 18%); border-radius: 7px; color: #eee; background: transparent; font: inherit; cursor: pointer; }
 @media (max-width: 680px) { .bb-library-header { grid-template-columns: auto 1fr; } .bb-library-tabs { grid-column: 1 / -1; grid-row: 2; } .bb-library-home { grid-column: 1; grid-row: 1; } .bb-library-content { width: min(calc(100% - 1.5rem), 600px); padding-top: 3rem; } .bb-book-modal { grid-template-columns: 88px 1fr; gap: 1rem; padding: 1rem; } .bb-modal-cover { min-height: 130px; } }
 @media (prefers-reduced-transparency: reduce) { .bb-library-header { background: #050505; backdrop-filter: none; } }
+@media (prefers-reduced-motion: reduce) { .bb-library::before { animation: none; } }

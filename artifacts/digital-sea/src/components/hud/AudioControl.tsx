@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useIsMobile } from '../../hooks/useMobile';
 import { useAudioCtx } from '../../hooks/AudioContext';
+import { SITE_MODE } from '../../config/siteMode';
 
 interface Props {
   /** Compact variant for the sub-page headers (quotes / books / resume). */
@@ -16,6 +17,7 @@ export function AudioControl({ mini = false }: Props) {
   const { enabled, blocked, armed, track, volume, setVolume, toggle } = useAudioCtx();
   const [expanded, setExpanded] = useState(false);
   const isMobile = useIsMobile();
+  const blackboard = SITE_MODE === 'blackboard';
 
   // `blocked` is rare (cold browser refused autoplay). Normal path never hits it.
   const label = blocked ? 'PLAY' : enabled ? 'SOUND' : 'MUTED';
@@ -27,7 +29,7 @@ export function AudioControl({ mini = false }: Props) {
 
   return (
     <div
-      className={`audio-control${mini ? ' mini-audio' : ''}`}
+      className={`audio-control${mini ? ' mini-audio' : ''}${blackboard ? ' bb-audio-control' : ''}`}
       data-audio-armed={armed ? 'true' : 'false'}
       data-audio-track={track ?? 'none'}
       onMouseEnter={() => setExpanded(true)}

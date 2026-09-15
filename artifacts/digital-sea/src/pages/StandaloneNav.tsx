@@ -2,6 +2,7 @@ import { useLocation } from 'wouter';
 import { useState, useEffect, useRef } from 'react';
 import { markNavigationIntent } from '../lib/navIntent';
 import { SITE_MODE } from '../config/siteMode';
+import { BlackboardQuickNav } from '../blackboard/BlackboardQuickNav';
 
 const DESTINATIONS = [
   { href: '/', label: 'Home', logo: '/assets/nodes/site-logo.png' },
@@ -19,7 +20,7 @@ const DESTINATIONS = [
 
 const isExternal = (href: string) => /^https?:\/\//.test(href);
 
-export function StandaloneNav() {
+function LegacyStandaloneNav() {
   const [location, setLocation] = useLocation();
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -95,4 +96,8 @@ export function StandaloneNav() {
       </div>
     </div>
   );
+}
+
+export function StandaloneNav() {
+  return SITE_MODE === 'blackboard' ? <BlackboardQuickNav standalone /> : <LegacyStandaloneNav />;
 }

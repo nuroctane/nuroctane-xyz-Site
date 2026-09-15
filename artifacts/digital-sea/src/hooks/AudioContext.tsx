@@ -9,6 +9,7 @@ import {
   type ReactNode,
 } from 'react';
 import type { Track } from '../types';
+import { SITE_MODE } from '../config/siteMode';
 
 /* ═══════════════════════════════════════════════════════════════════════════
    AUDIO — one <audio> element for the whole app.
@@ -31,6 +32,15 @@ const PLAYLISTS: Record<Track, string[]> = {
     'Compendium - Introduction Development and Development.mp3',
   ],
 };
+
+// Blackboard deliberately has one resident track. Switching SITE_MODE back to
+// digital-sea restores the original soundtrack without changing the player.
+const BLACKBOARD_PLAYLISTS: Record<Track, string[]> = {
+  main: ['difference (interlude) [540300138].mp3'],
+  blog: ['difference (interlude) [540300138].mp3'],
+};
+
+const ACTIVE_PLAYLISTS = SITE_MODE === 'blackboard' ? BLACKBOARD_PLAYLISTS : PLAYLISTS;
 
 const src = (name: string) =>
   new URL(
@@ -56,11 +66,17 @@ interface AudioCtxValue {
   /** play() was refused; next click/tap will retry. Not a required step. */
   blocked: boolean;
   armed: boolean;
+  playing: boolean;
+  currentTime: number;
+  duration: number;
   volume: number;
   track: Track | null;
   arm: () => void;
+  play: () => void;
+  pause: () => void;
   setTrack: (t: Track | null) => void;
   setVolume: (v: number) => void;
+  seek: (seconds: number) => void;
   toggle: () => void;
 }
 
@@ -72,6 +88,9 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   const [enabled, setEnabled] = useState(true);
   const [armed,   setArmed]   = useState(false);
   const [blocked, setBlocked] = useState(false);
+  const [playing, setPlaying] = useState(false);
+  const [currentTime, setCurrentTime] = useState(0);
+  const [duration, setDuration] = useState(0);
   const [volume,  setVolume]  = useState(0.5);
   const [track,   setTrackState] = useState<Track | null>(null);
   const [idx,     setIdx]        = useState(0);
@@ -198,7 +217,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       const t = trackRef.current;
       if (!a || !t) return;
 
-      const list      = PLAYLISTS[t];
+      const list      = ACTIVE_PLAYLISTS[t];
       const wantSrc   = src(list[idxRef.current % list.length]);
       const wantSound = armedRef.current && enabledRef.current;
       const isLoop    = list.length === 1;
@@ -251,18 +270,19 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     a.loop = true;
     a.volume = 0;
     a.preload = 'auto';
-    a.src = src(PLAYLISTS.main[0]);
+    a.src = src(ACTIVE_PLAYLISTS.main[0]);
     a.load();
     audioRef.current = a;
 
     const onEnded = () => {
       const t = trackRef.current;
       if (!t) return;
-      const len = PLAYLISTS[t].length;
+      const len = ACTIVE_PLAYLISTS[t].length;
       if (len > 1) setIdx(i => (i + 1) % len);
     };
 
     const onPause = () => {
+      setPlaying(false);
       if (a.ended) return;
       if (selfPauseRef.current) { selfPauseRef.current = false; return; }
       if (armedRef.current && enabledRef.current && trackRef.current) {
@@ -272,6 +292,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     };
 
     const onPlaying = () => {
+      setPlaying(true);
       selfPauseRef.current = false;
       pendingRef.current = false;
       soundedRef.current = true;
@@ -282,15 +303,21 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     const onError = () => {
       const t = trackRef.current;
       if (!t) return;
-      const len = PLAYLISTS[t].length;
+      const len = ACTIVE_PLAYLISTS[t].length;
       failuresRef.current += 1;
       if (len > 1 && failuresRef.current < len) setIdx(i => (i + 1) % len);
     };
+
+    const onTimeUpdate = () => setCurrentTime(a.currentTime || 0);
+    const onMetadata = () => setDuration(Number.isFinite(a.duration) ? a.duration : 0);
 
     a.addEventListener('ended', onEnded);
     a.addEventListener('pause', onPause);
     a.addEventListener('playing', onPlaying);
     a.addEventListener('error', onError);
+    a.addEventListener('timeupdate', onTimeUpdate);
+    a.addEventListener('loadedmetadata', onMetadata);
+    a.addEventListener('durationchange', onMetadata);
 
     return () => {
       if (fadeTimerRef.current !== null) clearInterval(fadeTimerRef.current);
@@ -299,6 +326,9 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       a.removeEventListener('pause', onPause);
       a.removeEventListener('playing', onPlaying);
       a.removeEventListener('error', onError);
+      a.removeEventListener('timeupdate', onTimeUpdate);
+      a.removeEventListener('loadedmetadata', onMetadata);
+      a.removeEventListener('durationchange', onMetadata);
       a.pause();
       // Invalidate in-flight play attempts from this mount (React 18 StrictMode double-mount)
       playGenRef.current++;
@@ -357,7 +387,22 @@ export function AudioProvider({ children }: { children: ReactNode }) {
 
   const arm = useCallback(() => setArmed(true), []);
 
+  const play = useCallback(() => {
+    setArmed(true);
+    setEnabled(true);
+  }, []);
+
+  const pause = useCallback(() => setEnabled(false), []);
+
   const setTrack = useCallback((t: Track | null) => setTrackState(t), []);
+
+  const seek = useCallback((seconds: number) => {
+    const a = audioRef.current;
+    if (!a || !Number.isFinite(seconds)) return;
+    const next = Math.max(0, Math.min(seconds, Number.isFinite(a.duration) ? a.duration : seconds));
+    a.currentTime = next;
+    setCurrentTime(next);
+  }, []);
 
   const toggle = useCallback(() => {
     // If a cold browser blocked play, this click is the retry — don't mute.
@@ -370,8 +415,8 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   }, [reconcile]);
 
   const value = useMemo(
-    () => ({ enabled, blocked, armed, volume, track, arm, setTrack, setVolume, toggle }),
-    [enabled, blocked, armed, volume, track, arm, setTrack, toggle],
+    () => ({ enabled, blocked, armed, playing, currentTime, duration, volume, track, arm, play, pause, setTrack, setVolume, seek, toggle }),
+    [enabled, blocked, armed, playing, currentTime, duration, volume, track, arm, play, pause, setTrack, seek, toggle],
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
