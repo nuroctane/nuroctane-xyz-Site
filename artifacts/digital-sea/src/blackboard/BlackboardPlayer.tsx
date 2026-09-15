@@ -17,6 +17,13 @@ const formatTime = (seconds: number) => {
   return `${minutes}:${remainder}`;
 };
 
+/* iOS ignores HTMLMediaElement.volume outright — device volume is the only
+ * control that works there — so an in-page slider would be dead UI. Hide it
+ * and let the hardware volume buttons do their native job. */
+const IOS_VOLUME_DEAD = typeof navigator !== 'undefined' &&
+  (/iP(hone|od|ad)/.test(navigator.userAgent) ||
+   (navigator.platform === 'MacIntel' && (navigator as Navigator & { maxTouchPoints?: number }).maxTouchPoints > 1));
+
 export function BlackboardPlayer() {
   const { track, playing, currentTime, duration, volume, blocked, mutedAutoplay, setTrack, play, pause, seek, setVolume } = useAudioCtx();
   const titleViewportRef = useRef<HTMLSpanElement>(null);
@@ -99,7 +106,7 @@ export function BlackboardPlayer() {
         <button type="button" className="bb-player-volume-button" onClick={onVolumeToggle} aria-label={volume === 0 ? 'Unmute audio' : 'Mute audio'}>
           {volume === 0 ? <VolumeX aria-hidden="true" /> : <Volume2 aria-hidden="true" />}
         </button>
-        <input type="range" min="0" max="1" step="0.01" value={volume} onChange={event => { const next = Number(event.target.value); if (next > 0) lastAudibleVolumeRef.current = next; setVolume(next); }} aria-label="Volume" />
+        {!IOS_VOLUME_DEAD && <input type="range" min="0" max="1" step="0.01" value={volume} onChange={event => { const next = Number(event.target.value); if (next > 0) lastAudibleVolumeRef.current = next; setVolume(next); }} aria-label="Volume" />}
       </div>
       <span className="bb-player-state" role="status">{blocked ? 'TAP TO PLAY' : mutedAutoplay ? 'TAP FOR SOUND' : playing ? 'PLAYING' : 'PAUSED'}</span>
     </div>

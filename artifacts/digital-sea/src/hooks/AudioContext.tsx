@@ -116,53 +116,15 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   const playGenRef     = useRef(0);
   /** Re-entrancy guard for reconcile(). */
   const reconcilingRef = useRef(false);
-  /** Web Audio graph — volume is driven through its GainNode from the first
-   *  user gesture onward, which works on iOS where element.volume does not. */
-  const webAudioRef  = useRef<{ ctx: AudioContext; gain: GainNode } | null>(null);
   /** Muted-autoplay in progress: track is playing silently until a gesture. */
   const mutedAutoplayRef = useRef(false);
 
   const applyVolume = useCallback((a: HTMLAudioElement) => {
     const product = Math.max(0, Math.min(1, volumeRef.current * gainRef.current));
-    const web = webAudioRef.current;
-    if (web) {
-      // Attenuation lives in the graph; keep the element wide open so the
-      // two don't multiply.
-      web.gain.gain.value = product;
-      if (a.volume !== 1) a.volume = 1;
-      return;
-    }
     a.volume = product;
-    // Platforms that ignore element.volume (iOS) honor .muted — so muting
-    // works even before the gain graph exists.
+    // Platforms that ignore element.volume (iOS) honor .muted — so the mute
+    // button still works there. iOS volume itself is device-controlled.
     a.muted = product <= 0.001;
-  }, []);
-
-  /** Create/resume the Web Audio graph. Must run inside a user gesture on
-   *  iOS — a resume outside one simply stays suspended and playback keeps
-   *  flowing until the next gesture lands. Cheap once running. */
-  const ensureWebAudio = useCallback(() => {
-    const a = audioRef.current;
-    if (!a) return;
-    let web = webAudioRef.current;
-    if (!web) {
-      try {
-        const Ctor = window.AudioContext
-          ?? (window as unknown as { webkitAudioContext?: typeof AudioContext }).webkitAudioContext;
-        if (!Ctor) return;
-        const ctx = new Ctor();
-        const source = ctx.createMediaElementSource(a);
-        const gain = ctx.createGain();
-        gain.gain.value = Math.max(0, Math.min(1, volumeRef.current * gainRef.current));
-        source.connect(gain);
-        gain.connect(ctx.destination);
-        web = { ctx, gain };
-        webAudioRef.current = web;
-      } catch {
-        return;
-      }
-    }
-    if (web.ctx.state === 'suspended') void web.ctx.resume().catch(() => undefined);
   }, []);
 
   const fadeTo = useCallback(
@@ -248,10 +210,6 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         pendingRef.current = false;
         soundedRef.current = true;
         setBlocked(false);
-        // play() resolving usually means a gesture just landed; bring the
-        // volume graph along before the fade starts writing to it.
-        const web = webAudioRef.current;
-        if (web && web.ctx.state === 'suspended') void web.ctx.resume().catch(() => undefined);
         fadeTo(1, fadeMs);
       };
 
@@ -423,28 +381,9 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       // Invalidate in-flight play attempts from this mount (React 18 StrictMode double-mount)
       playGenRef.current++;
       playingRef.current = false;
-      // The gain node is bound to this element; drop the graph with it.
-      const web = webAudioRef.current;
-      webAudioRef.current = null;
-      if (web) void web.ctx.close().catch(() => undefined);
       audioRef.current = null;
     };
   }, []);
-
-  // Create/resume the volume graph on real interactions — AudioContext work
-  // is only honored inside a user gesture on iOS. From the first gesture the
-  // player's volume control runs through the GainNode on every platform.
-  useEffect(() => {
-    const onGesture = () => ensureWebAudio();
-    RETRY_EVENTS.forEach(type =>
-      window.addEventListener(type, onGesture, { passive: true, capture: true }),
-    );
-    return () => {
-      RETRY_EVENTS.forEach(type =>
-        window.removeEventListener(type, onGesture, { capture: true }),
-      );
-    };
-  }, [ensureWebAudio]);
 
   // Cold-browser fallback: if play() was refused, retry on interaction. A
   // silent muted-autoplay is unmuted by the same first gesture.
@@ -452,7 +391,6 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     const retry = (e: Event) => {
       const el = e.target as Element | null;
       const fromAudioControl = Boolean(el?.closest?.('.audio-control'));
-      ensureWebAudio();
       if (mutedAutoplayRef.current && !fromAudioControl) {
         mutedAutoplayRef.current = false;
         setMutedAutoplay(false);
@@ -466,7 +404,6 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     };
     const onVisible = () => {
       if (document.hidden) return;
-      ensureWebAudio();
       if (pendingRef.current) {
         playingRef.current = false;
         reconcile();
@@ -484,7 +421,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       );
       document.removeEventListener('visibilitychange', onVisible);
     };
-  }, [reconcile, ensureWebAudio]);
+  }, [reconcile]);
 
   useEffect(() => {
     enabledRef.current = enabled;
