@@ -61,28 +61,13 @@ const RETRY_EVENTS = [
   'click',
 ] as const;
 
-/* iOS Safari silently ignores HTMLMediaElement.volume (the write is dropped,
- * reads return 1), so the player's slider and mute button would do nothing on
- * an iPhone. Probe for that once; on such platforms the element is routed
- * through a Web Audio GainNode, which iOS does honor. The graph may only be
- * created inside a user gesture there — created while suspended it would
- * swallow playback — so ensureWebAudio() rides the same interaction events as
- * the autoplay retry. Until the graph exists, `.muted` (which iOS honors)
- * covers the mute button. */
-const VOLUME_IGNORED = (() => {
-  try {
-    const probe = new Audio();
-    probe.volume = 0.42;
-    return Math.abs(probe.volume - 0.42) > 0.01;
-  } catch {
-    return false;
-  }
-})();
-
 interface AudioCtxValue {
   enabled: boolean;
   /** play() was refused; next click/tap will retry. Not a required step. */
   blocked: boolean;
+  /** Audible autoplay was refused, so the track is playing silently and the
+   *  first user gesture unmutes it. */
+  mutedAutoplay: boolean;
   armed: boolean;
   playing: boolean;
   currentTime: number;
@@ -106,6 +91,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   const [enabled, setEnabled] = useState(true);
   const [armed,   setArmed]   = useState(false);
   const [blocked, setBlocked] = useState(false);
+  const [mutedAutoplay, setMutedAutoplay] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
@@ -130,8 +116,11 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   const playGenRef     = useRef(0);
   /** Re-entrancy guard for reconcile(). */
   const reconcilingRef = useRef(false);
-  /** Web Audio graph for platforms that ignore element.volume (iOS). */
+  /** Web Audio graph — volume is driven through its GainNode from the first
+   *  user gesture onward, which works on iOS where element.volume does not. */
   const webAudioRef  = useRef<{ ctx: AudioContext; gain: GainNode } | null>(null);
+  /** Muted-autoplay in progress: track is playing silently until a gesture. */
+  const mutedAutoplayRef = useRef(false);
 
   const applyVolume = useCallback((a: HTMLAudioElement) => {
     const product = Math.max(0, Math.min(1, volumeRef.current * gainRef.current));
@@ -144,14 +133,15 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       return;
     }
     a.volume = product;
-    if (VOLUME_IGNORED) a.muted = product <= 0.001;
+    // Platforms that ignore element.volume (iOS) honor .muted — so muting
+    // works even before the gain graph exists.
+    a.muted = product <= 0.001;
   }, []);
 
-  /** Create/resume the Web Audio graph. Gesture-scoped on iOS — call from
-   *  interaction handlers; a resume outside a gesture simply stays suspended
-   *  and playback keeps flowing at device volume until one lands. */
+  /** Create/resume the Web Audio graph. Must run inside a user gesture on
+   *  iOS — a resume outside one simply stays suspended and playback keeps
+   *  flowing until the next gesture lands. Cheap once running. */
   const ensureWebAudio = useCallback(() => {
-    if (!VOLUME_IGNORED) return;
     const a = audioRef.current;
     if (!a) return;
     let web = webAudioRef.current;
@@ -213,9 +203,19 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     [applyVolume],
   );
 
-  /** Unmuted play, same as the old site — no muted gate. */
+  /** Unmuted play where the browser allows it; muted autoplay + first-gesture
+   *  unmute where it doesn't (iOS, cold Chrome). */
   const attemptPlay = useCallback(
     (a: HTMLAudioElement, fadeMs: number) => {
+      // Silent-playing state: keep it until a real gesture unmutes; restarting
+      // or unmuting here would leave the element audible without a gesture.
+      if (mutedAutoplayRef.current && !a.paused) {
+        pendingRef.current = false;
+        setBlocked(false);
+        return;
+      }
+      mutedAutoplayRef.current = false;
+      setMutedAutoplay(false);
       // Guard: already playing this track at audible volume
       if (!a.paused && a.currentTime > 0 && gainRef.current > 0.01) {
         a.muted = false;
@@ -237,8 +237,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         p = a.play() as Promise<void> | undefined;
       } catch {
         if (playGenRef.current === thisGen) playingRef.current = false;
-        pendingRef.current = true;
-        setBlocked(true);
+        mutedFallback(a, thisGen);
         return;
       }
 
@@ -250,7 +249,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         soundedRef.current = true;
         setBlocked(false);
         // play() resolving usually means a gesture just landed; bring the
-        // iOS volume graph along before the fade starts writing to it.
+        // volume graph along before the fade starts writing to it.
         const web = webAudioRef.current;
         if (web && web.ctx.state === 'suspended') void web.ctx.resume().catch(() => undefined);
         fadeTo(1, fadeMs);
@@ -262,13 +261,38 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         if (playGenRef.current !== thisGen) return;
         playingRef.current = false;
         if (err?.name === 'AbortError') return;
-        // Cold browser only — most visits with prior engagement just play.
-        pendingRef.current = true;
-        setBlocked(true);
+        // Audible autoplay refused. Muted autoplay is permitted everywhere —
+        // start silently; the first user gesture unmutes.
+        mutedFallback(a, thisGen);
       });
     },
-    [fadeTo],
+    [fadeTo, applyVolume],
   );
+
+  /** Muted autoplay fallback for a refused audible play(). */
+  const mutedFallback = useCallback((a: HTMLAudioElement, thisGen: number) => {
+    mutedAutoplayRef.current = true;
+    setMutedAutoplay(true);
+    gainRef.current = 0;
+    a.muted = true;
+    applyVolume(a);
+    let muted: Promise<void> | undefined;
+    try {
+      muted = a.play() as Promise<void> | undefined;
+    } catch {
+      muted = undefined;
+    }
+    if (!muted) return;
+    muted.then(() => {
+      if (playGenRef.current !== thisGen) return;
+      pendingRef.current = false;
+      setBlocked(false);
+    }).catch(() => {
+      if (playGenRef.current !== thisGen) return;
+      pendingRef.current = true;
+      setBlocked(true);
+    });
+  }, [applyVolume]);
 
   const reconcile = useCallback(() => {
     // Re-entrancy guard
@@ -305,6 +329,10 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       if (wantSound) {
         if (a.paused) {
           attemptPlay(a, soundedRef.current ? FADE_RESUME_MS : FADE_FIRST_MS);
+        } else if (mutedAutoplayRef.current) {
+          // Silent autoplay is already running; leave it until a gesture.
+          pendingRef.current = false;
+          setBlocked(false);
         } else {
           a.muted = false;
           fadeTo(1, soundedRef.current ? FADE_RESUME_MS : FADE_FIRST_MS);
@@ -403,10 +431,10 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  // Create/resume the iOS volume graph on real interactions — AudioContext
-  // work is only honored inside a user gesture there.
+  // Create/resume the volume graph on real interactions — AudioContext work
+  // is only honored inside a user gesture on iOS. From the first gesture the
+  // player's volume control runs through the GainNode on every platform.
   useEffect(() => {
-    if (!VOLUME_IGNORED) return;
     const onGesture = () => ensureWebAudio();
     RETRY_EVENTS.forEach(type =>
       window.addEventListener(type, onGesture, { passive: true, capture: true }),
@@ -418,17 +446,28 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     };
   }, [ensureWebAudio]);
 
-  // Cold-browser fallback only: if play() was refused, retry on interaction.
+  // Cold-browser fallback: if play() was refused, retry on interaction. A
+  // silent muted-autoplay is unmuted by the same first gesture.
   useEffect(() => {
     const retry = (e: Event) => {
-      if (!pendingRef.current) return;
       const el = e.target as Element | null;
-      if (el?.closest?.('.audio-control')) return;
+      const fromAudioControl = Boolean(el?.closest?.('.audio-control'));
+      ensureWebAudio();
+      if (mutedAutoplayRef.current && !fromAudioControl) {
+        mutedAutoplayRef.current = false;
+        setMutedAutoplay(false);
+        playingRef.current = false;
+        reconcile();
+        return;
+      }
+      if (!pendingRef.current || fromAudioControl) return;
       playingRef.current = false;
       reconcile();
     };
     const onVisible = () => {
-      if (!document.hidden && pendingRef.current) {
+      if (document.hidden) return;
+      ensureWebAudio();
+      if (pendingRef.current) {
         playingRef.current = false;
         reconcile();
       }
@@ -445,7 +484,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       );
       document.removeEventListener('visibilitychange', onVisible);
     };
-  }, [reconcile]);
+  }, [reconcile, ensureWebAudio]);
 
   useEffect(() => {
     enabledRef.current = enabled;
@@ -496,8 +535,8 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   }, [reconcile]);
 
   const value = useMemo(
-    () => ({ enabled, blocked, armed, playing, currentTime, duration, volume, track, arm, play, pause, setTrack, setVolume, seek, toggle }),
-    [enabled, blocked, armed, playing, currentTime, duration, volume, track, arm, play, pause, setTrack, seek, toggle],
+    () => ({ enabled, blocked, mutedAutoplay, armed, playing, currentTime, duration, volume, track, arm, play, pause, setTrack, setVolume, seek, toggle }),
+    [enabled, blocked, mutedAutoplay, armed, playing, currentTime, duration, volume, track, arm, play, pause, setTrack, setVolume, seek, toggle],
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

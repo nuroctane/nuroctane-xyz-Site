@@ -18,7 +18,7 @@ const formatTime = (seconds: number) => {
 };
 
 export function BlackboardPlayer() {
-  const { track, playing, currentTime, duration, volume, blocked, setTrack, play, pause, seek, setVolume } = useAudioCtx();
+  const { track, playing, currentTime, duration, volume, blocked, mutedAutoplay, setTrack, play, pause, seek, setVolume } = useAudioCtx();
   const titleViewportRef = useRef<HTMLSpanElement>(null);
   const titleRef = useRef<HTMLElement>(null);
   const autoplayAttemptedRef = useRef(false);
@@ -101,7 +101,7 @@ export function BlackboardPlayer() {
         </button>
         <input type="range" min="0" max="1" step="0.01" value={volume} onChange={event => { const next = Number(event.target.value); if (next > 0) lastAudibleVolumeRef.current = next; setVolume(next); }} aria-label="Volume" />
       </div>
-      <span className="bb-player-state" role="status">{blocked ? 'TAP TO PLAY' : playing ? 'PLAYING' : 'PAUSED'}</span>
+      <span className="bb-player-state" role="status">{blocked ? 'TAP TO PLAY' : mutedAutoplay ? 'TAP FOR SOUND' : playing ? 'PLAYING' : 'PAUSED'}</span>
     </div>
   </section>;
 }

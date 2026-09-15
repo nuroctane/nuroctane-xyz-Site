@@ -50,7 +50,8 @@ function parseBooks(raw: string): Shelf[] {
 function parseQuotes(raw: string) {
   const sections: { name: string; quotes: { text: string; source: string }[] }[] = []; let current: (typeof sections)[number] | undefined; let pending: string[] = [];
   const flush = () => { if (!current || !pending.length) return; const source = pending.at(-1)?.match(/^(?:—|--|–|- )\s*(.+)$/)?.[1] ?? ''; const body = source ? pending.slice(0, -1) : pending; if (body.join('').trim()) current.quotes.push({ text: body.join(' ').trim(), source }); pending = []; };
-  for (const line of raw.split('\n')) { if (line.startsWith('## ')) { flush(); current = { name: line.slice(3).trim(), quotes: [] }; sections.push(current); continue; } if (line.startsWith('>')) pending.push(line.replace(/^>\s?/, '').trim()); else if (!line.trim()) flush(); }
+  for (const line of raw.split('\n')) { if (line.startsWith('## ')) { flush(); const name = line.slice(3).trim(); // "Index" is the vault file's TOC, not a quote category
+    current = name === 'Index' ? undefined : { name, quotes: [] }; if (current) sections.push(current); continue; } if (line.startsWith('>')) pending.push(line.replace(/^>\s?/, '').trim()); else if (!line.trim()) flush(); }
   flush(); return sections;
 }
 
