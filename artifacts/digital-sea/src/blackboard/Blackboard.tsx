@@ -4,6 +4,7 @@ import { Link } from 'wouter';
 import { LOGO_MAP } from '../data/navLogos';
 import { BlackboardQuickNav } from './BlackboardQuickNav';
 import { BlackboardPlayer } from './BlackboardPlayer';
+import { BlackboardWallpaper } from './BlackboardWallpaper';
 import './blackboard.css';
 const BTC_ADDR = 'bc1qmsexp4nygxcw0gklw346hds4gxctfley2tvn40';
 const ETH_ADDR = '0xf5386e680d5629a6e1c04bb2bfd1b79a794467f5';
@@ -41,6 +42,7 @@ export default function Blackboard() {
   };
 
   return <main className="blackboard">
+    <BlackboardWallpaper />
     <h1 className="sr-only">NUROCTANE</h1>
     <header className="bb-header">
       <div className="bb-header-row">

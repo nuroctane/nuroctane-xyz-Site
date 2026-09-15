@@ -1,0 +1,16 @@
+/* WebGL Blackboard wallpaper (Wallpaper Engine 2207944762 port).
+ * The JPEG background is the no-WebGL / pre-first-frame fallback — the canvas
+ * paints the same image, so the swap is seamless. */
+.bb-wallpaper {
+  position: fixed;
+  inset: 0;
+  z-index: -2;
+  width: 100vw;
+  height: 100vh;
+  background: url('/assets/blackboard/wallpaper-1280.jpg') center / cover no-repeat;
+  pointer-events: none;
+}
+
+@media (min-width: 901px) {
+  .bb-wallpaper { background-image: url('/assets/blackboard/wallpaper.jpg'); }
+}

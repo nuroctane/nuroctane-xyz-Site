@@ -24,9 +24,7 @@
   -webkit-font-smoothing: antialiased;
   isolation: isolate;
 }
-.blackboard::before, .bb-library::before { position: fixed; inset: -6%; z-index: -2; content: ''; background: url('https://images.steamusercontent.com/ugc/1488957328905586689/20F659EABD9A841B8003E36A83AE5141BEFBD756/?imw=2500&imh=1406&ima=fit&impolicy=Letterbox&imcolor=%23000000&letterbox=false') center / cover no-repeat; filter: grayscale(1) contrast(1.15) brightness(.42); opacity: .42; transform: scale(1.06); animation: bb-abstract-drift 28s ease-in-out infinite alternate; pointer-events: none; }
-.blackboard::after, .bb-library::after { position: fixed; inset: 0; z-index: -1; content: ''; background: radial-gradient(ellipse at 50% 42%, rgb(0 0 0 / 8%), rgb(0 0 0 / 62%) 72%), linear-gradient(180deg, rgb(0 0 0 / 16%), rgb(0 0 0 / 48%)); pointer-events: none; }
-@keyframes bb-abstract-drift { from { transform: scale(1.06) translate3d(-1.2%, -0.8%, 0); } to { transform: scale(1.14) translate3d(1.2%, 0.9%, 0); } }
+.blackboard::after, .bb-library::after { position: fixed; inset: 0; z-index: -1; content: ''; background: radial-gradient(ellipse at 50% 42%, rgb(0 0 0 / 4%), rgb(0 0 0 / 52%) 74%), linear-gradient(180deg, rgb(0 0 0 / 12%), rgb(0 0 0 / 38%)); pointer-events: none; }
 .bb-loading { position: fixed; inset: 0; display: grid; place-items: center; gap: 14px; align-content: center; background: #050505; color: #f2f2f2; color-scheme: dark; font: 400 .75rem/1 'JetBrains Mono', ui-monospace, monospace; }
 .bb-loading-mark { display: grid; place-items: center; width: 42px; height: 42px; border: 1px solid rgb(255 255 255 / 28%); border-radius: 8px; color: #f2f2f2; font-size: 1rem; letter-spacing: .08em; animation: bb-loading-breathe 1.2s ease-in-out infinite; }
 .bb-loading-mark img { width: 30px; height: 34px; object-fit: contain; }
