@@ -19,7 +19,7 @@
   "observability": { "enabled": true },
 
   "assets": {
-    "directory": "artifacts/digital-sea/dist/public",
+    "directory": "dist/public",
     "binding": "ASSETS",
 
     // The SPA is client-routed by wouter, so any path that is not a real file

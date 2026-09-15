@@ -14,7 +14,11 @@
 import fs from 'node:fs';
 import path from 'node:path';
 
-const assetsDir = path.resolve('artifacts/digital-sea/dist/public/assets');
+const design = process.argv[2] ?? JSON.parse(fs.readFileSync('site.config.json', 'utf8')).active;
+if (!['blackboard', 'digital-sea'].includes(design)) throw new Error('Unknown design');
+const siteRoot = `artifacts/${design}`;
+const modkeysRoot = design === 'digital-sea' ? `${siteRoot}/modkeys` : 'artifacts/modkeys';
+const assetsDir = path.resolve(`${siteRoot}/dist/public/assets`);
 if (!fs.existsSync(assetsDir)) {
   console.error('check-spa-shell: dist assets not found — run the digital-sea build first');
   process.exit(1);
@@ -47,7 +51,7 @@ for (const [needle, why] of musts) {
  * (b) No inline style band-aids on the tab nav/buttons in either template
  *     mirror — fixes go in mobile.css or they don't go in.
  * (c) mobile.css must explicitly declare row direction on .mTabs. */
-const cssFiles = ['artifacts/modkeys/src/css/layout.css', 'artifacts/modkeys/src/css/components.css'];
+const cssFiles = [`${modkeysRoot}/src/css/layout.css`, `${modkeysRoot}/src/css/components.css`];
 for (const f of cssFiles) {
   const css = fs.readFileSync(path.resolve(f), 'utf-8');
   for (const [i, line] of css.split('\n').entries()) {
@@ -57,7 +61,7 @@ for (const f of cssFiles) {
     }
   }
 }
-const mobileCssRaw = fs.readFileSync(path.resolve('artifacts/modkeys/src/css/mobile.css'), 'utf-8');
+const mobileCssRaw = fs.readFileSync(path.resolve(`${modkeysRoot}/src/css/mobile.css`), 'utf-8');
 const mobileCss = mobileCssRaw.replace(/\/\*[\s\S]*?\*\//g, ''); // comments may quote braces
 const mTabsBlock = mobileCss.match(/\.mShell \.mTabs \{[^}]*\}/)?.[0] ?? '';
 if (!/flex-direction:\s*row/.test(mTabsBlock)) {
@@ -65,8 +69,8 @@ if (!/flex-direction:\s*row/.test(mTabsBlock)) {
   fail++;
 }
 const idxHtml = fs.readFileSync(path.resolve('artifacts/modkeys/index.html'), 'utf-8');
-const tsxSrc = fs.readFileSync(path.resolve('artifacts/digital-sea/src/pages/ModkeysPage.tsx'), 'utf-8');
-const hostCss = fs.readFileSync(path.resolve('artifacts/digital-sea/src/index.css'), 'utf-8');
+const tsxSrc = fs.readFileSync(path.resolve(`${siteRoot}/src/pages/ModkeysPage.tsx`), 'utf-8');
+const hostCss = fs.readFileSync(path.resolve(`${siteRoot}/src/index.css`), 'utf-8');
 for (const [name, doc] of [['index.html', idxHtml], ['ModkeysPage.tsx', tsxSrc]]) {
   if (/data-sec="[a-z]+"[^>]*style="/.test(doc) || /class="snav mTabs"[^>]*style="/.test(doc)) {
     console.error(`check-spa-shell FAIL: inline style band-aid on tab nav/buttons in ${name} — use mobile.css`);

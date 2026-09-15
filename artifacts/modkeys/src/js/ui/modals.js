@@ -299,6 +299,7 @@ $('tnav')?.addEventListener('click', (ev) => {
 $('modalClose')?.addEventListener('click', closeModal);
 $('modalBack')?.addEventListener('click', closeModal);
 document.addEventListener('keydown', (ev) => {
+  if (!$('modal')) return;
   if (ev.key === 'Escape') {
     if (document.getElementById('mkAdminOverlay')) return; /* overlay handles its own esc */
     closeModal();
@@ -307,6 +308,7 @@ document.addEventListener('keydown', (ev) => {
 
 /* Desktop: Ctrl+Shift+A toggles community gallery admin (same chord as /books). */
 document.addEventListener('keydown', async (ev) => {
+  if (!$('modal')) return;
   if (!isDesktop()) return;
   if (!(ev.ctrlKey && ev.shiftKey && (ev.code === 'KeyA' || ev.key === 'A' || ev.key === 'a'))) return;
   /* Don't steal when typing in fields */

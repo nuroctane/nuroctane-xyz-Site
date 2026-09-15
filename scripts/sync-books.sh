@@ -1,8 +1,8 @@
 #!/bin/bash
-# Sync books the other direction: digital-sea repo -> Obsidian vault.
+# Sync books the other direction: blackboard repo -> Obsidian vault.
 #
 # Source of truth for the site wishlist is:
-#   artifacts/digital-sea/src/content/books.md
+#   artifacts/blackboard/src/content/books.md
 # Vault mirror (same body, no frontmatter today):
 #   ∞∞∞/Books/Book Wishlist.md
 #
@@ -14,7 +14,7 @@ set -uo pipefail
 
 export HOME="${HOME:-/c/Users/david}"
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || REPO_ROOT="/c/Users/david/Laboratory/nuroctane.xyz"
-SRC="$REPO_ROOT/artifacts/digital-sea/src/content/books.md"
+SRC="$REPO_ROOT/artifacts/blackboard/src/content/books.md"
 DEST="${OBSIDIAN_BOOKS:-$HOME/iCloudDrive/iCloud~md~obsidian/∞∞∞/Books/Book Wishlist.md}"
 
 [[ -f "$SRC" ]] || { echo "books.md not found: $SRC"; exit 1; }

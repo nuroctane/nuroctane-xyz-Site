@@ -4,8 +4,8 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const BOOKS_MD = path.resolve(__dirname, '../../artifacts/digital-sea/src/content/books.md');
-const OUTPUT_JSON = path.resolve(__dirname, '../../artifacts/digital-sea/src/data/bookMeta.json');
+const BOOKS_MD = path.resolve(__dirname, '../../artifacts/blackboard/src/content/books.md');
+const OUTPUT_JSON = path.resolve(__dirname, '../../artifacts/blackboard/src/data/bookMeta.json');
 
 const GB_BASE = 'https://www.googleapis.com/books/v1/volumes';
 const OL_SEARCH = 'https://openlibrary.org/search.json';
@@ -281,7 +281,7 @@ async function main() {
   console.log(`Unique entries in JSON: ${Object.keys(output.books).length}`);
   console.log(`Covers found: ${Object.keys(output.books).length - noCover.length}`);
   console.log(`Descriptions found: ${Object.keys(output.books).length - noDesc.length}`);
-  const missFile = path.resolve(__dirname, '../../artifacts/digital-sea/src/data/bookMeta.misses.txt');
+  const missFile = path.resolve(__dirname, '../../artifacts/blackboard/src/data/bookMeta.misses.txt');
   const missLines = [
     `# Generated ${new Date().toISOString().slice(0, 10)}`,
     `# Total entries: ${Object.keys(output.books).length}`,

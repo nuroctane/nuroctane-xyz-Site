@@ -31,7 +31,7 @@ HERMES_PYTHON = HERMES_ROOT / "hermes-agent" / "venv" / "Scripts" / "python.exe"
 LOG_FILE = REPO_ROOT / ".nur" / "quotes-pipeline.log"
 LOCK_FILE = REPO_ROOT / ".nur" / "quotes-pipeline.lock"
 STALE_LOCK_SECONDS = 2 * 60 * 60
-REL_QUOTES = "artifacts/digital-sea/src/content/quotes.md"
+REL_QUOTES = "artifacts/blackboard/src/content/quotes.md"
 
 
 def log(message: str) -> None:
@@ -233,7 +233,7 @@ def main() -> int:
 
         # Publish the canonical bank to the site and main, then mirror that
         # exact reindexed copy back into Obsidian.
-        sync_rc = run("obsidian-to-site sync", [str(HERMES_PYTHON), "-u", str(sync)])
+        sync_rc = run("obsidian-to-site sync", [str(HERMES_PYTHON), "-u", str(REPO_ROOT / "scripts" / "run_hermes_quote_sync.py")])
         if sync_rc:
             return sync_rc
         return ingest_rc

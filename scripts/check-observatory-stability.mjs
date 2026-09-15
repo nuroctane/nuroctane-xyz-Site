@@ -1,11 +1,11 @@
 import { readFileSync } from 'node:fs';
 
 const context = readFileSync(
-  new URL('../artifacts/digital-sea/src/observatory/state/ObservatoryContext.tsx', import.meta.url),
+  new URL('../artifacts/blackboard/src/observatory/state/ObservatoryContext.tsx', import.meta.url),
   'utf8',
 );
 const world = readFileSync(
-  new URL('../artifacts/digital-sea/src/observatory/modes/UnifiedWorld.tsx', import.meta.url),
+  new URL('../artifacts/blackboard/src/observatory/modes/UnifiedWorld.tsx', import.meta.url),
   'utf8',
 );
 

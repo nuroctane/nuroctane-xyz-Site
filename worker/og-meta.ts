@@ -1,3 +1,4 @@
+import siteConfig from '../site.config.json';
 /**
  * Path-specific Open Graph HTML for social/chat crawlers.
  *
@@ -72,12 +73,12 @@ interface PageMeta {
 
 const PAGES: Record<string, PageMeta> = {
   home: {
-    title: "NUROCTANE",
+    title: siteConfig.active === "blackboard" ? "NUROCTANE" : "NUROCTANE — Digital Sea",
     description:
-      "Nuroctane's Blackboard. Projects, socials, books, and quotes.",
-    badge: "BLACKBOARD",
+      siteConfig.active === "blackboard" ? "Nuroctane's Blackboard. Projects, socials, books, and quotes." : "A 3D interactive scroll experience through nuroctane's digital network — socials, creative projects, writings, and more.",
+    badge: siteConfig.active === "blackboard" ? "BLACKBOARD" : "DIGITAL SEA",
     path: "/",
-    image: `${SITE}/assets/nodes/site-logo.png`,
+    image: siteConfig.active === "blackboard" ? `${SITE}/assets/nodes/site-logo.png` : `${SITE}/opengraph.jpg`,
     favicon: "/assets/nodes/site-logo.png",
   },
   quotes: {

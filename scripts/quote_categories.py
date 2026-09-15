@@ -53,7 +53,7 @@ FALLBACK_SECTION = "Life, Joy & Meaning"
 LABELED_BANK = (
     Path(__file__).resolve().parents[1]
     / "artifacts"
-    / "digital-sea"
+    / "blackboard"
     / "src"
     / "content"
     / "quotes.md"

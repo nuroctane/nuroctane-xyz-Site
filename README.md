@@ -1,3 +1,10 @@
+## Active design: Blackboard
+
+Complete apps live in `artifacts/blackboard` and `artifacts/digital-sea`.
+Use `pnpm site blackboard` or `pnpm site digital-sea` to select the complete design,
+then `pnpm dev` to preview. Selection does not publish until the normal ship pipeline
+runs. See [site design documentation](docs/BLACKBOARD.md).
+
 <div align="center">
 
 <img src="docs/media/digital-sea.gif" alt="Digital Sea" width="480" />
@@ -51,7 +58,7 @@ Aesthetic inspiration: **Code Lyoko** (MoonScoop, 2003–2007). [Wikipedia](http
 ## Features
 
 ### Books
-- Curated shelves + Kindle wishlist content (`artifacts/digital-sea/src/content/books.md`)
+- Curated shelves + Kindle wishlist content (`artifacts/blackboard/src/content/books.md`)
 - Federated, deduplicated discovery across Google Books, Open Library, Crossref, Library of Congress, Internet Archive, and Project Gutenberg
 - Community recommendations plus independent manual title/author entry
 - Validated custom-cover uploads (exactly 600×900px; JPEG, PNG, or WebP; 300 KB max)
@@ -63,16 +70,16 @@ Aesthetic inspiration: **Code Lyoko** (MoonScoop, 2003–2007). [Wikipedia](http
 - Synced from the local Obsidian vault (see [Content sync](#content-sync-obsidian--git))
 
 ### Modkeys
-Full 3D keyboard configurator (desktop + mobile shells) at `/modkeys` - layouts, materials, switches, keycaps, lighting, per-key edits, KLE/SVG/PDF/spec export, shareable URL state. Details: `artifacts/modkeys/.agents/docs/MOBILE_SHELL.md`. Brand mark: `artifacts/digital-sea/public/assets/nodes/modkeys-logo.png` (also `Laboratory/nur-modkeys/assets/`).
+Full 3D keyboard configurator (desktop + mobile shells) at `/modkeys` - layouts, materials, switches, keycaps, lighting, per-key edits, KLE/SVG/PDF/spec export, shareable URL state. Details: `artifacts/modkeys/.agents/docs/MOBILE_SHELL.md`. Brand mark: `artifacts/blackboard/public/assets/nodes/modkeys-logo.png` (also `Laboratory/nur-modkeys/assets/`).
 
 ### NurCLI (`/cli`)
-Product page for [nur-cli](https://github.com/nuroctane/nur-cli): multi-provider Rust TUI agent, installers (Windows/macOS/Linux), live version polling, Foglamp codebase map embed, command reference. Page source: `artifacts/digital-sea/src/pages/CliPage.tsx`.
+Product page for [nur-cli](https://github.com/nuroctane/nur-cli): multi-provider Rust TUI agent, installers (Windows/macOS/Linux), live version polling, Foglamp codebase map embed, command reference. Page source: `artifacts/blackboard/src/pages/CliPage.tsx`.
 
 ### SnipOCR / Blackjack (sea nodes)
-Standalone repos with Digital Sea cards: [snipocr](https://github.com/nuroctane/snipocr) · [blackjack](https://github.com/nuroctane/blackjack). Marks live under `artifacts/digital-sea/public/assets/nodes/{snipocr,blackjack}-logo.png` and must stay synced with each repo’s `assets/` / `branding/`.
+Standalone repos with Digital Sea cards: [snipocr](https://github.com/nuroctane/snipocr) · [blackjack](https://github.com/nuroctane/blackjack). Marks live under `artifacts/blackboard/public/assets/nodes/{snipocr,blackjack}-logo.png` and must stay synced with each repo’s `assets/` / `branding/`.
 
 ### Observatory (`/observatory`)
-Swiss Ephemeris astrology, Cesium Earth exploration, CelesTrak satellites / SGP4, solar system, sky chart, missions, weather. Spec: `docs/research/components/observatory.spec.md`. Brand mark: `artifacts/digital-sea/public/assets/nodes/observatory-logo.png`.
+Swiss Ephemeris astrology, Cesium Earth exploration, CelesTrak satellites / SGP4, solar system, sky chart, missions, weather. Spec: `docs/research/components/observatory.spec.md`. Brand mark: `artifacts/blackboard/public/assets/nodes/observatory-logo.png`.
 
 The Three.js scene owns frame-by-frame visual motion. Shared ephemeris/chart state publishes at 1 Hz in live mode and 10 Hz during accelerated simulation; per-frame satellite code must mutate bounded buffers/objects rather than allocate one object per satellite. `pnpm run check:observatory` guards those stability contracts.
 
@@ -102,7 +109,7 @@ pnpm run build          # typecheck + package builds + smoke + SPA shell checks
 npx wrangler dev        # local Worker (.dev.vars with KV_MEMORY=1)
 ```
 
-SPA-only: `pnpm --filter digital-sea dev` (see package scripts).
+SPA-only: `pnpm dev` (see package scripts).
 
 ---
 
@@ -126,7 +133,7 @@ Full agent ship checklist: `C:\Users\david\.agents\SHIP.md` (nuroctane.xyz secti
 
 | Direction | What | How |
 |---|---|---|
-| Raindrop / vault → repo | Raindrop `#quotes` → `Quotes.md` → `artifacts/digital-sea/src/content/quotes.md` | `scripts/quotes-pipeline.py` (uses Hermes ingest + sync parsers) |
+| Raindrop / vault → repo | Raindrop `#quotes` → `Quotes.md` → `artifacts/blackboard/src/content/quotes.md` | `scripts/quotes-pipeline.py` (uses Hermes ingest + sync parsers) |
 | Repo → vault | `books.md` → Obsidian `Books/Book Wishlist.md` | `scripts/sync-books.sh` / Hermes `poll-sync.py` |
 
 Windows task **`NuroctanePollSync`** (every 15 min) launches silent `scripts/poll-sync.vbs` → `scripts/quotes-pipeline.py` (no console window). Its ordered source of truth is **Raindrop `#quotes` first**, then new Obsidian `#quotes` notes; Raindrop additions are written to the canonical `Quotes.md`, which is copied to the site and pushed to `main`. Install: `powershell -File scripts/install-poll-sync-task.ps1`. Logs: `.nur/quotes-pipeline.log`.
@@ -140,11 +147,11 @@ Quotes sync strips Obsidian frontmatter, rebuilds `## Index`, parser-sanity-chec
 **Build-time** (`VITE_*` - Workers Builds → Build variables, and local `.env.local`):
 
 - `VITE_POSTHOG_KEY` / `VITE_POSTHOG_HOST` / `VITE_POSTHOG_UI_HOST` - analytics (host defaults to managed proxy `https://i.nuroctane.xyz`)
-- Observatory weather / traffic keys as consumed under `artifacts/digital-sea/src/observatory/`
+- Observatory weather / traffic keys as consumed under `artifacts/blackboard/src/observatory/`
 
 **Runtime** (Worker secrets via `wrangler secret put`): KV credentials, `JWT_SECRET`, GitHub OAuth, etc. `GOOGLE_BOOKS_API_KEY` is optional for higher Google Books quota; public volume search works without authentication and every other catalog remains available if Google rate-limits a request.
 
-See `artifacts/digital-sea/.env.example`. Adding a new `VITE_*` means updating `.env.local`, the example file, **and** Workers Builds vars.
+See `artifacts/blackboard/.env.example`. Adding a new `VITE_*` means updating `.env.local`, the example file, **and** Workers Builds vars.
 
 ---
 
@@ -162,7 +169,8 @@ Ops: Cloudflare Workers dashboard (deployments, logs, cron) + PostHog + Upstash 
 nuroctane.xyz/
 ├── api/                      # Residual Vercel OG renderer only
 ├── artifacts/
-│   ├── digital-sea/          # Main React SPA
+│   ├── blackboard/           # Active React SPA
+│   ├── digital-sea/          # Preserved pre-Blackboard SPA
 │   ├── api-server/           # Hono API bundled into the Worker
 │   └── modkeys/              # Keyboard configurator
 ├── worker/                   # Cloudflare Worker entry + OG HTML

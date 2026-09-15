@@ -84,6 +84,9 @@
     "posthog-js": "^1.407.5",
     "postprocessing": "^6.39.1",
     "swisseph-wasm": "^0.0.5",
-    "three": "^0.184.0"
+    "three": "^0.184.0",
+    "gsap": "^3.12.5",
+    "jspdf": "^2.5.2",
+    "svg2pdf.js": "^2.2.4"
   }
 }

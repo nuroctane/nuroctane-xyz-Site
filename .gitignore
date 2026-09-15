@@ -70,3 +70,6 @@ AGENTS.md
 
 # local research only
 .casimir-research/
+
+# Per-app agent caches are not site assets.
+**/.nur/

@@ -1,75 +1,58 @@
-# Blackboard
+# Site designs
 
-The homepage is a quiet launch surface: black paper, the existing monochrome
-avatar at the top left with Books and Quotes beside it, and Projects / Socials at
-the bottom right. No hero copy, descriptions, background effects, audio, or
-automatically moving elements.
+**Blackboard remains the active production design.** The complete frontends are siblings.
 
-## Design foundations
+| Folder | Owns |
+| --- | --- |
+| `artifacts/blackboard` | Today's complete Blackboard, including libraries, audio, wallpaper, themed navigation/admin UI and compatibility deep links |
+| `artifacts/digital-sea` | Pre-Blackboard frontend from `b48b16d1d606dcbec50e19223fea319a576773c0`, with original pages, assets, soundtrack and a local copy of original Modkeys |
+| `artifacts/modkeys` | Current Modkeys used by Blackboard |
 
-- References: Pitchboard, Curriculum, and Laboratory/spreadlab/public/index.html.
-- Skills: `.nur/skills/design-taste-frontend`, `apple-design`,
-  `emil-design-eng`, `glassmorphism`, and `frontend-ui-engineering`.
-- Design variance 6 (opposite corners), motion intensity 3 (interaction only),
-  visual density 2 (empty canvas, compact navigation).
-- Page #050505; surface #141414; text #f2f2f2; secondary text #a0a0a0.
-- Existing JetBrains Mono typography, 4px spacing rhythm, 12px outer / 8px
-  control / 6px link corners. The original avatar and brand marks stay intact.
-- CSS approximates Liquid Glass with translucent neutral surfaces, a luminous
-  inner edge and 16px backdrop blur. It is not an official Apple web material.
-- Only navigation receives the glass treatment. No ambient gradients or imagery
-  are added to the intentionally empty canvas.
+## One-command selection
 
-## Interaction
+From the repository root:
 
-- Both categories remain visible. One list opens upward at a time; links go
-  directly to their destinations. Local site URLs stay on the current origin.
-- Projects lists StarSleep, Blackjack, and CS Skin Creations first with Soon
-  labels, then reads upward from NurCLI through HoodStock, ATX Tunerz Society,
-  Observatory, MODKEYS, Miyamaker, and CD Collegium. Books and Quotes are
-  separate top tabs. Curriculum is not in the Blackboard list.
-- Socials follows the requested order. AniList and MAL share one row.
-- Existing directory entries and logo mapping are shared with the Digital Sea.
-  Books and Quotes are library tabs; Curriculum is intentionally absent from the
-  Blackboard launch list.
-- Unreleased destinations retain a noninteractive Soon state.
-- Click outside or Escape closes a list. Escape restores trigger focus.
-- Tab follows the trigger into its links; collapsed lists are inert. Navigation
-  is nonmodal and does not trap focus.
-- Pointer transitions take 120-180ms and reverse immediately. Keyboard changes
-  and reduced-motion mode are immediate. No waiting or stagger delays.
-- Controls have at least 44px touch targets. Long lists scroll within the viewport.
-- Reduced transparency uses solid surfaces. Increased contrast strengthens edges.
+```sh
+pnpm site blackboard
+pnpm site digital-sea
+```
 
-## Preservation and extension
+These update `site.config.json`; selection alone never publishes. `pnpm dev` starts
+the selected app (restart after switching). `pnpm build` checks both apps and stages
+only the selected frontend into `dist/public`, the Worker asset directory. Worker
+homepage metadata follows the same config. Ship the config through the normal
+commit/push/live-check/backup pipeline to change production. `pnpm deploy` remains
+the manual deployment fallback.
 
-`src/blackboard/Blackboard.tsx` owns the new homepage. Its CSS is scoped to avoid
-changing NURCLI or standalone pages. `src/App.tsx`, the Digital Sea scene, original
-HUD, and assets remain available in the repository; existing project/social/blog
-deep links still use that experience. The original package name and build paths
-stay unchanged to preserve deployment and quote synchronization.
+Do not edit Blackboard's internal `src/config/siteMode.ts` to switch designs: it
+identifies that app. The root config selects the complete app, CSS and soundtrack.
 
-The active presentation is controlled by one switch in
-`src/config/siteMode.ts`:
+## Preservation
 
-- `SITE_MODE = 'blackboard'` serves the new Blackboard homepage and the new
-  Blackboard Books/Quotes views.
-- `SITE_MODE = 'digital-sea'` restores the original Digital Sea homepage and
-  original Books/Quotes pages.
+Digital Sea source and public assets are frozen at the recorded baseline. Its only
+adaptations are build dependency declarations and the Modkeys import path to its
+preserved local copy. Local agent logs are excluded. API infrastructure, community
+data and runtime secrets remain shared and current; switching never restores old
+database contents or credentials.
 
-While Blackboard is active, `/sea` is an explicit doorway back to the retained
-Digital Sea scene. This keeps both presentations in the repo and makes a future
-mode change a one-line configuration edit.
+Blackboard keeps today's source and assets. Its scene code supports existing deep
+links and does not import the Digital Sea app. Quotes ingestion, books synchronization
+and metadata enrichment target Blackboard so archived content does not drift.
 
-Add future homepage content inside the Blackboard main element. Keep the two
-corner anchors and shared tokens. Do not bring back page-wide animation, a large
-hero, or a third dropdown without a new design decision.
+## Changes in this refactor
 
-## QA
+Avatar, library tabs, player and responsive layout retain their existing design.
+Wallpaper ripple and cloud motion are stronger below 900px; desktop settings and
+the 30fps limit are retained. Reduced motion receives a still frame. ATX Tunerz
+Society is directly below Instagram in Socials.
 
-- Build, typecheck, API smoke tests, Observatory and Modkeys guards.
-- Check both dropdowns at 320, 768, 1024 and 1440px widths.
-- Check Tab, Enter, Escape, outside dismissal, switching categories and long-list scrolling.
-- Check all logos load and local links retain localhost in development.
-- Check no canvas or Digital Sea scene loads on the homepage.
-- Check NURCLI and standalone page source remains unchanged.
+Books uses the same API/admin flow, but now updates the view only after successful
+saves. Failures show an error rather than pretending to persist. Modkeys keyboard
+shortcuts act only while its page is mounted.
+
+## Verification
+
+`pnpm build` runs typechecks, both frontend builds, API smoke tests and the existing
+Observatory/Modkeys guards. Check both design outputs before switching. Verify mobile
+and desktop layout, audio continuity, book metadata and recommendation search.
+Do not delete real community data during visual checks.

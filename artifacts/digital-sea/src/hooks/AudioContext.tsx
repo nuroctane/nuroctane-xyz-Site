@@ -9,7 +9,6 @@ import {
   type ReactNode,
 } from 'react';
 import type { Track } from '../types';
-import { SITE_MODE } from '../config/siteMode';
 
 /* ═══════════════════════════════════════════════════════════════════════════
    AUDIO — one <audio> element for the whole app.
@@ -32,15 +31,6 @@ const PLAYLISTS: Record<Track, string[]> = {
     'Compendium - Introduction Development and Development.mp3',
   ],
 };
-
-// Blackboard deliberately has one resident track. Switching SITE_MODE back to
-// digital-sea restores the original soundtrack without changing the player.
-const BLACKBOARD_PLAYLISTS: Record<Track, string[]> = {
-  main: ['difference (interlude) [540300138].mp3'],
-  blog: ['difference (interlude) [540300138].mp3'],
-};
-
-const ACTIVE_PLAYLISTS = SITE_MODE === 'blackboard' ? BLACKBOARD_PLAYLISTS : PLAYLISTS;
 
 const src = (name: string) =>
   new URL(
@@ -65,21 +55,12 @@ interface AudioCtxValue {
   enabled: boolean;
   /** play() was refused; next click/tap will retry. Not a required step. */
   blocked: boolean;
-  /** Audible autoplay was refused, so the track is playing silently and the
-   *  first user gesture unmutes it. */
-  mutedAutoplay: boolean;
   armed: boolean;
-  playing: boolean;
-  currentTime: number;
-  duration: number;
   volume: number;
   track: Track | null;
   arm: () => void;
-  play: () => void;
-  pause: () => void;
   setTrack: (t: Track | null) => void;
   setVolume: (v: number) => void;
-  seek: (seconds: number) => void;
   toggle: () => void;
 }
 
@@ -91,10 +72,6 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   const [enabled, setEnabled] = useState(true);
   const [armed,   setArmed]   = useState(false);
   const [blocked, setBlocked] = useState(false);
-  const [mutedAutoplay, setMutedAutoplay] = useState(false);
-  const [playing, setPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(0);
-  const [duration, setDuration] = useState(0);
   const [volume,  setVolume]  = useState(0.5);
   const [track,   setTrackState] = useState<Track | null>(null);
   const [idx,     setIdx]        = useState(0);
@@ -116,15 +93,9 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   const playGenRef     = useRef(0);
   /** Re-entrancy guard for reconcile(). */
   const reconcilingRef = useRef(false);
-  /** Muted-autoplay in progress: track is playing silently until a gesture. */
-  const mutedAutoplayRef = useRef(false);
 
   const applyVolume = useCallback((a: HTMLAudioElement) => {
-    const product = Math.max(0, Math.min(1, volumeRef.current * gainRef.current));
-    a.volume = product;
-    // Platforms that ignore element.volume (iOS) honor .muted — so the mute
-    // button still works there. iOS volume itself is device-controlled.
-    a.muted = product <= 0.001;
+    a.volume = Math.max(0, Math.min(1, volumeRef.current * gainRef.current));
   }, []);
 
   const fadeTo = useCallback(
@@ -165,19 +136,9 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     [applyVolume],
   );
 
-  /** Unmuted play where the browser allows it; muted autoplay + first-gesture
-   *  unmute where it doesn't (iOS, cold Chrome). */
+  /** Unmuted play, same as the old site — no muted gate. */
   const attemptPlay = useCallback(
     (a: HTMLAudioElement, fadeMs: number) => {
-      // Silent-playing state: keep it until a real gesture unmutes; restarting
-      // or unmuting here would leave the element audible without a gesture.
-      if (mutedAutoplayRef.current && !a.paused) {
-        pendingRef.current = false;
-        setBlocked(false);
-        return;
-      }
-      mutedAutoplayRef.current = false;
-      setMutedAutoplay(false);
       // Guard: already playing this track at audible volume
       if (!a.paused && a.currentTime > 0 && gainRef.current > 0.01) {
         a.muted = false;
@@ -199,7 +160,8 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         p = a.play() as Promise<void> | undefined;
       } catch {
         if (playGenRef.current === thisGen) playingRef.current = false;
-        mutedFallback(a, thisGen);
+        pendingRef.current = true;
+        setBlocked(true);
         return;
       }
 
@@ -219,38 +181,13 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         if (playGenRef.current !== thisGen) return;
         playingRef.current = false;
         if (err?.name === 'AbortError') return;
-        // Audible autoplay refused. Muted autoplay is permitted everywhere —
-        // start silently; the first user gesture unmutes.
-        mutedFallback(a, thisGen);
+        // Cold browser only — most visits with prior engagement just play.
+        pendingRef.current = true;
+        setBlocked(true);
       });
     },
-    [fadeTo, applyVolume],
+    [fadeTo],
   );
-
-  /** Muted autoplay fallback for a refused audible play(). */
-  const mutedFallback = useCallback((a: HTMLAudioElement, thisGen: number) => {
-    mutedAutoplayRef.current = true;
-    setMutedAutoplay(true);
-    gainRef.current = 0;
-    a.muted = true;
-    applyVolume(a);
-    let muted: Promise<void> | undefined;
-    try {
-      muted = a.play() as Promise<void> | undefined;
-    } catch {
-      muted = undefined;
-    }
-    if (!muted) return;
-    muted.then(() => {
-      if (playGenRef.current !== thisGen) return;
-      pendingRef.current = false;
-      setBlocked(false);
-    }).catch(() => {
-      if (playGenRef.current !== thisGen) return;
-      pendingRef.current = true;
-      setBlocked(true);
-    });
-  }, [applyVolume]);
 
   const reconcile = useCallback(() => {
     // Re-entrancy guard
@@ -261,7 +198,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       const t = trackRef.current;
       if (!a || !t) return;
 
-      const list      = ACTIVE_PLAYLISTS[t];
+      const list      = PLAYLISTS[t];
       const wantSrc   = src(list[idxRef.current % list.length]);
       const wantSound = armedRef.current && enabledRef.current;
       const isLoop    = list.length === 1;
@@ -270,7 +207,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
         const swap = () => {
           selfPauseRef.current = true;
           gainRef.current = 0;
-          applyVolume(a);
+          a.volume = 0;
           a.src  = wantSrc;
           a.loop = isLoop;
           if (wantSound) {
@@ -287,10 +224,6 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       if (wantSound) {
         if (a.paused) {
           attemptPlay(a, soundedRef.current ? FADE_RESUME_MS : FADE_FIRST_MS);
-        } else if (mutedAutoplayRef.current) {
-          // Silent autoplay is already running; leave it until a gesture.
-          pendingRef.current = false;
-          setBlocked(false);
         } else {
           a.muted = false;
           fadeTo(1, soundedRef.current ? FADE_RESUME_MS : FADE_FIRST_MS);
@@ -310,7 +243,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     } finally {
       reconcilingRef.current = false;
     }
-  }, [attemptPlay, fadeTo, applyVolume]);
+  }, [attemptPlay, fadeTo]);
 
   // Create the element once. Preload main track so the first arm isn't a fetch.
   useEffect(() => {
@@ -318,19 +251,18 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     a.loop = true;
     a.volume = 0;
     a.preload = 'auto';
-    a.src = src(ACTIVE_PLAYLISTS.main[0]);
+    a.src = src(PLAYLISTS.main[0]);
     a.load();
     audioRef.current = a;
 
     const onEnded = () => {
       const t = trackRef.current;
       if (!t) return;
-      const len = ACTIVE_PLAYLISTS[t].length;
+      const len = PLAYLISTS[t].length;
       if (len > 1) setIdx(i => (i + 1) % len);
     };
 
     const onPause = () => {
-      setPlaying(false);
       if (a.ended) return;
       if (selfPauseRef.current) { selfPauseRef.current = false; return; }
       if (armedRef.current && enabledRef.current && trackRef.current) {
@@ -340,7 +272,6 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     };
 
     const onPlaying = () => {
-      setPlaying(true);
       selfPauseRef.current = false;
       pendingRef.current = false;
       soundedRef.current = true;
@@ -351,21 +282,15 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     const onError = () => {
       const t = trackRef.current;
       if (!t) return;
-      const len = ACTIVE_PLAYLISTS[t].length;
+      const len = PLAYLISTS[t].length;
       failuresRef.current += 1;
       if (len > 1 && failuresRef.current < len) setIdx(i => (i + 1) % len);
     };
-
-    const onTimeUpdate = () => setCurrentTime(a.currentTime || 0);
-    const onMetadata = () => setDuration(Number.isFinite(a.duration) ? a.duration : 0);
 
     a.addEventListener('ended', onEnded);
     a.addEventListener('pause', onPause);
     a.addEventListener('playing', onPlaying);
     a.addEventListener('error', onError);
-    a.addEventListener('timeupdate', onTimeUpdate);
-    a.addEventListener('loadedmetadata', onMetadata);
-    a.addEventListener('durationchange', onMetadata);
 
     return () => {
       if (fadeTimerRef.current !== null) clearInterval(fadeTimerRef.current);
@@ -374,9 +299,6 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       a.removeEventListener('pause', onPause);
       a.removeEventListener('playing', onPlaying);
       a.removeEventListener('error', onError);
-      a.removeEventListener('timeupdate', onTimeUpdate);
-      a.removeEventListener('loadedmetadata', onMetadata);
-      a.removeEventListener('durationchange', onMetadata);
       a.pause();
       // Invalidate in-flight play attempts from this mount (React 18 StrictMode double-mount)
       playGenRef.current++;
@@ -385,26 +307,17 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     };
   }, []);
 
-  // Cold-browser fallback: if play() was refused, retry on interaction. A
-  // silent muted-autoplay is unmuted by the same first gesture.
+  // Cold-browser fallback only: if play() was refused, retry on interaction.
   useEffect(() => {
     const retry = (e: Event) => {
+      if (!pendingRef.current) return;
       const el = e.target as Element | null;
-      const fromAudioControl = Boolean(el?.closest?.('.audio-control'));
-      if (mutedAutoplayRef.current && !fromAudioControl) {
-        mutedAutoplayRef.current = false;
-        setMutedAutoplay(false);
-        playingRef.current = false;
-        reconcile();
-        return;
-      }
-      if (!pendingRef.current || fromAudioControl) return;
+      if (el?.closest?.('.audio-control')) return;
       playingRef.current = false;
       reconcile();
     };
     const onVisible = () => {
-      if (document.hidden) return;
-      if (pendingRef.current) {
+      if (!document.hidden && pendingRef.current) {
         playingRef.current = false;
         reconcile();
       }
@@ -444,22 +357,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
 
   const arm = useCallback(() => setArmed(true), []);
 
-  const play = useCallback(() => {
-    setArmed(true);
-    setEnabled(true);
-  }, []);
-
-  const pause = useCallback(() => setEnabled(false), []);
-
   const setTrack = useCallback((t: Track | null) => setTrackState(t), []);
-
-  const seek = useCallback((seconds: number) => {
-    const a = audioRef.current;
-    if (!a || !Number.isFinite(seconds)) return;
-    const next = Math.max(0, Math.min(seconds, Number.isFinite(a.duration) ? a.duration : seconds));
-    a.currentTime = next;
-    setCurrentTime(next);
-  }, []);
 
   const toggle = useCallback(() => {
     // If a cold browser blocked play, this click is the retry — don't mute.
@@ -472,8 +370,8 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   }, [reconcile]);
 
   const value = useMemo(
-    () => ({ enabled, blocked, mutedAutoplay, armed, playing, currentTime, duration, volume, track, arm, play, pause, setTrack, setVolume, seek, toggle }),
-    [enabled, blocked, mutedAutoplay, armed, playing, currentTime, duration, volume, track, arm, play, pause, setTrack, setVolume, seek, toggle],
+    () => ({ enabled, blocked, armed, volume, track, arm, setTrack, setVolume, toggle }),
+    [enabled, blocked, armed, volume, track, arm, setTrack, toggle],
   );
 
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;

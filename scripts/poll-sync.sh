@@ -41,7 +41,7 @@ fi
 # Conditional git pull for books (repo → local working tree) when on a clean main.
 if (( SHOULD_PULL )); then
     git fetch origin main >/dev/null 2>&1
-    if git diff HEAD origin/main --name-only | grep -q 'artifacts/digital-sea/src/content/books.md'; then
+    if git diff HEAD origin/main --name-only | grep -q 'artifacts/blackboard/src/content/books.md'; then
         if git pull --ff-only origin main; then
             echo "[$(date)] Pulled books.md update"
         else

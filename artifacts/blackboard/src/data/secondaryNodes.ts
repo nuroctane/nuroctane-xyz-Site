@@ -1,0 +1,103 @@
+import { nodes } from './nodes';
+
+// Secondary media live in src/assets/secondary-nodes/ so Vite emits each file
+// exactly once (the <img> only fetches when a tile actually renders). Drop a new
+// image/gif there named "<cardname>-whatever.ext" and it auto-attaches to that card.
+// Optional link/note/kind metadata: see SECONDARY_OVERRIDES below + the folder README.
+const modules = import.meta.glob(
+  '../assets/secondary-nodes/*.{png,jpg,jpeg,webp,gif,PNG,JPG,JPEG,WEBP,GIF}',
+  { eager: true, query: '?url', import: 'default' },
+) as Record<string, string>;
+
+export interface SecondaryMedia {
+  url: string;
+  file: string;
+  isGif: boolean;
+  /** Internal path (`/books`) or absolute external URL. */
+  link?: string;
+  linkLabel?: string;
+  /** Child note card parented under this tile (same orbit / lean / face). */
+  note?: string;
+  /** Special secondary tile kinds (non-image). */
+  kind?: 'image' | 'link' | 'github-contrib' | 'note';
+}
+
+/** Per-file metadata layered onto glob-discovered sidecards. */
+const SECONDARY_OVERRIDES: Record<string, Partial<SecondaryMedia>> = {
+  'anilist-mal-logo-sidecard.png': {
+    link: 'https://myanimelist.net/animelist/nuroctane',
+    linkLabel: 'MyAnimeList',
+    note: 'legacy anime listing site, still updated',
+  },
+};
+
+const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');
+
+// The assignment is the filename prefix before the first hyphen. We match it to a
+// main card id: exact id first, then normalized substring either way (so "tunerz"
+// resolves to the "atxtunerz" card), then by label as a last resort.
+function resolveNodeId(prefix: string): string | null {
+  const p = norm(prefix);
+  if (!p) return null;
+
+  let n = nodes.find((nd) => norm(nd.id) === p);
+  if (n) return n.id;
+
+  n = nodes.find((nd) => {
+    const nid = norm(nd.id);
+    return nid.includes(p) || p.includes(nid);
+  });
+  if (n) return n.id;
+
+  n = nodes.find((nd) => norm(nd.label).includes(p));
+  return n ? n.id : null;
+}
+
+function buildMap(): Record<string, SecondaryMedia[]> {
+  const map: Record<string, SecondaryMedia[]> = {};
+  for (const [path, url] of Object.entries(modules)) {
+    const file = path.split('/').pop() ?? path;
+    const prefix = file.split('-')[0] ?? '';
+    const id = resolveNodeId(prefix);
+    if (!id) {
+      if (import.meta.env.DEV) {
+        console.warn(`[secondary-nodes] no matching card for "${file}" (prefix "${prefix}")`);
+      }
+      continue;
+    }
+    const base: SecondaryMedia = { url, file, isGif: /\.gif$/i.test(file), kind: 'image' };
+    (map[id] ??= []).push({ ...base, ...SECONDARY_OVERRIDES[file] });
+  }
+  for (const id of Object.keys(map)) {
+    map[id].sort((a, b) => a.file.localeCompare(b.file));
+  }
+  return map;
+}
+
+export const secondaryMediaByNode: Record<string, SecondaryMedia[]> = buildMap();
+
+// Synthetic "Recommendations" link card that orbits the Goodreads card and
+// navigates to the /books page. Not an image — rendered as a clickable card.
+(secondaryMediaByNode['goodreads'] ??= []).push({
+  url: '',
+  file: 'goodreads-recommendations-link',
+  isGif: false,
+  kind: 'link',
+  link: '/books',
+  linkLabel: 'RECOMMENDATIONS',
+});
+
+// Live contribution terrain (data from /api/github-contrib, KV + daily cron).
+(secondaryMediaByNode['github'] ??= []).unshift({
+  url: '',
+  file: 'github-contrib-terrain',
+  isGif: false,
+  kind: 'github-contrib',
+});
+
+if (import.meta.env.DEV) {
+  const summary = Object.fromEntries(
+    Object.entries(secondaryMediaByNode).map(([k, v]) => [k, v.map((m) => m.file)]),
+  );
+  console.info('[secondary-nodes] assignment map:', summary);
+}

@@ -1,5 +1,5 @@
 #!/bin/bash
-# Sync quotes: Obsidian vault -> digital-sea repo (commits only on change).
+# Sync quotes: Obsidian vault -> blackboard repo (commits only on change).
 #
 # Steps:
 #   0. Ensure we are on origin/main (never commit on a detached HEAD / side branch)
@@ -20,8 +20,8 @@ set -uo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || REPO_ROOT="/c/Users/david/Laboratory/nuroctane.xyz"
 SRC="${OBSIDIAN_VAULT:-$HOME/iCloudDrive/iCloud~md~obsidian/∞∞∞/Metaphysics/Quotes.md}"
-DEST="$REPO_ROOT/artifacts/digital-sea/src/content/quotes.md"
-REL_DEST="artifacts/digital-sea/src/content/quotes.md"
+DEST="$REPO_ROOT/artifacts/blackboard/src/content/quotes.md"
+REL_DEST="artifacts/blackboard/src/content/quotes.md"
 LOG_DIR="$REPO_ROOT/.nur"
 mkdir -p "$LOG_DIR"
 

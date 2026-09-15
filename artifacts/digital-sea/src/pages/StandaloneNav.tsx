@@ -1,8 +1,6 @@
 import { useLocation } from 'wouter';
 import { useState, useEffect, useRef } from 'react';
 import { markNavigationIntent } from '../lib/navIntent';
-import { SITE_MODE } from '../config/siteMode';
-import { BlackboardQuickNav } from '../blackboard/BlackboardQuickNav';
 
 const DESTINATIONS = [
   { href: '/', label: 'Home', logo: '/assets/nodes/site-logo.png' },
@@ -20,7 +18,7 @@ const DESTINATIONS = [
 
 const isExternal = (href: string) => /^https?:\/\//.test(href);
 
-function LegacyStandaloneNav() {
+export function StandaloneNav() {
   const [location, setLocation] = useLocation();
   const [open, setOpen] = useState(false);
   const panelRef = useRef<HTMLDivElement>(null);
@@ -54,7 +52,7 @@ function LegacyStandaloneNav() {
   };
 
   return (
-    <div className={`qnav${SITE_MODE === 'blackboard' ? ' qnav--blackboard' : ''}`} ref={panelRef}>
+    <div className="qnav" ref={panelRef}>
       <button
         className={`qnav-trigger${open ? ' qnav-trigger--open' : ''}`}
         onClick={() => setOpen(v => !v)}
@@ -96,8 +94,4 @@ function LegacyStandaloneNav() {
       </div>
     </div>
   );
-}
-
-export function StandaloneNav() {
-  return SITE_MODE === 'blackboard' ? <BlackboardQuickNav standalone /> : <LegacyStandaloneNav />;
 }

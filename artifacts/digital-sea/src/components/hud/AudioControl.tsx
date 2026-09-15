@@ -1,7 +1,6 @@
 import { useState } from 'react';
 import { useIsMobile } from '../../hooks/useMobile';
 import { useAudioCtx } from '../../hooks/AudioContext';
-import { SITE_MODE } from '../../config/siteMode';
 
 interface Props {
   /** Compact variant for the sub-page headers (quotes / books / resume). */
@@ -17,7 +16,6 @@ export function AudioControl({ mini = false }: Props) {
   const { enabled, blocked, armed, track, volume, setVolume, toggle } = useAudioCtx();
   const [expanded, setExpanded] = useState(false);
   const isMobile = useIsMobile();
-  const blackboard = SITE_MODE === 'blackboard';
 
   // `blocked` is rare (cold browser refused autoplay). Normal path never hits it.
   const label = blocked ? 'PLAY' : enabled ? 'SOUND' : 'MUTED';
@@ -29,7 +27,7 @@ export function AudioControl({ mini = false }: Props) {
 
   return (
     <div
-      className={`audio-control${mini ? ' mini-audio' : ''}${blackboard ? ' bb-audio-control' : ''}`}
+      className={`audio-control${mini ? ' mini-audio' : ''}`}
       data-audio-armed={armed ? 'true' : 'false'}
       data-audio-track={track ?? 'none'}
       onMouseEnter={() => setExpanded(true)}
@@ -60,7 +58,8 @@ export function AudioControl({ mini = false }: Props) {
           </svg>
         </button>
 
-        <div className={`audio-slider-wrap${isMobile || expanded ? ' audio-expanded' : ''}`}>
+        {!isMobile && (
+          <div className={`audio-slider-wrap${expanded ? ' audio-expanded' : ''}`}>
             <input
               type="range"
               min={0}
@@ -70,9 +69,10 @@ export function AudioControl({ mini = false }: Props) {
               onChange={(e) => setVolume(parseFloat(e.target.value))}
               className="audio-slider"
               aria-label="Background audio volume"
-              tabIndex={isMobile || expanded ? 0 : -1}
+              tabIndex={expanded ? 0 : -1}
             />
-        </div>
+          </div>
+        )}
       </div>
       <div className="audio-label">{label}</div>
     </div>

@@ -1146,43 +1146,6 @@ html.standalone-active body {
   outline-offset: 2px;
 }
 
-/* Blackboard chrome: shared by standalone routes while the Digital Sea
-   palette remains the default when SITE_MODE is switched back to sea. */
-.qnav--blackboard .qnav-trigger {
-  background: rgb(10 10 10 / 94%);
-  border-color: rgb(255 255 255 / 22%);
-  box-shadow: 0 0 18px rgb(0 0 0 / 28%), inset 0 0 18px rgb(255 255 255 / 3%);
-}
-.qnav--blackboard .qnav-trigger:hover {
-  background: rgb(25 25 25 / 98%);
-  border-color: rgb(255 255 255 / 48%);
-}
-.qnav--blackboard .qnav-bar--1 { background: #f2f2f2; }
-.qnav--blackboard .qnav-bar--2 { background: #a0a0a0; }
-.qnav--blackboard .qnav-bar--3 { background: #666; }
-.qnav--blackboard .qnav-panel {
-  background: linear-gradient(145deg, rgb(255 255 255 / 5%), transparent 65%), rgb(15 15 15 / 96%);
-  border-color: rgb(255 255 255 / 15%);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 9%), 0 18px 48px rgb(0 0 0 / 36%);
-  backdrop-filter: blur(18px) saturate(110%);
-  -webkit-backdrop-filter: blur(18px) saturate(110%);
-}
-.qnav--blackboard .qnav-scan { background: linear-gradient(90deg, transparent, rgb(255 255 255 / 28%), transparent); }
-.qnav--blackboard .qnav-hd { border-bottom-color: rgb(255 255 255 / 10%); }
-.qnav--blackboard .qnav-hd-text,
-.qnav--blackboard .qnav-cat-lbl,
-.qnav--blackboard .qnav-item-name { color: #d6d6d6; }
-.qnav--blackboard .qnav-cat-cnt,
-.qnav--blackboard .qnav-cat-chev,
-.qnav--blackboard .qnav-item-ext { color: #858585; }
-.qnav--blackboard .qnav-cat-hd:hover,
-.qnav--blackboard .qnav-item:hover { background: rgb(255 255 255 / 7%); }
-.qnav--blackboard .qnav-cat-ico,
-.qnav--blackboard .qnav-item-badge { color: #bdbdbd; border-color: rgb(255 255 255 / 16%); }
-.qnav--blackboard .qnav-close { color: #a0a0a0; }
-.qnav--blackboard .qnav-close:hover { color: #fff; }
-.qnav--blackboard .qnav-item--active { background: rgb(255 255 255 / 10%); }
-
 /* ═══════════════════════════════════════════════════════════════════════════
    MODE TOGGLE — angular pill, bottom left
    ═══════════════════════════════════════════════════════════════════════════ */
@@ -2273,61 +2236,6 @@ html.standalone-active body {
     right: 0.55rem;
   }
 }
-
-/* Resume Blackboard treatment. The resume remains direct-route only, but its
-   reading surface shares the same quiet monochrome glass language. */
-.resume-page {
-  --resume-accent: #f2f2f2;
-  --resume-accent-soft: #f2f2f2;
-  --resume-ink: #d4d4d4;
-  --resume-muted: #969696;
-  --resume-line: rgb(255 255 255 / 12%);
-  max-width: min(1160px, 100%);
-  background: #050505;
-  color: #d4d4d4;
-  padding-bottom: 5rem;
-}
-.resume-page .standalone-header { color: #8d8d8d; letter-spacing: .18em; }
-.resume-page .resume-hero {
-  margin-bottom: 2rem;
-  padding: clamp(1.25rem, 3vw, 2.25rem);
-  border: 1px solid rgb(255 255 255 / 13%);
-  border-radius: 14px;
-  background: linear-gradient(145deg, rgb(255 255 255 / 6%), transparent 58%), rgb(14 14 14 / 92%);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 8%), 0 22px 60px rgb(0 0 0 / 24%);
-  clip-path: none;
-}
-.resume-page .resume-hero::before { opacity: .08; mask-image: linear-gradient(120deg, black, transparent 68%); }
-.resume-page .resume-title { color: #f2f2f2; font-size: clamp(2.1rem, 6vw, 4rem); letter-spacing: -.07em; }
-.resume-page .resume-tagline { color: #bdbdbd; }
-.resume-page .resume-contacts a { color: #cfcfcf; }
-.resume-page .resume-contacts a:hover { color: #fff; }
-.resume-page .resume-download { border: 1px solid rgb(255 255 255 / 20%); border-radius: 7px; background: rgb(255 255 255 / 8%); color: #eee; }
-.resume-page .resume-download:hover { background: rgb(255 255 255 / 14%); }
-.resume-page .resume-layout { gap: 1rem; }
-.resume-page .resume-main,
-.resume-page .resume-sidebar { padding: 1.15rem; border: 1px solid rgb(255 255 255 / 10%); border-radius: 12px; background: rgb(15 15 15 / 76%); box-shadow: inset 0 1px 0 rgb(255 255 255 / 5%); }
-.resume-page .resume-sidebar { background: rgb(12 12 12 / 62%); }
-.resume-page .resume-section { border-color: rgb(255 255 255 / 11%); }
-.resume-page .resume-heading { color: #e8e8e8; letter-spacing: .08em; }
-.resume-page .resume-heading::after { background: linear-gradient(90deg, rgb(255 255 255 / 42%), transparent); }
-.resume-page .resume-subhead,
-.resume-page .resume-job-company,
-.resume-page .resume-list a,
-.resume-page .resume-para a,
-.resume-page .resume-quote a,
-.resume-page .resume-table a,
-.resume-page .resume-job a { color: #e0e0e0; }
-.resume-page .resume-para,
-.resume-page .resume-list li,
-.resume-page .resume-job-dates,
-.resume-page .resume-table td { color: #a3a3a3; }
-.resume-page .resume-quote,
-.resume-page .resume-job,
-.resume-page .resume-section[data-section="selected-products"] > .resume-list > li,
-.resume-page .resume-section[data-section="additional-builds"] > .resume-list > li { border-color: rgb(255 255 255 / 10%); background: rgb(255 255 255 / 3%); }
-.resume-page .resume-table th { color: #d6d6d6; border-color: rgb(255 255 255 / 12%); }
-.resume-page .resume-table td { border-color: rgb(255 255 255 / 8%); }
 
 /* ── Quotes page ── */
 
@@ -4811,36 +4719,3 @@ body {
     border-width: 2px;
   }
 }
-
-/* Final Blackboard overrides for the direct-route resume surface. */
-.resume-page {
-  --resume-accent: #f2f2f2;
-  --resume-accent-soft: #f2f2f2;
-  --resume-ink: #d4d4d4;
-  --resume-muted: #969696;
-  --resume-line: rgb(255 255 255 / 12%);
-  max-width: min(1160px, 100%);
-  background: #050505;
-  color: #d4d4d4;
-  padding-bottom: 5rem;
-}
-.resume-page .standalone-header { color: #8d8d8d; letter-spacing: .18em; }
-.resume-page .resume-hero { margin-bottom: 2rem; padding: clamp(1.25rem, 3vw, 2.25rem); border: 1px solid rgb(255 255 255 / 13%); border-radius: 14px; background: linear-gradient(145deg, rgb(255 255 255 / 6%), transparent 58%), rgb(14 14 14 / 92%); box-shadow: inset 0 1px 0 rgb(255 255 255 / 8%), 0 22px 60px rgb(0 0 0 / 24%); clip-path: none; }
-.resume-page .resume-hero::before { opacity: .08; mask-image: linear-gradient(120deg, black, transparent 68%); }
-.resume-page .resume-title { color: #f2f2f2; font-size: clamp(2.1rem, 6vw, 4rem); letter-spacing: -.07em; }
-.resume-page .resume-tagline { color: #bdbdbd; }
-.resume-page .resume-contacts a { color: #cfcfcf; }
-.resume-page .resume-contacts a:hover { color: #fff; }
-.resume-page .resume-download { border: 1px solid rgb(255 255 255 / 20%); border-radius: 7px; background: rgb(255 255 255 / 8%); color: #eee; }
-.resume-page .resume-download:hover { background: rgb(255 255 255 / 14%); }
-.resume-page .resume-layout { gap: 1rem; }
-.resume-page .resume-main, .resume-page .resume-sidebar { padding: 1.15rem; border: 1px solid rgb(255 255 255 / 10%); border-radius: 12px; background: rgb(15 15 15 / 76%); box-shadow: inset 0 1px 0 rgb(255 255 255 / 5%); }
-.resume-page .resume-sidebar { background: rgb(12 12 12 / 62%); }
-.resume-page .resume-section { border-color: rgb(255 255 255 / 11%); }
-.resume-page .resume-heading { color: #e8e8e8; letter-spacing: .08em; }
-.resume-page .resume-heading::after { background: linear-gradient(90deg, rgb(255 255 255 / 42%), transparent); }
-.resume-page .resume-subhead, .resume-page .resume-job-company, .resume-page .resume-list a, .resume-page .resume-para a, .resume-page .resume-quote a, .resume-page .resume-table a, .resume-page .resume-job a { color: #e0e0e0; }
-.resume-page .resume-para, .resume-page .resume-list li, .resume-page .resume-job-dates, .resume-page .resume-table td { color: #a3a3a3; }
-.resume-page .resume-quote, .resume-page .resume-job, .resume-page .resume-section[data-section="selected-products"] > .resume-list > li, .resume-page .resume-section[data-section="additional-builds"] > .resume-list > li { border-color: rgb(255 255 255 / 10%); background: rgb(255 255 255 / 3%); }
-.resume-page .resume-table th { color: #d6d6d6; border-color: rgb(255 255 255 / 12%); }
-.resume-page .resume-table td { border-color: rgb(255 255 255 / 8%); }

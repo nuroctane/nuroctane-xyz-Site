@@ -7,17 +7,6 @@ export default defineConfig(async ({ command }) => {
   let server: import("vite").ServerOptions | undefined;
   let preview: import("vite").PreviewOptions | undefined;
 
-  // Dev has no Worker process, so /api is proxied to the deployed Worker —
-  // same secrets, same KV, same admin flow as production. Point
-  // API_PROXY_TARGET at a local `npx wrangler dev` (http://127.0.0.1:8787)
-  // to test against the gitignored .dev.vars instead.
-  const apiProxy = {
-    "/api": {
-      target: process.env.API_PROXY_TARGET || "https://www.nuroctane.xyz",
-      changeOrigin: true,
-    },
-  };
-
   if (command !== "build") {
     const rawPort = process.env.PORT ?? "5173";
     const port = Number(rawPort);
@@ -30,13 +19,11 @@ export default defineConfig(async ({ command }) => {
       host: "0.0.0.0",
       allowedHosts: true,
       fs: { strict: true },
-      proxy: apiProxy,
     };
     preview = {
       port,
       host: "0.0.0.0",
       allowedHosts: true,
-      proxy: apiProxy,
     };
   }
 
