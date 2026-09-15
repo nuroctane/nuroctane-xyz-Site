@@ -4,7 +4,7 @@
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (76)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (53)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (91)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (92)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (30)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (93)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
@@ -1248,6 +1248,12 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > 
 > Stop playing not to lose.... It'll be too late soon.
 > — @ZssBecker
+
+> major life hack for life: live as if you’re already the best version of yourself. design the super version of yourself down to the last detail. the habits. the nutrition. how this person handles obstacles. difficult people. negative outcomes. the belief system. the work ethic.
+> 
+> everything matters. the more thoroughly you understand how this person behaves, the sooner you can become this person.
+> — @conductr_
+
 
 
 
