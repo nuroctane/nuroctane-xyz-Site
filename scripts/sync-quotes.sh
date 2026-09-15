@@ -72,15 +72,28 @@ if [[ "${SYNC_DRY_RUN:-0}" != "1" ]]; then
   ensure_main
 fi
 
+# Dry runs normalize a temporary source, never the canonical vault.
+if [[ "${SYNC_DRY_RUN:-0}" == "1" ]]; then
+  DRY_SOURCE="$(mktemp)"
+  cp "$SRC" "$DRY_SOURCE"
+  SRC="$DRY_SOURCE"
+  trap 'rm -f "$DRY_SOURCE"' EXIT
+fi
+
 # Merge any legacy sections before copying the canonical bank to the site.
 # The normalizer is intentionally run after ingest so new entries cannot leave
 # the old category names in the published bank.
 NORMALIZER="$REPO_ROOT/scripts/normalize-quotes-categories.py"
-if command -v python3 >/dev/null 2>&1; then
-  python3 "$NORMALIZER" || exit $?
-elif command -v python >/dev/null 2>&1; then
-  python "$NORMALIZER" || exit $?
-else
+quote_python_found=0
+for quote_python in "${QUOTE_PYTHON:-python}" python3; do
+  # Windows Store aliases may exist on PATH without a usable interpreter.
+  if "$quote_python" --version >/dev/null 2>&1; then
+    "$quote_python" "$NORMALIZER" --source "$SRC" || exit $?
+    quote_python_found=1
+    break
+  fi
+done
+if [[ "$quote_python_found" != "1" ]]; then
   echo "Python is required for quote category normalization"
   exit 1
 fi
@@ -251,7 +264,7 @@ if git diff --cached --quiet -- "$REL_DEST"; then
     exit 0
 fi
 
-git commit -m "chore: sync quotes from Obsidian vault [auto]"
+git commit --only -m "chore: sync quotes from Obsidian vault [auto]" -- "$REL_DEST"
 # Push the commit we just made on main - never push a detached SHA as "main".
 if ! git push origin HEAD:main; then
     echo "[$(date)] FATAL: git push origin HEAD:main failed"

@@ -1,3 +1,4 @@
+import { parseQuotes } from '../lib/parseQuotes';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { BookOpen, FileText, Quote, Search } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
@@ -47,13 +48,36 @@ function parseBooks(raw: string): Shelf[] {
   return shelves;
 }
 
-function parseQuotes(raw: string) {
-  const sections: { name: string; quotes: { text: string; source: string }[] }[] = []; let current: (typeof sections)[number] | undefined; let pending: string[] = [];
-  const flush = () => { if (!current || !pending.length) return; const source = pending.at(-1)?.match(/^(?:—|--|–|- )\s*(.+)$/)?.[1] ?? ''; const body = source ? pending.slice(0, -1) : pending; if (body.join('').trim()) current.quotes.push({ text: body.join(' ').trim(), source }); pending = []; };
-  for (const line of raw.split('\n')) { if (line.startsWith('## ')) { flush(); const name = line.slice(3).trim(); // "Index" is the vault file's TOC, not a quote category
-    current = name === 'Index' ? undefined : { name, quotes: [] }; if (current) sections.push(current); continue; } if (line.startsWith('>')) pending.push(line.replace(/^>\s?/, '').trim()); else if (!line.trim()) flush(); }
-  flush(); return sections;
+function renderText(t: string) {
+  // ==highlight== → styled span
+  // [[wiki-link]] or [[wiki-link|display]] → plain display text
+  const parts: { t: 'text' | 'hl'; v: string }[] = [];
+  let i = 0;
+  while (i < t.length) {
+    const hl = t.indexOf('==', i);
+    const wl = t.indexOf('[[', i);
+    if (hl === -1 && wl === -1) { parts.push({ t: 'text', v: t.slice(i) }); break; }
+    const next = (hl !== -1 && (wl === -1 || hl < wl)) ? hl : wl;
+    if (next > i) parts.push({ t: 'text', v: t.slice(i, next) });
+    if (next === hl) {
+      const end = t.indexOf('==', hl + 2);
+      if (end === -1) { parts.push({ t: 'text', v: t.slice(hl) }); break; }
+      parts.push({ t: 'hl', v: t.slice(hl + 2, end) });
+      i = end + 2;
+    } else {
+      const end = t.indexOf(']]', wl + 2);
+      if (end === -1) { parts.push({ t: 'text', v: t.slice(wl) }); break; }
+      const inner = t.slice(wl + 2, end);
+      const display = inner.includes('|') ? (inner.split('|')[1] ?? inner) : inner;
+      parts.push({ t: 'text', v: display });
+      i = end + 2;
+    }
+  }
+  return parts.map((p, k) =>
+    p.t === 'hl' ? <mark key={k} className="bb-quote-highlight">{p.v}</mark> : <span key={k}>{p.v}</span>
+  );
 }
+
 
 function LibraryChrome({ active, children }: { active: 'books' | 'quotes' | 'blog'; children: React.ReactNode }) {
   useStandaloneScroll();
@@ -203,9 +227,9 @@ export function BlackboardBooksPage() {
 }
 
 export function BlackboardQuotesPage() {
-  const [query, setQuery] = useState(''); const [activeCategory, setActiveCategory] = useState('All'); const sections = useMemo(() => parseQuotes(quotesRaw), []); const categories = ['All', ...sections.map(section => section.name)]; const normalized = query.toLowerCase().trim();
+  const [query, setQuery] = useState(''); const [activeCategory, setActiveCategory] = useState('All'); const [quoteOrder, setQuoteOrder] = useState<'newest' | 'oldest'>('newest'); const sections = useMemo(() => parseQuotes(quotesRaw), []); const categories = ['All', ...sections.map(section => section.name)]; const normalized = query.toLowerCase().trim();
   const visible = sections.filter(section => activeCategory === 'All' || section.name === activeCategory).map(section => ({ ...section, quotes: section.quotes.filter(quote => !normalized || `${quote.text} ${quote.source}`.toLowerCase().includes(normalized)) })).filter(section => section.quotes.length);
-  return <LibraryChrome active="quotes"><div className="bb-library-intro"><p className="bb-kicker">Collected notes</p><h1>Quotes</h1></div><div className="bb-category-tabs" role="tablist" aria-label="Quote categories">{categories.map(category => <button key={category} className={activeCategory === category ? 'is-active' : ''} onClick={() => setActiveCategory(category)} role="tab" aria-selected={activeCategory === category}>{category}</button>)}</div><label className="bb-search"><Search aria-hidden="true" /><span className="sr-only">Search quotes</span><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Search quote or source" /></label><div className="bb-quote-grid">{visible.map(section => <section className="bb-quote-section" key={section.name}><div className="bb-shelf-heading"><h2>{section.name}</h2><span>{String(section.quotes.length).padStart(2, '0')}</span></div>{section.quotes.map((quote, index) => <blockquote key={`${section.name}-${index}`}><p>{quote.text}</p>{quote.source && <cite>{quote.source}</cite>}</blockquote>)}</section>)}</div></LibraryChrome>;
+  return <LibraryChrome active="quotes"><div className="bb-library-intro"><p className="bb-kicker">Collected notes</p><h1>Quotes</h1></div><div className="bb-category-tabs" role="tablist" aria-label="Quote categories">{categories.map(category => <button key={category} className={activeCategory === category ? 'is-active' : ''} onClick={() => setActiveCategory(category)} role="tab" aria-selected={activeCategory === category}>{category}</button>)}</div><label className="bb-search"><Search aria-hidden="true" /><span className="sr-only">Search quotes</span><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Search quote or source" /></label><div className="bb-quote-order" role="group" aria-label="Quote order"><button aria-pressed={quoteOrder === 'newest'} onClick={() => setQuoteOrder('newest')}>Newest first</button><button aria-pressed={quoteOrder === 'oldest'} onClick={() => setQuoteOrder('oldest')}>Oldest first</button></div><div className="bb-quote-grid">{visible.map(section => <section className="bb-quote-section" key={section.name}><div className="bb-shelf-heading"><h2>{section.name}</h2><span>{String(section.quotes.length).padStart(2, '0')}</span></div>{(quoteOrder === 'newest' ? [...section.quotes].reverse() : section.quotes).map((quote, index) => <blockquote key={`${section.name}-${index}`}><p>{renderText(quote.text)}</p>{quote.source && <cite>{/^@[A-Za-z0-9_]{1,15}$/.test(quote.source) ? <a href={`https://x.com/${quote.source.slice(1)}`} target="_blank" rel="noreferrer">{quote.source}</a> : renderText(quote.source)}</cite>}</blockquote>)}</section>)}</div></LibraryChrome>;
 }
 
 export function BlackboardBlogPage() {

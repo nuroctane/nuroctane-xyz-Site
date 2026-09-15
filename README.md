@@ -1,201 +1,215 @@
-## Active design: Blackboard
+# NUROCTANE
 
-Complete apps live in `artifacts/blackboard` and `artifacts/digital-sea`.
-Use `pnpm site blackboard` or `pnpm site digital-sea` to select the complete design,
-then `pnpm dev` to preview. Selection does not publish until the normal ship pipeline
-runs. See [site design documentation](docs/BLACKBOARD.md).
+**One personal site. Independent, complete designs.**
 
-<div align="center">
+[Visit nuroctane.xyz](https://nuroctane.xyz) · [Design architecture](docs/BLACKBOARD.md) · [Quote maintenance](docs/QUOTES.md)
 
-<img src="docs/media/digital-sea.gif" alt="Digital Sea" width="480" />
+Blackboard is the active design: a monochrome launch surface with animated wallpaper,
+persistent audio, and Books, Quotes and Blog libraries. Digital Sea remains a complete,
+separate snapshot of the earlier immersive 3D site. Switching selects the whole frontend;
+it does not require changing individual pages, navigation, styles or soundtracks.
 
-# 🌊 nuroctane.xyz
+## Start here
 
-### _a digital sea of thoughts, books, and experiences_
-
-[![Live Site](https://img.shields.io/badge/🌐-Live%20Site-blue?style=for-the-badge)](https://nuroctane.xyz)
-[![License](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
-
----
-
-</div>
-
-## What is this?
-
-A personal [digital sea](https://codelyoko.fandom.com/wiki/Digital_Sea) - living portfolio and toolkit:
-
-| Surface | Route | What it is |
-|---|---|---|
-| **Digital Sea** | `/` | Interactive scroll identity / scene |
-| **Books** | `/books` | Kindle wishlist + community recommendations |
-| **Quotes** | `/quotes` | Themed quote bank synced from Obsidian |
-| **Modkeys** | `/modkeys` | 3D mechanical keyboard configurator |
-| **NurCLI** | `/cli` | Product page for the Rust coding agent |
-| **Observatory** | `/observatory` | Astrology, Cesium Earth, satellites, sky |
-| **Resume** | `/resume` | Direct URL only (unlinked in nav) |
-
-Also: `/socials`, `/projects`, `/blog`, `/fin`. Home aliases `/home`, `/sea`, `/identity` → `/`.
-
-Aesthetic inspiration: **Code Lyoko** (MoonScoop, 2003–2007). [Wikipedia](https://en.wikipedia.org/wiki/Code_Lyoko)
-
----
-
-## Tech stack
-
-| Area | Stack |
-|---|---|
-| **SPA (digital-sea)** | React + Vite, TailwindCSS, Wouter |
-| **Modkeys** | Vanilla ES modules + Vite, Three.js, GSAP (desktop + mobile shell) |
-| **API** | Hono on Cloudflare Workers (`artifacts/api-server`, bundled into the Worker) |
-| **Storage** | Upstash Redis KV (visitor books, modkeys configs) |
-| **Host** | Cloudflare Worker `nuroctane-xyz` (`worker/index.ts`, `wrangler.jsonc`) |
-| **OG cards** | Residual Vercel function `api/og.mjs` (proxied at `/api/og`) |
-| **Telemetry** | PostHog + Cloudflare Workers Observability |
-| **Monorepo** | pnpm workspaces |
-
----
-
-## Features
-
-### Books
-- Curated shelves + Kindle wishlist content (`artifacts/blackboard/src/content/books.md`)
-- Federated, deduplicated discovery across Google Books, Open Library, Crossref, Library of Congress, Internet Archive, and Project Gutenberg
-- Community recommendations plus independent manual title/author entry
-- Validated custom-cover uploads (exactly 600×900px; JPEG, PNG, or WebP; 300 KB max)
-- Cover caching, source provenance, descriptions, and lazy enrichment
-
-### Quotes
-- Narrow thematic sections (Faith, Reality, Manifestation, Shadow, …)
-- Markdown bank with Obsidian-compatible index
-- Synced from the local Obsidian vault (see [Content sync](#content-sync-obsidian--git))
-
-### Modkeys
-Full 3D keyboard configurator (desktop + mobile shells) at `/modkeys` - layouts, materials, switches, keycaps, lighting, per-key edits, KLE/SVG/PDF/spec export, shareable URL state. Details: `artifacts/modkeys/.agents/docs/MOBILE_SHELL.md`. Brand mark: `artifacts/blackboard/public/assets/nodes/modkeys-logo.png` (also `Laboratory/nur-modkeys/assets/`).
-
-### NurCLI (`/cli`)
-Product page for [nur-cli](https://github.com/nuroctane/nur-cli): multi-provider Rust TUI agent, installers (Windows/macOS/Linux), live version polling, Foglamp codebase map embed, command reference. Page source: `artifacts/blackboard/src/pages/CliPage.tsx`.
-
-### SnipOCR / Blackjack (sea nodes)
-Standalone repos with Digital Sea cards: [snipocr](https://github.com/nuroctane/snipocr) · [blackjack](https://github.com/nuroctane/blackjack). Marks live under `artifacts/blackboard/public/assets/nodes/{snipocr,blackjack}-logo.png` and must stay synced with each repo’s `assets/` / `branding/`.
-
-### Observatory (`/observatory`)
-Swiss Ephemeris astrology, Cesium Earth exploration, CelesTrak satellites / SGP4, solar system, sky chart, missions, weather. Spec: `docs/research/components/observatory.spec.md`. Brand mark: `artifacts/blackboard/public/assets/nodes/observatory-logo.png`.
-
-The Three.js scene owns frame-by-frame visual motion. Shared ephemeris/chart state publishes at 1 Hz in live mode and 10 Hz during accelerated simulation; per-frame satellite code must mutate bounded buffers/objects rather than allocate one object per satellite. `pnpm run check:observatory` guards those stability contracts.
-
----
-
-## Production architecture
-
-```
-Browser → Cloudflare Worker (nuroctane-xyz)
-            ├── ASSETS  → Vite SPA build
-            ├── /api/*  → Hono (api-server)
-            ├── crawler → path-specific og:* HTML
-            └── /api/og → proxy → nuroctane-og.vercel.app
+```sh
+pnpm install --frozen-lockfile
+pnpm dev
 ```
 
-- Apex + `www` are Cloudflare Custom Domains on the Worker.
-- Cron `0 12 * * *` refreshes GitHub contribution data only (not quotes).
-- **Do not** `vercel --prod` expecting to deploy the site. Vercel git integration for OG is disconnected on purpose; redeploy `api/og.mjs` by hand only when that file changes.
+Use the URL Vite prints. Blackboard's Vite server proxies `/api` to production by default;
+recommendation and admin mutations in that preview affect real community data. Set
+`API_PROXY_TARGET` to a local Worker for isolated API work.
 
----
-
-## Local development
-
-```bash
-pnpm install
-pnpm run build          # typecheck + package builds + smoke + SPA shell checks
-npx wrangler dev        # local Worker (.dev.vars with KV_MEMORY=1)
+```sh
+pnpm build
+npx wrangler dev
 ```
 
-SPA-only: `pnpm dev` (see package scripts).
+The second path serves the built frontend and Worker together. Use local `.dev.vars`
+with `KV_MEMORY=1` for disposable API state. Never commit credentials.
 
----
+## Choose a design
 
-## Deploy
+| Design | Package | Status |
+| --- | --- | --- |
+| **Blackboard** | `artifacts/blackboard` / `@workspace/blackboard` | Current production frontend; live content sync |
+| **Digital Sea** | `artifacts/digital-sea` / `@workspace/digital-sea` | Preserved pre-Blackboard frontend at `b48b16d` |
+| Future designs | A new sibling in `artifacts/` | Add through the extension contract below |
 
-Pushing `main` should trigger **Workers Builds** (`pnpm run build` → `npx wrangler deploy`). GitHub Actions `.github/workflows/deploy.yml` notifies each main push (and can wrangler-deploy only if `CLOUDFLARE_API_TOKEN` is set - leave it unset while Builds is healthy).
-
-```bash
-git push origin main
-# Verify: Builds list / Actions green + deployment issue notify, and:
-curl -sI https://www.nuroctane.xyz/ | grep -i server   # expect cloudflare
+```sh
+pnpm site                 # Show the selection
+pnpm site blackboard      # Select Blackboard
+pnpm site digital-sea     # Select Digital Sea
+pnpm dev                  # Preview the selected frontend
 ```
 
-Manual deploy only if the push did not publish: `pnpm run deploy`.
+Selection changes the tracked `site.config.json`. Restart an existing dev server after
+switching. **Selection alone does not publish.** The normal ship pipeline publishes the
+selected design. Shared community data and API credentials remain current whichever
+design is selected; switching is not a database rollback.
 
-Full agent ship checklist: `C:\Users\david\.agents\SHIP.md` (nuroctane.xyz section) and repo `AGENTS.md`.
+The Digital Sea snapshot owns its original pages, assets, soundtrack and local Modkeys
+source. It is intentionally frozen. Blackboard retains its own compatibility scene code
+for existing deep links and uses the current `artifacts/modkeys` implementation. Neither
+frontend imports the other frontend. Do not switch using Blackboard's internal
+`src/config/siteMode.ts`; it identifies that app, not the deployment selection.
 
----
+## Explore the site
 
-## Content sync (Obsidian ↔ git)
+| Route | Blackboard surface |
+| --- | --- |
+| `/` | Avatar, Cal/GitHub links, copyable wallet addresses, central audio player, Projects/Socials launchers |
+| `/books` | Responsive shelves, visible covers, metadata modals, library search and community recommendations |
+| `/quotes` | Searchable thematic collections, newest/oldest ordering, source credits and preserved quote paragraphs |
+| `/blog` | Full writing in cards that follow their content height |
+| `/modkeys` | 3D keyboard configurator, community builds and exports |
+| `/observatory` | Sky, Earth, satellite and solar-system exploration |
+| `/cli` | NurCLI product page, downloads and documentation |
+| `/curriculum` | Standalone curriculum |
+| `/resume` | Resume, accessible directly and intentionally unlinked |
 
-| Direction | What | How |
-|---|---|---|
-| Raindrop / vault → repo | Raindrop `#quotes` → `Quotes.md` → `artifacts/blackboard/src/content/quotes.md` | `scripts/quotes-pipeline.py` (uses Hermes ingest + sync parsers) |
-| Repo → vault | `books.md` → Obsidian `Books/Book Wishlist.md` | `scripts/sync-books.sh` / Hermes `poll-sync.py` |
+Blackboard uses responsive monochrome glass controls, JetBrains Mono interface type,
+and serif quote text. Its wallpaper respects reduced motion and uses stronger movement
+on small screens. The native audio provider survives SPA navigation; browser autoplay
+and device-volume rules still apply. Books and Modkeys use the existing server-side
+admin gates. Failed book mutations display an error and do not pretend to save.
 
-Windows task **`NuroctanePollSync`** (every 15 min) launches silent `scripts/poll-sync.vbs` → `scripts/quotes-pipeline.py` (no console window). Its ordered source of truth is **Raindrop `#quotes` first**, then new Obsidian `#quotes` notes; Raindrop additions are written to the canonical `Quotes.md`, which is copied to the site and pushed to `main`. Install: `powershell -File scripts/install-poll-sync-task.ps1`. Logs: `.nur/quotes-pipeline.log`.
+Digital Sea provides its own original scene, HUD, standalone libraries and soundtrack.
+Its appearance is inspired by Code Lyoko. The repository's historical scene preview:
 
-Quotes sync strips Obsidian frontmatter, rebuilds `## Index`, parser-sanity-checks like `QuotesPage.tsx`, then commits/pushes on `main` only when content changes. Optional local deploy: `SYNC_DEPLOY=1`. Dry run: `SYNC_DRY_RUN=1`.
+<details>
+<summary>Digital Sea preview</summary>
 
----
+![Digital Sea scene](docs/media/digital-sea.gif)
 
-## Environment variables
+</details>
 
-**Build-time** (`VITE_*` - Workers Builds → Build variables, and local `.env.local`):
+## Architecture
 
-- `VITE_POSTHOG_KEY` / `VITE_POSTHOG_HOST` / `VITE_POSTHOG_UI_HOST` - analytics (host defaults to managed proxy `https://i.nuroctane.xyz`)
-- Observatory weather / traffic keys as consumed under `artifacts/blackboard/src/observatory/`
-
-**Runtime** (Worker secrets via `wrangler secret put`): KV credentials, `JWT_SECRET`, GitHub OAuth, etc. `GOOGLE_BOOKS_API_KEY` is optional for higher Google Books quota; public volume search works without authentication and every other catalog remains available if Google rate-limits a request.
-
-See `artifacts/blackboard/.env.example`. Adding a new `VITE_*` means updating `.env.local`, the example file, **and** Workers Builds vars.
-
----
-
-## Analytics
-
-PostHog: route pageviews, Core Web Vitals, curated product events (`Modkeys Save` / `Export`, `Quotes Section`, `Book Open`, …). Autocapture off; no person profiles for anonymous events.
-
-Ops: Cloudflare Workers dashboard (deployments, logs, cron) + PostHog + Upstash console.
-
----
-
-## Repository structure
-
-```
-nuroctane.xyz/
-├── api/                      # Residual Vercel OG renderer only
-├── artifacts/
-│   ├── blackboard/           # Active React SPA
-│   ├── digital-sea/          # Preserved pre-Blackboard SPA
-│   ├── api-server/           # Hono API bundled into the Worker
-│   └── modkeys/              # Keyboard configurator
-├── worker/                   # Cloudflare Worker entry + OG HTML
-├── scripts/                  # poll-sync, sync-quotes, sync-books, …
-├── docs/                     # Current research, media, and archived planning notes
-├── wrangler.jsonc
-└── AGENTS.md                 # Agent ship + sync instructions
+```text
+Browser
+  └─ Cloudflare Worker: nuroctane-xyz
+       ├─ Static assets → dist/public → selected frontend build
+       ├─ /api/* → shared Hono API
+       ├─ Crawler requests → route-specific Open Graph HTML
+       └─ /api/og → separate Vercel OG renderer
 ```
 
-Run `pnpm run check:repo-hygiene` before a commit (it also runs in `pnpm run build`). It blocks common credential formats plus local caches, pasted intake, and machine-specific files from entering Git. Historical July 2026 planning notes live under `docs/archive/`; active component research stays under `docs/research/`.
+| Layer | Implementation |
+| --- | --- |
+| Frontends | React, TypeScript, Vite, Wouter; design-specific CSS and assets |
+| Interactive graphics | Three.js, React Three Fiber, Cesium, WebGL wallpaper |
+| Modkeys | Vanilla ES modules, Three.js, GSAP, keyboard export tooling |
+| API | Hono in `artifacts/api-server`, bundled by `worker/index.ts` |
+| Shared storage | Redis-compatible KV; in-memory mode for local API checks |
+| Deployment | Single Cloudflare Worker, apex and `www` Custom Domains |
+| Analytics | PostHog and Cloudflare Workers Observability |
+| Workspace | pnpm, TypeScript project references, shared `lib/` packages |
 
----
+Build-time `VITE_*` variables belong in local frontend `.env.local` and Cloudflare
+Workers Builds variables. Runtime API credentials belong in Worker secrets. The two
+sets are separate. See `artifacts/blackboard/.env.example` for the frontend template.
+Adding a build variable requires updating the example and the CI configuration.
 
-## Philosophy
+## Content and quote sync
 
-Minimal yet expressive, fast, personal, continuously evolving - like a digital sea.
+The scheduled source of truth is **Raindrop `#quotes` → canonical Obsidian Quotes.md →
+Blackboard**. New Obsidian `#quotes` notes are the secondary intake source.
+
+1. Windows task `NuroctanePollSync` runs every 15 minutes through hidden `wscript`.
+2. `scripts/poll-sync.vbs` launches the repository-owned `quotes-pipeline.py`.
+3. The pipeline tests the canonical 12-category classifier and runs the Hermes ingester
+   through `run_hermes_quote_ingest.py`.
+4. Category normalization applies reviewed editorial corrections and refreshes the index.
+5. `run_hermes_quote_sync.py` validates and publishes only
+   `artifacts/blackboard/src/content/quotes.md` from `main`, then mirrors the published
+   form into the vault. Unrelated work blocks publishing.
+6. Workers Builds deploys the content commit through the usual production path.
+
+Blackboard follows the original Digital Sea parsing contract: contiguous blockquotes,
+paragraph breaks, author boundaries, callout exclusion, index exclusion and newest-first
+presentation without reversing the canonical file. The archived Digital Sea bank is not
+changed by sync. See [the quote playbook](docs/QUOTES.md) for corrections, attribution
+sources and verification commands.
+
+Books synchronization is a separate repo-to-vault path in `scripts/sync-books.sh`:
+Blackboard's `content/books.md` → Obsidian `Books/Book Wishlist.md`.
+The Worker's daily cron only refreshes GitHub contributions; it does not sync quotes.
+
+## Checks
+
+```sh
+pnpm build
+pnpm check:quotes
+python scripts/test_quote_editorial.py
+python scripts/test_quote_categories.py
+```
+
+The root build checks repository hygiene, typechecks packages and Worker code, builds
+both frontends, stages the selected output, runs the API smoke suite, and validates
+Observatory stability, the Modkeys mobile shell and the quote parser/content contract.
+The classifier tests require the configured local semantic model; they also run before
+scheduled ingestion. Do not weaken existing guards to make a build pass.
+
+Check mobile and desktop layouts, deep links, artwork/assets, library scrolling and
+admin dialogs before shipping changes to shared UI. Use isolated API state for destructive
+tests. A green notification-only GitHub Action is not proof that Workers Builds deployed.
+
+## Ship
+
+The repository's required pipeline is **commit → push `origin main` → verify live → backup**.
+Follow `AGENTS.md` and `C:\Users\david\.agents\SHIP.md`.
+
+```powershell
+powershell -File $env:USERPROFILE\.agents\ship.ps1 -Repo nuroctane.xyz -Message "Describe the change"
+```
+
+Workers Builds normally runs `pnpm build` then `npx wrangler deploy`. The GitHub workflow
+is a fallback deployer only when its Cloudflare token is configured; otherwise it sends
+the deployment notification. Keep one production promotion path active.
+
+Verify the Workers Builds check for the shipped commit and the actual live assets/routes.
+Use `pnpm deploy` only if the push did not publish. Backups go to
+`D:\BACKUP\CODE Backups\nuroctane.xyz\` with the date and commit in the filename.
+
+Vercel serves only `api/og.mjs`; its git integration is disconnected. Deploy that project
+manually only when the OG renderer changes. It does not publish the website.
+
+## Adding another design
+
+A new design is a complete frontend, not a collection of overrides on a preserved design.
+
+1. Add `artifacts/<design>` with a unique workspace package name, `dev`, `build` and
+   `typecheck` scripts, and Vite output at `dist/public` inside that package.
+2. Give it its own entrypoint, routes, navigation, loading UI, styles, public assets and
+   audio behavior. Reuse shared APIs and libraries where that does not couple designs.
+3. Register the identifier in `scripts/site.mjs` and extend design-aware Worker metadata
+   in `worker/og-meta.ts` and shell validation in `artifacts/modkeys/check-spa-shell.mjs`.
+4. Decide explicitly whether it reads live content or owns a frozen snapshot. Update
+   synchronization destinations and parser checks only when that ownership changes.
+5. Test the new app and the existing designs. Select it in `site.config.json` only when
+   ready to preview or ship it. Preserve prior designs' source and assets.
+
+This registration is deliberate: merely adding a directory does not make a design a
+supported production selection.
+
+## Repository map
+
+```text
+artifacts/
+  blackboard/        Current frontend and live content
+  digital-sea/       Preserved earlier frontend, including original Modkeys
+  modkeys/           Current keyboard configurator
+  api-server/        Shared Hono API
+lib/                 Shared API clients, schemas and server utilities
+worker/              Cloudflare entrypoint and crawler metadata
+scripts/             Design selection, validation and local content sync
+api/og.mjs           Separate Vercel OG image renderer
+docs/                Design notes, quote playbook, research and historical archive
+site.config.json     Selected design and Digital Sea baseline
+wrangler.jsonc       Single Worker deployment configuration
+```
 
 ## License
 
-MIT - use as inspiration for your own digital sea.
-
----
-
-<div align="center">
-
-Visit [nuroctane.xyz](https://nuroctane.xyz) · *Built with curiosity and code*
-
-</div>
+See [LICENSE](LICENSE).

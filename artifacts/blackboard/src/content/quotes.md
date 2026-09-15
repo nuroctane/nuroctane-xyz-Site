@@ -1,5 +1,5 @@
 ## Index
-- [[#Faith, God & Surrender|Faith, God & Surrender]] (44)
+- [[#Faith, God & Surrender|Faith, God & Surrender]] (43)
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (29)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (76)
@@ -35,13 +35,13 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > The former affirms that you actually don't have faith that He knows what He's doing
 > You don't trust that He put you in the situation for a reason
 > Perception is what determines reality, and it starts with acknowledging that you're exactly where you're supposed to be
-> You're always being guided with love my friend, never forget that.
+> You're always being guided with love, my friend; never forget that.
 
 > Whoever decides to commit a sin but does not end up doing it, Allah will write one good deed for him - saying he only left it because of Me
 > • صحيح مسلم ١٢٩.
 > — Prophet Muhammad ﷺ, Sahih Muslim 129
 
-> The more you put your life on the line, the more interesting God finds you, the more likely your virtues to be rewarded (and vices punished.)
+> The more you put your life on the line, the more interesting God finds you, the more likely your virtues to be rewarded (and vices punished).
 
 > The devil gives and gives until what you are being given means nothing to you
 > when the Most High gives, you cherish.
@@ -55,7 +55,7 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 
 > Consider how precious a soul is when both God and the devil are after it. Your mission is to keep your mind and heart pure and remove bad thoughts, bad aesthetics and bad people from your life. You can learn to laugh like a child again and hope like a virgin again. There is so much room for love. Simply walk away from the hate. Turn around and walk away.
 
-> When you take one step towards the angels, heaven, Spirit, the Divine. they take ten towards you.
+> When you take one step towards the angels, heaven, Spirit, the Divine, they take ten towards you.
 > — Sathya Sai Baba
 
 > You are the bridge between heaven and earth. On a subtle level you are one with all things. Establish your daily communication with the universe. It’s as simple as if you are talking to a dear old friend.
@@ -67,7 +67,7 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > Identify a major life challenge.
 > Then connect it to how it helped you develop a particular divine virtue. This is an essential step in transcendence.
 
-> If ever you wake up in the middle of the night for 'no reason' There is a reason! A gate has opened up for you. Get out that bed and go meditate or pray. You didn't wake up for 'no reason'.
+> If ever you wake up in the middle of the night for 'no reason', There is a reason! A gate has opened up for you. Get out that bed and go meditate or pray. You didn't wake up for 'no reason'.
 
 > My deepest moments of peace came when I would give up. I give up trying to figure this out. I give up needing to know why. I just surrender.
 
@@ -83,7 +83,7 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 
 > May the Creator gently remove anyone around me who secretly loathes and wishes me ill. May every evil, jealous, and resentful eye go blind. May only pure intent find its way to my path. May the protection of the Divine, Most High Source continue to cover me. And it is so.
 
-> If you talk to any old priest who's actually been in the game forty years they're like yes the devil is real and he prefers intelligent people, don't pray when you're angry it opens the wrong door, some saints were terrifying in person and not in a good way, certain prayers work at certain times of night and we don't know why, and never let a possessed person know you're afraid
+> If you talk to any old priest who's actually been in the game forty years they're like yes the devil is real and he prefers intelligent people, don't pray when you're angry it opens the wrong door, some saints were terrifying in person and not in a good way, certain prayers work at certain times of night and we don't know why, and never let a possessed person know you're afraid.
 > — @lichthauch
 
 > People always say the universe is testing them, but I’m always testing the universe.
@@ -93,7 +93,7 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 
 > God gets offended when you don't believe in yourself. You're his creation. It's like you're insulting him directly. How dare you tell him that he failed?
 
-> The entire spiritual industry is a coward's invention, designed to package the most violent undertaking a human being can choose into something palatable for soft hands and weekend schedules. the actual practice, the original practice, before it was gutted and resold as self-care, involves deliberately breaking your body down as an offering to something that will never confirm it's received the gift. fasting isn't intermittent caloric optimization, it's starving until something inside you cracks open that eating kept shut. prayer isn't meditation apps with bells, it's grinding the same fucking words into your teeth until they bypass your intellect entirely and enter the bloodstream. the desert fathers lived in holes in the ground eating insects, not because they were performing piety, but because they discovered that comfort is the single most efficient mechanism for keeping a man from encountering anything real about himself, or god, or both. every generation produces fewer thousands willing to pay the actual price, and more millions willing to purchase the aesthetic of having paid it
+> The entire spiritual industry is a coward's invention, designed to package the most violent undertaking a human being can choose into something palatable for soft hands and weekend schedules. the actual practice, the original practice, before it was gutted and resold as self-care, involves deliberately breaking your body down as an offering to something that will never confirm it's received the gift. fasting isn't intermittent caloric optimization, it's starving until something inside you cracks open that eating kept shut. prayer isn't meditation apps with bells, it's grinding the same fucking words into your teeth until they bypass your intellect entirely and enter the bloodstream. the desert fathers lived in holes in the ground eating insects, not because they were performing piety, but because they discovered that comfort is the single most efficient mechanism for keeping a man from encountering anything real about himself, or god, or both. every generation produces fewer thousands willing to pay the actual price, and more millions willing to purchase the aesthetic of having paid it.
 > — @lichthauch
 
 > The considerationalist is a menace because God hates you when you try to do His job for Him.
@@ -116,13 +116,13 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 
 > The mark of a leader is someone who succeeds not by pushing hard or fighting for change but by wisely going with the universal flow.
 
-> I would only tell a mans son one thing, that the weight you feel, the dull excruciating heft of being alive, thats it. that is the entire inheritance. i dont have land or money or wisdom worth a rotten penny but i know this, god gives weight to the men he has not forgotten. the light ones, the untouched ones, gliding through with their clean hands and empty smiles, they were never burdened because they were never chosen, and that is a sentence far worse than yours. so when it gets heavy, and it will, remember your father said that was the honor, the only one that mattered
+> I would only tell a man's son one thing, that the weight you feel, the dull excruciating heft of being alive, that's it. that is the entire inheritance. i don't have land or money or wisdom worth a rotten penny but i know this, god gives weight to the men he has not forgotten. the light ones, the untouched ones, gliding through with their clean hands and empty smiles, they were never burdened because they were never chosen, and that is a sentence far worse than yours. so when it gets heavy, and it will, remember your father said that was the honor, the only one that mattered.
 > — @lichthauch
 
 > the unforgivable sin is refusing forgiveness.
 > — @0xSero
 
-> God Enters Through The Wound
+> God Enters Through The Wound.
 > — @sullen11111
 
 > Disrespecting yourself is disrespecting God.
@@ -142,7 +142,7 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > You must look good for God.
 > — @selfmaxxer
 
-> The pure hearted simple man is not idiot. he does not lack knowledge, merely lacks the vanity of knowledge. he is not impressed by the convolutions of that which refuses to state itself plainly, and when something is stated plain he will not pretend it is complex to flatter his own cleverness. this is the only mind God can really do anything with. that can water, grow things, like the plant drinking from the childs hand. this is the mind that listens because it is not so besotted with its own voice that it cannot be quiet and learn from what is above it. the mind that will grow the garden because it is not too busy being a garden unto itself
+> The pure hearted simple man is not idiot. he does not lack knowledge, merely lacks the vanity of knowledge. he is not impressed by the convolutions of that which refuses to state itself plainly, and when something is stated plain he will not pretend it is complex to flatter his own cleverness. this is the only mind God can really do anything with. that can water, grow things, like the plant drinking from the child's hand. this is the mind that listens because it is not so besotted with its own voice that it cannot be quiet and learn from what is above it. the mind that will grow the garden because it is not too busy being a garden unto itself.
 > — @lichthauch
 
 > It is said that when the dark magician finally corrupts his very soul and peers into the deepest depths of the abyss, he finds there not some hidden Necronomicon of power, nor some twisted, malformed manuscript - but something far more terrifying.
@@ -150,11 +150,10 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > He finds, among its absolute lifelessness and horror, at the boiling heart of hell itself - the Book of Love.
 > — @JackOfFaces
 
-> The greatest sacrifice a man can make is to remain exactly where God asked him to be while everyone he loved and served walks away from him. to see everyone you poured your life into turn their backs on you and still wake up every day and keep pouring. to feel the sting of betrayal. to be haunted by the ghosts of companionship and still extend your hand in friendship. to hold the line alone when you once stood shoulder to shoulder with an army, and choose to become a statue of unshakeable conviction while the world erodes around you. this is how a man proves his integrity to heaven and earns the respect of hell itself
+> The greatest sacrifice a man can make is to remain exactly where God asked him to be while everyone he loved and served walks away from him. to see everyone you poured your life into turn their backs on you and still wake up every day and keep pouring. to feel the sting of betrayal. to be haunted by the ghosts of companionship and still extend your hand in friendship. to hold the line alone when you once stood shoulder to shoulder with an army, and choose to become a statue of unshakeable conviction while the world erodes around you. this is how a man proves his integrity to heaven and earns the respect of hell itself.
 > — @lichthauch
 
-> The entire spiritual industry is a coward's invention, designed to package the most violent undertaking a human being can choose into something palatable for soft hands and weekend schedules. the actual practice, the original practice, before it was gutted and resold as self
-> — @lichthauch
+
 
 
 
@@ -216,7 +215,7 @@ _Consciousness, time, illusion, energy, synchronicity, metaphysics, and the arch
 
 > We are freedom itself, asleep in a dream where we believe we need to somehow become free. Do you see the game?
 
-> the person you'll become is already editing the person you were, probability reaching backward through time to ensure coherence with whatever you're about to calcify into, you never had a stable past, only a past that keeps reorganizing itself to accommodate who you're becoming
+> the person you'll become is already editing the person you were, probability reaching backward through time to ensure coherence with whatever you're about to calcify into, you never had a stable past, only a past that keeps reorganizing itself to accommodate who you're becoming.
 > — @null_ropex
 
 > The world within is the cause, the world without the effect; to change the effect you must change the cause. Most men try to change effects by working with effects. They fail to see that this is simply changing one form of distress for another. To remove discord, we must remove the cause, and this cause can be found only in the world within.
@@ -236,7 +235,7 @@ _Consciousness, time, illusion, energy, synchronicity, metaphysics, and the arch
 > U realize it’s all a Schrodinger’s cat in the end.
 > — @MrE_mssg
 
-> you need to flirt with the universe
+> you need to flirt with the universe.
 > — @ellaaborating
 
 > Reality is gooey. Keep pushing and it gives.
@@ -562,7 +561,7 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 
 > Who are you when you allow yourself to exist without concern of how others will experience you?
 
-> Your awakening is also a rude awakening for those who love your mask
+> Your awakening is also a rude awakening for those who love your mask.
 
 > Re-asserting yourself,
 > spiritually and energetically,
@@ -657,6 +656,7 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 > There's always an empowering, freeing and generative way to have the want - instead of the other ways. Feel into that, find it & live that.
 
 > The reason you have a hard time trusting your intuition is because you are still convinced that some outside authority knows better than you.
+> — @Maryamhasnaa
 
 > Plot twist:
 > The advice you give to others is for you to take.
@@ -732,7 +732,7 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 > Discipline is rudimentary and far too simple of a concept to grab hold of the subconscious.
 > Constantly having to force yourself to take action? No thanks. You are ignoring your probable future, which is weak.
 
-> Men think themselves too small in their minds. They don’t whisper to themselves , “Conquer my boy. Be proud. Be fruitful. Know abundance. Don’t give up. Don’t let others push you down.” This is the only voice worth keeping. Kick the rest out. They give nothing but poison.
+> Men think themselves too small in their minds. They don’t whisper to themselves, “Conquer my boy. Be proud. Be fruitful. Know abundance. Don’t give up. Don’t let others push you down.” This is the only voice worth keeping. Kick the rest out. They give nothing but poison.
 
 > Those urges to compete/compare do not belong to you and never did. Just another layer of survival, fear and programming.
 
@@ -784,7 +784,7 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 > For me, there are two different voices:
 > -One is soft, calm, gentle, and confident.
 > -The other is pressed, hasty, insecure.
-> Trust the calm voice
+> Trust the calm voice.
 
 > Let’s work on cultivating genuine awareness rather than pretending we are aware as a new method to point out everyone else’s flaws.
 
@@ -838,7 +838,7 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 > You will notice that on the days you do not do anything to shift your heavy mood that you also have experiences throughout that day that are frustrating and disappointing. When you’re feeling good you will notice your day seems to just go better. And things seem to all work out.
 > This is how you develop for yourself a general understanding of the laws of vibration. There will always be days that are “exceptions” because there is so much nuance within the practice of frequency management. But this will help you understand the importance of energy work.
 
-> If you're feeling stuck, remember this: Every time you chase certainty, you create paralysis
+> If you're feeling stuck, remember this: Every time you chase certainty, you create paralysis.
 > — @fu_joehudson
 
 > The first demon you will ever cast out is doubt, and it's from yourself.
@@ -855,10 +855,10 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 > — @BreatheLesss
 
 > Lean into everything that causes stress so that you may be able to get to the root of it
-> 
+>
 > Avoidance is the real issue -- not what you think the external problem might be
-> 
-> You remove friction by sanding it off
+>
+> You remove friction by sanding it off.
 > — @augustusdelano
 
 > Remember what happened the last time you didn’t listen to your intuition.
@@ -881,13 +881,13 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 > — @fastrlife
 
 > stop paying attention to the distractions
-> 
-> theyre trying to get us to manifest the reality they desire
-> 
-> manifest the reality you desire & block out everything else
+>
+> they're trying to get us to manifest the reality they desire
+>
+> manifest the reality you desire & block out everything else.
 > — @the_cia_hacker
 
-> They say making mistakes is part of being human. I'd say making mistakes is part of being intelligent
+> They say making mistakes is part of being human. I'd say making mistakes is part of being intelligent.
 > — @uzairname1
 
 
@@ -1054,17 +1054,17 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > What it will do, is generate a few good opportunities a year for u, and u’ll have anywhere from a few seconds to few days to seize them.
 > — @MrE_mssg
 
-> an idiot in motion goes further than a genius at rest
+> an idiot in motion goes further than a genius at rest.
 > — @MachJustine
 
 > one common trait I find in high-achieving individuals is urgency. it looks almost like impatience until you understand it is closer to reverence, a deep refusal to waste the one thing they can’t buy more of. the alarm goes and they rise. the message is answered while it is still warm. the small task is done before it can find a shelf to hide on. they commit and move in a single motion. an idea sparks and they chase it that day, before the world talks them out of it. they run at their own lives like something is at stake, because they have decided something is.
 > — @josbjohnson
 
 > the thing that beats any strategy is just being able to stay in the game longer than everyone else
-> and to do that you need to stay motivated every single day and to do that you have to be having fun
+> and to do that you need to stay motivated every single day and to do that you have to be having fun.
 > — @thdxr
 
-> failure is a privilege reserved for those who have the balls to enter the arena
+> failure is a privilege reserved for those who have the balls to enter the arena.
 > — @theJayAlto
 
 > I am relentless because the alternative disgusts me. settling, coasting, going soft in the body and lazy in the spirit and half present with the people I love - I’d rather bleed for the higher version every day than drift comfortably toward the smaller one.
@@ -1152,7 +1152,7 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > it truly takes something close to violence to leave a comfortable life on purpose. at least when you hit rock bottom, the climb out makes sense to everyone. but when you look at a life that works - one that looks good enough from the outside and you decide to burn it down because it is quietly suffocating you - people will call you insane and you have to be willing to be called insane because the alternative is a lifetime of comfortable regret.
 > — @josbjohnson
 
-> it gets easier to flip the switch with each passing year
+> it gets easier to flip the switch with each passing year.
 > — @nuroctane
 
 > Never attribute to difficulty what is adequately explained by novelty.
@@ -1162,7 +1162,7 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > The sooner you internalize this, the sooner you start.
 > — @BowTiedPhys
 
-> even at 1 hp, you can do 200 damage
+> even at 1 hp, you can do 200 damage.
 > — @Clix
 
 > one common trait I find in high achieving individuals is urgency. it looks almost like impatience until you understand it is closer to reverence, a deep refusal to waste the one thing they can’t buy more of. the alarm goes and they rise. the message is answered while it is still warm. the small task is done before it can find a shelf to hide on. they commit and move in a single motion. an idea sparks and they chase it that day, before the world talks them out of it. they run at their own lives like something is at stake, because they have decided something is.
@@ -1176,7 +1176,7 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 
 > Why are you as a grown man getting nice shit so you can have even less fun?
 > Freak out if someone spills a drink in ur car, anxiety about ashing your nice clothes, scuffing ur watch, can't take ur nice SUV off road?
-> Beyond soy
+> Beyond soy.
 > — @brutedeforce
 
 > All urges are contraindicators.
@@ -1185,7 +1185,7 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > So close yet so far.
 > — @MrE_mssg
 
-> if you have trouble getting things done, try doing them in a hurry. you should be doing things in a hurry. if you're not engaged, you're just not being urgent enough. if you're not urgent you're not trying
+> if you have trouble getting things done, try doing them in a hurry. you should be doing things in a hurry. if you're not engaged, you're just not being urgent enough. if you're not urgent you're not trying.
 > — @yacinemtb
 
 > There is no dilemma of safe vs risky path; Assume the worst for both and pick whichever u would then regret the least.
@@ -1195,42 +1195,42 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > — @josbjohnson
 
 > There's a mental space you can find that i call 'beyond the win and loss'
-> 
+>
 > Your journey right now, in your mind, probably 'ends' in some grandiose victory. You go through the wars, and grab the W's
-> 
+>
 > But in reality, there is also a story beyond that - beyond the losses, beyond the wins, beyond it all
-> 
+>
 > And *that* story is the 'continuity of you'. And IMO that is what you want to hitch yourself onto. The river of life. You are not just a win/loss, you are multiple, in each direction
-> 
+>
 > You may delay taking action because you're scared of the conclusion
-> 
+>
 > But what if there actually wasn't a conclusion, in either direction? What if what you CURRENTLY view as the conclusion - is actually just the first little step of many, along the way of a life grander & more beautiful than you can currently conceptualize?
-> 
+>
 > an L can't define you
-> But a W can make you shine
+> But a W can make you shine.
 > — @retirementkeys
 
-> do things that make you feel like you deserve to win
+> do things that make you feel like you deserve to win.
 > — @networkdeity
 
 > In the context of portfolio theory, the longer the measurement window, the more your sharpe ratio dominates your returns, the less luck does.
 > — @mostlymonkey
 
 > choosing retard is the only substitute to religion in the modern world
-> 
+>
 > retardmaxx and believe. do the work, & randomness will take care of itself sooner or later, earlier than you expect, later than you hope
-> 
+>
 > there’s obv philosophical reason, pascal wager, Camus’ Sisyphus conclusion, n math eg instrumental rationality under uncertainty
-> 
+>
 > call it fate or karma or randomness
-> 
+>
 > bc the world was never saved by the good guys. the world is saved by retards, ordinary people choosing right at the wrong time (see arkhipov)
-> 
+>
 > you might not see the consequences of your actions in real time, maybe not even in your lifetime but being a nihilist atheist is the worst thing you can do to yourself
-> 
+>
 > retardmaxx & believe. CHOOSE retard over math
-> 
-> do the work. be nice. never give up. you are perfect
+>
+> do the work. be nice. never give up. you are perfect.
 > — @nicoletteduclar
 
 
@@ -1347,10 +1347,10 @@ _Calling, craft, art, play, service, voice, vision, and making what only you can
 > — Jeff Brown, *Humanifestations*
 
 > i like to think that problems want to be solved. and that they are waiting there for the right person to come along and figure out a solution
-> 
+>
 > it follows that: if a problem seems inaccessible to you, that doesn't mean it's unsolvable. it just means the problem doesn't want you to solve it yet. you are probably unworthy of solving it yet, because you haven't acquired the skills you need to do so
-> 
-> but that's not rejection (literally nothing is rejection). it's just homework
+>
+> but that's not rejection (literally nothing is rejection). it's just homework.
 > — @AnikaSomaia
 
 > get out of any “deciding what to build” phases as fast as you possibly can. follow the tendrils of light until you are out of the tunnel. don’t get distracted by moving shadows. remember.
@@ -1541,6 +1541,7 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > It’s not somebody’s energy you can’t be around. it’s your resistance to letting them heal that part of you that they touch.
 
 > One energy that used to trip me up in people was certainty. I would feel someone else was certain about what they knew, felt or believed and certain that they were right. So if I wasn’t feeling certain I assumed they knew better than me. And would go along with their perception.
+> — @Maryamhasnaa
 
 > Once you feel you are avoided by someone, never disturb them again.
 
@@ -1550,7 +1551,7 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 
 > I recommend taking pictures and videos of your parents more often.
 
-> “you’re usually one phone call away from that mountain becoming a molehill”
+> “you’re usually one phone call away from that mountain becoming a molehill.”
 > — @nuroctane
 
 > Rejection is a universal reminder that certain anticipated experiences won't fulfill desires.
@@ -1572,9 +1573,9 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > - being a martyr/scapegoat for others' unresolved traumas
 > - giving energy to others out of a sense of duty/guilt
 > - addiction to being a victim
-> - codependence
+> - codependence.
 
-> people will paint you with the colors they have
+> people will paint you with the colors they have.
 > — @jia_seed
 
 > You should be envious of someone who is living a life that is more exciting than yours and represents the values that are important to you.  If you are not envious then you don't care enough to do it yourself.
@@ -1625,20 +1626,20 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > Do not waste your precious time trying to fix someone else. What is truly yours will come to you in an effortless, natural, easy way. The most valuable things are often the cheapest: water, air, the sun, and so on.
 > — @alphaman_111
 
-> No amount of sex or kisses can replace the absolution of an honest embrace from someone who genuinely cares for you. A hug is perhaps the most profound and innocent expression of care we have for one another, creature to creature
+> No amount of sex or kisses can replace the absolution of an honest embrace from someone who genuinely cares for you. A hug is perhaps the most profound and innocent expression of care we have for one another, creature to creature.
 > — @graveair
 
 > The key to holding frame is to simply not judge yourself, even if you perceive that people are judging you. They will yield to your reality and this will unarmour them… they will likely apologize for judging, or joke alongside you, realizing it is safe to finally release the parts of themselves they have judged. A form of true love.
 > — @anomalie_blue
 
-> Once when I was young I was at a dive bar joking around with some women, and after I had finished this older  Mexican guy comes up at taps me on the shoulder. 
-> 
-> He’s like :” Ayy Amigo, you shouldn’t ever Joo dat” 
-> 
-> “what are you talking about it ?” I said. 
-> 
-> With a thick Mexican accent He said:  “da Joking amigo, don’t Joke with women. They never forget, and they don’t understand jokes. They think is real, and they will bring dat shit up later.” 
-> 
+> Once when I was young I was at a dive bar joking around with some women, and after I had finished this older  Mexican guy comes up at taps me on the shoulder.
+>
+> He’s like :” Ayy Amigo, you shouldn’t ever Joo dat”
+>
+> “what are you talking about it?” I said.
+>
+> With a thick Mexican accent He said:  “da Joking amigo, don’t Joke with women. They never forget, and they don’t understand jokes. They think is real, and they will bring dat shit up later.”
+>
 > I kinda laughed it off, but now that I’m old that Mexican dude was actually cooking and I wish I listened to him.
 > — @123skely
 
@@ -1790,11 +1791,11 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 > People most taken advantage of are out there thinking they’re taking advantage of.
 > — @MrE_mssg
 
-> If you’re someone with a lot to offer others, you have to think VERY INTENTIONALLY about *who needs what you’re offering* because that’s the kind of person who will rapidly fill up your life 
-> 
-> Maybe you’re smart and sexy and honest and patient and kind. If you lead with the patience (aka offer it conspicuously to people) the people most incentivized to be around you will be those who have a hard time getting patience. If you lead with your sex appeal you incentivize for people who are lustful. If you lead with your ideas you incentivize people who most need intellectual connection. 
-> 
-> Everyone *wants* everything but what you offer most readily fills your life with those who need it. Reveal your gifts wisely
+> If you’re someone with a lot to offer others, you have to think VERY INTENTIONALLY about *who needs what you’re offering* because that’s the kind of person who will rapidly fill up your life
+>
+> Maybe you’re smart and sexy and honest and patient and kind. If you lead with the patience (aka offer it conspicuously to people) the people most incentivized to be around you will be those who have a hard time getting patience. If you lead with your sex appeal you incentivize for people who are lustful. If you lead with your ideas you incentivize people who most need intellectual connection.
+>
+> Everyone *wants* everything but what you offer most readily fills your life with those who need it. Reveal your gifts wisely.
 > — @divya_venn
 
 > You do not have to carry negative energy in your own field in order to transmute it, you can send it directly back to Source.
@@ -1813,7 +1814,7 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 
 > I don’t talk to people who say things like “what if you’re not successful, what if you fail”. People who walk around with that question in their minds are already losers and their failure is contagious.
 
-> Don't judge a book by its cover might be the worst generalized advice ever told
+> Don't judge a book by its cover might be the worst generalized advice ever told.
 > — @simulaxion
 
 > No advice from the defeated person. Ever.
@@ -1896,7 +1897,7 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 
 > I hate when I’m mad and people try to calm me down or make me choose peace. Anger inspired my most successful moments. Let me be mad.
 
-> I think this is super relevant and explains a lot of the “side effects” people experience with psychedelics and mindfulness: when you increase awareness too fast without increasing equanimity you become overly sensitive and extremely disoriented. When you increase equanimity without increasing awareness it’s like being a stoner who’s perpetually chill but has no desire to actively engage with the world around them. People who are high in both tend to be an amazing mix of non-neurotic yet truly motivated by what matters to them
+> I think this is super relevant and explains a lot of the “side effects” people experience with psychedelics and mindfulness: when you increase awareness too fast without increasing equanimity you become overly sensitive and extremely disoriented. When you increase equanimity without increasing awareness it’s like being a stoner who’s perpetually chill but has no desire to actively engage with the world around them. People who are high in both tend to be an amazing mix of non-neurotic yet truly motivated by what matters to them.
 > — @noampomsky
 
 > If you don't acknowledge negative feelings, they won't have any effect on you.
@@ -2127,20 +2128,20 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > — @Maryamhasnaa
 
 > No static electricity in the hair is a sign of a nearly barren soul
-> 
+>
 > When in small towns you notice many of these barren people I call "hollow humans" or "porcelain people"
-> 
+>
 > All wearing a personality they stole from a TV show.
-> 
+>
 > Almost all of these people aren't just balding
-> 
+>
 > But their hairs thin and have little to no electrical charge.
-> 
+>
 > You could rub a balloon on their head and it'd only make a mess
-> 
+>
 > Hair indistinguishable from a thatch roof.
-> 
-> No electricity, no authenticity
+>
+> No electricity, no authenticity.
 > — @Tanimal
 
 > There has been 2 women i've met in my life that i'd consider were in their "divine feminine". There are many women that *claim* they are in their divine feminine - but it is astronomically rare. It is essentially when they lead with their queen energy but keep their girlish playfulness alive. It is a very calm, capable, nourishing & competent energy - but it *stays* perfectly feminine & allows you to naturally operate as a man. It doesn't PULL you away, or nag you, or make you feel like you have to avoid it or pour energy into it so it doesn't emotionally explode on it's own. It's very soft & self-contained, yet still firm & effective. it sort of just *there*, and you are fully free to 'leave it if you'd like' (not the person, but the energy), and when you come back to it, it is naturally receptive. it replenishes on its own. And this energy inspires genuine & natural leadership within you. You can quite literally *feel* the inspiration get sparked, as well as the strength get added. It feels like you can take more hits, and be okay, knowing you'll have additional replenishment & understanding if need be. The way your body interprets it as a man is essentially a subconscious/energetic "wow - i need to reciprocate the favor", and it sort of imbues your steps with a newfound electricity, and transforms regular 'ambition' (which is usually of the mind) into a god-infused typed of duty, but it's a duty you look forward to pouring yourself into. The prize is 'real', and the foundation is 'real'. It's a power-up in a real a way. You could even say it's 'divinely designed'.
@@ -2148,21 +2149,21 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > But again - this is astronomically rare. you will usually run into feminine women who are too chaotic / needy / clingy (and they drain you or don't *give* anything in return spiritually), and the man thinks "ah, she's not really worth the effort", or you will run into women who have disowned a large part of their feminine in either circumstantial survival mode (failed father) or the pursuit of competence. These women can do things, but in a sharp/jagged way - and have trouble relaxing into their feminine - even with a fully competent / masculine man. The man thinks "she's still holding up walls after i've displayed the natural key, this isn't worth it". The "natural way" doesn't unfold with all other types of women due to different reasons, the way it does with the woman in her 'divine feminine'. But you as a man also have to be in your 'divine masculine' for this to work. If you're not, she will basically son you on accident - as her energy will just son your energy. But if you're both there - it creates a wild push/pull exchange of spiritual energy - and each party gets the nourishment they need. Usually very seamless, ton of fun, able to do a bunch of shit - whereas all other pairings will have trouble doing outcome-based things together
 > — @retirementkeys
 
-> Fear makes you stupid
+> Fear makes you stupid.
 > — @lichthauch
 
-> Breaking promises to yourself is the most insidious form of self-mutilation in existence. you just wake up with swollen joints or your skin starts rejecting sunlight or your hair comes out in clumps in the shower and some dumb doctor tells you its genetics or its stress. but honestly, its the accumulated rot of a thousand broken oaths fermenting inside your gut lining
+> Breaking promises to yourself is the most insidious form of self-mutilation in existence. you just wake up with swollen joints or your skin starts rejecting sunlight or your hair comes out in clumps in the shower and some dumb doctor tells you it's genetics or it's stress. but honestly, it's the accumulated rot of a thousand broken oaths fermenting inside your gut lining.
 > — @lichthauch
 
 > tantum
 > In the ancient Greek city Of Miletus, there was a high-profile suicide by a young woman. And
 > (because depression and suicide are psychogenic illnesses) some other Milesian maiden saw the attention she got, and committed suicide herself, and pretty soon they had a suicide epidemic.
 > How did it end, you ask? Well, they tried everything, but the young women affected by this epidemic Of madness seemed immune to reason. And then the leader of the city decreed that the next suicide would be stripped naked and left hanging in the city center to be leered at, and then rot.
-> "How humiliating!" , you say. "HOW cruel! How inhuman!" But that was the last suicide in Miletus.
+> "How humiliating!", you say. "HOW cruel! How inhuman!" But that was the last suicide in Miletus.
 > 0 81 8.8K
 
-> By far the most brutal Occams Razor of wealth is central nervous system stability, this is one of those honest signals that cannot be faked, impossible across time. There is immense power in becoming LIGHTER as you become more capable. Less tension in the face, less desperation in the voice, less attachment to individual outcomes, more fluidity between environments, more calmness when plans change, more charm when circumstances become difficult. Smile easily. Move slowly. Listen deeply. Make people laugh. Let silence breathe. Do not turn every disagreement into war or every ambition into visible strain. The highest competence eventually begins to look like ease because the machinery underneath it has become so sophisticated and battle tested through reps. Heavy men make every room feel like work. The rare spiritual outlier man carries enormous responsibility while somehow making life around him feel more beautiful. This is the king touch or the midas touch with full contextual flow, the fact this account is free is generational. Calm nervous system, light touch, smooth voice, simple smile, flow heavy movement light
-> 
+> By far the most brutal Occam's Razor of wealth is central nervous system stability, this is one of those honest signals that cannot be faked, impossible across time. There is immense power in becoming LIGHTER as you become more capable. Less tension in the face, less desperation in the voice, less attachment to individual outcomes, more fluidity between environments, more calmness when plans change, more charm when circumstances become difficult. Smile easily. Move slowly. Listen deeply. Make people laugh. Let silence breathe. Do not turn every disagreement into war or every ambition into visible strain. The highest competence eventually begins to look like ease because the machinery underneath it has become so sophisticated and battle tested through reps. Heavy men make every room feel like work. The rare spiritual outlier man carries enormous responsibility while somehow making life around him feel more beautiful. This is the king touch or the midas touch with full contextual flow, the fact this account is free is generational. Calm nervous system, light touch, smooth voice, simple smile, flow heavy movement light
+>
 > https://x.com/AvantPrince_/status/2067680014200410375
 > — @AvantPrince_
 
@@ -2217,7 +2218,7 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 > -Spend money to keep your time free
 > -Avoid paying full cost for anything
 > -Borrow money to make money or don’t borrow money at all
-> -Learn skills that earn money
+> -Learn skills that earn money.
 
 > Your best job will be one that you were unqualified for because it stretches you. In fact only apply to jobs you are unqualified for.
 > — Kevin Kelly, *Excellent Advice for Living*
@@ -2236,13 +2237,13 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 
 > Hire talented people, the chance of you fixing a loser with a sob story is highly unlikely.
 
-> If one potential client can't afford your service, the next one will, the world is full of abundance
+> If one potential client can't afford your service, the next one will, the world is full of abundance.
 
 > Scarcity mindset will cage your income potential.
 
-> Copy people that have made it, your ideas probably suck, just copy what works
+> Copy people that have made it, your ideas probably suck, just copy what works.
 
-> The bar is 30 feet lower than what you think it is, the bar is way lower in reality than in your mind
+> The bar is 30 feet lower than what you think it is, the bar is way lower in reality than in your mind.
 
 > Most people suck at what they do and still get paid.
 
@@ -2254,7 +2255,7 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 
 > Cash flow over everything.
 
-> Ignore criticisms over your business niche, no matter what niche it is people will mock it somehow, just follow the money
+> Ignore criticisms over your business niche, no matter what niche it is people will mock it somehow, just follow the money.
 
 > I recommend saving money before people know you're making money.
 
@@ -2266,35 +2267,35 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 > — @incentivising
 
 > every great technology starts out noble and ends up looking "sinful" at the consumer layer
-> 
+>
 > we built the internet and most of it went to brainrot
-> 
+>
 > we built superintelligence and most of it went to making ai slop
-> 
+>
 > we built high-frequency blockchains and most of it went to trading memecoins
-> 
+>
 > are consumer builders inherently more evil? or are they just the ones building the end products people actually want?
-> 
+>
 > i see a lot of infrastructure builders, safely one or two layers removed from the end consumer, frown on these kinds of use cases, but at the end of the day the revenue to fund deep research and innovation needs to come from somewhere
-> 
+>
 > the closer you are to the real average consumer, the closer you get to a reflection of what humans actually want. not what they say they want, or what smart people think they should want
-> 
+>
 > and sometimes humanity’s reflection just isn’t that flattering
-> 
-> that doesn’t make the mirror evil
+>
+> that doesn’t make the mirror evil.
 > — @j0hnwang
 
 > Eye-watering gains are drawn from the same distribution as wipeouts
-> 
-> Once you learn this fundamental truth, you win a lot more than you lose
+>
+> Once you learn this fundamental truth, you win a lot more than you lose.
 > — @iamgingertrash
 
 > Reality:
-> 
-> If someone steals your idea it means the market wanted more and you didnt supply it.
-> 
+>
+> If someone steals your idea, it means the market wanted more and you didn't supply it.
+>
 > The only way to beat copy cats is do so much volume so fast you’ve squeezed every drop out the idea before they even got a chance.
-> 
+>
 > Relying on lawyers is always too little too late.
 > — @AlexHormozi
 
@@ -2302,37 +2303,37 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 > — @Maryamhasnaa
 
 > no crying in the casino
-> 
+>
 > if you are an entrepreneur that is grinding expect to win massively. then lose it all. hit rock bottom. and get it all back
-> 
+>
 > don't be naive enough to think everything is going to work from the jump
-> 
+>
 > you will get scammed. backdoored by partners. hit roadblocks and go 0 to 100, 100 to 0 and so on
-> 
+>
 > this is the price you pay for the freedom to move and think freely
-> 
+>
 > if you thought this was some linear path to success you chose the wrong life
-> 
+>
 > and remember… the ones still standing after all of it are the ones who were never playing for the exit
-> 
-> they do this shit for LOVE of the game
+>
+> they do this shit for LOVE of the game.
 > — @justineliaa
 
 > I went 30k in personal CC debt over the last 2 years in pursuit of "making it" in a high risk industry while happily paying the $500 - 1k interest monthly payments all bc I knew one good ad or one good month will rinse all of that out
-> 
+>
 > Never was frugal, travelled better than some rich phags, took care of my girl and my ppl, never skimped out, lived better than 90% of nerds on here, and always knew Id make it happen one way or another, was just a matter of time
-> 
+>
 > Also ran the # s - what's an avg of $6k a year in interest payments to be able to spend freely with a CC? Multiply that for 2 years - $12k? Okay and? You could make that in a month, week, even a day once you have motion - and I knew this when I was making maybe $2 - 4k/mo
-> 
+>
 > Zero limiting beliefs or scarcity mindset
-> 
-> Thats why I cant relate to brokes and poors who laments about x y or z, you were meant to be cattle
-> 
-> Meant to be a cog, doesnt concern me - and no this isnt DR copy to sell you bizopp course - straight iced coffee flow letting you know shts very obviously possible and it almost 100% a mindset issue my nigga
-> 
-> Toughen up, grab your nuts, get a beautiful girl BEFORE YOU TRY TO MAKE IT (assuming youre broke rn), and relentlessly pursue whatever goals you have (do not place physical objects as your primary goal please... all these guys are fucking tasteless lames I promise you your fav ex-bh ecom guru twitter homo is not your ideal role model)
-> 
-> Dont forget to live every week, maybe even day if you can - lastly dont be entitled. Have some self awareness ffs, youre all heathens in this category. Father shouldve raised you better but now its on you, you got this dawg
+>
+> Thats why I can't relate to brokes and poors who laments about x y or z, you were meant to be cattle
+>
+> Meant to be a cog, doesn't concern me - and no this isn't DR copy to sell you bizopp course - straight iced coffee flow letting you know shts very obviously possible and it almost 100% a mindset issue my nigga
+>
+> Toughen up, grab your nuts, get a beautiful girl BEFORE YOU TRY TO MAKE IT (assuming you're broke rn), and relentlessly pursue whatever goals you have (do not place physical objects as your primary goal please... all these guys are fucking tasteless lames I promise you your fav ex-bh ecom guru twitter homo is not your ideal role model)
+>
+> Dont forget to live every week, maybe even day if you can - lastly don't be entitled. Have some self awareness ffs, you're all heathens in this category. Father should've raised you better but now it's on you, you got this dawg
 > — @rawknuckle
 
 > this is how i trade. what i do is scalping attention. that is my job. believing in smth is not my job. mapping out possibilities of exchange listings, crime team twaps or industry leaders liking tweets is not my job.
@@ -2357,7 +2358,7 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 > Don't show off.
 > — @samuraix
 
-> Getting married bc u very much want to have sex with the man or are enjoying current great sex with the man is an excellent reason to get married, perhaps the best. Trust me. You’re gonna be together a long time. Money’s easy to make, starting a fire with the wrong fuel is hard
+> Getting married bc u very much want to have sex with the man or are enjoying current great sex with the man is an excellent reason to get married, perhaps the best. Trust me. You’re gonna be together a long time. Money’s easy to make, starting a fire with the wrong fuel is hard.
 > — @frailskeleton
 
 > the love we sacrificed for money will be desperately clawed back when money changes.
@@ -2446,7 +2447,7 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > - forgive yourself
 > - release judgements
 > - honor others' paths.
-> - laugh
+> - laugh.
 
 > Sometimes it’s hard to celebrate when good things happen because we are used to everything being so difficult. Try to focus on your progress anyway.
 > Don’t dismiss change when it finally shows up. Embrace the new flow. Reclaim your vitality. Grow brighter wings.
@@ -2486,7 +2487,7 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 
 > You may think, "I did this work already, I shouldn't have to be here, doing it again," which makes it harder + more painful than it has to be. Some lessons are learned over + again w more depth + complexity each time. Maybe the work is 2 make peace w doing the work.
 
-> The father of seven has not finished a thought in four years. he is just moving. feeding. driving. wiping. his brain is soup and his back is finished and he has no opinions about civilization he is too tired for opinions. and meanwhile civilization is growing out of him like he is dirt and he doesn't even notice because there is milk on the floor again. the childfree man has read eleven books this year about the decline of the west and he is the decline and the books are the evidence and he will understand this at fifty-eight in a room that is very clean and very quiet
+> The father of seven has not finished a thought in four years. he is just moving. feeding. driving. wiping. his brain is soup and his back is finished and he has no opinions about civilization he is too tired for opinions. and meanwhile civilization is growing out of him like he is dirt and he doesn't even notice because there is milk on the floor again. the childfree man has read eleven books this year about the decline of the west and he is the decline and the books are the evidence and he will understand this at fifty-eight in a room that is very clean and very quiet.
 > — @lichthauch
 
 > Enjoying life is not free. Its price is the constant swallowing of human weakness and the various sufferings that life presents.
@@ -2496,7 +2497,7 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > When each day is the same as the next, it's because people fail to recognize the good things that happen in their lives every day that the sun rises. There's always a silver lining, if you look for it.
 > — Paulo Coelho, *The Alchemist*
 
-> every enlargement of life makes you partially incompetent again, revealing exactly where you have room to grow
+> every enlargement of life makes you partially incompetent again, revealing exactly where you have room to grow.
 > — @augustusdelano
 
 > I hope you get what you want, but you know, you have all these plans for life and then it just kind of beats you down and you learn to enjoy survival.
@@ -2556,7 +2557,7 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > It's why I encourage everyone to think of balance in years, not days. A good life can look horribly unbalanced on some random Tuesday and still be very balanced over 10 years.
 > — @aporia9n
 
-> The task of man is to labor with joy, love with sincerity, give with pleasure, see with reverence, listen with affection, speak with prudence, and pray with every breath
+> The task of man is to labor with joy, love with sincerity, give with pleasure, see with reverence, listen with affection, speak with prudence, and pray with every breath.
 > — @augustusdelano
 
 > Money is infinite and you can make it all back. Embarrassment is temporary and everyone will forget in a week. There's literally nothing to worry about.
@@ -2568,7 +2569,7 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > The Reverse Gratitude Journal: The most life-changing daily habit you have never heard of.
 > — @PromptLLM
 
-> We can lowkey start again tomorrow btw
+> We can lowkey start again tomorrow btw.
 > — @34rths
 
 > Treat days with good sleep score like gold.
@@ -2579,7 +2580,7 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > Ah, who will save me from existing? It's neither death nor life that I want.
 > — Fernando Pessoa, *The Book of Disquiet*
 
-> people will let small problems persist in their life for forever not realizing that 5 minutes a day for a lifetime (60yrs) costs you 1825 hours. do you want 1825 hours of toil or annoyance in your life? can you solve the problem in less than 1825 hours? then you fucking should
+> people will let small problems persist in their life for forever not realizing that 5 minutes a day for a lifetime (60yrs) costs you 1825 hours. do you want 1825 hours of toil or annoyance in your life? can you solve the problem in less than 1825 hours? then you fucking should.
 > — @satellitedown
 
 > I used to be very against having a routine. I thought routine and discipline was the death of Life. I wanted to wake up every day and do whatever I felt like doing, "going with the flow," and acting on the whims of my desires. I never made plans. I refused calendars. I already have a chaotic and layabout disposition with low motivation, and this kind of lifestyle aggravated that more. I was lazy, unhappy, and depressed, despite affording myself this "freedom" of choice and time.
@@ -2594,7 +2595,7 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > xykrhgr on X: "everything exists for your benefit" / X
 > — @xykrhgr
 
-> the underworld is best romanticized from a distance
+> the underworld is best romanticized from a distance.
 > — @networkfaggot
 
 

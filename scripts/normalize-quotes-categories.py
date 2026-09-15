@@ -6,6 +6,8 @@ import argparse
 import re
 from pathlib import Path
 
+from quote_editorial import apply_editorial
+
 from quote_categories import LEGACY_TO_CANONICAL, SECTION_DESCRIPTIONS, categorize
 
 
@@ -51,13 +53,15 @@ def rebuild_index(body: str) -> str:
     )
     return re.sub(
         r"(?ms)^## Index\r?\n.*?(?=^## (?!Index\b))",
-        index,
+        index + "\n",
         body,
         count=1,
     )
 
 
 def normalize(text: str) -> tuple[str, bool]:
+    original = text
+    text = apply_editorial(text)
     frontmatter, body = strip_frontmatter(text)
     sections = list(SECTION_RE.finditer(body))
     if not sections:
@@ -79,7 +83,8 @@ def normalize(text: str) -> tuple[str, bool]:
             removals.add(name)
 
     if not removals:
-        return text, False
+        normalized = frontmatter + rebuild_index(body)
+        return normalized, normalized != original
 
     rebuilt: list[str] = []
     emitted: set[str] = set()
@@ -104,7 +109,7 @@ def normalize(text: str) -> tuple[str, bool]:
     normalized_body = "## Index\n\n" + "\n\n".join(rebuilt) + "\n"
     normalized_body = rebuild_index(normalized_body)
     normalized = frontmatter + normalized_body
-    return normalized, normalized != text
+    return normalized, normalized != original
 
 
 def main() -> int:
@@ -119,7 +124,7 @@ def main() -> int:
     normalized, changed = normalize(original)
     if changed and not args.check:
         args.source.write_text(normalized, encoding="utf-8", newline="\n")
-    print(f"legacy categories: {'merged' if changed else 'none found'}")
+    print(f"quote normalization: {'updated' if changed else 'already current'}")
     return 1 if changed and args.check else 0
 
 
