@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { ArrowDownRight, ArrowUpRight, BookOpen, ChevronUp, Grid2X2, Network, Quote } from 'lucide-react';
+import { ArrowDownRight, ArrowUpRight, BookOpen, ChevronUp, FileText, Grid2X2, Network, Quote } from 'lucide-react';
 import { directoryEntries } from '../data/directory';
 import { LOGO_MAP } from '../data/navLogos';
 import malLogo from '../assets/secondary-nodes/anilist-mal-logo-sidecard.png';
@@ -123,6 +123,7 @@ export default function Blackboard() {
         <div className="bb-top-tabs" aria-label="Library links">
           <a href="/books"><BookOpen aria-hidden="true" /><span>Books</span></a>
           <a href="/quotes"><Quote aria-hidden="true" /><span>Quotes</span></a>
+          <a href="/blog"><FileText aria-hidden="true" /><span>Blog</span></a>
         </div>
       </div>
     </header>

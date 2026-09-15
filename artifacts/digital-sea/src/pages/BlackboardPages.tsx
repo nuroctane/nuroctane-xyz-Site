@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from 'react';
-import { ArrowLeft, BookOpen, Quote, Search } from 'lucide-react';
+import { BookOpen, FileText, Quote, Search } from 'lucide-react';
 import { useLocation } from 'wouter';
 import booksRaw from '../content/books.md?raw';
 import quotesRaw from '../content/quotes.md?raw';
 import bookMeta from '../data/bookMeta.json';
 import { trackEvent } from '../lib/analytics';
+import { useStandaloneScroll } from '../hooks/useStandaloneScroll';
+import { blogPosts } from '../data/blogPosts';
 import './blackboard-pages.css';
 
 type Book = { title: string; author: string; read: boolean; note?: string; visitor?: boolean; coverUrl?: string; description?: string; year?: string; source?: string; sourceUrl?: string; dateAdded?: string; sessionId?: string };
@@ -34,8 +36,9 @@ function parseQuotes(raw: string) {
   flush(); return sections;
 }
 
-function LibraryChrome({ active, children }: { active: 'books' | 'quotes'; children: React.ReactNode }) {
-  return <main className="bb-library"><header className="bb-library-header"><a className="bb-library-home" href="/" aria-label="Back to Blackboard"><ArrowLeft aria-hidden="true" /></a><nav className="bb-library-tabs" aria-label="Library navigation"><a className={active === 'books' ? 'is-active' : ''} href="/books"><BookOpen aria-hidden="true" /> Books</a><a className={active === 'quotes' ? 'is-active' : ''} href="/quotes"><Quote aria-hidden="true" /> Quotes</a></nav></header><section className="bb-library-content">{children}</section></main>;
+function LibraryChrome({ active, children }: { active: 'books' | 'quotes' | 'blog'; children: React.ReactNode }) {
+  useStandaloneScroll();
+  return <main className="bb-library"><header className="bb-library-header"><a className="bb-library-home" href="/" aria-label="Back to Blackboard"><img src="/assets/nodes/site-logo.png" alt="" width="42" height="48" /></a><nav className="bb-library-tabs" aria-label="Library navigation"><a className={active === 'books' ? 'is-active' : ''} href="/books"><BookOpen aria-hidden="true" /> Books</a><a className={active === 'quotes' ? 'is-active' : ''} href="/quotes"><Quote aria-hidden="true" /> Quotes</a><a className={active === 'blog' ? 'is-active' : ''} href="/blog"><FileText aria-hidden="true" /> Blog</a></nav></header><section className="bb-library-content">{children}</section></main>;
 }
 
 function BookModal({ book, onClose, onToggle }: { book: Book; onClose: () => void; onToggle?: () => void }) {
@@ -58,4 +61,8 @@ export function BlackboardQuotesPage() {
   const [query, setQuery] = useState(''); const [activeCategory, setActiveCategory] = useState('All'); const sections = useMemo(() => parseQuotes(quotesRaw), []); const categories = ['All', ...sections.map(section => section.name)]; const normalized = query.toLowerCase().trim();
   const visible = sections.filter(section => activeCategory === 'All' || section.name === activeCategory).map(section => ({ ...section, quotes: section.quotes.filter(quote => !normalized || `${quote.text} ${quote.source}`.toLowerCase().includes(normalized)) })).filter(section => section.quotes.length);
   return <LibraryChrome active="quotes"><div className="bb-library-intro"><p className="bb-kicker">Collected notes</p><h1>Quotes</h1></div><div className="bb-category-tabs" role="tablist" aria-label="Quote categories">{categories.map(category => <button key={category} className={activeCategory === category ? 'is-active' : ''} onClick={() => setActiveCategory(category)} role="tab" aria-selected={activeCategory === category}>{category}</button>)}</div><label className="bb-search"><Search aria-hidden="true" /><span className="sr-only">Search quotes</span><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Search quote or source" /></label><div className="bb-quote-grid">{visible.map(section => <section className="bb-quote-section" key={section.name}><div className="bb-shelf-heading"><h2>{section.name}</h2><span>{String(section.quotes.length).padStart(2, '0')}</span></div>{section.quotes.map((quote, index) => <blockquote key={`${section.name}-${index}`}><p>{quote.text}</p>{quote.source && <cite>{quote.source}</cite>}</blockquote>)}</section>)}</div></LibraryChrome>;
+}
+
+export function BlackboardBlogPage() {
+  return <LibraryChrome active="blog"><div className="bb-library-intro"><p className="bb-kicker">From the blog</p><h1>Blog</h1></div><div className="bb-blog-grid">{blogPosts.map((post, index) => <article className="bb-blog-card" key={post.id}><div className="bb-blog-card-heading"><span>{String(index + 1).padStart(2, '0')}</span></div><h2>{post.title}</h2><div className="bb-blog-copy">{post.paragraphs.map((paragraph, paragraphIndex) => <p key={`${post.id}-${paragraphIndex}`}>{paragraph}</p>)}</div></article>)}</div></LibraryChrome>;
 }

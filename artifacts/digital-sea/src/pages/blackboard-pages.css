@@ -1,7 +1,8 @@
 .bb-library { min-height: 100dvh; background: #050505; color: #f2f2f2; color-scheme: dark; font: 400 0.8125rem/1.55 'JetBrains Mono', ui-monospace, monospace; }
 .bb-library-header { position: sticky; top: 0; z-index: 2; display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; gap: 1rem; min-height: 72px; padding: 12px clamp(1rem, 4vw, 4rem); background: rgb(5 5 5 / 78%); border-bottom: 1px solid rgb(255 255 255 / 10%); backdrop-filter: blur(18px) saturate(120%); }
 .bb-library-home, .bb-library-sea { display: inline-flex; align-items: center; justify-self: start; min-height: 44px; padding: 10px 12px; border: 1px solid transparent; border-radius: 8px; color: #a0a0a0; background: transparent; font: inherit; cursor: pointer; }
-.bb-library-home svg { width: 17px; height: 17px; }
+.bb-library-home { width: 58px; height: 58px; padding: 5px; }
+.bb-library-home img { width: 42px; height: 48px; object-fit: contain; }
 .bb-library-sea { justify-self: end; }
 .bb-library-tabs { display: flex; justify-content: center; gap: 8px; }
 .bb-library-tabs a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 14px; border: 1px solid transparent; border-radius: 8px; color: #a0a0a0; text-decoration: none; }
@@ -27,7 +28,9 @@
 .bb-recommend-results button:hover { background: rgb(255 255 255 / 8%); }
 .bb-recommend-results strong, .bb-recommend-results small { display: block; }
 .bb-recommend-results small { margin-top: 3px; color: #999; }
-.bb-shelf-grid, .bb-quote-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.bb-shelf-grid { columns: 280px 3; column-gap: 1rem; column-fill: balance; }
+.bb-shelf-grid .bb-shelf { break-inside: avoid; margin: 0 0 1rem; }
+.bb-quote-grid { display: grid; grid-template-columns: 1fr; gap: 1rem; }
 .bb-shelf, .bb-quote-section { padding: 1.25rem; border: 1px solid rgb(255 255 255 / 11%); border-radius: 12px; background: linear-gradient(145deg, rgb(255 255 255 / 5%), transparent 65%), rgb(20 20 20 / 82%); box-shadow: inset 0 1px 0 rgb(255 255 255 / 8%); }
 .bb-shelf-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; padding-bottom: 1rem; border-bottom: 1px solid rgb(255 255 255 / 10%); }
 .bb-shelf-heading h2 { margin: 0; font-size: 0.8rem; font-weight: 500; }
@@ -48,11 +51,16 @@
 .bb-api-note { margin: -1rem 0 2rem; color: #888; font-size: .75rem; }
 .bb-library-backlink { margin-top: 2rem; padding: 10px 0; border: 0; color: #999; background: transparent; font: inherit; cursor: pointer; }
 .bb-library-backlink:hover { color: #f2f2f2; }
-.bb-quote-grid { grid-template-columns: 1fr; }
 .bb-quote-section blockquote { margin: 0; padding: 1.25rem 0; border-bottom: 1px solid rgb(255 255 255 / 8%); }
 .bb-quote-section blockquote:last-child { border-bottom: 0; padding-bottom: 0; }
 .bb-quote-section blockquote p { margin: 0; max-width: 72ch; font-family: Georgia, serif; font-size: clamp(1.05rem, 2vw, 1.35rem); line-height: 1.4; }
 .bb-quote-section cite { display: block; margin-top: 0.75rem; color: #929292; font-style: normal; font-size: 0.75rem; }
+.bb-blog-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.bb-blog-card { padding: 1.25rem; border: 1px solid rgb(255 255 255 / 11%); border-radius: 12px; background: linear-gradient(145deg, rgb(255 255 255 / 5%), transparent 65%), rgb(20 20 20 / 82%); box-shadow: inset 0 1px 0 rgb(255 255 255 / 8%); }
+.bb-blog-card-heading { display: flex; justify-content: space-between; padding-bottom: .9rem; border-bottom: 1px solid rgb(255 255 255 / 10%); color: #777; font-size: .6875rem; letter-spacing: .08em; text-transform: uppercase; }
+.bb-blog-card h2 { margin: 1.1rem 0 1.2rem; color: #f2f2f2; font-size: 1.05rem; font-weight: 500; line-height: 1.35; }
+.bb-blog-copy { display: grid; gap: 1rem; }
+.bb-blog-copy p { margin: 0; color: #b3b3b3; font-family: Georgia, serif; font-size: 1rem; line-height: 1.62; }
 .bb-library :is(a, button, input):focus-visible { outline: 2px solid #f2f2f2; outline-offset: 3px; }
 .bb-modal-overlay { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; padding: 1rem; background: rgb(0 0 0 / 76%); backdrop-filter: blur(12px); }
 .bb-book-modal { position: relative; display: grid; grid-template-columns: minmax(110px, 180px) 1fr; gap: 1.5rem; width: min(100%, 680px); max-height: min(80dvh, 680px); overflow: auto; padding: 1.5rem; border: 1px solid rgb(255 255 255 / 18%); border-radius: 14px; background: #161616; box-shadow: inset 0 1px 0 rgb(255 255 255 / 10%), 0 24px 80px rgb(0 0 0 / 45%); }
@@ -66,5 +74,5 @@
 .bb-modal-synopsis { color: #d0d0d0; font-family: Georgia, serif; line-height: 1.5; }
 .bb-modal-note { padding: .75rem; border-left: 2px solid #777; background: rgb(255 255 255 / 4%); }
 .bb-modal-action { min-height: 40px; padding: 8px 12px; border: 1px solid rgb(255 255 255 / 18%); border-radius: 7px; color: #eee; background: transparent; font: inherit; cursor: pointer; }
-@media (max-width: 680px) { .bb-library-header { grid-template-columns: auto 1fr; } .bb-library-tabs { grid-column: 1 / -1; grid-row: 2; } .bb-library-home { grid-column: 1; grid-row: 1; } .bb-library-content { width: min(100% - 1.5rem, 600px); padding-top: 3rem; } .bb-shelf-grid { grid-template-columns: 1fr; } .bb-book-modal { grid-template-columns: 88px 1fr; gap: 1rem; padding: 1rem; } .bb-modal-cover { min-height: 130px; } }
+@media (max-width: 680px) { .bb-library-header { grid-template-columns: auto 1fr; } .bb-library-tabs { grid-column: 1 / -1; grid-row: 2; } .bb-library-home { grid-column: 1; grid-row: 1; } .bb-library-content { width: min(100% - 1.5rem, 600px); padding-top: 3rem; } .bb-book-modal { grid-template-columns: 88px 1fr; gap: 1rem; padding: 1rem; } .bb-modal-cover { min-height: 130px; } }
 @media (prefers-reduced-transparency: reduce) { .bb-library-header { background: #050505; backdrop-filter: none; } }

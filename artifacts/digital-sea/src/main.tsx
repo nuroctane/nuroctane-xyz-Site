@@ -18,6 +18,7 @@ const ObservatoryPage = lazy(() => import('./pages/ObservatoryPage'));
 const CurriculumPage = lazy(() => import('./pages/CurriculumPage'));
 const BlackboardBooksPage = lazy(() => import('./pages/BlackboardPages').then(module => ({ default: module.BlackboardBooksPage })));
 const BlackboardQuotesPage = lazy(() => import('./pages/BlackboardPages').then(module => ({ default: module.BlackboardQuotesPage })));
+const BlackboardBlogPage = lazy(() => import('./pages/BlackboardPages').then(module => ({ default: module.BlackboardBlogPage })));
 // Retain the Digital Sea and its deep links without loading it on the Blackboard.
 const App = lazy(() => import('./App'));
 
@@ -70,6 +71,7 @@ function Root() {
   const fallback = SITE_MODE === 'blackboard' && top !== 'sea' ? <BlackboardFallback /> : <Fallback />;
   if (top === 'quotes') return <Suspense fallback={fallback}>{SITE_MODE === 'blackboard' ? <BlackboardQuotesPage /> : <QuotesPage />}</Suspense>;
   if (top === 'books')  return <Suspense fallback={fallback}>{SITE_MODE === 'blackboard' ? <BlackboardBooksPage /> : <BooksPage />}</Suspense>;
+  if (top === 'blog') return <Suspense fallback={fallback}>{SITE_MODE === 'blackboard' ? <BlackboardBlogPage /> : <App />}</Suspense>;
   if (top === 'resume') return <Suspense fallback={fallback}><ResumePage /></Suspense>;
   if (top === 'modkeys') return <Suspense fallback={fallback}><ModkeysPage /></Suspense>;
   if (top === 'cli') return <Suspense fallback={fallback}><CliPage /></Suspense>;
