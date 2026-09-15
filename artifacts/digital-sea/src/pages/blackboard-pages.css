@@ -62,6 +62,8 @@
 .bb-blog-copy { display: grid; gap: 1rem; }
 .bb-blog-copy p { margin: 0; color: #b3b3b3; font-family: Georgia, serif; font-size: 1rem; line-height: 1.62; }
 .bb-library :is(a, button, input):focus-visible { outline: 2px solid #f2f2f2; outline-offset: 3px; }
+.bb-library .scroll-top-btn { right: max(1rem, env(safe-area-inset-right)); bottom: max(1rem, env(safe-area-inset-bottom)); display: grid; place-items: center; width: 42px; height: 42px; border: 1px solid rgb(255 255 255 / 18%); border-radius: 8px; background: rgb(18 18 18 / 92%); color: #c8c8c8; box-shadow: inset 0 1px 0 rgb(255 255 255 / 8%), 0 10px 30px rgb(0 0 0 / 30%); clip-path: none; }
+.bb-library .scroll-top-btn:hover { border-color: rgb(255 255 255 / 34%); background: rgb(32 32 32 / 96%); color: #fff; }
 .bb-modal-overlay { position: fixed; inset: 0; z-index: 10; display: grid; place-items: center; padding: 1rem; background: rgb(0 0 0 / 76%); backdrop-filter: blur(12px); }
 .bb-book-modal { position: relative; display: grid; grid-template-columns: minmax(110px, 180px) 1fr; gap: 1.5rem; width: min(100%, 680px); max-height: min(80dvh, 680px); overflow: auto; padding: 1.5rem; border: 1px solid rgb(255 255 255 / 18%); border-radius: 14px; background: #161616; box-shadow: inset 0 1px 0 rgb(255 255 255 / 10%), 0 24px 80px rgb(0 0 0 / 45%); }
 .bb-modal-close { position: absolute; top: 10px; right: 12px; border: 0; color: #aaa; background: transparent; font-size: 1.4rem; cursor: pointer; }
