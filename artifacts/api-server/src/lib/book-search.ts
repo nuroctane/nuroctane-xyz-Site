@@ -80,7 +80,7 @@ async function fetchJson(url: URL): Promise<unknown> {
       signal: controller.signal,
     });
     if (!response.ok) throw new Error(`${url.hostname} returned ${response.status}`);
-    return response.json();
+    return await response.json();
   } finally {
     clearTimeout(timeout);
   }
@@ -281,7 +281,7 @@ function canonical(value: string): string {
     .normalize("NFKD")
     .replace(/[\u0300-\u036f]/g, "")
     .toLowerCase()
-    .replace(/[^a-z0-9]+/g, " ")
+    .replace(/[^\p{L}\p{N}]+/gu, " ")
     .trim();
 }
 
@@ -346,7 +346,8 @@ function dedupe(resultsBySource: BookSearchResult[][], query: string): BookSearc
 }
 
 export async function searchBooks(query: string): Promise<BookSearchResponse> {
-  const cacheKey = canonical(query);
+  // Preserve Unicode and query operators; punctuation-stripping conflates distinct searches.
+  const cacheKey = query.normalize("NFKC").toLowerCase().replace(/\s+/g, " ").trim();
   const cached = cache.get(cacheKey);
   if (cached && cached.expiresAt > Date.now()) return cached.response;
 
@@ -368,8 +369,10 @@ export async function searchBooks(query: string): Promise<BookSearchResponse> {
     }
   });
 
+  if (!sources.length) throw new Error("All book catalogs are unavailable");
   const response = { results: dedupe(resultsBySource, query), sources };
   if (cache.size >= SEARCH_CACHE_MAX) cache.delete(cache.keys().next().value as string);
-  cache.set(cacheKey, { response, expiresAt: Date.now() + SEARCH_CACHE_MS });
+  // Partial outages should recover promptly instead of hiding providers for ten minutes.
+  cache.set(cacheKey, { response, expiresAt: Date.now() + (sources.length === providers.length ? SEARCH_CACHE_MS : 30_000) });
   return response;
 }

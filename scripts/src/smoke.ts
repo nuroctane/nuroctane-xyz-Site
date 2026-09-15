@@ -64,10 +64,13 @@ async function smokeBooks(app: App): Promise<void> {
   ok(g.status === 200 && Array.isArray(g.json?.books) && typeof g.json?.overrides === "object",
     "GET /api/visitor-books shape {books[], overrides{}}");
 
-  const submittedBook = { title: "Smoke Title", author: "Smoke Author", dateAdded: "2026-01-01T00:00:00.000Z", sessionId: "smoke-session" };
+  const submittedBook = { title: "Smoke Title", author: "Smoke Author", dateAdded: "2026-01-01T00:00:00.000Z", sessionId: "smoke-session", note: "Worth reading", coverUrl: "https://example.com/cover.jpg", description: "A full catalog description.", year: "1965", source: "Open Library", sourceUrl: "https://openlibrary.org/works/test" };
   const add = await jfetch(app, "/api/visitor-books", { action: "add", book: submittedBook });
   ok(add.status === 200 && add.json?.ok === true && add.json?.book?.title === "Smoke Title", "POST add visitor book");
   const book = add.json.book;
+  for (const field of ["note", "coverUrl", "description", "year", "source", "sourceUrl"] as const) {
+    ok(book[field] === submittedBook[field], `Recommendation preserves ${field}`);
+  }
 
   g = await jfetch(app, "/api/visitor-books");
   ok(g.json.books.some((b: any) => b.title === "Smoke Title"), "added book appears in GET");
@@ -215,6 +218,16 @@ async function smokeMisc(app: App): Promise<void> {
 
   const missingSearch = await jfetch(app, "/api/book-search");
   ok(missingSearch.status === 400, "book search requires a meaningful query");
+
+  const realFetch = globalThis.fetch;
+  try {
+    globalThis.fetch = async () => { throw new Error("Simulated catalog outage"); };
+    const outage = await app.fetch(new Request(BASE + "/api/book-search?q=smoke-outage"), {}, ctx);
+    ok(outage.status === 503 && outage.headers.get("cache-control") === "no-store", "Catalog outage is retryable and never HTTP cached");
+    globalThis.fetch = async () => Response.json({});
+    const recovered = await jfetch(app, "/api/book-search?q=smoke-outage");
+    ok(recovered.status === 200 && recovered.json.sources.length === 6, "Search recovers after outage without stale empty cache");
+  } finally { globalThis.fetch = realFetch; }
 
   /* No cookie → { user: null } rather than a 401. The modkeys page relies on
      this to decide whether to show the sign-in prompt. */

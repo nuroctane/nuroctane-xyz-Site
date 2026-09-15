@@ -136,11 +136,27 @@ Books synchronization is a separate repo-to-vault path in `scripts/sync-books.sh
 Blackboard's `content/books.md` → Obsidian `Books/Book Wishlist.md`.
 The Worker's daily cron only refreshes GitHub contributions; it does not sync quotes.
 
+### Public library discovery
+
+Blackboard's recommendation search uses the same six-catalog `/api/book-search`
+service as Digital Sea. It displays every returned match (up to 20), including
+covers, authors, years and contributing catalogs. Selecting a result opens a
+review dialog; an optional note and all catalog metadata are saved through the
+existing `/api/visitor-books` contract. Manual entries support optional 600 × 900
+JPEG, PNG or WebP covers up to 300 KB.
+
+Search requests cancel when the query changes. Catalog outages expose retry
+controls; partial results stay usable and expire quickly. Save failures retain
+the draft rather than displaying a recommendation that was never persisted.
+The frontend lives in `artifacts/blackboard/src/components/BookRecommendationSearch.tsx`;
+the shared service lives in `artifacts/api-server/src/lib/book-search.ts`.
+
 ## Checks
 
 ```sh
 pnpm build
 pnpm check:quotes
+pnpm check:books
 python scripts/test_quote_editorial.py
 python scripts/test_quote_categories.py
 ```

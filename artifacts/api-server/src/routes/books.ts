@@ -83,11 +83,12 @@ router.get("/book-search", async (c) => {
   if (query.length < 2) return c.json({ error: "Search query must be at least 2 characters" }, 400);
   try {
     const response = await searchBooks(query);
-    c.header("Cache-Control", "public, max-age=300, s-maxage=600, stale-while-revalidate=86400");
+    c.header("Cache-Control", response.sources.length === 6 ? "public, max-age=300, s-maxage=600" : "no-store");
     return c.json(response);
   } catch (err) {
     logger.error({ err }, "Federated book search failed");
-    return c.json({ results: [], sources: [] });
+    c.header("Cache-Control", "no-store");
+    return c.json({ error: "Book catalogs are temporarily unavailable. Please retry.", results: [], sources: [] }, 503);
   }
 });
 
