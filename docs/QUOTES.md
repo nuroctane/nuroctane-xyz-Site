@@ -88,3 +88,11 @@ the quote file. Logs are in `.nur/quotes-pipeline.log` and `.nur/poll-sync.log`.
 Do not run a publishing sync while performing unrelated repository changes. Apply and
 verify local corrections, then use the required ship process. Confirm the actual live
 quote content after Workers Builds completes, not merely a green notification job.
+
+### Legacy Hermes entrypoint
+
+The legacy `%LOCALAPPDATA%/hermes/scripts/sync-quotes.py` must also target
+`artifacts/blackboard/src/content/quotes.md` if invoked directly by an older poller.
+The versioned scheduled pipeline uses `run_hermes_quote_sync.py` to enforce this
+destination even if Hermes is restored or upgraded. Do not sync current captures
+into the preserved Digital Sea quote snapshot.
