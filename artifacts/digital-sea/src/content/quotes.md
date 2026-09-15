@@ -4,7 +4,7 @@
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (76)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (53)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (89)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (90)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (30)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (93)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
@@ -1215,6 +1215,24 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 
 > In the context of portfolio theory, the longer the measurement window, the more your sharpe ratio dominates your returns, the less luck does.
 > — @mostlymonkey
+
+> choosing retard is the only substitute to religion in the modern world
+> 
+> retardmaxx and believe. do the work, & randomness will take care of itself sooner or later, earlier than you expect, later than you hope
+> 
+> there’s obv philosophical reason, pascal wager, Camus’ Sisyphus conclusion, n math eg instrumental rationality under uncertainty
+> 
+> call it fate or karma or randomness
+> 
+> bc the world was never saved by the good guys. the world is saved by retards, ordinary people choosing right at the wrong time (see arkhipov)
+> 
+> you might not see the consequences of your actions in real time, maybe not even in your lifetime but being a nihilist atheist is the worst thing you can do to yourself
+> 
+> retardmaxx & believe. CHOOSE retard over math
+> 
+> do the work. be nice. never give up. you are perfect
+> — @nicoletteduclar
+
 
 
 
