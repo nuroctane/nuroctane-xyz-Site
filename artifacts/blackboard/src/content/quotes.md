@@ -10,7 +10,7 @@
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (99)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (45)
-- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (62)
+- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (63)
 
 ## Faith, God & Surrender
 
@@ -2597,6 +2597,9 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 
 > the underworld is best romanticized from a distance.
 > — @networkfaggot
+
+> 6AC05472-DF0C-43B7-A025-BEBBF7E784EC.png
+
 
 
 
