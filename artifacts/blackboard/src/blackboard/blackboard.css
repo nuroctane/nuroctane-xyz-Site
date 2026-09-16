@@ -24,7 +24,101 @@
   -webkit-font-smoothing: antialiased;
   isolation: isolate;
 }
-.blackboard::after, .bb-library::after { position: fixed; inset: 0; z-index: -1; content: ''; background: radial-gradient(ellipse at 50% 42%, rgb(0 0 0 / 4%), rgb(0 0 0 / 52%) 74%), linear-gradient(180deg, rgb(0 0 0 / 12%), rgb(0 0 0 / 38%)); pointer-events: none; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ADAPTIVE MONOCHROME INK
+
+   The wallpaper is a photograph, not a flat colour. "Black & White Clouds"
+   puts near-black sky behind the identity column (sRGB ~0.01) and a brilliant
+   white cumulus mass behind the wallet rail (sRGB ~0.62). One page-wide ink
+   cannot stay legible on both, so ink is resolved per region from the pixels
+   actually behind it — wallpaper/luminance.ts measures the plate, and
+   useAdaptiveInk() sets data-ink on each transparent overlay.
+
+   The poles are registered with @property so ONE typed custom-property change
+   on a scope re-colours every descendant that reads it, and CSS can
+   interpolate it. That animates the whole flip without animating each
+   declaration and without per-frame JS writes to inherited variables.
+
+   Surfaces that are dark glass BY DESIGN (the player, the dock, the toast)
+   are pinned to the light pole: their ink must not follow the photo behind
+   them, because their own background never changes.
+   ═══════════════════════════════════════════════════════════════════════════ */
+@property --bb-ink { syntax: '<color>'; inherits: true; initial-value: #f2f2f2; }
+@property --bb-muted { syntax: '<color>'; inherits: true; initial-value: #a0a0a0; }
+@property --bb-faint { syntax: '<color>'; inherits: true; initial-value: #777777; }
+@property --bb-edge { syntax: '<color>'; inherits: true; initial-value: rgb(255 255 255 / 12%); }
+@property --bb-edge-strong { syntax: '<color>'; inherits: true; initial-value: rgb(255 255 255 / 30%); }
+@property --bb-sheen { syntax: '<color>'; inherits: true; initial-value: rgb(255 255 255 / 9%); }
+@property --bb-hover { syntax: '<color>'; inherits: true; initial-value: rgb(255 255 255 / 7%); }
+@property --bb-halo { syntax: '<color>'; inherits: true; initial-value: rgb(0 0 0 / 42%); }
+@property --bb-scrim-inner { syntax: '<color>'; inherits: true; initial-value: rgb(0 0 0 / 4%); }
+@property --bb-scrim-outer { syntax: '<color>'; inherits: true; initial-value: rgb(0 0 0 / 52%); }
+@property --bb-scrim-top { syntax: '<color>'; inherits: true; initial-value: rgb(0 0 0 / 12%); }
+@property --bb-scrim-bottom { syntax: '<color>'; inherits: true; initial-value: rgb(0 0 0 / 38%); }
+
+[data-ink='light'] {
+  --bb-ink: #f2f2f2;
+  --bb-muted: #a0a0a0;
+  --bb-faint: #777777;
+  --bb-edge: rgb(255 255 255 / 12%);
+  --bb-edge-strong: rgb(255 255 255 / 30%);
+  --bb-sheen: rgb(255 255 255 / 9%);
+  --bb-hover: rgb(255 255 255 / 7%);
+  --bb-halo: rgb(0 0 0 / 42%);
+}
+
+[data-ink='dark'] {
+  --bb-ink: #0c0c0c;
+  --bb-muted: #454545;
+  --bb-faint: #5c5c5c;
+  --bb-edge: rgb(0 0 0 / 14%);
+  --bb-edge-strong: rgb(0 0 0 / 32%);
+  --bb-sheen: rgb(0 0 0 / 6%);
+  --bb-hover: rgb(0 0 0 / 7%);
+  --bb-halo: rgb(255 255 255 / 48%);
+}
+
+[data-ink] {
+  /* 280ms — a theme flip is a page-level change, not a hover. The scrim poles
+     ride here too, easing with the 600ms plate cross-fade, so this stays a
+     single `transition` declaration (two would clobber each other on the page
+     root, which carries both ink and scrim). */
+  transition:
+    --bb-ink 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+    --bb-muted 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+    --bb-faint 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+    --bb-edge 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+    --bb-edge-strong 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+    --bb-sheen 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+    --bb-hover 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+    --bb-halo 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+    --bb-scrim-inner 600ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+    --bb-scrim-outer 600ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+    --bb-scrim-top 600ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+    --bb-scrim-bottom 600ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1));
+}
+
+/* The halo exists only for dark ink. Light ink already sits on near-black
+   imagery at 16:1, so adding one there would alter the shipped abstract look
+   for no legibility gain; over the textured cloud mass it is what keeps small
+   text crisp. */
+[data-ink='dark'] {
+  text-shadow: 0 1px 2px var(--bb-halo);
+}
+
+/* The cumulus scene is a photograph with its own tonality and real contrast.
+   It needs far less veiling than the abstract plate, and a heavy scrim would
+   both dull it and fight the per-region ink. The reading surfaces keep the
+   full scrim — see blackboard-pages.css. */
+.blackboard[data-wallpaper='clouds'] {
+  --bb-scrim-inner: rgb(0 0 0 / 0%);
+  --bb-scrim-outer: rgb(0 0 0 / 16%);
+  --bb-scrim-top: rgb(0 0 0 / 0%);
+  --bb-scrim-bottom: rgb(0 0 0 / 14%);
+}
+
+.blackboard::after { position: fixed; inset: 0; z-index: -1; content: ''; background: radial-gradient(ellipse at 50% 42%, var(--bb-scrim-inner, rgb(0 0 0 / 4%)), var(--bb-scrim-outer, rgb(0 0 0 / 52%)) 74%), linear-gradient(180deg, var(--bb-scrim-top, rgb(0 0 0 / 12%)), var(--bb-scrim-bottom, rgb(0 0 0 / 38%))); pointer-events: none; }
 .bb-loading { position: fixed; inset: 0; display: grid; place-items: center; gap: 14px; align-content: center; background: #050505; color: #f2f2f2; color-scheme: dark; font: 400 .75rem/1 'JetBrains Mono', ui-monospace, monospace; }
 .bb-loading-mark { display: grid; place-items: center; width: 42px; height: 42px; border: 1px solid rgb(255 255 255 / 28%); border-radius: 8px; color: #f2f2f2; font-size: 1rem; letter-spacing: .08em; animation: bb-loading-breathe 1.2s ease-in-out infinite; }
 .bb-loading-mark img { width: 30px; height: 34px; object-fit: contain; }
@@ -51,7 +145,7 @@
 .bb-github { display: grid; place-items: center; align-self: center; margin-left: 0; width: 20px; height: 20px; color: var(--bb-muted); opacity: .82; transition: color 120ms ease, opacity 120ms ease, transform 120ms var(--bb-ease); }
 .bb-github img { width: 20px; height: 20px; object-fit: contain; }
 .bb-github:hover { color: var(--bb-ink); opacity: 1; transform: translateY(-1px); }
-.bb-wallets { position: fixed; top: 50%; left: max(var(--bb-margin), env(safe-area-inset-left)); display: grid; grid-template-columns: 1fr 1fr; align-self: flex-start; gap: 8px; margin-top: 0; color: #777; transform: translateY(-50%); }
+.bb-wallets { position: fixed; top: 50%; left: max(var(--bb-margin), env(safe-area-inset-left)); display: grid; grid-template-columns: 1fr 1fr; align-self: flex-start; gap: 8px; margin-top: 0; color: var(--bb-faint, #777); transform: translateY(-50%); }
 .bb-wallet { display: flex; flex-direction: column; align-items: center; gap: 4px; }
 .bb-wallet-address { display: flex; flex-direction: column; align-items: center; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; font-size: .42rem; line-height: 1.25; letter-spacing: .02em; user-select: none; cursor: copy; }
 .bb-wallet-address span { display: block; height: 1em; }
@@ -210,12 +304,33 @@
 }
 .bb-nav[data-keyboard='true'] *, .bb-nav[data-keyboard='true'] .bb-panel { transition: none; }
 @media (prefers-reduced-motion: reduce) { .blackboard *, .bb-panel[data-open='true'] { transition: none; } }
+/* Exception to the blanket rule above: the ink flip is a colour cross-fade,
+   not motion. Snapping it would be the jarring brightness jump to avoid, so
+   the registered poles keep their transition while everything else goes
+   instant. */
+@media (prefers-reduced-motion: reduce) {
+  .blackboard [data-ink] {
+    transition:
+      --bb-ink 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+      --bb-muted 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+      --bb-faint 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+      --bb-edge 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+      --bb-edge-strong 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+      --bb-sheen 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+      --bb-hover 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+      --bb-halo 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1));
+  }
+}
 @media (prefers-reduced-transparency: reduce) {
   .bb-dock, .bb-panel { background: var(--bb-surface); backdrop-filter: none; -webkit-backdrop-filter: none; }
 }
 @media (prefers-contrast: more) {
   .blackboard { --bb-edge: #aaa; --bb-muted: #ddd; }
   .bb-dock, .bb-panel { background: var(--bb-paper); backdrop-filter: none; }
+  /* Ink scopes sit on descendants, so they would otherwise inherit straight
+     past the .blackboard override above. */
+  [data-ink='light'] { --bb-edge: #aaa; --bb-muted: #ddd; }
+  [data-ink='dark'] { --bb-edge: #000; --bb-muted: #1a1a1a; }
 }
 @media (max-width: 680px) {
   .bb-identity { width: auto; flex-direction: row; align-items: center; }

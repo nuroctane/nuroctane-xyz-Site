@@ -2,6 +2,7 @@ import { Router, useLocation } from 'wouter';
 import { lazy, Suspense, useEffect, useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
 import Blackboard from './blackboard/Blackboard';
+import { WallpaperProvider } from './blackboard/WallpaperProvider';
 import { SITE_MODE } from './config/siteMode';
 import { AudioProvider } from './hooks/AudioContext';
 import { resolveAnalytics } from './lib/analytics';
@@ -90,7 +91,9 @@ function Root() {
 createRoot(document.getElementById('root')!).render(
   <Router>
     <AudioProvider>
-      <Root />
+      <WallpaperProvider>
+        <Root />
+      </WallpaperProvider>
       <Telemetry />
     </AudioProvider>
   </Router>,

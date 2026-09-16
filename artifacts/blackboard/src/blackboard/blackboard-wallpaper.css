@@ -1,16 +1,148 @@
-/* WebGL Blackboard wallpaper (Wallpaper Engine 2207944762 port).
- * The JPEG background is the no-WebGL / pre-first-frame fallback — the canvas
- * paints the same image, so the swap is seamless. */
+/* ═══════════════════════════════════════════════════════════════════════════
+   Wallpaper layer + background switcher.
+
+   WebGL ports of Wallpaper Engine workshop scenes:
+     abstract  item 2207944762  "Black & White Abstract"
+     clouds    item 3612455067  "Black & White Clouds"
+
+   Layer order inside the page: plate x2 (cross-fading) -> canvas -> the page's
+   own scrim ::after at z-index -1.
+
+   Tokens are read with literal fallbacks because this sheet is shared by
+   `.blackboard` and `.bb-library`, and only the former declares them.
+   ═══════════════════════════════════════════════════════════════════════════ */
+
 .bb-wallpaper {
   position: fixed;
   inset: 0;
   z-index: -2;
-  width: 100vw;
-  height: 100vh;
-  background: url('/assets/blackboard/wallpaper-1280.jpg') center / cover no-repeat;
+  overflow: hidden;
   pointer-events: none;
 }
 
+/* ── Plate layers: the pre-WebGL / reduced-motion fallback, and the carrier of
+      the visible cross-fade when the variant changes. ─────────────────────── */
+.bb-wallpaper-plate {
+  position: absolute;
+  inset: 0;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  opacity: 0;
+  transition: opacity 600ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1));
+}
+
+.bb-wallpaper-plate[data-active='true'] { opacity: 1; }
+
+.bb-wallpaper-plate[data-variant='abstract'] { background-image: url('/assets/blackboard/wallpaper-1280.jpg'); }
+.bb-wallpaper-plate[data-variant='clouds'] { background-image: url('/assets/blackboard/clouds/clouds-1280.webp'); }
+
 @media (min-width: 901px) {
-  .bb-wallpaper { background-image: url('/assets/blackboard/wallpaper.jpg'); }
+  .bb-wallpaper-plate[data-variant='abstract'] { background-image: url('/assets/blackboard/wallpaper.jpg'); }
+  .bb-wallpaper-plate[data-variant='clouds'] { background-image: url('/assets/blackboard/clouds/clouds.webp'); }
+}
+
+/* ── Canvas: paints the live scene over the matching plate. Hidden until the
+      scene's first frame, so a variant switch never shows a stale or empty
+      frame — the plates cover the swap. Fades out faster than it fades in. ── */
+.bb-wallpaper-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+  transition: opacity 300ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1));
+}
+
+.bb-wallpaper-canvas[data-painted='true'] {
+  opacity: 1;
+  transition-duration: 420ms;
+}
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   BACKGROUND SWITCHER — sits directly below the GitHub icon in the identity
+   column and reuses the `.bb-cal` control schema (28px rounded square, 16px
+   glyph, currentColor). Ink comes from the enclosing adaptive scope.
+   ═══════════════════════════════════════════════════════════════════════════ */
+.bb-wallpaper-toggle {
+  position: relative;
+  display: grid;
+  place-items: center;
+  align-self: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  border: 1px solid var(--bb-edge, rgb(255 255 255 / 15%));
+  border-radius: 6px;
+  color: var(--bb-muted, #a0a0a0);
+  background: transparent;
+  cursor: pointer;
+  transition:
+    color 120ms ease,
+    border-color 120ms ease,
+    background 120ms ease,
+    transform 120ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1));
+}
+
+/* 44x44 hit area for a 28px control. It meets the neighbouring icons' boxes
+   edge-to-edge but never overlaps them, so no click is ever ambiguous. */
+.bb-wallpaper-toggle::before {
+  position: absolute;
+  inset: -8px;
+  content: '';
+}
+
+.bb-wallpaper-toggle .bb-icon-swap {
+  display: inline-grid;
+  place-items: center;
+}
+
+/* Both glyphs occupy one cell; the incoming one arrives small and blurred,
+   never resizing in place, and nothing overshoots. */
+.bb-wallpaper-toggle svg {
+  grid-area: 1 / 1;
+  width: 16px;
+  height: 16px;
+  opacity: 0;
+  filter: blur(2px);
+  transform: scale(0.3);
+  transition:
+    opacity 120ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+    transform 120ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+    filter 120ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1));
+}
+
+.bb-wallpaper-toggle svg[data-visible='true'] {
+  opacity: 1;
+  filter: blur(0);
+  transform: scale(1);
+}
+
+.bb-wallpaper-toggle:active { transform: scale(0.97); }
+
+@media (hover: hover) and (pointer: fine) {
+  .bb-wallpaper-toggle:hover {
+    border-color: var(--bb-edge-strong, rgb(255 255 255 / 30%));
+    color: var(--bb-ink, #f2f2f2);
+    background: var(--bb-hover, rgb(255 255 255 / 7%));
+  }
+}
+
+/* The swap's scale and blur are decorative; the opacity cross-fade still does
+   the work, so the glyph change stays readable without motion. */
+@media (prefers-reduced-motion: reduce) {
+  .bb-wallpaper-toggle svg,
+  .bb-wallpaper-toggle svg[data-visible='true'] {
+    filter: none;
+    transform: none;
+    transition: opacity 120ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1));
+  }
+  .bb-wallpaper-toggle:active { transform: none; }
+  .bb-wallpaper-plate { transition: none; }
+}
+
+/* Keyboard focus must stay perceivable even when motion is off. */
+.bb-wallpaper-toggle:focus-visible {
+  outline: 2px solid var(--bb-ink, #f2f2f2);
+  outline-offset: 4px;
 }

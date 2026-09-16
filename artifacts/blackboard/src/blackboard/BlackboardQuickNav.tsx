@@ -66,7 +66,7 @@ export function BlackboardQuickNav({ standalone = false }: { standalone?: boolea
     return () => document.removeEventListener('pointerdown', outside);
   }, []);
 
-  return <nav className={`bb-nav${standalone ? ` bb-standalone-nav${visible ? ' bb-standalone-nav--open' : ''}` : ''}`} aria-label="Quick navigation" ref={nav} data-keyboard={keyboard}
+  return <nav className={`bb-nav${standalone ? ` bb-standalone-nav${visible ? ' bb-standalone-nav--open' : ''}` : ''}`} aria-label="Quick navigation" ref={nav} data-keyboard={keyboard} data-ink="light"
     onPointerDown={() => setKeyboard(false)}
     onBlur={event => {
       if (!event.currentTarget.contains(event.relatedTarget as Node | null)) setOpen(null);

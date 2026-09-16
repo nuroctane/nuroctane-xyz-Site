@@ -72,7 +72,7 @@ export function BlackboardPlayer() {
 
   const progress = duration > 0 ? Math.min(100, Math.max(0, (currentTime / duration) * 100)) : 0;
 
-  return <section className="bb-player" aria-label="Blackboard audio player">
+  return <section className="bb-player" aria-label="Blackboard audio player" data-ink="light">
     <div className="bb-player-meta">
       <div className="bb-player-artwork"><img src={TRACK.artwork} alt="SKINS album artwork" /></div>
       <div className="bb-player-copy">

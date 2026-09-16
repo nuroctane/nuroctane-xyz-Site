@@ -11,6 +11,7 @@ import { useStandaloneScroll } from '../hooks/useStandaloneScroll';
 import { blogPosts } from '../data/blogPosts';
 import { ScrollToTop } from '../components/hud/ScrollToTop';
 import { BlackboardWallpaper } from '../blackboard/BlackboardWallpaper';
+import { useWallpaper } from '../blackboard/WallpaperProvider';
 import './blackboard-pages.css';
 
 type Book = { title: string; author: string; read: boolean; note?: string; visitor?: boolean; coverUrl?: string; description?: string; year?: string; source?: string; sourceUrl?: string; dateAdded?: string; sessionId?: string };
@@ -81,7 +82,10 @@ function renderText(t: string) {
 
 function LibraryChrome({ active, children }: { active: 'books' | 'quotes' | 'blog'; children: React.ReactNode }) {
   useStandaloneScroll();
-  return <main className="bb-library"><BlackboardWallpaper /><ScrollToTop /><header className="bb-library-header"><Link className="bb-library-home" href="/" aria-label="Back to Blackboard"><img src="/assets/nodes/site-logo.png" alt="" width="42" height="48" /></Link><nav className="bb-library-tabs" aria-label="Library navigation"><Link className={active === 'books' ? 'is-active' : ''} href="/books"><BookOpen aria-hidden="true" /> Books</Link><Link className={active === 'quotes' ? 'is-active' : ''} href="/quotes"><Quote aria-hidden="true" /> Quotes</Link><Link className={active === 'blog' ? 'is-active' : ''} href="/blog"><FileText aria-hidden="true" /> Blog</Link></nav></header><section className="bb-library-content">{children}</section></main>;
+  const { variant } = useWallpaper();
+  // The reading surfaces keep the full dark scrim (see blackboard-pages.css),
+  // so their ink stays on the light pole rather than following the photo.
+  return <main className="bb-library" data-wallpaper={variant} data-ink="light"><BlackboardWallpaper /><ScrollToTop /><header className="bb-library-header"><Link className="bb-library-home" href="/" aria-label="Back to Blackboard"><img src="/assets/nodes/site-logo.png" alt="" width="42" height="48" /></Link><nav className="bb-library-tabs" aria-label="Library navigation"><Link className={active === 'books' ? 'is-active' : ''} href="/books"><BookOpen aria-hidden="true" /> Books</Link><Link className={active === 'quotes' ? 'is-active' : ''} href="/quotes"><Quote aria-hidden="true" /> Quotes</Link><Link className={active === 'blog' ? 'is-active' : ''} href="/blog"><FileText aria-hidden="true" /> Blog</Link></nav></header><section className="bb-library-content">{children}</section></main>;
 }
 
 function BookModal({ book, onClose, onToggle, onDelete }: { book: Book; onClose: () => void; onToggle?: () => void; onDelete?: () => void }) {
