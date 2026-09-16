@@ -60,10 +60,11 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   BACKGROUND SWITCHER — the player's footer control: centred under the
-   transport, on the player's dark glass, so its ink is the pinned light pole
-   rather than the adaptive one. Reuses the `.bb-cal` control schema (28px
-   rounded square, 16px glyph, currentColor).
+   BACKGROUND SWITCHER — its own control, centred beneath the player panel
+   rather than inside it. It sits over the plate, not on the panel's dark
+   glass, so it resolves its own ink pole from the wallpaper behind it and
+   stays legible wherever it is placed. Reuses the `.bb-cal` control schema
+   (28px rounded square, 16px glyph, currentColor).
    ═══════════════════════════════════════════════════════════════════════════ */
 .bb-wallpaper-toggle {
   position: relative;

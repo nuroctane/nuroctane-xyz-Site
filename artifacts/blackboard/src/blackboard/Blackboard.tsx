@@ -5,6 +5,7 @@ import { LOGO_MAP } from '../data/navLogos';
 import { BlackboardQuickNav } from './BlackboardQuickNav';
 import { BlackboardPlayer } from './BlackboardPlayer';
 import { BlackboardWallpaper } from './BlackboardWallpaper';
+import { BlackboardWallpaperToggle } from './BlackboardWallpaperToggle';
 import { useAdaptiveInk, useWallpaper } from './WallpaperProvider';
 import './blackboard.css';
 const BTC_ADDR = 'bc1qmsexp4nygxcw0gklw346hds4gxctfley2tvn40';
@@ -85,7 +86,13 @@ export default function Blackboard() {
       </div>
     </header>
 
-    <BlackboardPlayer />
+    {/* The switcher is its own element centred beneath the player rather than
+        inside its panel: the panel stays a pure player, and this wrapper is a
+        plain layout div, so it adds no second region. */}
+    <div className="bb-player-stack">
+      <BlackboardPlayer />
+      <BlackboardWallpaperToggle />
+    </div>
     <div className="bb-copy-toast" data-ink="light" role="status" aria-live="polite" data-visible={Boolean(copied)}>{copied ? `${copied} address copied` : ''}</div>
 
     <BlackboardQuickNav />

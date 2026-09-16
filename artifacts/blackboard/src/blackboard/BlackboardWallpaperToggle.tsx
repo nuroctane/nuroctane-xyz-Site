@@ -1,13 +1,13 @@
 import { VARIANTS, WALLPAPER_ORDER, type WallpaperId } from './wallpaper/variants';
-import { useWallpaper } from './WallpaperProvider';
+import { useAdaptiveInk, useWallpaper } from './WallpaperProvider';
 
 /* ═══════════════════════════════════════════════════════════════════════════
    BACKGROUND SWITCHER
 
-   Sits directly below the GitHub icon in the identity column and follows the
-   same box/hover schema as its neighbours. The glyph advertises the wallpaper
-   the press moves you TO — a cloud for the cumulus scene, waves for the
-   abstract one — so the button states its own action.
+   Its own control, centred beneath the player panel rather than inside it, so
+   the panel stays a pure player. The glyph advertises the wallpaper the press
+   moves you TO — a cloud for the cumulus scene, waves for the abstract one —
+   so the button states its own action.
 
    The two glyphs share one grid cell and cross-fade in place: the outgoing
    glyph fades while the incoming one arrives from scale(.3) with a clearing
@@ -28,10 +28,17 @@ const GLYPHS: Record<WallpaperId, string[]> = {
 
 export function BlackboardWallpaperToggle() {
   const { variant, next, setVariant } = useWallpaper();
+  // Self-contained ink: this control sits on the wallpaper, not on a dark
+  // panel, so it resolves its own pole from the pixels behind it. Pinning it
+  // to a pole would break it over the other wallpaper, and keeping the
+  // measurement here means the button stays correct if it is ever moved again.
+  const [ref, ink] = useAdaptiveInk<HTMLButtonElement>();
   const label = `Switch background to ${VARIANTS[next].label}`;
 
   return (
     <button
+      ref={ref}
+      data-ink={ink}
       type="button"
       className="bb-wallpaper-toggle"
       onClick={() => setVariant(next)}

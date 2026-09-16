@@ -1,7 +1,6 @@
 import { Pause, Play, Volume2, VolumeX } from 'lucide-react';
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
 import { useAudioCtx } from '../hooks/AudioContext';
-import { BlackboardWallpaperToggle } from './BlackboardWallpaperToggle';
 
 const TRACK = {
   artist: 'XXXTENTACION',
@@ -111,6 +110,5 @@ export function BlackboardPlayer() {
       </div>
       <span className="bb-player-state" role="status">{blocked ? 'TAP TO PLAY' : mutedAutoplay ? 'TAP FOR SOUND' : playing ? 'PLAYING' : 'PAUSED'}</span>
     </div>
-    <BlackboardWallpaperToggle />
   </section>;
 }
