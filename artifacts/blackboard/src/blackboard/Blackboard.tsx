@@ -5,7 +5,6 @@ import { LOGO_MAP } from '../data/navLogos';
 import { BlackboardQuickNav } from './BlackboardQuickNav';
 import { BlackboardPlayer } from './BlackboardPlayer';
 import { BlackboardWallpaper } from './BlackboardWallpaper';
-import { BlackboardWallpaperToggle } from './BlackboardWallpaperToggle';
 import { useAdaptiveInk, useWallpaper } from './WallpaperProvider';
 import './blackboard.css';
 const BTC_ADDR = 'bc1qmsexp4nygxcw0gklw346hds4gxctfley2tvn40';
@@ -73,7 +72,6 @@ export default function Blackboard() {
           <a className="bb-github" href="https://github.com/nuroctane" target="_blank" rel="noreferrer" aria-label="Nuroctane on GitHub">
             <img src={LOGO_MAP.github} alt="" width="20" height="20" />
           </a>
-          <BlackboardWallpaperToggle />
           <div className="bb-wallets" data-ink={walletsInk} ref={walletsRef} aria-label="Cryptocurrency addresses">
             <div className="bb-wallet"><WalletAddress address={BTC_ADDR} chain="Bitcoin" onCopy={handleCopy} /></div>
             <div className="bb-wallet"><WalletAddress address={ETH_ADDR} chain="Ethereum" onCopy={handleCopy} /></div>

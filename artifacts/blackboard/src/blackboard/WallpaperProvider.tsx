@@ -18,26 +18,52 @@ import {
 } from './wallpaper/luminance';
 import { VARIANTS, WALLPAPER_ORDER, isWallpaperId, type WallpaperId } from './wallpaper/variants';
 
-const STORAGE_KEY = 'bb-wallpaper';
-const DEFAULT_VARIANT: WallpaperId = 'abstract';
+const SESSION_KEY = 'bb-wallpaper-shown';
 const MOBILE_QUERY = '(max-width: 900px)';
 
-function readStoredVariant(): WallpaperId {
+function readSessionVariant(): WallpaperId | null {
   try {
-    const raw = window.localStorage.getItem(STORAGE_KEY);
-    return isWallpaperId(raw) ? raw : DEFAULT_VARIANT;
+    const raw = window.sessionStorage.getItem(SESSION_KEY);
+    return isWallpaperId(raw) ? raw : null;
   } catch {
-    // Private mode / blocked storage: fall back to the shipped default.
-    return DEFAULT_VARIANT;
+    // Private mode / blocked storage: treat it as a fresh session.
+    return null;
   }
 }
 
-function storeVariant(id: WallpaperId) {
+function rememberVariant(id: WallpaperId) {
   try {
-    window.localStorage.setItem(STORAGE_KEY, id);
+    window.sessionStorage.setItem(SESSION_KEY, id);
   } catch {
-    /* storage unavailable — the choice simply does not persist */
+    /* storage unavailable — the cycle simply restarts on the next load */
   }
+}
+
+let resolvedInitialVariant: WallpaperId | null = null;
+
+/**
+ * Which wallpaper this page view shows.
+ *
+ * A tab session's FIRST view picks pseudorandomly, so separate visits open on
+ * different wallpapers. Every later load — a refresh, a URL entry — advances
+ * one step, so reloading always visibly changes the background instead of
+ * handing back the same one.
+ *
+ * sessionStorage, not localStorage: tabs stay independent of each other, and
+ * the cycle resets when the tab closes, which is the granularity wanted.
+ * Memoised at module scope so React re-invoking the initialiser (StrictMode)
+ * cannot advance the cycle twice in one load.
+ */
+function resolveInitialVariant(): WallpaperId {
+  if (resolvedInitialVariant) return resolvedInitialVariant;
+  const shown = readSessionVariant();
+  const index = shown ? WALLPAPER_ORDER.indexOf(shown) : -1;
+  const chosen = index >= 0
+    ? WALLPAPER_ORDER[(index + 1) % WALLPAPER_ORDER.length]
+    : WALLPAPER_ORDER[Math.floor(Math.random() * WALLPAPER_ORDER.length)];
+  rememberVariant(chosen);
+  resolvedInitialVariant = chosen;
+  return chosen;
 }
 
 interface WallpaperValue {
@@ -59,13 +85,13 @@ export function useWallpaper(): WallpaperValue {
 }
 
 export function WallpaperProvider({ children }: { children: ReactNode }) {
-  const [variant, setVariantState] = useState<WallpaperId>(readStoredVariant);
+  const [variant, setVariantState] = useState<WallpaperId>(resolveInitialVariant);
   const [active, setActive] = useState(false);
   const [field, setField] = useState<LuminanceField | null>(null);
 
   const setVariant = useCallback((id: WallpaperId) => {
     setVariantState(id);
-    storeVariant(id);
+    rememberVariant(id);
   }, []);
 
   const next = useMemo(() => {

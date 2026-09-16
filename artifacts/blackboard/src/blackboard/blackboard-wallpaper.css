@@ -60,15 +60,16 @@
 }
 
 /* ═══════════════════════════════════════════════════════════════════════════
-   BACKGROUND SWITCHER — sits directly below the GitHub icon in the identity
-   column and reuses the `.bb-cal` control schema (28px rounded square, 16px
-   glyph, currentColor). Ink comes from the enclosing adaptive scope.
+   BACKGROUND SWITCHER — the player's footer control: centred under the
+   transport, on the player's dark glass, so its ink is the pinned light pole
+   rather than the adaptive one. Reuses the `.bb-cal` control schema (28px
+   rounded square, 16px glyph, currentColor).
    ═══════════════════════════════════════════════════════════════════════════ */
 .bb-wallpaper-toggle {
   position: relative;
   display: grid;
   place-items: center;
-  align-self: center;
+  justify-self: center;
   width: 28px;
   height: 28px;
   padding: 0;
@@ -84,8 +85,7 @@
     transform 120ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1));
 }
 
-/* 44x44 hit area for a 28px control. It meets the neighbouring icons' boxes
-   edge-to-edge but never overlaps them, so no click is ever ambiguous. */
+/* 44x44 hit area for a 28px control, absorbed by the player's own padding. */
 .bb-wallpaper-toggle::before {
   position: absolute;
   inset: -8px;
