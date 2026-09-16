@@ -3,7 +3,7 @@
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (29)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (76)
-- [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (53)
+- [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (54)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (92)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (30)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (93)
@@ -898,6 +898,25 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 
 > They say making mistakes is part of being human. I'd say making mistakes is part of being intelligent.
 > — @uzairname1
+
+> The reason why logical guys can't pull is because they think their standards of 'ice cold efficiency' are universal, and aren't aware that is 'men's genius' but does not relate to women
+> 
+> A man's brain thinks "let me get to the result asap"
+> 
+> A woman's brain does not work like this. A woman's brain likes the experience of the thing. It's about the vibe, the show, the larp/play, the 'doing it'
+> 
+> Grocery store easy example
+> 
+> guy brain goes "i want to get in, get out" because his goal is 'get the stuff'
+> 
+> woman's brain is not 'get the stuff'. woman's brain is 'experience the store'. She wants to look at things, check stuff out, enjoy the stroll etc
+> 
+> A man's genius is ice-cold efficiency
+> A woman's genius is smelling the roses
+> 
+> The logical guy can make instant strides if he learns to incorporate play/fun. Less logic/function/pragmatism, more randomness,fun,vibe
+> — @retirementkeys
+
 
 
 
