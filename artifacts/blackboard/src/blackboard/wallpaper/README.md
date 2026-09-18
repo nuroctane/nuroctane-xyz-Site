@@ -1,10 +1,11 @@
 # Wallpaper Engine ports
 
-The Blackboard's wallpapers are WebGL ports of Wallpaper Engine workshop scenes.
-This is how the source scenes were read, so the ports can be re-derived or
-re-checked.
+The Blackboard's wallpapers come from Wallpaper Engine workshop items. Nine are
+WebGL ports of `scene` items, one is a CSS animation ported as maths, and two
+ship as a finished loop that is played rather than reproduced. This is how the
+sources were read, so the ports can be re-derived or re-checked.
 
-| variant | workshop item | title | type | effects ported |
+| variant | workshop item | workshop title | type | effects ported |
 |---|---|---|---|---|
 | `abstract` | [2207944762](https://steamcommunity.com/sharedfiles/filedetails/?id=2207944762) | Black & White Abstract | scene | `tint`, `clouds`, `godrays`, `shine`, `waterripple` (five passes; `tint` is modelled by the tone curve rather than as a shader) |
 | `clouds` | [3612455067](https://steamcommunity.com/sharedfiles/filedetails/?id=3612455067) | Black & White Clouds | scene | `shake`, `waterflow` |
@@ -13,12 +14,64 @@ re-checked.
 | `sakura` | [3493394392](https://steamcommunity.com/sharedfiles/filedetails/?id=3493394392) | White sakura | scene | `shake` |
 | `blossom` | [3613577930](https://steamcommunity.com/sharedfiles/filedetails/?id=3613577930) | White sakura (the second item of that name) | scene | `shake`, `waterflow` |
 | `waves` | [2279430364](https://steamcommunity.com/sharedfiles/filedetails/?id=2279430364) | Black Waves | scene | `waterflow` (disabled in the source), `waterripple` |
+| `roses` | [2549515627](https://steamcommunity.com/sharedfiles/filedetails/?id=2549515627) | Black Roses (Music) | scene | `foliagesway`, `shine`, `filmgrain`, `tint` |
+| `lattice` | [1760275007](https://steamcommunity.com/sharedfiles/filedetails/?id=1760275007) | Black | scene | `fog` particles, `shake` |
+| `sweep` | [3036482397](https://steamcommunity.com/sharedfiles/filedetails/?id=3036482397) | Angular Gradient - Black White (Animated) | **web** | none — a CSS `conic-gradient`, evaluated directly |
+| `dots` | [3759381233](https://steamcommunity.com/sharedfiles/filedetails/?id=3759381233) | Abstract Black & White Oled | **video** | none — the loop *is* the artwork |
+| `topography` | [3636465548](https://steamcommunity.com/sharedfiles/filedetails/?id=3636465548) | white-on-black-topographical-map-clean | **video** | none — the loop *is* the artwork |
 
-All seven are `"type": "scene"`: one fullscreen image object with live effects
-on top. `variants.ts` reproduces the effect maths; the constants are the ones
-`scene.json` overrides. Two of the scenes ship more objects than that —
-`blossom` adds two audio objects and `waves` adds an invisible normal-map
-object — and none of them are ported; only the image object's effect chain is.
+The nine `scene` items are each one fullscreen image object with live effects on
+top. `variants.ts` reproduces the effect maths; the constants are the ones
+`scene.json` overrides. Three of the scenes ship more objects than that —
+`blossom` adds two audio objects, `waves` adds an invisible normal-map object,
+and `roses` adds a second image layer — and none of them are ported; only the
+image object's effect chain is.
+
+## Labels
+
+The switcher's label is not the workshop title. Titles there carry uploader
+noise — `(Music)`, `(Animated)`, `-clean`, file-style lowercasing — and two of
+the originals are actively misleading: `lattice`'s is just "Black", and `dots`'s
+calls a dot field an OLED. The convention matches the seven that were already
+shipping (`Black & White Clouds`, `White Sakura in Fog`, `Black Waves`): **tone
+then subject**, Title Case, no suffixes, and the slug is the lowercase subject
+alone.
+
+| slug | shipped label | slug | shipped label |
+|---|---|---|---|
+| `abstract` | Black & White Abstract | `roses` | Black Roses |
+| `clouds` | Black & White Clouds | `lattice` | Black Lattice |
+| `japanese` | Black & White Japanese | `sweep` | Black & White Sweep |
+| `forest` | Black & White Forest | `dots` | Black & White Dots |
+| `sakura` | White Sakura | `topography` | White Topography |
+| `blossom` | White Sakura in Fog | | |
+| `waves` | Black Waves | | |
+
+Every `title` and `aria-label` in the switcher is derived from
+`VARIANTS[id].label`, so a rename only ever has to touch the label.
+
+## The preset that is not a wallpaper
+
+[2871807573](https://steamcommunity.com/sharedfiles/filedetails/?id=2871807573)
+"Black'n White" has no media of its own: its folder holds only `preview.jpg` and
+a `project.json` with **no `type` and no `file`**, just a `"dependency"` on
+`2406911626`. It is a settings preset layered over someone else's scene, so there
+is nothing to extract and it is not a variant.
+
+Its settings are still the useful part — they are the *look* the new scenes are
+wanted in, and its dependency scene renders a purple prism that this preset
+flattens to monochrome:
+
+```
+darkmode: true   colorshifting: true   saturation(wec_sa): 0
+brightness(wec_brs): 58   contrast(wec_con): 49   bloomstrength: 1.5
+shiftstrength: 0.41   smoothrate: 13   responsiveness: 75   rate: 100
+particles: true   pattern: rings   particlecolor: 1 1 1   walls: 0 0 0
+```
+
+`lattice`'s plate is composited at `saturation 0 / brightness 58 / contrast 49`
+for exactly this reason: what is stored is what the scene looks like under the
+preset, not what it renders bare.
 
 ## Where the source lives
 
@@ -26,13 +79,28 @@ Wallpaper Engine keeps subscribed items unpacked at
 
 ```
 <steam>/steamapps/workshop/content/431960/<published_file_id>/
-  project.json     metadata: title, tags, preview, scheme colour
-  scene.pkg        the scene: scene.json, shaders, textures, mask maps
+  project.json     metadata: title, type, tags, preview, scheme colour
+  scene.pkg        a `scene` item: scene.json, shaders, textures, mask maps
   shaders/         compiled SM40 blobs (not needed — the GLSL sources are packed)
+  index.html       a `web` item: the whole wallpaper is just this
+  <name>.mp4       a `video` item: the whole wallpaper is just this
   preview.gif|jpg  the author's preview
 ```
 
-`431960` is Wallpaper Engine's app id. Only the `scene.pkg` is actually needed.
+`431960` is Wallpaper Engine's app id.
+
+`project.json`'s `type` field is the fastest triage there is, because each type
+needs completely different work:
+
+- **`scene`** → unpack `scene.pkg` and decode `.tex` (sections 1–2 below).
+- **`web`** → read `index.html`. A web wallpaper is usually a few lines of CSS
+  or canvas, and if it is CSS the port can evaluate the same maths instead of
+  re-deriving it. `sweep` is one line of `conic-gradient`, reproduced exactly.
+- **`video`** → transcode the `.mp4` and let a `<video>` element play it. There
+  is no shader to write; the master *is* the artwork.
+
+A `project.json` with **no `type`, no `file`, and a `dependency`** is not a
+wallpaper at all — it is a settings preset. See the 2871807573 section.
 
 ## 1. Unpack `scene.pkg`
 
@@ -124,6 +192,25 @@ cloud, noise and no-flow patterns are the exact ones the shaders sample.
 | `waves/waves-normal.webp` | 256x256, lossless, 99 KB | the scene's real `effects/waterripplenormal` |
 | `waves/waves-phase.png` | 32x32, 2 KB | scalar phase noise |
 | `waves/waves-noflow.png` | 32x32, 169 B | `util/noflow`, copied byte for byte |
+| `roses/roses.webp` | 2560x1080, 252 KB | plate, desktop |
+| `roses/roses-portrait.webp` | 1080x1920, 152 KB | plate, mobile |
+| `lattice/lattice.webp` | 2560x1080, 23 KB | plate, desktop (near-black, so it compresses hard) |
+| `lattice/lattice-portrait.webp` | 1080x1920, 12 KB | plate, mobile |
+| `sweep/sweep.webp` | 2560x1080, 10 KB | poster, desktop — the canvas paints over it |
+| `sweep/sweep-portrait.webp` | 1080x1920, 8 KB | poster, mobile |
+| `dots/dots.webp` | 1920x1080, 135 KB | poster, desktop |
+| `dots/dots-portrait.webp` | 1080x1920, 79 KB | poster, mobile |
+| `dots/dots-1920.mp4` | 1920x1080, 24fps, 15.2 MB | desktop loop (source 3840x2160 @ 60fps) |
+| `dots/dots-960.mp4` | 960x540, 24fps, 7.0 MB | mobile loop |
+| `topography/topography.webp` | 1920x1080, 109 KB | poster, desktop |
+| `topography/topography-portrait.webp` | 1080x1920, 62 KB | poster, mobile |
+| `topography/topography-1920.mp4` | 1920x1080, 24fps, 10.4 MB | desktop loop (source 4K60) |
+| `topography/topography-960.mp4` | 960x540, 24fps, 4.1 MB | mobile loop |
+
+The three portrait plates for `roses`, `lattice` and `sweep` are 1080x1920 and
+their desktop plates 2560x1080 — 21:9, matching each source's own aspect rather
+than being cropped to 16:9, because these are already monochrome fields where
+the corners carry as much of the look as the centre.
 
 Every source mask is half its plate in both axes — 1280x720 against 2560x1440 for
 `sakura`, 1706x960 against 3412x1920 for `blossom`, 1920x1080 against 3840x2160
@@ -175,6 +262,77 @@ Documented in full at each site in `variants.ts`; the short version:
   implementation.
 - Every scene pins `schemecolor` to grey; the ports render pure monochrome
   (luminance) to match the Blackboard's palette.
+- **`roses`' `foliagesway` is a stand-in, not the shader** — the source sways
+  per-vertex off a noise map, which needs the plate as a subdivided mesh rather
+  than the single fullscreen quad every variant draws. The port keeps the
+  visible result — a slow, two-frequency uv wobble of the same order — and the
+  `filmgrain` pass alongside it. Its `tint` is a no-op: the plate is already
+  monochrome, so a tint over grey can only darken it.
+- **`lattice`'s fog is a parallax, not particles** — the source runs a fog
+  particle pass, and the preset asks for `rate 100 / smoothrate 13`, i.e. long
+  smooth drifts. The port reproduces the drift as a two-axis parallax with a
+  second deeper sample for body, which is what the particles read as at that
+  smoothness. The plate itself is the source's four beam layers composited at
+  the preset's own `saturation 0 / brightness 58 / contrast 49`.
+- **`sweep`'s ink is a local average of the ramp** — the live field is sampled
+  over the switcher's own box, and that box sits about 95 px from the conic
+  origin, so it spans roughly 18° of the gradient. The pole therefore changes
+  slightly later in the cycle than the value at the box's exact centre would
+  suggest. This is deliberate: averaging over the glyph's actual footprint is a
+  better description of what is behind the glyph than a point sample. Measured
+  over a full revolution, the worst contrast anywhere in the cycle is **3.17:1**,
+  against a floor of 3.0.
+- **`dots` and `topography` are downscaled, not reproduced** — both sources are
+  4K60 H.264 loops (163 MB and 300 MB). They ship at 1080p24 desktop / 540p24
+  mobile: 15.2 MB and 10.4 MB. A frame-diff against the full-rate encode of
+  `dots` measures mean 2.4 / p99 31, and a side-by-side of the dot field at 8x
+  zoom shows the dots still round with no ringing — these are slow, low-contrast
+  fields, so the frame rate buys nothing visible and costs 45% of the payload.
+- **`blossom` sits on the ink crossover on a phone** — `blossom-portrait.webp`
+  puts the switcher's backdrop at a linear luminance of ≈ 0.174, which is exactly
+  where `inkForLuminance` swaps poles, so successive loads resolve either way. The
+  dark outcome measures **2.83:1** under the glyph against a floor of 3.0 (the
+  light one is ≥ 4.4:1, and the glyph's halo paints in the opposite pole either
+  way). Probed through the app's own modules — `.nur/we/ink_probe.mjs`, which
+  rebuilds the field from the live plate in the page — the inputs are knife-edge
+  rather than wrong: the covering cells range 0.159–0.196 and *both* poles clear
+  the floor on them, while the true pixels under the glyph read 0.111. Raising the
+  grid from 48x27 to 768x432 does not move the estimate off the crossover, so this
+  is not a resolution or decision-rule bug, and no rule over those cells recovers
+  it. A coverage-of-floor rule was written, measured, and rejected: it does not
+  change this decision. The real fix is to sample the element's own rect directly
+  instead of through the coarse grid. Pre-existing — it reproduces on `main`
+  without any of these variants — and deliberately left alone here.
 - The one thing deliberately **not** reproduced anywhere: Wallpaper Engine's
   audio response. No port reads an audio spectrum, so `shake`'s
   `AUDIOPROCESSING` branches and the audio objects are all outside these ports.
+
+## 5. Verification
+
+`scripts/test_wallpaper_shaders.ts` (run by `pnpm build` as `check:wallpapers`)
+statically checks that every variant's shader declares every uniform it reads.
+
+This exists because of a real failure: `sweep` spliced in `COMMON_GLSL`, whose
+`coverUv()` reads `uImageAspect`, and declared only `uAspect`. The fragment then
+failed to compile, `createProgram` returned null, and the render path treated
+that as "nothing to draw" — so the canvas sat at `opacity: 0` and the viewer saw
+the static poster while the animation this variant exists for never ran.
+
+What made it hard to catch is that the ink is driven from `liveField`, which is
+plain maths and never touches the canvas. So the switcher's glyph kept flipping
+correctly, every DOM-level probe reported a healthy, animating variant, and the
+only symptom was an animation that was not there.
+
+A shader compile failure is silent by construction, so it has to be caught
+statically. The check reads the assembled source — after `COMMON_GLSL` is
+spliced in — because that is what the compiler sees; uniform names here are `u`
+plus a capital, which GLSL ES built-ins never are, so no type analysis is needed.
+
+Behaviour worth re-measuring after any change to `sweep`, all under `.nur/we/`:
+
+| check | what it proves |
+|---|---|
+| `sweepdir.mjs` + `sweepdir_report.py` | the phase of the rendered conic advances **+5.97°/s** against an ideal +6.00, i.e. clockwise, measured from pixels rather than from a second copy of the maths |
+| `sweep_contrast.py` | worst glyph contrast across a full revolution |
+| `videopause.mjs` | only the active `<video>` decodes; the inactive loop is paused, not merely transparent |
+| `contrast_gate.py [desktop\|mobile]` | every variant meets the contrast floor on both viewports |

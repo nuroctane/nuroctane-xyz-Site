@@ -1,9 +1,21 @@
 /* ═══════════════════════════════════════════════════════════════════════════
    Wallpaper layer + background switcher.
 
-   WebGL ports of Wallpaper Engine workshop scenes:
-     abstract  item 2207944762  "Black & White Abstract"
-     clouds    item 3612455067  "Black & White Clouds"
+   WebGL ports of Wallpaper Engine workshop scenes, plus two that ship as a
+   finished loop rather than a shader (they get a <video> layer, below):
+
+     abstract    2207944762  Black & White Abstract    shader
+     clouds      3612455067  Black & White Clouds      shader
+     japanese                Black & White Japanese    shader
+     forest                  Black & White Forest      shader
+     sakura                  White Sakura              shader
+     blossom                 White Sakura in Fog       shader
+     waves                   Black Waves               shader
+     roses       2549515627  Black Roses               shader
+     lattice     1760275007  Black Lattice             shader
+     sweep       3036482397  Black & White Sweep       shader (live field)
+     dots        3759381233  Black & White Dots        video
+     topography  3636465548  White Topography          video
 
    Layer order inside the page: plate x2 (cross-fading) -> canvas -> the page's
    own scrim ::after at z-index -1.
@@ -36,6 +48,22 @@
 }
 
 .bb-wallpaper-plate[data-active='true'] { opacity: 1; }
+
+/* ── Video layers: the two Wallpaper Engine scenes that ship as a finished
+      loop rather than a shader. Same cross-fade contract as a plate, and the
+      poster (the variant's `plate`) covers the gap until the first frame
+      decodes, so a switch never shows an empty background. ────────────────── */
+.bb-wallpaper-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  transition: opacity 600ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1));
+}
+
+.bb-wallpaper-video[data-active='true'] { opacity: 1; }
 
 /* ── Canvas: paints the live scene over the matching plate. Hidden until the
       scene's first frame, so a variant switch never shows a stale or empty

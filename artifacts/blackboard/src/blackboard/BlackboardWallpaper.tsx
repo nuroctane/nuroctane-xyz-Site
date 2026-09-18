@@ -22,6 +22,7 @@ export function BlackboardWallpaper() {
   const { variant, plate, narrow, activate } = useWallpaper();
   const reduced = useReducedMotion();
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const hostRef = useRef<HTMLDivElement>(null);
   const glRef = useRef<WebGLRenderingContext | null>(null);
   const [painted, setPainted] = useState(false);
   // Bumped when the browser hands back a lost context, to remount the scene.
@@ -66,13 +67,46 @@ export function BlackboardWallpaper() {
     };
   }, []);
 
-  // Mount the active scene onto that context.
+  // Drive playback explicitly instead of leaning on autoPlay. An inactive
+  // <video> is only faded to opacity 0, which does not stop it: autoplaying
+  // both would keep two 1080p decoders busy for the whole visit, on a phone,
+  // for a background nobody is looking at. Only the active loop runs, and it
+  // stops with the tab.
+  useEffect(() => {
+    const nodes = hostRef.current?.querySelectorAll('video');
+    if (!nodes?.length) return undefined;
+
+    const sync = () => {
+      nodes.forEach(node => {
+        const wanted = node.dataset.active === 'true' && !reduced && !document.hidden;
+        if (wanted) {
+          // Rejects when the element is torn down mid-play (a fast switch), so
+          // the rejection is expected rather than a fault worth surfacing.
+          void node.play().catch(() => {});
+        } else {
+          node.pause();
+        }
+      });
+    };
+
+    sync();
+    document.addEventListener('visibilitychange', sync);
+    return () => document.removeEventListener('visibilitychange', sync);
+  }, [narrow, reduced, variant]);
+
+  // Mount the active scene onto that context. A video variant has no runtime —
+  // its element draws the frame — so the canvas is left transparent and the
+  // scene is never mounted at all.
   useEffect(() => {
     const canvas = canvasRef.current;
     const gl = glRef.current;
     if (!canvas || !gl || gl.isContextLost()) return undefined;
 
     const scene = VARIANTS[variant];
+    if (scene.video) {
+      setPainted(false);
+      return undefined;
+    }
 
     setPainted(false);
     const program = createProgram(gl, scene.vertex, scene.fragment);
@@ -173,21 +207,49 @@ export function BlackboardWallpaper() {
   }, [generation, narrow, reduced, variant]);
 
   return (
-    <div className="bb-wallpaper" aria-hidden="true">
+    <div className="bb-wallpaper" aria-hidden="true" ref={hostRef}>
       {/* Every plate is a real layer so the cross-fade has both ends present.
           The source is set here rather than in a stylesheet per variant: with
           two wallpapers that was merely duplication, with nine it is the thing
           that silently breaks — a variant with no CSS rule renders no plate at
           all, and the background goes blank wherever WebGL cannot paint. */}
-      {WALLPAPER_ORDER.map(id => (
-        <div
-          key={id}
-          className="bb-wallpaper-plate"
-          data-variant={id}
-          data-active={id === variant}
-          style={{ backgroundImage: `url('${plate(id)}')` }}
-        />
-      ))}
+      {WALLPAPER_ORDER.map(id => {
+        const scene = VARIANTS[id];
+        // Video scenes get a real element rather than a WebGL texture: the
+        // master is already a finished loop, so sampling it into a texture each
+        // frame would copy every frame to redraw what the element decodes for
+        // free. Muted, so the browser's autoplay policy permits it to start —
+        // it is a background, not the score.
+        if (scene.video) {
+          const poster = plate(id);
+          // No autoPlay: the effect above owns playback, so the inactive loop
+          // never decodes. preload is deferred for the same reason — the poster
+          // carries the cross-fade either way.
+          return (
+            <video
+              key={id}
+              className="bb-wallpaper-video"
+              data-active={id === variant}
+              src={narrow ? scene.video.mobile : scene.video.desktop}
+              poster={poster}
+              muted
+              loop
+              playsInline
+              preload={id === variant ? 'auto' : 'none'}
+              disablePictureInPicture
+            />
+          );
+        }
+        return (
+          <div
+            key={id}
+            className="bb-wallpaper-plate"
+            data-variant={id}
+            data-active={id === variant}
+            style={{ backgroundImage: `url('${plate(id)}')` }}
+          />
+        );
+      })}
       <canvas ref={canvasRef} className="bb-wallpaper-canvas" data-painted={painted} />
     </div>
   );

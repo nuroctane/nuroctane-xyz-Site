@@ -25,7 +25,12 @@ export type WallpaperId =
   | 'forest'
   | 'sakura'
   | 'blossom'
-  | 'waves';
+  | 'waves'
+  | 'roses'
+  | 'lattice'
+  | 'sweep'
+  | 'dots'
+  | 'topography';
 
 export interface WallpaperRuntime {
   /** Update uniforms and draw. Returns false when the plate is not decoded yet. */
@@ -35,6 +40,39 @@ export interface WallpaperRuntime {
   dispose(gl: WebGLRenderingContext): void;
 }
 
+/**
+ * A moving-image source. The wallpaper layer renders these as a real <video>
+ * element rather than through WebGL: the source is already a finished,
+ * full-frame animation, so uploading it as a texture every frame would spend a
+ * copy per frame to reproduce exactly what the element draws for free, with
+ * hardware decoding and the browser's own power management.
+ *
+ * `plate` still applies to these variants — it is a poster frame, used for the
+ * CSS layer, the reduced-motion still, and the luminance field the ink reads.
+ */
+export interface WallpaperVideo {
+  desktop: string;
+  mobile: string;
+}
+
+/**
+ * Fill a luminance grid for a variant whose background moves, where no still
+ * image could predict the pixels under the UI.
+ *
+ * Called with the grid the ink sampler reads, so writing into `data` in place
+ * changes what `sampleRect` sees without changing the field's identity — which
+ * is what keeps the ink from re-registering its listeners on every tick. The
+ * grid is in SCREEN space and `aspect` is the viewport's, since a live variant
+ * paints the viewport directly rather than cover-fitting a plate.
+ */
+export type LiveField = (
+  data: Float32Array,
+  cols: number,
+  rows: number,
+  timeSeconds: number,
+  aspect: number,
+) => void;
+
 export interface WallpaperVariant {
   id: WallpaperId;
   label: string;
@@ -42,6 +80,10 @@ export interface WallpaperVariant {
   plate: { desktop: string; mobile: string };
   vertex: string;
   fragment: string;
+  /** Present when the scene is a video rather than a WebGL port. */
+  video?: WallpaperVideo;
+  /** Present when the background moves in a way a still plate cannot describe. */
+  liveField?: LiveField;
   /**
    * The sRGB tone curve the fragment shader applies to the plate, so the
    * luminance field behind the adaptive ink predicts what actually reaches the
@@ -1225,6 +1267,320 @@ export const WAVES: WallpaperVariant = {
   },
 };
 
+/* ═══════════════════════════════════════════════════════════════════════════
+   SHARED SINGLE-PLATE SCENE
+
+   One texture, drawn full-frame, with the variant's fragment doing the work.
+   `frame` refuses to draw until the plate has decoded, which is what keeps the
+   canvas transparent over the CSS plate rather than flashing black.
+   ═══════════════════════════════════════════════════════════════════════════ */
+function createPlateScene(
+  gl: WebGLRenderingContext,
+  program: WebGLProgram,
+  plate: { desktop: string; mobile: string },
+  mobile: boolean,
+): WallpaperRuntime | null {
+  gl.uniform1i(gl.getUniformLocation(program, 'uImage'), 0);
+  const uTime = gl.getUniformLocation(program, 'uTime');
+  const uAspect = gl.getUniformLocation(program, 'uAspect');
+  const uImageAspect = gl.getUniformLocation(program, 'uImageAspect');
+
+  const image = loadImage(mobile ? plate.mobile : plate.desktop);
+  let texture: WebGLTexture | null = null;
+  let ready = false;
+  let failed = false;
+
+  image.onload = () => {
+    // A full-frame plate is never tiled, and coverUv keeps its samples well
+    // inside the image, so CLAMP is both correct and — for the NPOT sizes every
+    // plate here has — the only value that samples at all under WebGL 1.
+    texture = uploadTexture(gl, 0, image, false, false);
+    gl.uniform1f(uImageAspect, image.naturalWidth / image.naturalHeight);
+    ready = true;
+  };
+  image.onerror = () => {
+    failed = true;
+  };
+
+  return {
+    frame(context, time) {
+      if (!ready) return false;
+      context.uniform1f(uTime, time);
+      context.uniform1f(uAspect, context.drawingBufferWidth / context.drawingBufferHeight);
+      context.drawArrays(context.TRIANGLE_STRIP, 0, 4);
+      return true;
+    },
+    alive: () => !failed,
+    dispose(context) {
+      image.onload = null;
+      image.onerror = null;
+      if (texture) context.deleteTexture(texture);
+    },
+  };
+}
+
+/** sRGB channel -> linear light. Mirrors luminance.ts, kept local to avoid a
+ *  variants -> luminance import edge from a module the field builder already
+ *  depends on. */
+function linearFromSrgb(channel: number): number {
+  return channel <= 0.04045 ? channel / 12.92 : Math.pow((channel + 0.055) / 1.055, 2.4);
+}
+
+const ROSES_PLATE = {
+  desktop: '/assets/blackboard/roses/roses.webp',
+  mobile: '/assets/blackboard/roses/roses-portrait.webp',
+};
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ROSES — workshop 2549515627
+   A dense near-black rose wall. The source runs four effects over a single
+   plate: foliagesway (a per-vertex sway driven off a noise map), a shine/bloom
+   pass, filmgrain and a tint. The plate is already monochrome and the scene's
+   tint is a no-op on it, so the port keeps the two that are visible on a still:
+   a small low-frequency uv wobble standing in for the sway, and grain.
+   ═══════════════════════════════════════════════════════════════════════════ */
+const ROSES_FRAGMENT = `
+${PRECISION}
+varying vec2 vUv;
+uniform sampler2D uImage;
+uniform float uTime;
+uniform float uAspect;
+uniform float uImageAspect;
+${COMMON_GLSL}
+
+float grain(vec2 p) {
+  return frac(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+}
+
+// foliagesway, reduced to a displacement: two incommensurate frequencies so the
+// field never settles into a visible beat.
+vec2 sway(vec2 uv, float t) {
+  return uv + vec2(
+    sin(uv.y * 9.0 + t * 0.55) * 0.0024,
+    cos(uv.x * 7.0 + t * 0.41) * 0.0019
+  );
+}
+
+void main() {
+  vec2 uv = coverUv(vUv);
+  vec3 col = texture2D(uImage, sway(uv, uTime)).rgb;
+  // filmgrain, faint enough to read as film rather than noise
+  col += (grain(uv * uAspect * 900.0 + frac(uTime) * 91.0) - 0.5) * 0.032;
+  gl_FragColor = vec4(monochrome(col), 1.0);
+}
+`;
+
+export const ROSES: WallpaperVariant = {
+  id: 'roses',
+  label: 'Black Roses',
+  plate: ROSES_PLATE,
+  vertex: VERTEX_SRC,
+  fragment: ROSES_FRAGMENT,
+  toneMap: srgb => srgb,
+  create: (gl, program, mobile) => createPlateScene(gl, program, ROSES_PLATE, mobile),
+};
+
+const LATTICE_PLATE = {
+  desktop: '/assets/blackboard/lattice/lattice.webp',
+  mobile: '/assets/blackboard/lattice/lattice-portrait.webp',
+};
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   LATTICE — workshop 1760275007 ("Black")
+   A near-black angular truss: a brushed base plus three stacked beam layers,
+   a fog particle pass and a shake effect. The plate is those four layers
+   composited at the user's own preset values (saturation 0, brightness 58,
+   contrast 49), so what is stored is what they see running the scene.
+
+   The fog layer is the only thing that moves, and it moves slowly — the preset
+   sets rate 100 / smoothrate 13, i.e. long, smooth drifts. Ported as a slow
+   two-axis parallax rather than as particles.
+   ═══════════════════════════════════════════════════════════════════════════ */
+const LATTICE_FRAGMENT = `
+${PRECISION}
+varying vec2 vUv;
+uniform sampler2D uImage;
+uniform float uTime;
+uniform float uAspect;
+uniform float uImageAspect;
+${COMMON_GLSL}
+
+float grain(vec2 p) {
+  return frac(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+}
+
+void main() {
+  vec2 uv = coverUv(vUv);
+  // smoothrate 13 across rate 100 — a drift slow enough to read as fog, not as
+  // a moving image.
+  vec2 drift = vec2(sin(uTime * 0.052), cos(uTime * 0.037)) * 0.0075;
+  vec3 col = texture2D(uImage, uv + drift).rgb;
+  // A second, deeper sample for the fog body, so the drift has volume rather
+  // than reading as the whole picture sliding.
+  col = mix(col, texture2D(uImage, uv + drift * 2.6).rgb, 0.34);
+  col += (grain(uv * uAspect * 820.0 + frac(uTime) * 57.0) - 0.5) * 0.022;
+  gl_FragColor = vec4(monochrome(col), 1.0);
+}
+`;
+
+export const LATTICE: WallpaperVariant = {
+  id: 'lattice',
+  label: 'Black Lattice',
+  plate: LATTICE_PLATE,
+  vertex: VERTEX_SRC,
+  fragment: LATTICE_FRAGMENT,
+  toneMap: srgb => srgb,
+  create: (gl, program, mobile) => createPlateScene(gl, program, LATTICE_PLATE, mobile),
+};
+
+const SWEEP_PLATE = {
+  desktop: '/assets/blackboard/sweep/sweep.webp',
+  mobile: '/assets/blackboard/sweep/sweep-portrait.webp',
+};
+
+/** One full clockwise turn, matching the source's `rotate 60s linear infinite`. */
+const SWEEP_PERIOD = 60.0;
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   SWEEP — workshop 3036482397, a Web wallpaper
+
+   The source is a CSS one-liner, so this is a port of the actual code rather
+   than a reconstruction:
+
+     div { background-image: conic-gradient(white, black);
+           400vw x 400vw, centred;
+           animation: rotate 60s linear infinite }      // -90deg -> 270deg
+
+   A conic gradient's angle is measured from 12 o'clock and increases
+   clockwise, and the animation sweeps a full turn, so the live shader evaluates
+   the gradient analytically at the current rotation instead of animating a
+   texture. `liveField` mirrors the same maths for the ink: because the bright
+   wedge physically crosses the UI once per turn, the ink polarity has to follow
+   it, which is exactly the clockwise light/dark behaviour the scene is wanted
+   for.
+
+   The gradient is drawn in the SAME square space as the source (a square far
+   larger than the viewport, turning about its centre), which is why the angle
+   uses an aspect-corrected vector about the viewport's centre.
+   ═══════════════════════════════════════════════════════════════════════════ */
+const SWEEP_FRAGMENT = `
+${PRECISION}
+varying vec2 vUv;
+uniform float uTime;
+uniform float uAspect;
+// Declared for the COMMON_GLSL block this splices in, not because this shader
+// samples anything: coverUv() reads it, and a fragment that omits it fails to
+// compile — which costs the WHOLE program, silently leaving the static plate on
+// screen. See the shader-declaration test.
+uniform float uImageAspect;
+${COMMON_GLSL}
+
+void main() {
+  float rot = uTime * (2.0 * PI_HALF * 2.0 / ${SWEEP_PERIOD.toFixed(1)});
+  vec2 p = (vUv - 0.5) * vec2(uAspect, 1.0);
+  // atan(x, -y): 0 at 12 o'clock, increasing clockwise, matching CSS conic.
+  float ang = atan(p.x, -p.y);
+  float t = frac((ang - rot) / (4.0 * PI_HALF));
+  gl_FragColor = vec4(vec3(1.0 - t), 1.0);
+}
+`;
+
+export const SWEEP: WallpaperVariant = {
+  id: 'sweep',
+  label: 'Black & White Sweep',
+  plate: SWEEP_PLATE,
+  vertex: VERTEX_SRC,
+  fragment: SWEEP_FRAGMENT,
+  toneMap: srgb => srgb,
+  create(gl, program) {
+    const uTime = gl.getUniformLocation(program, 'uTime');
+    const uAspect = gl.getUniformLocation(program, 'uAspect');
+    // Nothing to load: the gradient is pure maths, so the canvas can paint on
+    // its first frame instead of waiting on a decode.
+    return {
+      frame(context, time) {
+        context.uniform1f(uTime, time);
+        context.uniform1f(uAspect, context.drawingBufferWidth / context.drawingBufferHeight);
+        context.drawArrays(context.TRIANGLE_STRIP, 0, 4);
+        return true;
+      },
+      alive: () => true,
+      dispose() {},
+    };
+  },
+  liveField(data, cols, rows, timeSeconds, aspect) {
+    const rot = timeSeconds * ((Math.PI * 2) / SWEEP_PERIOD);
+    const TAU = Math.PI * 2;
+    for (let row = 0; row < rows; row++) {
+      const y = (row + 0.5) / rows - 0.5;
+      for (let col = 0; col < cols; col++) {
+        const x = (((col + 0.5) / cols) - 0.5) * aspect;
+        const ang = Math.atan2(x, -y);
+        let t = ((ang - rot) % TAU) / TAU;
+        if (t < 0) t += 1;
+        // The field is linear-light, and the gradient is authored in sRGB.
+        data[row * cols + col] = linearFromSrgb(1 - t);
+      }
+    }
+  },
+};
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   VIDEO SCENES — workshops 3759381233 and 3636465548
+
+   Both ship as a finished 4K60 H.264 loop, so there is no shader work to do:
+   the wallpaper layer plays them in a real <video>. These entries therefore
+   carry no WebGL runtime — `create` returning null is what tells the layer to
+   leave the canvas transparent and let the element show — and their `plate` is
+   a poster frame, which is what the CSS layer cross-fades and what the ink
+   measures.
+   ═══════════════════════════════════════════════════════════════════════════ */
+const VIDEO_FRAGMENT = `
+${PRECISION}
+varying vec2 vUv;
+void main() {
+  gl_FragColor = vec4(0.0, 0.0, 0.0, 0.0);
+}
+`;
+
+const DOTS_PLATE = {
+  desktop: '/assets/blackboard/dots/dots.webp',
+  mobile: '/assets/blackboard/dots/dots-portrait.webp',
+};
+
+export const DOTS: WallpaperVariant = {
+  id: 'dots',
+  label: 'Black & White Dots',
+  plate: DOTS_PLATE,
+  vertex: VERTEX_SRC,
+  fragment: VIDEO_FRAGMENT,
+  video: {
+    desktop: '/assets/blackboard/dots/dots-1920.mp4',
+    mobile: '/assets/blackboard/dots/dots-960.mp4',
+  },
+  toneMap: srgb => srgb,
+  create: () => null,
+};
+
+const TOPOGRAPHY_PLATE = {
+  desktop: '/assets/blackboard/topography/topography.webp',
+  mobile: '/assets/blackboard/topography/topography-portrait.webp',
+};
+
+export const TOPOGRAPHY: WallpaperVariant = {
+  id: 'topography',
+  label: 'White Topography',
+  plate: TOPOGRAPHY_PLATE,
+  vertex: VERTEX_SRC,
+  fragment: VIDEO_FRAGMENT,
+  video: {
+    desktop: '/assets/blackboard/topography/topography-1920.mp4',
+    mobile: '/assets/blackboard/topography/topography-960.mp4',
+  },
+  toneMap: srgb => srgb,
+  create: () => null,
+};
+
 export const VARIANTS: Record<WallpaperId, WallpaperVariant> = {
   abstract: ABSTRACT,
   clouds: CLOUDS,
@@ -1233,6 +1589,11 @@ export const VARIANTS: Record<WallpaperId, WallpaperVariant> = {
   sakura: SAKURA,
   blossom: BLOSSOM,
   waves: WAVES,
+  roses: ROSES,
+  lattice: LATTICE,
+  sweep: SWEEP,
+  dots: DOTS,
+  topography: TOPOGRAPHY,
 };
 
 /** Cycle order for the switcher. The added scenes follow the two originals. */
@@ -1244,6 +1605,11 @@ export const WALLPAPER_ORDER: WallpaperId[] = [
   'sakura',
   'blossom',
   'waves',
+  'roses',
+  'lattice',
+  'sweep',
+  'dots',
+  'topography',
 ];
 
 export function isWallpaperId(value: unknown): value is WallpaperId {

@@ -124,6 +124,38 @@ export function WallpaperProvider({ children }: { children: ReactNode }) {
     const scene = VARIANTS[variant];
     let cancelled = false;
 
+    // A live variant paints the viewport directly, so there is no plate that
+    // could predict it. Size the grid to the viewport instead — which makes
+    // sampleRect's cover mapping the identity, so a cell is exactly the same
+    // fraction of the screen — and let the variant's own `liveField` fill it.
+    if (scene.liveField) {
+      const cols = 48;
+      const rows = 27;
+      const build = () => {
+        const width = Math.max(1, window.innerWidth);
+        const height = Math.max(1, window.innerHeight);
+        const live: LuminanceField = {
+          cols,
+          rows,
+          data: new Float32Array(cols * rows),
+          imageWidth: width,
+          imageHeight: height,
+        };
+        scene.liveField?.(live.data, cols, rows, performance.now() / 1000, width / height);
+        if (!cancelled) setField(live);
+      };
+      build();
+      // No decode to redo on a resize, so rebuilding is cheap and the mapping
+      // stays true to the viewport after a rotation or a chrome collapse.
+      window.addEventListener('resize', build);
+      window.addEventListener('orientationchange', build);
+      return () => {
+        cancelled = true;
+        window.removeEventListener('resize', build);
+        window.removeEventListener('orientationchange', build);
+      };
+    }
+
     const image = new Image();
     image.decoding = 'async';
     image.onload = () => {
@@ -162,12 +194,31 @@ export function WallpaperProvider({ children }: { children: ReactNode }) {
  *
  * Returns `'light'` until the field is ready — the site's own default — so
  * first paint never flashes a wrong colour.
+ *
+ * For a LIVE variant the grid is refilled in place on a timer and re-measured,
+ * because the pixels behind the element keep moving. In-place mutation is
+ * deliberate: `field` keeps its identity, so this effect does not tear down and
+ * re-register its listeners several times a second.
  */
 export function useAdaptiveInk<T extends HTMLElement>(): readonly [RefObject<T | null>, InkPolarity] {
   const { field, variant } = useWallpaper();
   const ref = useRef<T>(null);
   const [ink, setInkState] = useState<InkPolarity>('light');
   const inkRef = useRef<InkPolarity>('light');
+
+  // Sampled at a few Hz: the ink only has to keep up with the eye noticing the
+  // background changed colour underneath it, not with the frame rate.
+  const liveTick = useCallback((schedule: () => void) => {
+    const live = VARIANTS[variant].liveField;
+    if (!live || !field) return undefined;
+    const id = window.setInterval(() => {
+      const width = Math.max(1, window.innerWidth);
+      const height = Math.max(1, window.innerHeight);
+      live(field.data, field.cols, field.rows, performance.now() / 1000, width / height);
+      schedule();
+    }, 180);
+    return () => window.clearInterval(id);
+  }, [field, variant]);
 
   useEffect(() => {
     if (!field) return undefined;
@@ -225,15 +276,17 @@ export function useAdaptiveInk<T extends HTMLElement>(): readonly [RefObject<T |
     const observer = new ResizeObserver(schedule);
     const element = ref.current;
     if (element) observer.observe(element);
+    const stopLive = liveTick(schedule);
     return () => {
       if (frame) window.cancelAnimationFrame(frame);
       observer.disconnect();
+      stopLive?.();
       window.removeEventListener('resize', schedule);
       window.removeEventListener('orientationchange', schedule);
       window.visualViewport?.removeEventListener('resize', schedule);
       document.removeEventListener('scroll', schedule, { capture: true });
     };
-  }, [field, variant]);
+  }, [field, variant, liveTick]);
 
   return [ref, ink] as const;
 }

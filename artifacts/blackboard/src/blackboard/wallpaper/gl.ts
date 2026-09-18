@@ -78,6 +78,47 @@ export function createQuad(gl: WebGLRenderingContext, program: WebGLProgram): We
   return buffer;
 }
 
+/** Intrinsic pixel size of any TexImageSource. */
+function sourceSize(source: TexImageSource): { width: number; height: number } {
+  if (typeof HTMLVideoElement !== 'undefined' && source instanceof HTMLVideoElement) {
+    return { width: source.videoWidth, height: source.videoHeight };
+  }
+  if (typeof HTMLImageElement !== 'undefined' && source instanceof HTMLImageElement) {
+    return { width: source.naturalWidth, height: source.naturalHeight };
+  }
+  const sized = source as { width?: number; height?: number };
+  return { width: sized.width ?? 0, height: sized.height ?? 0 };
+}
+
+function isPowerOfTwo(value: number): boolean {
+  return value > 0 && (value & (value - 1)) === 0;
+}
+
+/**
+ * The texture flags that are actually legal for a source of this size.
+ *
+ * Under WebGL 1 a non-power-of-two texture is INCOMPLETE — and an incomplete
+ * texture samples as solid BLACK, with no GL error — if it uses REPEAT wrapping
+ * or a mipmapped minification filter. Both are silently accepted by the API, so
+ * the failure surfaces only as a wallpaper that renders as an empty black field.
+ *
+ * That is not hypothetical: every photographic plate here is NPOT (2560x1080,
+ * 1920x1080, 2560x1440), and a full-frame plate uploaded with REPEAT rendered as
+ * a black canvas over a perfectly good plate, hiding it entirely.
+ *
+ * Exported and pure so the rule can be tested directly, rather than only through
+ * the accident of a caller passing the right flag.
+ */
+export function textureMode(
+  width: number,
+  height: number,
+  repeat: boolean,
+  mipmap: boolean,
+): { repeat: boolean; mipmap: boolean } {
+  const legal = isPowerOfTwo(width) && isPowerOfTwo(height);
+  return { repeat: repeat && legal, mipmap: mipmap && legal };
+}
+
 export function uploadTexture(
   gl: WebGLRenderingContext,
   index: number,
@@ -90,12 +131,20 @@ export function uploadTexture(
   gl.bindTexture(gl.TEXTURE_2D, tex);
   gl.pixelStorei(gl.UNPACK_PREMULTIPLY_ALPHA_WEBGL, false);
   gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, gl.RGBA, gl.UNSIGNED_BYTE, source);
-  const wrap = repeat ? gl.REPEAT : gl.CLAMP_TO_EDGE;
+
+  // Decided from the source itself, not from the caller's belief about it: a
+  // caller that asks for tiling on a photographic plate would otherwise get an
+  // incomplete texture and no warning at all. Tiling stays available for the
+  // procedural maps that are genuinely POT (256x256, 32x32), which is where it
+  // is actually wanted.
+  const { width, height } = sourceSize(source);
+  const mode = textureMode(width, height, repeat, mipmap);
+  const wrap = mode.repeat ? gl.REPEAT : gl.CLAMP_TO_EDGE;
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, wrap);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, wrap);
-  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, mipmap ? gl.LINEAR_MIPMAP_LINEAR : gl.LINEAR);
+  gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, mode.mipmap ? gl.LINEAR_MIPMAP_LINEAR : gl.LINEAR);
   gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
-  if (mipmap) gl.generateMipmap(gl.TEXTURE_2D);
+  if (mode.mipmap) gl.generateMipmap(gl.TEXTURE_2D);
   gl.activeTexture(gl.TEXTURE0);
   return tex;
 }

@@ -47,6 +47,45 @@ const GLYPHS: Record<WallpaperId, string[]> = {
   waves: [
     'M2.5 20.5c2.5 0 4.5-2 4.5-4.5 0-3.5 3-6.5 6.5-6.5 2 0 3.5 1.5 3.5 3.5 0 1.6-1.3 2.9-2.9 2.9-1.2 0-2.1-0.9-2.1-2.1',
   ],
+  // Bloom — two turns of a spiral, for the black rose wall. Deliberately not a
+  // petal ring: that is the sakura glyph.
+  roses: [
+    'M12 7.4a4.6 4.6 0 1 0 4.6 4.6',
+    'M12 10.1a1.9 1.9 0 1 0 1.9 1.9',
+  ],
+  // Truss — uprights crossed by diagonals, for the angular lattice.
+  lattice: [
+    'M5 3.5v17',
+    'M12 3.5v17',
+    'M19 3.5v17',
+    'M5 8l14 5.5',
+    'M19 8L5 13.5',
+    'M5 14.5l14 5',
+  ],
+  // Wedge — a radius pair inside an arc, for the rotating conic sweep.
+  sweep: [
+    'M12 4a8 8 0 0 1 8 8',
+    'M12 12V4',
+    'M12 12h8',
+  ],
+  // Grid — nine dots, for the density-modulated dot field.
+  dots: [
+    'M5.4 6.5a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0-2.2 0',
+    'M10.9 6.5a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0-2.2 0',
+    'M16.4 6.5a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0-2.2 0',
+    'M5.4 12a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0-2.2 0',
+    'M10.9 12a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0-2.2 0',
+    'M16.4 12a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0-2.2 0',
+    'M5.4 17.5a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0-2.2 0',
+    'M10.9 17.5a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0-2.2 0',
+    'M16.4 17.5a1.1 1.1 0 1 0 2.2 0a1.1 1.1 0 1 0-2.2 0',
+  ],
+  // Contours — closed rings, for the topographic map.
+  topography: [
+    'M4 12c0-4.1 3.4-7 8-7s8 2.9 8 7-3.4 7-8 7-8-2.9-8-7',
+    'M7.2 12c0-2.5 2.1-4.4 4.8-4.4s4.8 1.9 4.8 4.4-2.1 4.4-4.8 4.4S7.2 14.5 7.2 12',
+    'M10.3 12c0-1.1 0.8-1.9 1.7-1.9s1.7 0.8 1.7 1.9-0.8 1.9-1.7 1.9-1.7-0.8-1.7-1.9',
+  ],
 };
 
 export function BlackboardWallpaperToggle() {
