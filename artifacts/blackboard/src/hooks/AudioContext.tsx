@@ -10,6 +10,7 @@ import {
 } from 'react';
 import type { Track } from '../types';
 import { SITE_MODE } from '../config/siteMode';
+import { blackboardAudioPath, blackboardMusicPick } from '../data/blackboardMusic';
 
 /* ═══════════════════════════════════════════════════════════════════════════
    AUDIO — one <audio> element for the whole app.
@@ -33,18 +34,26 @@ const PLAYLISTS: Record<Track, string[]> = {
   ],
 };
 
-// Blackboard deliberately has one resident track. Switching SITE_MODE back to
-// digital-sea restores the original soundtrack without changing the player.
+// Blackboard has no fixed resident track. One is drawn per page view from the
+// blackboard-exclusive library — including the original `difference (interlude)`
+// — and it is the whole score for that visit: no skip, no next. Both cues
+// resolve to the same file, so whichever one the page asks for, the visitor
+// hears the track they were dealt. Switching SITE_MODE back to digital-sea
+// restores the original soundtrack without touching the player.
+const BLACKBOARD_FILE = blackboardAudioPath(blackboardMusicPick());
+
 const BLACKBOARD_PLAYLISTS: Record<Track, string[]> = {
-  main: ['difference (interlude) [540300138].mp3'],
-  blog: ['difference (interlude) [540300138].mp3'],
+  main: [BLACKBOARD_FILE],
+  blog: [BLACKBOARD_FILE],
 };
 
 const ACTIVE_PLAYLISTS = SITE_MODE === 'blackboard' ? BLACKBOARD_PLAYLISTS : PLAYLISTS;
 
+// Encode per path segment: blackboard tracks live in a music/ subdirectory, and
+// a blanket encodeURIComponent would escape the separator into %2F.
 const src = (name: string) =>
   new URL(
-    `${import.meta.env.BASE_URL}assets/nodes/${encodeURIComponent(name)}`,
+    `${import.meta.env.BASE_URL}assets/nodes/${name.split('/').map(encodeURIComponent).join('/')}`,
     window.location.href,
   ).href;
 

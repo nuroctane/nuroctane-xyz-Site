@@ -1,14 +1,12 @@
 import { Pause, Play, Volume2, VolumeX } from 'lucide-react';
 import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
 import { useAudioCtx } from '../hooks/AudioContext';
+import { blackboardArtworkSrc, blackboardMusicPick } from '../data/blackboardMusic';
 
-const TRACK = {
-  artist: 'XXXTENTACION',
-  title: 'difference (interlude)',
-  album: 'SKINS',
-  artwork: 'https://i1.sndcdn.com/artworks-000453716607-5n8yeu-t500x500.jpg',
-  source: 'https://soundcloud.com/jahseh-onfroy/difference-interlude',
-};
+/* The library draw for this page view, shared with AudioContext through the
+ * same module-level pick — so the panel always labels the file actually
+ * playing. There is no chooser: the visitor gets one track per visit. */
+const TRACK = blackboardMusicPick();
 
 const formatTime = (seconds: number) => {
   if (!Number.isFinite(seconds) || seconds < 0) return '0:00';
@@ -74,14 +72,16 @@ export function BlackboardPlayer() {
 
   return <section className="bb-player" aria-label="Blackboard audio player" data-ink="light">
     <div className="bb-player-meta">
-      <div className="bb-player-artwork"><img src={TRACK.artwork} alt="SKINS album artwork" /></div>
+      <div className="bb-player-artwork">
+        {/* Decorative: the title and artist sit immediately beside it. */}
+        <img src={blackboardArtworkSrc(TRACK)} alt="" />
+      </div>
       <div className="bb-player-copy">
-        <span className="bb-player-kicker">{TRACK.album}</span>
+        {TRACK.album && <span className="bb-player-kicker">{TRACK.album}</span>}
         <span className="bb-player-title-viewport" ref={titleViewportRef}>
           <strong className="bb-player-title" ref={titleRef} data-marquee={marquee}>{TRACK.title}</strong>
         </span>
         <span className="bb-player-artist">{TRACK.artist}</span>
-        <a className="bb-player-source" href={TRACK.source} target="_blank" rel="noreferrer">SOUNDCLOUD ↗</a>
       </div>
     </div>
     <div className="bb-player-scrub">
