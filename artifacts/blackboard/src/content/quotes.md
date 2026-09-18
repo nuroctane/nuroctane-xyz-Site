@@ -4,7 +4,7 @@
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (76)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (54)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (92)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (93)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (30)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (93)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
@@ -1272,6 +1272,10 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > 
 > everything matters. the more thoroughly you understand how this person behaves, the sooner you can become this person.
 > — @conductr_
+
+> i love to antistalk, which is, learning a person’s routine in order to avoid them.
+> — @sunlove
+
 
 
 
