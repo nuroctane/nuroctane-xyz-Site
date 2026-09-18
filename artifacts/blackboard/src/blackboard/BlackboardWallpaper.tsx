@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
-import { createProgram, destroyProgram } from './wallpaper/gl';
+import { createProgram, destroyProgram, readRenderedPixels } from './wallpaper/gl';
+import { buildLuminanceFieldFromPixels } from './wallpaper/luminance';
 import { VARIANTS, WALLPAPER_ORDER, mountVariant } from './wallpaper/variants';
 import { useReducedMotion, useWallpaper } from './WallpaperProvider';
 import './blackboard-wallpaper.css';
@@ -19,7 +20,7 @@ import './blackboard-wallpaper.css';
    settled still; no WebGL at all falls back to the plates.
    ═══════════════════════════════════════════════════════════════════════════ */
 export function BlackboardWallpaper() {
-  const { variant, plate, narrow, activate } = useWallpaper();
+  const { variant, plate, narrow, activate, publishField } = useWallpaper();
   const reduced = useReducedMotion();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const hostRef = useRef<HTMLDivElement>(null);
@@ -131,6 +132,23 @@ export function BlackboardWallpaper() {
     resize();
     gl.clearColor(0, 0, 0, 0);
 
+    // Measure the field from a frame this scene actually rendered, once, and hand
+    // it to the provider so the ink is resolved from the finished image rather
+    // than from the plate it samples. Re-run on a resize or a variant switch, the
+    // same events that invalidate the plate-backed field.
+    const publishRendered = (seconds: number) => {
+      const measured = readRenderedPixels(gl, context => runtime.frame(context, seconds));
+      if (!measured) return;
+      const built = buildLuminanceFieldFromPixels(
+        measured.pixels,
+        measured.width,
+        measured.height,
+        window.innerWidth,
+        window.innerHeight,
+      );
+      if (built) publishField(variant, built);
+    };
+
     let raf = 0;
     let lastDraw = 0;
     let running = false;
@@ -143,6 +161,9 @@ export function BlackboardWallpaper() {
       if (drawn && !announced) {
         announced = true;
         setPainted(true);
+        // Same tick as the first paint: the scene is decoded and has drawn, which
+        // is exactly the state the ink decision needs to see.
+        publishRendered(seconds);
       }
       return drawn;
     };
@@ -192,7 +213,12 @@ export function BlackboardWallpaper() {
 
     const onResize = () => {
       resize();
-      if (reduced) renderFrame(37);
+      if (reduced) {
+        renderFrame(37);
+        publishRendered(37);
+      } else {
+        publishRendered(performance.now() / 1000);
+      }
     };
     window.addEventListener('resize', onResize);
 
@@ -204,7 +230,7 @@ export function BlackboardWallpaper() {
       gl.deleteBuffer(quad);
       destroyProgram(gl, program);
     };
-  }, [generation, narrow, reduced, variant]);
+  }, [generation, narrow, reduced, variant, publishField]);
 
   return (
     <div className="bb-wallpaper" aria-hidden="true" ref={hostRef}>

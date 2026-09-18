@@ -277,3 +277,92 @@ export function makeNormalCanvas(size: number): HTMLCanvasElement | null {
   ctx.putImageData(img, 0, 0);
   return canvas;
 }
+
+/**
+ * Render the active scene into an offscreen framebuffer and read the pixels
+ * back, so the luminance field can be built from what the shader actually
+ * produces rather than from the plate it samples.
+ *
+ * The scene is re-rendered at a reduced size that PRESERVES the viewport's
+ * aspect. That matters: every variant's `frame` sets `uAspect` from
+ * `gl.drawingBufferWidth / drawingBufferHeight` — the canvas backing store,
+ * which this does not change — so a same-aspect target reproduces the on-screen
+ * composition exactly, just at lower resolution.
+ *
+ * Leaves the default framebuffer and the previous viewport bound, so the caller's
+ * render loop is undisturbed. The texture is NPOT, which under WebGL 1 is only
+ * sampleable with CLAMP + LINEAR and no mipmaps — the same rule the plates obey.
+ *
+ * Returns null if any GL object cannot be created, or if the context is lost;
+ * callers fall back to the plate-backed field.
+ */
+export function readRenderedPixels(
+  gl: WebGLRenderingContext,
+  draw: (gl: WebGLRenderingContext) => boolean,
+  targetWidth = 384,
+): { pixels: Uint8Array; width: number; height: number } | null {
+  if (gl.isContextLost()) return null;
+  const viewWidth = gl.drawingBufferWidth;
+  const viewHeight = gl.drawingBufferHeight;
+  if (!viewWidth || !viewHeight) return null;
+
+  // Same aspect as the viewport; never bigger than it.
+  const width = Math.max(2, Math.min(viewWidth, Math.round(targetWidth)));
+  const height = Math.max(2, Math.round((width * viewHeight) / viewWidth));
+
+  const texture = gl.createTexture();
+  const framebuffer = gl.createFramebuffer();
+  if (!texture || !framebuffer) {
+    if (texture) gl.deleteTexture(texture);
+    if (framebuffer) gl.deleteFramebuffer(framebuffer);
+    return null;
+  }
+
+  const prevTexture = gl.getParameter(gl.TEXTURE_BINDING_2D) as WebGLTexture | null;
+  const prevFramebuffer = gl.getParameter(gl.FRAMEBUFFER_BINDING) as WebGLFramebuffer | null;
+  const prevViewport = gl.getParameter(gl.VIEWPORT) as Int32Array;
+
+  let pixels: Uint8Array | null = null;
+  try {
+    gl.bindTexture(gl.TEXTURE_2D, texture);
+    gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, width, height, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.LINEAR);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+    gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+
+    gl.bindFramebuffer(gl.FRAMEBUFFER, framebuffer);
+    gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, texture, 0);
+    if (gl.checkFramebufferStatus(gl.FRAMEBUFFER) !== gl.FRAMEBUFFER_COMPLETE) {
+      throw new Error('incomplete framebuffer');
+    }
+
+    gl.viewport(0, 0, width, height);
+    gl.clearColor(0, 0, 0, 0);
+    gl.clear(gl.COLOR_BUFFER_BIT);
+    if (!draw(gl)) throw new Error('scene did not draw');
+
+    pixels = new Uint8Array(width * height * 4);
+    gl.readPixels(0, 0, width, height, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+    if (gl.getError() !== gl.NO_ERROR) pixels = null;
+  } catch {
+    pixels = null;
+  } finally {
+    // Unconditional: a thrown draw must not leave the caller rendering into an
+    // offscreen buffer, which would look like the wallpaper freezing.
+    gl.bindFramebuffer(gl.FRAMEBUFFER, prevFramebuffer);
+    gl.bindTexture(gl.TEXTURE_2D, prevTexture);
+    gl.viewport(prevViewport[0], prevViewport[1], prevViewport[2], prevViewport[3]);
+    gl.deleteFramebuffer(framebuffer);
+    gl.deleteTexture(texture);
+  }
+
+  if (!pixels) return null;
+  // readPixels origin is bottom-left; the field indexes top-down like the plates.
+  const flipped = new Uint8Array(pixels.length);
+  const stride = width * 4;
+  for (let y = 0; y < height; y++) {
+    flipped.set(pixels.subarray((height - 1 - y) * stride, (height - y) * stride), y * stride);
+  }
+  return { pixels: flipped, width, height };
+}

@@ -68,6 +68,19 @@ interface WallpaperValue {
   field: LuminanceField | null;
   /** The wallpaper layer calls this so the field is only built where it shows. */
   activate: () => void;
+  /**
+   * The wallpaper layer measures the field from the frame it actually RENDERED
+   * and publishes it here.
+   *
+   * A shader variant draws its own layers over the plate and runs the result
+   * through a tone curve, so the plate is a proxy for the finished image rather
+   * than a description of it: on `blossom` the plate-backed field read 0.176
+   * where the screen showed 0.111. Where a rendered field exists for the current
+   * variant it therefore wins, and the plate-backed field is only the fallback —
+   * for a video variant, which has no canvas, and for the frames before the
+   * first paint.
+   */
+  publishField: (variant: WallpaperId, field: LuminanceField) => void;
 }
 
 const WallpaperContext = createContext<WallpaperValue | null>(null);
@@ -81,7 +94,11 @@ export function useWallpaper(): WallpaperValue {
 export function WallpaperProvider({ children }: { children: ReactNode }) {
   const [variant, setVariantState] = useState<WallpaperId>(resolveInitialVariant);
   const [active, setActive] = useState(false);
-  const [field, setField] = useState<LuminanceField | null>(null);
+  const [plateField, setField] = useState<LuminanceField | null>(null);
+  // Keyed by variant: a field measured from the last frame of a previous
+  // wallpaper describes an image that is no longer on screen, and using it would
+  // resolve the ink from the wrong backdrop for one paint after every switch.
+  const [renderedField, setRenderedField] = useState<{ variant: WallpaperId; field: LuminanceField } | null>(null);
   // The breakpoint has to be state, not a one-shot read: the field is built from
   // a DIFFERENT file on each side of it, so crossing 900px in either direction
   // has to rebuild the grid or the ink keeps sampling the plate that is no longer
@@ -108,6 +125,19 @@ export function WallpaperProvider({ children }: { children: ReactNode }) {
     const index = WALLPAPER_ORDER.indexOf(variant);
     return WALLPAPER_ORDER[(index + 1) % WALLPAPER_ORDER.length];
   }, [variant]);
+
+  const publishField = useCallback((id: WallpaperId, measured: LuminanceField) => {
+    setRenderedField({ variant: id, field: measured });
+  }, []);
+
+  // A rendered field describes the finished frame, so it wins over the plate.
+  // `liveField` variants are the exception: their backdrop is continuously
+  // recomputed by the variant's own maths, which a one-shot readback cannot
+  // track, so they keep the live grid.
+  const field = useMemo(() => {
+    if (!VARIANTS[variant].liveField && renderedField?.variant === variant) return renderedField.field;
+    return plateField;
+  }, [plateField, renderedField, variant]);
 
   const toggle = useCallback(() => setVariant(next), [next, setVariant]);
   const activate = useCallback(() => setActive(true), []);
@@ -175,8 +205,8 @@ export function WallpaperProvider({ children }: { children: ReactNode }) {
   }, [active, variant, narrow, plate]);
 
   const value = useMemo<WallpaperValue>(
-    () => ({ variant, next, setVariant, plate, narrow, field, activate }),
-    [variant, next, setVariant, plate, narrow, field, activate],
+    () => ({ variant, next, setVariant, plate, narrow, field, activate, publishField }),
+    [variant, next, setVariant, plate, narrow, field, activate, publishField],
   );
 
   return <WallpaperContext.Provider value={value}>{children}</WallpaperContext.Provider>;

@@ -17,7 +17,7 @@
     "dev": "node scripts/site.mjs dev",
     "check:quotes": "pnpm --filter @workspace/scripts exec tsx test_quote_parser.ts",
     "check:books": "pnpm --filter @workspace/scripts exec tsx test_book_search.ts",
-    "check:wallpapers": "pnpm --filter @workspace/scripts exec tsx test_wallpaper_shaders.ts && pnpm --filter @workspace/scripts exec tsx test_wallpaper_textures.ts"
+    "check:wallpapers": "pnpm --filter @workspace/scripts exec tsx test_wallpaper_shaders.ts && pnpm --filter @workspace/scripts exec tsx test_wallpaper_textures.ts && pnpm --filter @workspace/scripts exec tsx test_wallpaper_ink_field.ts"
   },
   "private": true,
   "devDependencies": {

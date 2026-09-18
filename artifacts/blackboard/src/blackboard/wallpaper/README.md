@@ -288,21 +288,27 @@ Documented in full at each site in `variants.ts`; the short version:
   `dots` measures mean 2.4 / p99 31, and a side-by-side of the dot field at 8x
   zoom shows the dots still round with no ringing — these are slow, low-contrast
   fields, so the frame rate buys nothing visible and costs 45% of the payload.
-- **`blossom` sits on the ink crossover on a phone** — `blossom-portrait.webp`
-  puts the switcher's backdrop at a linear luminance of ≈ 0.174, which is exactly
-  where `inkForLuminance` swaps poles, so successive loads resolve either way. The
-  dark outcome measures **2.83:1** under the glyph against a floor of 3.0 (the
-  light one is ≥ 4.4:1, and the glyph's halo paints in the opposite pole either
-  way). Probed through the app's own modules — `.nur/we/ink_probe.mjs`, which
-  rebuilds the field from the live plate in the page — the inputs are knife-edge
-  rather than wrong: the covering cells range 0.159–0.196 and *both* poles clear
-  the floor on them, while the true pixels under the glyph read 0.111. Raising the
-  grid from 48x27 to 768x432 does not move the estimate off the crossover, so this
-  is not a resolution or decision-rule bug, and no rule over those cells recovers
-  it. A coverage-of-floor rule was written, measured, and rejected: it does not
-  change this decision. The real fix is to sample the element's own rect directly
-  instead of through the coarse grid. Pre-existing — it reproduces on `main`
-  without any of these variants — and deliberately left alone here.
+- **The ink field is measured from the RENDERED frame, not the plate** — a scene
+  composites its own layers over the plate (fog, shake, grain) and runs the result
+  through a tone curve, so the plate is a *proxy* for the finished image rather
+  than a description of it. The plate-backed field read **0.176 where the screen
+  showed 0.111** on `blossom` — a 58% overestimate that survived every grid
+  resolution from 48x27 up to 768x432, because it is a modelling error and not a
+  sampling one. It was enough to park `blossom`'s switcher glyph on the dark pole
+  over a backdrop that cannot carry it: **2.83:1 measured against a 3.0 floor**,
+  and, worse, the backdrop sat on the ink crossover (linear ≈ 0.174), so
+  successive loads resolved to opposite poles and the glyph flipped between
+  visits.
+  `readRenderedPixels()` now re-renders the scene into an offscreen framebuffer
+  at a reduced size that **preserves the viewport's aspect** — which is what keeps
+  `uAspect`, and so the composition, identical to the screen — reads the pixels
+  back and box-averages them into the grid. `blossom` now resolves to light ink at
+  **4.72:1** on mobile and **4.53:1** on desktop. Both breakpoints pass 12/12.
+  A coverage-of-the-floor rule was also written and rejected on the same evidence:
+  no decision rule can recover a field that does not contain the truth.
+  `liveField` variants (`sweep`) keep their own maths, which tracks a continuously
+  moving backdrop that a one-shot readback cannot; video variants keep the poster,
+  which for these two near-static sources is accurate to within a rounding error.
 - The one thing deliberately **not** reproduced anywhere: Wallpaper Engine's
   audio response. No port reads an audio spectrum, so `shake`'s
   `AUDIOPROCESSING` branches and the audio objects are all outside these ports.
