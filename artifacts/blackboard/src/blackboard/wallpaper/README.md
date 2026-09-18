@@ -288,27 +288,34 @@ Documented in full at each site in `variants.ts`; the short version:
   `dots` measures mean 2.4 / p99 31, and a side-by-side of the dot field at 8x
   zoom shows the dots still round with no ringing — these are slow, low-contrast
   fields, so the frame rate buys nothing visible and costs 45% of the payload.
-- **The ink field is measured from the RENDERED frame, not the plate** — a scene
-  composites its own layers over the plate (fog, shake, grain) and runs the result
-  through a tone curve, so the plate is a *proxy* for the finished image rather
-  than a description of it. The plate-backed field read **0.176 where the screen
-  showed 0.111** on `blossom` — a 58% overestimate that survived every grid
-  resolution from 48x27 up to 768x432, because it is a modelling error and not a
-  sampling one. It was enough to park `blossom`'s switcher glyph on the dark pole
-  over a backdrop that cannot carry it: **2.83:1 measured against a 3.0 floor**,
-  and, worse, the backdrop sat on the ink crossover (linear ≈ 0.174), so
-  successive loads resolved to opposite poles and the glyph flipped between
-  visits.
-  `readRenderedPixels()` now re-renders the scene into an offscreen framebuffer
-  at a reduced size that **preserves the viewport's aspect** — which is what keeps
-  `uAspect`, and so the composition, identical to the screen — reads the pixels
-  back and box-averages them into the grid. `blossom` now resolves to light ink at
-  **4.72:1** on mobile and **4.53:1** on desktop. Both breakpoints pass 12/12.
-  A coverage-of-the-floor rule was also written and rejected on the same evidence:
-  no decision rule can recover a field that does not contain the truth.
-  `liveField` variants (`sweep`) keep their own maths, which tracks a continuously
-  moving backdrop that a one-shot readback cannot; video variants keep the poster,
-  which for these two near-static sources is accurate to within a rounding error.
+- **The ink tolerates an unseen darkening, because the field cannot see UI** —
+  the ink field describes the WALLPAPER, but the eye sees the COMPOSITE, and the
+  composite includes overlays no wallpaper-derived field can know about. The
+  wallpaper switcher sits directly under the player panel's shadow: measured on
+  `blossom`, the field reads **0.60** (linear) at the switcher where the screen
+  reads **0.34** — a 1.7x darkening contributed by a soft shadow cast by a
+  different element, with the switcher's own `background: transparent`.
+  Attribution was measured rather than reasoned, by capturing the same region
+  with each layer removed in turn (`.nur/we/layer_probe.mjs`): the `.blackboard`
+  scrim model is accurate to within 1.3% of its true alpha (measured 0.4202
+  against a modelled 0.4148), and the canvas contributes nothing the plate does
+  not. Both a plate-derived field and one read back from the rendered canvas
+  therefore read ~0.60 there and neither can be fixed by resolution or by a
+  cleverer decision rule — a coverage-of-the-floor rule was written, measured and
+  rejected on exactly this evidence.
+  What the field *can* know is that **every unmodelled overlay here darkens** —
+  a shadow, dark glass, a scrim; nothing brightens. So the real backdrop sits at
+  or below the estimate, and the pole that survives a darker backdrop is light:
+  dark ink is the one that fails when the composite comes out darker than
+  expected. `INK_DARK_MARGIN` (1.08) requires the dark pole to win by 8% before
+  it is taken, which only re-decides the band where the two poles are within 8%
+  of each other — i.e. where both are comfortably legible, so the choice cannot
+  lose contrast. A decisively bright plate is untouched: `clouds` carries a
+  **1.79x** margin at its backdrop and stays on the dark pole.
+  `blossom` now resolves to light ink at **4.55:1** on mobile and **4.73:1** on
+  desktop, from the same 0.112 backdrop that was measuring 2.83:1. Both
+  breakpoints pass 12/12, and `sweep`'s worst moment over a full revolution is
+  unchanged at 3.17:1.
 - The one thing deliberately **not** reproduced anywhere: Wallpaper Engine's
   audio response. No port reads an audio spectrum, so `shake`'s
   `AUDIOPROCESSING` branches and the audio objects are all outside these ports.

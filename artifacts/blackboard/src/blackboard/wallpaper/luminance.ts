@@ -179,6 +179,31 @@ export function inkContrast(luminance: number): { light: number; dark: number } 
 }
 
 /**
+ * How much better the dark pole must be before it is preferred.
+ *
+ * The field describes the WALLPAPER, but the eye sees the COMPOSITE, and the
+ * composite includes overlays no wallpaper-derived field can know about — above
+ * all the player panel's shadow, which the wallpaper switcher sits directly
+ * under. Measured on `blossom`: the field reads about 0.60 (linear) at the
+ * switcher where the screen reads 0.34, a ~1.7x darkening contributed by a soft
+ * shadow cast by a DIFFERENT element. Neither a plate-derived field nor one read
+ * back from the rendered canvas can see it.
+ *
+ * Every such unmodelled overlay in this design DARKENS — a shadow, dark glass, a
+ * scrim; nothing here brightens what is behind it. So the real backdrop is at or
+ * below the field's estimate, and the pole that survives a darker backdrop is the
+ * light one: dark ink is the pole that fails when the composite comes out darker
+ * than expected.
+ *
+ * At the crossover itself the two poles are equal by definition, so preferring
+ * one cannot lose contrast — which is what makes a tie band safe. 1.08 only
+ * re-decides the band where the poles are within 8% of each other, i.e. both
+ * comfortably legible, so it cannot flip a plate that is decisively bright or
+ * decisively dark: `clouds` (dark pole, ~2.4x margin) is untouched.
+ */
+const INK_DARK_MARGIN = 1.08;
+
+/**
  * Pick the monochrome ink pole with the better contrast.
  *
  * `previous` biases the comparison so that an element hovering on the crossover
@@ -192,7 +217,8 @@ export function inkContrast(luminance: number): { light: number; dark: number } 
  */
 export function inkForLuminance(luminance: number, previous?: InkPolarity): InkPolarity {
   const { light, dark } = inkContrast(luminance);
-  if (!previous) return dark > light ? 'dark' : 'light';
+  const prefersDark = dark > light * INK_DARK_MARGIN;
+  if (!previous) return prefersDark ? 'dark' : 'light';
   const HYSTERESIS = 1.18;
   if (previous === 'dark') return dark * HYSTERESIS >= light ? 'dark' : 'light';
   return light * HYSTERESIS >= dark ? 'light' : 'dark';
@@ -226,63 +252,6 @@ export function buildLuminanceField(
     out[i] = 0.2126 * channel(data[p]) + 0.7152 * channel(data[p + 1]) + 0.0722 * channel(data[p + 2]);
   }
   return { cols, rows, data: out, imageWidth, imageHeight };
-}
-
-/**
- * Build a luminance field from pixels the RENDERER produced.
- *
- * `buildLuminanceField` measures the source plate, which is only a proxy for
- * what ends up on screen: a scene composites its own layers over the plate (fog,
- * shake, grain) and runs it through a tone curve. Measured against the real
- * composite, that proxy read **0.176 where the screen showed 0.111** on
- * `blossom` — a 58% overestimate that no amount of grid resolution fixes, and
- * enough to make the ink resolve to the dark pole over a backdrop that cannot
- * carry it.
- *
- * This takes the framebuffer's own bytes instead, so the field describes the
- * pixels that are actually painted. `sRGB` here is the same 8-bit encoding
- * `buildLuminanceField` reads out of an image, so both paths land in the same
- * linear space and the ink decision downstream is unchanged.
- *
- * The grid is box-averaged with integer bounds rather than point-sampled, so a
- * cell reports the mean of the pixels it covers — the same thing
- * `sampleRect` assumes a cell to be.
- */
-export function buildLuminanceFieldFromPixels(
-  pixels: Uint8Array,
-  pixelWidth: number,
-  pixelHeight: number,
-  viewportWidth: number,
-  viewportHeight: number,
-  cols = 48,
-  rows = 27,
-): LuminanceField | null {
-  if (!pixelWidth || !pixelHeight || cols < 1 || rows < 1) return null;
-  if (pixels.length < pixelWidth * pixelHeight * 4) return null;
-
-  const out = new Float32Array(cols * rows);
-  for (let row = 0; row < rows; row++) {
-    // Integer bounds, so every source pixel lands in exactly one cell.
-    const y0 = Math.floor((row * pixelHeight) / rows);
-    const y1 = Math.max(y0 + 1, Math.floor(((row + 1) * pixelHeight) / rows));
-    for (let col = 0; col < cols; col++) {
-      const x0 = Math.floor((col * pixelWidth) / cols);
-      const x1 = Math.max(x0 + 1, Math.floor(((col + 1) * pixelWidth) / cols));
-      let sum = 0;
-      let count = 0;
-      for (let y = y0; y < Math.min(y1, pixelHeight); y++) {
-        let p = (y * pixelWidth + x0) * 4;
-        for (let x = x0; x < Math.min(x1, pixelWidth); x++, p += 4) {
-          sum += 0.2126 * srgbToLinear(pixels[p] / 255)
-            + 0.7152 * srgbToLinear(pixels[p + 1] / 255)
-            + 0.0722 * srgbToLinear(pixels[p + 2] / 255);
-          count++;
-        }
-      }
-      out[row * cols + col] = count ? sum / count : 0;
-    }
-  }
-  return { cols, rows, data: out, imageWidth: viewportWidth, imageHeight: viewportHeight };
 }
 
 /**
