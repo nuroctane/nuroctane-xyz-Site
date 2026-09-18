@@ -175,6 +175,9 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 
 
 
+
+
+
 ## Reality, Consciousness & Perception
 
 _Consciousness, time, illusion, energy, synchronicity, metaphysics, and the architecture of experience._
