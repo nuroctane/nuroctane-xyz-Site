@@ -10,60 +10,42 @@ import {
   type RefObject,
 } from 'react';
 import {
+  applyScrim,
   buildLuminanceField,
   inkForLuminance,
+  parseAlpha,
   sampleRect,
+  scrimAlphaAt,
   type InkPolarity,
   type LuminanceField,
+  type ScrimRamp,
 } from './wallpaper/luminance';
-import { VARIANTS, WALLPAPER_ORDER, isWallpaperId, type WallpaperId } from './wallpaper/variants';
+import { VARIANTS, WALLPAPER_ORDER, type WallpaperId } from './wallpaper/variants';
 
-const SESSION_KEY = 'bb-wallpaper-shown';
 const MOBILE_QUERY = '(max-width: 900px)';
 
-function readSessionVariant(): WallpaperId | null {
-  try {
-    const raw = window.sessionStorage.getItem(SESSION_KEY);
-    return isWallpaperId(raw) ? raw : null;
-  } catch {
-    // Private mode / blocked storage: treat it as a fresh session.
-    return null;
-  }
-}
-
-function rememberVariant(id: WallpaperId) {
-  try {
-    window.sessionStorage.setItem(SESSION_KEY, id);
-  } catch {
-    /* storage unavailable — the cycle simply restarts on the next load */
-  }
+/** True while the viewport is at or below the plate breakpoint. */
+function matchesNarrow(): boolean {
+  return typeof window !== 'undefined' && window.matchMedia(MOBILE_QUERY).matches;
 }
 
 let resolvedInitialVariant: WallpaperId | null = null;
 
 /**
- * Which wallpaper this page view shows.
+ * Which wallpaper this page view opens on.
  *
- * A tab session's FIRST view picks pseudorandomly, so separate visits open on
- * different wallpapers. Every later load — a refresh, a URL entry — advances
- * one step, so reloading always visibly changes the background instead of
- * handing back the same one.
+ * A plain uniform draw over the whole set, on every load. Nothing is excluded,
+ * and nothing here is coordinated with the music: the wallpaper and the track
+ * are two independent random draws, so the wallpapers and the tracks pair up in
+ * every combination rather than along any fixed or remembered path.
  *
- * sessionStorage, not localStorage: tabs stay independent of each other, and
- * the cycle resets when the tab closes, which is the granularity wanted.
  * Memoised at module scope so React re-invoking the initialiser (StrictMode)
- * cannot advance the cycle twice in one load.
+ * cannot burn two draws in one load.
  */
 function resolveInitialVariant(): WallpaperId {
   if (resolvedInitialVariant) return resolvedInitialVariant;
-  const shown = readSessionVariant();
-  const index = shown ? WALLPAPER_ORDER.indexOf(shown) : -1;
-  const chosen = index >= 0
-    ? WALLPAPER_ORDER[(index + 1) % WALLPAPER_ORDER.length]
-    : WALLPAPER_ORDER[Math.floor(Math.random() * WALLPAPER_ORDER.length)];
-  rememberVariant(chosen);
-  resolvedInitialVariant = chosen;
-  return chosen;
+  resolvedInitialVariant = WALLPAPER_ORDER[Math.floor(Math.random() * WALLPAPER_ORDER.length)];
+  return resolvedInitialVariant;
 }
 
 interface WallpaperValue {
@@ -71,6 +53,18 @@ interface WallpaperValue {
   /** The variant the switcher moves to next, i.e. what its glyph advertises. */
   next: WallpaperId;
   setVariant: (id: WallpaperId) => void;
+  /**
+   * The plate URL for a variant at the CURRENT breakpoint.
+   *
+   * One source of truth, deliberately. The plate is chosen in three places —
+   * the CSS layer that shows it, the luminance grid that measures it, and the
+   * scene that samples it as a texture — and when those disagreed (a CSS media
+   * query against a one-shot matchMedia read) the ink was resolved from a
+   * different image than the one on screen.
+   */
+  plate: (id: WallpaperId) => string;
+  /** True at or below the plate breakpoint. */
+  narrow: boolean;
   field: LuminanceField | null;
   /** The wallpaper layer calls this so the field is only built where it shows. */
   activate: () => void;
@@ -88,10 +82,26 @@ export function WallpaperProvider({ children }: { children: ReactNode }) {
   const [variant, setVariantState] = useState<WallpaperId>(resolveInitialVariant);
   const [active, setActive] = useState(false);
   const [field, setField] = useState<LuminanceField | null>(null);
+  // The breakpoint has to be state, not a one-shot read: the field is built from
+  // a DIFFERENT file on each side of it, so crossing 900px in either direction
+  // has to rebuild the grid or the ink keeps sampling the plate that is no longer
+  // on screen. Rotating a phone and resizing a desktop window both land here.
+  const [narrow, setNarrow] = useState(matchesNarrow);
+
+  useEffect(() => {
+    const query = window.matchMedia(MOBILE_QUERY);
+    const onChange = () => setNarrow(query.matches);
+    // Safari < 14 only has the deprecated listener.
+    if (query.addEventListener) query.addEventListener('change', onChange);
+    else query.addListener(onChange);
+    return () => {
+      if (query.removeEventListener) query.removeEventListener('change', onChange);
+      else query.removeListener(onChange);
+    };
+  }, []);
 
   const setVariant = useCallback((id: WallpaperId) => {
     setVariantState(id);
-    rememberVariant(id);
   }, []);
 
   const next = useMemo(() => {
@@ -102,13 +112,16 @@ export function WallpaperProvider({ children }: { children: ReactNode }) {
   const toggle = useCallback(() => setVariant(next), [next, setVariant]);
   const activate = useCallback(() => setActive(true), []);
 
+  const plate = useCallback(
+    (id: WallpaperId) => (narrow ? VARIANTS[id].plate.mobile : VARIANTS[id].plate.desktop),
+    [narrow],
+  );
+
   // Build the luminance grid for the active plate. The URL is identical to the
   // CSS plate layer, so this is served from the HTTP cache in practice.
   useEffect(() => {
     if (!active) return undefined;
     const scene = VARIANTS[variant];
-    const plate = scene.plate;
-    const mobile = window.matchMedia(MOBILE_QUERY).matches;
     let cancelled = false;
 
     const image = new Image();
@@ -120,18 +133,18 @@ export function WallpaperProvider({ children }: { children: ReactNode }) {
     image.onerror = () => {
       if (!cancelled) setField(null);
     };
-    image.src = mobile ? plate.mobile : plate.desktop;
+    image.src = plate(variant);
 
     return () => {
       cancelled = true;
       image.onload = null;
       image.onerror = null;
     };
-  }, [active, variant]);
+  }, [active, variant, narrow, plate]);
 
   const value = useMemo<WallpaperValue>(
-    () => ({ variant, next, setVariant, field, activate }),
-    [variant, next, setVariant, field, activate],
+    () => ({ variant, next, setVariant, plate, narrow, field, activate }),
+    [variant, next, setVariant, plate, narrow, field, activate],
   );
 
   return <WallpaperContext.Provider value={value}>{children}</WallpaperContext.Provider>;
@@ -139,8 +152,13 @@ export function WallpaperProvider({ children }: { children: ReactNode }) {
 
 /**
  * Resolve the ink polarity that stays legible over the wallpaper actually
- * behind `ref`. Re-measures on resize and scroll, and only commits when the
- * polarity genuinely changes, so a boundary hover cannot thrash the DOM.
+ * behind `ref`.
+ *
+ * Measures the plate through its own tone curve, then composites the page scrim
+ * that is painted over it, so the decision is made against what reaches the eye
+ * rather than against the raw file. Re-measures on every change that can move
+ * either the element or the plate — resize, rotation, the mobile browser chrome
+ * collapsing, the 900px breakpoint, and reflows that move nothing.
  *
  * Returns `'light'` until the field is ready — the site's own default — so
  * first paint never flashes a wrong colour.
@@ -154,19 +172,34 @@ export function useAdaptiveInk<T extends HTMLElement>(): readonly [RefObject<T |
   useEffect(() => {
     if (!field) return undefined;
     let frame = 0;
+    // The first measurement for a given wallpaper decides fresh; hysteresis is
+    // only for the repeats that follow it.
+    let settled = false;
 
     const measure = () => {
       frame = 0;
       const element = ref.current;
       if (!element) return;
-      const value = sampleRect(
-        field,
-        element.getBoundingClientRect(),
-        window.innerWidth,
-        window.innerHeight,
-      );
+      const rect = element.getBoundingClientRect();
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const value = sampleRect(field, rect, width, height);
       if (value === null) return;
-      const resolved = inkForLuminance(value, inkRef.current);
+
+      // The scrim is read from the element's own computed style, so it follows
+      // the active variant's override and any future media-query change rather
+      // than being duplicated as a constant here.
+      const style = window.getComputedStyle(element);
+      const scrim: ScrimRamp = {
+        inner: parseAlpha(style.getPropertyValue('--bb-scrim-inner')),
+        outer: parseAlpha(style.getPropertyValue('--bb-scrim-outer')),
+        top: parseAlpha(style.getPropertyValue('--bb-scrim-top')),
+        bottom: parseAlpha(style.getPropertyValue('--bb-scrim-bottom')),
+      };
+      const seen = applyScrim(value, scrimAlphaAt(rect, width, height, scrim));
+
+      const resolved = inkForLuminance(seen, settled ? inkRef.current : undefined);
+      settled = true;
       if (resolved !== inkRef.current) {
         inkRef.current = resolved;
         setInkState(resolved);
@@ -179,6 +212,10 @@ export function useAdaptiveInk<T extends HTMLElement>(): readonly [RefObject<T |
 
     measure();
     window.addEventListener('resize', schedule);
+    window.addEventListener('orientationchange', schedule);
+    // The URL bar collapsing on mobile changes the visual viewport without
+    // necessarily firing a window resize on every engine.
+    window.visualViewport?.addEventListener('resize', schedule);
     // Capture-phase: `scroll` does not bubble, so a document-level capture
     // listener also fires for inner scroll containers (the Blackboard scrolls
     // its own box, not the window).
@@ -192,6 +229,8 @@ export function useAdaptiveInk<T extends HTMLElement>(): readonly [RefObject<T |
       if (frame) window.cancelAnimationFrame(frame);
       observer.disconnect();
       window.removeEventListener('resize', schedule);
+      window.removeEventListener('orientationchange', schedule);
+      window.visualViewport?.removeEventListener('resize', schedule);
       document.removeEventListener('scroll', schedule, { capture: true });
     };
   }, [field, variant]);

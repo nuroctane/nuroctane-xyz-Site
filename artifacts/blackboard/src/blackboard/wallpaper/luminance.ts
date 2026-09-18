@@ -37,9 +37,115 @@ export interface Rect {
   height: number;
 }
 
+/**
+ * The page's own veiling gradient, as four black-overlay alphas.
+ *
+ * This is the `.blackboard::after` scrim defined in blackboard.css. It sits ON
+ * TOP of the wallpaper, so it is part of what the eye actually sees — and it is
+ * not uniform: a radial wash centred at 50% 42% plus a vertical ramp. On a
+ * narrow viewport the ellipse compresses and the ramp covers a proportionally
+ * larger share of the screen, so the same wallpaper pixel arrives at the eye at
+ * a very different brightness on a phone than on a desktop.
+ *
+ * Modelling only the plate therefore misjudges the ink pole whenever the scrim
+ * is doing real work — which is exactly the case on mobile.
+ */
+export interface ScrimRamp {
+  inner: number;
+  outer: number;
+  top: number;
+  bottom: number;
+}
+
+const SCRIM_CENTRE_X = 0.5;
+const SCRIM_CENTRE_Y = 0.42;
+/** Stop position of the outer colour in the radial gradient. */
+const SCRIM_OUTER_STOP = 0.74;
+
+export function parseAlpha(token: string): number {
+  const text = token.trim();
+  if (!text) return 0;
+  const open = text.indexOf('(');
+  const close = text.lastIndexOf(')');
+  if (open < 0 || close < open) {
+    // A keyword or an unparsed token: treat a bare colour keyword as opaque.
+    return text === 'transparent' || text === 'none' ? 0 : 1;
+  }
+  const body = text.slice(open + 1, close);
+
+  // Two serialisations reach here and they do not share a separator. The author
+  // syntax in blackboard.css is modern space-and-slash — `rgb(0 0 0 / 16%)` —
+  // but `getComputedStyle` serialises any value whose syntax is a registered
+  // `<color>` back to the legacy comma form, `rgba(0, 0, 0, 0.16)`. Parsing only
+  // the slash form silently returns "opaque black", which then darkens every
+  // sample to zero and pins the ink pole on light.
+  const parts = body.includes('/') ? body.split('/') : body.split(',');
+  if (parts.length < 2) return 1;          // rgb(r g b) — no alpha channel
+
+  const value = parts[parts.length - 1].trim();
+  if (/^(none|transparent)$/i.test(value)) return 0;
+  const number = Number.parseFloat(value);
+  if (!Number.isFinite(number)) return 1;
+  return value.endsWith('%') ? number / 100 : number;
+}
+
+/**
+ * Scrim alpha over a viewport-space rect.
+ *
+ * Mirrors the two gradient layers of `.blackboard::after`. For an ellipse with
+ * `farthest-corner`, CSS keeps the ellipse's aspect equal to the box's and grows
+ * it until it touches the farthest corner, so the normalised distance from the
+ * centre divides by that corner's own distance.
+ */
+export function scrimAlphaAt(
+  rect: Rect,
+  viewportWidth: number,
+  viewportHeight: number,
+  scrim: ScrimRamp,
+): number {
+  if (viewportWidth <= 0 || viewportHeight <= 0) return 0;
+  const x = rect.left + rect.width / 2;
+  const y = rect.top + rect.height / 2;
+  const u = (x - viewportWidth * SCRIM_CENTRE_X) / viewportWidth;
+  const v = (y - viewportHeight * SCRIM_CENTRE_Y) / viewportHeight;
+
+  const cornerU = Math.max(SCRIM_CENTRE_X, 1 - SCRIM_CENTRE_X);
+  const cornerV = Math.max(SCRIM_CENTRE_Y, 1 - SCRIM_CENTRE_Y);
+  const corner = Math.hypot(cornerU, cornerV);
+  const t = corner > 0 ? Math.hypot(u, v) / corner : 0;
+  const radial = scrim.inner + (scrim.outer - scrim.inner) *
+    Math.max(0, Math.min(1, t / SCRIM_OUTER_STOP));
+
+  const ramp = scrim.top + (scrim.bottom - scrim.top) *
+    Math.max(0, Math.min(1, y / viewportHeight));
+
+  // The radial layer paints first and the ramp second, so the ramp's occluded
+  // share is the radial layer's own transparency.
+  return radial + ramp * (1 - radial);
+}
+
+/**
+ * Apply the page scrim to a sampled plate luminance.
+ *
+ * The field holds linear light, but CSS composites the scrim in sRGB space, so
+ * the value round-trips through sRGB for the multiply rather than being
+ * attenuated as linear light.
+ */
+export function applyScrim(linearLuminance: number, scrimAlpha: number): number {
+  if (scrimAlpha <= 0) return linearLuminance;
+  const composited = linearToSrgb(linearLuminance) * (1 - Math.max(0, Math.min(1, scrimAlpha)));
+  return srgbToLinear(composited);
+}
+
 /** sRGB channel (0..1) -> linear-light. */
 export function srgbToLinear(channel: number): number {
   return channel <= 0.04045 ? channel / 12.92 : Math.pow((channel + 0.055) / 1.055, 2.4);
+}
+
+/** Linear-light -> sRGB channel (0..1). Inverse of `srgbToLinear`. */
+export function linearToSrgb(channel: number): number {
+  const c = Math.max(0, Math.min(1, channel));
+  return c <= 0.0031308 ? c * 12.92 : 1.055 * Math.pow(c, 1 / 2.4) - 0.055;
 }
 
 function linearFromHex(hex: string): number {
@@ -76,11 +182,17 @@ export function inkContrast(luminance: number): { light: number; dark: number } 
  * Pick the monochrome ink pole with the better contrast.
  *
  * `previous` biases the comparison so that an element hovering on the crossover
- * (a resize, a subtle cloud drift) does not flip back and forth. Light ink is
- * the site's default, so it wins ties.
+ * (a resize, a subtle cloud drift) does not flip back and forth. Pass
+ * `undefined` for a FRESH decision — first paint, or the first measurement after
+ * the wallpaper itself changed: a variant switch replaces the whole background,
+ * so there is nothing to thrash, and carrying the old pole over would let a
+ * bright wallpaper inherit light ink from a dark one.
+ *
+ * With no `previous`, light wins an exact tie — it is the site's default.
  */
 export function inkForLuminance(luminance: number, previous?: InkPolarity): InkPolarity {
   const { light, dark } = inkContrast(luminance);
+  if (!previous) return dark > light ? 'dark' : 'light';
   const HYSTERESIS = 1.18;
   if (previous === 'dark') return dark * HYSTERESIS >= light ? 'dark' : 'light';
   return light * HYSTERESIS >= dark ? 'light' : 'dark';

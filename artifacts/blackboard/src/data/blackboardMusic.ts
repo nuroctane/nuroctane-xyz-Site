@@ -62,51 +62,23 @@ export function blackboardArtworkSrc(track: BlackboardTrack): string {
   return `${import.meta.env.BASE_URL}assets/nodes/music/${track.id}.jpg`;
 }
 
-const SESSION_KEY = 'bb-track-shown';
-
-function readShownTrack(): string | null {
-  try {
-    return window.sessionStorage.getItem(SESSION_KEY);
-  } catch {
-    // Private mode / blocked storage: treat it as a fresh session.
-    return null;
-  }
-}
-
-function rememberShownTrack(id: string) {
-  try {
-    window.sessionStorage.setItem(SESSION_KEY, id);
-  } catch {
-    /* storage unavailable — the next load simply draws freely */
-  }
-}
-
 let resolvedTrack: BlackboardTrack | null = null;
 
 /**
  * Which track this page view plays.
  *
- * A tab's FIRST view draws uniformly from the whole library, so separate
- * visitors open on different scores. Every later load — a refresh, a URL entry
- * — draws again from the library *minus* the one already shown, so a reload
- * always audibly changes the music and can never hand back the same track
- * twice in a row.
+ * A plain uniform draw over the whole library, on every load. Nothing is
+ * excluded and nothing is coordinated with the wallpaper: the two are
+ * independent draws, so the pairings span every wallpaper against every track.
  *
  * There is deliberately no way to move off the draw once it is made: no skip,
  * no next, no chooser. The visitor commits to one piece of music for the visit.
  *
- * sessionStorage, not localStorage: tabs stay independent of each other and
- * the history resets when the tab closes, which is the granularity wanted.
  * Memoised at module scope so React re-invoking the initialiser (StrictMode)
  * cannot burn two draws in a single load.
  */
 export function blackboardMusicPick(): BlackboardTrack {
   if (resolvedTrack) return resolvedTrack;
-  const shown = readShownTrack();
-  const unseen = BLACKBOARD_MUSIC.filter(track => track.id !== shown);
-  const pool = unseen.length > 0 ? unseen : BLACKBOARD_MUSIC;
-  const chosen = pool[Math.floor(Math.random() * pool.length)];
-  rememberShownTrack(chosen.id);
-  resolvedTrack = chosen;
-  return chosen;
+  resolvedTrack = BLACKBOARD_MUSIC[Math.floor(Math.random() * BLACKBOARD_MUSIC.length)];
+  return resolvedTrack;
 }

@@ -46,6 +46,14 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 @property --bb-ink { syntax: '<color>'; inherits: true; initial-value: #f2f2f2; }
 @property --bb-muted { syntax: '<color>'; inherits: true; initial-value: #a0a0a0; }
+/* Quiet ink for controls that sit DIRECTLY on the photograph rather than on a
+   glass panel. `--bb-muted` cannot be used there: a glass panel guarantees its
+   own background, so muted only has to be quieter than the ink, but a control
+   on the plate has nothing behind it. Resolving a pole picks the better of two
+   STRONG poles, which still leaves the crossover (linear L 0.174) as the worst
+   case - and the dimmed poles only manage 1.6-2.5:1 there. These tones are
+   lifted to hold >= 3:1 at that exact crossover, so decision and paint agree. */
+@property --bb-plate-quiet { syntax: '<color>'; inherits: true; initial-value: #d8d8d8; }
 @property --bb-faint { syntax: '<color>'; inherits: true; initial-value: #777777; }
 @property --bb-edge { syntax: '<color>'; inherits: true; initial-value: rgb(255 255 255 / 12%); }
 @property --bb-edge-strong { syntax: '<color>'; inherits: true; initial-value: rgb(255 255 255 / 30%); }
@@ -60,6 +68,7 @@
 [data-ink='light'] {
   --bb-ink: #f2f2f2;
   --bb-muted: #a0a0a0;
+  --bb-plate-quiet: #d8d8d8;
   --bb-faint: #777777;
   --bb-edge: rgb(255 255 255 / 12%);
   --bb-edge-strong: rgb(255 255 255 / 30%);
@@ -71,12 +80,16 @@
 [data-ink='dark'] {
   --bb-ink: #0c0c0c;
   --bb-muted: #454545;
+  --bb-plate-quiet: #141414;
   --bb-faint: #5c5c5c;
   --bb-edge: rgb(0 0 0 / 14%);
   --bb-edge-strong: rgb(0 0 0 / 32%);
   --bb-sheen: rgb(0 0 0 / 6%);
   --bb-hover: rgb(0 0 0 / 7%);
-  --bb-halo: rgb(255 255 255 / 48%);
+  /* Softer than the light pole's halo: a white rim around a near-black glyph
+     on a bright plate lifts the local background toward the ink and reads as
+     washed out, which is the exact failure this pole most needs to avoid. */
+  --bb-halo: rgb(255 255 255 / 34%);
 }
 
 [data-ink] {
@@ -87,6 +100,7 @@
   transition:
     --bb-ink 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
     --bb-muted 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+    --bb-plate-quiet 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
     --bb-faint 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
     --bb-edge 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
     --bb-edge-strong 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
@@ -315,6 +329,7 @@
     transition:
       --bb-ink 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
       --bb-muted 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
+    --bb-plate-quiet 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
       --bb-faint 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
       --bb-edge 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
       --bb-edge-strong 280ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),

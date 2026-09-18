@@ -21,7 +21,10 @@
 }
 
 /* ── Plate layers: the pre-WebGL / reduced-motion fallback, and the carrier of
-      the visible cross-fade when the variant changes. ─────────────────────── */
+      the visible cross-fade when the variant changes. The image itself is set
+      from `VARIANTS[id].plate` via an inline style — see BlackboardWallpaper —
+      so the plate, the luminance grid and the WebGL texture are guaranteed to
+      be the same file rather than three separate lookups that can drift. ──── */
 .bb-wallpaper-plate {
   position: absolute;
   inset: 0;
@@ -33,14 +36,6 @@
 }
 
 .bb-wallpaper-plate[data-active='true'] { opacity: 1; }
-
-.bb-wallpaper-plate[data-variant='abstract'] { background-image: url('/assets/blackboard/wallpaper-1280.jpg'); }
-.bb-wallpaper-plate[data-variant='clouds'] { background-image: url('/assets/blackboard/clouds/clouds-1280.webp'); }
-
-@media (min-width: 901px) {
-  .bb-wallpaper-plate[data-variant='abstract'] { background-image: url('/assets/blackboard/wallpaper.jpg'); }
-  .bb-wallpaper-plate[data-variant='clouds'] { background-image: url('/assets/blackboard/clouds/clouds.webp'); }
-}
 
 /* ── Canvas: paints the live scene over the matching plate. Hidden until the
       scene's first frame, so a variant switch never shows a stale or empty
@@ -76,7 +71,10 @@
   padding: 0;
   border: 1px solid var(--bb-edge, rgb(255 255 255 / 15%));
   border-radius: 6px;
-  color: var(--bb-muted, #a0a0a0);
+  /* This control sits on the photograph, not on glass, so it reads the on-plate
+     tone rather than --bb-muted: same pole as the decision, dimmed only as far
+     as the crossover still permits. */
+  color: var(--bb-plate-quiet, #d2d2d2);
   background: transparent;
   cursor: pointer;
   transition:
@@ -99,13 +97,20 @@
 }
 
 /* Both glyphs occupy one cell; the incoming one arrives small and blurred,
-   never resizing in place, and nothing overshoots. */
+   never resizing in place, and nothing overshoots.
+
+   The drop-shadow is not decoration. The glyph is a 1.5px stroke sitting
+   directly on a photograph, and `text-shadow` (which the rest of the ink scopes
+   use) does nothing to SVG. Without it the control goes invisible wherever the
+   measured luminance lands near the crossover, or wherever the scrim lifts the
+   background toward the ink's own value. It paints in the OPPOSITE pole, so it
+   keeps working no matter which way the ink resolves. */
 .bb-wallpaper-toggle svg {
   grid-area: 1 / 1;
   width: 16px;
   height: 16px;
   opacity: 0;
-  filter: blur(2px);
+  filter: blur(2px) drop-shadow(0 0 1.5px var(--bb-halo, rgb(0 0 0 / 42%)));
   transform: scale(0.3);
   transition:
     opacity 120ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)),
@@ -115,7 +120,7 @@
 
 .bb-wallpaper-toggle svg[data-visible='true'] {
   opacity: 1;
-  filter: blur(0);
+  filter: blur(0) drop-shadow(0 0 1.5px var(--bb-halo, rgb(0 0 0 / 42%)));
   transform: scale(1);
 }
 
@@ -130,11 +135,12 @@
 }
 
 /* The swap's scale and blur are decorative; the opacity cross-fade still does
-   the work, so the glyph change stays readable without motion. */
+   the work, so the glyph change stays readable without motion. The halo is
+   legibility, not motion, so it is kept. */
 @media (prefers-reduced-motion: reduce) {
   .bb-wallpaper-toggle svg,
   .bb-wallpaper-toggle svg[data-visible='true'] {
-    filter: none;
+    filter: drop-shadow(0 0 1.5px var(--bb-halo, rgb(0 0 0 / 42%)));
     transform: none;
     transition: opacity 120ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1));
   }

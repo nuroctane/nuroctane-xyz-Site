@@ -4,8 +4,6 @@ import { VARIANTS, WALLPAPER_ORDER, mountVariant } from './wallpaper/variants';
 import { useReducedMotion, useWallpaper } from './WallpaperProvider';
 import './blackboard-wallpaper.css';
 
-const MOBILE_QUERY = '(max-width: 900px)';
-
 /* ═══════════════════════════════════════════════════════════════════════════
    BLACKBOARD WALLPAPER LAYER
 
@@ -21,7 +19,7 @@ const MOBILE_QUERY = '(max-width: 900px)';
    settled still; no WebGL at all falls back to the plates.
    ═══════════════════════════════════════════════════════════════════════════ */
 export function BlackboardWallpaper() {
-  const { variant, activate } = useWallpaper();
+  const { variant, plate, narrow, activate } = useWallpaper();
   const reduced = useReducedMotion();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const glRef = useRef<WebGLRenderingContext | null>(null);
@@ -75,12 +73,11 @@ export function BlackboardWallpaper() {
     if (!canvas || !gl || gl.isContextLost()) return undefined;
 
     const scene = VARIANTS[variant];
-    const mobileQuery = window.matchMedia(MOBILE_QUERY);
 
     setPainted(false);
     const program = createProgram(gl, scene.vertex, scene.fragment);
     if (!program) return undefined;
-    const mounted = mountVariant(gl, program, scene, mobileQuery.matches);
+    const mounted = mountVariant(gl, program, scene, narrow);
     if (!mounted) {
       destroyProgram(gl, program);
       return undefined;
@@ -88,7 +85,7 @@ export function BlackboardWallpaper() {
     const { runtime, quad } = mounted;
 
     const resize = () => {
-      const renderScale = Math.min(window.devicePixelRatio || 1, 1.5) * 0.7 * (mobileQuery.matches ? 0.8 : 1);
+      const renderScale = Math.min(window.devicePixelRatio || 1, 1.5) * 0.7 * (narrow ? 0.8 : 1);
       const width = Math.max(1, Math.round(canvas.clientWidth * renderScale));
       const height = Math.max(1, Math.round(canvas.clientHeight * renderScale));
       if (canvas.width !== width || canvas.height !== height) {
@@ -173,16 +170,22 @@ export function BlackboardWallpaper() {
       gl.deleteBuffer(quad);
       destroyProgram(gl, program);
     };
-  }, [generation, reduced, variant]);
+  }, [generation, narrow, reduced, variant]);
 
   return (
     <div className="bb-wallpaper" aria-hidden="true">
+      {/* Every plate is a real layer so the cross-fade has both ends present.
+          The source is set here rather than in a stylesheet per variant: with
+          two wallpapers that was merely duplication, with nine it is the thing
+          that silently breaks — a variant with no CSS rule renders no plate at
+          all, and the background goes blank wherever WebGL cannot paint. */}
       {WALLPAPER_ORDER.map(id => (
         <div
           key={id}
           className="bb-wallpaper-plate"
           data-variant={id}
           data-active={id === variant}
+          style={{ backgroundImage: `url('${plate(id)}')` }}
         />
       ))}
       <canvas ref={canvasRef} className="bb-wallpaper-canvas" data-painted={painted} />
