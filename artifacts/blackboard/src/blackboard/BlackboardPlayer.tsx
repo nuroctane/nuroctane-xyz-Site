@@ -22,13 +22,38 @@ const IOS_VOLUME_DEAD = typeof navigator !== 'undefined' &&
   (/iP(hone|od|ad)/.test(navigator.userAgent) ||
    (navigator.platform === 'MacIntel' && (navigator as Navigator & { maxTouchPoints?: number }).maxTouchPoints > 1));
 
+/* ── Title pan ──────────────────────────────────────────────────────────────
+   A title wider than its box is panned by exactly the distance it overflows, so
+   the end is always reachable. The distance is MEASURED, never assumed: the
+   previous version panned a fixed 2rem, which on a title that overflowed by
+   hundreds of pixels stopped mid-word and left the rest unreadable.
+
+   The duration is derived from the distance at a constant speed, so a long title
+   does not crawl and a short one does not flash past; the clamps keep both ends
+   sane. This has to hold at every width the box can take — desktop, a phone, a
+   resize mid-pan, a rotation — which is why the measurement is re-run from a
+   ResizeObserver rather than once on mount. */
+const PAN_GAP = 16;
+const PAN_SPEED = 30;
+const PAN_MIN_SECONDS = 6;
+const PAN_MAX_SECONDS = 40;
+
+interface TitlePan {
+  panning: boolean;
+  /** Total travel in px, positive. */
+  shift: number;
+  seconds: number;
+}
+
+const NO_PAN: TitlePan = { panning: false, shift: 0, seconds: PAN_MIN_SECONDS };
+
 export function BlackboardPlayer() {
   const { track, playing, currentTime, duration, volume, blocked, mutedAutoplay, setTrack, play, pause, seek, setVolume } = useAudioCtx();
   const titleViewportRef = useRef<HTMLSpanElement>(null);
   const titleRef = useRef<HTMLElement>(null);
   const autoplayAttemptedRef = useRef(false);
   const lastAudibleVolumeRef = useRef(0.5);
-  const [marquee, setMarquee] = useState(false);
+  const [pan, setPan] = useState<TitlePan>(NO_PAN);
 
   useEffect(() => {
     if (track !== 'main') {
@@ -46,11 +71,37 @@ export function BlackboardPlayer() {
     const viewport = titleViewportRef.current;
     const title = titleRef.current;
     if (!viewport || !title) return;
-    const measure = () => setMarquee(title.scrollWidth > viewport.clientWidth + 1);
+    const measure = () => {
+      const box = viewport.clientWidth;
+      // scrollWidth rounds to whole pixels and reports the UNCLIPPED content
+      // width, which is what the overflow has to be measured against. A sub-pixel
+      // overshoot is not an overflow worth panning for.
+      const overflow = title.scrollWidth - box;
+      if (overflow <= 1) {
+        setPan(current => (current.panning ? NO_PAN : current));
+        return;
+      }
+      const shift = overflow + PAN_GAP;
+      const seconds = Math.min(
+        PAN_MAX_SECONDS,
+        Math.max(PAN_MIN_SECONDS, shift / PAN_SPEED),
+      );
+      setPan(current =>
+        current.panning && current.shift === shift && current.seconds === seconds
+          ? current
+          : { panning: true, shift, seconds },
+      );
+    };
     measure();
+    // Re-measure on any width change: the box is `min(26rem, ...)`, so a resize,
+    // a rotation or a scrollbar appearing all change what has to be panned.
     const observer = new ResizeObserver(measure);
     observer.observe(viewport);
     observer.observe(title);
+    // Web fonts land after first paint and change the measured width, so the
+    // title is re-measured once they are ready rather than keeping a distance
+    // derived from the fallback face.
+    document.fonts?.ready.then(measure).catch(() => {});
     return () => observer.disconnect();
   }, []);
 
@@ -79,7 +130,19 @@ export function BlackboardPlayer() {
       <div className="bb-player-copy">
         {TRACK.album && <span className="bb-player-kicker">{TRACK.album}</span>}
         <span className="bb-player-title-viewport" ref={titleViewportRef}>
-          <strong className="bb-player-title" ref={titleRef} data-marquee={marquee}>{TRACK.title}</strong>
+          <strong
+            className="bb-player-title"
+            ref={titleRef}
+            data-pan={pan.panning}
+            // The travel and the pace are passed as custom properties so the
+            // keyframes can use them: a keyframe cannot read a measured value
+            // any other way, and hardcoding it is what broke this before.
+            style={pan.panning
+              ? ({ '--bb-pan-shift': `${pan.shift}px`, '--bb-pan-duration': `${pan.seconds}s` } as CSSProperties)
+              : undefined}
+          >
+            {TRACK.title}
+          </strong>
         </span>
         <span className="bb-player-artist">{TRACK.artist}</span>
       </div>
