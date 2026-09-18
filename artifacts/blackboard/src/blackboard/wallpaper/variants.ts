@@ -554,11 +554,17 @@ ${WATERFLOW_GLSL}
 //   .xz *= g_Texture0Resolution.x / .w    (the plate as rendered)
 //   .yw *= ratio
 // scrollspeed is left at its 0 default, so the scroll term vanishes.
-// animationspeed 0.04 is squared by the source: the phase advances at 0.0016/s.
-// The mask is util/white, so the fragment's "normal.xy * strength^2 * mask" is
-// a multiply by one.
+//
+// The scene's own animationspeed 0.04 is squared by the source, so the phase
+// advanced at 0.0016/s and the ripplestrength 0.08 squared the displacement to
+// 0.0064 uv. Measured on the rendered plate that is a mean frame-to-frame delta
+// of ~1.8/255 — real but sub-pixel, so the scene reads as a still image on every
+// platform. Both are boosted here: ~9x the phase rate and ~5x the displacement,
+// which lands the motion at a visible shimmer without turning the water to jelly.
+// This is a deliberate departure from the source scene; the ported constants are
+// noted above so the original values stay recoverable.
 vec2 rippleUv(vec2 uv, float t) {
-  float phase = 0.04 * 0.04 * t;
+  float phase = 0.12 * 0.12 * t;
   vec4 rp;
   rp.xy = uv + vec2(phase);
   rp.zw = uv * 1.333 - vec2(phase);
@@ -572,7 +578,7 @@ vec2 rippleUv(vec2 uv, float t) {
   // scene's variant of this, which floors z at 0.35 for its generated map.
   vec3 normal = normalize(vec3(n1.xy + n2.xy, n1.z));
 
-  return uv + normal.xy * (0.08 * 0.08);   // ripplestrength, squared
+  return uv + normal.xy * (0.18 * 0.18);   // ripplestrength, squared (scene: 0.08)
 }
 
 void main() {
