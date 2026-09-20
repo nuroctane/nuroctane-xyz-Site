@@ -1,10 +1,10 @@
 ## Index
 - [[#Faith, God & Surrender|Faith, God & Surrender]] (44)
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (29)
-- [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (56)
+- [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (57)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (76)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (54)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (93)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (94)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (30)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (93)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
@@ -463,6 +463,10 @@ _Imagination, intention, frequency, prosperity, timelines, desire, and allowing 
 > Unimaginable self-rewards are yours if you should invest in working out this creative self-practice.
 
 > Visualize your heart opening, your path being golden or whatever you need for your journey already being yours.
+
+> "Glow-ups" are often just individuals who have been out of alignment returning to themselves as a new incarnation through deep self-work, reflected externally. It is insanely hot because emerging from an underworld pivot usually encompasses a peak period of embodied holistic alignment, and this is devastatingly magnetic, perfect for attracting in that which resonates, before encountering future timelines requiring further iterations.
+> — @buridansridge
+
 
 ## Self, Identity & Awakening
 
@@ -1278,6 +1282,10 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 
 > i love to antistalk, which is, learning a person’s routine in order to avoid them.
 > — @sunlove
+
+> Your daily goal should be “how relaxed can I be while doing everything that needs to be done?”
+> — @noahryanco
+
 
 
 
