@@ -10,7 +10,7 @@
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (100)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (45)
-- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (63)
+- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (64)
 
 ## Faith, God & Surrender
 
@@ -2660,6 +2660,21 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > — @networkfaggot
 
 > 6AC05472-DF0C-43B7-A025-BEBBF7E784EC.png
+
+> 我爷爷给人看了一辈子风水，临走前跟我交了个实底：
+> 
+> 1. 不管住哪，要说房子好
+> 2. 和谁在一起，就说谁好
+> 3. 上班的时候，就说这个工作好
+> 4. 遇到晴天，就说阳光很暖
+> 5. 碰到下雨天，就说空气很好
+> 6. 喝水的时候，就说水都是甜的
+> 
+> 人本身就是一个能量场，从你嘴里说出什么，就吸引什么，坚持这样做，你会发现自己一切都越来越好。
+> 
+> 最后补了一句：“看风水是看地，但人最大的风水，在嘴上。这话，你记死了。”
+> — @Yue_official_
+
 
 
 
