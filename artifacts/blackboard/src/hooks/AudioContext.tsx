@@ -355,6 +355,10 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       soundedRef.current = true;
       failuresRef.current = 0;
       setBlocked(false);
+      // iOS ignores preload and only reveals duration once playback actually
+      // starts, so metadata events may never have fired: sync it here, or the
+      // scrubber stays disabled at 0:00 with a frozen dot.
+      if (Number.isFinite(a.duration) && a.duration > 0) setDuration(a.duration);
     };
 
     const onError = () => {
@@ -439,6 +443,32 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     idxRef.current     = idx;
     reconcile();
   }, [enabled, armed, track, idx, reconcile]);
+
+  // Mobile Safari throttles `timeupdate` to ~1Hz and can pause it entirely
+  // while its audio pipeline owns playback — the scrub dot would freeze on
+  // phones while gliding on desktop. While the element reports it is playing,
+  // poll its clock off rAF instead. Ticks are throttled to the scrubber's own
+  // 0.1s step, so this costs about one small render per tick — the same order
+  // as the desktop event rate — and `timeupdate` stays on as the fallback for
+  // background tabs, where rAF stops but the event still fires.
+  useEffect(() => {
+    if (!playing) return;
+    let raf = 0;
+    let last = -1;
+    const tick = () => {
+      const a = audioRef.current;
+      if (a && !a.paused) {
+        const t = a.currentTime || 0;
+        if (Math.abs(t - last) >= 0.09) {
+          last = t;
+          setCurrentTime(t);
+        }
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [playing]);
 
   useEffect(() => {
     volumeRef.current = volume;

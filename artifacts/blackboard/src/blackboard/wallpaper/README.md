@@ -262,12 +262,23 @@ Documented in full at each site in `variants.ts`; the short version:
   implementation.
 - Every scene pins `schemecolor` to grey; the ports render pure monochrome
   (luminance) to match the Blackboard's palette.
-- **`roses`' `foliagesway` is a stand-in, not the shader** — the source sways
-  per-vertex off a noise map, which needs the plate as a subdivided mesh rather
-  than the single fullscreen quad every variant draws. The port keeps the
-  visible result — a slow, two-frequency uv wobble of the same order — and the
-  `filmgrain` pass alongside it. Its `tint` is a no-op: the plate is already
-  monochrome, so a tint over grey can only darken it.
+- **`roses`' `foliagesway` is the MODE 0 fragment branch, ported whole** — the
+  same maths as the `japanese` port with this scene's own constants (scale 0.19,
+  ratio 1.36, scrolldirection -2.7109, phase 0.34, power 2, speeduv 2.82,
+  strength 0.47, no mask). The source's vertex-displacement branch (MODE 1, with
+  corner and direction weights) is dead code for this scene, exactly as for
+  `japanese`. Per-pixel phase from `util/noise` is what rustles leaves against
+  the branch sway. Its `tint` is a no-op: white at alpha 0.15 over a plate this
+  dark lifts blacks by a fraction of a percent, far below the filmgrain it ships
+  alongside. The shine pass is not ported: it is a bloom-shaped highlight
+  catcher with no bloom buffer to catch on, and the plate already carries the
+  highlights it would lift.
+- **Both sakuras carry a petal rustle the sources do not** — each source's
+  `shake` drives every masked pixel with one global phase, so the whole branch
+  breathes as a sheet. A second displacement with per-pixel phase from
+  `util/noise` (two incommensurate frequency pairs, ~1.4px max, gated by the
+  shake flow amount so the masked-out sky stays still) flutters petals against
+  that sway. Uv-only like the shake, so the identity tone curves still hold.
 - **`lattice`'s fog is a parallax, not particles** — the source runs a fog
   particle pass, and the preset asks for `rate 100 / smoothrate 13`, i.e. long
   smooth drifts. The port reproduces the drift as a two-axis parallax with a

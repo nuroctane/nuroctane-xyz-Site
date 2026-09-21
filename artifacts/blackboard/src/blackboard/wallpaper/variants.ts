@@ -363,6 +363,24 @@ vec2 shakeOffset(vec2 uv, float t, float speed, float strength) {
 `;
 
 /**
+ * Petal rustle laid over the branch sway. `shake` drives every masked pixel
+ * with one global phase, so a branch breathes as a sheet; this adds a finer
+ * displacement with per-pixel phase from util/noise so petals flutter against
+ * that sway. Two incommensurate frequency pairs, so it never settles into a
+ * beat. `gate` must be the shake flow amount at the pixel, so still sky the
+ * mask protects never moves: neutral flow samples at ~8e-5 and the gate reads
+ * zero there.
+ */
+const RUSTLE_GLSL = `
+vec2 rustle(vec2 uv, float t, float gate) {
+  vec3 rn = texture2D(uNoise, uv * 3.0).rgb;
+  float p = rn.g * 6.283185307179586 + (uv.x + uv.y) * 40.0;
+  vec2 r = vec2(sin(p + t * 3.1) + 0.5 * sin(p * 1.7 - t * 4.3),
+                cos(p * 1.3 + t * 2.7) + 0.5 * cos(p * 2.1 + t * 3.9));
+  return r * (0.00035 * gate);
+}
+`;
+/**
  * effects/waterflow, shared by `blossom` and `waves`.
  *
  * Again the maths from CLOUDS_FRAGMENT with the scene's constants passed in:
@@ -521,22 +539,29 @@ void main() {
    One effects/shake pass, strength 0.059, mask masks/shake_mask_59ff63c3. This
    is the same effect the clouds scene runs at 0.071; the mask is 1280x720
    against a 2560x1440 plate, half in both axes, so its uv is the object uv.
+   The shake moves every masked pixel with one global phase — the whole branch
+   breathes as a sheet — so a second, finer displacement with per-pixel phase
+   from util/noise flutters the petals against that sway. Both are uv-only, so
+   the ink field is untouched.
    ═══════════════════════════════════════════════════════════════════════════ */
 const SAKURA_FRAGMENT = `
 ${PRECISION}
 varying vec2 vUv;
 uniform sampler2D uImage;
 uniform sampler2D uShakeMask;
+uniform sampler2D uNoise;
 uniform float uTime;
 uniform float uAspect;
 uniform float uImageAspect;
 ${COMMON_GLSL}
 ${SHAKE_GLSL}
+${RUSTLE_GLSL}
 void main() {
   vec2 uv = coverUv(vUv);
   // speed 0.74, friction "1 1" and bounds "0 1" both collapse to identity.
   vec2 offset = shakeOffset(uv, uTime, 0.74, 0.059);
-  gl_FragColor = vec4(monochrome(texture2D(uImage, uv + offset).rgb), 1.0);
+  float gate = smoothstep(0.0, 0.3, length((texture2D(uShakeMask, uv).rg - vec2(0.498)) * 2.0));
+  gl_FragColor = vec4(monochrome(texture2D(uImage, uv + offset + rustle(uv, uTime, gate)).rgb), 1.0);
 }
 `;
 
@@ -546,7 +571,9 @@ void main() {
    speed 0.25, feather 0.4, phasescale 2.0). The second one displaces the result
    of the first, so the shake offset is applied to the uv before the flow taps
    sample it. Both masks are 1706x960 against a 3412x1920 plate — half in both
-   axes — so each shader's mask uv is the object uv. The scene's two audio
+   axes — so each shader's mask uv is the object uv. A petal rustle flutters the
+   blossoms against the shake's single-phase sway, gated by the shake flow so
+   the fog-bound stillness elsewhere never moves. The scene's two audio
    objects are dropped: this port never reads an audio spectrum.
    ═══════════════════════════════════════════════════════════════════════════ */
 const BLOSSOM_FRAGMENT = `
@@ -556,16 +583,20 @@ uniform sampler2D uImage;
 uniform sampler2D uShakeMask;
 uniform sampler2D uFlowMask;
 uniform sampler2D uPhase;
+uniform sampler2D uNoise;
 uniform float uTime;
 uniform float uAspect;
 uniform float uImageAspect;
 ${COMMON_GLSL}
 ${SHAKE_GLSL}
 ${WATERFLOW_GLSL}
+${RUSTLE_GLSL}
 void main() {
   float t = uTime;
   vec2 uv = coverUv(vUv);
-  vec3 col = waterflow(uv + shakeOffset(uv, t, 0.74, 0.071), t, 0.25, 0.2, 0.4, 2.0);
+  vec2 shaken = uv + shakeOffset(uv, t, 0.74, 0.071);
+  float gate = smoothstep(0.0, 0.3, length((texture2D(uShakeMask, uv).rg - vec2(0.498)) * 2.0));
+  vec3 col = waterflow(shaken + rustle(uv, t, gate), t, 0.25, 0.2, 0.4, 2.0);
   gl_FragColor = vec4(monochrome(col), 1.0);
 }
 `;
@@ -1032,11 +1063,13 @@ export const SAKURA: WallpaperVariant = {
   fragment: SAKURA_FRAGMENT,
   // Displacement only — the shake moves uv by at most 0.059^2 of the flow map,
   // 8.6px at this asset's width, measured at 3.45px max on a 1024-wide render —
-  // and no level changes. Identity. Confident.
+  // and the rustle adds at most ~1.4px more on masked foliage, with no level
+  // changes. Identity. Confident.
   toneMap: srgb => srgb,
   create(gl, program, mobile) {
     gl.uniform1i(gl.getUniformLocation(program, 'uImage'), 0);
     gl.uniform1i(gl.getUniformLocation(program, 'uShakeMask'), 1);
+    gl.uniform1i(gl.getUniformLocation(program, 'uNoise'), 2);
 
     const uTime = gl.getUniformLocation(program, 'uTime');
     const uAspect = gl.getUniformLocation(program, 'uAspect');
@@ -1048,9 +1081,14 @@ export const SAKURA: WallpaperVariant = {
     };
 
     const mask = loadImage('/assets/blackboard/sakura/sakura-shake-mask.webp');
+    // util/noise, byte-copied from Wallpaper Engine — the same file the
+    // japanese variant ships as japanese-noise.png. Sampled tiled at 3x the
+    // object uv for per-leaf rustle phase, so it binds REPEAT; 256x256 is POT,
+    // which is what keeps that legal under WebGL 1.
+    const noise = loadImage('/assets/blackboard/japanese/japanese-noise.png');
     const image = loadImage(mobile ? SAKURA_PLATE.mobile : SAKURA_PLATE.desktop);
 
-    let pending = 2;
+    let pending = 3;
     let ready = false;
     let failed = false;
     const settle = () => {
@@ -1065,6 +1103,11 @@ export const SAKURA: WallpaperVariant = {
       settle();
     };
     mask.onerror = fail;
+    noise.onload = () => {
+      keep(uploadTexture(gl, 2, noise, true, false));
+      settle();
+    };
+    noise.onerror = fail;
     image.onload = () => {
       keep(uploadTexture(gl, 0, image, false, false));
       gl.uniform1f(uImageAspect, image.naturalWidth / image.naturalHeight);
@@ -1086,6 +1129,8 @@ export const SAKURA: WallpaperVariant = {
         image.onerror = null;
         mask.onload = null;
         mask.onerror = null;
+        noise.onload = null;
+        noise.onerror = null;
         for (const texture of textures) context.deleteTexture(texture);
       },
     };
@@ -1103,7 +1148,8 @@ export const BLOSSOM: WallpaperVariant = {
   fragment: BLOSSOM_FRAGMENT,
   // Displacement only: the shake is masked to <= 0.071^2 and the waterflow to
   // 0.2 * 0.1 of a flow map, both well under a percent of the plate's width,
-  // and neither touches levels. The plate is near-white — mean 0.82 sRGB, so
+  // and the rustle adds at most ~1.4px more on masked foliage, with neither
+  // touching levels. The plate is near-white — mean 0.82 sRGB, so
   // about 210/255 — which is a consequence for the ink system, not for this
   // curve: the shader reproduces the file. Identity. Confident.
   toneMap: srgb => srgb,
@@ -1112,6 +1158,7 @@ export const BLOSSOM: WallpaperVariant = {
     gl.uniform1i(gl.getUniformLocation(program, 'uShakeMask'), 1);
     gl.uniform1i(gl.getUniformLocation(program, 'uFlowMask'), 2);
     gl.uniform1i(gl.getUniformLocation(program, 'uPhase'), 3);
+    gl.uniform1i(gl.getUniformLocation(program, 'uNoise'), 4);
 
     const uTime = gl.getUniformLocation(program, 'uTime');
     const uAspect = gl.getUniformLocation(program, 'uAspect');
@@ -1127,6 +1174,11 @@ export const BLOSSOM: WallpaperVariant = {
       { image: loadImage('/assets/blackboard/blossom/blossom-waterflow-mask.webp'), unit: 2, repeat: false },
       // The phase map tiles: it is sampled at twice the object uv here.
       { image: loadImage('/assets/blackboard/blossom/blossom-phase.png'), unit: 3, repeat: true },
+      // util/noise, byte-copied from Wallpaper Engine — the same file the
+      // japanese variant ships as japanese-noise.png. Sampled tiled at 3x the
+      // object uv for per-petal rustle phase, so it binds REPEAT; 256x256 is
+      // POT, which is what keeps that legal under WebGL 1.
+      { image: loadImage('/assets/blackboard/japanese/japanese-noise.png'), unit: 4, repeat: true },
     ];
     const image = loadImage(mobile ? BLOSSOM_PLATE.mobile : BLOSSOM_PLATE.desktop);
 
@@ -1334,14 +1386,19 @@ const ROSES_PLATE = {
 /* ═══════════════════════════════════════════════════════════════════════════
    ROSES — workshop 2549515627
    A dense near-black rose wall. The source runs four effects over a single
-   plate: foliagesway, a shine pass, filmgrain and a white tint. The sway
-   stays the small original wobble. A few leaves in the plate stay green;
-   the rest of the wall is already grey.
+   plate: foliagesway (MODE 0, the UV branch), a shine pass, filmgrain and a
+   white tint. The sway is the same maths the japanese variant ports, with this
+   scene's own constants — scale 0.19, ratio 1.36, scrolldirection -2.7109,
+   phase 0.34, power 2, speeduv 2.82, strength 0.47 — and no mask texture, so it
+   runs full-frame. Per-pixel phase from util/noise is what makes leaves rustle
+   against the slower branch sway, instead of one uniform wobble. The plate
+   keeps the workshop's green leaves; the rest of the wall is already grey.
    ═══════════════════════════════════════════════════════════════════════════ */
 const ROSES_FRAGMENT = `
 ${PRECISION}
 varying vec2 vUv;
 uniform sampler2D uImage;
+uniform sampler2D uNoise;
 uniform float uTime;
 uniform float uAspect;
 uniform float uImageAspect;
@@ -1351,19 +1408,41 @@ float grain(vec2 p) {
   return frac(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
 }
 
-// The original small wobble. Two incommensurate frequencies so it never
-// settles into a beat. The green is in the plate, not in the motion.
-vec2 sway(vec2 uv, float t) {
-  return uv + vec2(
-    sin(uv.y * 9.0 + t * 0.55) * 0.0024,
-    cos(uv.x * 7.0 + t * 0.41) * 0.0019
-  );
-}
-
 void main() {
   vec2 uv = coverUv(vUv);
-  // The plate keeps a few green leaves; monochrome() would wipe that back off.
-  vec3 col = texture2D(uImage, sway(uv, uTime)).rgb;
+
+  // effects/foliagesway, MODE 0 fragment branch, constants straight from the
+  // scene: vertex aspect is the plate as displayed, so the canvas aspect stands
+  // in for it exactly as in the japanese port. No mask: the scene supplies no
+  // mask texture, so the amplitude gates on nothing.
+  float aspect = uAspect * 1.3600000000000001;
+  vec2 axes = rotateVec2(vec2(1.0 / aspect, aspect), -2.7109001422032852);
+  vec2 rot = rotateVec2(uv, -2.7109001422032852);
+
+  // scale 0.19: the noise field is magnified ~5x on screen, so neighbouring
+  // leaves read different phases and rustle against each other while the
+  // rotated-uv terms carry the slower branch-scale sway.
+  vec3 noise = texture2D(uNoise, uv * 0.19).rgb;
+
+  // strength 0.47, squared and scaled by 0.005 in the vertex shader.
+  float amp = 0.46999999999999997 * 0.46999999999999997 * 0.005;
+
+  // phase 0.34 scales the whole argument: noise.g on 0..2pi, plus the rotated
+  // uv with its x weighted tenfold and its y fivefold.
+  float phase = (noise.g * 6.283185307179586 + rot.x * 10.0 + rot.y * 5.0) * 0.34000000000000002;
+  // speeduv 2.82, and power 2 applied as an odd (sign-preserving) curve.
+  vec4 sines = sin(phase + 2.8199999999999998 * uTime * vec4(1.0, -0.16161616, 0.0083333, -0.00019841));
+  vec4 csines = sin(0.4 + phase + 2.8199999999999998 * uTime * vec4(-0.5, 0.041666666, -0.0013888889, 0.000024801587));
+  sines = pow(abs(sines), vec4(2.0)) * sign(sines);
+  csines = pow(abs(csines), vec4(2.0)) * sign(csines);
+
+  vec2 offset;
+  offset.x = axes.x * dot(sines, vec4(amp));
+  offset.y = axes.y * dot(csines, vec4(amp));
+
+  // The plate keeps the workshop's green leaves; monochrome() would wipe that off.
+  vec3 col = texture2D(uImage, uv + offset).rgb;
+  // effects/filmgrain: exponent 0.4, scale 20, strength 0.32 — faint, reads as film.
   col += (grain(uv * uAspect * 900.0 + frac(uTime) * 91.0) - 0.5) * 0.032;
   gl_FragColor = vec4(col, 1.0);
 }
@@ -1375,8 +1454,71 @@ export const ROSES: WallpaperVariant = {
   plate: ROSES_PLATE,
   vertex: VERTEX_SRC,
   fragment: ROSES_FRAGMENT,
+  // Displacement only: the sway and the grain move uv and dither levels by
+  // ±0.016 with zero mean, so the plate stands in for the render in the ink
+  // field. Identity. Confident.
   toneMap: srgb => srgb,
-  create: (gl, program, mobile) => createPlateScene(gl, program, ROSES_PLATE, mobile),
+  create(gl, program, mobile) {
+    gl.uniform1i(gl.getUniformLocation(program, 'uImage'), 0);
+    gl.uniform1i(gl.getUniformLocation(program, 'uNoise'), 1);
+
+    const uTime = gl.getUniformLocation(program, 'uTime');
+    const uAspect = gl.getUniformLocation(program, 'uAspect');
+    const uImageAspect = gl.getUniformLocation(program, 'uImageAspect');
+
+    const textures: WebGLTexture[] = [];
+    const keep = (texture: WebGLTexture | null) => {
+      if (texture) textures.push(texture);
+    };
+
+    // util/noise, byte-copied from Wallpaper Engine — the same file the
+    // japanese variant ships as japanese-noise.png. Read at a fifth of the uv,
+    // so it never wraps: clamping is identical to repeating.
+    const noise = loadImage('/assets/blackboard/japanese/japanese-noise.png');
+    const image = loadImage(mobile ? ROSES_PLATE.mobile : ROSES_PLATE.desktop);
+
+    // Gate the first frame: sampling an unbound unit returns (0,0,0,1), which
+    // would park the noise phase at zero and jump once the map arrives.
+    let pending = 2;
+    let ready = false;
+    let failed = false;
+    const settle = () => {
+      if (--pending === 0 && !failed) ready = true;
+    };
+    const fail = () => {
+      failed = true;
+    };
+
+    noise.onload = () => {
+      keep(uploadTexture(gl, 1, noise, false, false));
+      settle();
+    };
+    noise.onerror = fail;
+    image.onload = () => {
+      keep(uploadTexture(gl, 0, image, false, false));
+      gl.uniform1f(uImageAspect, image.naturalWidth / image.naturalHeight);
+      settle();
+    };
+    image.onerror = fail;
+
+    return {
+      frame(context, time) {
+        if (!ready) return false;
+        context.uniform1f(uTime, time);
+        context.uniform1f(uAspect, context.drawingBufferWidth / context.drawingBufferHeight);
+        context.drawArrays(context.TRIANGLE_STRIP, 0, 4);
+        return true;
+      },
+      alive: () => !failed,
+      dispose(context) {
+        image.onload = null;
+        image.onerror = null;
+        noise.onload = null;
+        noise.onerror = null;
+        for (const texture of textures) context.deleteTexture(texture);
+      },
+    };
+  },
 };
 
 const LATTICE_PLATE = {
