@@ -446,11 +446,23 @@ export function AudioProvider({ children }: { children: ReactNode }) {
 
   // Mobile Safari throttles `timeupdate` to ~1Hz and can pause it entirely
   // while its audio pipeline owns playback — the scrub dot would freeze on
-  // phones while gliding on desktop. While the element reports it is playing,
-  // poll its clock off rAF instead. Ticks are throttled to the scrubber's own
-  // 0.1s step, so this costs about one small render per tick — the same order
-  // as the desktop event rate — and `timeupdate` stays on as the fallback for
-  // background tabs, where rAF stops but the event still fires.
+  // phones while gliding on desktop. rAF alone does not cover it either: it
+  // stalls during touch scrolls and can be suspended around gestures, which is
+  // exactly when a finger is near the scrubber. So the clock has three
+  // drivers: rAF smooths it to the scrubber's 0.1s step while playing, a 500ms
+  // interval carries it whenever sound is coming out regardless of rAF or
+  // `playing` state, and `timeupdate` stays on for background tabs, where both
+  // timers stop but the event still fires. The interval no-ops while rAF is
+  // healthy (0.25 threshold vs rAF's 0.09 steps), so they never double-render.
+  useEffect(() => {
+    const id = setInterval(() => {
+      const a = audioRef.current;
+      if (!a || a.paused) return;
+      const t = a.currentTime || 0;
+      setCurrentTime(prev => (Math.abs(t - prev) >= 0.25 ? t : prev));
+    }, 500);
+    return () => clearInterval(id);
+  }, []);
   useEffect(() => {
     if (!playing) return;
     let raf = 0;
