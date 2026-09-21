@@ -19,7 +19,7 @@ import './blackboard-wallpaper.css';
    settled still; no WebGL at all falls back to the plates.
    ═══════════════════════════════════════════════════════════════════════════ */
 export function BlackboardWallpaper() {
-  const { variant, plate, narrow, activate } = useWallpaper();
+  const { variant, plate, narrow, activate, reportFrame } = useWallpaper();
   const reduced = useReducedMotion();
   // Leave cross-fade layers mounted, but fetch a plate only when first shown.
   // Loading all twelve on every visit wastes bandwidth, especially on mobile.
@@ -97,8 +97,36 @@ export function BlackboardWallpaper() {
 
     sync();
     document.addEventListener('visibilitychange', sync);
-    return () => document.removeEventListener('visibilitychange', sync);
-  }, [narrow, reduced, variant]);
+
+    // Video scenes never touch the canvas, so the ink has to read the element.
+    // Cover-crop into the grid the same way object-fit: cover paints it, at
+    // whatever size the element currently is.
+    let scratch: HTMLCanvasElement | null = null;
+    const sampleVideo = window.setInterval(() => {
+      if (document.hidden) return;
+      const video = hostRef.current?.querySelector<HTMLVideoElement>('video[data-active="true"]');
+      if (!video || video.readyState < 2 || !video.videoWidth || !video.videoHeight) return;
+      const cols = 48;
+      const rows = Math.max(1, Math.round(cols * video.clientHeight / Math.max(1, video.clientWidth)));
+      if (!scratch) scratch = document.createElement('canvas');
+      if (scratch.width !== cols || scratch.height !== rows) {
+        scratch.width = cols;
+        scratch.height = rows;
+      }
+      const ctx = scratch.getContext('2d', { willReadFrequently: true });
+      if (!ctx) return;
+      const scale = Math.max(cols / video.videoWidth, rows / video.videoHeight);
+      const dw = video.videoWidth * scale;
+      const dh = video.videoHeight * scale;
+      ctx.drawImage(video, (cols - dw) / 2, (rows - dh) / 2, dw, dh);
+      reportFrame(ctx.getImageData(0, 0, cols, rows).data, cols, rows, video.clientWidth, video.clientHeight, false);
+    }, 180);
+
+    return () => {
+      document.removeEventListener('visibilitychange', sync);
+      window.clearInterval(sampleVideo);
+    };
+  }, [narrow, reduced, variant, reportFrame]);
 
   // Mount the active scene onto that context. A video variant has no runtime —
   // its element draws the frame — so the canvas is left transparent and the
@@ -142,12 +170,71 @@ export function BlackboardWallpaper() {
     let running = false;
     let announced = false;
 
+    // A downscaled second draw of the same frame. Reading the canvas later is
+    // blank — WebGL drops the drawing buffer after composite — and reading the
+    // full buffer every tick is a multi-megabyte stall. 48 columns matches the
+    // plate grid and follows the canvas aspect, so the ink tracks this viewport.
+    let sampleFbo: WebGLFramebuffer | null = null;
+    let sampleTex: WebGLTexture | null = null;
+    let sampleCols = 0;
+    let sampleRows = 0;
+    let lastSample = 0;
+    const releaseSample = () => {
+      if (sampleFbo) gl.deleteFramebuffer(sampleFbo);
+      if (sampleTex) gl.deleteTexture(sampleTex);
+      sampleFbo = null;
+      sampleTex = null;
+    };
+    const sampleFrame = (seconds: number) => {
+      const cols = 48;
+      const rows = Math.max(1, Math.round(cols * canvas.height / Math.max(1, canvas.width)));
+      if (sampleCols !== cols || sampleRows !== rows) {
+        releaseSample();
+        const prevUnit = gl.getParameter(gl.ACTIVE_TEXTURE) as number;
+        const prevTex = gl.getParameter(gl.TEXTURE_BINDING_2D) as WebGLTexture | null;
+        sampleTex = gl.createTexture();
+        gl.bindTexture(gl.TEXTURE_2D, sampleTex);
+        gl.texImage2D(gl.TEXTURE_2D, 0, gl.RGBA, cols, rows, 0, gl.RGBA, gl.UNSIGNED_BYTE, null);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MIN_FILTER, gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_MAG_FILTER, gl.NEAREST);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_S, gl.CLAMP_TO_EDGE);
+        gl.texParameteri(gl.TEXTURE_2D, gl.TEXTURE_WRAP_T, gl.CLAMP_TO_EDGE);
+        sampleFbo = gl.createFramebuffer();
+        gl.bindFramebuffer(gl.FRAMEBUFFER, sampleFbo);
+        gl.framebufferTexture2D(gl.FRAMEBUFFER, gl.COLOR_ATTACHMENT0, gl.TEXTURE_2D, sampleTex, 0);
+        const ok = gl.checkFramebufferStatus(gl.FRAMEBUFFER) === gl.FRAMEBUFFER_COMPLETE;
+        gl.bindTexture(gl.TEXTURE_2D, prevTex);
+        gl.activeTexture(prevUnit);
+        gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+        sampleCols = cols;
+        sampleRows = rows;
+        if (!ok) releaseSample();
+      }
+      if (!sampleFbo) return;
+      gl.bindFramebuffer(gl.FRAMEBUFFER, sampleFbo);
+      gl.viewport(0, 0, cols, rows);
+      gl.clear(gl.COLOR_BUFFER_BIT);
+      if (runtime.frame(gl, seconds)) {
+        const pixels = new Uint8Array(cols * rows * 4);
+        gl.readPixels(0, 0, cols, rows, gl.RGBA, gl.UNSIGNED_BYTE, pixels);
+        reportFrame(pixels, cols, rows, canvas.clientWidth, canvas.clientHeight, true);
+      }
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+      gl.viewport(0, 0, canvas.width, canvas.height);
+    };
+
     const renderFrame = (seconds: number) => {
+      gl.bindFramebuffer(gl.FRAMEBUFFER, null);
+      gl.viewport(0, 0, canvas.width, canvas.height);
       gl.clear(gl.COLOR_BUFFER_BIT);
       const drawn = runtime.frame(gl, seconds);
       if (drawn && !announced) {
         announced = true;
         setPainted(true);
+      }
+      if (drawn && performance.now() - lastSample > 160) {
+        lastSample = performance.now();
+        sampleFrame(seconds);
       }
       return drawn;
     };
@@ -208,11 +295,12 @@ export function BlackboardWallpaper() {
       window.removeEventListener('resize', onResize);
       if (onVisibility) document.removeEventListener('visibilitychange', onVisibility);
       stop();
+      releaseSample();
       runtime.dispose(gl);
       gl.deleteBuffer(quad);
       destroyProgram(gl, program);
     };
-  }, [generation, narrow, reduced, variant]);
+  }, [generation, narrow, reduced, variant, reportFrame]);
 
   return (
     <div className="bb-wallpaper" aria-hidden="true" ref={hostRef}>

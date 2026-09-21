@@ -1334,9 +1334,9 @@ const ROSES_PLATE = {
 /* ═══════════════════════════════════════════════════════════════════════════
    ROSES — workshop 2549515627
    A dense near-black rose wall. The source runs four effects over a single
-   plate: foliagesway (speed 2.82, strength 0.47), a shine pass, filmgrain
-   and a white tint. The port keeps the sway and the grain. A few leaves in
-   the plate stay green; the rest of the wall is already grey.
+   plate: foliagesway, a shine pass, filmgrain and a white tint. The sway
+   stays the small original wobble. A few leaves in the plate stay green;
+   the rest of the wall is already grey.
    ═══════════════════════════════════════════════════════════════════════════ */
 const ROSES_FRAGMENT = `
 ${PRECISION}
@@ -1351,15 +1351,13 @@ float grain(vec2 p) {
   return frac(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
 }
 
-// Workshop foliagesway on this plate: speed 2.82, power 2, strength 0.47
-// (the effect applies strength as hundredths). Two continuous waves, not a
-// noise-cell slide, so neighbouring leaves travel together instead of tearing.
+// The original small wobble. Two incommensurate frequencies so it never
+// settles into a beat. The green is in the plate, not in the motion.
 vec2 sway(vec2 uv, float t) {
-  float s = sin(uv.y * 10.0 + t * 2.82);
-  float c = sin(uv.x * 7.5 + t * 1.41 + 0.7);
-  s = pow(abs(s), 2.0) * sign(s);
-  c = pow(abs(c), 2.0) * sign(c);
-  return uv + vec2(s * 0.010, c * 0.007);
+  return uv + vec2(
+    sin(uv.y * 9.0 + t * 0.55) * 0.0024,
+    cos(uv.x * 7.0 + t * 0.41) * 0.0019
+  );
 }
 
 void main() {

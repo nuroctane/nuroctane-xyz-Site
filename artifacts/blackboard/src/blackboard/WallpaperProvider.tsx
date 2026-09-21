@@ -13,8 +13,9 @@ import {
 import {
   applyScrim,
   buildLuminanceField,
-  centerPatch,
   inkForLuminance,
+  inkSampleRect,
+  luminanceGrid,
   parseAlpha,
   sampleRect,
   scrimAlphaAt,
@@ -68,6 +69,21 @@ interface WallpaperValue {
   field: LuminanceField | null;
   /** The wallpaper layer calls this so the field is only built where it shows. */
   activate: () => void;
+  /**
+   * The rendered frame (canvas or video), already in viewport space. This is
+   * what the ink follows for every wallpaper: the plate grid is only the
+   * stand-in until the first frame is up.
+   */
+  reportFrame: (
+    rgba: ArrayLike<number>,
+    cols: number,
+    rows: number,
+    viewWidth: number,
+    viewHeight: number,
+    flipY: boolean,
+  ) => void;
+  renderedField: () => (LuminanceField & { at: number }) | null;
+  subscribeRendered: (listener: () => void) => () => void;
 }
 
 const WallpaperContext = createContext<WallpaperValue | null>(null);
@@ -88,6 +104,8 @@ export function WallpaperProvider({ children }: { children: ReactNode }) {
   // has to rebuild the grid or the ink keeps sampling the plate that is no longer
   // on screen. Rotating a phone and resizing a desktop window both land here.
   const [narrow, setNarrow] = useState(matchesNarrow);
+  const renderedRef = useRef<(LuminanceField & { at: number }) | null>(null);
+  const renderedSubs = useRef(new Set<() => void>());
 
   useEffect(() => {
     const query = window.matchMedia(MOBILE_QUERY);
@@ -120,8 +138,40 @@ export function WallpaperProvider({ children }: { children: ReactNode }) {
 
   // Build the luminance grid for the active plate. The URL is identical to the
   // CSS plate layer, so this is served from the HTTP cache in practice.
+  const reportFrame = useCallback((
+    rgba: ArrayLike<number>,
+    cols: number,
+    rows: number,
+    viewWidth: number,
+    viewHeight: number,
+    flipY: boolean,
+  ) => {
+    if (cols < 1 || rows < 1 || viewWidth < 1 || viewHeight < 1) return;
+    const data = luminanceGrid(rgba, cols, rows, flipY);
+    const previous = renderedRef.current;
+    const same = previous && previous.cols === cols && previous.rows === rows;
+    const next: LuminanceField & { at: number } = same
+      ? previous
+      : { cols, rows, data, imageWidth: viewWidth, imageHeight: viewHeight, at: 0 };
+    if (same) next.data.set(data);
+    next.imageWidth = viewWidth;
+    next.imageHeight = viewHeight;
+    next.at = performance.now();
+    renderedRef.current = next;
+    renderedSubs.current.forEach(listener => listener());
+  }, []);
+
+  const renderedField = useCallback(() => renderedRef.current, []);
+
+  const subscribeRendered = useCallback((listener: () => void) => {
+    renderedSubs.current.add(listener);
+    return () => renderedSubs.current.delete(listener);
+  }, []);
+
   useEffect(() => {
     if (!active) return undefined;
+    // Drop the previous wallpaper's frame so ink doesn't track it through the fade.
+    renderedRef.current = null;
     setField(null);
     const scene = VARIANTS[variant];
     let cancelled = false;
@@ -177,8 +227,11 @@ export function WallpaperProvider({ children }: { children: ReactNode }) {
   }, [active, variant, narrow, plate, reduced]);
 
   const value = useMemo<WallpaperValue>(
-    () => ({ variant, next, setVariant, plate, narrow, field, activate }),
-    [variant, next, setVariant, plate, narrow, field, activate],
+    () => ({
+      variant, next, setVariant, plate, narrow, field, activate,
+      reportFrame, renderedField, subscribeRendered,
+    }),
+    [variant, next, setVariant, plate, narrow, field, activate, reportFrame, renderedField, subscribeRendered],
   );
 
   return <WallpaperContext.Provider value={value}>{children}</WallpaperContext.Provider>;
@@ -203,26 +256,29 @@ export function WallpaperProvider({ children }: { children: ReactNode }) {
  * re-register its listeners several times a second.
  */
 export function useAdaptiveInk<T extends HTMLElement>(): readonly [RefObject<T | null>, InkPolarity] {
-  const { field, variant } = useWallpaper();
+  const { field, variant, renderedField, subscribeRendered } = useWallpaper();
   const reduced = useReducedMotion();
   const ref = useRef<T>(null);
   const [ink, setInkState] = useState<InkPolarity>('light');
   const inkRef = useRef<InkPolarity>('light');
 
-  // Sampled at a few Hz: the ink only has to keep up with the eye noticing the
-  // background changed colour underneath it, not with the frame rate.
+  // Until the wallpaper has published a real frame, a live variant (the sweep)
+  // still has to move. Once frames are arriving, those pixels win — they are
+  // the render at this exact viewport size, for every wallpaper.
   const liveTick = useCallback((schedule: () => void) => {
     const live = VARIANTS[variant].liveField;
     if (!live || !field || reduced) return undefined;
     const id = window.setInterval(() => {
       if (document.hidden) return;
+      const rendered = renderedField();
+      if (rendered && performance.now() - rendered.at < 800) return;
       const width = Math.max(1, window.innerWidth);
       const height = Math.max(1, window.innerHeight);
-      live(field.data, field.cols, field.rows, (reduced ? 37 : performance.now() / 1000), width / height);
+      live(field.data, field.cols, field.rows, performance.now() / 1000, width / height);
       schedule();
     }, 180);
     return () => window.clearInterval(id);
-  }, [field, variant, reduced]);
+  }, [field, variant, reduced, renderedField]);
 
   useEffect(() => {
     if (!field) return undefined;
@@ -238,10 +294,11 @@ export function useAdaptiveInk<T extends HTMLElement>(): readonly [RefObject<T |
       const rect = element.getBoundingClientRect();
       const width = window.innerWidth;
       const height = window.innerHeight;
-      // Live fields (the Sweep) are not a photograph: averaging the whole box
-      // mixes the black half with the white half and the pole never moves.
-      const target = VARIANTS[variant].liveField ? centerPatch(rect) : rect;
-      const value = sampleRect(field, target, width, height);
+      const rendered = renderedField();
+      const source = rendered && performance.now() - rendered.at < 800 ? rendered : field;
+      // Every wallpaper, every viewport. A full-box mean stays grey wherever
+      // the art crosses a pole inside the element.
+      const value = sampleRect(source, inkSampleRect(rect, width, height), width, height);
       if (value === null) return;
 
       // The scrim is read from the element's own computed style, so it follows
@@ -284,16 +341,18 @@ export function useAdaptiveInk<T extends HTMLElement>(): readonly [RefObject<T |
     const element = ref.current;
     if (element) observer.observe(element);
     const stopLive = liveTick(schedule);
+    const unsubscribe = subscribeRendered(schedule);
     return () => {
       if (frame) window.cancelAnimationFrame(frame);
       observer.disconnect();
       stopLive?.();
+      unsubscribe();
       window.removeEventListener('resize', schedule);
       window.removeEventListener('orientationchange', schedule);
       window.visualViewport?.removeEventListener('resize', schedule);
       document.removeEventListener('scroll', schedule, { capture: true });
     };
-  }, [field, variant, liveTick]);
+  }, [field, variant, liveTick, renderedField, subscribeRendered]);
 
   return [ref, ink] as const;
 }

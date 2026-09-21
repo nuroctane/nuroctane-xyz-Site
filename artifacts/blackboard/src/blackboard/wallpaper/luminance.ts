@@ -38,17 +38,48 @@ export interface Rect {
 }
 
 /**
- * A small patch at the centre of `rect`.
+ * The patch of `rect` the ink decision should read, at any viewport size.
  *
- * The mean of a wide or tall box is the right sample for a photograph. It is
- * the wrong one for a live field that swings from black to white across the
- * box — the Sweep — because that mean is always grey and the ink never flips.
- * The glyphs sit on the centre, so that is what the decision should read.
+ * A control smaller than the patch is already local, so the whole box is the
+ * sample. A wide row, a tall column, or the page itself spans opposing poles
+ * on every wallpaper that is not a flat colour — clouds, lattice, the sweep —
+ * and the mean of that box is grey, so the pole never moves. The glyphs sit
+ * in the middle. The patch scales with the viewport (about 7% of the shorter
+ * side, clamped) so a phone and a wide desktop do not share one pixel size.
  */
-export function centerPatch(rect: Rect, size = 28): Rect {
+export function inkSampleRect(rect: Rect, viewportWidth: number, viewportHeight: number): Rect {
+  if (!(rect.width > 0) || !(rect.height > 0) || !(viewportWidth > 0) || !(viewportHeight > 0)) {
+    return rect;
+  }
+  const vmin = Math.min(viewportWidth, viewportHeight);
+  const scaled = Math.min(Math.max(20, vmin * 0.07), 96);
+  const width = Math.min(rect.width, scaled);
+  const height = Math.min(rect.height, scaled);
+  if (width >= rect.width - 0.5 && height >= rect.height - 0.5) return rect;
   const cx = rect.left + rect.width / 2;
   const cy = rect.top + rect.height / 2;
-  return { left: cx - size / 2, top: cy - size / 2, width: size, height: size };
+  return { left: cx - width / 2, top: cy - height / 2, width, height };
+}
+
+/** Linear luminance of an RGBA buffer. WebGL's rows are bottom-up (`flipY`). */
+export function luminanceGrid(
+  rgba: ArrayLike<number>,
+  cols: number,
+  rows: number,
+  flipY: boolean,
+): Float32Array {
+  const out = new Float32Array(cols * rows);
+  for (let row = 0; row < rows; row++) {
+    const src = flipY ? rows - 1 - row : row;
+    for (let col = 0; col < cols; col++) {
+      const p = (src * cols + col) * 4;
+      const r = srgbToLinear(rgba[p] / 255);
+      const g = srgbToLinear(rgba[p + 1] / 255);
+      const b = srgbToLinear(rgba[p + 2] / 255);
+      out[row * cols + col] = 0.2126 * r + 0.7152 * g + 0.0722 * b;
+    }
+  }
+  return out;
 }
 
 /**
