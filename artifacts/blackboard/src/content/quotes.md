@@ -1,6 +1,6 @@
 ## Index
 - [[#Faith, God & Surrender|Faith, God & Surrender]] (44)
-- [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (29)
+- [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (30)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (57)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (76)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (54)
@@ -255,6 +255,12 @@ _Consciousness, time, illusion, energy, synchronicity, metaphysics, and the arch
 
 > A compiler can inject a backdoor into itself and into every future compilation of itself which is invisible in the source, i.e. the trusting trust problem (Ken Thompson, 1984).
 > — @abdimoalim_
+
+> You're not getting this yet. The nature of reality is inverted. You think the world is the cause and you're the effect. It's not. You're the cause and reality is the effect.
+> 
+> It's all a projection happening from within you. Everything you encounter: the people, circumstances, challenges and joys. It's a reflection of the data you're holding in your consciousness. It's all a mirror. And you have to learn how to interpret your reality through your emotional reactions.
+> — @IkaraRose
+
 
 
 
