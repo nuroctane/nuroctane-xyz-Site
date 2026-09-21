@@ -132,6 +132,20 @@
   --bb-scrim-bottom: rgb(0 0 0 / 14%);
 }
 
+/* The sweep is the background. A veiling scrim would both muddy the wedge and
+   hold the measured luminance under the dark-ink threshold, which is why the
+   type stayed light while the switcher — a 28px sample with no scrim of its
+   own — kept flipping. On-plate type uses the strong pole, same as that control. */
+.blackboard[data-wallpaper='sweep'] {
+  --bb-scrim-inner: rgb(0 0 0 / 0%);
+  --bb-scrim-outer: rgb(0 0 0 / 0%);
+  --bb-scrim-top: rgb(0 0 0 / 0%);
+  --bb-scrim-bottom: rgb(0 0 0 / 0%);
+}
+.blackboard[data-wallpaper='sweep'] :is(.bb-wallets, .bb-cal, .bb-github, .bb-top-tabs a) {
+  color: var(--bb-ink);
+}
+
 .blackboard::after { position: fixed; inset: 0; z-index: -1; content: ''; background: radial-gradient(ellipse at 50% 42%, var(--bb-scrim-inner, rgb(0 0 0 / 4%)), var(--bb-scrim-outer, rgb(0 0 0 / 52%)) 74%), linear-gradient(180deg, var(--bb-scrim-top, rgb(0 0 0 / 12%)), var(--bb-scrim-bottom, rgb(0 0 0 / 38%))); pointer-events: none; }
 .bb-loading { position: fixed; inset: 0; display: grid; place-items: center; gap: 14px; align-content: center; background: #050505; color: #f2f2f2; color-scheme: dark; font: 400 .75rem/1 'JetBrains Mono', ui-monospace, monospace; }
 .bb-loading-mark { display: grid; place-items: center; width: 42px; height: 42px; border: 1px solid rgb(255 255 255 / 28%); border-radius: 8px; color: #f2f2f2; font-size: 1rem; letter-spacing: .08em; animation: bb-loading-breathe 1.2s ease-in-out infinite; }

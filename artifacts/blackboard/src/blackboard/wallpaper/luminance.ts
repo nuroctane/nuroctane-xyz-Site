@@ -38,6 +38,20 @@ export interface Rect {
 }
 
 /**
+ * A small patch at the centre of `rect`.
+ *
+ * The mean of a wide or tall box is the right sample for a photograph. It is
+ * the wrong one for a live field that swings from black to white across the
+ * box — the Sweep — because that mean is always grey and the ink never flips.
+ * The glyphs sit on the centre, so that is what the decision should read.
+ */
+export function centerPatch(rect: Rect, size = 28): Rect {
+  const cx = rect.left + rect.width / 2;
+  const cy = rect.top + rect.height / 2;
+  return { left: cx - size / 2, top: cy - size / 2, width: size, height: size };
+}
+
+/**
  * The page's own veiling gradient, as four black-overlay alphas.
  *
  * This is the `.blackboard::after` scrim defined in blackboard.css. It sits ON

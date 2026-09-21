@@ -13,6 +13,7 @@ import {
 import {
   applyScrim,
   buildLuminanceField,
+  centerPatch,
   inkForLuminance,
   parseAlpha,
   sampleRect,
@@ -237,7 +238,10 @@ export function useAdaptiveInk<T extends HTMLElement>(): readonly [RefObject<T |
       const rect = element.getBoundingClientRect();
       const width = window.innerWidth;
       const height = window.innerHeight;
-      const value = sampleRect(field, rect, width, height);
+      // Live fields (the Sweep) are not a photograph: averaging the whole box
+      // mixes the black half with the white half and the pole never moves.
+      const target = VARIANTS[variant].liveField ? centerPatch(rect) : rect;
+      const value = sampleRect(field, target, width, height);
       if (value === null) return;
 
       // The scrim is read from the element's own computed style, so it follows

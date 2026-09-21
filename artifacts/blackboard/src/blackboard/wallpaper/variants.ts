@@ -1334,10 +1334,9 @@ const ROSES_PLATE = {
 /* ═══════════════════════════════════════════════════════════════════════════
    ROSES — workshop 2549515627
    A dense near-black rose wall. The source runs four effects over a single
-   plate: foliagesway (a per-vertex sway driven off a noise map), a shine/bloom
-   pass, filmgrain and a tint. The plate is already monochrome and the scene's
-   tint is a no-op on it, so the port keeps the two that are visible on a still:
-   a small low-frequency uv wobble standing in for the sway, and grain.
+   plate: foliagesway (speed 2.82, strength 0.47), a shine pass, filmgrain
+   and a white tint. The port keeps the sway and the grain. A few leaves in
+   the plate stay green; the rest of the wall is already grey.
    ═══════════════════════════════════════════════════════════════════════════ */
 const ROSES_FRAGMENT = `
 ${PRECISION}
@@ -1352,21 +1351,23 @@ float grain(vec2 p) {
   return frac(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
 }
 
-// foliagesway, reduced to a displacement: two incommensurate frequencies so the
-// field never settles into a visible beat.
+// Workshop foliagesway on this plate: speed 2.82, power 2, strength 0.47
+// (the effect applies strength as hundredths). Two continuous waves, not a
+// noise-cell slide, so neighbouring leaves travel together instead of tearing.
 vec2 sway(vec2 uv, float t) {
-  return uv + vec2(
-    sin(uv.y * 9.0 + t * 0.55) * 0.0024,
-    cos(uv.x * 7.0 + t * 0.41) * 0.0019
-  );
+  float s = sin(uv.y * 10.0 + t * 2.82);
+  float c = sin(uv.x * 7.5 + t * 1.41 + 0.7);
+  s = pow(abs(s), 2.0) * sign(s);
+  c = pow(abs(c), 2.0) * sign(c);
+  return uv + vec2(s * 0.010, c * 0.007);
 }
 
 void main() {
   vec2 uv = coverUv(vUv);
+  // The plate keeps a few green leaves; monochrome() would wipe that back off.
   vec3 col = texture2D(uImage, sway(uv, uTime)).rgb;
-  // filmgrain, faint enough to read as film rather than noise
   col += (grain(uv * uAspect * 900.0 + frac(uTime) * 91.0) - 0.5) * 0.032;
-  gl_FragColor = vec4(monochrome(col), 1.0);
+  gl_FragColor = vec4(col, 1.0);
 }
 `;
 
@@ -1440,8 +1441,12 @@ void main() {
   col = mix(col, layer.rgb, layer.a);
   layer = texture2D(uLayer3, uv + latticeShake(texture2D(uFlow3, uv).rg, 0.78, 0.12));
   col = mix(col, layer.rgb, layer.a);
+  // The source composite sits near sRGB 0.08 with highlights only to ~0.30.
+  // A contrast grade centred on 0.5 pushed that darker, so the beams disappeared.
+  // Open the shadows (the still plates use this same curve) and keep a black floor.
   float gray = dot(col, vec3(0.2126, 0.7152, 0.0722));
-  gl_FragColor = vec4(vec3(clamp(((gray - 0.5) * 1.08 + 0.5) * 1.14, 0.0, 1.0)), 1.0);
+  gray = pow(max(gray, 0.0), 0.65);
+  gl_FragColor = vec4(vec3(clamp(gray * 1.55 - 0.02, 0.0, 1.0)), 1.0);
 }
 `;
 
