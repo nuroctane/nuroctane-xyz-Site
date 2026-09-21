@@ -1,3 +1,4 @@
+import { refreshChoice, rememberChoice } from '../lib/refreshChoice';
 import {
   createContext,
   useCallback,
@@ -34,17 +35,15 @@ let resolvedInitialVariant: WallpaperId | null = null;
 /**
  * Which wallpaper this page view opens on.
  *
- * A plain uniform draw over the whole set, on every load. Nothing is excluded,
- * and nothing here is coordinated with the music: the wallpaper and the track
- * are two independent random draws, so the wallpapers and the tracks pair up in
- * every combination rather than along any fixed or remembered path.
+ * An independent draw excluding the last wallpaper shown in this tab.
+ * Manual switches update that history too; older choices remain eligible.
  *
  * Memoised at module scope so React re-invoking the initialiser (StrictMode)
  * cannot burn two draws in one load.
  */
 function resolveInitialVariant(): WallpaperId {
   if (resolvedInitialVariant) return resolvedInitialVariant;
-  resolvedInitialVariant = WALLPAPER_ORDER[Math.floor(Math.random() * WALLPAPER_ORDER.length)];
+  resolvedInitialVariant = refreshChoice('bb:last-wallpaper', WALLPAPER_ORDER, id => id);
   return resolvedInitialVariant;
 }
 
@@ -80,6 +79,7 @@ export function useWallpaper(): WallpaperValue {
 
 export function WallpaperProvider({ children }: { children: ReactNode }) {
   const [variant, setVariantState] = useState<WallpaperId>(resolveInitialVariant);
+  const reduced = useReducedMotion();
   const [active, setActive] = useState(false);
   const [field, setField] = useState<LuminanceField | null>(null);
   // The breakpoint has to be state, not a one-shot read: the field is built from
@@ -101,6 +101,7 @@ export function WallpaperProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const setVariant = useCallback((id: WallpaperId) => {
+    rememberChoice('bb:last-wallpaper', id);
     setVariantState(id);
   }, []);
 
@@ -109,7 +110,6 @@ export function WallpaperProvider({ children }: { children: ReactNode }) {
     return WALLPAPER_ORDER[(index + 1) % WALLPAPER_ORDER.length];
   }, [variant]);
 
-  const toggle = useCallback(() => setVariant(next), [next, setVariant]);
   const activate = useCallback(() => setActive(true), []);
 
   const plate = useCallback(
@@ -121,6 +121,7 @@ export function WallpaperProvider({ children }: { children: ReactNode }) {
   // CSS plate layer, so this is served from the HTTP cache in practice.
   useEffect(() => {
     if (!active) return undefined;
+    setField(null);
     const scene = VARIANTS[variant];
     let cancelled = false;
 
@@ -141,7 +142,7 @@ export function WallpaperProvider({ children }: { children: ReactNode }) {
           imageWidth: width,
           imageHeight: height,
         };
-        scene.liveField?.(live.data, cols, rows, performance.now() / 1000, width / height);
+        scene.liveField?.(live.data, cols, rows, (reduced ? 37 : performance.now() / 1000), width / height);
         if (!cancelled) setField(live);
       };
       build();
@@ -172,7 +173,7 @@ export function WallpaperProvider({ children }: { children: ReactNode }) {
       image.onload = null;
       image.onerror = null;
     };
-  }, [active, variant, narrow, plate]);
+  }, [active, variant, narrow, plate, reduced]);
 
   const value = useMemo<WallpaperValue>(
     () => ({ variant, next, setVariant, plate, narrow, field, activate }),
@@ -202,6 +203,7 @@ export function WallpaperProvider({ children }: { children: ReactNode }) {
  */
 export function useAdaptiveInk<T extends HTMLElement>(): readonly [RefObject<T | null>, InkPolarity] {
   const { field, variant } = useWallpaper();
+  const reduced = useReducedMotion();
   const ref = useRef<T>(null);
   const [ink, setInkState] = useState<InkPolarity>('light');
   const inkRef = useRef<InkPolarity>('light');
@@ -210,15 +212,16 @@ export function useAdaptiveInk<T extends HTMLElement>(): readonly [RefObject<T |
   // background changed colour underneath it, not with the frame rate.
   const liveTick = useCallback((schedule: () => void) => {
     const live = VARIANTS[variant].liveField;
-    if (!live || !field) return undefined;
+    if (!live || !field || reduced) return undefined;
     const id = window.setInterval(() => {
+      if (document.hidden) return;
       const width = Math.max(1, window.innerWidth);
       const height = Math.max(1, window.innerHeight);
-      live(field.data, field.cols, field.rows, performance.now() / 1000, width / height);
+      live(field.data, field.cols, field.rows, (reduced ? 37 : performance.now() / 1000), width / height);
       schedule();
     }, 180);
     return () => window.clearInterval(id);
-  }, [field, variant]);
+  }, [field, variant, reduced]);
 
   useEffect(() => {
     if (!field) return undefined;

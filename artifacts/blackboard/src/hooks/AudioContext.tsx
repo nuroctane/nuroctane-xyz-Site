@@ -98,14 +98,14 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const [enabled, setEnabled] = useState(true);
-  const [armed,   setArmed]   = useState(false);
+  const [armed,   setArmed]   = useState(SITE_MODE === 'blackboard');
   const [blocked, setBlocked] = useState(false);
   const [mutedAutoplay, setMutedAutoplay] = useState(false);
   const [playing, setPlaying] = useState(false);
   const [currentTime, setCurrentTime] = useState(0);
   const [duration, setDuration] = useState(0);
   const [volume,  setVolume]  = useState(0.5);
-  const [track,   setTrackState] = useState<Track | null>(null);
+  const [track,   setTrackState] = useState<Track | null>(SITE_MODE === 'blackboard' ? 'main' : null);
   const [idx,     setIdx]        = useState(0);
 
   const enabledRef = useRef(enabled);

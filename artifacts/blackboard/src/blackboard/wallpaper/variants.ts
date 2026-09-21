@@ -1385,52 +1385,106 @@ const LATTICE_PLATE = {
   mobile: '/assets/blackboard/lattice/lattice-portrait.webp',
 };
 
-/* ═══════════════════════════════════════════════════════════════════════════
-   LATTICE — workshop 1760275007 ("Black")
-   A near-black angular truss: a brushed base plus three stacked beam layers,
-   a fog particle pass and a shake effect. The plate is those four layers
-   composited at the user's own preset values (saturation 0, brightness 58,
-   contrast 49), so what is stored is what they see running the scene.
-
-   The fog layer is the only thing that moves, and it moves slowly — the preset
-   sets rate 100 / smoothrate 13, i.e. long, smooth drifts. Ported as a slow
-   two-axis parallax rather than as particles.
-   ═══════════════════════════════════════════════════════════════════════════ */
+/** Workshop 1760275007: stationary base, fog, then three independently
+ * masked shake layers. Local preset: playback 132%, brightness 57, contrast 54,
+ * saturation 0. Keep the source's full aspect for every texture, including on
+ * mobile; cropping the layers separately would misalign their direction maps. */
 const LATTICE_FRAGMENT = `
 ${PRECISION}
 varying vec2 vUv;
 uniform sampler2D uImage;
+uniform sampler2D uLayer1;
+uniform sampler2D uLayer2;
+uniform sampler2D uLayer3;
+uniform sampler2D uFlow1;
+uniform sampler2D uFlow3;
+uniform sampler2D uNoFlow;
+uniform sampler2D uFog;
 uniform float uTime;
 uniform float uAspect;
 uniform float uImageAspect;
 ${COMMON_GLSL}
 
-float grain(vec2 p) {
-  return frac(sin(dot(p, vec2(127.1, 311.7))) * 43758.5453);
+vec2 latticeShake(vec2 flow, float speed, float strength) {
+  // Source shake.frag, defaults NOISE=0 / DIRECTION=0 / phase=white:
+  // sin(speed*time + 2pi), remapped through [0.002,0.998] to [-0.996,0.996].
+  return sin(speed * uTime * 1.32) * 0.996 * strength * strength
+    * (flow - vec2(0.498)) * 2.0;
 }
-
+float fog(vec2 uv) {
+  float result = 0.0;
+  // Source emission 1.5 * 0.19 particles/sec, lifetime 3..5s, alpha
+  // 0.15..0.20 * instance 0.30. Deterministic staggering avoids CPU particles.
+  for (int i = 0; i < 4; i++) {
+    float seed = float(i);
+    float age = mod(uTime * 1.32 + seed * 3.50877, 14.03508);
+    float life = 3.0 + seed * 0.6;
+    float fade = smoothstep(0.0, 0.5, age) * (1.0 - smoothstep(life - 0.5, life, age));
+    vec2 center = vec2(0.30 + seed * 0.12 + age * (25.0 + seed * 18.0) * 1.973 / 2560.0,
+                       0.44 + sin(seed * 7.0) * 0.15);
+    float size = (1000.0 + seed * 400.0) * 1.973;
+    vec2 p = (uv - center) * vec2(2560.0, 1080.0) / size;
+    float angle = seed * 2.4;
+    p = mat2(cos(angle), -sin(angle), sin(angle), cos(angle)) * p + 0.5;
+    float inside = step(0.0,p.x)*step(p.x,1.0)*step(0.0,p.y)*step(p.y,1.0);
+    result += texture2D(uFog,p).r * fade * inside * (0.15 + seed * 0.01667) * 0.30;
+  }
+  return result;
+}
 void main() {
   vec2 uv = coverUv(vUv);
-  // smoothrate 13 across rate 100 — a drift slow enough to read as fog, not as
-  // a moving image.
-  vec2 drift = vec2(sin(uTime * 0.052), cos(uTime * 0.037)) * 0.0075;
-  vec3 col = texture2D(uImage, uv + drift).rgb;
-  // A second, deeper sample for the fog body, so the drift has volume rather
-  // than reading as the whole picture sliding.
-  col = mix(col, texture2D(uImage, uv + drift * 2.6).rgb, 0.34);
-  col += (grain(uv * uAspect * 820.0 + frac(uTime) * 57.0) - 0.5) * 0.022;
-  gl_FragColor = vec4(monochrome(col), 1.0);
+  vec3 col = texture2D(uImage, uv).rgb + vec3(fog(uv));
+  vec4 layer = texture2D(uLayer1, uv + latticeShake(texture2D(uFlow1, uv).rg, 0.36, 0.23));
+  col = mix(col, layer.rgb, layer.a);
+  layer = texture2D(uLayer2, uv + latticeShake(texture2D(uNoFlow, uv).rg, 1.72, 0.26));
+  col = mix(col, layer.rgb, layer.a);
+  layer = texture2D(uLayer3, uv + latticeShake(texture2D(uFlow3, uv).rg, 0.78, 0.12));
+  col = mix(col, layer.rgb, layer.a);
+  float gray = dot(col, vec3(0.2126, 0.7152, 0.0722));
+  gl_FragColor = vec4(vec3(clamp(((gray - 0.5) * 1.08 + 0.5) * 1.14, 0.0, 1.0)), 1.0);
 }
 `;
 
 export const LATTICE: WallpaperVariant = {
-  id: 'lattice',
-  label: 'Black Lattice',
-  plate: LATTICE_PLATE,
-  vertex: VERTEX_SRC,
-  fragment: LATTICE_FRAGMENT,
+  id: 'lattice', label: 'Black Lattice', plate: LATTICE_PLATE,
+  vertex: VERTEX_SRC, fragment: LATTICE_FRAGMENT,
   toneMap: srgb => srgb,
-  create: (gl, program, mobile) => createPlateScene(gl, program, LATTICE_PLATE, mobile),
+  create(gl, program) {
+    const files = ['background', '1', '2', '3', 'flow1', 'flow3', 'noflow', 'fog1'];
+    const uniforms = ['uImage', 'uLayer1', 'uLayer2', 'uLayer3', 'uFlow1', 'uFlow3', 'uNoFlow', 'uFog'];
+    const textures: WebGLTexture[] = [];
+    let ready = 0;
+    let failed = false;
+    const images = files.map((file, unit) => {
+      gl.uniform1i(gl.getUniformLocation(program, uniforms[unit]), unit);
+      const image = loadImage(`/assets/blackboard/lattice/${file}.webp`);
+      image.onload = () => {
+        const texture = uploadTexture(gl, unit, image, false, false);
+        if (!texture) { failed = true; return; }
+        textures.push(texture);
+        ready++;
+      };
+      image.onerror = () => { failed = true; };
+      return image;
+    });
+    const timeUniform = gl.getUniformLocation(program, 'uTime');
+    const aspectUniform = gl.getUniformLocation(program, 'uAspect');
+    gl.uniform1f(gl.getUniformLocation(program, 'uImageAspect'), 2560 / 1080);
+    return {
+      frame(context, time) {
+        if (ready !== files.length) return false;
+        context.uniform1f(timeUniform, time);
+        context.uniform1f(aspectUniform, context.drawingBufferWidth / context.drawingBufferHeight);
+        context.drawArrays(context.TRIANGLE_STRIP, 0, 4);
+        return true;
+      },
+      alive: () => !failed,
+      dispose(context) {
+        for (const image of images) { image.onload = null; image.onerror = null; }
+        for (const texture of textures) context.deleteTexture(texture);
+      },
+    };
+  },
 };
 
 const SWEEP_PLATE = {

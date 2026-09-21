@@ -21,6 +21,12 @@ import './blackboard-wallpaper.css';
 export function BlackboardWallpaper() {
   const { variant, plate, narrow, activate } = useWallpaper();
   const reduced = useReducedMotion();
+  // Leave cross-fade layers mounted, but fetch a plate only when first shown.
+  // Loading all twelve on every visit wastes bandwidth, especially on mobile.
+  const [visited, setVisited] = useState(() => new Set([variant]));
+  useEffect(() => {
+    setVisited(previous => previous.has(variant) ? previous : new Set([...previous, variant]));
+  }, [variant]);
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const hostRef = useRef<HTMLDivElement>(null);
   const glRef = useRef<WebGLRenderingContext | null>(null);
@@ -137,7 +143,6 @@ export function BlackboardWallpaper() {
     let announced = false;
 
     const renderFrame = (seconds: number) => {
-      resize();
       gl.clear(gl.COLOR_BUFFER_BIT);
       const drawn = runtime.frame(gl, seconds);
       if (drawn && !announced) {
@@ -187,16 +192,19 @@ export function BlackboardWallpaper() {
         else start();
       };
       document.addEventListener('visibilitychange', onVisibility);
-      start();
+      onVisibility();
     }
 
     const onResize = () => {
       resize();
       if (reduced) renderFrame(37);
     };
+    const observer = new ResizeObserver(onResize);
+    observer.observe(canvas);
     window.addEventListener('resize', onResize);
 
     return () => {
+      observer.disconnect();
       window.removeEventListener('resize', onResize);
       if (onVisibility) document.removeEventListener('visibilitychange', onVisibility);
       stop();
@@ -215,13 +223,14 @@ export function BlackboardWallpaper() {
           all, and the background goes blank wherever WebGL cannot paint. */}
       {WALLPAPER_ORDER.map(id => {
         const scene = VARIANTS[id];
+        const loaded = id === variant || visited.has(id);
         // Video scenes get a real element rather than a WebGL texture: the
         // master is already a finished loop, so sampling it into a texture each
         // frame would copy every frame to redraw what the element decodes for
         // free. Muted, so the browser's autoplay policy permits it to start —
         // it is a background, not the score.
         if (scene.video) {
-          const poster = plate(id);
+          const poster = loaded ? plate(id) : undefined;
           // No autoPlay: the effect above owns playback, so the inactive loop
           // never decodes. preload is deferred for the same reason — the poster
           // carries the cross-fade either way.
@@ -230,7 +239,7 @@ export function BlackboardWallpaper() {
               key={id}
               className="bb-wallpaper-video"
               data-active={id === variant}
-              src={narrow ? scene.video.mobile : scene.video.desktop}
+              src={loaded ? (narrow ? scene.video.mobile : scene.video.desktop) : undefined}
               poster={poster}
               muted
               loop
@@ -246,7 +255,7 @@ export function BlackboardWallpaper() {
             className="bb-wallpaper-plate"
             data-variant={id}
             data-active={id === variant}
-            style={{ backgroundImage: `url('${plate(id)}')` }}
+            style={loaded ? { backgroundImage: `url('${plate(id)}')` } : undefined}
           />
         );
       })}

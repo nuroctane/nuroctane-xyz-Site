@@ -1,5 +1,5 @@
 import { Pause, Play, Volume2, VolumeX } from 'lucide-react';
-import { useEffect, useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
+import { useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
 import { useAudioCtx } from '../hooks/AudioContext';
 import { blackboardArtworkSrc, blackboardMusicPick } from '../data/blackboardMusic';
 
@@ -48,24 +48,11 @@ interface TitlePan {
 const NO_PAN: TitlePan = { panning: false, shift: 0, seconds: PAN_MIN_SECONDS };
 
 export function BlackboardPlayer() {
-  const { track, playing, currentTime, duration, volume, blocked, mutedAutoplay, setTrack, play, pause, seek, setVolume } = useAudioCtx();
+  const { playing, currentTime, duration, volume, blocked, mutedAutoplay, play, pause, seek, setVolume } = useAudioCtx();
   const titleViewportRef = useRef<HTMLSpanElement>(null);
   const titleRef = useRef<HTMLElement>(null);
-  const autoplayAttemptedRef = useRef(false);
   const lastAudibleVolumeRef = useRef(0.5);
   const [pan, setPan] = useState<TitlePan>(NO_PAN);
-
-  useEffect(() => {
-    if (track !== 'main') {
-      setTrack('main');
-      return;
-    }
-    if (autoplayAttemptedRef.current) return;
-    autoplayAttemptedRef.current = true;
-    // Try immediately on page load. Browsers that reject audible autoplay set
-    // `blocked`; AudioContext retries on the first real interaction.
-    play();
-  }, [track, setTrack, play]);
 
   useLayoutEffect(() => {
     const viewport = titleViewportRef.current;

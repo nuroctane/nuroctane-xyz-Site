@@ -1,3 +1,5 @@
+import { refreshChoice } from '../lib/refreshChoice';
+
 /* ═══════════════════════════════════════════════════════════════════════════
    BLACKBOARD MUSIC — the blackboard's own library.
 
@@ -67,9 +69,8 @@ let resolvedTrack: BlackboardTrack | null = null;
 /**
  * Which track this page view plays.
  *
- * A plain uniform draw over the whole library, on every load. Nothing is
- * excluded and nothing is coordinated with the wallpaper: the two are
- * independent draws, so the pairings span every wallpaper against every track.
+ * An independent, uniform draw excluding the last track in this tab. History
+ * survives refreshes; the module memo keeps route changes on the same track.
  *
  * There is deliberately no way to move off the draw once it is made: no skip,
  * no next, no chooser. The visitor commits to one piece of music for the visit.
@@ -79,6 +80,6 @@ let resolvedTrack: BlackboardTrack | null = null;
  */
 export function blackboardMusicPick(): BlackboardTrack {
   if (resolvedTrack) return resolvedTrack;
-  resolvedTrack = BLACKBOARD_MUSIC[Math.floor(Math.random() * BLACKBOARD_MUSIC.length)];
+  resolvedTrack = refreshChoice('bb:last-track', BLACKBOARD_MUSIC, track => track.id);
   return resolvedTrack;
 }
