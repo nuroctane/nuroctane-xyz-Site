@@ -96,7 +96,7 @@ const TOKEN_PATH = [
     label: "ROUTE",
     title: "Select a protocol, not just a model name",
     body: "Capabilities choose Responses, Chat Completions, Anthropic Messages, native Gemini, Cursor Agent, or a local server. OpenCode routes each model through its documented native protocol.",
-    meta: "62 routes · capability checked",
+    meta: "65 routes · capability checked",
   },
   {
     id: "05",
@@ -260,7 +260,7 @@ const FEATURE_TABS: FeatureTab[] = [
         <li>
           <strong>One credential control plane</strong> — <code>/auth</code>
           opens a scrollable provider vault for API keys, OAuth sessions, vendor
-          CLIs, and OMP credentials across all 62 routes. Save, replace, or
+          CLIs, and OMP credentials across all 65 routes. Save, replace, or
           delete without editing a JSON file.
         </li>
         <li>
@@ -368,6 +368,58 @@ const FEATURE_TABS: FeatureTab[] = [
     ),
   },
   {
+    id: "judgments",
+    label: "Judgments",
+    blurb: "Typed decisions in the loop, keyless on this machine.",
+    body: (
+      <ul className="cli-feat-list">
+        <li>
+          <strong>TypeSafe - Jev, inside the harness</strong> — not a second
+          opinion beside it. One batched request per turn decides which tool
+          calls still earn their tokens, whether a result actually worked, what
+          a fresh context can drop, which of a triggered skill&apos;s rules
+          matter, and which model is adequate. See{" "}
+          <a href="https://nuroctane.github.io/nur-cli/typesafe/">docs/typesafe</a>.
+        </li>
+        <li>
+          <strong>Confidence gates action</strong> — judgments land in three
+          bands (act · confirm · escalate).{" "}
+          <code>Judgment::usable()</code> is the single choke point that reads
+          an answer, so a coin flip is never obeyed: it is reported, and the
+          caller falls back to its own default.
+        </li>
+        <li>
+          <strong>Compaction that writes no summary</strong> — stale calls are
+          dropped and survivors stay verbatim, so nothing is paraphrased away on
+          the way through. Below the minimum reduction the summarizer is skipped
+          entirely.
+        </li>
+        <li>
+          <strong>Keyless on this machine</strong> — three local engines behind
+          one bridge, each offered only where it can actually run:{" "}
+          <strong>openJev-verdict-2.0</strong> (any CPU, ~20ms per decision),{" "}
+          <strong>Bespoke-Nimble-9B</strong> (NVIDIA GPU or Apple Silicon MLX),{" "}
+          <strong>Laya Core ML</strong> (Apple Silicon Neural Engine, macOS
+          15+), plus a deterministic mock for tests. A backend that cannot run
+          here says why instead of failing late. <code>nur jev start</code> ·{" "}
+          <code>nur jev use</code> · <code>nur jev status</code>
+        </li>
+        <li>
+          <strong>One credential lifts every provider</strong> — the hosted
+          route is provider-agnostic, and <code>TypeSafe · Jev</code> sits
+          pinned at the top of the credential vault with its own borders. It
+          stores a key; it never becomes your chat provider, and the catalog
+          count does not change.
+        </li>
+        <li>
+          <strong>Honest telemetry</strong> — receipts record the endpoint that
+          actually answered and the model it served, whether that was{" "}
+          <code>api.typesafe.ai</code> or a loopback engine.
+        </li>
+      </ul>
+    ),
+  },
+  {
     id: "tools",
     label: "Tools",
     blurb: "Read, edit, shell, web, browsers, git.",
@@ -410,7 +462,36 @@ const FEATURE_TABS: FeatureTab[] = [
           <strong>knowledge</strong> — <code>graphify</code> ·{" "}
           <code>graphjin</code> · <code>plur</code> · <code>ruflo</code> ·{" "}
           <code>executor</code> · <code>skill</code> · <code>memory</code> ·{" "}
-          <code>headroom</code> · <code>optmem</code>
+          <code>headroom</code> · 48 tools in one dispatcher
+        </li>
+        <li>
+          <strong>judgments</strong> — <code>typesafe</code> (gate a call,
+          judge a result, rank, route, classify, risk, verify)
+        </li>
+        <li>
+          <strong>memory</strong> — <code>optmem</code> (permanent,{" "}
+          <code>~/.optmem</code>) · <code>connectome</code> (hierarchical notes
+          + an append-only chronicle) · <code>mem</code> (vector / graph
+          router)
+        </li>
+        <li>
+          <strong>context</strong> — <code>context</code> (register, peek,
+          slice, search) · <code>anydoc</code> (PDF / DOCX / XLSX to markdown)
+        </li>
+        <li>
+          <strong>async</strong> — <code>bg</code> (jobs that outlive the turn)
+          · <code>admission</code> (async subagent handles) ·{" "}
+          <code>goal</code> · <code>proposal</code> (staged writes) ·{" "}
+          <code>message</code> (peer mail between sessions)
+        </li>
+        <li>
+          <strong>policy</strong> — <code>dogwood</code> (Cedar + temporal
+          checks over the agent event stream; an on-demand guardrail, not a
+          runtime gate)
+        </li>
+        <li>
+          <strong>python</strong> — <code>repl</code>: a long-lived kernel whose
+          variables survive turns and compaction
         </li>
         <li>
           <strong>diagrams</strong> — <code>excalidraw</code> ·{" "}
@@ -426,8 +507,8 @@ const FEATURE_TABS: FeatureTab[] = [
         </li>
         <li>
           <strong>egaki</strong> — image / video / speech CLI (
-          <code>/egaki</code> · <code>/image</code>) · ChatGPT, xAI OAuth, Egaki
-          plan, or BYOK
+          <code>/egaki</code>; <code>/image &lt;path&gt;</code> attaches a file
+          for vision) · ChatGPT, xAI OAuth, Egaki plan, or BYOK
         </li>
         <li>
           <strong>plan</strong> — <code>todo_write</code> ·{" "}
@@ -605,6 +686,22 @@ const FEATURE_TABS: FeatureTab[] = [
           the lot, <code>e</code> expands the modal
         </li>
         <li>
+          <strong>Every path in the transcript is a link</strong> — a file, a
+          directory, or a URL opens where it belongs (editor, file manager,
+          browser) straight from the transcript
+        </li>
+        <li>
+          <strong>Prose, not markdown source</strong> — headings, lists, quotes,
+          task boxes and rules render as structure through the theme&apos;s own
+          colour roles; wrapped lines repeat their gutter, and LaTeX renders
+          when the build carries <code>image-peek</code>
+        </li>
+        <li>
+          <code>/receipt</code> verifies the session hash chain (and exports
+          spans) — the receipt is evidence only if each entry still links to the
+          one before it
+        </li>
+        <li>
           <strong>Ghost-cell recovery</strong> — full terminal clear on resize,
           focus regain, sidegraph open/close, peek close, theme change, and
           returning from foreground children (ConPTY-safe)
@@ -709,8 +806,13 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
     desc: "take over a foreign agent session (alias of /takeover)",
   },
   {
+    cmd: "/typesafe",
+    desc: "TypeSafe / Jev layer: status, on/off, ask <proposition> · tool `typesafe`",
+  },
+  { cmd: "/jev", desc: "TypeSafe / Jev layer  (alias of /typesafe)" },
+  {
     cmd: "/optmem",
-    desc: "OptMem permanent memory (~/.optmem): wake | note | nap | recall | doctor",
+    desc: "OptMem permanent memory (~/.optmem): status | wake | note | nap lines=[…] | recall | zoom | forget | config | doctor",
   },
   { cmd: "/memo", desc: "OptMem permanent memory  (alias of /optmem)" },
   {
@@ -909,6 +1011,16 @@ const CLI_SUBCOMMANDS: { cmd: string; desc: string }[] = [
     desc: "dry-run: report whether a newer release is available",
   },
   { cmd: "nur doctor", desc: "health check" },
+  {
+    cmd: "nur jev start",
+    desc: "start a local judgment engine - verdict | nimble | laya | mock (no API key)",
+  },
+  {
+    cmd: "nur jev status",
+    desc: "endpoint, credential, bridge state, and which engines this device can run",
+  },
+  { cmd: "nur jev use", desc: "point the judgment layer at the loopback engine" },
+  { cmd: "nur jev stop", desc: "stop the recorded bridge and verify the port is free" },
   { cmd: "nur ecosystem ensure", desc: "install / repair knowledge packs" },
   {
     cmd: "nur ecosystem status",
@@ -1406,6 +1518,30 @@ const INSPIRATIONS: Inspiration[] = [
     name: "t3code",
     href: "https://github.com/pingdotgg/t3code",
     why: "vendor-CLI auth delegation — nur mirrors its driver-probing / no-secret-storage pattern in the t3code tool (MIT)",
+  },
+  {
+    group: "stack",
+    name: "TypeSafe · System One",
+    href: "https://docs.typesafe.ai",
+    why: "typed judgments as a harness layer: tool gate, result judge, summary-free compaction, skill checks, model routing · confidence-gated, provider-agnostic",
+  },
+  {
+    group: "stack",
+    name: "openJev-verdict-2.0",
+    href: "https://github.com/Heman10x-NGU/openJev-verdict-2.0",
+    why: "local CPU engine for the same contract: ModernBERT + GLiClass head, non-autoregressive, ~20ms per decision",
+  },
+  {
+    group: "stack",
+    name: "Bespoke-Nimble-9B",
+    href: "https://huggingface.co/bespokelabs/Bespoke-Nimble-9B",
+    why: "local scoring engine: a Qwen3.5-9B LoRA that scores allowed answer tokens directly, with no free-form reasoning",
+  },
+  {
+    group: "stack",
+    name: "Laya Core ML",
+    href: "https://github.com/mizorewww/laya-coreml",
+    why: "local ANE engine: Core ML decisions on Apple Silicon, ~5ms per short request",
   },
   {
     group: "stack",
@@ -2064,7 +2200,8 @@ function FoglampMap() {
               <span>// living architecture</span>
               <p>
                 Trace auth resolution, provider protocols, attempt accounting,
-                local memory, and cache boundaries behind NurCLI.
+                typed judgments, the local engine bridge, memory, and cache
+                boundaries behind NurCLI.
               </p>
               <button
                 type="button"
@@ -2209,7 +2346,7 @@ export default function CliPage() {
       {/* Hero */}
       <header className="cli-hero cli-reveal">
         <div className="cli-hero-rail" aria-hidden>
-          <span>UNIT / NUR-62</span>
+          <span>UNIT / NUR-65</span>
           <span>STATE / LOCAL-FIRST</span>
           <span>MODE / USER-ROUTED</span>
         </div>
@@ -2301,8 +2438,12 @@ export default function CliPage() {
 
         <ul className="cli-stats" aria-label="Highlights">
           <li>
-            <strong>62</strong>
+            <strong>65</strong>
             <span>provider routes</span>
+          </li>
+          <li>
+            <strong>3</strong>
+            <span>keyless local engines</span>
           </li>
           <li>
             <strong>3-STATE</strong>
@@ -2668,7 +2809,7 @@ export default function CliPage() {
           </ol>
           <p className="cli-after-note">
             Or run <code>nur</code> and use <code>/auth</code> in the TUI —
-            inspect all 62 provider routes in one scrollable vault, then save,
+            inspect all 65 provider routes in one scrollable vault, then save,
             replace, or delete an API key, OAuth session, vendor CLI login, or
             OMP credential.{" "}
             <a
@@ -2692,7 +2833,9 @@ export default function CliPage() {
           <p className="cli-lead">
             The gold TUI is the control surface. This Foglamp map follows the
             Rust request path from prompt assembly through provider adapters,
-            tools, usage accounting, memory, and durable state.
+            tools, typed judgments, usage accounting, memory, and durable state
+            — regenerated from the current tree, so it includes the judgment
+            layer and its three local engines.
           </p>
         </div>
         <figure className="cli-demo">

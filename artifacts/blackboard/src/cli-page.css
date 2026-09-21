@@ -396,7 +396,9 @@ html.standalone-active.cli-theme body {
   padding: 0;
   margin: 1.35rem 0 0;
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  /* auto-fit, not a fixed 4: the hero carries a variable number of stats
+     (providers, local engines, provenance, latency, version). */
+  grid-template-columns: repeat(auto-fit, minmax(8.5rem, 1fr));
   gap: 0.5rem;
 }
 .cli-stats li {

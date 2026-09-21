@@ -264,7 +264,7 @@ function cliCard() {
               lineHeight: 1.35,
             },
           },
-          'Rust harness · gold TUI · 60+ providers · vision · 800+ skills',
+          'Rust harness · gold TUI · 65 providers · Jev judgments · 48 tools · 1,000+ skills',
         ),
       ),
     ),
@@ -282,7 +282,7 @@ function cliCard() {
           letterSpacing: '0.1em',
         },
       },
-      h('span', null, 'nur install  ·  /login  ·  /model  ·  /plugins'),
+      h('span', null, 'nur install  ·  /login  ·  /model  ·  /plugins  ·  /typesafe'),
       h('span', { style: { color: gold } }, '/cli'),
     ),
   );
