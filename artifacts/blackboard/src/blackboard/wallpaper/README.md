@@ -15,6 +15,7 @@ sources were read, so the ports can be re-derived or re-checked.
 | `blossom` | [3613577930](https://steamcommunity.com/sharedfiles/filedetails/?id=3613577930) | White sakura (the second item of that name) | scene | `shake`, `waterflow` |
 | `waves` | [2279430364](https://steamcommunity.com/sharedfiles/filedetails/?id=2279430364) | Black Waves | scene | `waterflow` (disabled in the source), `waterripple` |
 | `roses` | [2549515627](https://steamcommunity.com/sharedfiles/filedetails/?id=2549515627) | Black Roses (Music) | scene | `foliagesway`, `shine`, `filmgrain`, `tint` |
+| `gears` | [3128684611](https://steamcommunity.com/sharedfiles/filedetails/?id=3128684611) | Ender Rotating Gears WUHD (4K) | scene | `spin` ×6, `tint`, grade LUT |
 | `lattice` | [1760275007](https://steamcommunity.com/sharedfiles/filedetails/?id=1760275007) | Black | scene | `fog` particles, `shake` |
 | `sweep` | [3036482397](https://steamcommunity.com/sharedfiles/filedetails/?id=3036482397) | Angular Gradient - Black White (Animated) | **web** | none — a CSS `conic-gradient`, evaluated directly |
 | `dots` | [3759381233](https://steamcommunity.com/sharedfiles/filedetails/?id=3759381233) | Abstract Black & White Oled | **video** | none — the loop *is* the artwork |
@@ -44,6 +45,7 @@ alone.
 | `japanese` | Black & White Japanese | `sweep` | Black & White Sweep |
 | `forest` | Black & White Forest | `dots` | Black & White Dots |
 | `sakura` | White Sakura | `topography` | White Topography |
+| `blossom` | White Sakura in Fog | `gears` | Black Gears |
 | `blossom` | White Sakura in Fog | | |
 | `waves` | Black Waves | | |
 
@@ -194,6 +196,10 @@ cloud, noise and no-flow patterns are the exact ones the shaders sample.
 | `waves/waves-noflow.png` | 32x32, 169 B | `util/noflow`, copied byte for byte |
 | `roses/roses.webp` | 2560x1080, 252 KB | plate, desktop |
 | `roses/roses-portrait.webp` | 1080x1920, 152 KB | plate, mobile |
+| `gears/gears.webp` | 2580x1413 | plate, desktop (exact half of the 5160x2825 scene) |
+| `gears/gears-portrait.webp` | 1080x1920 | plate, mobile (center crop) |
+| `gears/g1.webp` … `g7.webp` | 1179–1417px, q90 | the six gear layers, pre-tinted grey 192 |
+| `gears/simple-film.png` | 32x1024, 30 KB | the scene's grade LUT, copied byte for byte |
 | `lattice/lattice.webp` | 2560x1080, 23 KB | plate, desktop (near-black, so it compresses hard) |
 | `lattice/lattice-portrait.webp` | 1080x1920, 12 KB | plate, mobile |
 | `sweep/sweep.webp` | 2560x1080, 10 KB | poster, desktop — the canvas paints over it |
@@ -279,6 +285,20 @@ Documented in full at each site in `variants.ts`; the short version:
   `util/noise` (two incommensurate frequency pairs, ~1.4px max, gated by the
   shake flow amount so the masked-out sky stays still) flutters petals against
   that sway. Uv-only like the shake, so the identity tone curves still hold.
+- **`gears` runs at the local settings, not the project defaults** — color ON,
+  gears grey 192, background black, rate 151%, `simple_film` grade, taken from
+  `WallpaperEngine/config.json` on DISPLAY1. The defaults (color off, red gears,
+  grey backdrop) never ship. The additive composite is an inference, but a
+  forced one: the six layer textures are opaque black squares, so anything but
+  addition would paste visible squares — the shipped scene reads clean, so the
+  layers add. If overlaps ever read hotter than the desktop, the suspect is
+  this choice (screen would be the softer alternative), not the geometry.
+- **Nature moves harder on phones** — `clouds`, `japanese`, `forest`, `sakura`,
+  `blossom`, `waves` and `roses` carry a `uBoost` uniform (1.0 desktop,
+  2.5 mobile) over their displacement amplitudes and drift rates. The same uv
+  offset shrinks to a fraction of its desktop pixels on a phone canvas, so the
+  sway is re-amplified there to read the same. Levels never change, so every
+  identity tone curve still holds.
 - **`lattice`'s fog is a parallax, not particles** — the source runs a fog
   particle pass, and the preset asks for `rate 100 / smoothrate 13`, i.e. long
   smooth drifts. The port reproduces the drift as a two-axis parallax with a

@@ -16,6 +16,7 @@
      sweep       3036482397  Black & White Sweep       shader (live field)
      dots        3759381233  Black & White Dots        video
      topography  3636465548  White Topography          video
+     gears       3128684611  Black Gears               shader
 
    Layer order inside the page: plate x2 (cross-fading) -> canvas -> the page's
    own scrim ::after at z-index -1.

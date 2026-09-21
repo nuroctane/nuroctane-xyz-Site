@@ -103,8 +103,15 @@ assert.ok(read.length >= 10, `expected at least 10 image files, read ${read.leng
 // Large sources are the photographic plates and must be NPOT — that is the case
 // the fixtures above exist for. A large POT plate would mean the guard is not
 // covering the assets that ship.
+//
+// Grading LUTs are the one exception, named: a LUT is POT by specification (its
+// dimensions address the color cube, not the screen) and is always uploaded
+// CLAMP without mipmaps, which is the combination the NPOT rule protects. If a
+// second LUT ever ships, extend this list rather than weakening the rule.
+const LUTS = new Set(['/assets/blackboard/gears/simple-film.png']);
 const bigPot = read
   .filter(([, w, h]) => Math.max(w, h) > 512 && isPot(w) && isPot(h))
+  .filter(([path]) => !LUTS.has(path))
   .map(([path, w, h]) => `${path} ${w}x${h}`);
 assert.deepEqual(
   bigPot,

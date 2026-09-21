@@ -86,6 +86,18 @@ const GLYPHS: Record<WallpaperId, string[]> = {
     'M7.2 12c0-2.5 2.1-4.4 4.8-4.4s4.8 1.9 4.8 4.4-2.1 4.4-4.8 4.4S7.2 14.5 7.2 12',
     'M10.3 12c0-1.1 0.8-1.9 1.7-1.9s1.7 0.8 1.7 1.9-0.8 1.9-1.7 1.9-1.7-0.8-1.7-1.9',
   ],
+  // Cog — hub ring plus eight teeth, for the rotating gears.
+  gears: [
+    'M12 8.6a3.4 3.4 0 1 0 0 6.8 3.4 3.4 0 1 0 0-6.8',
+    'M12 2.2v2.6',
+    'M12 19.2v2.6',
+    'M2.2 12h2.6',
+    'M19.2 12h2.6',
+    'M5.1 5.1l1.8 1.8',
+    'M17.1 17.1l1.8 1.8',
+    'M18.9 5.1l-1.8 1.8',
+    'M6.9 17.1l-1.8 1.8',
+  ],
 };
 
 export function BlackboardWallpaperToggle() {

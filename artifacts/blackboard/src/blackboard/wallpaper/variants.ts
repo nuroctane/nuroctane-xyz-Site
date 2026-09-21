@@ -30,7 +30,8 @@ export type WallpaperId =
   | 'lattice'
   | 'sweep'
   | 'dots'
-  | 'topography';
+  | 'topography'
+  | 'gears';
 
 export interface WallpaperRuntime {
   /** Update uniforms and draw. Returns false when the plate is not decoded yet. */
@@ -226,6 +227,7 @@ uniform float uTime;
 uniform float uMotion;
 uniform float uAspect;
 uniform float uImageAspect;
+uniform float uBoost;
 
 #define PI_HALF 1.5707963267948966
 
@@ -256,7 +258,7 @@ vec2 shakeOffset(vec2 uv, float t) {
   float time = 0.74 * t;
   float o = 0.5 - 0.5 * cos(6.283185307179586 * frac(time / PI_HALF));
   vec2 flow = (texture2D(uShakeMask, uv).rg - vec2(0.498)) * 2.0;
-  return o * (0.071 * 0.071) * flow;      // strength is applied squared
+  return o * (0.071 * 0.071) * flow * uBoost;      // strength is applied squared
 }
 
 // effects/waterflow — scene.json: strength 0.24, speed 0.2, feather 0.4,
@@ -281,7 +283,7 @@ vec3 waterflow(vec2 uv, float t) {
   vec2 flowMask = (texture2D(uFlowMask, uv).rg - vec2(0.498)) * 2.0;
   float flowAmount = length(flowMask);
 
-  vec2 warp = flowMask * amp * 0.1;
+  vec2 warp = flowMask * amp * 0.1 * uBoost;
   vec3 albedo = texture2D(uImage, uv).rgb;
   vec3 flowA = mix(texture2D(uImage, uv + warp * phase.x).rgb,
                    texture2D(uImage, uv + warp * phase.y).rgb, blendA);
@@ -358,7 +360,7 @@ vec2 shakeOffset(vec2 uv, float t, float speed, float strength) {
   float time = speed * t;
   float o = 0.5 - 0.5 * cos(6.283185307179586 * frac(time / PI_HALF));
   vec2 flow = (texture2D(uShakeMask, uv).rg - vec2(0.498)) * 2.0;
-  return o * (strength * strength) * flow;      // strength is applied squared
+  return o * (strength * strength) * flow * uBoost;      // strength is applied squared
 }
 `;
 
@@ -377,7 +379,7 @@ vec2 rustle(vec2 uv, float t, float gate) {
   float p = rn.g * 6.283185307179586 + (uv.x + uv.y) * 40.0;
   vec2 r = vec2(sin(p + t * 3.1) + 0.5 * sin(p * 1.7 - t * 4.3),
                 cos(p * 1.3 + t * 2.7) + 0.5 * cos(p * 2.1 + t * 3.9));
-  return r * (0.00035 * gate);
+  return r * (0.00035 * gate * uBoost);
 }
 `;
 /**
@@ -407,7 +409,7 @@ vec3 waterflow(vec2 uv, float t, float speed, float amp, float feather, float ph
   vec2 flowMask = (texture2D(uFlowMask, uv).rg - vec2(0.498)) * 2.0;
   float flowAmount = length(flowMask);
 
-  vec2 warp = flowMask * amp * 0.1;
+  vec2 warp = flowMask * amp * 0.1 * uBoost;
   vec3 albedo = texture2D(uImage, uv).rgb;
   vec3 flowA = mix(texture2D(uImage, uv + warp * phase.x).rgb,
                    texture2D(uImage, uv + warp * phase.y).rgb, blendA);
@@ -436,6 +438,7 @@ uniform sampler2D uMask;
 uniform float uTime;
 uniform float uAspect;
 uniform float uImageAspect;
+uniform float uBoost;
 ${COMMON_GLSL}
 void main() {
   vec2 uv = coverUv(vUv);
@@ -457,8 +460,9 @@ void main() {
   // by the mask. That is an amplitude of ~4.5e-4 per sine term, so the summed
   // displacement is a few pixels on the source's 3840px plate — around 3px at
   // this asset's 2560. It is a subtle effect on purpose, and it is not
-  // amplified here.
-  float amp = 0.3 * 0.3 * 0.005;
+  // amplified here. uBoost re-amplifies it on phones, where the same uv
+  // displacement would otherwise shrink to a sub-pixel shimmer.
+  float amp = 0.3 * 0.3 * 0.005 * uBoost;
   amp *= texture2D(uMask, uv).r;
 
   // phase 1.4 scales the whole argument: noise.g on 0..2pi, plus the rotated
@@ -494,6 +498,7 @@ uniform sampler2D uClouds;
 uniform float uTime;
 uniform float uAspect;
 uniform float uImageAspect;
+uniform float uBoost;
 ${COMMON_GLSL}
 void main() {
   vec2 uv = coverUv(vUv);
@@ -505,8 +510,8 @@ void main() {
   // each pair is then aspect-corrected, and the zw pair is transposed and
   // negated about x.
   vec4 clouds;
-  clouds.xy = (uv + uTime * 0.01) * 1.3;
-  clouds.zw = (uv - uTime * 0.02) * 0.5;
+  clouds.xy = (uv + uTime * uBoost * 0.01) * 1.3;
+  clouds.zw = (uv - uTime * uBoost * 0.02) * 0.5;
   clouds.xz *= uAspect;
   clouds.zw = vec2(-clouds.w, clouds.z);
 
@@ -553,6 +558,7 @@ uniform sampler2D uNoise;
 uniform float uTime;
 uniform float uAspect;
 uniform float uImageAspect;
+uniform float uBoost;
 ${COMMON_GLSL}
 ${SHAKE_GLSL}
 ${RUSTLE_GLSL}
@@ -587,6 +593,7 @@ uniform sampler2D uNoise;
 uniform float uTime;
 uniform float uAspect;
 uniform float uImageAspect;
+uniform float uBoost;
 ${COMMON_GLSL}
 ${SHAKE_GLSL}
 ${WATERFLOW_GLSL}
@@ -618,6 +625,7 @@ uniform sampler2D uPhase;
 uniform float uTime;
 uniform float uAspect;
 uniform float uImageAspect;
+uniform float uBoost;
 ${COMMON_GLSL}
 ${WATERFLOW_GLSL}
 // effects/waterripple vertex, rewritten as a uv displacement:
@@ -651,7 +659,7 @@ vec2 rippleUv(vec2 uv, float t) {
   // scene's variant of this, which floors z at 0.35 for its generated map.
   vec3 normal = normalize(vec3(n1.xy + n2.xy, n1.z));
 
-  return uv + normal.xy * (0.18 * 0.18);   // ripplestrength, squared (scene: 0.08)
+  return uv + normal.xy * (0.18 * 0.18) * uBoost;   // ripplestrength, squared (scene: 0.08)
 }
 
 void main() {
@@ -771,6 +779,8 @@ export const CLOUDS: WallpaperVariant = {
     const uImageAspect = gl.getUniformLocation(program, 'uImageAspect');
     // scene.json timing is used verbatim.
     gl.uniform1f(uMotion, 1.0);
+    // Phones shrink every uv displacement; re-amplify the motion there.
+    gl.uniform1f(gl.getUniformLocation(program, 'uBoost'), mobile ? 2.5 : 1.0);
 
     const textures: WebGLTexture[] = [];
     const keep = (texture: WebGLTexture | null) => {
@@ -928,6 +938,8 @@ export const JAPANESE: WallpaperVariant = {
     // channel the original carries is harmless.
     const noise = loadImage('/assets/blackboard/japanese/japanese-noise.png');
     const mask = loadImage('/assets/blackboard/japanese/japanese-foliage-mask.webp');
+    // Phones shrink every uv displacement; re-amplify the motion there.
+    gl.uniform1f(gl.getUniformLocation(program, 'uBoost'), mobile ? 2.5 : 1.0);
     const image = loadImage(mobile ? JAPANESE_PLATE.mobile : JAPANESE_PLATE.desktop);
 
     // Gate the first frame: the plate, the noise and the mask must all be
@@ -1011,6 +1023,9 @@ export const FOREST: WallpaperVariant = {
     // Engine agrees — the shipped util/clouds_256.tex-json carries
     // "clampuvs": false.
     const clouds = loadImage('/assets/blackboard/forest/forest-clouds.png');
+    // Phones shrink the drift; re-amplify it there. The veil time-average the
+    // tone curve fits is unchanged by speed.
+    gl.uniform1f(gl.getUniformLocation(program, 'uBoost'), mobile ? 2.5 : 1.0);
     const image = loadImage(mobile ? FOREST_PLATE.mobile : FOREST_PLATE.desktop);
 
     let pending = 2;
@@ -1081,6 +1096,8 @@ export const SAKURA: WallpaperVariant = {
     };
 
     const mask = loadImage('/assets/blackboard/sakura/sakura-shake-mask.webp');
+    // Phones shrink every uv displacement; re-amplify the motion there.
+    gl.uniform1f(gl.getUniformLocation(program, 'uBoost'), mobile ? 2.5 : 1.0);
     // util/noise, byte-copied from Wallpaper Engine — the same file the
     // japanese variant ships as japanese-noise.png. Sampled tiled at 3x the
     // object uv for per-leaf rustle phase, so it binds REPEAT; 256x256 is POT,
@@ -1159,6 +1176,8 @@ export const BLOSSOM: WallpaperVariant = {
     gl.uniform1i(gl.getUniformLocation(program, 'uFlowMask'), 2);
     gl.uniform1i(gl.getUniformLocation(program, 'uPhase'), 3);
     gl.uniform1i(gl.getUniformLocation(program, 'uNoise'), 4);
+    // Phones shrink every uv displacement; re-amplify the motion there.
+    gl.uniform1f(gl.getUniformLocation(program, 'uBoost'), mobile ? 2.5 : 1.0);
 
     const uTime = gl.getUniformLocation(program, 'uTime');
     const uAspect = gl.getUniformLocation(program, 'uAspect');
@@ -1256,6 +1275,8 @@ export const WAVES: WallpaperVariant = {
     // The real effects/waterripplenormal at 256x256, kept as-is because the
     // shader reads its texels directly. The phase map tiles, as above.
     const normal = loadImage('/assets/blackboard/waves/waves-normal.webp');
+    // Phones shrink every uv displacement; re-amplify the motion there.
+    gl.uniform1f(gl.getUniformLocation(program, 'uBoost'), mobile ? 2.5 : 1.0);
     const flowMask = loadImage('/assets/blackboard/waves/waves-noflow.png');
     const phase = loadImage('/assets/blackboard/waves/waves-phase.png');
     const image = loadImage(mobile ? WAVES_PLATE.mobile : WAVES_PLATE.desktop);
@@ -1402,6 +1423,7 @@ uniform sampler2D uNoise;
 uniform float uTime;
 uniform float uAspect;
 uniform float uImageAspect;
+uniform float uBoost;
 ${COMMON_GLSL}
 
 float grain(vec2 p) {
@@ -1425,7 +1447,9 @@ void main() {
   vec3 noise = texture2D(uNoise, uv * 0.19).rgb;
 
   // strength 0.47, squared and scaled by 0.005 in the vertex shader.
-  float amp = 0.46999999999999997 * 0.46999999999999997 * 0.005;
+  // uBoost re-amplifies it on phones, where the same uv displacement would
+  // otherwise shrink to a sub-pixel shimmer.
+  float amp = 0.46999999999999997 * 0.46999999999999997 * 0.005 * uBoost;
 
   // phase 0.34 scales the whole argument: noise.g on 0..2pi, plus the rotated
   // uv with its x weighted tenfold and its y fivefold.
@@ -1476,6 +1500,8 @@ export const ROSES: WallpaperVariant = {
     // so it never wraps: clamping is identical to repeating.
     const noise = loadImage('/assets/blackboard/japanese/japanese-noise.png');
     const image = loadImage(mobile ? ROSES_PLATE.mobile : ROSES_PLATE.desktop);
+    // Phones shrink every uv displacement; re-amplify the motion there.
+    gl.uniform1f(gl.getUniformLocation(program, 'uBoost'), mobile ? 2.5 : 1.0);
 
     // Gate the first frame: sampling an unbound unit returns (0,0,0,1), which
     // would park the noise phase at zero and jump once the map arrives.
@@ -1780,6 +1806,156 @@ export const TOPOGRAPHY: WallpaperVariant = {
   create: () => null,
 };
 
+const GEARS_PLATE = {
+  desktop: '/assets/blackboard/gears/gears.webp',
+  mobile: '/assets/blackboard/gears/gears-portrait.webp',
+};
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   GEARS — workshop 3128684611 ("Ender Rotating Gears WUHD (4K)")
+
+   Six gear layers over a tinted base, each running effects/spin (a rotation
+   about its own center inside a feathered circular mask) plus effects/tint.
+   Copied at the local settings from WallpaperEngine/config.json on DISPLAY1:
+   color ON, gears grey 192/255, background black, playback rate 151%,
+   brightness/contrast/saturation/hue 100, and the simple_film grade.
+
+   Those settings decide the whole look, and they simplify the port to almost
+   nothing:
+   - The base tint is black at alpha 1 over the blueprint plate (tint mode 30
+     is max-channel × color), so the base image never shows: solid black.
+   - Each gear tint is the same mode with grey 192, so every layer is baked
+     grey up front and the shader only rotates, masks and adds.
+   - The gear textures are opaque black squares, so a normal alpha composite
+     would paste visible squares: the scene can only read clean if the layers
+     ADD (black adds nothing, the linework adds grey), which is what the port
+     does, in scene order. Overlaps glow brighter, as in the source.
+   - simple_film is a 32x1024 vertical-slice LUT shipped byte-for-byte; the
+     fragment grades the composite through it, and the plates are baked through
+     the same curve so the ink field stays honest.
+   ═══════════════════════════════════════════════════════════════════════════ */
+const GEARS_FRAGMENT = `
+${PRECISION}
+varying vec2 vUv;
+uniform sampler2D uG7;
+uniform sampler2D uG1;
+uniform sampler2D uG2;
+uniform sampler2D uG3;
+uniform sampler2D uG5;
+uniform sampler2D uG6;
+uniform sampler2D uLut;
+uniform float uTime;
+uniform float uAspect;
+uniform float uImageAspect;
+${COMMON_GLSL}
+
+// One gear: canvas-fraction uv into the layer's rect, spin about its center,
+// feathered circular mask, additive linework. Constants are the scene's own
+// origin/size/scale (canvas 5160x2825), spin center/size (mask radius) and
+// speed, with the local 151% playback rate folded into the angle.
+vec3 gearLayer(sampler2D tex, vec2 cuv, vec2 origin, vec2 size, vec2 center, float texAspect, float msize, float speed) {
+  vec2 rectMin = (origin - size * 0.5) / vec2(5160.0, 2825.0);
+  vec2 rectSize = size / vec2(5160.0, 2825.0);
+  vec2 local = (cuv - rectMin) / rectSize;
+  vec2 d = (local - center) * vec2(texAspect, 1.0);
+  float m = smoothstep(msize + 0.002 + 0.00001, msize - 0.002, length(d));
+  if (m <= 0.0) return vec3(0.0);
+  // Source spin.vert: aspect-correct, rotate by speed * time (ELLIPTICAL at
+  // angle 0 / ratio 1 is identity), un-correct, re-center. NOISE is off.
+  vec2 rel = rotateVec2(d, speed * 1.51 * uTime);
+  rel.x /= texAspect;
+  return texture2D(tex, rel + center).rgb * m;
+}
+
+// simple_film: 32 vertical 32x32 slices, x = red, y-in-slice = green, slice =
+// blue. Bilinear within the slice from the sampler, manual lerp across slices.
+vec3 applyFilm(vec3 c) {
+  c = clamp(c, 0.0, 1.0);
+  float b = c.b * 31.0;
+  float s = floor(b);
+  float f = b - s;
+  vec2 sliceUv = vec2((c.r * 31.0 + 0.5) / 32.0, (s * 32.0 + c.g * 31.0 + 0.5) / 1024.0);
+  vec2 sliceUvNext = vec2((c.r * 31.0 + 0.5) / 32.0, (min(s + 1.0, 31.0) * 32.0 + c.g * 31.0 + 0.5) / 1024.0);
+  return mix(texture2D(uLut, sliceUv).rgb, texture2D(uLut, sliceUvNext).rgb, f);
+}
+
+void main() {
+  // Full scene aspect, like the lattice port: the plates and every layer keep
+  // the source's 5160x2825, so mobile reads the center slice rather than a
+  // separately cropped (and misaligned) set of layers.
+  vec2 uv = coverUv(vUv);
+  vec3 col = vec3(0.0);
+  col += gearLayer(uG7, uv, vec2(3357.59448, 596.86206), vec2(1303.0 * 3.0, 1303.0 * 3.0), vec2(0.49786, 0.49695), 1.0, 0.48661602, -0.40);
+  col += gearLayer(uG1, uv, vec2(4479.94287, 1916.81458), vec2(1306.0 * 2.0, 1326.0 * 2.0), vec2(0.50208, 0.50683), 0.98496, 0.47972497, 0.20);
+  col += gearLayer(uG2, uv, vec2(3357.63989, 584.90808), vec2(1320.0, 1262.0), vec2(0.50676, 0.50202), 1.04596, 0.48980454, -0.40);
+  col += gearLayer(uG3, uv, vec2(1505.28821, 1136.68628), vec2(1179.0 * 2.5, 1164.0 * 2.5), vec2(0.50514, 0.50000), 1.01289, 0.48453483, 0.182);
+  col += gearLayer(uG5, uv, vec2(1519.49170, 1128.79749), vec2(1249.0, 1241.0), vec2(0.49713, 0.49513), 1.00645, 0.49444276, 0.182);
+  col += gearLayer(uG6, uv, vec2(542.95398, 1920.54443), vec2(1417.0, 1414.0), vec2(0.5, 0.5), 1.00212, 0.49336642, -0.165);
+  gl_FragColor = vec4(applyFilm(col), 1.0);
+}
+`;
+
+export const GEARS: WallpaperVariant = {
+  id: 'gears',
+  label: 'Black Gears',
+  plate: GEARS_PLATE,
+  vertex: VERTEX_SRC,
+  fragment: GEARS_FRAGMENT,
+  // Rotation plus a static grade: the plates are baked through the same film
+  // curve from the rest-pose composite, so the file stands in for the render
+  // in the ink field. Identity. Confident.
+  toneMap: srgb => srgb,
+  create(gl, program) {
+    const files = ['g7', 'g1', 'g2', 'g3', 'g5', 'g6'];
+    const uniforms = ['uG7', 'uG1', 'uG2', 'uG3', 'uG5', 'uG6'];
+    gl.uniform1i(gl.getUniformLocation(program, 'uLut'), 6);
+    const textures: WebGLTexture[] = [];
+    let ready = 0;
+    let failed = false;
+    const images = files.map((file, unit) => {
+      gl.uniform1i(gl.getUniformLocation(program, uniforms[unit]), unit);
+      const image = loadImage(`/assets/blackboard/gears/${file}.webp`);
+      image.onload = () => {
+        const texture = uploadTexture(gl, unit, image, false, false);
+        if (!texture) { failed = true; return; }
+        textures.push(texture);
+        ready++;
+      };
+      image.onerror = () => { failed = true; };
+      return image;
+    });
+    // The film grade, byte-copied from Wallpaper Engine. Sampled with plain
+    // linear filtering and no mipmaps: mipmaps would bleed adjacent slices.
+    const lut = loadImage('/assets/blackboard/gears/simple-film.png');
+    lut.onload = () => {
+      const texture = uploadTexture(gl, 6, lut, false, false);
+      if (!texture) { failed = true; return; }
+      textures.push(texture);
+      ready++;
+    };
+    lut.onerror = () => { failed = true; };
+    images.push(lut);
+    const timeUniform = gl.getUniformLocation(program, 'uTime');
+    const aspectUniform = gl.getUniformLocation(program, 'uAspect');
+    gl.uniform1f(gl.getUniformLocation(program, 'uImageAspect'), 5160 / 2825);
+    const want = files.length + 1;
+    return {
+      frame(context, time) {
+        if (ready !== want) return false;
+        context.uniform1f(timeUniform, time);
+        context.uniform1f(aspectUniform, context.drawingBufferWidth / context.drawingBufferHeight);
+        context.drawArrays(context.TRIANGLE_STRIP, 0, 4);
+        return true;
+      },
+      alive: () => !failed,
+      dispose(context) {
+        for (const image of images) { image.onload = null; image.onerror = null; }
+        for (const texture of textures) context.deleteTexture(texture);
+      },
+    };
+  },
+};
+
 export const VARIANTS: Record<WallpaperId, WallpaperVariant> = {
   abstract: ABSTRACT,
   clouds: CLOUDS,
@@ -1793,6 +1969,7 @@ export const VARIANTS: Record<WallpaperId, WallpaperVariant> = {
   sweep: SWEEP,
   dots: DOTS,
   topography: TOPOGRAPHY,
+  gears: GEARS,
 };
 
 /** Cycle order for the switcher. The added scenes follow the two originals. */
@@ -1809,6 +1986,7 @@ export const WALLPAPER_ORDER: WallpaperId[] = [
   'sweep',
   'dots',
   'topography',
+  'gears',
 ];
 
 export function isWallpaperId(value: unknown): value is WallpaperId {
