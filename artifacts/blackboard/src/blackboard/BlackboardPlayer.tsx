@@ -1,12 +1,20 @@
 import { Pause, Play, Volume2, VolumeX } from 'lucide-react';
 import { useLayoutEffect, useRef, useState, type CSSProperties } from 'react';
 import { useAudioCtx } from '../hooks/AudioContext';
+import { useIsMobile } from '../hooks/useMobile';
 import { blackboardArtworkSrc, blackboardMusicPick } from '../data/blackboardMusic';
 
 /* The library draw for this page view, shared with AudioContext through the
  * same module-level pick — so the panel always labels the file actually
  * playing. There is no chooser: the visitor gets one track per visit. */
 const TRACK = blackboardMusicPick();
+
+const formatTime = (seconds: number) => {
+  if (!Number.isFinite(seconds) || seconds < 0) return '0:00';
+  const minutes = Math.floor(seconds / 60);
+  const remainder = Math.floor(seconds % 60).toString().padStart(2, '0');
+  return `${minutes}:${remainder}`;
+};
 
 /* iOS ignores HTMLMediaElement.volume outright — device volume is the only
  * control that works there — so an in-page slider would be dead UI. Hide it
@@ -41,7 +49,11 @@ interface TitlePan {
 const NO_PAN: TitlePan = { panning: false, shift: 0, seconds: PAN_MIN_SECONDS };
 
 export function BlackboardPlayer() {
-  const { playing, volume, blocked, mutedAutoplay, play, pause, setVolume } = useAudioCtx();
+  const { playing, currentTime, duration, volume, blocked, mutedAutoplay, play, pause, seek, setVolume } = useAudioCtx();
+  // The scrubber is desktop-only: mobile browsers throttle the media clock and
+  // the dot read as broken there, so phones get no scrubber at all rather than
+  // a frozen one.
+  const isMobile = useIsMobile();
   const titleViewportRef = useRef<HTMLSpanElement>(null);
   const titleRef = useRef<HTMLElement>(null);
   const lastAudibleVolumeRef = useRef(0.5);
@@ -99,6 +111,8 @@ export function BlackboardPlayer() {
     }
   };
 
+  const progress = duration > 0 ? Math.min(100, Math.max(0, (currentTime / duration) * 100)) : 0;
+
   return <section className="bb-player" aria-label="Blackboard audio player" data-ink="light">
     <div className="bb-player-meta">
       <div className="bb-player-artwork">
@@ -125,6 +139,20 @@ export function BlackboardPlayer() {
         <span className="bb-player-artist">{TRACK.artist}</span>
       </div>
     </div>
+    {!isMobile && <div className="bb-player-scrub">
+      <input
+        type="range"
+        min="0"
+        max={duration || 0}
+        step="0.1"
+        value={Math.min(currentTime, duration || 0)}
+        onChange={event => seek(Number(event.target.value))}
+        aria-label="Scrub audio"
+        style={{ '--bb-progress': `${progress}%` } as CSSProperties}
+        disabled={!duration}
+      />
+      <div className="bb-player-times"><span>{formatTime(currentTime)}</span><span>{duration ? formatTime(duration) : '--:--'}</span></div>
+    </div>}
     <div className="bb-player-controls">
       <button type="button" className="bb-player-play" onClick={onPlayPause} aria-label={playing ? 'Pause audio' : 'Play audio'}>
         {playing ? <Pause aria-hidden="true" /> : <Play aria-hidden="true" />}
