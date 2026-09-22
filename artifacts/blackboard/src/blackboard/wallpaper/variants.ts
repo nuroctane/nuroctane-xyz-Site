@@ -263,16 +263,12 @@ vec2 shakeOffset(vec2 uv, float t) {
 
 // effects/waterflow — scene.json: strength 0.24, speed 0.2, feather 0.4,
 // phasescale 2.0. Four taps half a phase apart, cross-faded, so the phase
-// wrap is continuous.
-//
-// The scene's own 0.24 is NOT replayed: flowMask * 0.24 * 0.1 swings the taps
-// ±41px on a plate whose cauliflower detail lives at that scale, so the live
-// render came out as mush next to the crisp still. 0.06 keeps the shimmer at
-// ±10px and leaves the travelling to the pan below.
+// wrap is continuous. Replayed near-verbatim: the churn IS the clouds'
+// texture-life, and taming it to a shimmer left the scene static.
 vec3 waterflow(vec2 uv, float t) {
   const float speed = 0.2;
   const float feather = 0.4;
-  const float amp = 0.06;
+  const float amp = 0.16;
   const float phaseScale = 2.0;
 
   vec4 cycles = vec4(frac(t * speed),
@@ -302,15 +298,18 @@ vec3 waterflow(vec2 uv, float t) {
 void main() {
   float t = uTime * uMotion;
   vec2 uv = coverUv(vUv);
-  // The source only ever warps in place (shake + waterflow), so the mass
-  // breathes but never travels. A bounded pan on top reads as weather: a 60s
-  // ping-pong along a rising leftward wind, gated by the flow amount so the
-  // black sky stays perfectly still. Bounded (±3.5% uv) rather than open
-  // drift, because the plate is clamped — a one-direction pan would walk off
-  // the edge into smear within a minute.
-  float gate = smoothstep(0.0, 0.4, length((texture2D(uFlowMask, uv).rg - vec2(0.498)) * 2.0));
-  float ph = abs(frac(t / 60.0) * 2.0 - 1.0) - 0.5;
-  vec2 drifted = uv + normalize(vec2(-1.0, 0.25)) * (ph * 0.07 * gate * uBoost);
+  // Travel, gated by what is actually cloud: the flow mask is sparse (median
+  // flow is zero), so gating the pan by it left most of the mass static. The
+  // plate's own luminance is the honest gate — clouds are bright, the sky is
+  // black. A 50s ping-pong along a rising leftward wind at ±5% uv, faded to
+  // zero at the borders so the clamped plate can never smear. The warp and
+  // shake underneath keep the source's own churn.
+  float lum = dot(texture2D(uImage, uv).rgb, vec3(0.299, 0.587, 0.114));
+  float gate = smoothstep(0.08, 0.4, lum);
+  float edge = smoothstep(0.0, 0.05, uv.x) * smoothstep(1.0, 0.95, uv.x)
+             * smoothstep(0.0, 0.05, uv.y) * smoothstep(1.0, 0.95, uv.y);
+  float ph = abs(frac(t / 50.0) * 2.0 - 1.0) - 0.5;
+  vec2 drifted = uv + normalize(vec2(-1.0, 0.25)) * (ph * 0.10 * gate * edge * uBoost);
   vec3 col = waterflow(drifted + shakeOffset(drifted, t), t);
 
   // scene.json pins the scheme to grey; the plate is already black and white,
