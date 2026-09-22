@@ -5,9 +5,10 @@ import { useAdaptiveInk, useWallpaper } from './WallpaperProvider';
    BACKGROUND SWITCHER
 
    Its own control, centred beneath the player panel rather than inside it, so
-   the panel stays a pure player. The glyph advertises the wallpaper the press
-   moves you TO — a cloud for the cumulus scene, a crest for the abstract one —
-   so the button states its own action.
+   the panel stays a pure player. The glyph shows the CURRENT wallpaper — a
+   cloud while the cumulus scene is up, a crest for the abstract one — so the
+   button states what is on screen. The hover hint (title / aria-label) is
+   what advertises the press action and still names the NEXT wallpaper.
 
    The glyphs share one grid cell and cross-fade in place: the outgoing glyph
    fades while the incoming one arrives from scale(.3) with a clearing 2px blur,
@@ -130,7 +131,7 @@ export function BlackboardWallpaperToggle() {
             strokeLinecap="round"
             strokeLinejoin="round"
             aria-hidden="true"
-            data-visible={id === next}
+            data-visible={id === variant}
           >
             {GLYPHS[id].map(d => (
               <path key={d} d={d} />
