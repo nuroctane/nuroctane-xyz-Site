@@ -264,7 +264,7 @@ function cliCard() {
               lineHeight: 1.35,
             },
           },
-          'Rust harness · gold TUI · 65 providers · Jev judgments · 48 tools · 1,000+ skills',
+          'Rust harness · gold TUI · 65 providers · Jev judgments · 51 tools · 1,000+ skills',
         ),
       ),
     ),

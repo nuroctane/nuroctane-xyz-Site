@@ -462,11 +462,15 @@ const FEATURE_TABS: FeatureTab[] = [
           <strong>knowledge</strong> — <code>graphify</code> ·{" "}
           <code>graphjin</code> · <code>plur</code> · <code>ruflo</code> ·{" "}
           <code>executor</code> · <code>skill</code> · <code>memory</code> ·{" "}
-          <code>headroom</code> · 48 tools in one dispatcher
+          <code>headroom</code> · 51 tools in one dispatcher
         </li>
         <li>
           <strong>judgments</strong> — <code>typesafe</code> (gate a call,
-          judge a result, rank, route, classify, risk, verify)
+          judge a result, rank, route, classify, risk, verify). Measured on
+          the live API: 24 mixed judgments in <strong>1 request, ~280 ms</strong>,
+          100% replay agreement, zero frontier tokens — against 5 ms / coin-flip
+          accuracy for keyword heuristics and full-transcript re-reads without it.
+          Keyless local engines (openJev, Nimble, Laya, mock) speak the same contract.
         </li>
         <li>
           <strong>memory</strong> — <code>optmem</code> (permanent,{" "}
@@ -482,7 +486,8 @@ const FEATURE_TABS: FeatureTab[] = [
           <strong>async</strong> — <code>bg</code> (jobs that outlive the turn)
           · <code>admission</code> (async subagent handles) ·{" "}
           <code>goal</code> · <code>proposal</code> (staged writes) ·{" "}
-          <code>message</code> (peer mail between sessions)
+          <code>message</code> (peer mail between sessions) · <code>question</code>{" "}
+          (close-ended user questions)
         </li>
         <li>
           <strong>policy</strong> — <code>dogwood</code> (Cedar + temporal
