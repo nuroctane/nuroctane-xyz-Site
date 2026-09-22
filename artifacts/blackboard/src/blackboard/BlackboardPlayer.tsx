@@ -120,7 +120,6 @@ export function BlackboardPlayer() {
         <img src={blackboardArtworkSrc(TRACK)} alt="" />
       </div>
       <div className="bb-player-copy">
-        {TRACK.album && <span className="bb-player-kicker">{TRACK.album}</span>}
         <span className="bb-player-title-viewport" ref={titleViewportRef}>
           <strong
             className="bb-player-title"

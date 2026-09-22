@@ -38,7 +38,7 @@ export const BLACKBOARD_MUSIC: readonly BlackboardTrack[] = [
   { id: 'difference-interlude', artist: 'XXXTENTACION', title: 'difference (interlude)', album: 'SKINS' },
   { id: 'the-interlude-that-never-ends', artist: 'XXXTENTACION', title: 'the interlude that never ends/Ugly' },
   { id: 'love-yourself-interlude', artist: 'XXXTENTACION', title: 'love yourself (interlude) (Instrumental)' },
-  { id: 'girl-next-door', artist: 'Heavenly Snow', title: 'Girl next door', album: 'Girl next door' },
+  { id: 'girl-next-door', artist: 'Heavenly Snow', title: 'Girl next door' },
   { id: 'poison-tree', artist: 'Grouper', title: 'Poison Tree' },
   { id: 'about-yesterday', artist: 'Greaf', title: 'About Yesterday' },
   { id: 'surrounded', artist: 'Greaf', title: 'Surrounded' },
