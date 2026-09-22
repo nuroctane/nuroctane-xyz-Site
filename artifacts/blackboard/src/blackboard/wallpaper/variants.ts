@@ -264,10 +264,15 @@ vec2 shakeOffset(vec2 uv, float t) {
 // effects/waterflow — scene.json: strength 0.24, speed 0.2, feather 0.4,
 // phasescale 2.0. Four taps half a phase apart, cross-faded, so the phase
 // wrap is continuous.
+//
+// The scene's own 0.24 is NOT replayed: flowMask * 0.24 * 0.1 swings the taps
+// ±41px on a plate whose cauliflower detail lives at that scale, so the live
+// render came out as mush next to the crisp still. 0.06 keeps the shimmer at
+// ±10px and leaves the travelling to the pan below.
 vec3 waterflow(vec2 uv, float t) {
   const float speed = 0.2;
   const float feather = 0.4;
-  const float amp = 0.24;
+  const float amp = 0.06;
   const float phaseScale = 2.0;
 
   vec4 cycles = vec4(frac(t * speed),
@@ -298,14 +303,14 @@ void main() {
   float t = uTime * uMotion;
   vec2 uv = coverUv(vUv);
   // The source only ever warps in place (shake + waterflow), so the mass
-  // breathes but never travels. A slow bounded pan on top reads as weather:
-  // a 75s ping-pong along a rising leftward wind, gated by the flow amount so
-  // the black sky stays perfectly still. Bounded (±2.5% uv) rather than open
+  // breathes but never travels. A bounded pan on top reads as weather: a 60s
+  // ping-pong along a rising leftward wind, gated by the flow amount so the
+  // black sky stays perfectly still. Bounded (±3.5% uv) rather than open
   // drift, because the plate is clamped — a one-direction pan would walk off
   // the edge into smear within a minute.
   float gate = smoothstep(0.0, 0.4, length((texture2D(uFlowMask, uv).rg - vec2(0.498)) * 2.0));
-  float ph = abs(frac(t / 75.0) * 2.0 - 1.0) - 0.5;
-  vec2 drifted = uv + normalize(vec2(-1.0, 0.25)) * (ph * 0.05 * gate * uBoost);
+  float ph = abs(frac(t / 60.0) * 2.0 - 1.0) - 0.5;
+  vec2 drifted = uv + normalize(vec2(-1.0, 0.25)) * (ph * 0.07 * gate * uBoost);
   vec3 col = waterflow(drifted + shakeOffset(drifted, t), t);
 
   // scene.json pins the scheme to grey; the plate is already black and white,
