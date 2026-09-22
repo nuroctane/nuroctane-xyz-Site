@@ -285,6 +285,11 @@ Documented in full at each site in `variants.ts`; the short version:
   `util/noise` (two incommensurate frequency pairs, ~1.4px max, gated by the
   shake flow amount so the masked-out sky stays still) flutters petals against
   that sway. Uv-only like the shake, so the identity tone curves still hold.
+- **`clouds` pans on top of its warp** — the source only displaces in place,
+  so the mass breathed but never travelled. A 75s ping-pong along a rising
+  leftward wind (±2.5% uv, gated by the flow amount so the sky stays still)
+  reads as weather. Bounded rather than open drift because the plate is
+  clamped: a one-direction pan would walk off the edge into smear.
 - **`gears` runs at the local settings, not the project defaults** — color ON,
   gears grey 192, background black, rate 151%, `simple_film` grade, taken from
   `WallpaperEngine/config.json` on DISPLAY1. The defaults (color off, red gears,
