@@ -10,7 +10,7 @@
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (100)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (45)
-- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (64)
+- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (65)
 
 ## Faith, God & Surrender
 
@@ -2680,6 +2680,10 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > 
 > 最后补了一句：“看风水是看地，但人最大的风水，在嘴上。这话，你记死了。”
 > — @Yue_official_
+
+> Rid urself of the illusion of milestones and finish lines. Seasons come and go but the game never ends or even changes. Every day is the same day till death.
+> — @MrE_mssg
+
 
 
 
