@@ -7,7 +7,7 @@
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (94)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (30)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (95)
-- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
+- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (60)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (100)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (45)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (65)
@@ -1917,6 +1917,10 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 
 > people will draw conclusions and make me out to be terrible for the rest of my life. i’ve learned by now. just LET them. release the urge to prove literal retards wrong. just be. chill. breathe. your oxygen tastes better than theirs.
 > — @nuroctane
+
+> Showing a person the absurdity of their defense mechanism almost never causes them to abandon the defense; it causes them to abandon you.
+> — @DoxepinHCl
+
 
 
 
