@@ -2,11 +2,11 @@
 - [[#Faith, God & Surrender|Faith, God & Surrender]] (44)
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (30)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (57)
-- [[#Self, Identity & Awakening|Self, Identity & Awakening]] (76)
+- [[#Self, Identity & Awakening|Self, Identity & Awakening]] (77)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (54)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (94)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (30)
-- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (93)
+- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (95)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (100)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (45)
@@ -737,6 +737,12 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 
 > Nobody actually cares. Nobody sees you and has sympathy for you or wonders why you turned out how you did. They just see you as a monster.
 > — @melanchol1ck
+
+> I was a rebel before I was a father - so what makes you think I don’t know you when I literally was you? Like you, the world weighed on my shoulders when I was far too young and small to possess the capacity to take care of myself, and so like you, I was self-destructive, contemptuous, distrusting and rebellious. I too came to distrust authority, because none of what I saw was righteous, fair, or just, and so like you I decided to break all rules, forge my own path, and learn the hard way by making my own mistakes - paying the blood and soul price along the way.
+> 
+> What do you know of me then that I do not know of you, or would you pretend we are so dissimilar? Do you think my authority is like theirs when I was (and in many ways, still am) you? No. I do not desire it, and never pursued it - I just fucking have it by simple merit of being the man that I am as an emergent property of my being - it is another burden that is an honour, and so I employ it in the way I think others should have but failed to, because I know better than them - because I do not emulate my inferiors - because I care more for beauty and goodness than I do trinkets or a felt sense of superiority. That’s it. That’s all it is. It is really that simple.
+> — @SovereignIM
+
 
 
 
@@ -1714,6 +1720,14 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 
 > The most naive and innocent get cheated on and stepped over. Bambi gets shot and fileted. Theres no room for naivete and innocence in a man - flowers get trampled and thorns get revered. Its always the callous and rugged who end up sprouting among the debris - you have no chance to be a soft little doe as a man because women and other sharks alike will leave your bones for the worms. Always the softest dudes who exclusively talk up women and white knightingly talk down on cheating who are literally the ones getting cheated on - the nice guy businessman getting fucked over in some deal. You have zero clue how reality operates and your delusions blind you until the shows over, and the only one in the audience is your past self deceased and covered in bottom feeders. I understand being like this in your teens and early 20s but it also reminds me life is vicious and rightfully so when I see a grown man thinking his gay little morality will defend him from reality - get trampled early and learn life before it happens to you at a point of no return. And kill your arrogance - chances of you being a part of the clueless majority is very high. Hate me but thank me much later - no room for monks and gardeners in the game of love and war
 > — @rawknuckle
+
+> Also, your private intentions do not constitute your character. You are what you repeatedly do.
+> — @Illusionist_126
+
+> When a woman truly loves you, she desperately wants to become a better woman for you, but when she doesn't love you, all she will do is incessantly demand you improve. This is not to say you should not try to improve, only that a woman with a pure heart sees her own shortcomings long before she sees yours.
+> — @SovereignIM
+
+
 
 
 
