@@ -9,6 +9,12 @@ The Windows task owns the schedule.  Each run is intentionally ordered:
 4. Write the canonical Obsidian Quotes.md bank (Raindrop additions land here).
 5. Copy that bank to the site's quotes.md, commit only that file, and push main.
 6. Rewrite the vault bank so it matches the published copy.
+7. Mirror the committed site ``books.md`` into the Obsidian Book Wishlist.
+
+This is the only scheduler.  The Hermes cron jobs that used to run pieces of
+this on their own (sync-quotes-obsidian-to-repo, poll-sync-90min,
+ingest-and-sync-quotes-hourly) are paused: they bypassed the editorial pass and
+raced this run.
 
 The source-specific parser stays in Hermes because it owns the Raindrop token and
 the durable de-duplication sidecar.  This small, versioned runner makes the
@@ -32,6 +38,13 @@ LOG_FILE = REPO_ROOT / ".nur" / "quotes-pipeline.log"
 LOCK_FILE = REPO_ROOT / ".nur" / "quotes-pipeline.lock"
 STALE_LOCK_SECONDS = 2 * 60 * 60
 REL_QUOTES = "artifacts/blackboard/src/content/quotes.md"
+REL_BOOKS = "artifacts/blackboard/src/content/books.md"
+BOOKS_VAULT = Path(
+    os.environ.get(
+        "OBSIDIAN_BOOKS",
+        str(Path.home() / "iCloudDrive" / "iCloud~md~obsidian" / "∞∞∞" / "Home" / "Books" / "Book Wishlist.md"),
+    )
+)
 
 
 def log(message: str) -> None:
@@ -186,6 +199,43 @@ def preflight_git() -> int:
     return 0
 
 
+def split_frontmatter(text: str) -> tuple[str, str]:
+    lines = text.splitlines(keepends=True)
+    if lines and lines[0].strip() == "---":
+        for i in range(1, len(lines)):
+            if lines[i].strip() == "---":
+                return "".join(lines[: i + 1]), "".join(lines[i + 1 :])
+    return "", text
+
+
+def mirror_books() -> int:
+    """Committed site books.md -> Obsidian Book Wishlist (keeps vault frontmatter)."""
+    shown = subprocess.run(
+        ["git", "show", f"HEAD:{REL_BOOKS}"],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        creationflags=command_flags(),
+    )
+    if shown.returncode:
+        log(f"books mirror skipped: cannot read HEAD:{REL_BOOKS}")
+        return 1
+    if not BOOKS_VAULT.is_file():
+        log(f"books mirror skipped: vault wishlist missing ({BOOKS_VAULT}); set OBSIDIAN_BOOKS if it moved")
+        return 1
+    books = shown.stdout.replace("\r\n", "\n")
+    current = BOOKS_VAULT.read_text(encoding="utf-8").replace("\r\n", "\n")
+    frontmatter, body = split_frontmatter(current)
+    if body == books:
+        log("books mirror: unchanged")
+        return 0
+    BOOKS_VAULT.write_text(frontmatter + books, encoding="utf-8", newline="\n")
+    log(f"books mirror: updated {BOOKS_VAULT}")
+    return 0
+
+
 def main() -> int:
     if not acquire_lock():
         return 0
@@ -229,14 +279,14 @@ def main() -> int:
         ready = preflight_git()
         if ready:
             log("vault ingest finished; site publish deferred until git is clean")
+            mirror_books()
             return ingest_rc or ready
 
         # Publish the canonical bank to the site and main, then mirror that
         # exact reindexed copy back into Obsidian.
         sync_rc = run("obsidian-to-site sync", [str(HERMES_PYTHON), "-u", str(REPO_ROOT / "scripts" / "run_hermes_quote_sync.py")])
-        if sync_rc:
-            return sync_rc
-        return ingest_rc
+        books_rc = mirror_books()
+        return sync_rc or ingest_rc or books_rc
     except OSError as exc:
         log(f"pipeline fatal: {exc}")
         return 1

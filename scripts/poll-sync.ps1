@@ -4,8 +4,8 @@
   Fallback Windows entrypoint for the Obsidian quotes + books poller.
 
   Preferred path: Scheduled Task "NuroctanePollSync" -> poll-sync.vbs ->
-  Hermes poll-sync.py (utterly silent; no powershell/cmd window).
-  This .ps1 is only used if the Hermes Python poller is missing.
+  scripts/quotes-pipeline.py via Hermes Python (utterly silent).
+  This .ps1 is only used if Hermes Python is missing.
 #>
 $ErrorActionPreference = 'Stop'
 $RepoRoot = 'C:\Users\david\Laboratory\nuroctane.xyz'

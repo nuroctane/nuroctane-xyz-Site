@@ -4,7 +4,7 @@
 # Source of truth for the site wishlist is:
 #   artifacts/blackboard/src/content/books.md
 # Vault mirror (same body, no frontmatter today):
-#   ∞∞∞/Books/Book Wishlist.md
+#   ∞∞∞/Home/Books/Book Wishlist.md
 #
 # Called from poll-sync after a books.md pull, and also whenever the two
 # files differ (cheap cmp) so a manual pull / Workers deploy still lands
@@ -15,7 +15,7 @@ set -uo pipefail
 export HOME="${HOME:-/c/Users/david}"
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || REPO_ROOT="/c/Users/david/Laboratory/nuroctane.xyz"
 SRC="$REPO_ROOT/artifacts/blackboard/src/content/books.md"
-DEST="${OBSIDIAN_BOOKS:-$HOME/iCloudDrive/iCloud~md~obsidian/∞∞∞/Books/Book Wishlist.md}"
+DEST="${OBSIDIAN_BOOKS:-$HOME/iCloudDrive/iCloud~md~obsidian/∞∞∞/Home/Books/Book Wishlist.md}"
 
 [[ -f "$SRC" ]] || { echo "books.md not found: $SRC"; exit 1; }
 [[ -f "$DEST" ]] || { echo "Book Wishlist.md not found: $DEST"; exit 1; }
