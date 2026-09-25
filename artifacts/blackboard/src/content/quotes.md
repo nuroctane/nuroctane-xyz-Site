@@ -10,7 +10,7 @@
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (60)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (100)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (45)
-- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (65)
+- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (66)
 
 ## Faith, God & Surrender
 
@@ -2701,6 +2701,10 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 
 > Rid urself of the illusion of milestones and finish lines. Seasons come and go but the game never ends or even changes. Every day is the same day till death.
 > — @MrE_mssg
+
+> One day it will be recognised that our mood is one way that we pollute the commons; that feelings are not private; that we have a responsibility to the commons & each other to cultivate joy & not be in a gigantic sulk at life all the time. its like defecating in the town water
+> — @wholebodyprayer
+
 
 
 
