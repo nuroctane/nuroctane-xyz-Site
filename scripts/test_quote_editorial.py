@@ -26,6 +26,12 @@ class EditorialTests(unittest.TestCase):
         self.assertEqual(len(BLOCK.findall(result)), 1)
         self.assertEqual(split_block(BLOCK.findall(result)[0])[0], bodies[duplicate['complete']])
 
+    def test_reimport_with_different_punctuation_is_dropped(self):
+        edited = '> one trait of high-achieving people is urgency.\n> — @someone'
+        reimport = '> one trait of high achieving people is urgency\n> — @someone'
+        result = apply_editorial(f'## S\n\n{edited}\n\n{reimport}\n')
+        self.assertEqual(result.rstrip('\n'), f'## S\n\n{edited}')
+
     def test_unreviewed_text_is_untouched(self):
         text = '## New\n\n> dont auto edit a new capture\n'
         self.assertEqual(apply_editorial(text), text)

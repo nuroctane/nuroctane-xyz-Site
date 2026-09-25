@@ -35,12 +35,16 @@ def apply_editorial(text):
     blocks = list(BLOCK.finditer(text))
     present = {body_key(split_block(m[0])[0]) for m in blocks}
     remove = {entry['fragment'] for entry in rules['duplicates'] if entry['complete'] in present}
+    seen = set()
 
     def replace(match):
         body, source = split_block(match[0])
         key = body_key(body)
-        if key in remove:
+        # A re-import of a quote already in the bank (same words, different
+        # punctuation) is dropped; the earlier, edited copy wins.
+        if key in remove or key in seen:
             return ''
+        seen.add(key)
         correction = replacements.get(key)
         if not correction:
             return match[0]
@@ -51,4 +55,4 @@ def apply_editorial(text):
             lines.append('> — ' + source)
         return '\n'.join(lines)
 
-    return BLOCK.sub(replace, text)
+    return re.sub(r'\n{3,}', '\n\n', BLOCK.sub(replace, text))
