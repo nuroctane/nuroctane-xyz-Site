@@ -6,7 +6,7 @@
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (54)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (94)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (31)
-- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (97)
+- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (98)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (78)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (45)
@@ -1623,6 +1623,9 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > 
 > She behaved unpleasantly toward a man who had no obligation to tolerate her, so he removed her.
 > — @SovereignIM
+
+> Most men don’t understand female relational aggression. It is subtle yet vicious. There is always plausible deniability. The aggressor in a mean girl dynamic will always play the victim and deny any wrongdoing. She will trash another woman behind her back, make up lies, actively work to turn people against her and destroy her social reputation, all while maintaining the facade of being the nice good girl. It’s a very subtle and insidious form of DARVO: deny, attack, reverse victim and offender. Every woman I know dealt with this growing up. Some women never grow out of it and operate this way into adulthood. Seeing even a hint of it in another woman is enough for me to avoid them like the plague.
+> — @digitlartifacts
 
 ## Shadow, Discernment & Protection
 
