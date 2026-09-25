@@ -4,8 +4,8 @@
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (57)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (77)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (54)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (94)
-- [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (30)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (95)
+- [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (31)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (95)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (60)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (100)
@@ -1298,6 +1298,10 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > Your daily goal should be “how relaxed can I be while doing everything that needs to be done?”
 > — @noahryanco
 
+> I'm the luckiest man alive. "Will it work?". I'm optimistic. Not even cautiously optimistic. Why the caution?? I've never been unlucky once. For me luck is a given. I am recklessly optimistic
+> — @yacinemtb
+
+
 
 
 
@@ -1427,6 +1431,10 @@ _Calling, craft, art, play, service, voice, vision, and making what only you can
 
 > kubrick has this quote about how it’s not great to try to directly teach or transfer an idea to anyone. he says something like, you need to give people an experience where they can arrive at the truth for themselves. something about doing that anchors the experience from a conceptual one to an embodied one. I get that it’s a sneaky way to teach but it’s the only real way.
 > — @hahacomputer
+
+> nothing shuts up your inner critic faster than being creative badly on purpose. when you get ideas out that are messy, stupid, or wrong, the perfectionist monster that lives in your prefrontal cortex and sabotages your flow state gets small. then you can play
+> — @eroticacid
+
 
 
 ## Love, Relationships & Boundaries
