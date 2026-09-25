@@ -6,7 +6,7 @@
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (54)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (94)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (31)
-- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (95)
+- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (97)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (78)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (45)
@@ -1604,6 +1604,24 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > — @Illusionist_126
 
 > When a woman truly loves you, she desperately wants to become a better woman for you, but when she doesn't love you, all she will do is incessantly demand you improve. This is not to say you should not try to improve, only that a woman with a pure heart sees her own shortcomings long before she sees yours.
+> — @SovereignIM
+
+> Just because you can adapt to a situation or circumstance doesn’t mean you should.
+> — @Maryamhasnaa
+
+> Combative women want men they consider unusually masculine, psychologically deep and intellectually penetrating, but those are precisely the kinds of men least likely to tolerate contempt. So when she feels insecure and tries to regain a sense of internal power by reflexively degrading the man, she disproportionately selects herself out of access to precisely the type of man she claims to value.
+> 
+> This is her structural trap.
+> 
+> She appears to think her contempt can function as a kind of leash: I will lower him, withdraw admiration and criticise him, and in doing so, force him to engage with me.
+> 
+> But with the type of man she wants, it actually has the complete opposite effect. She seemingly fails to understand a very basic principle: that disrespect will not widen the aperture and create more access through negative attachment - but will lead to the complete collapse of whatever limited access she had otherwise up until that point been permitted. Antagonism is momentarily cathartic for her in so much as it allows her to vent her frustrations and trauma dump - but more crucially, such indulgence is spiritually ugly and unseductive, and thus pertinently antithetical to her intended aim of winning him.
+> 
+> She is not a conqueror of man, because she does not "know her enemy", meaning she is self-absorbed to the point she seems to have no theory of mind as to the nature of man's psyche and his underlying dignity, and thereby like a bull in a china shop, presumes she can just inelegantly trample all over him, repeatedly humiliating herself by imposing herself unpleasantly, under the idiotic belief this will somehow get her what she wants. For the supposedly emotionally intelligent sex, this is profoundly retarded - but it goes to show that even in otherwise at least moderately clever women, ego can prove such a blind spot it renders them functionally moronic.
+> 
+> And because she apparently does not understand that disrespecting the man she wants is why he keeps cutting her off every time she manages to force access to him, she keeps interpreting his resulting exclusion as "another move in the dance" - further evidence that something psychologically profound and meaningful is happening between them, rather than recognising the much simpler but less flattering and more self-indicting causal chain:
+> 
+> She behaved unpleasantly toward a man who had no obligation to tolerate her, so he removed her.
 > — @SovereignIM
 
 ## Shadow, Discernment & Protection
