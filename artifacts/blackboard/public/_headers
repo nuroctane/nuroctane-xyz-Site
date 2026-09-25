@@ -46,11 +46,6 @@
 /assets/*.mp3
   Cache-Control: public, max-age=2592000
 
-# Cesium ships its own versioned bundle (~14 MB of js/wasm/css) under this
-# prefix. Separate from /assets/*, so no rule above can also match it.
-/cesium/*
-  Cache-Control: public, max-age=2592000
-
 # Prebuilt nested SPA shipped verbatim as static assets.
 /observatory-runtime/*
   Cache-Control: public, max-age=2592000

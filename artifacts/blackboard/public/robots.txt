@@ -1,3 +1,5 @@
 User-agent: *
 Allow: /
 Disallow: /resume
+
+Sitemap: https://www.nuroctane.xyz/sitemap.xml

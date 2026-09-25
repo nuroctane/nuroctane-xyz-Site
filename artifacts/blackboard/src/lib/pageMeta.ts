@@ -39,7 +39,7 @@ const PAGES: Record<string, PageMeta> = {
   quotes: {
     title: "Quotes — NUROCTANE",
     description:
-      "A curated vault of thoughts, lines, and ideas that shape the work — faith, discipline, shadow, and the digital sea.",
+      "A curated vault of thoughts, lines, and ideas that shape the work — faith, discipline, shadow, and meaning.",
     badge: "QUOTES",
     path: "/quotes",
     favicon: "/assets/nodes/nuroctane-animated-avatar.gif",
@@ -47,7 +47,7 @@ const PAGES: Record<string, PageMeta> = {
   books: {
     title: "Books — NUROCTANE",
     description:
-      "Reading shelves, notes, and community recommendations — a living library inside the digital sea.",
+      "Reading shelves, notes, and community recommendations — a living library.",
     badge: "BOOKS",
     path: "/books",
     favicon: "/assets/nodes/books-logo.png?v=115",
@@ -101,7 +101,7 @@ const PAGES: Record<string, PageMeta> = {
   blog: {
     title: "Writings — NUROCTANE",
     description:
-      "Passages from the digital sea — sovereignty, the veil, the machine, and the attractor that pulls from the future.",
+      "Passages on sovereignty, the veil, the machine, and the attractor that pulls from the future.",
     badge: "WRITINGS",
     path: "/blog",
     favicon: "/assets/nodes/blog-logo.png?v=115",

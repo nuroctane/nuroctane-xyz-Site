@@ -28,7 +28,7 @@ function Fallback() {
 }
 
 function BlackboardFallback() {
-  return <div className="bb-loading" role="status" aria-label="Loading Blackboard"><span className="bb-loading-mark"><img src="/assets/nodes/site-logo.png" alt="" /></span><span className="bb-loading-line" /></div>;
+  return <div className="bb-loading" role="status" aria-label="Loading Blackboard"><span className="bb-loading-mark"><img src="/assets/nodes/site-logo-avatar.webp" alt="" /></span><span className="bb-loading-line" /></div>;
 }
 
 /**
@@ -67,7 +67,11 @@ function Root() {
   const { path } = useMemo(() => resolveAnalytics(location), [location]);
   useRouteMeta(path);
 
-  const top = path === '/' ? '' : path.slice(1).split('/')[0];
+  // Route from the real URL. The analytics path folds /sea, /home and
+  // /identity into '/' so they group together in PostHog; routing from it made
+  // the /sea branch below unreachable and sent that deep link to the Blackboard.
+  const segment = location.replace(/^\/+/, '').split(/[/?#]/)[0].toLowerCase();
+  const top = segment === 'home' || segment === 'identity' ? '' : segment;
 
   const fallback = SITE_MODE === 'blackboard' && top !== 'sea' ? <BlackboardFallback /> : <Fallback />;
   if (top === 'quotes') return <Suspense fallback={fallback}>{SITE_MODE === 'blackboard' ? <BlackboardQuotesPage /> : <QuotesPage />}</Suspense>;
@@ -87,6 +91,21 @@ function Root() {
   if (top === 'sea' && SITE_MODE === 'blackboard') return <Suspense fallback={<Fallback />}><App /></Suspense>;
   return <Suspense fallback={fallback}><App /></Suspense>;
 }
+
+// A deploy replaces every hashed chunk, and the quotes sync can deploy every
+// 15 minutes. A tab opened before that deploy then asks for a chunk that no
+// longer exists, the SPA fallback answers with HTML, and the lazy page never
+// mounts. Reload once to pick up the new index.html; the timestamp stops a
+// reload loop when the failure is a real network outage instead.
+window.addEventListener('vite:preloadError', event => {
+  const KEY = 'bb:chunk-reload-at';
+  let last = 0;
+  try { last = Number(sessionStorage.getItem(KEY)) || 0; } catch { /* storage blocked */ }
+  if (Date.now() - last < 10_000) return;
+  try { sessionStorage.setItem(KEY, String(Date.now())); } catch { /* storage blocked */ }
+  event.preventDefault();
+  window.location.reload();
+});
 
 createRoot(document.getElementById('root')!).render(
   <Router>

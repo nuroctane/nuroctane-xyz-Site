@@ -1,7 +1,7 @@
-import { useRef, useState } from 'react';
+import { useRef, useState, type ReactNode } from 'react';
 import { BookOpen, FileText, Quote } from 'lucide-react';
 import { Link } from 'wouter';
-import { LOGO_MAP } from '../data/navLogos';
+import { LOGO_MAP, dockIcon } from '../data/navLogos';
 import { BlackboardQuickNav } from './BlackboardQuickNav';
 import { BlackboardPlayer } from './BlackboardPlayer';
 import { BlackboardWallpaper } from './BlackboardWallpaper';
@@ -18,6 +18,14 @@ function WalletAddress({ address, chain, onCopy }: { address: string; chain: str
   return <button className="bb-wallet-address" type="button" onClick={copy} aria-label={`Copy ${chain} address`}>
     {[...address].map((char, index) => <span key={`${chain}-${index}`}>{char}</span>)}
   </button>;
+}
+
+// Each tab measures the wallpaper behind itself. One measurement for the whole
+// row averaged a split plate (black left, white right) into a single polarity,
+// leaving whichever tab sat on the other pole dark-on-dark.
+function LibraryTab({ href, icon, label }: { href: string; icon: ReactNode; label: string }) {
+  const [ref, ink] = useAdaptiveInk<HTMLAnchorElement>();
+  return <Link href={href} ref={ref} data-ink={ink}>{icon}<span>{label}</span></Link>;
 }
 
 async function copyAddress(address: string): Promise<boolean> {
@@ -41,13 +49,12 @@ export default function Blackboard() {
   // dock and toast sit on dark glass and stay pinned to the light pole.
   const [rootRef, rootInk] = useAdaptiveInk<HTMLElement>();
   const [identityRef, identityInk] = useAdaptiveInk<HTMLDivElement>();
-  const [tabsRef, tabsInk] = useAdaptiveInk<HTMLDivElement>();
   const [walletsRef, walletsInk] = useAdaptiveInk<HTMLDivElement>();
 
   const handleCopy = (address: string, chain: string) => {
     void copyAddress(address).then(success => {
-      if (!success) return;
-      setCopied(chain);
+      // Silence on failure read as a dead button, so say so.
+      setCopied(success ? `${chain} address copied` : `Couldn't copy the ${chain} address`);
       if (copyTimer.current) window.clearTimeout(copyTimer.current);
       copyTimer.current = window.setTimeout(() => setCopied(null), 1400);
     });
@@ -60,7 +67,7 @@ export default function Blackboard() {
       <div className="bb-header-row">
         <div className="bb-identity" data-ink={identityInk} ref={identityRef}>
           <Link href="/" className="bb-avatar" aria-label="Nuroctane home">
-            <img src="/assets/nodes/site-logo.png" alt="" width="56" height="64" fetchPriority="high" />
+            <img src="/assets/nodes/site-logo-avatar.webp" alt="" width="56" height="64" fetchPriority="high" />
           </Link>
           <a className="bb-cal" href="https://cal.com/nuroctane/meeting-nuroctane" target="_blank" rel="noreferrer" aria-label="Book a meeting on Cal.com">
             <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
@@ -71,17 +78,17 @@ export default function Blackboard() {
             </svg>
           </a>
           <a className="bb-github" href="https://github.com/nuroctane" target="_blank" rel="noreferrer" aria-label="Nuroctane on GitHub">
-            <img src={LOGO_MAP.github} alt="" width="20" height="20" />
+            <img src={dockIcon(LOGO_MAP.github)} alt="" width="20" height="20" />
           </a>
           <div className="bb-wallets" data-ink={walletsInk} ref={walletsRef} aria-label="Cryptocurrency addresses">
             <div className="bb-wallet"><WalletAddress address={BTC_ADDR} chain="Bitcoin" onCopy={handleCopy} /></div>
             <div className="bb-wallet"><WalletAddress address={ETH_ADDR} chain="Ethereum" onCopy={handleCopy} /></div>
           </div>
         </div>
-        <div className="bb-top-tabs" data-ink={tabsInk} ref={tabsRef} aria-label="Library links">
-          <Link href="/books"><BookOpen aria-hidden="true" /><span>Books</span></Link>
-          <Link href="/quotes"><Quote aria-hidden="true" /><span>Quotes</span></Link>
-          <Link href="/blog"><FileText aria-hidden="true" /><span>Blog</span></Link>
+        <div className="bb-top-tabs" aria-label="Library links">
+          <LibraryTab href="/books" icon={<BookOpen aria-hidden="true" />} label="Books" />
+          <LibraryTab href="/quotes" icon={<Quote aria-hidden="true" />} label="Quotes" />
+          <LibraryTab href="/blog" icon={<FileText aria-hidden="true" />} label="Blog" />
         </div>
       </div>
     </header>
@@ -93,7 +100,7 @@ export default function Blackboard() {
       <BlackboardPlayer />
       <BlackboardWallpaperToggle />
     </div>
-    <div className="bb-copy-toast" data-ink="light" role="status" aria-live="polite" data-visible={Boolean(copied)}>{copied ? `${copied} address copied` : ''}</div>
+    <div className="bb-copy-toast" data-ink="light" role="status" aria-live="polite" data-visible={Boolean(copied)}>{copied ?? ''}</div>
 
     <BlackboardQuickNav />
   </main>;

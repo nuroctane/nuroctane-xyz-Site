@@ -1,7 +1,49 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
-import cesium from "vite-plugin-cesium";
+
+// Vendor chunks are matched by package directory, not by the object form of
+// manualChunks: the object form also pulls shared helpers into whichever chunk
+// claims a dependent first. It put react-dom/client's createRoot inside
+// vendor-three and Vite's preload helper inside vendor-astro, so every page —
+// the Blackboard home included — preloaded 1.2 MB of Three.js and astronomy.
+const VENDOR_CHUNKS: Record<string, string[]> = {
+  "vendor-three": ["three", "@react-three/fiber", "@react-three/drei", "@react-three/postprocessing", "postprocessing"],
+  "vendor-react": ["react", "react-dom", "scheduler", "wouter", "zod"],
+  "vendor-ui": [
+    "@radix-ui/react-dialog",
+    "@radix-ui/react-dropdown-menu",
+    "@radix-ui/react-popover",
+    "@radix-ui/react-select",
+    "@radix-ui/react-tabs",
+    "@radix-ui/react-tooltip",
+    "framer-motion",
+    "lucide-react",
+    "clsx",
+    "tailwind-merge",
+    "class-variance-authority",
+  ],
+  "vendor-charts": ["recharts", "embla-carousel-react", "react-resizable-panels"],
+  "vendor-astro": ["astronomy-engine", "swisseph-wasm"],
+};
+
+function vendorChunk(id: string): string | undefined {
+  const normalized = id.replace(/\\/g, "/");
+  // Virtual helpers every page needs. Left unassigned, Rollup folds them into
+  // the first manual chunk that depends on them (swisseph-wasm's dynamic import
+  // put the preload helper in vendor-astro), dragging that chunk onto every page.
+  if (normalized.includes("vite/preload-helper") || normalized.includes("commonjsHelpers")) {
+    return "vendor-react";
+  }
+  const at = normalized.lastIndexOf("/node_modules/");
+  if (at === -1) return undefined;
+  const rest = normalized.slice(at + "/node_modules/".length).split("/");
+  const name = rest[0].startsWith("@") ? `${rest[0]}/${rest[1]}` : rest[0];
+  for (const [chunk, packages] of Object.entries(VENDOR_CHUNKS)) {
+    if (packages.includes(name)) return chunk;
+  }
+  return undefined;
+}
 
 export default defineConfig(async ({ command }) => {
   let server: import("vite").ServerOptions | undefined;
@@ -44,9 +86,12 @@ export default defineConfig(async ({ command }) => {
 
   return {
     base: basePath,
-    plugins: [react(), (cesium as any)()],
+    // No vite-plugin-cesium: it injected a render-blocking 5.7 MB Cesium.js into
+    // every page's <head>, and no mounted Observatory mode uses Cesium (the
+    // globe is UnifiedWorld on Three.js; the Cesium modes are unimported).
+    plugins: [react()],
     optimizeDeps: {
-      exclude: ["swisseph-wasm", "cesium"],
+      exclude: ["swisseph-wasm"],
     },
     assetsInclude: ["**/*.wasm"],
     css: {
@@ -65,36 +110,11 @@ export default defineConfig(async ({ command }) => {
     },
     root: path.resolve(import.meta.dirname),
     build: {
-      // Keep outDir relative so vite-plugin-cesium's path.join(root,outDir) works on Windows
       outDir: "dist/public",
       emptyOutDir: true,
       rollupOptions: {
         output: {
-          manualChunks: {
-            "vendor-three": [
-              "three",
-              "@react-three/fiber",
-              "@react-three/drei",
-              "@react-three/postprocessing",
-              "postprocessing",
-            ],
-            "vendor-react": ["react", "react-dom", "wouter", "zod"],
-            "vendor-ui": [
-              "@radix-ui/react-dialog",
-              "@radix-ui/react-dropdown-menu",
-              "@radix-ui/react-popover",
-              "@radix-ui/react-select",
-              "@radix-ui/react-tabs",
-              "@radix-ui/react-tooltip",
-              "framer-motion",
-              "lucide-react",
-              "clsx",
-              "tailwind-merge",
-              "class-variance-authority",
-            ],
-            "vendor-charts": ["recharts", "embla-carousel-react", "react-resizable-panels"],
-            "vendor-astro": ["astronomy-engine", "swisseph-wasm"],
-          },
+          manualChunks: vendorChunk,
         },
       },
     },

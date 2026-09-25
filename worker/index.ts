@@ -187,6 +187,13 @@ export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
 
+    // Plain http:// on the production hosts was served as-is (no zone-level
+    // HTTPS redirect). Local `wrangler dev` stays on http.
+    if (url.protocol === "http:" && /(^|\.)nuroctane\.xyz$/.test(url.hostname)) {
+      url.protocol = "https:";
+      return Response.redirect(url.toString(), 301);
+    }
+
     if (url.pathname.startsWith("/assets/nodes/") && url.pathname.endsWith(".mp3")) {
       return serveAudioAsset(request, env);
     }

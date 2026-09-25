@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ArrowDownRight, ArrowUpRight, ChevronUp, Grid2X2, Network } from 'lucide-react';
 import { Link } from 'wouter';
 import { directoryEntries } from '../data/directory';
-import { LOGO_MAP } from '../data/navLogos';
+import { LOGO_MAP, dockIcon } from '../data/navLogos';
 import malLogo from '../assets/secondary-nodes/anilist-mal-logo-sidecard.png';
 import './blackboard.css';
 
@@ -12,7 +12,7 @@ const destinations: Destination[] = directoryEntries.map(entry => ({
   id: entry.id,
   label: entry.navLabel ?? entry.label,
   url: entry.url.replace(/^https?:\/\/(www\.)?nuroctane\.xyz(?=\/|$)/, '') || '/',
-  logo: LOGO_MAP[entry.id] || entry.avatar || entry.logo,
+  logo: dockIcon(LOGO_MAP[entry.id] || entry.avatar || entry.logo),
 }));
 
 const find = (id: string) => destinations.find(entry => entry.id === id)!;
@@ -23,7 +23,7 @@ const soonProjects: Destination[] = [
 ];
 const orderedProjects = ['nur-cli', 'hoodstock', 'observatory', 'modkeys', 'miyamaker', 'sis'].map(find).reverse();
 const groups = {
-  projects: [find('webutils'), ...soonProjects, { id: 'ios-downloader', label: 'iOS Shortcut: Downloader', url: 'https://routinehub.co/shortcut/26384/', logo: '/assets/nodes/routinehub-logo.png' }, ...orderedProjects],
+  projects: [find('webutils'), ...soonProjects, { id: 'ios-downloader', label: 'iOS Shortcut: Downloader', url: 'https://routinehub.co/shortcut/26384/', logo: dockIcon('/assets/nodes/routinehub-logo.png') }, ...orderedProjects],
   socials: ['instagram', 'atxtunerz', 'x', 'discord', 'substack', 'remilia', 'glasp', 'steam', 'anilist', 'goodreads', 'letterboxd', 'reddit', 'kick', 'twitch', 'youtube', 'soundcloud']
     .map(find)
     .map(entry => entry.id === 'anilist' ? { ...entry, secondary: { id: 'mal', label: 'MAL', logo: malLogo, url: 'https://myanimelist.net/profile/nuroctane' } } : entry),
