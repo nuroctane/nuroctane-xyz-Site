@@ -1,5 +1,6 @@
 import { BookRecommendationSearch } from '../components/BookRecommendationSearch';
 import { parseQuotes } from '../lib/parseQuotes';
+import { renderEmphasis } from '../lib/quoteEmphasis';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { BookOpen, FileText, Quote, Search } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
@@ -75,7 +76,9 @@ function renderText(t: string) {
     }
   }
   return parts.map((p, k) =>
-    p.t === 'hl' ? <mark key={k} className="bb-quote-highlight">{p.v}</mark> : <span key={k}>{p.v}</span>
+    p.t === 'hl'
+      ? <mark key={k} className="bb-quote-highlight">{renderEmphasis(p.v)}</mark>
+      : <span key={k}>{renderEmphasis(p.v)}</span>
   );
 }
 

@@ -4,13 +4,13 @@
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (57)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (77)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (54)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (95)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (94)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (31)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (95)
-- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (60)
-- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (100)
+- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
+- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (78)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (45)
-- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (66)
+- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (65)
 
 ## Faith, God & Surrender
 
@@ -108,9 +108,9 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > — Imam al-Shafiʿi
 
 > Knowing in the troughs of your life that God has unfathomable good in store for you, will carry you steady through every possible storm - even those that persist for months. The reassurance He provides to those He calls cannot be disturbed. There's no harm that can be done unto you which He cannot heal in a second.
-> 
+>
 > Often what happens though, is that He allows you first to stumble, venture off the path, and flirt with danger so that at your lowest His protection becomes clearer- since even then, you are held and guided well beyond your comprehension, and merely the recognition of it marks the inflection point of mulling blindly to moving forward with courage
-> 
+>
 > A single momentary encounter with God - no matter how slight or small- will allow for a lifetime of faith and zeal. Once you *know* He is there, listens, and wills your good, all changes. Life begins. Heaven beckons. You transform
 > — @AugustusDelano
 
@@ -126,19 +126,19 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > — @sullen11111
 
 > Disrespecting yourself is disrespecting God.
-> 
+>
 > Not believing in yourself is not believing in God.
-> 
-> You and him are one. 
-> 
+>
+> You and him are one.
+>
 > This does not mean you are God, in case you have a double digit IQ.
-> 
+>
 > Stop externalizing everything and asking an old man in the sky from a state of desperation.
-> 
-> You only get what you are. State precedes truth. 
-> 
-> The way you age is a reflection of your inner state, physiognomy is real because of the mind-body connection. 
-> 
+>
+> You only get what you are. State precedes truth.
+>
+> The way you age is a reflection of your inner state, physiognomy is real because of the mind-body connection.
+>
 > You must look good for God.
 > — @selfmaxxer
 
@@ -146,7 +146,7 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > — @lichthauch
 
 > It is said that when the dark magician finally corrupts his very soul and peers into the deepest depths of the abyss, he finds there not some hidden Necronomicon of power, nor some twisted, malformed manuscript - but something far more terrifying.
-> 
+>
 > He finds, among its absolute lifelessness and horror, at the boiling heart of hell itself - the Book of Love.
 > — @JackOfFaces
 
@@ -160,23 +160,6 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > Eternal over ephemeral
 > Trust over everything
 > — @augustusdelano
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ## Reality, Consciousness & Perception
 
@@ -257,14 +240,9 @@ _Consciousness, time, illusion, energy, synchronicity, metaphysics, and the arch
 > — @abdimoalim_
 
 > You're not getting this yet. The nature of reality is inverted. You think the world is the cause and you're the effect. It's not. You're the cause and reality is the effect.
-> 
+>
 > It's all a projection happening from within you. Everything you encounter: the people, circumstances, challenges and joys. It's a reflection of the data you're holding in your consciousness. It's all a mirror. And you have to learn how to interpret your reality through your emotional reactions.
 > — @IkaraRose
-
-
-
-
-
 
 ## Manifestation, Desire & Abundance
 
@@ -314,39 +292,18 @@ _Imagination, intention, frequency, prosperity, timelines, desire, and allowing 
 > The divine law of specificity.
 > Get specific with the universe about what you want to manifest.
 
-> The key to bringing something into your experience that you
-> desire is to achieve vibrational harmony with what you desire. And
-> the easiest way for you to achieve vibrational harmony with it is
-> to imagine having it, pretend that it is already in your experience,
-> flow your thoughts toward the enjoyment of the experience, and
-> as you practice those thoughts and begin to consistently offer that
-> vibration, you will then be in the place of allowing that into your
-> experience. Now, by paying attention to the way you feel, you can easily
-> know if you are giving your attention to your desire or if you are giving it to the absence of your desire. When your thoughts are a vibrational match to your desire, you feel good; your emotional range would be from contentment to expectation to eagerness to joy. But if you are giving your attention to the lack, or absence, of your desire your emotions would range from feelings of pessimism to worry to discouragement to anger to insecurity to depression.
-> If there is something you desire that you currently do not
-> have, you need only put your attention upon it, and, by the Law
-> of Attraction, it will come to you, for as you think about this thing
-> or experience that you desire, you offer a vibration, and then, by
-> Law, that very thing or experience must come to you.
-> However, if there is something that you desire that you currently
-> do not have, and you put your attention upon your current state
-> of not having it, then Law of Attraction will continue to match that
-> not having it vibration, so you will continue to not have that which
-> you desire. It is Law.
+> The key to bringing something into your experience that you desire is to achieve vibrational harmony with what you desire. And the easiest way for you to achieve vibrational harmony with it is to imagine having it, pretend that it is already in your experience, flow your thoughts toward the enjoyment of the experience, and as you practice those thoughts and begin to consistently offer that vibration, you will then be in the place of allowing that into your experience. Now, by paying attention to the way you feel, you can easily know if you are giving your attention to your desire or if you are giving it to the absence of your desire. When your thoughts are a vibrational match to your desire, you feel good; your emotional range would be from contentment to expectation to eagerness to joy. But if you are giving your attention to the lack, or absence, of your desire your emotions would range from feelings of pessimism to worry to discouragement to anger to insecurity to depression.
+>
+> If there is something you desire that you currently do not have, you need only put your attention upon it, and, by the Law of Attraction, it will come to you, for as you think about this thing or experience that you desire, you offer a vibration, and then, by Law, that very thing or experience must come to you.
+>
+> However, if there is something that you desire that you currently do not have, and you put your attention upon your current state of not having it, then Law of Attraction will continue to match that not having it vibration, so you will continue to not have that which you desire. It is Law.
 > — Abraham (Esther Hicks), *Ask and It Is Given*
 
-> When you are thinking about something that you have been
-> wanting for a very long time, and, in this moment, you are noticing
-> that it has not yet happened, a strong negative emotion would be
-> present within you, for you are thinking about something that has
-> very strong energy that you are not in vibrational alignment with.
-> However, if you are thinking about something that you have been
-> wanting for a long time and you are imagining that it is happening,
-> then your emotion would be one of anticipation or eagerness.
-> And so, you can tell by the way you feel whether, in this
-> moment, you are a match to your desire or a match to its absence;
-> whether you are allowing or resisting your desire, or whether you
-> are, in this moment, helping or hindering.
+> When you are thinking about something that you have been wanting for a very long time, and, in this moment, you are noticing that it has not yet happened, a strong negative emotion would be present within you, for you are thinking about something that has very strong energy that you are not in vibrational alignment with.
+>
+> However, if you are thinking about something that you have been wanting for a long time and you are imagining that it is happening, then your emotion would be one of anticipation or eagerness.
+>
+> And so, you can tell by the way you feel whether, in this moment, you are a match to your desire or a match to its absence; whether you are allowing or resisting your desire, or whether you are, in this moment, helping or hindering.
 > — Abraham (Esther Hicks), *Ask and It Is Given*
 
 > One of the greatest things that can change your vibration is the sound of your own voice.
@@ -393,12 +350,7 @@ _Imagination, intention, frequency, prosperity, timelines, desire, and allowing 
 
 > Expect luck and miracles to happen in your life. This is your natural state of mind. Things will work out. Rare opportunities will present themselves. You expect it, believe it, and see it. It is the norm.
 
-> See the things that you want as already yours.
-> Know that they will come to you at need. Then
-> let them come. Don't fret and worry about them.
-> Don't think about your lack of them. Think of
-> them as yours, as belonging to you, as already in
-> your possession.
+> See the things that you want as already yours. Know that they will come to you at need. Then let them come. Don't fret and worry about them. Don't think about your lack of them. Think of them as yours, as belonging to you, as already in your possession.
 > — Robert Collier
 
 > There is often an echo or a lag as I like to call it between when you have done the work and your physical reality catches up. This is why I say don’t give up right before the miracle happens.
@@ -417,8 +369,8 @@ _Imagination, intention, frequency, prosperity, timelines, desire, and allowing 
 
 > Internalize all energy that comes your way. love/hate positive/negative. all of it. save it for later and redirect it toward what you are choosing to manifest. this is much more beneficial to your bigger picture than spending that energy on emotional reactions.
 
-> The quickest way to “get your spark back” is to literally light yourself on fire. You’ve got to burn baby. You’re depressed bc you’re not being insane enough. Double. Down. The world does not reward half ass. All in or out. You’re thinking too small. You’ve accepted your current reality as the only reality. Bullshit. You need to write a list of the most insane asks you could ever dream of. “I am a NYT best-selling author. I am the founder of a Fortune 500 company. I paint for a living and I make a damn good living.” Ask and you shall receive. Embody and you become. Flip the fucking script. Your current ceiling is now the floor. Level up. 
-> 
+> The quickest way to “get your spark back” is to literally light yourself on fire. You’ve got to burn baby. You’re depressed bc you’re not being insane enough. Double. Down. The world does not reward half ass. All in or out. You’re thinking too small. You’ve accepted your current reality as the only reality. Bullshit. You need to write a list of the most insane asks you could ever dream of. “I am a NYT best-selling author. I am the founder of a Fortune 500 company. I paint for a living and I make a damn good living.” Ask and you shall receive. Embody and you become. Flip the fucking script. Your current ceiling is now the floor. Level up.
+>
 > You need to burn.
 > — @rachcorrine
 
@@ -473,7 +425,6 @@ _Imagination, intention, frequency, prosperity, timelines, desire, and allowing 
 > "Glow-ups" are often just individuals who have been out of alignment returning to themselves as a new incarnation through deep self-work, reflected externally. It is insanely hot because emerging from an underworld pivot usually encompasses a peak period of embodied holistic alignment, and this is devastatingly magnetic, perfect for attracting in that which resonates, before encountering future timelines requiring further iterations.
 > — @buridansridge
 
-
 ## Self, Identity & Awakening
 
 _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming real to yourself._
@@ -482,11 +433,7 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 
 > The blessing of having others project their judgments, beliefs and perspectives onto you is that you will meet many examples of who you are not. Which is often how you will come to realize who you really are.
 
-> Multiple versions of ourselves
-> can co-exist. but until we're at
-> home with ourselves, we struggle
-> to integrate them into a single,
-> functional voice.
+> Multiple versions of ourselves can co-exist. but until we're at home with ourselves, we struggle to integrate them into a single, functional voice.
 
 > People who are most magnetically attractive are those whose energy is not split by trying to satisfy the opinion of others.
 
@@ -496,13 +443,7 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 
 > The dream for me for so long was to live outside of the matrix. To be consciously able to utilize the systems that are in place to support my vision, while never being enslaved or oppressed by them.
 
-> Spiritual-care also looks like:
-> Keeping valuable spiritual
-> principles, ethics, and morals,
-> in-place on your journey.
-> And, not being programmed
-> by an ‘anything goes’ culture
-> and consciousness.
+> Spiritual-care also looks like: keeping valuable spiritual principles, ethics, and morals, in-place on your journey. And, not being programmed by an ‘anything goes’ culture and consciousness.
 
 > Don't be afraid to conquer the stars cowboy. You're the only soul and desire there is.
 
@@ -525,7 +466,7 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 > There is a freedom that comes from being wholly yourself that awakens the truth that you are bound to no one.
 
 > Ask yourself today,
-> Is there anyone I have not been being honest with(including myself).
+> Is there anyone I have not been being honest with (including myself)?
 > What are the ways that I have chosen to be unconscious?
 > It requires so much energy to stay asleep in the illusion. You can free up an immense amount of energy by releasing this pattern.
 
@@ -585,10 +526,7 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 
 > Your awakening is also a rude awakening for those who love your mask.
 
-> Re-asserting yourself,
-> spiritually and energetically,
-> is how you take your power
-> back.
+> Re-asserting yourself, spiritually and energetically, is how you take your power back.
 
 > Surrender is letting go of who you think you are supposed to be so that you can become who you really are, a being of infinite possibility.
 > — Brené Brown, *The Gifts of Imperfection*
@@ -631,7 +569,7 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 > Rather than comparing where you are on your journey to others, trust that everyone is exactly where they need to be for their soul's lessons.
 
 > Why would we agree to have our memories wiped before incarnating, you might ask.
-> .because we wanted to experience the joy that comes from waking up and remembering who we are.
+> Because we wanted to experience the joy that comes from waking up and remembering who we are.
 > Message from the universe:
 > You can't be told all of the answers, you have to remember them.
 > Recognizing truth when you hear it is really a remembering of ancient wisdom that was silently resting in your subconscious.
@@ -644,17 +582,7 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 
 > Letting go of things to keep me in obligation mode so that I can create more space to experience my own freedom.
 
-> HAVE THE COURAGE TO BE
->  EXACTLY WHO YOU ARE
-> WITHOUT APOLOGY. ADMIT
-> YOUR MISTAKES WITHOUT
->  BEATING YOURSELF UP.
->  RELEASE ALL SHAME!
-> RELEASE ALL GUILT! YOU
-> CANNOT LIVE IF YOU ARE
-> HIDING BEHIND WHAT WAS.
-> FOCUS ON WHAT IS, RIGHT
-> NOW, AND THAT IS YOU!
+> Have the courage to be exactly who you are without apology. Admit your mistakes without beating yourself up. Release all shame! Release all guilt! You cannot live if you are hiding behind what was. Focus on what is, right now, and that is YOU!
 
 > What if your belief in X (God/tarot/astrology/crystals etc)
 > is what gives it power?
@@ -722,16 +650,16 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 > — @not_ellington
 
 > Good shadow work:
-> 
+>
 > Allow yourself to feel completely and utterly ordinary. Not special, nor ascended. Not exceptionally intelligent, attractive, talented, conscious, or good at anything.
-> 
+>
 > If you can sit with that possibility without trying to prove otherwise, your deepest insecurities will come up loudly - then you can surrender the parts of you that need to feel better than everyone else to be worthy of love.
 > — @theralkia
 
 > i fucking love having nothing to prove
-> 
+>
 > i literally don't have to spend my day trying to be someone else anymore. i can go out and do whatever the fuck i actually want to do. i don't have to explain myself, ask permission, or wait for everyone else to approve. i got comfortable being disliked. i got comfortable with silence. i just go where i want, talk to who i want, and leave when i don't want to be there anymore.
-> 
+>
 > life is fucking amazing when you stop living from the outside in.
 > — @PathOfMen_
 
@@ -739,13 +667,9 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 > — @melanchol1ck
 
 > I was a rebel before I was a father - so what makes you think I don’t know you when I literally was you? Like you, the world weighed on my shoulders when I was far too young and small to possess the capacity to take care of myself, and so like you, I was self-destructive, contemptuous, distrusting and rebellious. I too came to distrust authority, because none of what I saw was righteous, fair, or just, and so like you I decided to break all rules, forge my own path, and learn the hard way by making my own mistakes - paying the blood and soul price along the way.
-> 
+>
 > What do you know of me then that I do not know of you, or would you pretend we are so dissimilar? Do you think my authority is like theirs when I was (and in many ways, still am) you? No. I do not desire it, and never pursued it - I just fucking have it by simple merit of being the man that I am as an emergent property of my being - it is another burden that is an honour, and so I employ it in the way I think others should have but failed to, because I know better than them - because I do not emulate my inferiors - because I care more for beauty and goodness than I do trinkets or a felt sense of superiority. That’s it. That’s all it is. It is really that simple.
 > — @SovereignIM
-
-
-
-
 
 ## Mind, Belief & Inner Work
 
@@ -771,8 +695,7 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 > Sometimes you fantasise about how much better you're going to be in the future
 > to justify current poor behaviour.
 
-> Once you clear the program you have to remember to begin to also change the narrative. Change the way you tell the story of your life. You may have learned the lesson, even rewritten the program but be keeping it alive by talking about the past with a lot of emotion. The next step is to create opportunities to live in the new energy of the reality you are creating. This part can feel like "imposter
-> syndrome" but there is really no such thing. You have to teach your brain and your body a new pattern and state of being. You can teach your body what a future experience will feel like before it manifests. This is how you create miracles. Trust me it will not be from working harder but rather more intuition, allowing and flow.
+> Once you clear the program you have to remember to begin to also change the narrative. Change the way you tell the story of your life. You may have learned the lesson, even rewritten the program but be keeping it alive by talking about the past with a lot of emotion. The next step is to create opportunities to live in the new energy of the reality you are creating. This part can feel like "imposter syndrome" but there is really no such thing. You have to teach your brain and your body a new pattern and state of being. You can teach your body what a future experience will feel like before it manifests. This is how you create miracles. Trust me it will not be from working harder but rather more intuition, allowing and flow.
 
 > If something is upsetting you or making you afraid, you ask yourself: Is it true? Beyond any reasonable doubt? Can you know beyond any doubt that it is true?
 > — Byron Katie, *Loving What Is*
@@ -800,7 +723,7 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 
 > Are you being motivated by fear or love?
 
-> A wise man said, “Before you speak, let your words pass through three gates. At the first gate, ask yourself, “Is it true?” At the second gate ask, “Is it necessary?” At the third gate ask, “Is it kind?”
+> A wise man said, “Before you speak, let your words pass through three gates. At the first gate, ask yourself, ‘Is it true?’ At the second gate ask, ‘Is it necessary?’ At the third gate ask, ‘Is it kind?’”
 > — Beth Day, *Three Gates* (1835)
 
 > Your performance in any endeavor depends on what you think it depends on.
@@ -810,8 +733,8 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 > Here's a practice.
 > Next time you're making a decision, about anything. Stop for a moment and listen to your thoughts.
 > For me, there are two different voices:
-> -One is soft, calm, gentle, and confident.
-> -The other is pressed, hasty, insecure.
+> - One is soft, calm, gentle, and confident.
+> - The other is pressed, hasty, insecure.
 > Trust the calm voice.
 
 > Let’s work on cultivating genuine awareness rather than pretending we are aware as a new method to point out everyone else’s flaws.
@@ -896,15 +819,15 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 > — Luc de Clapiers, marquis de Vauvenargues
 
 > Some of you clearly didn’t pay attention reading The Great Gatsby in high school…
-> 
+>
 > You can’t recreate the past.
-> 
+>
 > It’s gone forever.
-> 
+>
 > If you desperately miss certain feelings or moments in time;
-> 
+>
 > You’re going to be insane.
-> 
+>
 > Because you’re longing for something that doesn’t exist.
 > — @fastrlife
 
@@ -919,29 +842,22 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 > — @uzairname1
 
 > The reason why logical guys can't pull is because they think their standards of 'ice cold efficiency' are universal, and aren't aware that is 'men's genius' but does not relate to women
-> 
+>
 > A man's brain thinks "let me get to the result asap"
-> 
+>
 > A woman's brain does not work like this. A woman's brain likes the experience of the thing. It's about the vibe, the show, the larp/play, the 'doing it'
-> 
+>
 > Grocery store easy example
-> 
+>
 > guy brain goes "i want to get in, get out" because his goal is 'get the stuff'
-> 
+>
 > woman's brain is not 'get the stuff'. woman's brain is 'experience the store'. She wants to look at things, check stuff out, enjoy the stroll etc
-> 
+>
 > A man's genius is ice-cold efficiency
 > A woman's genius is smelling the roses
-> 
+>
 > The logical guy can make instant strides if he learns to incorporate play/fun. Less logic/function/pragmatism, more randomness,fun,vibe
 > — @retirementkeys
-
-
-
-
-
-
-
 
 ## Action, Discipline & Mastery
 
@@ -1013,7 +929,7 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > The Samurai handbook Hagakure ("In the Shadow of Leaves") states that in order for a decision to be good, it must be made within seven breaths. Only two human types are capable of making decisions like this: the warrior and the religious fanatic.
 > — Yamamoto Tsunetomo, *Hagakure*
 
-> Satan loves it and laughs at you when you - you procrastinate - sleep in - Being a coward -Gossip - booze and get drunk all day - watch porn -simp - skip training - consume goyslop in excess; are you gonna let him win bro?
+> Satan loves it and laughs at you when you procrastinate - sleep in - be a coward - gossip - booze and get drunk all day - watch porn - simp - skip training - consume goyslop in excess; are you gonna let him win bro?
 
 > One thing I know: the universe will provide you with all the tools you need to accomplish the goal, once it knows you are in motion towards the goal. You don’t need all the details worked out, just start with small efforts. your motion will gain momentum & you’ll find all u need
 > sometimes, we’re discouraged bc we don’t have the entire plan laid out. so we don’t even get started. but the magic is in the intention. claim what you want. Believe it is yours. FANTASIZE ABOUT THAT REALITY daily. Live your life as if you are already there & you will arrive.
@@ -1066,12 +982,7 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > It's called positive excuses.
 > Find reasons to start.
 
-> "It's time you bit the bullet and started caring about
-> something with all your heart and energy, but you can't
-> care about it if you're always holding yourself back in
-> case it doesn't work out. Concentrate on what's
-> important Yusuke, then commit to it all the way!"
-> -Genkai (Yu Yu Hakusho.)
+> "It's time you bit the bullet and started caring about something with all your heart and energy, but you can't care about it if you're always holding yourself back in case it doesn't work out. Concentrate on what's important Yusuke, then commit to it all the way!"
 > — Genkai, *Yu Yu Hakusho*
 
 > Habit is far more dependable than inspiration. Make progress by making habits. Don't focus on getting into shape. Focus on becoming the kind of person who never misses a workout.
@@ -1097,7 +1008,7 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > Marginally better is worse than bad and far worse than the best.
 
 > The work of ur entire life, absolutely essential as it is, in and of itself will take u nowhere. It won’t lift u up in some latent fashion.
-> 
+>
 > What it will do, is generate a few good opportunities a year for u, and u’ll have anywhere from a few seconds to few days to seize them.
 > — @MrE_mssg
 
@@ -1125,35 +1036,34 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > — @avantprince_
 
 > advice for men, ages 23-29
-> 
+>
 > this is the stage where life stops responding to motivation and starts responding to structure. intelligence alone is no longer enough. passion without direction turns into frustration, and potential without execution becomes another form of wasted time. excuses begin to expire and responsibility quietly takes their place.
-> 
+>
 > you will rarely feel ready. waiting until you feel ready is how years disappear. most of your growth in this phase will come from acting while uncertain, learning while uncomfortable and moving before you have everything figured out.
-> 
+>
 > the people getting ahead are not necessarily smarter or braver. they are simply willing to move while confused.
-> 
+>
 > money becomes louder at this age. not because money suddenly becomes the meaning of life, but because life becomes expensive. your ideas, opinions and ambitions mean very little if you cannot sustain yourself financially. learn skills that solve real problems, create value and generate income. your ability to make yourself useful will become one of your greatest assets.
-> 
+>
 > your friendships will change. some bros will grow with you, some will grow away from you and some will stop growing altogether. do not interpret every distance as betrayal. sometimes people simply become strangers because their lives are heading in different directions. let people evolve without resentment and do not force old relationships to survive new versions of you.
-> 
+>
 > romantic choices also begin to carry consequences. loneliness can make you tolerate people who cost you peace, focus and years. do not confuse chemistry with compatibility or excitement with love. choose someone who brings enough clarity, stability and peace into your life.
-> 
+>
 > love should complement your direction, not constantly compete with it.
-> 
+>
 > discipline will now matter more than motivation. motivation is emotional and unreliable but discipline is quiet and repetitive. it is what keeps you moving when nobody is watching, nothing feels exciting and the results are still invisible.
-> 
+>
 > comparison will try to consume you. social media will make it look like everyone is ahead, richer, happier and more accomplished. remember that you are comparing your full reality to carefully edited pieces of someone else's. you do not see their debts, advantages, support systems, failures or private struggles. build your life instead of competing with an illusion or pixel.
-> 
+>
 > this is also the age when habits begin to become infrastructure. what you repeatedly do now will become increasingly difficult to change later. the things you neglect do not simply disappear, they compound. so do the things you build. your health, skills, relationships, finances, reputation and discipline are all quietly becoming your future.
-> 
+>
 > ages 23-29 are not supposed to look impressive, they are supposed to be intentional. this is the season to build quietly, make mistakes cheaply, learn aggressively, protect your peace and become useful.
-> 
+>
 > you are not behind just because your life has not taken shape yet.
-> 
+>
 > your 20s are laying the foundation.
 > your 30s will reveal how well you built it.
-> 
-> save, bookmark and share. 
+>
 > buena suerte.
 > — @eagleseyeinc
 
@@ -1185,9 +1095,7 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > When you’re not sure, flip a coin, cause while the coin is in the air, you realize which one you’re actually hoping for.
 > — Piet Hein, *A Psychological Tip*
 
-> You don't think your way to a new
-> way of living. You live your
-> way to a new way of thinking.
+> You don't think your way to a new way of living. You live your way to a new way of thinking.
 > — Henri Nouwen
 
 > Most of the old timers I respect (the successful happy and healthy ones I wouldn’t mind being like someday) seem to all give the same advice. It applies across the board to getting the life you actually want. Could be starting a business, hitting a certain liquid net worth, bagging the one girl you HAVE to have.. etc. The advice is to APPLY PRESSURE. Never let your current circumstances define what is possible for you. Go towards everything you want until either you get it, or God definitively reroutes you towards something better. All of their stories of conquest in business and personal dealings involve massive volatility, ups and downs, falling and getting back up etc. over and over again. The old timers with regrets, on the other hand, just let one or two failures convince them to stop trying. Go get exactly what you want.
@@ -1203,17 +1111,14 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > — @nuroctane
 
 > Never attribute to difficulty what is adequately explained by novelty.
-> 
+>
 > No thing is hard. It is only new.
-> 
+>
 > The sooner you internalize this, the sooner you start.
 > — @BowTiedPhys
 
 > even at 1 hp, you can do 200 damage.
 > — @Clix
-
-> one common trait I find in high achieving individuals is urgency. it looks almost like impatience until you understand it is closer to reverence, a deep refusal to waste the one thing they can’t buy more of. the alarm goes and they rise. the message is answered while it is still warm. the small task is done before it can find a shelf to hide on. they commit and move in a single motion. an idea sparks and they chase it that day, before the world talks them out of it. they run at their own lives like something is at stake, because they have decided something is.
-> — @josbjohnson
 
 > Men love games. This is why sports and video games are popular among men. Successful men gamify their ambitions. For example, exercise can be a game. Learning skills can be a game. Growing social media is a game. The key is to prefer playing games with real world rewards and not wasting time in games with no real world rewards. Gamify ambition.
 > — @jerr_rrej
@@ -1227,7 +1132,7 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > — @brutedeforce
 
 > All urges are contraindicators.
-> 
+>
 > When u get the urge to flee, that means ur standing an inch away from the finish line. Ur at the Gates of Troy. But to push through that last 1% is gonna take more out of u than the first 99%. And u subconsciously know that.
 > So close yet so far.
 > — @MrE_mssg
@@ -1281,14 +1186,14 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > — @nicoletteduclar
 
 > Stop being a coward. Commit to the goals that scare you and bet heavily on yourself.
-> 
+>
 > Every day you hesitate is another day of your short life wasted. All because you don't have faith in yourself to truly "do the thing".
-> 
+>
 > Stop playing not to lose.... It'll be too late soon.
 > — @ZssBecker
 
 > major life hack for life: live as if you’re already the best version of yourself. design the super version of yourself down to the last detail. the habits. the nutrition. how this person handles obstacles. difficult people. negative outcomes. the belief system. the work ethic.
-> 
+>
 > everything matters. the more thoroughly you understand how this person behaves, the sooner you can become this person.
 > — @conductr_
 
@@ -1300,22 +1205,6 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 
 > I'm the luckiest man alive. "Will it work?". I'm optimistic. Not even cautiously optimistic. Why the caution?? I've never been unlucky once. For me luck is a given. I am recklessly optimistic
 > — @yacinemtb
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 ## Creativity, Purpose & Expression
 
@@ -1340,20 +1229,9 @@ _Calling, craft, art, play, service, voice, vision, and making what only you can
 > When you tell some people your dreams they will laugh or tell you it’s impossible.
 > I’ll be the one that will not only tell you to quit your day job and follow your dreams. But will sit down and help you create, pray with you and hold your vision in my heart until it’s a reality.
 
-> ==I screamed “I don’t want to do this anymore!” and the void replied “then create something different.”.==
+> ==I screamed “I don’t want to do this anymore!” and the void replied “then create something different.”==
 
-> WHAT IF INSTEAD OF
-> GUILTING YOURSELF FOR
-> NOT WORKING HARD
-> ENOUGH ON YOUR
-> CREATIVE PROJECTS, YOU
-> ASK YOURSELF: WHAT
-> WOULD MAKE THIS SO
-> EXCITING AND
-> COMPELLING THAT I
-> CAN'T WAIT TO PLAY AND
-> CREATE AND BUILD ON
-> THESE IDEAS?
+> What if instead of guilting yourself for not working hard enough on your creative projects, you ask yourself: what would make this so exciting and compelling that I can't wait to play and create and build on these ideas?
 
 > I can tell you that if you have been in deep hibernation cultivating your spiritual gifts you will be needed sooner than later. And you will need to find the courage and a certain level of ferociousness in order to maintain balance offering yourself in service publicly.
 > And old souls you still have memories of being persecuted in the past for sharing your gifts. But it is time. It’s time to do what you came here to do. To be that bridge for consciousness while we walk toward reaching critical mass awakening.
@@ -1414,9 +1292,7 @@ _Calling, craft, art, play, service, voice, vision, and making what only you can
 > Work intuitively.
 > Not hard.
 
-> “You should be more afraid
->  of avoiding your path,
->  than walking it.”
+> “You should be more afraid of avoiding your path, than walking it.”
 > — Jeff Brown, *Humanifestations*
 
 > i like to think that problems want to be solved. and that they are waiting there for the right person to come along and figure out a solution
@@ -1434,8 +1310,6 @@ _Calling, craft, art, play, service, voice, vision, and making what only you can
 
 > nothing shuts up your inner critic faster than being creative badly on purpose. when you get ideas out that are messy, stupid, or wrong, the perfectionist monster that lives in your prefrontal cortex and sabotages your flow state gets small. then you can play
 > — @eroticacid
-
-
 
 ## Love, Relationships & Boundaries
 
@@ -1475,9 +1349,7 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 
 > Just remember that when you make up stories and pictures in your mind about who I am, then I turn out not to be the person you tried to make me into, the only person you’re hurting is yourself. My life remains unaffected.
 
-> The wrong people will use up all
-> of your energy, and leave you feeling empty when it comes to yourself,
-> your priorities, and your goals.
+> The wrong people will use up all of your energy, and leave you feeling empty when it comes to yourself, your priorities, and your goals.
 > That’s how you’ll know.
 
 > ==It took years to realize that I attracted people who didn't match me because I wasn't being myself not because anything was wrong with me.==
@@ -1543,13 +1415,12 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 
 > Why would I ever want to possess someone in any of these traditional forms of attachment, codependency, expectation, obligation, committed relationships.
 
-> The No.1 reason people fail in life is because they listen
-> to their friends, family, and neighbors.
+> The No.1 reason people fail in life is because they listen to their friends, family, and neighbors.
 > — Napoleon Hill, *Think and Grow Rich*
 
 > No matter how ridiculous people's boundaries may seem to you
-> they're important to them for a good, reason respect them
-> I'm glad I learnt this early, unfortunately it was the hard way.
+> they're important to them for a good reason; respect them.
+> I'm glad I learnt this early; unfortunately it was the hard way.
 
 > Expectations in relationships are just premeditated resentments.
 > — Alcoholics Anonymous
@@ -1655,51 +1526,51 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > people will paint you with the colors they have.
 > — @jia_seed
 
-> You should be envious of someone who is living a life that is more exciting than yours and represents the values that are important to you.  If you are not envious then you don't care enough to do it yourself.
+> You should be envious of someone who is living a life that is more exciting than yours and represents the values that are important to you. If you are not envious then you don't care enough to do it yourself.
 > — @spookyh8r
 
 > Women are like if you mix 10 year year old and a psychopath.
 > — @DeletedAcc3573
 
 > When I was a junior I took an upper division course on medieval literature, and I studied together with a married Mormon woman who was 15 years older than me that I had a brief sexual fling with.
-> 
+>
 > We swapped our final essays and had each other edit them to make them as good as we could, and both of our essays got eviscerated. The marginalia from the professor in my essay was shockingly mean and insulting, especially since the man had been more or less my mentor for about a year and a half and always so gentle and kind. But, my god, the feedback was gruesome.
-> 
+>
 > For her essay, there was one comment that I still remember although this happened in 1998.
-> 
+>
 > I do not remember exactly what it was about, but she was comparing two writers and said how something in their texts was "equalized". He underlined the word and said, "this is something I do to my stereo."
-> 
+>
 > Such an unbelievably harsh and cruel bit of feedback, I thought at the time, and I've gone back to this bit of feedback several times over the decades since it happened.
-> 
+>
 > He was right.
-> 
+>
 > That feedback was not harsh at all. He was properly policing a boundary: diction should be appropriate to the subject matter.
-> 
+>
 > Why does this matter?
-> 
+>
 > Because if you talk about an LLM as a computer program, you have a very clear head about what it is, what your relationship to it is, how it will develop as a piece of technology, and how that technology will impact the world.
-> 
+>
 > But if you talk about an LLM as a machine god, you'll end up making really dumb moves that end in your boss sticking a pager on your belt that you need to check every half hour.
-> 
+>
 > So when you read a blog post talking about anime as a natural kind (apparently this is a real Gwern post?), you are doing the exact opposite and the end result will be a very, very confused mind.
-> 
+>
 > You won't think you're confused--how could you be? You're rich, you're well paid, you're on the cutting edge of the most important transformative technology on Earth--you're the modern Prometheus building the replacement for humanity.
-> 
+>
 > Except you aren't. You've metaphysically inflated your position in life, and now you're paying the cost because you've been outsmarted by someone who understands social reality much, much better than you.
-> 
+>
 > This is what happens when you mix domains and discourses uncritically, unconsciously, unawares of what you are doing.
-> 
+>
 > Picasso painted hyperrealistic masterpieces before turning to Cubism.
-> 
+>
 > Master the craft before experimenting, or you're not a craftsman at all--you're just an overpaid hacker. And now you've got a pager.
-> 
+>
 > "Cum doceas artes, sit sermo domesticus arti: Quaelibet ars gaudet propriis" - Geoffrey de Vinsauf
 > — @47fucb4r8c69323
 
-> If you want to marry someone, remember this. It comes from personal experience, and it also has no a scientific basis:
-> 
+> If you want to marry someone, remember this. It comes from personal experience, and it also has no scientific basis:
+>
 > Your first intuition about that person is the true one. Do not twist divine signs so they go your way. That is one of the biggest mistakes people make. Do not try to change the person either. You cannot turn someone into a new version of themselves. You can only change yourself.
-> 
+>
 > Do not waste your precious time trying to fix someone else. What is truly yours will come to you in an effortless, natural, easy way. The most valuable things are often the cheapest: water, air, the sun, and so on.
 > — @alphaman_111
 
@@ -1709,18 +1580,18 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > The key to holding frame is to simply not judge yourself, even if you perceive that people are judging you. They will yield to your reality and this will unarmour them… they will likely apologize for judging, or joke alongside you, realizing it is safe to finally release the parts of themselves they have judged. A form of true love.
 > — @anomalie_blue
 
-> Once when I was young I was at a dive bar joking around with some women, and after I had finished this older  Mexican guy comes up at taps me on the shoulder.
+> Once when I was young I was at a dive bar joking around with some women, and after I had finished this older Mexican guy comes up and taps me on the shoulder.
 >
 > He’s like :” Ayy Amigo, you shouldn’t ever Joo dat”
 >
 > “what are you talking about it?” I said.
 >
-> With a thick Mexican accent He said:  “da Joking amigo, don’t Joke with women. They never forget, and they don’t understand jokes. They think is real, and they will bring dat shit up later.”
+> With a thick Mexican accent He said: “da Joking amigo, don’t Joke with women. They never forget, and they don’t understand jokes. They think is real, and they will bring dat shit up later.”
 >
 > I kinda laughed it off, but now that I’m old that Mexican dude was actually cooking and I wish I listened to him.
 > — @123skely
 
-> If a man loses his job, mind, hair or sexual function, good chance he loses his girl. Romantic love is conditional love. Men who don’t meet expectations are abandoned for new options. Only childish men think women love them unconditionally. The relationship is held together by the man’s masculine frame.  A man can lose everything but his frame and keep the woman. Power begins and ends in the mind. Stay on top or be eaten alive.
+> If a man loses his job, mind, hair or sexual function, good chance he loses his girl. Romantic love is conditional love. Men who don’t meet expectations are abandoned for new options. Only childish men think women love them unconditionally. The relationship is held together by the man’s masculine frame. A man can lose everything but his frame and keep the woman. Power begins and ends in the mind. Stay on top or be eaten alive.
 > — @jerr_rrej
 
 > Women are designed to test men. Women are designed to punish weakness in men. Hating women is hating the design. Don’t hate the game, play it. Women are designed to respect and submit to masculine frame. Strong men create feminine women. Understand polarity.
@@ -1734,18 +1605,6 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 
 > When a woman truly loves you, she desperately wants to become a better woman for you, but when she doesn't love you, all she will do is incessantly demand you improve. This is not to say you should not try to improve, only that a woman with a pure heart sees her own shortcomings long before she sees yours.
 > — @SovereignIM
-
-
-
-
-
-
-
-
-
-
-
-
 
 ## Shadow, Discernment & Protection
 
@@ -1829,7 +1688,7 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 > The elite may feel contempt, they may judge, they may filter out and punish - but they do not resent. Resentment is a slave trait - hatred stemming from person violation that was never put to rest and come to terms with. If you are living in resentment, you are a loser.
 > Are you going to keep being a loser?
 
-> "How ridiculous were the attentions the weak paid one another in the shadow of the strong!”
+> “How ridiculous were the attentions the weak paid one another in the shadow of the strong!”
 > — V. S. Naipaul, *A House for Mr Biswas*
 
 > The main defining characteristic of hate is a feeling of helpless trappedness.
@@ -1865,11 +1724,11 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 > If all the ‘facts’ point to a conclusion and your intuition says that conclusion is trash, trust your intuition. Time is ALWAYS on the side of your intuition. So be patient and the truth will be revealed in time.
 
 > One of my favourite lessons from Reality Transurfing is:
-> 
+>
 > Whether you’re good or evil, if you feel guilt things WILL turn against you.
-> 
+>
 > That’s why a lot of evil people don’t seem to have things turn against them, simply because they act without feeling shame nor fear against the consequences (no guilt).
-> 
+>
 > Not evil advice.
 > — @QuantumRover
 
@@ -1894,7 +1753,7 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 > When you believe you need protection you instantly do.
 > That is universal law.
 
-> =="Do not converse with one talking in their sleep.".==
+> ==Do not converse with one talking in their sleep.==
 > — Yuki Urushibara, *Mushishi*
 
 > I don’t talk to people who say things like “what if you’re not successful, what if you fail”. People who walk around with that question in their minds are already losers and their failure is contagious.
@@ -1904,15 +1763,6 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 
 > No advice from the defeated person. Ever.
 > — @BonesawMD
-
-> One of my favourite lesson from Reality Transurfing is:
-> 
-> Wether you’re good or evil, if you feel guilt things WILL turn against you.
-> 
-> That’s why a lot of evil people don’t seem to have things turn against them, simply because they act without feeling shame nor fear against the consequences (no guilt).
-> 
-> Not evil advice.
-> — @QuantumRover
 
 > Discernment is also a huge theme. The ways that we have allowed both overt and subtle forms of abuse, ignored our intuition, ignored red flags and chosen to be willfully ignorant will all need self forgiveness at this time.
 > — @Maryamhasnaa
@@ -1928,11 +1778,6 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 
 > Showing a person the absurdity of their defense mechanism almost never causes them to abandon the defense; it causes them to abandon you.
 > — @DoxepinHCl
-
-
-
-
-
 
 ## Body, Emotion & Nervous System
 
@@ -2055,7 +1900,7 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > Masculine energy derives psychic ability through intense observation, pattern recognition & analysis.
 > Feminine energy derives psychic ability from feeling, knowing, sensing.
 
-> You can very quickly change that overwhelming feeling of dread that comes from inaction make a few actions and it goes away depression/anxiety comes from not doing what you know you should do.
+> You can very quickly change that overwhelming feeling of dread that comes from inaction: make a few actions and it goes away. Depression/anxiety comes from not doing what you know you should do.
 
 > In the late 20th century, Russian scientists Dr. Peter Gariaev and Dr. Vladimir Poponin conducted a series of experiments that led them to a hypothesis: human DNA is not just a biological blueprint; it vibrates, resonates, and even "sings" in a way that influences our health and consciousness.
 > Their research, which has been largely ignored or dismissed by mainstream science, suggests that DNA operates on a wave-like principle, transmitting and receiving information through frequencies much like a radio station.
@@ -2069,17 +1914,9 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > — Joe Hudson, *How to actually feel your emotions*
 
 > Every emotion is like a young child. Ignore it, and it will find a louder way to be known.
-> — Joe Hudson, *How to actually feel your emotions*
-
 > Treat it like it's bad, and it grows defiant and confrontational.
-> — Joe Hudson, *How to actually feel your emotions*
-
 > Shun its nature and it turns stagnant, then sinks into depression.
-> — Joe Hudson, *How to actually feel your emotions*
-
 > Let it go unchecked, and it will act wild until it runs the home.
-> — Joe Hudson, *How to actually feel your emotions*
-
 > Give it attention and connection and it will always, eventually, turn back to you in love.
 > — Joe Hudson, *How to actually feel your emotions*
 
@@ -2099,86 +1936,50 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > — Joe Hudson, *How to actually feel your emotions*
 
 > Avoid failure → Play it safe → Feel like a failure.
-> — Joe Hudson, *How to actually feel your emotions*
-
 > Avoid conflict → People-please → Inner conflict.
-> — Joe Hudson, *How to actually feel your emotions*
-
 > Avoid losing → Dominates people → Loses trust.
 > — Joe Hudson, *How to actually feel your emotions*
 
 > When your thoughts keep looping, you're avoiding an emotion.
-> — Joe Hudson, *How to actually feel your emotions*
-
 > 95% of "overthinking" is unprocessed emotion wearing a rational disguise.
 > — Joe Hudson, *How to actually feel your emotions*
 
 > Every time you judge somebody or yourself, there's an emotional experience you're avoiding.
-> — Joe Hudson, *How to actually feel your emotions*
-
 > Judging others for showing off often means you're struggling with a desire to be seen.
 > — Joe Hudson, *How to actually feel your emotions*
 
 > A "hard" decision is one where you think about it.
-> — Joe Hudson, *How to actually feel your emotions*
-
 > Every time you think you have to make a big decision, there's an emotion you don't want to feel.
-> — Joe Hudson, *How to actually feel your emotions*
-
 > Wrestling with whether to end a relationship usually means avoiding your own pain and/or your partner's pain.
 > — Joe Hudson, *How to actually feel your emotions*
 
 > Don't believe your emotions.
-> — Joe Hudson, *How to actually feel your emotions*
-
 > Your emotions control you when you believe their stories.
 > — Joe Hudson, *How to actually feel your emotions*
 
 > When you're triggered, your nervous system isn't reacting to what's actually happening. It's reacting to what it expects based on old emotional data.
-> — Joe Hudson, *How to actually feel your emotions*
-
 > This data, which is encoded in your limbic system, hijacks your rational brain under stress.
 > — Joe Hudson, *How to actually feel your emotions*
 
 > Take your emotions seriously, not literally.
-> — Joe Hudson, *How to actually feel your emotions*
-
 > It took me decades to learn how to take my emotions seriously without believing them.
-> — Joe Hudson, *How to actually feel your emotions*
-
 > I figured out how to do this when I was giving unconditional love to my 3-year-old, who was yelling "I hate you daddy."
 > — Joe Hudson, *How to actually feel your emotions*
 
 > Even when your emotions aren't responding to reality, your body thinks it's real.
-> — Joe Hudson, *How to actually feel your emotions*
-
 > Your heart rate increases, your muscles tense, your gut tightens.
 > — Joe Hudson, *How to actually feel your emotions*
 
 > The trick is to welcome them without identifying with them.
-> — Joe Hudson, *How to actually feel your emotions*
-
 > An actor always knows it's not their emotion.
-> — Joe Hudson, *How to actually feel your emotions*
-
 > Even if they fully embody the feeling of hurt, anger, etc., they know they're playing a part.
-> — Joe Hudson, *How to actually feel your emotions*
-
 > They're not identified with the emotion.
 > — Joe Hudson, *How to actually feel your emotions*
 
 > Resisting your resistance is just more resistance.
-> — Joe Hudson, *How to actually feel your emotions*
-
 > Put your attention on the part of you that's resisting.
-> — Joe Hudson, *How to actually feel your emotions*
-
 > Be in wonder, not judgement.
-> — Joe Hudson, *How to actually feel your emotions*
-
 > Allow it to express itself without judgement.
-> — Joe Hudson, *How to actually feel your emotions*
-
 > Be with the resistance the way you'd sit with a scared child. Patiently, lovingly, without rushing it to change or "not" be resistant.
 > — Joe Hudson, *How to actually feel your emotions*
 
@@ -2196,7 +1997,7 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > — Alexander Den Heijer
 
 > Your body was not made for luxuries. It sickens, sinks, and dies beneath them. Much of what you do to ‘rest’ will unrelax you; you can only tolerate so much pampering.
-> 
+>
 > Motion is your meditation; movement is your sanity, your serenity, your ease.
 > — @BonesawMD
 
@@ -2233,8 +2034,8 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > No electricity, no authenticity.
 > — @Tanimal
 
-> There has been 2 women i've met in my life that i'd consider were in their "divine feminine". There are many women that *claim* they are in their divine feminine - but it is astronomically rare. It is essentially when they lead with their queen energy but keep their girlish playfulness alive. It is a very calm, capable, nourishing & competent energy - but it *stays* perfectly feminine & allows you to naturally operate as a man. It doesn't PULL you away, or nag you, or make you feel like you have to avoid it or pour energy into it so it doesn't emotionally explode on it's own. It's very soft & self-contained, yet still firm & effective. it sort of just *there*, and you are fully free to 'leave it if you'd like' (not the person, but the energy), and when you come back to it, it is naturally receptive. it replenishes on its own. And this energy inspires genuine & natural leadership within you. You can quite literally *feel* the inspiration get sparked, as well as the strength get added. It feels like you can take more hits, and be okay, knowing you'll have additional replenishment & understanding if need be. The way your body interprets it as a man is essentially a subconscious/energetic "wow - i need to reciprocate the favor", and it sort of imbues your steps with a newfound electricity, and transforms regular 'ambition' (which is usually of the mind) into a god-infused typed of duty, but it's a duty you look forward to pouring yourself into. The prize is 'real', and the foundation is 'real'. It's a power-up in a real a way. You could even say it's 'divinely designed'.
-> 
+> There has been 2 women i've met in my life that i'd consider were in their "divine feminine". There are many women that *claim* they are in their divine feminine - but it is astronomically rare. It is essentially when they lead with their queen energy but keep their girlish playfulness alive. It is a very calm, capable, nourishing & competent energy - but it *stays* perfectly feminine & allows you to naturally operate as a man. It doesn't PULL you away, or nag you, or make you feel like you have to avoid it or pour energy into it so it doesn't emotionally explode on its own. It's very soft & self-contained, yet still firm & effective. it sort of just *there*, and you are fully free to 'leave it if you'd like' (not the person, but the energy), and when you come back to it, it is naturally receptive. it replenishes on its own. And this energy inspires genuine & natural leadership within you. You can quite literally *feel* the inspiration get sparked, as well as the strength get added. It feels like you can take more hits, and be okay, knowing you'll have additional replenishment & understanding if need be. The way your body interprets it as a man is essentially a subconscious/energetic "wow - i need to reciprocate the favor", and it sort of imbues your steps with a newfound electricity, and transforms regular 'ambition' (which is usually of the mind) into a god-infused type of duty, but it's a duty you look forward to pouring yourself into. The prize is 'real', and the foundation is 'real'. It's a power-up in a real way. You could even say it's 'divinely designed'.
+>
 > But again - this is astronomically rare. you will usually run into feminine women who are too chaotic / needy / clingy (and they drain you or don't *give* anything in return spiritually), and the man thinks "ah, she's not really worth the effort", or you will run into women who have disowned a large part of their feminine in either circumstantial survival mode (failed father) or the pursuit of competence. These women can do things, but in a sharp/jagged way - and have trouble relaxing into their feminine - even with a fully competent / masculine man. The man thinks "she's still holding up walls after i've displayed the natural key, this isn't worth it". The "natural way" doesn't unfold with all other types of women due to different reasons, the way it does with the woman in her 'divine feminine'. But you as a man also have to be in your 'divine masculine' for this to work. If you're not, she will basically son you on accident - as her energy will just son your energy. But if you're both there - it creates a wild push/pull exchange of spiritual energy - and each party gets the nourishment they need. Usually very seamless, ton of fun, able to do a bunch of shit - whereas all other pairings will have trouble doing outcome-based things together
 > — @retirementkeys
 
@@ -2244,29 +2045,17 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > Breaking promises to yourself is the most insidious form of self-mutilation in existence. you just wake up with swollen joints or your skin starts rejecting sunlight or your hair comes out in clumps in the shower and some dumb doctor tells you it's genetics or it's stress. but honestly, it's the accumulated rot of a thousand broken oaths fermenting inside your gut lining.
 > — @lichthauch
 
-> tantum
-> In the ancient Greek city Of Miletus, there was a high-profile suicide by a young woman. And
-> (because depression and suicide are psychogenic illnesses) some other Milesian maiden saw the attention she got, and committed suicide herself, and pretty soon they had a suicide epidemic.
-> How did it end, you ask? Well, they tried everything, but the young women affected by this epidemic Of madness seemed immune to reason. And then the leader of the city decreed that the next suicide would be stripped naked and left hanging in the city center to be leered at, and then rot.
-> "How humiliating!", you say. "HOW cruel! How inhuman!" But that was the last suicide in Miletus.
-> 0 81 8.8K
+> In the ancient Greek city of Miletus, there was a high-profile suicide by a young woman. And (because depression and suicide are psychogenic illnesses) some other Milesian maiden saw the attention she got, and committed suicide herself, and pretty soon they had a suicide epidemic.
+>
+> How did it end, you ask? Well, they tried everything, but the young women affected by this epidemic of madness seemed immune to reason. And then the leader of the city decreed that the next suicide would be stripped naked and left hanging in the city center to be leered at, and then rot.
+>
+> "How humiliating!" you say. "How cruel! How inhuman!" But that was the last suicide in Miletus.
 
 > By far the most brutal Occam's Razor of wealth is central nervous system stability, this is one of those honest signals that cannot be faked, impossible across time. There is immense power in becoming LIGHTER as you become more capable. Less tension in the face, less desperation in the voice, less attachment to individual outcomes, more fluidity between environments, more calmness when plans change, more charm when circumstances become difficult. Smile easily. Move slowly. Listen deeply. Make people laugh. Let silence breathe. Do not turn every disagreement into war or every ambition into visible strain. The highest competence eventually begins to look like ease because the machinery underneath it has become so sophisticated and battle tested through reps. Heavy men make every room feel like work. The rare spiritual outlier man carries enormous responsibility while somehow making life around him feel more beautiful. This is the king touch or the midas touch with full contextual flow, the fact this account is free is generational. Calm nervous system, light touch, smooth voice, simple smile, flow heavy movement light
->
-> https://x.com/AvantPrince_/status/2067680014200410375
 > — @AvantPrince_
 
 > Mood follows motion far more often than motion follows mood. You don't wait to feel like going for the walk. You go for the walk and the feeling shows up halfway, slightly late, slightly apologetic.
 > — @Kpaxs
-
-
-
-
-
-
-
-
-
 
 ## Work, Wealth & Value
 
@@ -2296,22 +2085,22 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 
 > You’re beyond fucked if you start making money before big spends. The scoreboard you’re now looking at is the numbers on the screen instead of the lifestyle. You’re now playing the hoarding game. You just turned into a homosexual.
 
-> -Borrow money to make money or don’t borrow money at all.
+> Borrow money to make money or don’t borrow money at all.
 
 > To be valuable, you must either:
-> -Educate people on solutions to their problems
-> -Persuade them to feel better about their problems
-> -Entertain them in such a way that they forget about them
+> - Educate people on solutions to their problems
+> - Persuade them to feel better about their problems
+> - Entertain them in such a way that they forget about them
 > The value of someone comes down to their ability to do one of those things.
 
-> -Save more than you spend
-> -Avoid consumer debt
-> -Have multiple sources of income
-> -Spend money for knowledge
-> -Spend money to keep your time free
-> -Avoid paying full cost for anything
-> -Borrow money to make money or don’t borrow money at all
-> -Learn skills that earn money.
+> - Save more than you spend
+> - Avoid consumer debt
+> - Have multiple sources of income
+> - Spend money for knowledge
+> - Spend money to keep your time free
+> - Avoid paying full cost for anything
+> - Borrow money to make money or don’t borrow money at all
+> - Learn skills that earn money.
 
 > Your best job will be one that you were unqualified for because it stretches you. In fact only apply to jobs you are unqualified for.
 > — Kevin Kelly, *Excellent Advice for Living*
@@ -2430,23 +2219,23 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 > — @rawknuckle
 
 > this is how i trade. what i do is scalping attention. that is my job. believing in smth is not my job. mapping out possibilities of exchange listings, crime team twaps or industry leaders liking tweets is not my job.
-> 
-> my work is gauging if smth is capable of achieving a certain attention threshold. if the verdict is yes and said attention threshold is not reached yet, i am buying. when the attention threshold is reached i am selling. that does not involve speculating if peak attention is reached. 
-> 
-> example is my $AI trade today. i bought when there was not much talk about it yesterday and i sold when half the timeline talked about it today. the attention threshold is reached. my work is done. my edge is exhausted. can it go much higher from here? absolutely. one Vlad twitter interaction will send it flying, but i have no edge in mapping out possibilities of such an event occurring. that is not my job. 
-> 
-> i am not in the business of dreaming and i am not in the business of gauging ceilings. i am in the business of scalping attention. and by doing this it is only natural that from time to time i will sell an asset that does many multiples after my exit. and that is totally fine. i do not feel pain about it anymore(i did in the past, and it is a hard habit to get rid off). 
-> 
+>
+> my work is gauging if smth is capable of achieving a certain attention threshold. if the verdict is yes and said attention threshold is not reached yet, i am buying. when the attention threshold is reached i am selling. that does not involve speculating if peak attention is reached.
+>
+> example is my $AI trade today. i bought when there was not much talk about it yesterday and i sold when half the timeline talked about it today. the attention threshold is reached. my work is done. my edge is exhausted. can it go much higher from here? absolutely. one Vlad twitter interaction will send it flying, but i have no edge in mapping out possibilities of such an event occurring. that is not my job.
+>
+> i am not in the business of dreaming and i am not in the business of gauging ceilings. i am in the business of scalping attention. and by doing this it is only natural that from time to time i will sell an asset that does many multiples after my exit. and that is totally fine. i do not feel pain about it anymore(i did in the past, and it is a hard habit to get rid off).
+>
 > i acknowledge that selling some runners too early is part of my job. it is part of the contract i signed and it is necessary and crucial for the environment where i can do my job to exist in the first place. if dreamers would not be rewarded from time to time there would be nothing to scalp for me. its a symbiotic relationship. dreamers must stomach frequent roundtrips and getting their lunch eaten by scalpers in order to catch a huge multiple from time to time, and scalpers must accept selling a giga runner too early from time to time in exchange for no roundtrips. these are the contracts we signed.
 > — @real_y22
 
-> People get pissed. When I say this, I have a lot of wealthy friends and I also have a lot of broke friends. Broke, friends often spend time watching a lot of sports, Netflix scrolling a lot, complaining a lot, consuming a lot of news, wealthy friends spend time working out, working on their business, working on their relationships, spending time with their families, their kids. I find that my wealthy friends only consume news that's relevant to their industry or the thing that they're passionate about. Broke friends consume news from every disaster ever, even if it's not relevant to them, everything going wrong and are really in that echo chamber of going wrong. Wealthy friends, they talk about their self development, concept of living and life. My broke friends talk a lot more about politics. My wealthy friends are very much in a victor. I am responsible for everything mentality. My broke friends are often really stuck in the victim mentality. It's a super interesting dichotomy. Another thing is I think a lot of broke people will talk about the past  and a lot of wealthy people talk about the future.
+> People get pissed. When I say this, I have a lot of wealthy friends and I also have a lot of broke friends. Broke, friends often spend time watching a lot of sports, Netflix scrolling a lot, complaining a lot, consuming a lot of news, wealthy friends spend time working out, working on their business, working on their relationships, spending time with their families, their kids. I find that my wealthy friends only consume news that's relevant to their industry or the thing that they're passionate about. Broke friends consume news from every disaster ever, even if it's not relevant to them, everything going wrong and are really in that echo chamber of going wrong. Wealthy friends, they talk about their self development, concept of living and life. My broke friends talk a lot more about politics. My wealthy friends are very much in a victor. I am responsible for everything mentality. My broke friends are often really stuck in the victim mentality. It's a super interesting dichotomy. Another thing is I think a lot of broke people will talk about the past and a lot of wealthy people talk about the future.
 > — @sunnkssdseraph
 
 > When you show off wealth there's only 2 outcomes:
 > 1. They get jealous.
 > 2. They are wealthier than you and now you revealed yourself as nouveau riche.
-> 
+>
 > Either way you lose.
 > Don't show off.
 > — @samuraix
@@ -2457,40 +2246,19 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 > the love we sacrificed for money will be desperately clawed back when money changes.
 > — @networkfaggot
 
-
-
-
-
-
-
-
-
-
 ## Life, Joy & Meaning
 
 _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a life worth living._
 
 > Joy without wist, is mist.
 
-> 1) Make peace with your past
-> so it won't screw up the
-> present.
-> 2) What others think of you is
-> none of your business.
-> 3) Time heals almost
-> everything, give it time.
-> 4) Don't compare your life to
-> others and don't judge them.
-> You have no idea what their
-> journey is all about.
-> 5) Stop thinking too much, it's
-> alright not to know the
-> answers. They will come to
-> you when you least expect it.
-> 6) No one is in charge of your
-> happiness, except you.
-> 7) Smile. You don't own all
-> the problems in the world.
+> 1. Make peace with your past so it won't screw up the present.
+> 2. What others think of you is none of your business.
+> 3. Time heals almost everything, give it time.
+> 4. Don't compare your life to others and don't judge them. You have no idea what their journey is all about.
+> 5. Stop thinking too much, it's alright not to know the answers. They will come to you when you least expect it.
+> 6. No one is in charge of your happiness, except you.
+> 7. Smile. You don't own all the problems in the world.
 > — Regina Brett
 
 > Be grateful that you get to wake up every day, moving closer to what it is that will bring your soul the fulfillment you purely desire in this lifetime!
@@ -2523,7 +2291,7 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 
 > Everything that drives you closer to a place, drives you far from another one.
 > Make sure to pack your things on your way to the other.
-> *Meaning* :
+> *Meaning*:
 > Make sure to be ready as a whole prior to moving.
 > For that is the bestseller.
 
@@ -2532,11 +2300,11 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > Let yourself feel happy in the moment without trying to compare the feeling to what used to make you happy or what could make you happy.
 
 > Joy becomes activated when you
-> -know you are what you are seeking
-> -surrender to the divine plan
-> -expect a benevolent outcome
-> -have faith that all is well
-> -choose kindness over being right
+> - know you are what you are seeking
+> - surrender to the divine plan
+> - expect a benevolent outcome
+> - have faith that all is well
+> - choose kindness over being right
 > - forgive yourself
 > - release judgements
 > - honor others' paths.
@@ -2640,13 +2408,13 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > cherish the present(s.)
 
 > I think ambitious people should treat life in “seasons” rather than trying to balance everything every day.
-> 
+>
 > A few years massively overallocated to work. A period getting seriously fit. A year or two nomading. Then family takes priority for a while. Then maybe at 35 you go completely insane again and spend four years building a new company, and so on.
-> 
+>
 > The mistake is thinking every metric needs to stay green all the time. Most great outcomes (building a company, writing sth serious, training for an event) need uninterrupted runs, not daily moderation. Sometimes work should suffer cause you’re travelling, sometimes your social life should suffer cause you’re building, sometimes career progression should slow cause family matters more. That’s fine.
-> 
+>
 > And tbh it probably makes life more fun too. You get actual chapters and completely different versions of yourself instead of spending 40 years maintaining the same perfectly optimised routine. A few intense years in one city, a weird nomad phase, an obsession that takes over your life, then something completely different. Probably much more memorable than one very long well-optimised Tuesday.
-> 
+>
 > It's why I encourage everyone to think of balance in years, not days. A good life can look horribly unbalanced on some random Tuesday and still be very balanced over 10 years.
 > — @aporia9n
 
@@ -2666,7 +2434,7 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > — @34rths
 
 > Treat days with good sleep score like gold.
-> 
+>
 > Lift heavy, think hard, run far.
 > — @beffjezos
 
@@ -2677,33 +2445,31 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > — @satellitedown
 
 > I used to be very against having a routine. I thought routine and discipline was the death of Life. I wanted to wake up every day and do whatever I felt like doing, "going with the flow," and acting on the whims of my desires. I never made plans. I refused calendars. I already have a chaotic and layabout disposition with low motivation, and this kind of lifestyle aggravated that more. I was lazy, unhappy, and depressed, despite affording myself this "freedom" of choice and time.
-> 
+>
 > This past year I have cultivated a daily routine. Good habits. Exercise. Discipline. I've become a calendar person. I plan my weeks in advance. And becoming a routined and disciplined person is what has saved me from the self-destructive nature of my past self.
-> 
+>
 > I have never felt happier, healthier, more embodied, and more in control of my life, while still enjoying spontaneity and pleasure. I no longer over-indulge myself into a state of mindless passivity. I enjoy life's pleasures more now that I limit my time with them. I have cultivated an appreciation that was not there before.
-> 
+>
 > If you're a Dionysian chaos freak, try implementing a calendar. Watch your life change for the better. Maybe the Apollonians were right about some things.
 > — @bronzeageshawty
 
-> xykrhgr on X: "everything exists for your benefit" / X
+> everything exists for your benefit.
 > — @xykrhgr
 
 > the underworld is best romanticized from a distance.
 > — @networkfaggot
 
-> 6AC05472-DF0C-43B7-A025-BEBBF7E784EC.png
-
 > 我爷爷给人看了一辈子风水，临走前跟我交了个实底：
-> 
+>
 > 1. 不管住哪，要说房子好
 > 2. 和谁在一起，就说谁好
 > 3. 上班的时候，就说这个工作好
 > 4. 遇到晴天，就说阳光很暖
 > 5. 碰到下雨天，就说空气很好
 > 6. 喝水的时候，就说水都是甜的
-> 
+>
 > 人本身就是一个能量场，从你嘴里说出什么，就吸引什么，坚持这样做，你会发现自己一切都越来越好。
-> 
+>
 > 最后补了一句：“看风水是看地，但人最大的风水，在嘴上。这话，你记死了。”
 > — @Yue_official_
 
@@ -2712,16 +2478,3 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 
 > One day it will be recognised that our mood is one way that we pollute the commons; that feelings are not private; that we have a responsibility to the commons & each other to cultivate joy & not be in a gigantic sulk at life all the time. its like defecating in the town water
 > — @wholebodyprayer
-
-
-
-
-
-
-
-
-
-
-
-
-

@@ -4,6 +4,7 @@ import { MiniAudio } from '../components/hud/MiniAudio';
 import { ScrollToTop } from '../components/hud/ScrollToTop';
 import { useStandaloneScroll } from '../hooks/useStandaloneScroll';
 import { trackEvent } from '../lib/analytics';
+import { renderEmphasis } from '../lib/quoteEmphasis';
 import raw from '../content/quotes.md?raw';
 
 interface Quote {
@@ -162,7 +163,9 @@ function renderText(t: string) {
     }
   }
   return parts.map((p, k) =>
-    p.t === 'hl' ? <mark key={k} className="quote-hl">{p.v}</mark> : <span key={k}>{p.v}</span>
+    p.t === 'hl'
+      ? <mark key={k} className="quote-hl">{renderEmphasis(p.v)}</mark>
+      : <span key={k}>{renderEmphasis(p.v)}</span>
   );
 }
 
@@ -235,7 +238,7 @@ export default function QuotesPage() {
         {shown.map((q, i) => (
           <blockquote key={i} className="qs-quote">
             <div className="qs-body">{renderText(q.text)}</div>
-            {q.source && <div className="qs-source">— {q.source}</div>}
+            {q.source && <div className="qs-source">— {renderEmphasis(q.source)}</div>}
           </blockquote>
         ))}
       </div>
