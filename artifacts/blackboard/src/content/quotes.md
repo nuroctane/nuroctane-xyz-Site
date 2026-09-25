@@ -4,10 +4,10 @@
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (57)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (77)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (54)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (94)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (95)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (31)
-- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (95)
-- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
+- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (96)
+- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (60)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (78)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (45)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (65)
@@ -1206,6 +1206,10 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > I'm the luckiest man alive. "Will it work?". I'm optimistic. Not even cautiously optimistic. Why the caution?? I've never been unlucky once. For me luck is a given. I am recklessly optimistic
 > — @yacinemtb
 
+> one common trait I find in high achieving individuals is urgency. it looks almost like impatience until you understand it is closer to reverence, a deep refusal to waste the one thing they can’t buy more of. the alarm goes and they rise. the message is answered while it is still warm. the small task is done before it can find a shelf to hide on. they commit and move in a single motion. an idea sparks and they chase it that day, before the world talks them out of it. they run at their own lives like something is at stake, because they have decided something is.
+> — @josbjohnson
+
+
 ## Creativity, Purpose & Expression
 
 _Calling, craft, art, play, service, voice, vision, and making what only you can make._
@@ -1606,6 +1610,14 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > When a woman truly loves you, she desperately wants to become a better woman for you, but when she doesn't love you, all she will do is incessantly demand you improve. This is not to say you should not try to improve, only that a woman with a pure heart sees her own shortcomings long before she sees yours.
 > — @SovereignIM
 
+> If you want to marry someone, remember this. It comes from personal experience, and it also has no a scientific basis:
+> 
+> Your first intuition about that person is the true one. Do not twist divine signs so they go your way. That is one of the biggest mistakes people make. Do not try to change the person either. You cannot turn someone into a new version of themselves. You can only change yourself.
+> 
+> Do not waste your precious time trying to fix someone else. What is truly yours will come to you in an effortless, natural, easy way. The most valuable things are often the cheapest: water, air, the sun, and so on.
+> — @alphaman_111
+
+
 ## Shadow, Discernment & Protection
 
 _Enemies, manipulation, resentment, power, spiritual attack, discernment, and energetic hygiene._
@@ -1778,6 +1790,16 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 
 > Showing a person the absurdity of their defense mechanism almost never causes them to abandon the defense; it causes them to abandon you.
 > — @DoxepinHCl
+
+> One of my favourite lesson from Reality Transurfing is:
+> 
+> Wether you’re good or evil, if you feel guilt things WILL turn against you.
+> 
+> That’s why a lot of evil people don’t seem to have things turn against them, simply because they act without feeling shame nor fear against the consequences (no guilt).
+> 
+> Not evil advice.
+> — @QuantumRover
+
 
 ## Body, Emotion & Nervous System
 
