@@ -10,7 +10,7 @@
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (78)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (45)
-- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (65)
+- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (66)
 
 ## Faith, God & Surrender
 
@@ -2502,3 +2502,7 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 
 > One day it will be recognised that our mood is one way that we pollute the commons; that feelings are not private; that we have a responsibility to the commons & each other to cultivate joy & not be in a gigantic sulk at life all the time. its like defecating in the town water
 > — @wholebodyprayer
+
+> Lame ppl create chaos & drama in your life hoping you go crazy defending yourself enough that you turn into them & so does your life. It’s a destiny swap. Be careful what gets your attention.
+> — @bristaliina
+
