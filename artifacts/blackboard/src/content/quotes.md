@@ -2,7 +2,7 @@
 - [[#Faith, God & Surrender|Faith, God & Surrender]] (44)
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (30)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (57)
-- [[#Self, Identity & Awakening|Self, Identity & Awakening]] (77)
+- [[#Self, Identity & Awakening|Self, Identity & Awakening]] (78)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (54)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (94)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (31)
@@ -670,6 +670,9 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 >
 > What do you know of me then that I do not know of you, or would you pretend we are so dissimilar? Do you think my authority is like theirs when I was (and in many ways, still am) you? No. I do not desire it, and never pursued it - I just fucking have it by simple merit of being the man that I am as an emergent property of my being - it is another burden that is an honour, and so I employ it in the way I think others should have but failed to, because I know better than them - because I do not emulate my inferiors - because I care more for beauty and goodness than I do trinkets or a felt sense of superiority. That’s it. That’s all it is. It is really that simple.
 > — @SovereignIM
+
+> The activist hides from the inner work of transformation by constantly focusing outside on the problem. The seeker hides from the outer transformation in constant internal reflection. Both are in opposition to life itself, resisting becoming the actual medicine that is needed.
+> — @Maryamhasnaa
 
 ## Mind, Belief & Inner Work
 
