@@ -6,7 +6,7 @@
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (54)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (94)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (31)
-- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (98)
+- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (101)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (78)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (46)
@@ -1629,6 +1629,15 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 
 > Most men don’t understand female relational aggression. It is subtle yet vicious. There is always plausible deniability. The aggressor in a mean girl dynamic will always play the victim and deny any wrongdoing. She will trash another woman behind her back, make up lies, actively work to turn people against her and destroy her social reputation, all while maintaining the facade of being the nice good girl. It’s a very subtle and insidious form of DARVO: deny, attack, reverse victim and offender. Every woman I know dealt with this growing up. Some women never grow out of it and operate this way into adulthood. Seeing even a hint of it in another woman is enough for me to avoid them like the plague.
 > — @digitlartifacts
+
+> no importa cuánto ames a una persona, tu amor no le va a ganar nunca a su crianza, a los años donde nadie lo escuchó, a los padres que no lo vieron, a la idea mediocre del amor con la que creció y mucho menos a su fachada de autosuficiencia
+> — @alexacz28
+
+> if someone makes a choice knowing it’ll potentially end your relationship, they don’t love you. matter of fact that don’t even care if you live or die. don’t ever look past this. promise in your worst moment you’ll see why
+> — @angelicdeed
+
+> Here's my dating advice for men: Marry a woman who needs to be a slut for you. Everything else can be negotiated. She can always get hotter. She can find religion. She can improve her cooking skills. She can work on her interpersonal relationships. You can get her a therapist. You can get her a doctor. You can get her braces. You can send her back to college. But if she doesn't look at you in the dark of your bedroom, practically panting, like she needs your cock like she needs to breathe, you've got nothing.
+> — @teachrobotslove
 
 ## Shadow, Discernment & Protection
 
