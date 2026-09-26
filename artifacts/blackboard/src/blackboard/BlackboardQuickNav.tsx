@@ -99,6 +99,13 @@ export function BlackboardQuickNav({ standalone = false }: { standalone?: boolea
             inert={!expanded} aria-hidden={!expanded} data-open={expanded}>
             <div className="bb-panel-heading">
               <span>{group === 'projects' ? 'Projects' : 'Socials'}</span>
+              <Link href="/" className="bb-panel-home" aria-label="Nuroctane home" onClick={() => setOpen(null)}>
+                <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                  <path d="M2.5 7.2 8 2.5l5.5 4.7" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round" />
+                  <path d="M3.9 6.1v7.4h8.2V6.1" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
+                  <path d="M6.6 13.5V9.8h2.8v3.7" stroke="currentColor" strokeWidth="1.2" strokeLinejoin="round" />
+                </svg>
+              </Link>
               <span>{String(groups[group].length).padStart(2, '0')}</span>
             </div>
             <ul className="bb-links">{groups[group].map(entry => <DestinationRow key={entry.id} entry={entry} />)}</ul>
