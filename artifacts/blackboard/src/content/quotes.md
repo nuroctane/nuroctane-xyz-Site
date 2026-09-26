@@ -9,7 +9,7 @@
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (98)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (78)
-- [[#Work, Wealth & Value|Work, Wealth & Value]] (45)
+- [[#Work, Wealth & Value|Work, Wealth & Value]] (46)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (66)
 
 ## Faith, God & Surrender
@@ -2269,6 +2269,9 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 
 > the love we sacrificed for money will be desperately clawed back when money changes.
 > — @networkfaggot
+
+> The thing a lot of guys who haven’t found their purpose or way to make money yet need to realize is that you don’t choose it, you stumble into it. If life is a game start roaming the map. New characters and new paths will appear. All you got to do is move
+> — @chaseharris98
 
 ## Life, Joy & Meaning
 
