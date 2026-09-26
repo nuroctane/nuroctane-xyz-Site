@@ -8,6 +8,7 @@ import {
   useState,
   type ReactNode,
 } from 'react';
+import { useLocation } from 'wouter';
 import type { Track } from '../types';
 import { SITE_MODE } from '../config/siteMode';
 import { blackboardAudioPath, blackboardMusicPick } from '../data/blackboardMusic';
@@ -94,10 +95,21 @@ interface AudioCtxValue {
 
 const Ctx = createContext<AudioCtxValue>(null!);
 
+// Pages whose direct visitors (developers following a docs link to /cli) should
+// not be greeted by the music library. Landing on one starts the score muted and
+// unloaded; arriving from another page keeps whatever is already playing.
+const QUIET_LANDING_ROUTES = ['cli'];
+const isQuietRoute = (path: string) =>
+  QUIET_LANDING_ROUTES.includes(path.replace(/^\/+/, '').split(/[/?#]/)[0].toLowerCase());
+const QUIET_LANDING = SITE_MODE === 'blackboard' && isQuietRoute(window.location.pathname);
+
 export function AudioProvider({ children }: { children: ReactNode }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [location] = useLocation();
 
-  const [enabled, setEnabled] = useState(true);
+  const [enabled, setEnabled] = useState(!QUIET_LANDING);
+  /** Held while a quiet landing is in effect and the visitor has not chosen. */
+  const quietHoldRef = useRef(QUIET_LANDING);
   const [armed,   setArmed]   = useState(SITE_MODE === 'blackboard');
   const [blocked, setBlocked] = useState(false);
   const [mutedAutoplay, setMutedAutoplay] = useState(false);
@@ -326,9 +338,10 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     const a = new Audio();
     a.loop = true;
     a.volume = 0;
-    a.preload = 'auto';
+    // A quiet landing may never play; don't fetch the track until it does.
+    a.preload = QUIET_LANDING ? 'none' : 'auto';
     a.src = src(ACTIVE_PLAYLISTS.main[0]);
-    a.load();
+    if (!QUIET_LANDING) a.load();
     audioRef.current = a;
 
     const onEnded = () => {
@@ -493,14 +506,28 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     failuresRef.current = 0;
   }, [track]);
 
+  // Leaving a quiet landing for any other page restores the normal score, as if
+  // the visit had started there — unless the visitor already chose play/mute.
+  useEffect(() => {
+    if (!quietHoldRef.current || isQuietRoute(location)) return;
+    quietHoldRef.current = false;
+    const a = audioRef.current;
+    if (a) a.preload = 'auto';
+    setEnabled(true);
+  }, [location]);
+
   const arm = useCallback(() => setArmed(true), []);
 
   const play = useCallback(() => {
+    quietHoldRef.current = false;
     setArmed(true);
     setEnabled(true);
   }, []);
 
-  const pause = useCallback(() => setEnabled(false), []);
+  const pause = useCallback(() => {
+    quietHoldRef.current = false;
+    setEnabled(false);
+  }, []);
 
   const setTrack = useCallback((t: Track | null) => setTrackState(t), []);
 
@@ -519,6 +546,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       reconcile();
       return;
     }
+    quietHoldRef.current = false;
     setEnabled(prev => !prev);
   }, [reconcile]);
 
