@@ -7,8 +7,8 @@
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (94)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (31)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (101)
-- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (59)
-- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (78)
+- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (60)
+- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (79)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (46)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (66)
 
@@ -1812,6 +1812,9 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 > Showing a person the absurdity of their defense mechanism almost never causes them to abandon the defense; it causes them to abandon you.
 > — @DoxepinHCl
 
+> The more sane a woman seems the more insane she is. No sane woman acts sane because sane women are not sane. Women at their core are somewhat insane, we have built in neurosis, we are literally biologically born to not be “sane”. Thus, any woman who seems sane on the surface and makes it a point to act sane is most likely a delusional liar and manipulator and will be the first to screw you over then play victim. Literal wolves in sheep’s clothing. Sane women do not view themselves as “sane” because they are realistic with the core nature of who they are which is the most sane thing a woman can do.
+> — @rawmilkhoney
+
 ## Body, Emotion & Nervous System
 
 _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-system state._
@@ -2089,6 +2092,9 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 
 > Mood follows motion far more often than motion follows mood. You don't wait to feel like going for the walk. You go for the walk and the feeling shows up halfway, slightly late, slightly apologetic.
 > — @Kpaxs
+
+> The autistic tendency to speak whatever information is deemed most useful rather than to say things that are emotionally resonant can be instantly cured by reading this tweet. If the captain needs to steer his boat, he must not rotate the wheel faster than the boat can handle.
+> — @NgoloTesla
 
 ## Work, Wealth & Value
 
