@@ -7,7 +7,7 @@
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (94)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (31)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (101)
-- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (60)
+- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (61)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (79)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (46)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (66)
@@ -1814,6 +1814,9 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 
 > The more sane a woman seems the more insane she is. No sane woman acts sane because sane women are not sane. Women at their core are somewhat insane, we have built in neurosis, we are literally biologically born to not be “sane”. Thus, any woman who seems sane on the surface and makes it a point to act sane is most likely a delusional liar and manipulator and will be the first to screw you over then play victim. Literal wolves in sheep’s clothing. Sane women do not view themselves as “sane” because they are realistic with the core nature of who they are which is the most sane thing a woman can do.
 > — @rawmilkhoney
+
+> people will hate you if you don't fight and win. it's rare for someone to see another person as anything but a reflection of themselves, and you will elicit a disgust response if you show them the parts of themselves they secretly hate, like weakness or fear
+> — @eroticacid
 
 ## Body, Emotion & Nervous System
 
