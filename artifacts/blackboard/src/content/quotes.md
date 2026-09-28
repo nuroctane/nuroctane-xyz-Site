@@ -1,16 +1,16 @@
 ## Index
 - [[#Faith, God & Surrender|Faith, God & Surrender]] (44)
-- [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (30)
-- [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (57)
-- [[#Self, Identity & Awakening|Self, Identity & Awakening]] (78)
-- [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (54)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (94)
-- [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (31)
-- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (101)
-- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (61)
-- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (79)
-- [[#Work, Wealth & Value|Work, Wealth & Value]] (47)
-- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (66)
+- [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (29)
+- [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (58)
+- [[#Self, Identity & Awakening|Self, Identity & Awakening]] (79)
+- [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (53)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (97)
+- [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (32)
+- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (104)
+- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (62)
+- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (77)
+- [[#Work, Wealth & Value|Work, Wealth & Value]] (46)
+- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (62)
 
 ## Faith, God & Surrender
 
@@ -165,9 +165,6 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 
 _Consciousness, time, illusion, energy, synchronicity, metaphysics, and the architecture of experience._
 
-> Reminder that karma is also a belief
-> people don't have free will in your reality so manifest whatever you want. manifest that ex back, manifest that couple to break up, manifest that person's downfall. it's your reality YOU ARE GOD.
-
 > When you identify solely with this small part you (the person), you cut off the connection to your Source. You essentially fall asleep in the illusion. You believe you are separate. This is always the primary cause of all suffering.
 
 > Everything that exists is spirit. Matter is just densified spirit. Spirit is just refined matter. All is just energy.
@@ -236,13 +233,14 @@ _Consciousness, time, illusion, energy, synchronicity, metaphysics, and the arch
 > Reality is gooey. Keep pushing and it gives.
 > — @dhh
 
-> A compiler can inject a backdoor into itself and into every future compilation of itself which is invisible in the source, i.e. the trusting trust problem (Ken Thompson, 1984).
-> — @abdimoalim_
-
 > You're not getting this yet. The nature of reality is inverted. You think the world is the cause and you're the effect. It's not. You're the cause and reality is the effect.
 >
 > It's all a projection happening from within you. Everything you encounter: the people, circumstances, challenges and joys. It's a reflection of the data you're holding in your consciousness. It's all a mirror. And you have to learn how to interpret your reality through your emotional reactions.
 > — @IkaraRose
+
+> Masculine & feminine energy is not entirely separate, it just operates from different means.
+> Masculine energy derives psychic ability through intense observation, pattern recognition & analysis.
+> Feminine energy derives psychic ability from feeling, knowing, sensing.
 
 ## Manifestation, Desire & Abundance
 
@@ -422,8 +420,22 @@ _Imagination, intention, frequency, prosperity, timelines, desire, and allowing 
 
 > Visualize your heart opening, your path being golden or whatever you need for your journey already being yours.
 
-> "Glow-ups" are often just individuals who have been out of alignment returning to themselves as a new incarnation through deep self-work, reflected externally. It is insanely hot because emerging from an underworld pivot usually encompasses a peak period of embodied holistic alignment, and this is devastatingly magnetic, perfect for attracting in that which resonates, before encountering future timelines requiring further iterations.
-> — @buridansridge
+> Reminder that karma is also a belief
+> people don't have free will in your reality so manifest whatever you want. manifest that ex back, manifest that couple to break up, manifest that person's downfall. it's your reality YOU ARE GOD.
+
+> 我爷爷给人看了一辈子风水，临走前跟我交了个实底：
+>
+> 1. 不管住哪，要说房子好
+> 2. 和谁在一起，就说谁好
+> 3. 上班的时候，就说这个工作好
+> 4. 遇到晴天，就说阳光很暖
+> 5. 碰到下雨天，就说空气很好
+> 6. 喝水的时候，就说水都是甜的
+>
+> 人本身就是一个能量场，从你嘴里说出什么，就吸引什么，坚持这样做，你会发现自己一切都越来越好。
+>
+> 最后补了一句：“看风水是看地，但人最大的风水，在嘴上。这话，你记死了。”
+> — @Yue_official_
 
 ## Self, Identity & Awakening
 
@@ -674,6 +686,9 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 > The activist hides from the inner work of transformation by constantly focusing outside on the problem. The seeker hides from the outer transformation in constant internal reflection. Both are in opposition to life itself, resisting becoming the actual medicine that is needed.
 > — @Maryamhasnaa
 
+> "Glow-ups" are often just individuals who have been out of alignment returning to themselves as a new incarnation through deep self-work, reflected externally. It is insanely hot because emerging from an underworld pivot usually encompasses a peak period of embodied holistic alignment, and this is devastatingly magnetic, perfect for attracting in that which resonates, before encountering future timelines requiring further iterations.
+> — @buridansridge
+
 ## Mind, Belief & Inner Work
 
 _Thought, belief, attention, subconscious patterns, self-talk, perspective, and the stories that shape experience._
@@ -843,24 +858,6 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 
 > They say making mistakes is part of being human. I'd say making mistakes is part of being intelligent.
 > — @uzairname1
-
-> The reason why logical guys can't pull is because they think their standards of 'ice cold efficiency' are universal, and aren't aware that is 'men's genius' but does not relate to women
->
-> A man's brain thinks "let me get to the result asap"
->
-> A woman's brain does not work like this. A woman's brain likes the experience of the thing. It's about the vibe, the show, the larp/play, the 'doing it'
->
-> Grocery store easy example
->
-> guy brain goes "i want to get in, get out" because his goal is 'get the stuff'
->
-> woman's brain is not 'get the stuff'. woman's brain is 'experience the store'. She wants to look at things, check stuff out, enjoy the stroll etc
->
-> A man's genius is ice-cold efficiency
-> A woman's genius is smelling the roses
->
-> The logical guy can make instant strides if he learns to incorporate play/fun. Less logic/function/pragmatism, more randomness,fun,vibe
-> — @retirementkeys
 
 ## Action, Discipline & Mastery
 
@@ -1129,11 +1126,6 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > If you simply choose one goal, use all your free time to pursue that, never give up, and visualise success, you will inevitably reach that goal. It's as simple as that, and you’ll get there often a lot quicker than you thought.
 > — @SolBrah
 
-> Why are you as a grown man getting nice shit so you can have even less fun?
-> Freak out if someone spills a drink in ur car, anxiety about ashing your nice clothes, scuffing ur watch, can't take ur nice SUV off road?
-> Beyond soy.
-> — @brutedeforce
-
 > All urges are contraindicators.
 >
 > When u get the urge to flee, that means ur standing an inch away from the finish line. Ur at the Gates of Troy. But to push through that last 1% is gonna take more out of u than the first 99%. And u subconsciously know that.
@@ -1200,14 +1192,31 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > everything matters. the more thoroughly you understand how this person behaves, the sooner you can become this person.
 > — @conductr_
 
-> i love to antistalk, which is, learning a person’s routine in order to avoid them.
-> — @sunlove
-
 > Your daily goal should be “how relaxed can I be while doing everything that needs to be done?”
 > — @noahryanco
 
 > I'm the luckiest man alive. "Will it work?". I'm optimistic. Not even cautiously optimistic. Why the caution?? I've never been unlucky once. For me luck is a given. I am recklessly optimistic
 > — @yacinemtb
+
+> As a man thinketh in his heart so he builds in the world, but the heart is a liar and the hands are prophets. build the table before you understand why you're hungry, love the woman before you understand her because understanding is what happens after you've already committed, after your hands have already made the choice your brain was too coward to make, and the men who wait to think it through first are the men who die having thought about everything and built nothing, while the men who let their hands lead discover that action births clarity and clarity births more action and suddenly they're living in a world they made instead of a world they merely observed. thinking is just another word for stalling, that your hands know more about what you need than your fear ever will.
+
+> Also, your private intentions do not constitute your character. You are what you repeatedly do.
+> — @Illusionist_126
+
+> You should be envious of someone who is living a life that is more exciting than yours and represents the values that are important to you. If you are not envious then you don't care enough to do it yourself.
+> — @spookyh8r
+
+> I used to be very against having a routine. I thought routine and discipline was the death of Life. I wanted to wake up every day and do whatever I felt like doing, "going with the flow," and acting on the whims of my desires. I never made plans. I refused calendars. I already have a chaotic and layabout disposition with low motivation, and this kind of lifestyle aggravated that more. I was lazy, unhappy, and depressed, despite affording myself this "freedom" of choice and time.
+>
+> This past year I have cultivated a daily routine. Good habits. Exercise. Discipline. I've become a calendar person. I plan my weeks in advance. And becoming a routined and disciplined person is what has saved me from the self-destructive nature of my past self.
+>
+> I have never felt happier, healthier, more embodied, and more in control of my life, while still enjoying spontaneity and pleasure. I no longer over-indulge myself into a state of mindless passivity. I enjoy life's pleasures more now that I limit my time with them. I have cultivated an appreciation that was not there before.
+>
+> If you're a Dionysian chaos freak, try implementing a calendar. Watch your life change for the better. Maybe the Apollonians were right about some things.
+> — @bronzeageshawty
+
+> people will let small problems persist in their life for forever not realizing that 5 minutes a day for a lifetime (60yrs) costs you 1825 hours. do you want 1825 hours of toil or annoyance in your life? can you solve the problem in less than 1825 hours? then you fucking should.
+> — @satellitedown
 
 ## Creativity, Purpose & Expression
 
@@ -1314,6 +1323,41 @@ _Calling, craft, art, play, service, voice, vision, and making what only you can
 > nothing shuts up your inner critic faster than being creative badly on purpose. when you get ideas out that are messy, stupid, or wrong, the perfectionist monster that lives in your prefrontal cortex and sabotages your flow state gets small. then you can play
 > — @eroticacid
 
+> When I was a junior I took an upper division course on medieval literature, and I studied together with a married Mormon woman who was 15 years older than me that I had a brief sexual fling with.
+>
+> We swapped our final essays and had each other edit them to make them as good as we could, and both of our essays got eviscerated. The marginalia from the professor in my essay was shockingly mean and insulting, especially since the man had been more or less my mentor for about a year and a half and always so gentle and kind. But, my god, the feedback was gruesome.
+>
+> For her essay, there was one comment that I still remember although this happened in 1998.
+>
+> I do not remember exactly what it was about, but she was comparing two writers and said how something in their texts was "equalized". He underlined the word and said, "this is something I do to my stereo."
+>
+> Such an unbelievably harsh and cruel bit of feedback, I thought at the time, and I've gone back to this bit of feedback several times over the decades since it happened.
+>
+> He was right.
+>
+> That feedback was not harsh at all. He was properly policing a boundary: diction should be appropriate to the subject matter.
+>
+> Why does this matter?
+>
+> Because if you talk about an LLM as a computer program, you have a very clear head about what it is, what your relationship to it is, how it will develop as a piece of technology, and how that technology will impact the world.
+>
+> But if you talk about an LLM as a machine god, you'll end up making really dumb moves that end in your boss sticking a pager on your belt that you need to check every half hour.
+>
+> So when you read a blog post talking about anime as a natural kind (apparently this is a real Gwern post?), you are doing the exact opposite and the end result will be a very, very confused mind.
+>
+> You won't think you're confused--how could you be? You're rich, you're well paid, you're on the cutting edge of the most important transformative technology on Earth--you're the modern Prometheus building the replacement for humanity.
+>
+> Except you aren't. You've metaphysically inflated your position in life, and now you're paying the cost because you've been outsmarted by someone who understands social reality much, much better than you.
+>
+> This is what happens when you mix domains and discourses uncritically, unconsciously, unawares of what you are doing.
+>
+> Picasso painted hyperrealistic masterpieces before turning to Cubism.
+>
+> Master the craft before experimenting, or you're not a craftsman at all--you're just an overpaid hacker. And now you've got a pager.
+>
+> "Cum doceas artes, sit sermo domesticus arti: Quaelibet ars gaudet propriis" - Geoffrey de Vinsauf
+> — @47fucb4r8c69323
+
 ## Love, Relationships & Boundaries
 
 _Love, friendship, projection, intimacy, standards, rejection, and who gets access._
@@ -1387,8 +1431,6 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > If you see how a person treats others, it’s an indication of who/where they are and how they see the world around them. Don’t ever think they can’t do you like that. You’re not special. It’s just not time yet.
 
 > If I approach someone to initiate a conversation about how I didn’t like a certain way I was treated or I didn’t like how I felt after an interaction with them and I’m met with dismissive words or energy, as far as I’m concerned, there’s nothing left to discuss.
-
-> As a man thinketh in his heart so he builds in the world, but the heart is a liar and the hands are prophets. build the table before you understand why you're hungry, love the woman before you understand her because understanding is what happens after you've already committed, after your hands have already made the choice your brain was too coward to make, and the men who wait to think it through first are the men who die having thought about everything and built nothing, while the men who let their hands lead discover that action births clarity and clarity births more action and suddenly they're living in a world they made instead of a world they merely observed. thinking is just another word for stalling, that your hands know more about what you need than your fear ever will.
 
 > People overwhelmingly tend to project and interpret things the way they would mean them if they were in your shoes. A passive-aggressive person sees passive aggression. A cheater sees cheating. A liar sees duplicity.
 
@@ -1529,46 +1571,8 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > people will paint you with the colors they have.
 > — @jia_seed
 
-> You should be envious of someone who is living a life that is more exciting than yours and represents the values that are important to you. If you are not envious then you don't care enough to do it yourself.
-> — @spookyh8r
-
 > Women are like if you mix 10 year year old and a psychopath.
 > — @DeletedAcc3573
-
-> When I was a junior I took an upper division course on medieval literature, and I studied together with a married Mormon woman who was 15 years older than me that I had a brief sexual fling with.
->
-> We swapped our final essays and had each other edit them to make them as good as we could, and both of our essays got eviscerated. The marginalia from the professor in my essay was shockingly mean and insulting, especially since the man had been more or less my mentor for about a year and a half and always so gentle and kind. But, my god, the feedback was gruesome.
->
-> For her essay, there was one comment that I still remember although this happened in 1998.
->
-> I do not remember exactly what it was about, but she was comparing two writers and said how something in their texts was "equalized". He underlined the word and said, "this is something I do to my stereo."
->
-> Such an unbelievably harsh and cruel bit of feedback, I thought at the time, and I've gone back to this bit of feedback several times over the decades since it happened.
->
-> He was right.
->
-> That feedback was not harsh at all. He was properly policing a boundary: diction should be appropriate to the subject matter.
->
-> Why does this matter?
->
-> Because if you talk about an LLM as a computer program, you have a very clear head about what it is, what your relationship to it is, how it will develop as a piece of technology, and how that technology will impact the world.
->
-> But if you talk about an LLM as a machine god, you'll end up making really dumb moves that end in your boss sticking a pager on your belt that you need to check every half hour.
->
-> So when you read a blog post talking about anime as a natural kind (apparently this is a real Gwern post?), you are doing the exact opposite and the end result will be a very, very confused mind.
->
-> You won't think you're confused--how could you be? You're rich, you're well paid, you're on the cutting edge of the most important transformative technology on Earth--you're the modern Prometheus building the replacement for humanity.
->
-> Except you aren't. You've metaphysically inflated your position in life, and now you're paying the cost because you've been outsmarted by someone who understands social reality much, much better than you.
->
-> This is what happens when you mix domains and discourses uncritically, unconsciously, unawares of what you are doing.
->
-> Picasso painted hyperrealistic masterpieces before turning to Cubism.
->
-> Master the craft before experimenting, or you're not a craftsman at all--you're just an overpaid hacker. And now you've got a pager.
->
-> "Cum doceas artes, sit sermo domesticus arti: Quaelibet ars gaudet propriis" - Geoffrey de Vinsauf
-> — @47fucb4r8c69323
 
 > If you want to marry someone, remember this. It comes from personal experience, and it also has no scientific basis:
 >
@@ -1603,9 +1607,6 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > The most naive and innocent get cheated on and stepped over. Bambi gets shot and fileted. Theres no room for naivete and innocence in a man - flowers get trampled and thorns get revered. Its always the callous and rugged who end up sprouting among the debris - you have no chance to be a soft little doe as a man because women and other sharks alike will leave your bones for the worms. Always the softest dudes who exclusively talk up women and white knightingly talk down on cheating who are literally the ones getting cheated on - the nice guy businessman getting fucked over in some deal. You have zero clue how reality operates and your delusions blind you until the shows over, and the only one in the audience is your past self deceased and covered in bottom feeders. I understand being like this in your teens and early 20s but it also reminds me life is vicious and rightfully so when I see a grown man thinking his gay little morality will defend him from reality - get trampled early and learn life before it happens to you at a point of no return. And kill your arrogance - chances of you being a part of the clueless majority is very high. Hate me but thank me much later - no room for monks and gardeners in the game of love and war
 > — @rawknuckle
 
-> Also, your private intentions do not constitute your character. You are what you repeatedly do.
-> — @Illusionist_126
-
 > When a woman truly loves you, she desperately wants to become a better woman for you, but when she doesn't love you, all she will do is incessantly demand you improve. This is not to say you should not try to improve, only that a woman with a pure heart sees her own shortcomings long before she sees yours.
 > — @SovereignIM
 
@@ -1638,6 +1639,44 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 
 > Here's my dating advice for men: Marry a woman who needs to be a slut for you. Everything else can be negotiated. She can always get hotter. She can find religion. She can improve her cooking skills. She can work on her interpersonal relationships. You can get her a therapist. You can get her a doctor. You can get her braces. You can send her back to college. But if she doesn't look at you in the dark of your bedroom, practically panting, like she needs your cock like she needs to breathe, you've got nothing.
 > — @teachrobotslove
+
+> The reason why logical guys can't pull is because they think their standards of 'ice cold efficiency' are universal, and aren't aware that is 'men's genius' but does not relate to women
+>
+> A man's brain thinks "let me get to the result asap"
+>
+> A woman's brain does not work like this. A woman's brain likes the experience of the thing. It's about the vibe, the show, the larp/play, the 'doing it'
+>
+> Grocery store easy example
+>
+> guy brain goes "i want to get in, get out" because his goal is 'get the stuff'
+>
+> woman's brain is not 'get the stuff'. woman's brain is 'experience the store'. She wants to look at things, check stuff out, enjoy the stroll etc
+>
+> A man's genius is ice-cold efficiency
+> A woman's genius is smelling the roses
+>
+> The logical guy can make instant strides if he learns to incorporate play/fun. Less logic/function/pragmatism, more randomness,fun,vibe
+> — @retirementkeys
+
+> There has been 2 women i've met in my life that i'd consider were in their "divine feminine". There are many women that *claim* they are in their divine feminine - but it is astronomically rare. It is essentially when they lead with their queen energy but keep their girlish playfulness alive. It is a very calm, capable, nourishing & competent energy - but it *stays* perfectly feminine & allows you to naturally operate as a man. It doesn't PULL you away, or nag you, or make you feel like you have to avoid it or pour energy into it so it doesn't emotionally explode on its own. It's very soft & self-contained, yet still firm & effective. it sort of just *there*, and you are fully free to 'leave it if you'd like' (not the person, but the energy), and when you come back to it, it is naturally receptive. it replenishes on its own. And this energy inspires genuine & natural leadership within you. You can quite literally *feel* the inspiration get sparked, as well as the strength get added. It feels like you can take more hits, and be okay, knowing you'll have additional replenishment & understanding if need be. The way your body interprets it as a man is essentially a subconscious/energetic "wow - i need to reciprocate the favor", and it sort of imbues your steps with a newfound electricity, and transforms regular 'ambition' (which is usually of the mind) into a god-infused type of duty, but it's a duty you look forward to pouring yourself into. The prize is 'real', and the foundation is 'real'. It's a power-up in a real way. You could even say it's 'divinely designed'.
+>
+> But again - this is astronomically rare. you will usually run into feminine women who are too chaotic / needy / clingy (and they drain you or don't *give* anything in return spiritually), and the man thinks "ah, she's not really worth the effort", or you will run into women who have disowned a large part of their feminine in either circumstantial survival mode (failed father) or the pursuit of competence. These women can do things, but in a sharp/jagged way - and have trouble relaxing into their feminine - even with a fully competent / masculine man. The man thinks "she's still holding up walls after i've displayed the natural key, this isn't worth it". The "natural way" doesn't unfold with all other types of women due to different reasons, the way it does with the woman in her 'divine feminine'. But you as a man also have to be in your 'divine masculine' for this to work. If you're not, she will basically son you on accident - as her energy will just son your energy. But if you're both there - it creates a wild push/pull exchange of spiritual energy - and each party gets the nourishment they need. Usually very seamless, ton of fun, able to do a bunch of shit - whereas all other pairings will have trouble doing outcome-based things together
+> — @retirementkeys
+
+> Getting married bc u very much want to have sex with the man or are enjoying current great sex with the man is an excellent reason to get married, perhaps the best. Trust me. You’re gonna be together a long time. Money’s easy to make, starting a fire with the wrong fuel is hard.
+> — @frailskeleton
+
+> i love to antistalk, which is, learning a person’s routine in order to avoid them.
+> — @sunlove
+
+> The more sane a woman seems the more insane she is. No sane woman acts sane because sane women are not sane. Women at their core are somewhat insane, we have built in neurosis, we are literally biologically born to not be “sane”. Thus, any woman who seems sane on the surface and makes it a point to act sane is most likely a delusional liar and manipulator and will be the first to screw you over then play victim. Literal wolves in sheep’s clothing. Sane women do not view themselves as “sane” because they are realistic with the core nature of who they are which is the most sane thing a woman can do.
+> — @rawmilkhoney
+
+> The autistic tendency to speak whatever information is deemed most useful rather than to say things that are emotionally resonant can be instantly cured by reading this tweet. If the captain needs to steer his boat, he must not rotate the wheel faster than the boat can handle.
+> — @NgoloTesla
+
+> i ain’t gon lie, when some people feel like you having your way a lil too much they just want the opportunity to reject you.
+> — @BigKingC_
 
 ## Shadow, Discernment & Protection
 
@@ -1812,11 +1851,14 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 > Showing a person the absurdity of their defense mechanism almost never causes them to abandon the defense; it causes them to abandon you.
 > — @DoxepinHCl
 
-> The more sane a woman seems the more insane she is. No sane woman acts sane because sane women are not sane. Women at their core are somewhat insane, we have built in neurosis, we are literally biologically born to not be “sane”. Thus, any woman who seems sane on the surface and makes it a point to act sane is most likely a delusional liar and manipulator and will be the first to screw you over then play victim. Literal wolves in sheep’s clothing. Sane women do not view themselves as “sane” because they are realistic with the core nature of who they are which is the most sane thing a woman can do.
-> — @rawmilkhoney
-
 > people will hate you if you don't fight and win. it's rare for someone to see another person as anything but a reflection of themselves, and you will elicit a disgust response if you show them the parts of themselves they secretly hate, like weakness or fear
 > — @eroticacid
+
+> A compiler can inject a backdoor into itself and into every future compilation of itself which is invisible in the source, i.e. the trusting trust problem (Ken Thompson, 1984).
+> — @abdimoalim_
+
+> Lame ppl create chaos & drama in your life hoping you go crazy defending yourself enough that you turn into them & so does your life. It’s a destiny swap. Be careful what gets your attention.
+> — @bristaliina
 
 ## Body, Emotion & Nervous System
 
@@ -1934,10 +1976,6 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > The mind often registers the speeding up of our frequency as stress, anxiety, or confusion. This is a Quickening, so slow it down. Stay tuned in to yourself. Breathe.
 
 > The easiest time to write a story in your mind that can sink you into worry is when your body lacks proper rest.
-
-> Masculine & feminine energy is not entirely separate, it just operates from different means.
-> Masculine energy derives psychic ability through intense observation, pattern recognition & analysis.
-> Feminine energy derives psychic ability from feeling, knowing, sensing.
 
 > You can very quickly change that overwhelming feeling of dread that comes from inaction: make a few actions and it goes away. Depression/anxiety comes from not doing what you know you should do.
 
@@ -2073,11 +2111,6 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > No electricity, no authenticity.
 > — @Tanimal
 
-> There has been 2 women i've met in my life that i'd consider were in their "divine feminine". There are many women that *claim* they are in their divine feminine - but it is astronomically rare. It is essentially when they lead with their queen energy but keep their girlish playfulness alive. It is a very calm, capable, nourishing & competent energy - but it *stays* perfectly feminine & allows you to naturally operate as a man. It doesn't PULL you away, or nag you, or make you feel like you have to avoid it or pour energy into it so it doesn't emotionally explode on its own. It's very soft & self-contained, yet still firm & effective. it sort of just *there*, and you are fully free to 'leave it if you'd like' (not the person, but the energy), and when you come back to it, it is naturally receptive. it replenishes on its own. And this energy inspires genuine & natural leadership within you. You can quite literally *feel* the inspiration get sparked, as well as the strength get added. It feels like you can take more hits, and be okay, knowing you'll have additional replenishment & understanding if need be. The way your body interprets it as a man is essentially a subconscious/energetic "wow - i need to reciprocate the favor", and it sort of imbues your steps with a newfound electricity, and transforms regular 'ambition' (which is usually of the mind) into a god-infused type of duty, but it's a duty you look forward to pouring yourself into. The prize is 'real', and the foundation is 'real'. It's a power-up in a real way. You could even say it's 'divinely designed'.
->
-> But again - this is astronomically rare. you will usually run into feminine women who are too chaotic / needy / clingy (and they drain you or don't *give* anything in return spiritually), and the man thinks "ah, she's not really worth the effort", or you will run into women who have disowned a large part of their feminine in either circumstantial survival mode (failed father) or the pursuit of competence. These women can do things, but in a sharp/jagged way - and have trouble relaxing into their feminine - even with a fully competent / masculine man. The man thinks "she's still holding up walls after i've displayed the natural key, this isn't worth it". The "natural way" doesn't unfold with all other types of women due to different reasons, the way it does with the woman in her 'divine feminine'. But you as a man also have to be in your 'divine masculine' for this to work. If you're not, she will basically son you on accident - as her energy will just son your energy. But if you're both there - it creates a wild push/pull exchange of spiritual energy - and each party gets the nourishment they need. Usually very seamless, ton of fun, able to do a bunch of shit - whereas all other pairings will have trouble doing outcome-based things together
-> — @retirementkeys
-
 > Fear makes you stupid.
 > — @lichthauch
 
@@ -2096,8 +2129,10 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > Mood follows motion far more often than motion follows mood. You don't wait to feel like going for the walk. You go for the walk and the feeling shows up halfway, slightly late, slightly apologetic.
 > — @Kpaxs
 
-> The autistic tendency to speak whatever information is deemed most useful rather than to say things that are emotionally resonant can be instantly cured by reading this tweet. If the captain needs to steer his boat, he must not rotate the wheel faster than the boat can handle.
-> — @NgoloTesla
+> Treat days with good sleep score like gold.
+>
+> Lift heavy, think hard, run far.
+> — @beffjezos
 
 ## Work, Wealth & Value
 
@@ -2281,9 +2316,6 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 > Either way you lose.
 > Don't show off.
 > — @samuraix
-
-> Getting married bc u very much want to have sex with the man or are enjoying current great sex with the man is an excellent reason to get married, perhaps the best. Trust me. You’re gonna be together a long time. Money’s easy to make, starting a fire with the wrong fuel is hard.
-> — @frailskeleton
 
 > the love we sacrificed for money will be desperately clawed back when money changes.
 > — @networkfaggot
@@ -2481,25 +2513,8 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > We can lowkey start again tomorrow btw.
 > — @34rths
 
-> Treat days with good sleep score like gold.
->
-> Lift heavy, think hard, run far.
-> — @beffjezos
-
 > Ah, who will save me from existing? It's neither death nor life that I want.
 > — Fernando Pessoa, *The Book of Disquiet*
-
-> people will let small problems persist in their life for forever not realizing that 5 minutes a day for a lifetime (60yrs) costs you 1825 hours. do you want 1825 hours of toil or annoyance in your life? can you solve the problem in less than 1825 hours? then you fucking should.
-> — @satellitedown
-
-> I used to be very against having a routine. I thought routine and discipline was the death of Life. I wanted to wake up every day and do whatever I felt like doing, "going with the flow," and acting on the whims of my desires. I never made plans. I refused calendars. I already have a chaotic and layabout disposition with low motivation, and this kind of lifestyle aggravated that more. I was lazy, unhappy, and depressed, despite affording myself this "freedom" of choice and time.
->
-> This past year I have cultivated a daily routine. Good habits. Exercise. Discipline. I've become a calendar person. I plan my weeks in advance. And becoming a routined and disciplined person is what has saved me from the self-destructive nature of my past self.
->
-> I have never felt happier, healthier, more embodied, and more in control of my life, while still enjoying spontaneity and pleasure. I no longer over-indulge myself into a state of mindless passivity. I enjoy life's pleasures more now that I limit my time with them. I have cultivated an appreciation that was not there before.
->
-> If you're a Dionysian chaos freak, try implementing a calendar. Watch your life change for the better. Maybe the Apollonians were right about some things.
-> — @bronzeageshawty
 
 > everything exists for your benefit.
 > — @xykrhgr
@@ -2507,26 +2522,13 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > the underworld is best romanticized from a distance.
 > — @networkfaggot
 
-> 我爷爷给人看了一辈子风水，临走前跟我交了个实底：
->
-> 1. 不管住哪，要说房子好
-> 2. 和谁在一起，就说谁好
-> 3. 上班的时候，就说这个工作好
-> 4. 遇到晴天，就说阳光很暖
-> 5. 碰到下雨天，就说空气很好
-> 6. 喝水的时候，就说水都是甜的
->
-> 人本身就是一个能量场，从你嘴里说出什么，就吸引什么，坚持这样做，你会发现自己一切都越来越好。
->
-> 最后补了一句：“看风水是看地，但人最大的风水，在嘴上。这话，你记死了。”
-> — @Yue_official_
-
 > Rid urself of the illusion of milestones and finish lines. Seasons come and go but the game never ends or even changes. Every day is the same day till death.
 > — @MrE_mssg
 
 > One day it will be recognised that our mood is one way that we pollute the commons; that feelings are not private; that we have a responsibility to the commons & each other to cultivate joy & not be in a gigantic sulk at life all the time. its like defecating in the town water
 > — @wholebodyprayer
 
-> Lame ppl create chaos & drama in your life hoping you go crazy defending yourself enough that you turn into them & so does your life. It’s a destiny swap. Be careful what gets your attention.
-> — @bristaliina
-
+> Why are you as a grown man getting nice shit so you can have even less fun?
+> Freak out if someone spills a drink in ur car, anxiety about ashing your nice clothes, scuffing ur watch, can't take ur nice SUV off road?
+> Beyond soy.
+> — @brutedeforce
