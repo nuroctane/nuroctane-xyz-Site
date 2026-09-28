@@ -9,7 +9,7 @@
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (101)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (61)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (79)
-- [[#Work, Wealth & Value|Work, Wealth & Value]] (46)
+- [[#Work, Wealth & Value|Work, Wealth & Value]] (47)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (66)
 
 ## Faith, God & Surrender
@@ -2290,6 +2290,9 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 
 > The thing a lot of guys who haven’t found their purpose or way to make money yet need to realize is that you don’t choose it, you stumble into it. If life is a game start roaming the map. New characters and new paths will appear. All you got to do is move
 > — @chaseharris98
+
+> I’ll reiterate this again, the world is value-based. People won’t see your ‘bad character’ because of the advantages you possess. They’ll blatantly justify it just to enjoy the continuity of your value provision. This is reality. This is fact.
+> — @T_Gofficial01
 
 ## Life, Joy & Meaning
 
