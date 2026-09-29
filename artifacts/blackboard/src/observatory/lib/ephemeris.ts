@@ -138,7 +138,9 @@ function fallbackPositions(date: Date, zodiac: ZodiacMode, ayan: number, enabled
 
 // The Moon's geocentric distance (~0.0026 AU) is meaningless on the heliocentric
 // visual scale — anchor it next to Earth in the direction of its geocentric longitude.
-const MOON_VISUAL_DIST = 1.9;
+// 1.5 keeps it clear of Earth's 1.08 sphere and well inside the gaps to the
+// Venus and Mars orbits (at 1.9 it was drawn beyond both).
+const MOON_VISUAL_DIST = 1.5;
 function placeMoonNearEarth(planets: PlanetPosition[]) {
   const earth = planets.find((p) => p.id === 'Earth');
   const moon = planets.find((p) => p.id === 'Moon');

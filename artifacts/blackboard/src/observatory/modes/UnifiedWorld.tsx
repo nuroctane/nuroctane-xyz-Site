@@ -8,7 +8,7 @@ import { CONSTELLATIONS } from '../data/constellations';
 import { BRIGHT_STARS } from '../lib/brightStars';
 import { fetchEarthquakes, fetchEonet, fetchGlobalWindGrid, fetchRealWindGrid, type QuakeFeature, type EonetEvent, type WindSample } from '../lib/meteo';
 import { computeACLines, jdFromDate } from '../lib/astroCartography';
-import { raDecToVector } from '../lib/math';
+import { raDecToVector, visualOrbitRadius } from '../lib/math';
 import { orbitRingPoints } from '../lib/ephemeris';
 import { SOLAR_BODIES, type PlanetPosition } from '../lib/types';
 import { SATELLITE_GROUPS, type SatelliteGroupId } from '../lib/types';
@@ -543,21 +543,24 @@ const COUNTRIES: { name: string; lat: number; lon: number; code: string }[] = [
   { name: 'New Zealand', lat: -41, lon: 174, code: 'NZ' },
 ];
 
+type GeoBand = 'continents' | 'countries' | 'cities' | 'none';
+
 function GeographyLabels({ earthRadius, earthWorldPos, layers }: { earthRadius: number; earthWorldPos: THREE.Vector3; layers: any }) {
   const { camera } = useThree();
-  const [dist, setDist] = useState(8);
+  // Exclusive bands — never show all at once (avoids clutter)
+  // Far: continents only, mid: countries only, close: cities only.
+  // Only the band is state: tracking the raw distance re-rendered every label
+  // on nearly every frame of an orbit or zoom.
+  const [mode, setMode] = useState<GeoBand>('none');
   useFrame(() => {
-    const d = camera.position.distanceTo(earthWorldPos);
-    if (Math.abs(d - dist) > 0.08) setDist(d);
+    const dist = camera.position.distanceTo(earthWorldPos);
+    let next: GeoBand = 'none';
+    if (dist < 3.4 && (layers.cities || layers.labels)) next = 'cities';
+    else if (dist < 6.8 && layers.labels) next = 'countries';
+    else if (dist < 22 && layers.labels) next = 'continents';
+    if (next !== mode) setMode(next);
   });
   if (!layers.labels && !layers.cities) return null;
-  // Exclusive bands — never show all at once (avoids clutter)
-  // Far: continents only, mid: countries only, close: cities only
-  let mode: 'continents' | 'countries' | 'cities' | 'none' = 'none';
-  if (dist < 3.4 && (layers.cities || layers.labels)) mode = 'cities';
-  else if (dist < 6.8 && layers.labels) mode = 'countries';
-  else if (dist < 22 && layers.labels) mode = 'continents';
-
   if (mode === 'none') return null;
   return (
     <group>
@@ -1125,7 +1128,7 @@ function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) 
   const satPosRef = useRef<Map<string, THREE.Vector3>>(new Map());
 
   const earth = chart.planets.find((p: PlanetPosition) => p.id === 'Earth') as PlanetPosition | undefined;
-  const earthHelio = earth?.helio ?? { x: 5.5, y: 0, z: 0 };
+  const earthHelio = earth?.helio ?? { x: visualOrbitRadius(1), y: 0, z: 0 };
   const earthPosArr: [number, number, number] = [earthHelio.x, earthHelio.y, earthHelio.z];
   const earthPosVec = useMemo(() => new THREE.Vector3(earthHelio.x, earthHelio.y, earthHelio.z), [earthHelio.x, earthHelio.y, earthHelio.z]);
 
@@ -1167,15 +1170,21 @@ function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) 
 
   const earthSize = 1.08;
 
+  const { camera } = useThree();
   const didInitTarget = useRef(false);
   useEffect(() => {
     if (didInitTarget.current) return;
     if (!controlsRef.current) return;
-    // set initial target to Earth once — no forcing afterwards
+    // Open on Earth once — no forcing afterwards. The camera sits just outside
+    // Earth's orbit and a little above it, looking back at the daylit side
+    // with the Sun and inner planets beyond, whatever the time of year (a fixed
+    // world position framed Earth well only in some seasons).
+    const outward = earthPosVec.clone().setY(0).normalize();
+    camera.position.copy(earthPosVec).addScaledVector(outward, 7.5).add(new THREE.Vector3(0, 3.4, 0));
     controlsRef.current.target.copy(earthPosVec);
     controlsRef.current.update();
     didInitTarget.current = true;
-  }, [earthPosVec]);
+  }, [camera, earthPosVec]);
 
   return (
     <>
