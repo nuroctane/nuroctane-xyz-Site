@@ -1,4 +1,4 @@
-import { Router, useLocation } from 'wouter';
+import { Redirect, Router, useLocation } from 'wouter';
 import { lazy, Suspense, useEffect, useMemo } from 'react';
 import { createRoot } from 'react-dom/client';
 import Blackboard from './blackboard/Blackboard';
@@ -88,7 +88,19 @@ function Root() {
   }
 
   if (!top && SITE_MODE === 'blackboard') return <Blackboard />;
-  if (top === 'sea' && SITE_MODE === 'blackboard') return <Suspense fallback={<Fallback />}><App /></Suspense>;
+  if (SITE_MODE === 'blackboard') {
+    // The scene keeps the URL in sync with where you are in it ('/', '/socials',
+    // '/projects', '/fin', '/blog'). Here '/' is the Blackboard and '/blog' the
+    // Blackboard blog, so the scene lives under a nested /sea router: its own
+    // URLs become /sea/socials etc., and site links use scenePath()'s '~'.
+    if (top === 'sea') {
+      return <Router base="/sea"><Suspense fallback={<Fallback />}><App /></Suspense></Router>;
+    }
+    // Old scene deep links from before the Blackboard keep working.
+    if (top === 'socials' || top === 'projects' || top === 'fin') {
+      return <Redirect to={`/sea${location}`} replace />;
+    }
+  }
   return <Suspense fallback={fallback}><App /></Suspense>;
 }
 

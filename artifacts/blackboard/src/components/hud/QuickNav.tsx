@@ -6,6 +6,7 @@ import type { Mode } from '../../types';
 import { markNavigationIntent } from '../../lib/navIntent';
 
 import { LOGO_MAP } from '../../data/navLogos';
+import { scenePath } from '../../lib/seaPaths';
 
 
 // Computed once at module load. Categorization + order derive from
@@ -355,7 +356,7 @@ export function QuickNav({ mode, onNavigate, onBlogNavigate, onFinNavigate }: Qu
               onActivate={() => {
                 setOpen(false);
                 markNavigationIntent();
-                setLocation('/quotes');
+                setLocation(scenePath('/quotes'));
               }}
             />
           </div>
@@ -367,7 +368,7 @@ export function QuickNav({ mode, onNavigate, onBlogNavigate, onFinNavigate }: Qu
               onActivate={() => {
                 setOpen(false);
                 markNavigationIntent();
-                setLocation('/books');
+                setLocation(scenePath('/books'));
               }}
             />
           </div>

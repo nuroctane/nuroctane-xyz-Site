@@ -2,6 +2,7 @@ import React from "react";
 import { useLocation } from "wouter";
 import { NodeData, PROJECT_THRESHOLD, nodeMid } from "../../data/nodes";
 import { trackEvent } from "../../lib/analytics";
+import { scenePath } from "../../lib/seaPaths";
 
 const COMING_SOON_IDS = ["starsleep", "geoskin"];
 
@@ -47,7 +48,7 @@ export function NodeCard({ node }: { node: NodeData }) {
     setTimeout(() => setExploding(false), 420);
     if (isInternal && !e.ctrlKey && !e.metaKey && !e.shiftKey) {
       e.preventDefault();
-      setTimeout(() => setLocation(node.url), 160);
+      setTimeout(() => setLocation(scenePath(node.url)), 160);
     }
   };
 

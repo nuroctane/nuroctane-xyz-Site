@@ -6,6 +6,7 @@ import { markNavigationIntent } from "../../lib/navIntent";
 import * as THREE from "three";
 import type { SecondaryMedia } from "../../data/secondaryNodes";
 import { GithubContribTerrain } from "./GithubContribTerrain";
+import { scenePath } from "../../lib/seaPaths";
 
 // Module-level scratch — never allocate inside useFrame
 const _ringOffset = new THREE.Vector3();
@@ -210,7 +211,7 @@ export function SecondaryOrbit({
 
   const onInternalNav = (path: string) => {
     markNavigationIntent();
-    setLocation(path);
+    setLocation(scenePath(path));
   };
 
   useFrame(({ camera, clock }) => {
