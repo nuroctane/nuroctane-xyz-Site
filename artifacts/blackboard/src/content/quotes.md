@@ -6,7 +6,7 @@
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (53)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (97)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (32)
-- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (104)
+- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (105)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (62)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (77)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (46)
@@ -1677,6 +1677,17 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 
 > i ain’t gon lie, when some people feel like you having your way a lil too much they just want the opportunity to reject you.
 > — @BigKingC_
+
+> Highly ambitious men need women who can love them through the times when they must disappear into themselves to unlock the next threshold of their becoming.
+> 
+> Such men are rarely chasing success alone. they want psychic expansion, spiritual transformation, mastery, financial sovereignty, emotional command, and the transcendence through levels he was born in.
+> 
+> Being with such a man requires transformation. You will be left alone for long stretches, because both of you are being summoned into higher versions of yourselves. His solitude becomes the furnace of his becoming, and your solitude becomes the chamber in which your own interior life is forced to mature.
+> 
+> Ordinary people will look at this and call it neglect, or emotional starvation, because they understand love only through constant access. But in relationships like this, love is measured by growth, support and the mutual refusal to let each other remain small.
+> 
+> There is tenderness here, but there is also pressure. Both people are building themselves, building each other, and building the life that will one day exceed them both.
+> — @shedrinkswater
 
 ## Shadow, Discernment & Protection
 
