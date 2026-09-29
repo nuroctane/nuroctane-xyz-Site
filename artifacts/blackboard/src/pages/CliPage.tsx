@@ -716,6 +716,10 @@ const FEATURE_TABS: FeatureTab[] = [
           more of every tip
         </li>
         <li>Splash: NUR logotype + active provider · lean banner</li>
+        <li>
+          Login, help, settings, and session controls work while skills index in
+          the background. The NUR gradient and ambient animations stay active.
+        </li>
       </ul>
     ),
   },
@@ -874,7 +878,7 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: "/context", desc: "context-window utilization" },
   { cmd: "/status", desc: "session snapshot: model · mode · cwd · tokens" },
   { cmd: "/doctor", desc: "health check: version · auth · ecosystem · shell" },
-  { cmd: "/effort", desc: "reasoning effort: minimal → xhigh" },
+  { cmd: "/effort", desc: "reasoning effort: low · medium · high · xhigh · max · ultracode" },
   { cmd: "/turns", desc: "per-session agent-turn ceiling (0 = unlimited)" },
   {
     cmd: "/fusion",
