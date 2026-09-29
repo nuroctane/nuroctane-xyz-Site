@@ -10,11 +10,14 @@ from pathlib import Path
 from quote_categories import (
     LEGACY_TO_CANONICAL,
     SECTIONS,
+    bank_word_scores,
     categorize,
     classify_quote,
     find_labeled_match,
+    hybrid_scores,
     labeled_examples,
     score_quote,
+    word_evidence,
 )
 from quote_semantic import leave_one_out_semantic_scores, semantic_healthcheck
 
@@ -95,6 +98,12 @@ COLD_CASES = [
     ("Body, Emotion & Nervous System", "The jaw tightens long before the intellect admits it feels unsafe."),
     ("Work, Wealth & Value", "Income expands when useful problems are solved at scale."),
     ("Life, Joy & Meaning", "An ordinary afternoon becomes precious once you remember it will not return."),
+    # Distinctions from the 2026-09 reorganization: commentary on women and
+    # dating is relational, drama-bringers are a discernment problem, and a
+    # routine that tames chaos is still discipline.
+    ("Love, Relationships & Boundaries", "A woman tests whether a man's frame holds before she lets herself relax around him."),
+    ("Shadow, Discernment & Protection", "Some people bring chaos and drama into your life only to drag you down to their level; guard your attention."),
+    ("Action, Discipline & Mastery", "Building a daily routine and good habits is what finally pulled me out of my own chaos."),
 ]
 
 
@@ -221,32 +230,23 @@ def main() -> int:
         else:
             print("OK   cold semantic paraphrases cover all 12 categories")
 
+        # Same formula as production (hybrid_scores), with every signal learned
+        # from the bank computed as if this quote were not in it.
         semantic_rows = leave_one_out_semantic_scores(SECTIONS, examples)
         correct = 0
         for (expected, body), (semantic_scores, neighbor_scores) in zip(examples, semantic_rows):
-            values = list(semantic_scores.values())
-            mean = sum(values) / len(values)
-            variance = sum((value - mean) ** 2 for value in values) / len(values)
-            deviation = max(math.sqrt(variance), 1e-9)
-            neighbor_values = list(neighbor_scores.values())
-            neighbor_mean = sum(neighbor_values) / len(neighbor_values)
-            neighbor_variance = sum(
-                (value - neighbor_mean) ** 2 for value in neighbor_values
-            ) / len(neighbor_values)
-            neighbor_deviation = max(math.sqrt(neighbor_variance), 1e-9)
-            lexical = score_quote(body)
-            hybrid = {
-                section: ((semantic_scores[section] - mean) / deviation)
-                + math.log1p(lexical[section])
-                + 0.5
-                * ((neighbor_scores[section] - neighbor_mean) / neighbor_deviation)
-                for section in SECTIONS
-            }
+            hybrid = hybrid_scores(
+                semantic_scores,
+                neighbor_scores,
+                score_quote(body),
+                bank_word_scores(body, exclude_section=expected),
+                word_evidence(body),
+            )
             predicted = max(SECTIONS, key=lambda section: hybrid[section])
             correct += predicted == expected
         accuracy = correct / len(examples)
-        if accuracy < 0.58:
-            print(f"FAIL leave-one-out semantic alignment regressed: {accuracy:.1%} < 58.0%")
+        if accuracy < 0.61:
+            print(f"FAIL leave-one-out semantic alignment regressed: {accuracy:.1%} < 61.0%")
             failures += 1
         else:
             print(

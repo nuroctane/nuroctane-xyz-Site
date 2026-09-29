@@ -8,6 +8,7 @@ creating a thirteenth ``Unsorted`` section that can leak into production.
 """
 from __future__ import annotations
 
+from collections import Counter
 from collections.abc import Iterable
 from dataclasses import dataclass
 from difflib import SequenceMatcher
@@ -129,6 +130,7 @@ PHRASE_RULES: dict[str, tuple[str, ...]] = {
         "high achieving", "high-achieving", "sense of urgency", "small task",
         "even at 1 hp", "arrows that travel", "pulled back the farthest",
         "leave a comfortable life", "no thing is hard", "it is only new",
+        "good habits", "plan my weeks", "calendar person", "small problems",
     ),
     "Creativity, Purpose & Expression": (
         "creative project", "creative potential", "creative work", "your creations",
@@ -145,6 +147,10 @@ PHRASE_RULES: dict[str, tuple[str, ...]] = {
         "good boundaries", "people pleasing", "people-pleasing", "loving yourself",
         "people will paint you", "paint you with the colors", "phone call away",
         "rejection betrayal", "fear of rejection", "childhood needs",
+        # Commentary on women, men and dating belongs with relationships; it
+        # was drifting into Shadow on words like "insane".
+        "a woman", "women are", "a man's", "men and women", "your girl",
+        "divine feminine", "masculine frame", "emotionally resonant", "how you speak to",
     ),
     "Shadow, Discernment & Protection": (
         "psychic vampire", "energy vampire", "psychic attack", "toxic person",
@@ -154,6 +160,9 @@ PHRASE_RULES: dict[str, tuple[str, ...]] = {
         "wishes me ill", "judge a book", "no advice from the defeated",
         "advice from the defeated", "taken advantage of", "protect your energy",
         "charm without conscience", "without conscience", "warning sign",
+        # People who bring chaos, and guarding your attention from them.
+        "chaos and drama", "chaos & drama", "drama in your life", "be careful what",
+        "gets your attention", "destiny swap", "turn into them",
     ),
     "Body, Emotion & Nervous System": (
         "nervous system", "take a breath", "mental health", "emotional capacity",
@@ -194,8 +203,10 @@ KEYWORD_RULES: dict[str, tuple[str, ...]] = {
         "vibration", "desire", "affirmation", "visualize", "visualization",
         "intention", "prosperity", "timeline", "miracle", "luck",
     ),
+    # "authentic" was dropped: across the bank it only ever pulled quotes about
+    # authentic connection, creation or truth away from their real section.
     "Self, Identity & Awakening": (
-        "identity", "awaken", "authentic", "selfhood", "ego", "self-worth",
+        "identity", "awaken", "selfhood", "ego", "self-worth",
         "self", "shame", "approval", "mask", "individuality", "freedom",
     ),
     "Mind, Belief & Inner Work": (
@@ -208,6 +219,7 @@ KEYWORD_RULES: dict[str, tuple[str, ...]] = {
         "habit", "strategy", "execution", "momentum", "effort", "action", "motion",
         "start", "finish", "commit", "courage", "risk", "train", "skill", "urgency",
         "progress", "improve", "failure", "leader", "accountability",
+        "routine", "calendar", "procrastinate", "procrastination",
     ),
     "Creativity, Purpose & Expression": (
         "create", "creative", "creativity", "art", "artist", "craft", "write",
@@ -218,12 +230,14 @@ KEYWORD_RULES: dict[str, tuple[str, ...]] = {
         "relationship", "boundary", "love", "partner", "marriage", "marry", "friend",
         "intimacy", "rejection", "loyalty", "trust", "betrayal", "attachment",
         "family", "parents", "connection", "respect", "codependence",
+        "woman", "women", "wife", "husband", "girlfriend", "boyfriend", "dating",
+        "sex", "cheated", "cheating", "polarity", "feminine", "masculine",
     ),
     "Shadow, Discernment & Protection": (
         "psychic", "vampire", "enemy", "manipulation", "discernment", "protection",
         "resentment", "narcissist", "cruel", "toxic", "evil", "attack", "predator",
         "deceive", "liar", "projection", "hatred", "jealousy", "guilt", "curse",
-        "conscience", "warning",
+        "conscience", "warning", "drama", "chaos", "sabotage", "gossip", "envy",
     ),
     "Body, Emotion & Nervous System": (
         "nervous", "anxiety", "anxious", "emotion", "breath", "breathe", "sleep",
@@ -237,10 +251,12 @@ KEYWORD_RULES: dict[str, tuple[str, ...]] = {
         "sell", "pricing", "equity", "job", "company", "startup", "entrepreneur",
         "finance", "spending", "paid", "gains",
     ),
+    # "today" was dropped: it matched incidental wording ("do it today") and
+    # never once helped a Life quote in the bank.
     "Life, Joy & Meaning": (
         "life", "joy", "happy", "happiness", "gratitude", "grateful", "beauty",
         "mortality", "death", "change", "presence", "play", "meaning", "paradox",
-        "tomorrow", "today", "journey", "peace", "wonder",
+        "tomorrow", "journey", "peace", "wonder",
     ),
 }
 
@@ -297,7 +313,10 @@ def _similarity_text(text: str) -> str:
             continue
         lines.append(cleaned)
     joined = " ".join(lines).lower().replace("’", "'")
-    return " ".join(re.findall(r"[a-z0-9]+", joined))
+    # Letters of any script: an ASCII-only pattern reduced a Chinese quote to
+    # its list numbers ("1 2 3 4 5 6") and split Spanish words at accents, so
+    # those captures were invisible to both memory and the semantic model.
+    return " ".join(re.findall(r"[^\W_]+", joined))
 
 
 @lru_cache(maxsize=1)
@@ -327,6 +346,97 @@ def labeled_examples() -> tuple[tuple[str, str], ...]:
             flush()
     flush()
     return tuple(examples)
+
+
+WORD_WEIGHT = 0.25
+WORD_SMOOTHING = 0.3
+# Word statistics from a handful of words are noise; their weight ramps up to
+# WORD_WEIGHT as a capture reaches this many words. Measured on the bank: 80
+# keeps every short cold paraphrase on its semantic/rule verdict while long
+# captures (where word usage is informative) still gain from the signal.
+WORD_FULL_EVIDENCE = 80
+
+
+def _words(normalized: str) -> list[str]:
+    return [word for word in normalized.split() if len(word) > 1]
+
+
+def word_evidence(normalized: str) -> int:
+    """How many words the bank word statistics get to judge this text on."""
+    return len(_words(normalized))
+
+
+@lru_cache(maxsize=1)
+def _word_statistics() -> tuple[dict[str, Counter[str]], dict[str, int], int]:
+    """Per-section word counts learned from the curated bank.
+
+    Like the semantic centroids, these follow every manual reorganization: move
+    a quote and its vocabulary moves with it. Hand-written rules weight every
+    keyword equally; these weight a word by where the bank actually uses it.
+    """
+    counts: dict[str, Counter[str]] = {section: Counter() for section in SECTIONS}
+    for section, body in labeled_examples():
+        counts[section].update(_words(body))
+    vocabulary = set().union(*counts.values())
+    totals = {section: sum(counter.values()) for section, counter in counts.items()}
+    return counts, totals, len(vocabulary)
+
+
+def bank_word_scores(normalized: str, exclude_section: str | None = None) -> dict[str, float]:
+    """Naive-Bayes log-likelihood of the words under each section's bank usage.
+
+    ``exclude_section`` removes this text's own counts from that section, for
+    the leave-one-out benchmark on a quote that is already in the bank.
+    """
+    counts, totals, vocabulary_size = _word_statistics()
+    words = Counter(
+        word for word in _words(normalized) if any(word in counter for counter in counts.values())
+    )
+    scores: dict[str, float] = {}
+    for section in SECTIONS:
+        own = section == exclude_section
+        total = totals[section] - (sum(words.values()) if own else 0)
+        denominator = total + WORD_SMOOTHING * vocabulary_size
+        scores[section] = sum(
+            occurrences
+            * math.log(
+                (counts[section][word] - (occurrences if own else 0) + WORD_SMOOTHING) / denominator
+            )
+            for word, occurrences in words.items()
+        )
+    return scores
+
+
+def _standardized(values: dict[str, float]) -> dict[str, float]:
+    mean = sum(values.values()) / len(values)
+    deviation = max(
+        math.sqrt(sum((value - mean) ** 2 for value in values.values()) / len(values)),
+        1e-9,
+    )
+    return {key: (value - mean) / deviation for key, value in values.items()}
+
+
+def hybrid_scores(
+    semantic_scores: dict[str, float],
+    neighbor_scores: dict[str, float],
+    lexical: dict[str, int],
+    word_scores: dict[str, float],
+    word_count: int,
+) -> dict[str, float]:
+    """The one scoring formula, shared by production and the regression benchmark."""
+    semantic = _standardized(semantic_scores)
+    neighbors = _standardized(neighbor_scores)
+    words = _standardized(word_scores)
+    word_weight = WORD_WEIGHT * min(1.0, word_count / WORD_FULL_EVIDENCE)
+    return {
+        section: (
+            semantic[section]
+            + math.log1p(lexical[section])
+            + 0.5 * neighbors[section]
+            + word_weight * words[section]
+        )
+        for section in SECTIONS
+    }
 
 
 def find_labeled_match(text: str) -> str | None:
@@ -418,25 +528,13 @@ def classify_quote(
         return Classification(FALLBACK_SECTION, "weak-fallback", lexical, {}, 0.0)
 
     semantic = semantic_result(normalized, SECTIONS, labeled_examples())
-    values = list(semantic.scores.values())
-    mean = sum(values) / len(values)
-    variance = sum((value - mean) ** 2 for value in values) / len(values)
-    deviation = max(math.sqrt(variance), 1e-9)
-    neighbor_values = list(semantic.neighbor_scores.values())
-    neighbor_mean = sum(neighbor_values) / len(neighbor_values)
-    neighbor_variance = sum(
-        (value - neighbor_mean) ** 2 for value in neighbor_values
-    ) / len(neighbor_values)
-    neighbor_deviation = max(math.sqrt(neighbor_variance), 1e-9)
-    hybrid = {
-        section: (
-            ((semantic.scores[section] - mean) / deviation)
-            + math.log1p(lexical[section])
-            + 0.5
-            * ((semantic.neighbor_scores[section] - neighbor_mean) / neighbor_deviation)
-        )
-        for section in SECTIONS
-    }
+    hybrid = hybrid_scores(
+        semantic.scores,
+        semantic.neighbor_scores,
+        lexical,
+        bank_word_scores(normalized),
+        word_evidence(normalized),
+    )
     best = max(hybrid.values())
     section = next(section for section in SECTIONS if hybrid[section] == best)
 
