@@ -1,5 +1,5 @@
 ## Index
-- [[#Faith, God & Surrender|Faith, God & Surrender]] (46)
+- [[#Faith, God & Surrender|Faith, God & Surrender]] (47)
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (29)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (58)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (79)
@@ -165,6 +165,9 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > — @onlysianirose
 
 > Do not allow your past to interfere with your future, but rather leave your missteps to God's divine mercy, your future to His holy providence, & the eternal present to His infinite love.
+> — @AugustusDelano
+
+> Your weak points are exactly what you must strengthen, and your strengths are precisely what you must exploit. In faith, it's your vices you must perfect, and your virtues you must guard against. It's in taking you lower first, that God brings you higher. It's serving, that you lead; in giving, that you receive
 > — @AugustusDelano
 
 ## Reality, Consciousness & Perception
