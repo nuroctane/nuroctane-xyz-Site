@@ -17,6 +17,12 @@ import { useAdaptiveInk, useWallpaper } from './WallpaperProvider';
 
 /** 24x24 icon geometry, matching the Lucide family used across the nav. */
 const GLYPHS: Record<WallpaperId, string[]> = {
+  bough: ['M4 21 19 4', 'M9 15c-6 0-6-6-6-6 6 0 6 6 6 6Z', 'M14 9c0-6 6-6 6-6 0 6-6 6-6 6Z'],
+  torii: ['M3 5q9 3 18 0', 'M5 10h14', 'M7 6v15', 'M17 6v15', 'M12 7v3'],
+  dissolve: ['M7 5h9v9H7Z', 'M3 3h1', 'M3 9h1', 'M4 15h1', 'M10 19h1', 'M16 20h1', 'M19 14h1'],
+  blackhole: ['M9 12a3 3 0 1 0 6 0 3 3 0 1 0-6 0', 'M2 12c0-3 20-3 20 0s-20 3-20 0', 'M5 7c4-6 13-2 14 10'],
+  blackforest: ['M5 3v18', 'M12 2v20', 'M19 4v17', 'M2 9l3-3 3 3', 'M9 7l3-3 3 3', 'M16 10l3-3 3 3'],
+  liquid: ['M12 3C9 8 5 12 5 16a7 7 0 0 0 14 0c0-4-4-8-7-13Z', 'M9 16a3 3 0 0 0 3 3'],
   // Waves — the abstract scene's shimmering streaks and godrays.
   abstract: [
     'M2 7.5Q4.5 4 7 7.5T12 7.5T17 7.5T22 7.5',

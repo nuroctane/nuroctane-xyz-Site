@@ -31,7 +31,13 @@ export type WallpaperId =
   | 'sweep'
   | 'dots'
   | 'topography'
-  | 'gears';
+  | 'gears'
+  | 'bough'
+  | 'torii'
+  | 'dissolve'
+  | 'blackhole'
+  | 'blackforest'
+  | 'liquid';
 
 export interface WallpaperRuntime {
   /** Update uniforms and draw. Returns false when the plate is not decoded yet. */
@@ -83,6 +89,12 @@ export interface WallpaperVariant {
   fragment: string;
   /** Present when the scene is a video rather than a WebGL port. */
   video?: WallpaperVideo;
+  /** Stateful particle simulation rendered by the dedicated 2D canvas. */
+  native?: 'blackhole';
+  /** Preserve an artwork's composition, with black letterboxing when needed. */
+  fit?: 'contain';
+  /** Letterbox placement on narrow screens, leaving the central player clear. */
+  mobilePositionY?: number;
   /** Present when the background moves in a way a still plate cannot describe. */
   liveField?: LiveField;
   /**
@@ -1969,6 +1981,221 @@ export const GEARS: WallpaperVariant = {
   },
 };
 
+// September workshop imports. All mask coordinates are SOURCE coordinates,
+// never screen coordinates: a resize must crop the whole composition together.
+const SOURCE_SCENE = `
+${PRECISION}
+varying vec2 vUv;
+uniform sampler2D uImage;
+uniform sampler2D uNoise;
+uniform sampler2D uNormal;
+uniform float uTime;
+uniform float uAspect;
+uniform float uImageAspect;
+${COMMON_GLSL}
+vec2 ripple(vec2 uv, float scale, float ratio, float speed, float aspect) {
+  vec2 a = (uv + uTime * speed * speed) * scale * vec2(aspect, ratio);
+  vec2 b = (uv * 1.333 - uTime * speed * speed) * scale * vec2(aspect, ratio);
+  vec3 n1 = texture2D(uNormal, a).xyz * 2.0 - 1.0;
+  vec3 n2 = texture2D(uNormal, b).xyz * 2.0 - 1.0;
+  return normalize(vec3(n1.xy + n2.xy, n1.z)).xy;
+}
+float sourceHash(float x) { return fract(sin(x * 127.1) * 43758.5453); }
+// WE's preset particle emitter is approximated with a deterministic bounded
+// field. No separate canvas or sampling model: the ink sees this same pass.
+float petals(vec2 uv, float size, float speed) {
+  float result = 0.0;
+  for (int i = 0; i < 18; i++) {
+    float seed = float(i) + 1.0;
+    vec2 p = vec2(fract(sourceHash(seed) + uTime * 0.013 * speed),
+                  fract(sourceHash(seed + 50.0) + uTime * 0.035 * speed));
+    p.x += sin(uTime * 0.6 + seed) * 0.025;
+    vec2 d = (uv - p) * vec2(uImageAspect, 1.0);
+    float radius = size * (0.0015 + sourceHash(seed + 70.0) * 0.0015);
+    result += (1.0 - smoothstep(radius * 0.25, radius, length(d))) * 0.35;
+  }
+  return min(result, 0.6);
+}
+`;
+
+/** Load every source before painting; cancelled loaders cannot mutate a new scene. */
+function sourceScene(
+  gl: WebGLRenderingContext, program: WebGLProgram, plate: WallpaperVariant['plate'],
+  mobile: boolean, aspect: number, rate: number, maps: Array<[string, string, boolean]>,
+): WallpaperRuntime {
+  const textures: WebGLTexture[] = [];
+  let ready = 0;
+  let failed = false;
+  const sources: Array<[string, string, boolean]> = [
+    ['uImage', mobile ? plate.mobile : plate.desktop, false], ...maps,
+  ];
+  const images = sources.map(([uniform, path, repeat], unit) => {
+    gl.uniform1i(gl.getUniformLocation(program, uniform), unit);
+    const image = loadImage(path);
+    image.onload = () => {
+      const texture = uploadTexture(gl, unit, image, repeat, false);
+      if (!texture) { failed = true; return; }
+      textures.push(texture); ready++;
+    };
+    image.onerror = () => { failed = true; };
+    return image;
+  });
+  gl.uniform1f(gl.getUniformLocation(program, 'uImageAspect'), aspect);
+  const timeUniform = gl.getUniformLocation(program, 'uTime');
+  const aspectUniform = gl.getUniformLocation(program, 'uAspect');
+  return {
+    frame(context, time) {
+      if (ready !== sources.length) return false;
+      context.uniform1f(timeUniform, time * rate);
+      context.uniform1f(aspectUniform, context.drawingBufferWidth / context.drawingBufferHeight);
+      context.drawArrays(context.TRIANGLE_STRIP, 0, 4);
+      return true;
+    },
+    alive: () => !failed,
+    dispose(context) {
+      for (const image of images) { image.onload = null; image.onerror = null; }
+      for (const texture of textures) context.deleteTexture(texture);
+    },
+  };
+}
+
+const BOUGH_PLATE = {
+  desktop: '/assets/blackboard/bough/bough.webp',
+  mobile: '/assets/blackboard/bough/bough-mobile.webp',
+};
+const BOUGH: WallpaperVariant = {
+  id: 'bough', label: 'Black & White Bough', plate: BOUGH_PLATE,
+  vertex: VERTEX_SRC, toneMap: x => x,
+  fragment: `${SOURCE_SCENE}
+uniform sampler2D uFlow;
+uniform sampler2D uPhase;
+uniform sampler2D uOpacity;
+uniform sampler2D uWater;
+void main() {
+  vec2 uv = coverUv(vUv);
+  // Shake .42/.05, waterwaves 3.82/.07/.01; saved playback rate 45%.
+  vec2 wave = vec2(-sin(uTime * 3.82 - uv.y * 0.01) * 0.0049, 0.0);
+  uv += wave * texture2D(uWater, uv).r;
+  float phase = texture2D(uPhase, uv).r * 1.5707963;
+  float sway = sin(fract((uTime * 0.42 + phase) / 1.5707963) * 1.5707963) * 0.996;
+  vec2 flow = (texture2D(uFlow, uv).rg - 0.498) * 2.0;
+  vec2 offset = sway * 0.0025 * flow;
+  vec3 col = mix(texture2D(uImage, uv).rgb, texture2D(uImage, uv + offset).rgb,
+                 texture2D(uOpacity, uv + offset).r);
+  float fog = texture2D(uNoise, uv * 1.3 + vec2(uTime * 0.008, 0.0)).r;
+  float area = exp(-dot((uv - vec2(0.44, 0.67)) * vec2(1.2, 2.5),
+                       (uv - vec2(0.44, 0.67)) * vec2(1.2, 2.5)));
+  col = mix(col, vec3(0.75), fog * area * 0.08);
+  col += petals(uv, 1.93, 0.85);
+  gl_FragColor = vec4(col, 1.0);
+}`,
+  create(gl, program, mobile) {
+    return sourceScene(gl, program, BOUGH_PLATE, mobile, 1.5, 0.45, [
+      ['uFlow', '/assets/blackboard/bough/flow.png', false],
+      ['uPhase', '/assets/blackboard/bough/phase.png', false],
+      ['uOpacity', '/assets/blackboard/bough/opacity.png', false],
+      ['uWater', '/assets/blackboard/bough/water.png', false],
+      ['uNoise', '/assets/blackboard/forest/forest-clouds.png', true],
+    ]);
+  },
+};
+const TORII_PLATE = {
+  desktop: '/assets/blackboard/torii/torii.webp',
+  mobile: '/assets/blackboard/torii/torii-mobile.webp',
+};
+const TORII: WallpaperVariant = {
+  id: 'torii', label: 'Minimal Japanese Torii Gate', plate: TORII_PLATE,
+  vertex: VERTEX_SRC, toneMap: x => x,
+  fragment: `${SOURCE_SCENE}
+uniform sampler2D uCloudMask;
+uniform sampler2D uWaterMask;
+void main() {
+  vec2 uv = coverUv(vUv);
+  uv += ripple(uv, 5.2, 10.0, 0.08, uImageAspect) * 0.0169 * texture2D(uWaterMask, uv).r;
+  vec3 col = texture2D(uImage, uv).rgb;
+  vec2 c1 = (uv + uTime * vec2(0.01)) * 1.3 * vec2(uImageAspect, 1.0);
+  vec2 c2 = (uv - uTime * vec2(0.02)) * 0.5 * vec2(uImageAspect, 1.0);
+  float cloud = texture2D(uNoise, c1).r * texture2D(uNoise, vec2(-c2.y, c2.x)).r;
+  // Source default SHADING=7: cloud colour is white times the two noise samples.
+  col = mix(col, vec3(cloud), smoothstep(0.09, 0.44, cloud) * texture2D(uCloudMask, uv).r);
+  gl_FragColor = vec4(col, 1.0);
+}`,
+  create(gl, program, mobile) {
+    return sourceScene(gl, program, TORII_PLATE, mobile, 16 / 9, 1, [
+      ['uNormal', '/assets/blackboard/torii/normal.png', true],
+      ['uNoise', '/assets/blackboard/forest/forest-clouds.png', true],
+      ['uCloudMask', '/assets/blackboard/torii/cloud-mask.png', false],
+      ['uWaterMask', '/assets/blackboard/torii/water-mask.png', false],
+    ]);
+  },
+};
+const BLACKFOREST_PLATE = {
+  desktop: '/assets/blackboard/blackforest/blackforest.webp',
+  mobile: '/assets/blackboard/blackforest/blackforest-mobile.webp',
+};
+const BLACKFOREST: WallpaperVariant = {
+  id: 'blackforest', label: 'Black Forest', plate: BLACKFOREST_PLATE,
+  vertex: VERTEX_SRC, toneMap: x => x,
+  fragment: `${SOURCE_SCENE}
+vec2 pool(vec2 uv, vec2 origin, float scale, float strength) {
+  vec2 local = (uv * vec2(3840.0, 2160.0) - origin + 256.0) / 512.0;
+  float inside = step(0.0, local.x) * step(local.x, 1.0) * step(0.0, local.y) * step(local.y, 1.0);
+  return ripple(local, scale, 1.0, 0.15, 1.0) * strength * strength * inside * vec2(512.0 / 3840.0, 512.0 / 2160.0);
+}
+void main() {
+  vec2 uv = coverUv(vUv);
+  vec2 d = pool(uv, vec2(1437.655, 1880.117), 2.1, 0.2)
+         + pool(uv, vec2(2355.187, 1734.845), 2.5, 0.32)
+         + pool(uv, vec2(1913.928, 1840.777), 1.9, 0.2);
+  vec3 col = texture2D(uImage, uv + d).rgb;
+  float fog = texture2D(uNoise, uv * 2.2 + vec2(uTime * 0.006, 0.0)).r;
+  vec2 a = (uv - vec2(0.25, 0.7)) * vec2(3.0, 4.0);
+  col = mix(col, vec3(0.753), fog * exp(-dot(a, a)) * 0.12);
+  col += petals(uv, 1.15, 1.0) * 0.45;
+  gl_FragColor = vec4(col, 1.0);
+}`,
+  create(gl, program, mobile) {
+    return sourceScene(gl, program, BLACKFOREST_PLATE, mobile, 16 / 9, 0.59, [
+      ['uNormal', '/assets/blackboard/blackforest/normal.png', true],
+      ['uNoise', '/assets/blackboard/forest/forest-clouds.png', true],
+    ]);
+  },
+};
+const DISSOLVE: WallpaperVariant = {
+  id: 'dissolve', label: 'Black n White — Dissolve', vertex: VERTEX_SRC,
+  fit: 'contain',
+  mobilePositionY: 0.25,
+  fragment: VIDEO_FRAGMENT, toneMap: x => x, create: () => null,
+  plate: {
+    desktop: '/assets/blackboard/dissolve/dissolve.webp',
+    mobile: '/assets/blackboard/dissolve/dissolve-mobile.webp',
+  },
+  video: {
+    desktop: '/assets/blackboard/dissolve/dissolve-1920.mp4',
+    mobile: '/assets/blackboard/dissolve/dissolve-960.mp4',
+  },
+};
+const LIQUID: WallpaperVariant = {
+  id: 'liquid', label: 'Black Liquid Metal', vertex: VERTEX_SRC,
+  fragment: VIDEO_FRAGMENT, toneMap: x => x, create: () => null,
+  plate: {
+    desktop: '/assets/blackboard/liquid/liquid.webp',
+    mobile: '/assets/blackboard/liquid/liquid-mobile.webp',
+  },
+  video: {
+    desktop: '/assets/blackboard/liquid/liquid-1920.mp4',
+    mobile: '/assets/blackboard/liquid/liquid-960.mp4',
+  },
+};
+const BLACKHOLE: WallpaperVariant = {
+  id: 'blackhole', label: 'Black Hole Simulation', vertex: VERTEX_SRC,
+  fragment: VIDEO_FRAGMENT, toneMap: x => x, create: () => null, native: 'blackhole',
+  plate: {
+    desktop: '/assets/blackboard/blackhole/blackhole.webp',
+    mobile: '/assets/blackboard/blackhole/blackhole-mobile.webp',
+  },
+};
+
 export const VARIANTS: Record<WallpaperId, WallpaperVariant> = {
   abstract: ABSTRACT,
   clouds: CLOUDS,
@@ -1983,6 +2210,12 @@ export const VARIANTS: Record<WallpaperId, WallpaperVariant> = {
   dots: DOTS,
   topography: TOPOGRAPHY,
   gears: GEARS,
+  bough: BOUGH,
+  torii: TORII,
+  dissolve: DISSOLVE,
+  blackhole: BLACKHOLE,
+  blackforest: BLACKFOREST,
+  liquid: LIQUID,
 };
 
 /** Cycle order for the switcher. The added scenes follow the two originals. */
@@ -2000,6 +2233,12 @@ export const WALLPAPER_ORDER: WallpaperId[] = [
   'dots',
   'topography',
   'gears',
+  'bough',
+  'torii',
+  'dissolve',
+  'blackhole',
+  'blackforest',
+  'liquid',
 ];
 
 export function isWallpaperId(value: unknown): value is WallpaperId {

@@ -20,6 +20,7 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 import assert from 'node:assert/strict';
 import { VARIANTS } from '../artifacts/blackboard/src/blackboard/wallpaper/variants';
+import { sampleRect } from '../artifacts/blackboard/src/blackboard/wallpaper/luminance';
 
 /** `uniform <type> <name>;` — including sampler2D, which has a capital. */
 const DECLARATION = /uniform\s+[A-Za-z_][A-Za-z0-9_]*\s+(u[A-Z][A-Za-z0-9_]*)\s*(\[[^\]]*\])?\s*;/g;
@@ -92,3 +93,12 @@ assert.deepEqual([...referencedUniforms(sample)].sort(), ['uImageAspect', 'uTime
 
 console.log(`wallpaper shaders: ${checked} stages across ${ids.length} variants declare every uniform they read`);
 assert.ok(checked >= 24, `expected at least 24 shader stages, scanned ${checked}`);
+
+// Contained pixel art and its fallback field must agree on black letterboxing.
+const white = { cols: 2, rows: 1, data: new Float32Array([1, 1]), imageWidth: 200, imageHeight: 100, fit: 'contain' as const };
+assert.equal(sampleRect(white, { left: 0, top: 0, width: 100, height: 20 }, 100, 200), 0);
+assert.equal(sampleRect(white, { left: 0, top: 75, width: 100, height: 50 }, 100, 200), 1);
+assert.equal(sampleRect(white, { left: 0, top: 50, width: 100, height: 50 }, 100, 200), 0.5);
+assert.equal(VARIANTS.dissolve.fit, 'contain');
+assert.equal(VARIANTS.blackhole.native, 'blackhole');
+assert.equal(VARIANTS.blackhole.video, undefined);

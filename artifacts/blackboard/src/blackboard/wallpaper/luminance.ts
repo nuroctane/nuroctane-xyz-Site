@@ -28,6 +28,8 @@ export interface LuminanceField {
   data: Float32Array;
   imageWidth: number;
   imageHeight: number;
+  fit?: 'contain';
+  positionY?: number;
 }
 
 export interface Rect {
@@ -313,21 +315,30 @@ export function sampleRect(
 ): number | null {
   if (viewportWidth <= 0 || viewportHeight <= 0 || rect.width <= 0 || rect.height <= 0) return null;
 
-  const scale = Math.max(viewportWidth / field.imageWidth, viewportHeight / field.imageHeight);
+  const fit = field.fit === 'contain' ? Math.min : Math.max;
+  const scale = fit(viewportWidth / field.imageWidth, viewportHeight / field.imageHeight);
   const drawnWidth = field.imageWidth * scale;
   const drawnHeight = field.imageHeight * scale;
   const originX = (viewportWidth - drawnWidth) / 2;
-  const originY = (viewportHeight - drawnHeight) / 2;
+  const originY = (viewportHeight - drawnHeight) * (field.positionY ?? 0.5);
 
   // Viewport px -> normalised image coords.
   const toU = (x: number) => (x - originX) / drawnWidth;
   const toV = (y: number) => (y - originY) / drawnHeight;
 
-  const left = Math.max(rect.left, 0);
-  const top = Math.max(rect.top, 0);
-  const right = Math.min(rect.left + rect.width, viewportWidth);
-  const bottom = Math.min(rect.top + rect.height, viewportHeight);
+  let left = Math.max(rect.left, 0);
+  let top = Math.max(rect.top, 0);
+  let right = Math.min(rect.left + rect.width, viewportWidth);
+  let bottom = Math.min(rect.top + rect.height, viewportHeight);
   if (right <= left || bottom <= top) return null;
+  let coverage = 1;
+  if (field.fit === 'contain') {
+    const area = (right - left) * (bottom - top);
+    left = Math.max(left, originX); top = Math.max(top, originY);
+    right = Math.min(right, originX + drawnWidth); bottom = Math.min(bottom, originY + drawnHeight);
+    if (right <= left || bottom <= top) return 0; // black letterbox
+    coverage = (right - left) * (bottom - top) / area;
+  }
 
   const clamp = (v: number, hi: number) => Math.max(0, Math.min(hi, v));
   const c0 = clamp(Math.floor(toU(left) * field.cols), field.cols - 1);
@@ -345,5 +356,5 @@ export function sampleRect(
       count++;
     }
   }
-  return count ? sum / count : null;
+  return count ? sum / count * coverage : null;
 }

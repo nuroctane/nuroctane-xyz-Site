@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { createProgram, destroyProgram } from './wallpaper/gl';
 import { VARIANTS, WALLPAPER_ORDER, mountVariant } from './wallpaper/variants';
+import { BlackHoleCanvas } from './wallpaper/BlackHoleCanvas';
 import { useReducedMotion, useWallpaper } from './WallpaperProvider';
 import './blackboard-wallpaper.css';
 
@@ -115,10 +116,14 @@ export function BlackboardWallpaper() {
       }
       const ctx = scratch.getContext('2d', { willReadFrequently: true });
       if (!ctx) return;
-      const scale = Math.max(cols / video.videoWidth, rows / video.videoHeight);
+      const fit = VARIANTS[variant].fit === 'contain' ? Math.min : Math.max;
+      const scale = fit(cols / video.videoWidth, rows / video.videoHeight);
       const dw = video.videoWidth * scale;
       const dh = video.videoHeight * scale;
-      ctx.drawImage(video, (cols - dw) / 2, (rows - dh) / 2, dw, dh);
+      ctx.fillStyle = '#000';
+      ctx.fillRect(0, 0, cols, rows);
+      const y = narrow ? VARIANTS[variant].mobilePositionY ?? 0.5 : 0.5;
+      ctx.drawImage(video, (cols - dw) / 2, (rows - dh) * y, dw, dh);
       reportFrame(ctx.getImageData(0, 0, cols, rows).data, cols, rows, video.clientWidth, video.clientHeight, false);
     }, 180);
 
@@ -137,7 +142,7 @@ export function BlackboardWallpaper() {
     if (!canvas || !gl || gl.isContextLost()) return undefined;
 
     const scene = VARIANTS[variant];
-    if (scene.video) {
+    if (scene.video || scene.native) {
       setPainted(false);
       return undefined;
     }
@@ -326,6 +331,8 @@ export function BlackboardWallpaper() {
             <video
               key={id}
               className="bb-wallpaper-video"
+              data-fit={scene.fit}
+              style={{ objectPosition: `50% ${(narrow ? scene.mobilePositionY ?? 0.5 : 0.5) * 100}%` }}
               data-active={id === variant}
               src={loaded ? (narrow ? scene.video.mobile : scene.video.desktop) : undefined}
               poster={poster}
@@ -342,12 +349,17 @@ export function BlackboardWallpaper() {
             key={id}
             className="bb-wallpaper-plate"
             data-variant={id}
+            data-fit={scene.fit}
             data-active={id === variant}
-            style={loaded ? { backgroundImage: `url('${plate(id)}')` } : undefined}
+            style={loaded ? {
+              backgroundImage: `url('${plate(id)}')`,
+              backgroundPosition: `50% ${(narrow ? scene.mobilePositionY ?? 0.5 : 0.5) * 100}%`,
+            } : undefined}
           />
         );
       })}
       <canvas ref={canvasRef} className="bb-wallpaper-canvas" data-painted={painted} />
+      {VARIANTS[variant].native === 'blackhole' && <BlackHoleCanvas />}
     </div>
   );
 }

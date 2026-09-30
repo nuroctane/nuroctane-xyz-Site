@@ -1,8 +1,9 @@
 # Wallpaper Engine ports
 
-The Blackboard's wallpapers come from Wallpaper Engine workshop items. Nine are
-WebGL ports of `scene` items, one is a CSS animation ported as maths, and two
-ship as a finished loop that is played rather than reproduced. This is how the
+The Blackboard's 19 wallpapers come from Wallpaper Engine workshop items:
+13 WebGL scene ports, one CSS animation ported as maths, a native particle
+simulation, and four video loops (one recovered from a scene's sprite atlas).
+This is how the
 sources were read, so the ports can be re-derived or re-checked.
 
 | variant | workshop item | workshop title | type | effects ported |
@@ -20,6 +21,56 @@ sources were read, so the ports can be re-derived or re-checked.
 | `sweep` | [3036482397](https://steamcommunity.com/sharedfiles/filedetails/?id=3036482397) | Angular Gradient - Black White (Animated) | **web** | none — a CSS `conic-gradient`, evaluated directly |
 | `dots` | [3759381233](https://steamcommunity.com/sharedfiles/filedetails/?id=3759381233) | Abstract Black & White Oled | **video** | none — the loop *is* the artwork |
 | `topography` | [3636465548](https://steamcommunity.com/sharedfiles/filedetails/?id=3636465548) | white-on-black-topographical-map-clean | **video** | none — the loop *is* the artwork |
+| `bough` | [1706509671](https://steamcommunity.com/sharedfiles/filedetails/?id=1706509671) | black and white | scene | masked shake/waterwaves; approximated fog and petals |
+| `torii` | [2421216522](https://steamcommunity.com/sharedfiles/filedetails/?id=2421216522) | Minimal Black&White Japanese Torii Gate (4K) | scene | source-masked clouds and waterripple |
+| `dissolve` | [3654401407](https://steamcommunity.com/sharedfiles/filedetails/?id=3654401407) | Black n white | scene → video | complete TEXS sprite animation, 12 frames at 25fps |
+| `blackhole` | [2847920765](https://steamcommunity.com/sharedfiles/filedetails/?id=2847920765) | Black Hole Simulation [Audio Reactive] | web → canvas | source particle simulation, audio disabled by saved setting |
+| `blackforest` | [1369814271](https://steamcommunity.com/sharedfiles/filedetails/?id=1369814271) | Black Forest | scene | three local ripple regions; approximated fog and petals |
+| `liquid` | [3416693976](https://steamcommunity.com/sharedfiles/filedetails/?id=3416693976) | black-liquid-metal | video | complete 12-second source loop |
+
+## September additions: settings and parity
+
+The authoritative inputs are the installed workshop folders and Wallpaper
+Engine's `config.json`, not the workshop thumbnail. DISPLAY1 saves `rate:45`
+for 1706509671 and `rate:59` for 1369814271; the ports multiply scene time by
+0.45 and 0.59 respectively. Item 2847920765 saves `audioprocessing:false`:
+its project properties resolve to 1500 particles, fade 0.4, white particles,
+black centre, centre diameter 75, clockwise rotation offset 0.2, centre jitter
+0.2, and particle jitter zero. The audio-off equations are ported to a native
+canvas without p5 or a microphone/audio-spectrum dependency. Positions are
+height-normalised to keep the centre round and proportionate after resizing.
+The other additions use project defaults where there are no saved overrides.
+2207944762 is already `abstract`; the saved LED integration flag does not
+alter its image, and there is no duplicate variant.
+
+The sprite animation is recovered from `materials/gif.tex`, **not** the preview
+GIF. Its `TEXS0003\0` trailer has three u32s (count/width/height), followed by
+eight floats per frame (unknown, duration, origin.xy, basisX.xy, basisY.xy).
+The twelve 2160×1216 frames all last 0.04 seconds. H.264 exports retain all frames
+at 25fps with nearest-neighbour scaling for the pixel art. `dissolve` uses
+`contain` placement and black letterboxing: cover would remove its outstretched
+hand on phones. In portrait it sits in the upper quarter of the letterbox gap
+so the central player does not obscure the face and hand. Both the poster field
+and live video sampler use that placement.
+Liquid metal retains its 30fps, 12-second loop with audio stripped. Both videos
+have 1920-wide desktop and 960-wide mobile exports.
+
+New scene masks are decoded to lossless PNG, cropped to their declared content
+dimensions before resampling to at most 512px. This matters for the bough's
+1024-square padded TEX payloads containing 960×640 images. All new scene assets,
+including the lower-resolution mobile plates, retain the original aspect;
+the image and every mask are cover-cropped together exactly once in the shader.
+The torii/forest use the source ripple normal maps and existing byte-copied
+WE `util/clouds_256`, with no procedural replacement for those source textures.
+
+Limits: WE's preset fog/leaf/ember emitters are not reproduced particle-for-
+particle. Bough and Black Forest use bounded deterministic shader fog/petals;
+bough omits the separate ember emitter and bundled music, leaving the site's
+music player in control. Black Forest's old editor camera offset is not applied
+as a content translation; the full image and source-local water regions remain
+centred together. These are visual approximations, not claims of exact engine
+parity. All new live layers report their actual rendered pixels to adaptive ink.
+They pause when hidden; reduced motion settles the canvases and pauses videos.
 
 The nine `scene` items are each one fullscreen image object with live effects on
 top. `variants.ts` reproduces the effect maths; the constants are the ones

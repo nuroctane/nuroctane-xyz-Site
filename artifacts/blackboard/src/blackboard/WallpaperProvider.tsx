@@ -212,7 +212,12 @@ export function WallpaperProvider({ children }: { children: ReactNode }) {
     image.decoding = 'async';
     image.onload = () => {
       if (cancelled) return;
-      setField(buildLuminanceField(image, image.naturalWidth, image.naturalHeight, scene.toneMap));
+      const built = buildLuminanceField(image, image.naturalWidth, image.naturalHeight, scene.toneMap);
+      if (built) {
+        built.fit = scene.fit;
+        built.positionY = narrow ? scene.mobilePositionY : undefined;
+      }
+      setField(built);
     };
     image.onerror = () => {
       if (!cancelled) setField(null);

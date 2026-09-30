@@ -66,6 +66,12 @@
 
 .bb-wallpaper-video[data-active='true'] { opacity: 1; }
 
+/* The figure and its outstretched hand are one composition; a phone's cover
+   crop loses the hand entirely. Keep the source intact rather than stretching
+   it or animating a different crop. The ink sampler uses this same placement. */
+.bb-wallpaper-video[data-fit='contain'] { object-fit: contain; background: #000; }
+.bb-wallpaper-plate[data-fit='contain'] { background-size: contain; background-color: #000; }
+
 /* ── Canvas: paints the live scene over the matching plate. Hidden until the
       scene's first frame, so a variant switch never shows a stale or empty
       frame — the plates cover the swap. Fades out faster than it fades in. ── */
@@ -175,6 +181,7 @@
   }
   .bb-wallpaper-toggle:active { transform: none; }
   .bb-wallpaper-plate { transition: none; }
+  .bb-wallpaper-video, .bb-wallpaper-canvas { transition: none; }
 }
 
 /* Keyboard focus must stay perceivable even when motion is off. */
