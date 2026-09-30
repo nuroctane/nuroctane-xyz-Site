@@ -1,4 +1,4 @@
-import { refreshChoice } from '../lib/refreshChoice';
+import { refreshShuffledChoice } from '../lib/refreshChoice';
 
 /* ═══════════════════════════════════════════════════════════════════════════
    BLACKBOARD MUSIC — the blackboard's own library.
@@ -75,8 +75,9 @@ let resolvedTrack: BlackboardTrack | null = null;
 /**
  * Which track this page view plays.
  *
- * An independent, uniform draw excluding the last track in this tab. History
- * survives refreshes; the module memo keeps route changes on the same track.
+ * A shuffled full-library rotation excluding the last five tracks in this tab,
+ * including across rotation boundaries. History survives refreshes; the module
+ * memo keeps route changes on the same track.
  *
  * There is deliberately no way to move off the draw once it is made: no skip,
  * no next, no chooser. The visitor commits to one piece of music for the visit.
@@ -86,6 +87,6 @@ let resolvedTrack: BlackboardTrack | null = null;
  */
 export function blackboardMusicPick(): BlackboardTrack {
   if (resolvedTrack) return resolvedTrack;
-  resolvedTrack = refreshChoice('bb:last-track', BLACKBOARD_MUSIC, track => track.id);
+  resolvedTrack = refreshShuffledChoice('bb:last-track', BLACKBOARD_MUSIC, track => track.id);
   return resolvedTrack;
 }
