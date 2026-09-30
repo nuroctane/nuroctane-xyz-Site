@@ -7,7 +7,7 @@
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (97)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (32)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (105)
-- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (62)
+- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (63)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (78)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (46)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (62)
@@ -1870,6 +1870,9 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 
 > Lame ppl create chaos & drama in your life hoping you go crazy defending yourself enough that you turn into them & so does your life. It’s a destiny swap. Be careful what gets your attention.
 > — @bristaliina
+
+> as a free bird, don't listen to advice from caged birds.
+> — @Lunenth
 
 ## Body, Emotion & Nervous System
 
