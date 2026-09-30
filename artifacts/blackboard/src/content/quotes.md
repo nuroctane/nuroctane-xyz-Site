@@ -8,7 +8,7 @@
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (32)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (105)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (62)
-- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (77)
+- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (78)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (46)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (62)
 
@@ -2144,6 +2144,9 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 >
 > Lift heavy, think hard, run far.
 > — @beffjezos
+
+> what doesn't kill you introduces you to carl jung, marcus aurelius, epictetus, friedrich nietzsche, james baldwin, bell hooks, audre lorde, frantz fanon, paulo freire, joseph campbell, alan watts, ram dass, gary zukav, brene brown, gabor mate, shadow work, attachment theory, nervous-system regulation, ancestral trauma, existentialism, stoicism, meditation, emotional intelligence, neuroplasticity, metacognition, pattern recognition, game theory, delusional optimism, boundaries and discernment.
+> — @alexeixbt
 
 ## Work, Wealth & Value
 
