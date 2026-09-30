@@ -1,16 +1,16 @@
 ## Index
-- [[#Faith, God & Surrender|Faith, God & Surrender]] (44)
+- [[#Faith, God & Surrender|Faith, God & Surrender]] (45)
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (29)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (58)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (79)
-- [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (53)
+- [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (54)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (97)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (32)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (105)
-- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (63)
+- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (64)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (78)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (46)
-- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (62)
+- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (63)
 
 ## Faith, God & Surrender
 
@@ -160,6 +160,9 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > Eternal over ephemeral
 > Trust over everything
 > — @augustusdelano
+
+> Divinity in a man looks like surrender, accountability & ego mastery. His ability to face his shadows and not flinch makes him untouchable.
+> — @onlysianirose
 
 ## Reality, Consciousness & Perception
 
@@ -858,6 +861,9 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 
 > They say making mistakes is part of being human. I'd say making mistakes is part of being intelligent.
 > — @uzairname1
+
+> clear divide between people who think the purpose of education is to teach you how to Think and Learn vs. people who think the purpose of education is to enforce the boundary around What Is True
+> — @bridgietherease
 
 ## Action, Discipline & Mastery
 
@@ -1874,6 +1880,9 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 > as a free bird, don't listen to advice from caged birds.
 > — @Lunenth
 
+> People with big auras and star power get crucified in average environments.
+> — @Maddy__sn
+
 ## Body, Emotion & Nervous System
 
 _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-system state._
@@ -2549,3 +2558,8 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > Freak out if someone spills a drink in ur car, anxiety about ashing your nice clothes, scuffing ur watch, can't take ur nice SUV off road?
 > Beyond soy.
 > — @brutedeforce
+
+> Stars don't fear the dark.
+> That's where they belong.
+> — @celestaracosmos
+
