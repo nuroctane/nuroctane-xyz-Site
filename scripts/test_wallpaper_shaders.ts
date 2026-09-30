@@ -100,5 +100,15 @@ assert.equal(sampleRect(white, { left: 0, top: 0, width: 100, height: 20 }, 100,
 assert.equal(sampleRect(white, { left: 0, top: 75, width: 100, height: 50 }, 100, 200), 1);
 assert.equal(sampleRect(white, { left: 0, top: 50, width: 100, height: 50 }, 100, 200), 0.5);
 assert.equal(VARIANTS.dissolve.fit, 'contain');
+assert.equal(VARIANTS.dissolve.fillPortrait, true);
+assert.equal(VARIANTS.dissolve.mobilePositionY, undefined);
+assert.equal(VARIANTS.dissolve.label, 'Black and White — Mikoshi');
+const mikoshi = { ...white, fillPortrait: true };
+// Portrait/mobile samples the filled image, never a black letterbox. Wide
+// desktop still contains the original landscape composition.
+assert.equal(sampleRect(mikoshi, { left: 0, top: 0, width: 100, height: 20 }, 100, 200), 1);
+assert.equal(sampleRect(mikoshi, { left: 0, top: 0, width: 100, height: 20 }, 1200, 1600), 1);
+assert.equal(sampleRect(mikoshi, { left: 0, top: 0, width: 100, height: 20 }, 844, 390), 1);
+assert.equal(sampleRect(mikoshi, { left: 0, top: 0, width: 100, height: 20 }, 1600, 900), 0);
 assert.equal(VARIANTS.blackhole.native, 'blackhole');
 assert.equal(VARIANTS.blackhole.video, undefined);

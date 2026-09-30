@@ -29,6 +29,7 @@ export interface LuminanceField {
   imageWidth: number;
   imageHeight: number;
   fit?: 'contain';
+  fillPortrait?: boolean;
   positionY?: number;
 }
 
@@ -315,7 +316,11 @@ export function sampleRect(
 ): number | null {
   if (viewportWidth <= 0 || viewportHeight <= 0 || rect.width <= 0 || rect.height <= 0) return null;
 
-  const fit = field.fit === 'contain' ? Math.min : Math.max;
+  // Match the wallpaper CSS media rule; resolve at sampling time so crossing
+  // the portrait boundary above 900px cannot leave a stale poster field.
+  const contained = field.fit === 'contain' &&
+    !(field.fillPortrait && (viewportWidth <= 900 || viewportHeight >= viewportWidth));
+  const fit = contained ? Math.min : Math.max;
   const scale = fit(viewportWidth / field.imageWidth, viewportHeight / field.imageHeight);
   const drawnWidth = field.imageWidth * scale;
   const drawnHeight = field.imageHeight * scale;
@@ -332,7 +337,7 @@ export function sampleRect(
   let bottom = Math.min(rect.top + rect.height, viewportHeight);
   if (right <= left || bottom <= top) return null;
   let coverage = 1;
-  if (field.fit === 'contain') {
+  if (contained) {
     const area = (right - left) * (bottom - top);
     left = Math.max(left, originX); top = Math.max(top, originY);
     right = Math.min(right, originX + drawnWidth); bottom = Math.min(bottom, originY + drawnHeight);

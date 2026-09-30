@@ -47,11 +47,12 @@ The sprite animation is recovered from `materials/gif.tex`, **not** the preview
 GIF. Its `TEXS0003\0` trailer has three u32s (count/width/height), followed by
 eight floats per frame (unknown, duration, origin.xy, basisX.xy, basisY.xy).
 The twelve 2160×1216 frames all last 0.04 seconds. H.264 exports retain all frames
-at 25fps with nearest-neighbour scaling for the pixel art. `dissolve` uses
-`contain` placement and black letterboxing: cover would remove its outstretched
-hand on phones. In portrait it sits in the upper quarter of the letterbox gap
-so the central player does not obscure the face and hand. Both the poster field
-and live video sampler use that placement.
+at 25fps with nearest-neighbour scaling for the pixel art. `dissolve` is labelled
+**Black and White — Mikoshi**. Landscape desktop retains `contain` placement;
+mobile (up to 900px wide) and portrait windows use centred `cover`, filling the
+viewport without letterboxing. This deliberately crops the source composition
+instead of shrinking it into a landscape strip. Both the reduced-motion poster
+field and live video sampler use the same responsive placement.
 Liquid metal retains its 30fps, 12-second loop with audio stripped. Both videos
 have 1920-wide desktop and 960-wide mobile exports.
 

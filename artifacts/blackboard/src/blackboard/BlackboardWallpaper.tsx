@@ -116,7 +116,9 @@ export function BlackboardWallpaper() {
       }
       const ctx = scratch.getContext('2d', { willReadFrequently: true });
       if (!ctx) return;
-      const fit = VARIANTS[variant].fit === 'contain' ? Math.min : Math.max;
+      // Read actual CSS placement, including portrait/mobile overrides. Sampling
+      // the old letterboxed composition would give the ink the wrong pixels.
+      const fit = getComputedStyle(video).objectFit === 'contain' ? Math.min : Math.max;
       const scale = fit(cols / video.videoWidth, rows / video.videoHeight);
       const dw = video.videoWidth * scale;
       const dh = video.videoHeight * scale;
@@ -332,6 +334,7 @@ export function BlackboardWallpaper() {
               key={id}
               className="bb-wallpaper-video"
               data-fit={scene.fit}
+              data-fill-portrait={scene.fillPortrait}
               style={{ objectPosition: `50% ${(narrow ? scene.mobilePositionY ?? 0.5 : 0.5) * 100}%` }}
               data-active={id === variant}
               src={loaded ? (narrow ? scene.video.mobile : scene.video.desktop) : undefined}
@@ -350,6 +353,7 @@ export function BlackboardWallpaper() {
             className="bb-wallpaper-plate"
             data-variant={id}
             data-fit={scene.fit}
+            data-fill-portrait={scene.fillPortrait}
             data-active={id === variant}
             style={loaded ? {
               backgroundImage: `url('${plate(id)}')`,

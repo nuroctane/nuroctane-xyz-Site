@@ -66,11 +66,16 @@
 
 .bb-wallpaper-video[data-active='true'] { opacity: 1; }
 
-/* The figure and its outstretched hand are one composition; a phone's cover
-   crop loses the hand entirely. Keep the source intact rather than stretching
-   it or animating a different crop. The ink sampler uses this same placement. */
+/* Desktop keeps the full composition. Mobile/portrait intentionally fills the
+   viewport with a centred crop, not a landscape strip with black letterboxes.
+   Both the reduced-motion poster and live video use the same placement. */
 .bb-wallpaper-video[data-fit='contain'] { object-fit: contain; background: #000; }
 .bb-wallpaper-plate[data-fit='contain'] { background-size: contain; background-color: #000; }
+
+@media (max-width: 900px), (max-aspect-ratio: 1/1) {
+  .bb-wallpaper-video[data-fill-portrait='true'] { object-fit: cover; }
+  .bb-wallpaper-plate[data-fill-portrait='true'] { background-size: cover; }
+}
 
 /* ── Canvas: paints the live scene over the matching plate. Hidden until the
       scene's first frame, so a variant switch never shows a stale or empty

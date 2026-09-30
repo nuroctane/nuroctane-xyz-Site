@@ -93,6 +93,8 @@ export interface WallpaperVariant {
   native?: 'blackhole';
   /** Preserve an artwork's composition, with black letterboxing when needed. */
   fit?: 'contain';
+  /** Fill narrow/mobile and portrait viewports, retaining fit on desktop landscape. */
+  fillPortrait?: boolean;
   /** Letterbox placement on narrow screens, leaving the central player clear. */
   mobilePositionY?: number;
   /** Present when the background moves in a way a still plate cannot describe. */
@@ -2162,9 +2164,9 @@ void main() {
   },
 };
 const DISSOLVE: WallpaperVariant = {
-  id: 'dissolve', label: 'Black n White — Dissolve', vertex: VERTEX_SRC,
+  id: 'dissolve', label: 'Black and White — Mikoshi', vertex: VERTEX_SRC,
   fit: 'contain',
-  mobilePositionY: 0.25,
+  fillPortrait: true,
   fragment: VIDEO_FRAGMENT, toneMap: x => x, create: () => null,
   plate: {
     desktop: '/assets/blackboard/dissolve/dissolve.webp',

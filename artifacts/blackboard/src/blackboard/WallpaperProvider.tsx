@@ -215,6 +215,7 @@ export function WallpaperProvider({ children }: { children: ReactNode }) {
       const built = buildLuminanceField(image, image.naturalWidth, image.naturalHeight, scene.toneMap);
       if (built) {
         built.fit = scene.fit;
+        built.fillPortrait = scene.fillPortrait;
         built.positionY = narrow ? scene.mobilePositionY : undefined;
       }
       setField(built);
