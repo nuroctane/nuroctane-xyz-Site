@@ -1,5 +1,5 @@
 ## Index
-- [[#Faith, God & Surrender|Faith, God & Surrender]] (45)
+- [[#Faith, God & Surrender|Faith, God & Surrender]] (46)
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (29)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (58)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (79)
@@ -163,6 +163,9 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 
 > Divinity in a man looks like surrender, accountability & ego mastery. His ability to face his shadows and not flinch makes him untouchable.
 > — @onlysianirose
+
+> Do not allow your past to interfere with your future, but rather leave your missteps to God's divine mercy, your future to His holy providence, & the eternal present to His infinite love.
+> — @AugustusDelano
 
 ## Reality, Consciousness & Perception
 
