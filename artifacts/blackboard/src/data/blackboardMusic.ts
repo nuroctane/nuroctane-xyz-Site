@@ -9,7 +9,7 @@ import { refreshChoice } from '../lib/refreshChoice';
 
    Each entry is an asset pair under public/assets/nodes/music/:
 
-     <id>.mp3  128 kbps, transcoded from the lossless originals
+     <id>.mp3  128 kbps, transcoded from the verified source recording
      <id>.jpg  512x512 artwork, centre-cropped from the file's own cover
 
    That tree lives under /assets/nodes/ on purpose: worker/index.ts range-serves
@@ -25,17 +25,10 @@ export interface BlackboardTrack {
   id: string;
   artist: string;
   title: string;
-  /**
-   * Only where the release is genuinely known. Uploader-supplied tags for the
-   * re-upload sources were junk (playlist names, channel names), so those
-   * tracks carry no album at all rather than a wrong one, and the player hides
-   * the line when it is absent.
-   */
-  album?: string;
 }
 
 export const BLACKBOARD_MUSIC: readonly BlackboardTrack[] = [
-  { id: 'difference-interlude', artist: 'XXXTENTACION', title: 'difference (interlude)', album: 'SKINS' },
+  { id: 'difference-interlude', artist: 'XXXTENTACION', title: 'difference (interlude)' },
   { id: 'the-interlude-that-never-ends', artist: 'XXXTENTACION', title: 'the interlude that never ends/Ugly' },
   { id: 'love-yourself-interlude', artist: 'XXXTENTACION', title: 'love yourself (interlude) (Instrumental)' },
   { id: 'girl-next-door', artist: 'Heavenly Snow', title: 'Girl next door' },
@@ -52,7 +45,20 @@ export const BLACKBOARD_MUSIC: readonly BlackboardTrack[] = [
   { id: 'whatever-i-say-is-royal-ocean', artist: 'Dance Gavin Dance', title: 'Whatever I Say is Royal Ocean' },
   { id: 'thats-allwekando', artist: 'Knxwledge', title: 'thats allwekando.' },
   { id: 'directions', artist: 'Knumears', title: 'Directions' },
-  { id: 'nuts-slowed', artist: 'diorelic', title: 'Nuts (Slowed)' },
+  { id: 'nuts-slowed', artist: 'Lil Peep', title: 'Nuts (Slowed)' },
+  { id: 'recovery-2814', artist: '2814', title: '恢复' },
+  { id: 'honshirabe', artist: 'Adrian Freedman', title: 'Honshirabe' },
+  { id: 'alameda-vieja', artist: 'Moraíto', title: 'Alameda Vieja' },
+  { id: 'colors-speak-true', artist: 'Tides of Man', title: 'Colors Speak True' },
+  { id: 'under-the-house', artist: 'Greaf', title: 'Under The House' },
+  { id: 'untitled-instrumental', artist: 'Dance Gavin Dance', title: 'Untitled (Instrumental)' },
+  { id: 'the-backwards-pumpkin-song-instrumental', artist: 'Dance Gavin Dance', title: 'The Backwards Pumpkin Song (Instrumental)' },
+  { id: 'connector-instrumental', artist: 'A Lot Like Birds', title: 'Connector (Instrumental)' },
+  { id: 'david', artist: 'Animals as Leaders', title: 'David' },
+  { id: 'in-deep-at-your-expense', artist: 'Manacle', title: 'In Deep At Your Expense' },
+  { id: 'discoveries', artist: 'Northlane', title: 'Discoveries' },
+  { id: 'horizon', artist: 'Nujabes', title: 'Horizon' },
+  { id: 'dawn-on-the-side', artist: 'Nujabes', title: 'Dawn on the Side' },
 ];
 
 /** Path relative to /assets/nodes/ — AudioContext resolves it against BASE_URL. */
