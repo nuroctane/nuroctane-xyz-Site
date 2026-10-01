@@ -8,7 +8,7 @@
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (32)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (105)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (64)
-- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (79)
+- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (80)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (46)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (64)
 
@@ -2185,6 +2185,17 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 
 > Imagine if every uncomfortable sensation in your body was just energy trying to move, and the only thing keeping it stuck was your story about what it means.
 > — @PaulNHughes
+
+> It makes more sense when you internalize that women primarily live in their own heads.
+> 
+> Feeling cites feeling to prove feeling. They have much more interhemispheric neural activity: the hemispheres talk to themselves more, looking within, not outside. Hemisphere cites hemisphere to prove hemisphere.
+> 
+> She forms a circle. Loopers. It's true because I believe it, and I believe it because it's true. She is more prone to thinking reality is inside her head.
+> 
+> This is falsely narrated as "spirituality", and it's time to start calling it what it is: neurosis.
+> 
+> And when it's extra mystical: psychosis.
+> — @BackTheBunny
 
 ## Work, Wealth & Value
 
