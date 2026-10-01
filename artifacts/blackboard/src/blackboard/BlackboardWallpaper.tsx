@@ -286,6 +286,10 @@ export function BlackboardWallpaper() {
         else start();
       };
       document.addEventListener('visibilitychange', onVisibility);
+      // Safari can park a page in its back/forward cache without a matching
+      // visibility event. Explicitly resume the animation when it comes back.
+      window.addEventListener('pagehide', stop);
+      window.addEventListener('pageshow', onVisibility);
       onVisibility();
     }
 
@@ -301,6 +305,8 @@ export function BlackboardWallpaper() {
       observer.disconnect();
       window.removeEventListener('resize', onResize);
       if (onVisibility) document.removeEventListener('visibilitychange', onVisibility);
+      window.removeEventListener('pagehide', stop);
+      if (onVisibility) window.removeEventListener('pageshow', onVisibility);
       stop();
       releaseSample();
       runtime.dispose(gl);

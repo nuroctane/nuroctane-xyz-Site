@@ -81,6 +81,7 @@
     "astronomy-engine": "2.1.19",
     "posthog-js": "^1.407.5",
     "postprocessing": "^6.39.1",
+    "satellite.js": "^5.0.0",
     "swisseph-wasm": "^0.0.5",
     "three": "^0.184.0"
   }

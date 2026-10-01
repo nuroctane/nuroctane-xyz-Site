@@ -1,41 +1,43 @@
-/* Observatory — Unified 3D Dashboard — Liquid Glass edition
-   Clear neutral glass: crisp backdrop blur (low saturation so the scene's blue
-   doesn't bleed in), specular rim light, interactive shimmer.
-   Terminal mono type throughout. */
+/* Observatory — OLED black field with a liquid-glass web approximation.
+   Apple's Liquid Glass is a platform material, not a web CSS package.
+   This recipe approximates it: dark translucent fill, backdrop blur,
+   specular rim, and a solid fallback when transparency is reduced. */
 
 .obs-root {
-  /* glass tokens */
-  --glass-bg: rgba(255, 255, 255, 0.07);
-  --glass-bg-strong: rgba(255, 255, 255, 0.12);
-  --glass-stroke: rgba(255, 255, 255, 0.18);
-  --glass-stroke-soft: rgba(255, 255, 255, 0.10);
+  --glass-bg:
+    linear-gradient(165deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.04) 42%, rgba(255, 255, 255, 0.07)),
+    rgba(0, 0, 0, 0.62);
+  --glass-bg-strong:
+    linear-gradient(165deg, rgba(255, 255, 255, 0.22), rgba(255, 255, 255, 0.06) 46%, rgba(255, 255, 255, 0.10)),
+    rgba(0, 0, 0, 0.72);
+  --glass-stroke: rgba(255, 255, 255, 0.28);
+  --glass-stroke-soft: rgba(255, 255, 255, 0.16);
   --glass-specular:
-    inset 0 1px 0 rgba(255, 255, 255, 0.32),
-    inset 0 -1px 0 rgba(255, 255, 255, 0.07),
-    inset 1px 0 0 rgba(255, 255, 255, 0.10),
-    inset -1px 0 0 rgba(255, 255, 255, 0.10);
-  --glass-depth: 0 12px 40px rgba(0, 0, 0, 0.45), 0 2px 10px rgba(0, 0, 0, 0.30);
-  --ink: #f2f6fc;
-  --ink-mid: #bac6d8;
-  --ink-dim: #93a2b9;
-  --accent: #7dd3fc;
-  --accent-strong: #38bdf8;
-  --accent-tint: rgba(125, 211, 252, 0.16);
-  --accent-tint-strong: rgba(125, 211, 252, 0.26);
+    inset 0 1px 0 rgba(255, 255, 255, 0.42),
+    inset 0 -1px 0 rgba(255, 255, 255, 0.08),
+    inset 1px 0 0 rgba(255, 255, 255, 0.08),
+    inset -1px 0 0 rgba(255, 255, 255, 0.06);
+  --glass-depth: 0 18px 50px rgba(0, 0, 0, 0.55), 0 2px 8px rgba(0, 0, 0, 0.45);
+  --ink: #f5f5f5;
+  --ink-mid: #c8c8c8;
+  --ink-dim: #8e8e8e;
+  --accent: #f4f7fb;
+  --accent-strong: #ffffff;
+  --accent-tint: rgba(255, 255, 255, 0.10);
+  --accent-tint-strong: rgba(255, 255, 255, 0.18);
   --mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
 
   position: absolute;
   inset: 0;
-  background: radial-gradient(120% 120% at 20% 10%, #0b1220 0%, #050a14 40%, #02040a 100%);
+  background: #000;
   color: var(--ink);
   font-family: var(--mono);
   overflow: hidden;
   user-select: none;
 }
-.obs-root--unified { background: radial-gradient(140% 140% at 15% 15%, #0e1a2e 0%, #070c18 35%, #02040a 100%); }
+.obs-root--unified { background: #000; }
 
-/* ---- shared glass recipes ---------------------------------------------- */
-/* Clear glass: neutral, crisp, low saturation so the blue scene doesn't bleed in */
+/* ---- liquid-glass-web-approx ------------------------------------------- */
 .obs-panel,
 .obs-tabs,
 .obs-earth-tools--unified,
@@ -44,8 +46,8 @@
 .obs-city-hits,
 .obs-dtp-pop {
   background: var(--glass-bg);
-  -webkit-backdrop-filter: blur(10px) saturate(1.05) brightness(1.12);
-  backdrop-filter: blur(10px) saturate(1.05) brightness(1.12);
+  -webkit-backdrop-filter: blur(22px) saturate(1.45);
+  backdrop-filter: blur(22px) saturate(1.45);
   border: 1px solid var(--glass-stroke);
   box-shadow: var(--glass-depth), var(--glass-specular);
 }
@@ -58,9 +60,12 @@
 .obs-seg > button,
 .obs-world-hint,
 .obs-dtp-trigger {
-  background: var(--glass-bg);
-  -webkit-backdrop-filter: blur(8px) saturate(1.05) brightness(1.10);
-  backdrop-filter: blur(8px) saturate(1.05) brightness(1.10);
+  /* Solid glass fill. Per-chip backdrop-filter over the WebGL canvas is too expensive. */
+  background:
+    linear-gradient(165deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0.05)),
+    rgba(0, 0, 0, 0.78);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
   border: 1px solid var(--glass-stroke-soft);
   box-shadow:
     0 4px 16px rgba(0, 0, 0, 0.30),
@@ -125,7 +130,7 @@
   width: 100%;
   height: 100%;
   border: 0;
-  background: #02040a;
+  background: #000;
 }
 .obs-canvas-host canvas,
 .obs-canvas-host--unified canvas {
@@ -133,7 +138,7 @@
   width: 100% !important;
   height: 100% !important;
 }
-.obs-canvas-host--solar { background: #04060a; }
+.obs-canvas-host--solar { background: #000; }
 
 .obs-loading {
   position: absolute;
@@ -144,7 +149,7 @@
   font-family: var(--mono);
   letter-spacing: 0.08em;
   font-size: 12px;
-  background: #02040a;
+  background: #000;
 }
 
 /* HUD shell */
@@ -253,8 +258,8 @@
 .obs-tabs > button:hover { color: var(--ink); background: rgba(255, 255, 255, 0.09); }
 .obs-tabs > button.is-active {
   background: var(--accent-tint-strong);
-  color: #eaf7ff;
-  border-color: rgba(125, 211, 252, 0.35);
+  color: #f7f7f7;
+  border-color: rgba(255, 255, 255, 0.35);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.35);
 }
 
@@ -271,8 +276,15 @@
   margin-bottom: 0.55rem;
   font-family: var(--mono);
 }
-.obs-panel--scroll-lg { max-height: 380px; overflow: auto; scrollbar-width: thin; }
+.obs-panel--scroll-lg { max-height: 380px; overflow: auto; }
+.obs-panel,
+.obs-panel--scroll-lg {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.28) transparent;
+}
+.obs-panel::-webkit-scrollbar,
 .obs-panel--scroll-lg::-webkit-scrollbar { width: 6px; }
+.obs-panel::-webkit-scrollbar-thumb,
 .obs-panel--scroll-lg::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.22); border-radius: 999px; }
 
 .obs-radio-list { display: flex; flex-direction: column; gap: 0.15rem; }
@@ -290,7 +302,7 @@
 .obs-radio:hover { background: rgba(255, 255, 255, 0.08); color: var(--ink); }
 .obs-radio.is-active {
   background: var(--accent-tint);
-  color: #eaf7ff;
+  color: #f7f7f7;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
 }
 .obs-radio .code { font-weight: 700; color: var(--accent); font-family: var(--mono); }
@@ -326,12 +338,12 @@
 }
 .obs-field input:focus, .obs-field select:focus {
   outline: none;
-  border-color: rgba(125, 211, 252, 0.45);
+  border-color: rgba(255, 255, 255, 0.45);
   background: rgba(255, 255, 255, 0.09);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24), 0 0 0 3px rgba(125, 211, 252, 0.14);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.24), 0 0 0 3px rgba(255, 255, 255, 0.14);
 }
 .obs-field select { color-scheme: dark; }
-.obs-field select option { background: #0b1220; color: var(--ink); }
+.obs-field select option { background: #000; color: var(--ink); }
 
 /* glass slider */
 .obs-field input[type="range"] {
@@ -355,7 +367,7 @@
   height: 16px;
   margin-top: -5px;
   border-radius: 999px;
-  background: linear-gradient(180deg, #ffffff 0%, #cfe4f5 100%);
+  background: linear-gradient(180deg, #ffffff 0%, #d8d8d8 100%);
   border: 1px solid rgba(255, 255, 255, 0.6);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.5), inset 0 1px 0 #fff;
   cursor: pointer;
@@ -386,9 +398,9 @@
 }
 .obs-seg > button.is-active {
   background: var(--accent-tint-strong);
-  color: #eaf7ff;
-  border-color: rgba(125, 211, 252, 0.40);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.38), 0 2px 12px rgba(56, 189, 248, 0.18);
+  color: #f7f7f7;
+  border-color: rgba(255, 255, 255, 0.40);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.38), 0 2px 12px rgba(255, 255, 255, 0.18);
 }
 
 .obs-toggle {
@@ -428,8 +440,8 @@
 .obs-planet-row:hover { background: rgba(255, 255, 255, 0.08); color: var(--ink); }
 .obs-planet-row.is-active {
   background: var(--accent-tint);
-  color: #eaf7ff;
-  border-color: rgba(125, 211, 252, 0.28);
+  color: #f7f7f7;
+  border-color: rgba(255, 255, 255, 0.28);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.22);
 }
 .obs-planet-row .dot { width: 8px; height: 8px; border-radius: 999px; box-shadow: 0 0 8px currentColor; }
@@ -487,7 +499,7 @@
   border: 1px solid var(--glass-stroke-soft);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.14);
 }
-.obs-note { color: var(--ink-mid); border-color: rgba(125, 211, 252, 0.20); background: rgba(125, 211, 252, 0.07); }
+.obs-note { color: var(--ink-mid); border-color: rgba(255, 255, 255, 0.20); background: rgba(255, 255, 255, 0.07); }
 
 /* City search */
 .obs-city-hits {
@@ -542,8 +554,8 @@
   margin-top: 0.45rem;
   padding: 0.35rem 0.6rem;
   border-radius: 999px;
-  background: rgba(125, 211, 252, 0.08);
-  border: 1px solid rgba(125, 211, 252, 0.22);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.22);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.15);
 }
 .obs-earth-status--met { color: #fde68a; border-color: rgba(253, 230, 138, 0.25); background: rgba(253, 230, 138, 0.06); }
@@ -590,13 +602,33 @@
   border-bottom: 1px solid rgba(255, 255, 255, 0.10);
   font-family: var(--mono);
 }
-.obs-solar-mini-canvas { flex: 1; position: relative; background: #04060a; }
+.obs-solar-mini-canvas { flex: 1; position: relative; background: #000; }
 .obs-solar-mini-canvas .obs-canvas-host { position: absolute !important; inset: 0 !important; }
 
 .obs-top--unified { grid-template-columns: 1fr auto auto; }
 .obs-top-center { display: flex; gap: 0.4rem; align-items: center; }
-.obs-hud--unified .obs-left { top: 4.6rem; }
-.obs-hud--unified .obs-right { top: 4.6rem; }
+.obs-hud--unified .obs-left {
+  top: 4.6rem;
+  bottom: 6.6rem;
+}
+.obs-hud--unified .obs-left > .obs-panel {
+  flex: 0 1 auto;
+  min-height: 0;
+  max-height: 100%;
+  overflow: auto;
+}
+.obs-hud--unified .obs-right {
+  top: 4.6rem;
+  bottom: auto;
+  max-height: calc(100vh - 10.5rem);
+}
+.obs-panel--planets,
+.obs-panel--aspects {
+  min-height: 0;
+  overflow: auto;
+}
+.obs-panel--planets { flex: 1 1 auto; }
+.obs-panel--aspects { flex: 0 1 11rem; }
 
 /* Missions legacy */
 .obs-missions { position: absolute; inset: 0; display: grid; grid-template-columns: 1fr 340px; }
@@ -616,9 +648,42 @@
   .obs-solar-mini { right: 300px; width: 340px; height: 260px; }
 }
 @media (max-width: 960px) {
-  .obs-left, .obs-right { display: none; }
+  .obs-hud--unified .obs-left {
+    display: flex;
+    top: auto;
+    bottom: max(3.25rem, calc(env(safe-area-inset-bottom) + 3.25rem));
+    left: 0.45rem;
+    right: 0.45rem;
+    width: auto;
+    max-height: min(46vh, 440px);
+    z-index: 40;
+  }
+  .obs-hud--unified .obs-right {
+    display: flex;
+    top: 4.2rem;
+    right: 0.45rem;
+    left: auto;
+    width: min(260px, 68vw);
+    max-height: 30vh;
+    bottom: auto;
+  }
+  .obs-world-ui {
+    top: 4.15rem;
+    bottom: auto;
+    left: 0.45rem;
+    max-width: min(52vw, 280px);
+  }
+  .obs-anchor-bar { max-width: 50vw; }
   .obs-solar-mini { right: 1rem; left: 1rem; width: auto; bottom: 1rem; height: 220px; }
   .obs-earth-tools--unified { display: none; }
+}
+@media (max-width: 640px) {
+  /* Keep the scene visible and reserve the bottom edge for site navigation.
+     Planet selection and time controls remain in the tabbed mobile panel. */
+  .obs-hud--unified .obs-right { display: none; }
+  .obs-top-center { display: none; }
+  .obs-top--unified { grid-template-columns: 1fr auto; }
+  .obs-sub { max-width: calc(100vw - 5rem); }
 }
 .obs-label--planet { display: inline-flex; align-items: center; gap: 0.32rem; font-weight: 600; letter-spacing: 0.04em; }
 .obs-label-dot { width: 7px; height: 7px; border-radius: 999px; display: inline-block; box-shadow: 0 0 8px currentColor; }
@@ -638,7 +703,7 @@
   border-radius: 999px;
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
-.obs-solar-mini-hd .obs-pill { background: rgba(125, 211, 252, 0.12); border-color: rgba(125, 211, 252, 0.25); color: var(--accent); }
+.obs-solar-mini-hd .obs-pill { background: rgba(255, 255, 255, 0.12); border-color: rgba(255, 255, 255, 0.25); color: var(--accent); }
 
 .obs-hover-tip {
   position: absolute;
@@ -675,8 +740,8 @@
 .obs-tooltip--aspect .obs-tooltip-hd { font-weight: 700; color: #ffffff; margin-bottom: 0.2rem; border-left: 3px solid; padding-left: 0.4rem; }
 .obs-tooltip--instant { transition: none !important; animation: none !important; opacity: 1; }
 .obs-tooltip--billboard { transform: translate3d(12px, -14px, 0) !important; will-change: transform; backface-visibility: hidden; -webkit-font-smoothing: antialiased; }
-.obs-label.is-hover { background: var(--accent-tint-strong) !important; border-color: rgba(125, 211, 252, 0.45) !important; color: #eaf7ff !important; }
-.obs-label.is-active { background: rgba(125, 211, 252, 0.32) !important; border-color: rgba(125, 211, 252, 0.55) !important; }
+.obs-label.is-hover { background: var(--accent-tint-strong) !important; border-color: rgba(255, 255, 255, 0.45) !important; color: #f7f7f7 !important; }
+.obs-label.is-active { background: rgba(255, 255, 255, 0.32) !important; border-color: rgba(255, 255, 255, 0.55) !important; }
 
 /* labels render at fixed screen size (no distanceFactor scaling) — always small, always legible */
 .obs-label { max-width: 150px; font-size: 10px !important; line-height: 1.2; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
@@ -711,7 +776,7 @@
   inset: 0;
   width: 100%;
   height: 100%;
-  background: radial-gradient(140% 140% at 15% 15%, #0e1a2e 0%, #070c18 34%, #02040a 100%);
+  background: #000;
 }
 .obs-unified-world canvas {
   display: block;
@@ -721,14 +786,17 @@
 .obs-world-ui {
   position: absolute;
   left: 1rem;
-  bottom: 1rem;
+  right: 1rem;
+  bottom: 0.85rem;
   z-index: 35;
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-  align-items: center;
-  pointer-events: auto;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+  max-width: calc(100vw - 2rem);
+  pointer-events: none;
 }
+.obs-world-ui > * { pointer-events: auto; }
 .obs-world-ui .obs-pill--action {
   appearance: none;
   background: var(--glass-bg);
@@ -753,9 +821,9 @@
 }
 .obs-world-ui .obs-pill--action.is-active {
   background: var(--accent-tint-strong);
-  border-color: rgba(125, 211, 252, 0.45);
-  color: #eaf7ff;
-  box-shadow: 0 0 0 1px rgba(125, 211, 252, 0.22), 0 6px 22px rgba(56, 189, 248, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.38);
+  border-color: rgba(255, 255, 255, 0.45);
+  color: #f7f7f7;
+  box-shadow: 0 0 0 1px rgba(255, 255, 255, 0.22), 0 6px 22px rgba(255, 255, 255, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.38);
 }
 .obs-world-ui .obs-pill--stats {
   background: var(--glass-bg);
@@ -815,7 +883,7 @@
   gap: 0.32rem;
   flex-wrap: nowrap;
   overflow-x: auto;
-  max-width: 72vw;
+  max-width: 100%;
   padding-bottom: 0.15rem;
   margin-bottom: 0.35rem;
   scrollbar-width: none;
@@ -841,9 +909,9 @@
 .obs-pill--anchor:hover { background: var(--glass-bg-strong); border-color: var(--glass-stroke); color: var(--ink); transform: translateY(-1px); }
 .obs-pill--anchor.is-active {
   background: var(--accent-tint-strong);
-  border-color: rgba(125, 211, 252, 0.42);
-  color: #eaf7ff;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.38), 0 2px 14px rgba(56, 189, 248, 0.20);
+  border-color: rgba(255, 255, 255, 0.42);
+  color: #f7f7f7;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.38), 0 2px 14px rgba(255, 255, 255, 0.20);
 }
 
 /* --- themed date pickers (legacy native inputs; glass) --- */
@@ -853,15 +921,15 @@
   border: 1px solid var(--glass-stroke-soft) !important;
 }
 .obs-input--themed:focus {
-  border-color: rgba(125, 211, 252, 0.45) !important;
+  border-color: rgba(255, 255, 255, 0.45) !important;
   background: rgba(255, 255, 255, 0.09) !important;
-  box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.14);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.14);
 }
 .obs-field input[type="date"]::-webkit-calendar-picker-indicator,
 .obs-field input[type="time"]::-webkit-calendar-picker-indicator,
 .obs-field input[type="datetime-local"]::-webkit-calendar-picker-indicator,
 .obs-input--themed::-webkit-calendar-picker-indicator {
-  filter: invert(0.85) sepia(0.08) saturate(1.2) hue-rotate(175deg) brightness(1.2);
+  filter: invert(0.92) brightness(1.15);
   opacity: 0.85;
   cursor: pointer;
   padding: 2px;
@@ -871,7 +939,7 @@
 .obs-field input[type="date"]::-webkit-calendar-picker-indicator:hover,
 .obs-field input[type="time"]::-webkit-calendar-picker-indicator:hover,
 .obs-field input[type="datetime-local"]::-webkit-calendar-picker-indicator:hover {
-  filter: invert(0.95) sepia(0.08) saturate(1.4) hue-rotate(175deg) brightness(1.4);
+  filter: invert(1) brightness(1.3);
   opacity: 1;
 }
 /* date edit parts */
@@ -890,7 +958,7 @@
 .obs-field input::-webkit-datetime-edit-year-field:focus,
 .obs-field input::-webkit-datetime-edit-hour-field:focus,
 .obs-field input::-webkit-datetime-edit-minute-field:focus {
-  background: rgba(125, 211, 252, 0.28);
+  background: rgba(255, 255, 255, 0.28);
   color: #ffffff;
   border-radius: 3px;
 }
@@ -935,8 +1003,8 @@
 /* sat active */
 .obs-mini.is-active {
   background: var(--accent-tint-strong);
-  color: #eaf7ff;
-  border-color: rgba(125, 211, 252, 0.40);
+  color: #f7f7f7;
+  border-color: rgba(255, 255, 255, 0.40);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.36);
 }
 
@@ -948,7 +1016,7 @@
 .obs-icon-btn:focus-visible,
 .obs-dtp-trigger:focus-visible,
 .obs-dtp-cell:focus-visible {
-  outline: 2px solid rgba(125, 211, 252, 0.6);
+  outline: 2px solid rgba(255, 255, 255, 0.6);
   outline-offset: 1px;
 }
 
@@ -970,8 +1038,8 @@
   text-align: left;
 }
 .obs-dtp-trigger.is-open {
-  border-color: rgba(125, 211, 252, 0.45);
-  box-shadow: 0 0 0 3px rgba(125, 211, 252, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.30);
+  border-color: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.14), inset 0 1px 0 rgba(255, 255, 255, 0.30);
 }
 .obs-dtp-value { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .obs-dtp-icon { color: var(--ink-dim); font-size: 9px; }
@@ -1032,7 +1100,7 @@
   padding: 0.2rem 0.3rem;
 }
 .obs-dtp-year::-webkit-inner-spin-button, .obs-dtp-year::-webkit-outer-spin-button { -webkit-appearance: none; }
-.obs-dtp-year:focus { outline: none; border-color: rgba(125, 211, 252, 0.45); }
+.obs-dtp-year:focus { outline: none; border-color: rgba(255, 255, 255, 0.45); }
 .obs-dtp-dow {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
@@ -1075,13 +1143,13 @@
   border-color: var(--glass-stroke-soft);
   transform: scale(1.06);
 }
-.obs-dtp-cell.is-today { border-color: rgba(125, 211, 252, 0.40); color: var(--accent); }
+.obs-dtp-cell.is-today { border-color: rgba(255, 255, 255, 0.40); color: var(--accent); }
 .obs-dtp-cell.is-selected {
   background: var(--accent-tint-strong);
-  border-color: rgba(125, 211, 252, 0.55);
-  color: #eaf7ff;
+  border-color: rgba(255, 255, 255, 0.55);
+  color: #f7f7f7;
   font-weight: 700;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.40), 0 2px 10px rgba(56, 189, 248, 0.25);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.40), 0 2px 10px rgba(255, 255, 255, 0.25);
 }
 .obs-dtp-foot {
   display: flex;
@@ -1101,4 +1169,91 @@
   font-size: 11px;
   padding: 0.28rem 0.55rem;
 }
-.obs-dtp-time:focus { outline: none; border-color: rgba(125, 211, 252, 0.45); }
+.obs-dtp-time:focus { outline: none; border-color: rgba(255, 255, 255, 0.45); }
+
+/* Repeated chips and in-scene labels stay opaque glass. Blur stays on the panels. */
+.obs-label,
+.obs-star-label,
+.obs-city-label,
+.obs-pill--anchor,
+.obs-world-ui .obs-pill--action,
+.obs-world-ui .obs-pill--stats,
+.obs-tooltip,
+.obs-solar-legend {
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  background:
+    linear-gradient(165deg, rgba(255, 255, 255, 0.14), rgba(255, 255, 255, 0.04)),
+    rgba(0, 0, 0, 0.78);
+}
+
+.obs-stream {
+  margin-left: auto;
+  font-size: 9px;
+  letter-spacing: 0.04em;
+  color: var(--ink-dim);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .obs-fab,
+  .obs-icon-btn,
+  .obs-mini,
+  .obs-seg > button,
+  .obs-tabs > button,
+  .obs-pill--action,
+  .obs-pill--anchor,
+  .obs-planet-row,
+  .obs-radio,
+  .obs-toggle,
+  .obs-dtp-trigger,
+  .obs-dtp-nav,
+  .obs-dtp-cell {
+    transition: none;
+  }
+  .obs-fab:hover,
+  .obs-icon-btn:hover,
+  .obs-mini:hover,
+  .obs-seg > button:hover,
+  .obs-pill--action:hover,
+  .obs-pill--anchor:hover,
+  .obs-dtp-trigger:hover,
+  .obs-dtp-nav:hover,
+  .obs-dtp-cell:not(.obs-dtp-cell--empty):hover {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .obs-panel,
+  .obs-tabs,
+  .obs-earth-tools--unified,
+  .obs-solar-mini,
+  .obs-missions-list,
+  .obs-city-hits,
+  .obs-dtp-pop,
+  .obs-fab,
+  .obs-icon-btn,
+  .obs-mini,
+  .obs-pill,
+  .obs-seg > button,
+  .obs-world-hint,
+  .obs-dtp-trigger,
+  .obs-label,
+  .obs-tooltip,
+  .obs-star-label,
+  .obs-city-label {
+    background: #0a0a0a;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+}
+
+@media (max-width: 960px) {
+  .obs-unified-world .obs-world-ui {
+    top: 4.15rem;
+    bottom: auto;
+    left: 0.45rem;
+    max-width: min(52vw, 280px);
+  }
+  .obs-unified-world .obs-anchor-bar { max-width: 50vw; }
+}

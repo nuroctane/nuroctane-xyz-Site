@@ -192,3 +192,86 @@ function imageSize(bytes: Buffer): [number, number] | null {
   }
   return null;
 }
+
+
+// Black Waves used CLAMP for its scrolling normal map. After a few minutes
+// both samples hit constant edge texels: drawing kept running but motion stopped.
+// Exercise the runtime bindings as well as the large-time phase calculation.
+const { WAVES } = await import('../artifacts/blackboard/src/blackboard/wallpaper/variants');
+const { wavesPhase } = await import('../artifacts/blackboard/src/blackboard/wallpaper/wavesPhase');
+const originalImage = Object.getOwnPropertyDescriptor(globalThis, 'Image');
+const images: FakeImage[] = [];
+class FakeImage {
+  decoding = '';
+  src = '';
+  onload: (() => void) | null = null;
+  onerror: (() => void) | null = null;
+  get width() { return this.src.includes('normal') ? 256 : 2560; }
+  get height() { return this.src.includes('normal') ? 256 : 1440; }
+  get naturalWidth() { return this.width; }
+  get naturalHeight() { return this.height; }
+  constructor() { images.push(this); }
+}
+Object.defineProperty(globalThis, 'Image', { configurable: true, value: FakeImage });
+try {
+  let unit = 0;
+  let lastPhase: [number, number] = [0, 0];
+  const wraps: Array<[number, string, string]> = [];
+  let draws = 0;
+  const gl = {
+    TEXTURE0: 0, TEXTURE_2D: 'texture', TEXTURE_WRAP_S: 's', TEXTURE_WRAP_T: 't',
+    REPEAT: 'repeat', CLAMP_TO_EDGE: 'clamp', LINEAR: 'linear', TRIANGLE_STRIP: 'strip',
+    drawingBufferWidth: 1024, drawingBufferHeight: 1366,
+    getUniformLocation: (_program: unknown, name: string) => name,
+    uniform1i() {}, uniform1f() {},
+    uniform2f: (_name: string, x: number, y: number) => { lastPhase = [x, y]; },
+    createTexture: () => ({}), activeTexture: (index: number) => { unit = index; },
+    bindTexture() {}, pixelStorei() {}, texImage2D() {},
+    texParameteri: (_target: string, param: string, value: string) => {
+      if (param === 's' || param === 't') wraps.push([unit, param, value]);
+    },
+    drawArrays: () => { draws++; }, deleteTexture() {},
+  };
+  const context = gl as unknown as WebGLRenderingContext;
+  const runtime = WAVES.create(context, {} as WebGLProgram, true)!;
+  assert.equal(runtime.frame(context, 0), false, 'wait for both textures');
+  assert.equal(images.length, 2, 'only the plate and normal map are needed');
+  for (const image of images) image.onload?.();
+  assert.deepEqual(wraps.filter(([unit]) => unit === 1), [[1, 's', 'repeat'], [1, 't', 'repeat']]);
+  assert.deepEqual(wraps.filter(([unit]) => unit === 0), [[0, 's', 'clamp'], [0, 't', 'clamp']]);
+  for (const [width, height] of [[375, 812], [768, 1024], [1024, 1366], [1366, 1024], [1920, 1080]]) {
+    gl.drawingBufferWidth = width;
+    gl.drawingBufferHeight = height;
+    const aspect = width / height;
+    for (const seconds of [0, 180, 600, 3600, 86400, 604800]) {
+      assert(runtime.frame(context, seconds));
+      const before = [...lastPhase];
+      assert(lastPhase.every(value => value >= 0 && value < 1));
+      runtime.frame(context, seconds + 1 / 30);
+      assert.notDeepEqual(lastPhase, before, 'motion must advance after minutes, days and suspension');
+      // Wrapping each final coordinate preserves the continuous original phase
+      // modulo the repeating texture, even on non-square tablets.
+      const phase = wavesPhase(seconds, aspect);
+      for (const axis of [0, 1]) {
+        const unbounded = seconds * 0.12 * 0.12 * 0.3 * (axis === 0 ? aspect : 1.68);
+        assert(Math.abs(phase[axis] - (unbounded - Math.floor(unbounded))) < 1e-9);
+      }
+    }
+    // Each axis has a different period. Its wrap must meet the same texture
+    // coordinate without a jump, rather than resetting time for both axes.
+    for (const factor of [aspect, 1.68]) {
+      const period = 1 / (0.12 * 0.12 * 0.3 * factor);
+      const axis = factor === aspect ? 0 : 1;
+      const before = wavesPhase(period - 0.0001, aspect)[axis];
+      const after = wavesPhase(period + 0.0001, aspect)[axis];
+      assert((1 - before) + after < 0.00001);
+    }
+  }
+  assert.equal(draws, 60);
+  runtime.dispose(context);
+  assert(images.every(image => image.onload === null && image.onerror === null));
+  console.log('Black Waves: repeating normal map, bounded phase and long-running motion passed at phone/tablet/desktop aspects.');
+} finally {
+  if (originalImage) Object.defineProperty(globalThis, 'Image', originalImage);
+  else delete (globalThis as { Image?: unknown }).Image;
+}

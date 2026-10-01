@@ -190,9 +190,11 @@ export const SATELLITE_GROUPS: SatelliteGroupMeta[] = [
   { id: 'cosmos', label: 'Cosmos & Legacy', color: '#71717a', owner: 'RU / Legacy', count: 400 },
   { id: 'other', label: 'Other', color: '#64748b', owner: 'Mixed', count: 298 },
 ];
+const HEAVY_SAT_GROUPS = new Set<SatelliteGroupId>(['starlink', 'oneweb', 'planet', 'debris']);
+
 export function defaultSatelliteEnabled(): Record<SatelliteGroupId, boolean> {
   const out = {} as Record<SatelliteGroupId, boolean>;
-  for (const g of SATELLITE_GROUPS) out[g.id] = true;
+  for (const g of SATELLITE_GROUPS) out[g.id] = !HEAVY_SAT_GROUPS.has(g.id);
   return out;
 }
 

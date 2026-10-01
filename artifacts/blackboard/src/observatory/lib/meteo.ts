@@ -14,28 +14,45 @@ export type QuakeFeature = {
   depth: number;
 };
 
-export async function fetchEarthquakes(): Promise<QuakeFeature[]> {
+const QUAKE_TTL_MS = 10 * 60 * 1000;
+let quakeCache: { at: number; data: QuakeFeature[] } | null = null;
+
+function notifyStream(id: string, state: 'live' | 'cached' | 'error', detail: string) {
+  if (typeof window === 'undefined') return;
+  window.dispatchEvent(new CustomEvent('obs-stream', { detail: { id, state, detail } }));
+}
+
+export async function fetchEarthquakes(signal?: AbortSignal): Promise<QuakeFeature[]> {
+  if (quakeCache && Date.now() - quakeCache.at < QUAKE_TTL_MS) {
+    notifyStream('quakes', 'cached', `${quakeCache.data.length} quakes`);
+    return quakeCache.data;
+  }
   try {
-    const url = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/all_day.geojson';
-    const r = await fetch(url);
+    const url = 'https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_day.geojson';
+    const r = await fetch(url, { signal });
     if (!r.ok) throw new Error(`USGS ${r.status}`);
-    const j = (await r.json()) as any;
+    const j = (await r.json()) as { features?: Array<{ id?: string; geometry?: { coordinates?: number[] }; properties?: { mag?: number; place?: string; time?: number } }> };
     const feats: QuakeFeature[] = [];
     for (const f of j.features ?? []) {
-      const [lon, lat, depth] = f.geometry?.coordinates ?? [0, 0, 0];
+      const [lon, lat, depth] = f.geometry?.coordinates ?? [];
+      if (!Number.isFinite(lat) || !Number.isFinite(lon)) continue;
       feats.push({
-        id: f.id,
+        id: String(f.id ?? feats.length),
         mag: f.properties?.mag ?? 0,
         place: f.properties?.place ?? '',
         time: f.properties?.time ?? 0,
         lat,
         lon,
-        depth,
+        depth: depth ?? 0,
       });
     }
+    quakeCache = { at: Date.now(), data: feats };
+    notifyStream('quakes', 'live', `${feats.length} quakes`);
     return feats;
-  } catch {
-    return [];
+  } catch (err) {
+    if ((err as { name?: string }).name === 'AbortError') return quakeCache?.data ?? [];
+    notifyStream('quakes', 'error', 'USGS feed unavailable');
+    return quakeCache?.data ?? [];
   }
 }
 
@@ -49,30 +66,73 @@ export type EonetEvent = {
   link: string;
 };
 
-export async function fetchEonet(): Promise<EonetEvent[]> {
+const EONET_TTL_MS = 15 * 60 * 1000;
+let eonetCache: { at: number; data: EonetEvent[] } | null = null;
+
+/** Point, or the first ring of a polygon / multipolygon. */
+function eonetPoint(coords: unknown): { lon: number; lat: number } | null {
+  if (!Array.isArray(coords) || coords.length < 2) return null;
+  if (typeof coords[0] === 'number' && typeof coords[1] === 'number') {
+    return { lon: coords[0], lat: coords[1] };
+  }
+  const ring = Array.isArray(coords[0]) && typeof coords[0][0] === 'number'
+    ? coords
+    : Array.isArray(coords[0]) && Array.isArray(coords[0][0])
+      ? coords[0]
+      : null;
+  if (!ring) return null;
+  let lon = 0;
+  let lat = 0;
+  let n = 0;
+  for (const pair of ring.slice(0, 12)) {
+    if (!Array.isArray(pair) || typeof pair[0] !== 'number' || typeof pair[1] !== 'number') continue;
+    lon += pair[0];
+    lat += pair[1];
+    n += 1;
+  }
+  return n ? { lon: lon / n, lat: lat / n } : null;
+}
+
+export async function fetchEonet(signal?: AbortSignal): Promise<EonetEvent[]> {
+  if (eonetCache && Date.now() - eonetCache.at < EONET_TTL_MS) {
+    notifyStream('eonet', 'cached', `${eonetCache.data.length} events`);
+    return eonetCache.data;
+  }
   try {
     const url = 'https://eonet.gsfc.nasa.gov/api/v3/events?limit=80&status=open&days=30';
-    const r = await fetch(url);
+    const r = await fetch(url, { signal });
     if (!r.ok) throw new Error(`EONET ${r.status}`);
-    const j = (await r.json()) as any;
+    const j = (await r.json()) as {
+      events?: Array<{
+        id?: string;
+        title?: string;
+        link?: string;
+        categories?: Array<{ title?: string }>;
+        geometry?: Array<{ date?: string; coordinates?: unknown }>;
+      }>;
+    };
     const out: EonetEvent[] = [];
     for (const ev of j.events ?? []) {
       const geom = ev.geometry?.[ev.geometry.length - 1];
-      const coords = geom?.coordinates;
-      if (!coords || coords.length < 2) continue;
+      const point = eonetPoint(geom?.coordinates);
+      if (!point) continue;
       out.push({
-        id: ev.id,
-        title: ev.title,
+        id: String(ev.id ?? out.length),
+        title: ev.title ?? 'Event',
         category: ev.categories?.[0]?.title ?? 'Event',
         date: geom?.date ?? '',
-        lat: coords[1],
-        lon: coords[0],
+        lat: point.lat,
+        lon: point.lon,
         link: ev.link ?? `https://eonet.gsfc.nasa.gov/api/v3/events/${ev.id}`,
       });
     }
+    eonetCache = { at: Date.now(), data: out };
+    notifyStream('eonet', 'live', `${out.length} events`);
     return out;
-  } catch {
-    return [];
+  } catch (err) {
+    if ((err as { name?: string }).name === 'AbortError') return eonetCache?.data ?? [];
+    notifyStream('eonet', 'error', 'EONET feed unavailable');
+    return eonetCache?.data ?? [];
   }
 }
 
@@ -99,7 +159,7 @@ export type WindSample = { lat: number; lon: number; u: number; v: number };
 /**
  * Denser global wind grid synthetic fallback — trades + westerlies — for high visibility.
  */
-export async function fetchGlobalWindGrid(): Promise<WindSample[]> {
+export function fetchGlobalWindGrid(): WindSample[] {
   const lats = [-60, -45, -30, -15, 0, 15, 30, 45, 60];
   const lons = [-180, -150, -120, -90, -60, -30, 0, 30, 60, 90, 120, 150];
   const out: WindSample[] = [];
@@ -114,7 +174,7 @@ export async function fetchGlobalWindGrid(): Promise<WindSample[]> {
       } else {
         dir = lat > 0 ? 90 + Math.sin((lat * 0.7 * Math.PI) / 180) * 20 : 270 + Math.sin((lat * 0.7 * Math.PI) / 180) * 15;
       }
-      const speed = 4 + Math.abs(Math.sin((lat * 2 * Math.PI) / 180)) * 8 + Math.random() * 3.5;
+      const speed = 4 + Math.abs(Math.sin((lat * 2 * Math.PI) / 180)) * 8;
       const rad = (dir * Math.PI) / 180;
       out.push({ lat, lon, u: Math.cos(rad) * speed, v: Math.sin(rad) * speed });
     }
@@ -123,43 +183,61 @@ export async function fetchGlobalWindGrid(): Promise<WindSample[]> {
 }
 
 /**
- * Real wind sampling via Open-Meteo — denser 9x13 grid for visible layer.
+ * Real wind sampling via Open-Meteo — a 9x11 grid for the visible layer.
  * Uses https://open-meteo.com/ (no key, CORS). Falls back to synthetic if fails.
  */
-export async function fetchRealWindGrid(): Promise<WindSample[]> {
-  const gridLats = [-60, -45, -30, -15, 0, 15, 30, 45, 60];
-  const gridLons = [-150, -120, -90, -60, -30, 0, 30, 60, 90, 120, 150];
-  const tasks: Promise<WindSample>[] = [];
+const WIND_TTL_MS = 30 * 60 * 1000;
+let windCache: { at: number; data: WindSample[] } | null = null;
 
-  for (const lat of gridLats) {
-    for (const lon of gridLons) {
-      tasks.push(
-        (async (): Promise<WindSample> => {
-          try {
-            const url = `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=wind_speed_10m,wind_direction_10m&wind_speed_unit=ms&timezone=UTC`;
-            const r = await fetch(url);
-            if (!r.ok) throw new Error('om');
-            const j = (await r.json()) as any;
-            const speed = Number(j.current?.wind_speed_10m ?? 5);
-            const dir = Number(j.current?.wind_direction_10m ?? 0);
-            const toRad = ((dir + 180) % 360) * Math.PI / 180;
-            return { lat, lon, u: Math.cos(toRad) * speed, v: Math.sin(toRad) * speed };
-          } catch {
-            const dir = lat > 0 ? 270 : 90;
-            const rad = (dir * Math.PI) / 180;
-            return { lat, lon, u: Math.cos(rad) * 4, v: Math.sin(rad) * 4 };
-          }
-        })(),
-      );
+const WIND_LATS = [-60, -45, -30, -15, 0, 15, 30, 45, 60];
+const WIND_LONS = [-150, -120, -90, -60, -30, 0, 30, 60, 90, 120, 150];
+
+export function windFromCurrent(lat: number, lon: number, speed: number, dir: number): WindSample {
+  const toRad = ((dir + 180) % 360) * Math.PI / 180;
+  return { lat, lon, u: Math.sin(toRad) * speed, v: Math.cos(toRad) * speed };
+}
+
+/**
+ * One Open-Meteo request for the whole grid. The previous path issued a
+ * request per cell (~100) and tripped the public rate limit.
+ */
+export async function fetchRealWindGrid(signal?: AbortSignal): Promise<WindSample[]> {
+  if (windCache && Date.now() - windCache.at < WIND_TTL_MS) {
+    notifyStream('wind', 'cached', `${windCache.data.length} samples`);
+    return windCache.data;
+  }
+  const lats: number[] = [];
+  const lons: number[] = [];
+  for (const lat of WIND_LATS) {
+    for (const lon of WIND_LONS) {
+      lats.push(lat);
+      lons.push(lon);
     }
   }
-
   try {
-    const results = await Promise.allSettled(tasks);
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${lats.join(',')}&longitude=${lons.join(',')}&current=wind_speed_10m,wind_direction_10m&wind_speed_unit=ms&timezone=UTC`;
+    const r = await fetch(url, { signal });
+    if (!r.ok) throw new Error(`open-meteo ${r.status}`);
+    const json = await r.json() as
+      | { latitude?: number; longitude?: number; current?: { wind_speed_10m?: number; wind_direction_10m?: number } }
+      | Array<{ latitude?: number; longitude?: number; current?: { wind_speed_10m?: number; wind_direction_10m?: number } }>;
+    const rows = Array.isArray(json) ? json : [json];
     const out: WindSample[] = [];
-    for (const r of results) if (r.status === 'fulfilled') out.push(r.value);
-    return out.length > 5 ? out : await fetchGlobalWindGrid();
-  } catch {
-    return fetchGlobalWindGrid();
+    for (let i = 0; i < lats.length; i++) {
+      const row = rows[i];
+      const speed = row?.current?.wind_speed_10m;
+      const dir = row?.current?.wind_direction_10m;
+      if (typeof speed !== 'number' || typeof dir !== 'number' || !Number.isFinite(speed) || !Number.isFinite(dir)) continue;
+      out.push(windFromCurrent(row?.latitude ?? lats[i]!, row?.longitude ?? lons[i]!, speed, dir));
+    }
+    if (out.length < 8) throw new Error('open-meteo short');
+    windCache = { at: Date.now(), data: out };
+    notifyStream('wind', 'live', `${out.length} samples`);
+    return out;
+  } catch (err) {
+    if ((err as { name?: string }).name === 'AbortError') return windCache?.data ?? [];
+    const fallback = fetchGlobalWindGrid();
+    notifyStream('wind', 'cached', 'modeled trades');
+    return fallback;
   }
 }

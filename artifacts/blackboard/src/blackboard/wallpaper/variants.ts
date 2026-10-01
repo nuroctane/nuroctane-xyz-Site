@@ -17,6 +17,7 @@
 
 import { createQuad, loadImage, makeNoiseCanvas, makeNormalCanvas, uploadTexture } from './gl';
 import { linearToSrgb, srgbToLinear } from './luminance';
+import { wavesPhase } from './wavesPhase';
 
 export type WallpaperId =
   | 'abstract'
@@ -647,14 +648,11 @@ ${PRECISION}
 varying vec2 vUv;
 uniform sampler2D uImage;
 uniform sampler2D uNormal;
-uniform sampler2D uFlowMask;
-uniform sampler2D uPhase;
-uniform float uTime;
+uniform vec2 uRipplePhase;
 uniform float uAspect;
 uniform float uImageAspect;
 uniform float uBoost;
 ${COMMON_GLSL}
-${WATERFLOW_GLSL}
 // effects/waterripple vertex, rewritten as a uv displacement:
 //   v_TexCoordRipple.xy = uv + time * animationspeed^2 + scroll
 //   v_TexCoordRipple.zw = uv * 1.333 - time * animationspeed^2 + scroll
@@ -671,14 +669,15 @@ ${WATERFLOW_GLSL}
 // which lands the motion at a visible shimmer without turning the water to jelly.
 // This is a deliberate departure from the source scene; the ported constants are
 // noted above so the original values stay recoverable.
-vec2 rippleUv(vec2 uv, float t) {
-  float phase = 0.12 * 0.12 * t;
+vec2 rippleUv(vec2 uv) {
   vec4 rp;
-  rp.xy = uv + vec2(phase);
-  rp.zw = uv * 1.333 - vec2(phase);
+  rp.xy = uv;
+  rp.zw = uv * 1.333;
   rp *= 0.3;
   rp.xz *= uAspect;
   rp.yw *= 1.68;
+  rp.xy += uRipplePhase;
+  rp.zw -= uRipplePhase;
 
   vec3 n1 = texture2D(uNormal, rp.xy).xyz * 2.0 - 1.0;
   vec3 n2 = texture2D(uNormal, rp.zw).xyz * 2.0 - 1.0;
@@ -690,21 +689,10 @@ vec2 rippleUv(vec2 uv, float t) {
 }
 
 void main() {
-  float t = uTime;
   vec2 uv = coverUv(vUv);
-
-  // waterflow runs first, and waterripple samples its output, so the ripple's
-  // displaced coordinate is fed back through the waterflow displacement at that
-  // point. waterflow here is speed 0.17, strength 0.05, phasescale 0.01 — the
-  // phase map is read at a hundredth of the uv, not the 2x the blossom scene
-  // uses. Its mask is util/noflow, Wallpaper Engine's flat neutral 127: 127/255
-  // is 0.498, so flowMask comes out at ~8e-5 and the pass moves the plate by
-  // ~4e-7 uv, a thousandth of a pixel. It is inert, and the source keeps the
-  // effect "visible": false anyway. It is ported because the scene defines it;
-  // feather is unset in the scene and unsupported by this build's shader, so the
-  // shared 0.5 default shapes a crossfade that cannot be seen either way.
-  vec2 rippled = rippleUv(uv, t);
-  vec3 col = waterflow(rippled, t, 0.17, 0.05, 0.5, 0.01);
+  // The source waterflow pass is disabled and its noflow mask is neutral.
+  // Sampling the plate directly keeps that result without four inert taps.
+  vec3 col = texture2D(uImage, rippleUv(uv)).rgb;
   gl_FragColor = vec4(monochrome(col), 1.0);
 }
 `;
@@ -1280,17 +1268,14 @@ export const WAVES: WallpaperVariant = {
   plate: WAVES_PLATE,
   vertex: VERTEX_SRC,
   fragment: WAVES_FRAGMENT,
-  // Displacement only, and a small one: the ripple bends uv by at most 0.08^2
-  // of the normal map's xy, and the waterflow is inert. No level changes.
+  // Displacement only; the plate levels remain unchanged.
   // Identity. Confident.
   toneMap: srgb => srgb,
   create(gl, program, mobile) {
     gl.uniform1i(gl.getUniformLocation(program, 'uImage'), 0);
     gl.uniform1i(gl.getUniformLocation(program, 'uNormal'), 1);
-    gl.uniform1i(gl.getUniformLocation(program, 'uFlowMask'), 2);
-    gl.uniform1i(gl.getUniformLocation(program, 'uPhase'), 3);
 
-    const uTime = gl.getUniformLocation(program, 'uTime');
+    const uRipplePhase = gl.getUniformLocation(program, 'uRipplePhase');
     const uAspect = gl.getUniformLocation(program, 'uAspect');
     const uImageAspect = gl.getUniformLocation(program, 'uImageAspect');
 
@@ -1304,14 +1289,11 @@ export const WAVES: WallpaperVariant = {
     const normal = loadImage('/assets/blackboard/waves/waves-normal.webp');
     // Phones shrink every uv displacement; re-amplify the motion there.
     gl.uniform1f(gl.getUniformLocation(program, 'uBoost'), mobile ? 2.5 : 1.0);
-    const flowMask = loadImage('/assets/blackboard/waves/waves-noflow.png');
-    const phase = loadImage('/assets/blackboard/waves/waves-phase.png');
     const image = loadImage(mobile ? WAVES_PLATE.mobile : WAVES_PLATE.desktop);
 
-    // The normal map never samples outside 0..1 — the ripple uv tops out around
-    // 0.7 across an ultrawide canvas — so clamping is what the source's default
-    // sampler does and what this binds.
-    let pending = 4;
+    // The scrolling normal map must tile. CLAMP makes both moving samples
+    // stick to a constant edge after a few minutes, freezing the water.
+    let pending = 2;
     let ready = false;
     let failed = false;
     const settle = () => {
@@ -1322,20 +1304,10 @@ export const WAVES: WallpaperVariant = {
     };
 
     normal.onload = () => {
-      keep(uploadTexture(gl, 1, normal, false, false));
+      keep(uploadTexture(gl, 1, normal, true, false));
       settle();
     };
     normal.onerror = fail;
-    flowMask.onload = () => {
-      keep(uploadTexture(gl, 2, flowMask, false, false));
-      settle();
-    };
-    flowMask.onerror = fail;
-    phase.onload = () => {
-      keep(uploadTexture(gl, 3, phase, true, false));
-      settle();
-    };
-    phase.onerror = fail;
     image.onload = () => {
       keep(uploadTexture(gl, 0, image, false, false));
       gl.uniform1f(uImageAspect, image.naturalWidth / image.naturalHeight);
@@ -1346,8 +1318,10 @@ export const WAVES: WallpaperVariant = {
     return {
       frame(context, time) {
         if (!ready) return false;
-        context.uniform1f(uTime, time);
-        context.uniform1f(uAspect, context.drawingBufferWidth / context.drawingBufferHeight);
+        const aspect = context.drawingBufferWidth / context.drawingBufferHeight;
+        const [x, y] = wavesPhase(time, aspect);
+        context.uniform2f(uRipplePhase, x, y);
+        context.uniform1f(uAspect, aspect);
         context.drawArrays(context.TRIANGLE_STRIP, 0, 4);
         return true;
       },
@@ -1357,10 +1331,6 @@ export const WAVES: WallpaperVariant = {
         image.onerror = null;
         normal.onload = null;
         normal.onerror = null;
-        flowMask.onload = null;
-        flowMask.onerror = null;
-        phase.onload = null;
-        phase.onerror = null;
         for (const texture of textures) context.deleteTexture(texture);
       },
     };

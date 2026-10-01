@@ -2,6 +2,40 @@
 
 Canonical route: `/observatory`. The Observatory is the only satellite visualizer route.
 
+## Current Blackboard runtime (2026-10-01)
+
+The main scene is `UnifiedWorld.tsx`, with monochrome glass controls over a black
+Three.js canvas. Legacy mode capabilities below are a historical inventory;
+Swiss WASM browser initialization remains disabled in favor of the working
+astronomy-engine fallback.
+
+- `SatelliteField.tsx` propagates CelesTrak TLEs with satellite.js SGP4. The
+  same-origin `/api/observatory/tle` proxy validates and caches each allowed feed
+  for 15 minutes. Available committed snapshots keep supported groups visible
+  during an upstream outage. The HUD distinguishes live, snapshot and mixed
+  catalogs. Snapshot positions are estimates, especially as orbital data ages.
+- Catalog requests fail independently, cancel on group changes, deduplicate by
+  NORAD ID and cap rendering at 640 satellites. Propagation batches 160 points
+  per frame. Only the selected satellite enters the camera-follow map; dynamic
+  point geometry has a fixed orbital bound and no per-frame bounding calculation.
+  Search accepts a name, group or NORAD ID. The satellite layer toggle also hides
+  tracks and clears its HUD catalog when unmounted.
+- Wind sampling is one 99-location Open-Meteo request, cached for 30 minutes.
+  Meteorological bearings convert to east/north components in the direction the
+  wind blows. Missing values are skipped; an outage uses a labeled modeled field.
+  USGS quakes and NASA EONET events have their own bounded data caches.
+- Place lookup uses `/api/observatory/geocode`, with a one-hour result cache and
+  OpenStreetMap attribution. Invalid upstream bodies return a controlled error.
+- Phone controls use a scrollable tabbed panel above site navigation, with the
+  duplicate right panel hidden. Planet anchors and audio controls have separate
+  space. Desktop retains both side panels and smooth planet camera navigation.
+
+`pnpm run check:observatory` runs the frame-allocation guards and data regressions
+(SGP4 epoch positions, partial outages, mixed catalogs, cancellation, malformed
+upstreams, proxy cache, cardinal wind directions and missing weather/quake data).
+It is also part of `pnpm run build`. Browser checks cover phone and desktop
+layouts, NORAD search/selection, and Saturn fly-to without console errors.
+
 ## What it is
 
 A 3D astrology-rooted web observatory combining:

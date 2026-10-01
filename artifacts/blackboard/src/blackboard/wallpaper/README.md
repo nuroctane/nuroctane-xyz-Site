@@ -439,3 +439,24 @@ Behaviour worth re-measuring after any change to `sweep`, all under `.nur/we/`:
 | `sweep_contrast.py` | worst glyph contrast across a full revolution |
 | `videopause.mjs` | only the active `<video>` decodes; the inactive loop is paused, not merely transparent |
 | `contrast_gate.py [desktop\|mobile]` | every variant meets the contrast floor on both viewports |
+
+### Black Waves long-running animation
+
+The normal map must use `REPEAT` on both axes. Its scrolling coordinates
+eventually leave the unit square; clamping them makes the visible water freeze
+even while the frame loop keeps running. The 256×256 normal map is a power-of-two
+texture, so repeating is supported by WebGL 1 on Safari and other mobile browsers.
+The background plate keeps its clamped sampler.
+
+`wavesPhase.ts` wraps the ripple phase separately after each axis's scaling.
+The shader receives this bounded two-component phase instead of an ever-growing
+time value, keeping mobile shader precision stable after long tab suspensions.
+The disabled source waterflow pass no longer loads textures or samples the plate.
+Safari `pagehide` / `pageshow` events stop and resume the frame loop alongside
+visibility changes. OS reduced-motion preferences still request a still frame.
+
+`test_wallpaper_textures.ts` verifies both samplers, continuous phase wrapping
+at portrait and landscape aspect ratios, motion after seven days, and runtime
+cleanup. Browser checks on phone, tablet portrait/landscape and desktop viewports
+confirm painted frames; tablet screenshots 20 seconds apart show visible changes.
+These viewport checks do not substitute for a physical iPad Safari test.

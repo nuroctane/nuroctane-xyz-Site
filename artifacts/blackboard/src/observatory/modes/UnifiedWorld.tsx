@@ -6,12 +6,12 @@ import { useObservatory } from '../state/ObservatoryContext';
 import { MISSIONS, MAJOR_CITIES } from '../data/missions';
 import { CONSTELLATIONS } from '../data/constellations';
 import { BRIGHT_STARS } from '../lib/brightStars';
-import { fetchEarthquakes, fetchEonet, fetchGlobalWindGrid, fetchRealWindGrid, type QuakeFeature, type EonetEvent, type WindSample } from '../lib/meteo';
+import { fetchEarthquakes, fetchEonet, fetchRealWindGrid, type QuakeFeature, type EonetEvent, type WindSample } from '../lib/meteo';
 import { computeACLines, jdFromDate } from '../lib/astroCartography';
 import { raDecToVector, visualOrbitRadius } from '../lib/math';
 import { orbitRingPoints } from '../lib/ephemeris';
 import { SOLAR_BODIES, type PlanetPosition } from '../lib/types';
-import { SATELLITE_GROUPS, type SatelliteGroupId } from '../lib/types';
+import { SatelliteField } from './SatelliteField';
 import { getPlanetConfig, getPlanetTextureUrls, gasGiantTexture, moonTexture, marsTexture } from '../lib/planetModels';
 import { AtmosphereGlow, SunCorona, RingGlow, Aurora, SunDisk } from '../lib/planetShaders';
 
@@ -62,7 +62,7 @@ function PhotorealEarthShell({ size, sunDirRef, cloudsEnabled }: { size: number;
 
   return (
     <mesh>
-      <sphereGeometry args={[size, 96, 96]} />
+      <sphereGeometry args={[size, 64, 64]} />
       <shaderMaterial
         ref={matRef as any}
         uniforms={{
@@ -109,7 +109,7 @@ function PhotorealEarthShell({ size, sunDirRef, cloudsEnabled }: { size: number;
             float spec = pow(max(0.0, dot(reflect(-normalize(sunDir), N), vec3(0.0,0.0,1.0))), 28.0) * specMask * dayMix * 0.60;
             col += vec3(0.82,0.92,1.0)*spec*1.15;
             float fres = pow(1.0 - max(0.0, dot(N, vec3(0.0,0.0,1.0))), 2.6);
-            col += vec3(0.20,0.55,0.96)*fres*0.16*dayMix;
+            col += vec3(0.82,0.86,0.90)*fres*0.10*dayMix;
             col += vec3(1.0,0.58,0.16)*pow(max(0.0,1.0-abs(NdotSun))*0.85,3.0)*0.13;
             gl_FragColor = vec4(col,1.0);
           }
@@ -134,254 +134,6 @@ function CloudLayer({ size, enabled }: { size: number; enabled: boolean }) {
       <sphereGeometry args={[size, 48, 48]} />
       <meshBasicMaterial map={cloudTex} transparent opacity={0.48} depthWrite={false} />
     </mesh>
-  );
-}
-
-// ---------- Satellite field — functional pick/track/trail/follow ----------
-type SatRec = { id: string; name: string; group: SatelliteGroupId; color: string; radius: number; inc: number; raan: number; speed: number; angle: number };
-
-function SatelliteField({
-  earthRadius,
-  earthWorldPos,
-  enabledGroups,
-  search,
-  selectedId,
-  setSelectedId,
-  showGroundTrack,
-  showOrbitTrail,
-  satPosRef,
-}: {
-  earthRadius: number;
-  earthWorldPos: THREE.Vector3;
-  enabledGroups: Record<SatelliteGroupId, boolean>;
-  search: string;
-  selectedId: string | null;
-  setSelectedId: (id: string | null) => void;
-  showGroundTrack: boolean;
-  showOrbitTrail: boolean;
-  satPosRef: React.MutableRefObject<Map<string, THREE.Vector3>>;
-}) {
-  const sats = useMemo<SatRec[]>(() => {
-    const out: SatRec[] = [];
-    let idx = 0;
-    for (const g of SATELLITE_GROUPS) {
-      for (let i = 0; i < g.count; i++) {
-        const altKm = (() => {
-          const r = Math.random();
-          if (r < 0.6) return 400 + Math.random() * 180;
-          if (r < 0.8) return 650 + Math.random() * 180;
-          if (r < 0.92) return 1100 + Math.random() * 700;
-          return 2000 + Math.random() * 900;
-        })();
-        const factor = 1 + altKm / 6371;
-        const radius = earthRadius * factor;
-        const incDeg =
-          g.id === 'starlink'
-            ? 53 + Math.random() * 10
-            : g.id === 'oneweb'
-              ? 87.9 + (Math.random() - 0.5) * 2
-              : g.id === 'gps'
-                ? 55 + Math.random() * 2
-                : g.id === 'galileo'
-                  ? 56 + Math.random() * 2
-                  : g.id === 'glonass'
-                    ? 64.8 + Math.random() * 2
-                    : Math.random() * 180;
-        const incRad = (incDeg as number) * (Math.PI / 180);
-        const raan = Math.random() * Math.PI * 2;
-        const angle = Math.random() * Math.PI * 2;
-        const speed = 0.35 + Math.random() * 0.85 + 1 / Math.sqrt(radius * 1.4);
-        out.push({
-          id: `${g.id}-${i}-${idx++}`,
-          name: `${g.label.toUpperCase()}-${String(i).padStart(4, '0')}`,
-          group: g.id as SatelliteGroupId,
-          color: g.color,
-          radius,
-          inc: g.id === 'debris' ? Math.random() * Math.PI : incRad,
-          raan,
-          speed,
-          angle,
-        });
-      }
-    }
-    return out;
-  }, [earthRadius]);
-
-  // expose sats globally for HUD list (cheap)
-  useEffect(() => {
-    (window as any).__OBS_SATS__ = sats;
-  }, [sats]);
-
-  const geomRef = useRef<THREE.BufferGeometry>(null);
-  const anglesRef = useRef<Float32Array>(new Float32Array(sats.length));
-  const localPosCache = useRef<Float32Array>(new Float32Array(sats.length * 3));
-
-  const geometry = useMemo(() => {
-    const geo = new THREE.BufferGeometry();
-    const pos = new Float32Array(sats.length * 3);
-    const col = new Float32Array(sats.length * 3);
-    for (let i = 0; i < sats.length; i++) {
-      const s = sats[i];
-      const c = new THREE.Color(s.color);
-      col[i * 3] = c.r; col[i * 3 + 1] = c.g; col[i * 3 + 2] = c.b;
-      const phi = Math.acos(2 * Math.random() - 1); const theta = Math.random() * Math.PI * 2;
-      pos[i * 3] = s.radius * Math.sin(phi) * Math.cos(theta);
-      pos[i * 3 + 1] = s.radius * Math.cos(phi);
-      pos[i * 3 + 2] = s.radius * Math.sin(phi) * Math.sin(theta);
-    }
-    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
-    geo.setAttribute('color', new THREE.BufferAttribute(col, 3));
-    return geo;
-  }, [sats]);
-
-  useEffect(() => () => geometry.dispose(), [geometry]);
-
-  const selectedIndex = useMemo(
-    () => selectedId ? sats.findIndex((sat) => sat.id === selectedId) : -1,
-    [sats, selectedId],
-  );
-
-  useFrame((_, dt) => {
-    if (!geomRef.current) return;
-    const attr = geomRef.current.getAttribute('position') as THREE.BufferAttribute;
-    const arr = attr.array as Float32Array;
-    const q = search.toLowerCase().trim();
-    // update positions
-    for (let i = 0; i < sats.length; i++) {
-      const s = sats[i];
-      if (!enabledGroups[s.group]) {
-        arr[i * 3] = 9999; arr[i * 3 + 1] = 9999; arr[i * 3 + 2] = 9999;
-        continue;
-      }
-      anglesRef.current[i] += dt * s.speed * 0.28;
-      const ang = anglesRef.current[i] + s.angle;
-      const x0 = s.radius * Math.cos(ang);
-      const z0 = s.radius * Math.sin(ang);
-      const y1 = z0 * Math.sin(s.inc);
-      const z1 = z0 * Math.cos(s.inc);
-      const x2 = x0 * Math.cos(s.raan) - z1 * Math.sin(s.raan);
-      const z2 = x0 * Math.sin(s.raan) + z1 * Math.cos(s.raan);
-      // search filter
-      if (q && !s.name.toLowerCase().includes(q) && !s.group.includes(q)) {
-        arr[i * 3] = 9999; arr[i * 3 + 1] = 9999; arr[i * 3 + 2] = 9999;
-      } else {
-        arr[i * 3] = x2; arr[i * 3 + 1] = y1; arr[i * 3 + 2] = z2;
-        localPosCache.current[i * 3] = x2;
-        localPosCache.current[i * 3 + 1] = y1;
-        localPosCache.current[i * 3 + 2] = z2;
-      }
-    }
-    attr.needsUpdate = true;
-
-    // Camera follow only reads the selected satellite. Keep one stable vector
-    // instead of allocating a Vector3 for every enabled satellite every frame.
-    const map = satPosRef.current;
-    if (selectedIndex < 0 && map.size) map.clear();
-    if (selectedIndex >= 0) {
-      const i = selectedIndex;
-      if (!enabledGroups[sats[i].group] || Math.abs(arr[i * 3]) > 9000) {
-        if (map.size) map.clear();
-      } else {
-        const lx = localPosCache.current[i * 3];
-        const ly = localPosCache.current[i * 3 + 1];
-        const lz = localPosCache.current[i * 3 + 2];
-        let world = map.get(sats[i].id);
-        if (!world) {
-          map.clear();
-          world = new THREE.Vector3();
-          map.set(sats[i].id, world);
-        }
-        world.set(earthWorldPos.x + lx, earthWorldPos.y + ly, earthWorldPos.z + lz);
-      }
-    }
-  });
-
-  const selected = useMemo(() => sats.find((s) => s.id === selectedId) ?? null, [sats, selectedId]);
-
-  const groundTrack = useMemo(() => {
-    if (!selected || !showGroundTrack) return null;
-    const pts: [number, number, number][] = [];
-    for (let a = 0; a < Math.PI * 2; a += 0.08) {
-      const x0 = selected.radius * Math.cos(a);
-      const z0 = selected.radius * Math.sin(a);
-      const y1 = z0 * Math.sin(selected.inc);
-      const z1 = z0 * Math.cos(selected.inc);
-      const x2 = x0 * Math.cos(selected.raan) - z1 * Math.sin(selected.raan);
-      const z2 = x0 * Math.sin(selected.raan) + z1 * Math.cos(selected.raan);
-      const len = Math.sqrt(x2 * x2 + y1 * y1 + z2 * z2);
-      const scale = (earthRadius * 1.008) / len;
-      pts.push([x2 * scale, y1 * scale, z2 * scale]);
-    }
-    return pts;
-  }, [selected, showGroundTrack, earthRadius]);
-
-  const orbitTrail = useMemo(() => {
-    if (!selected || !showOrbitTrail) return null;
-    const pts: [number, number, number][] = [];
-    for (let a = 0; a < Math.PI * 2; a += 0.06) {
-      const x0 = selected.radius * Math.cos(a);
-      const z0 = selected.radius * Math.sin(a);
-      const y1 = z0 * Math.sin(selected.inc);
-      const z1 = z0 * Math.cos(selected.inc);
-      const x2 = x0 * Math.cos(selected.raan) - z1 * Math.sin(selected.raan);
-      const z2 = x0 * Math.sin(selected.raan) + z1 * Math.cos(selected.raan);
-      pts.push([x2, y1, z2]);
-    }
-    return pts;
-  }, [selected, showOrbitTrail]);
-
-  const handlePointPick = (e: any) => {
-    // e.index is point index
-    const idx = typeof e.index === 'number' ? e.index : typeof e.faceIndex === 'number' ? e.faceIndex : null;
-    if (idx == null) return;
-    const s = sats[idx];
-    if (!s) return;
-    if (!enabledGroups[s.group]) return;
-    e.stopPropagation();
-    setSelectedId(s.id);
-  };
-
-  const selectedWorldLocal = useMemo(() => {
-    if (!selected) return null;
-    const idx = sats.findIndex((s) => s.id === selected.id);
-    if (idx < 0) return null;
-    // we will use live position from cache if available, else calc approx
-    const lx = localPosCache.current[idx * 3];
-    const ly = localPosCache.current[idx * 3 + 1];
-    const lz = localPosCache.current[idx * 3 + 2];
-    if (Math.abs(lx) < 9000) return [lx, ly, lz] as [number, number, number];
-    return null;
-  }, [selected, sats, anglesRef.current]); // angles triggers re-render via frame? we use memo that updates each render, but we want reactive – useFrame will update, so we render marker via separate component using frame. For now approximate.
-
-  return (
-    <>
-      <points onPointerDown={handlePointPick} onPointerOver={() => (document.body.style.cursor = 'pointer')} onPointerOut={() => (document.body.style.cursor = 'default')}>
-        <primitive object={geometry} ref={geomRef as any} attach="geometry" />
-        <pointsMaterial vertexColors size={0.028} sizeAttenuation transparent opacity={0.92} blending={THREE.AdditiveBlending} depthWrite={false} />
-      </points>
-
-      {groundTrack && <Line points={groundTrack} color={selected?.color || '#38bdf8'} transparent opacity={0.88} lineWidth={1.5} />}
-      {orbitTrail && <Line points={orbitTrail} color={selected?.color || '#e2e8f0'} transparent opacity={0.58} lineWidth={1.2} />}
-
-      {selected && selectedWorldLocal && (
-        <group position={selectedWorldLocal}>
-          <mesh>
-            <sphereGeometry args={[0.052, 16, 16]} />
-            <meshStandardMaterial color={selected.color} emissive={selected.color} emissiveIntensity={1.4} />
-          </mesh>
-          <mesh scale={[2.1, 2.1, 2.1]}>
-            <sphereGeometry args={[0.052, 12, 12]} />
-            <meshBasicMaterial color={selected.color} transparent opacity={0.18} blending={THREE.AdditiveBlending} depthWrite={false} />
-          </mesh>
-          <Html zIndexRange={[0,5]} style={{ pointerEvents: 'none' }}>
-            <div className="obs-label obs-label--planet is-active" style={{ borderColor: selected.color }}>
-              <span className="obs-label-dot" style={{ background: selected.color, boxShadow: `0 0 10px ${selected.color}` }} />
-              {selected.name} · {selected.group}
-            </div>
-          </Html>
-        </group>
-      )}
-    </>
   );
 }
 
@@ -490,11 +242,11 @@ function WindField({ winds, earthRadius }: { winds: WindSample[]; earthRadius: n
         const br = Math.atan2(w.u, w.v);
         const len = Math.min(7.5, sp * 0.24 + 0.85);
         const p2 = latLonToVector3(w.lat + Math.cos(br) * len, w.lon + Math.sin(br) * len, earthRadius * 1.048);
-        const col = sp > 14 ? '#22d3ee' : sp > 8 ? '#7dd3fc' : '#e0f2fe';
+        const col = sp > 14 ? '#f4f7fb' : sp > 8 ? '#c5ced6' : '#8b949e';
         const isStrong = sp > 10;
         return (
           <group key={`wind-${i}`}>
-            <Line points={[[p1.x, p1.y, p1.z] as any, [p2.x, p2.y, p2.z] as any]} color={col} transparent opacity={isStrong ? 1.0 : 0.92} lineWidth={isStrong ? 5 : 3.2} />
+            <Line points={[[p1.x, p1.y, p1.z] as any, [p2.x, p2.y, p2.z] as any]} color={col} transparent opacity={isStrong ? 0.85 : 0.45} lineWidth={isStrong ? 1.6 : 1} />
             <mesh position={[p2.x, p2.y, p2.z]}><coneGeometry args={[0.007, 0.018, 7]} /><meshBasicMaterial color={col} /></mesh>
             <mesh position={[p1.x, p1.y, p1.z]}><sphereGeometry args={[0.007, 7, 7]} /><meshBasicMaterial color={col} transparent opacity={0.95} /></mesh>
             {isStrong && <mesh position={[(p1.x + p2.x) / 2, (p1.y + p2.y) / 2, (p1.z + p2.z) / 2]}><sphereGeometry args={[0.004, 6, 6]} /><meshBasicMaterial color={col} transparent opacity={0.6} /></mesh>}
@@ -747,6 +499,7 @@ function PlanetBody({ p, selected, isHovered, onSelect, onHover, showLabel, time
 function EarthDetailContent({
   earthRadius,
   earthWorldPos,
+  earthRotRef,
   layers,
   chart,
   enabledSatGroups,
@@ -760,32 +513,25 @@ function EarthDetailContent({
   const [quakes, setQuakes] = useState<QuakeFeature[]>([]);
   const [eonet, setEonet] = useState<EonetEvent[]>([]);
   const [winds, setWinds] = useState<WindSample[]>([]);
-  const [iss, setIss] = useState<{ lat: number; lon: number } | null>(null);
 
-  useEffect(() => { if (layers.earthquakes) fetchEarthquakes().then(setQuakes).catch(() => {}); else setQuakes([]); }, [layers.earthquakes]);
-  useEffect(() => { if (layers.eonet || layers.storms || layers.wildfires || layers.volcanoes) fetchEonet().then(setEonet).catch(() => {}); else setEonet([]); }, [layers.eonet, layers.storms, layers.wildfires, layers.volcanoes]);
+  useEffect(() => {
+    if (!layers.earthquakes) { setQuakes([]); return; }
+    const ctrl = new AbortController();
+    fetchEarthquakes(ctrl.signal).then((rows) => { if (!ctrl.signal.aborted) setQuakes(rows); }).catch(() => {});
+    return () => ctrl.abort();
+  }, [layers.earthquakes]);
+  useEffect(() => {
+    if (!(layers.eonet || layers.storms || layers.wildfires || layers.volcanoes)) { setEonet([]); return; }
+    const ctrl = new AbortController();
+    fetchEonet(ctrl.signal).then((rows) => { if (!ctrl.signal.aborted) setEonet(rows); }).catch(() => {});
+    return () => ctrl.abort();
+  }, [layers.eonet, layers.storms, layers.wildfires, layers.volcanoes]);
   useEffect(() => {
     if (!layers.winds) { setWinds([]); return; }
-    let cancelled = false;
-    fetchRealWindGrid().then((r) => { if (!cancelled) setWinds(r.length > 4 ? r : []); }).catch(async () => { const g = await fetchGlobalWindGrid(); if (!cancelled) setWinds(g); });
-    return () => { cancelled = true; };
+    const ctrl = new AbortController();
+    fetchRealWindGrid(ctrl.signal).then((r) => { if (!ctrl.signal.aborted) setWinds(r.length > 4 ? r : []); }).catch(() => {});
+    return () => ctrl.abort();
   }, [layers.winds]);
-  useEffect(() => {
-    // ISS always polls if any sat group enabled (sats tab suffices)
-    const anySat = Object.values(enabledSatGroups as any).some(Boolean);
-    if (!anySat) return;
-    let id: any = null;
-    const tick = async () => {
-      try {
-        const r = await fetch('https://api.wheretheiss.at/v1/satellites/25544');
-        if (!r.ok) throw new Error();
-        const j = await r.json() as any;
-        setIss({ lat: Number(j.latitude), lon: Number(j.longitude) });
-      } catch { const t = Date.now() / 1000; setIss({ lat: 51.6 * Math.sin(t * 0.001), lon: ((t * 0.06) % 360) - 180 }); }
-    };
-    tick(); id = setInterval(tick, 5000);
-    return () => { if (id) clearInterval(id); };
-  }, [enabledSatGroups]);
 
   const acLines = useMemo(() => {
     if (!layers.astroCartography) return [];
@@ -800,10 +546,11 @@ function EarthDetailContent({
   const anySatOn = Object.values(enabledSatGroups as any).some(Boolean);
   return (
     <>
-      {anySatOn && (
+      {layers.satellites && anySatOn && (
         <SatelliteField
           earthRadius={R}
           earthWorldPos={earthWorldPos}
+          earthRotRef={earthRotRef}
           enabledGroups={enabledSatGroups}
           search={satSearch}
           selectedId={selectedSatId}
@@ -823,19 +570,8 @@ function EarthDetailContent({
         return <Line key={`ac-${line.id}-${idx}`} points={pts} color={line.bodyColor || '#38bdf8'} transparent opacity={line.type === 'MC' || line.type === 'IC' ? 0.92 : 0.66} lineWidth={line.type === 'MC' ? 2.2 : 1.3} />;
       })}
 
-      {anySatOn && iss && (() => {
-        const pos = latLonToVector3(iss.lat, iss.lon, R * 1.20);
-        return (
-          <group position={[pos.x, pos.y, pos.z]}>
-            <mesh><sphereGeometry args={[0.032, 16, 16]} /><meshStandardMaterial color="#a3e635" emissive="#a3e635" emissiveIntensity={1.2} /></mesh>
-            <mesh scale={[1.9, 1.9, 1.9]}><sphereGeometry args={[0.032, 12, 12]} /><meshBasicMaterial color="#a3e635" transparent opacity={0.24} blending={THREE.AdditiveBlending} depthWrite={false} /></mesh>
-            <Html zIndexRange={[0,5]} style={{ pointerEvents: 'none' }}><div className="obs-label obs-label--planet"><span className="obs-label-dot" style={{ background: '#a3e635', boxShadow: '0 0 12px #a3e635' }} />ISS</div></Html>
-          </group>
-        );
-      })()}
-
       {layers.missions && MISSIONS.filter((m: any) => m.domain === 'earth').slice(0, 24).map((m: any, i: number) => {
-        const ang = (i / 24) * Math.PI * 2 + Date.now() * 0.00016 * (1 + i * 0.05);
+        const ang = (i / 24) * Math.PI * 2;
         const r = R * (1.32 + (i % 6) * 0.18);
         const incl = (m as any).inclination ? (m as any).inclination * Math.PI / 180 : 0.35;
         const pos = new THREE.Vector3(Math.cos(ang) * r, Math.sin(ang) * Math.sin(incl) * r + Math.cos(incl) * r * 0.20 * Math.sin(ang * 1.5), Math.sin(ang) * r);
@@ -849,13 +585,14 @@ function OrbitRing({ planetId, date, zodiac, ayanamsaId, swiss, isHovered, onHov
   const pts = useMemo(() => { try { return orbitRingPoints(planetId, date, 220, swiss, zodiac, ayanamsaId).map((p: any) => [p.x, p.y, p.z] as [number, number, number]); } catch { return []; } }, [planetId, date, zodiac, ayanamsaId, swiss]);
   if (pts.length < 2) return null;
   const isEarth = planetId === 'Earth';
-  return (<group onPointerOver={() => onHover(true)} onPointerOut={() => onHover(false)}><Line points={pts} color={isHovered ? '#e2e8f0' : isEarth ? '#38bdf8' : '#1e335f'} transparent opacity={isHovered ? 1 : isEarth ? 0.9 : 0.28} lineWidth={isHovered ? 2.8 : isEarth ? 1.8 : 0.9} /></group>);
+  return (<group onPointerOver={() => onHover(true)} onPointerOut={() => onHover(false)}><Line points={pts} color={isHovered ? '#f4f7fb' : isEarth ? '#d5dde6' : '#5c656e'} transparent opacity={isHovered ? 1 : isEarth ? 0.72 : 0.34} lineWidth={isHovered ? 2.4 : isEarth ? 1.5 : 0.8} /></group>);
 }
 
 function AspectLines({ hoveredId, setHoveredId }: { hoveredId: string | null; setHoveredId: (id: string | null) => void }) {
   const { chart, layers } = useObservatory();
   const map = useMemo(() => new Map(chart.planets.map((p: any) => [p.id, p])), [chart.planets]);
   const hoverPosRef = useRef<THREE.Vector3 | null>(null);
+  const hoverStamp = useRef(0);
   const [hoverPos, setHoverPos] = useState<THREE.Vector3 | null>(null);
   if (!layers.aspects) return null;
   const aspects = chart.aspects.slice(0, 130);
@@ -879,8 +616,11 @@ function AspectLines({ hoveredId, setHoveredId }: { hoveredId: string | null; se
               lineWidth={12}
               // @ts-ignore
               onPointerMove={(e: any) => {
+                const now = performance.now();
+                if (now - hoverStamp.current < 48 && hoveredId === id) return;
+                hoverStamp.current = now;
                 if (e.point) {
-                  hoverPosRef.current = e.point.clone();
+                  hoverPosRef.current = e.point;
                   setHoverPos(e.point.clone());
                 }
                 if (hoveredId !== id) setHoveredId(id);
@@ -924,7 +664,7 @@ function ConstellationLines({ radius = 140 }: { radius?: number }) {
     return out;
   }, [radius]);
   if (!layers.constellations) return null;
-  return (<group>{lines.map((l) => <Line key={l.id} points={l.pts} color="#7dd3fc" transparent opacity={0.22} lineWidth={0.9} />)}</group>);
+  return (<group>{lines.map((l) => <Line key={l.id} points={l.pts} color="#c5ced6" transparent opacity={0.28} lineWidth={0.85} />)}</group>);
 }
 
 function RealStars({ radius = 780 }: { radius?: number }) {
@@ -1042,6 +782,7 @@ function CameraFlyController({
   const anchorRef = useRef(anchorPlanet);
   useEffect(() => { anchorRef.current = anchorPlanet; }, [anchorPlanet]);
   const anchorWorldRef = useRef(new THREE.Vector3());
+  const lookScratch = useRef(new THREE.Vector3());
 
   useEffect(() => {
     const makeFly = (target: THREE.Vector3, offset: THREE.Vector3, dur = 1900) => {
@@ -1061,8 +802,15 @@ function CameraFlyController({
       else if (p) target = new THREE.Vector3(p.helio.x, p.helio.y, p.helio.z);
       else if (id === 'Earth') target = earthPosRef.current.clone();
       else return;
-      const size = id === 'Sun' ? 2.4 : id === 'Jupiter' ? 0.94 : id === 'Saturn' ? 0.86 : id === 'Earth' ? 1.08 : 0.5;
-      makeFly(target, new THREE.Vector3(0, size * 0.9, size * 2.2));
+      if (id === 'Earth') {
+        makeFly(target, new THREE.Vector3(0, 1.6, 2.8));
+        return;
+      }
+      const body = id === 'Sun' ? 1.12 : id === 'Jupiter' ? 0.94 : id === 'Saturn' ? 0.86 : id === 'Neptune' || id === 'Uranus' ? 0.62 : id === 'Venus' ? 0.54 : id === 'Mars' ? 0.42 : id === 'Moon' ? 0.2 : 0.3;
+      const reach = id === 'Saturn' ? body * 2.7 : body * 1.7;
+      const fov = ((camera as THREE.PerspectiveCamera).fov * Math.PI) / 180;
+      const dist = (reach / Math.tan(fov / 2)) * 1.45;
+      makeFly(target, new THREE.Vector3(0, dist * 0.18, dist));
     };
     (window as any).__flyEarth = onEarth;
     (window as any).__flySolar = onSolar;
@@ -1109,12 +857,18 @@ function CameraFlyController({
     const f = flying.current;
     const tt = Math.min(1, (performance.now() - f.start) / f.dur);
     const ease = tt < 0.5 ? 4 * tt * tt * tt : 1 - Math.pow(-2 * tt + 2, 3) / 2;
+    const look = lookScratch.current.lerpVectors(f.startTarget, f.endTarget, ease);
     camera.position.lerpVectors(f.startPos, f.endPos, ease);
-    if (controlsRef.current) {
-      controlsRef.current.target.lerpVectors(f.startTarget, f.endTarget, ease);
-      controlsRef.current.update();
+    camera.lookAt(look);
+    if (tt >= 1) {
+      if (controlsRef.current) {
+        controlsRef.current.target.copy(f.endTarget);
+        const delta = controlsRef.current.sphericalDelta;
+        if (delta?.set) delta.set(0, 0, 0);
+        controlsRef.current.update();
+      }
+      flying.current = null;
     }
-    if (tt >= 1) flying.current = null;
   });
   return null;
 }
@@ -1151,6 +905,7 @@ function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) 
   useEffect(() => { sunDirRef.current.copy(sunDirWorld); }, [sunDirWorld]);
 
   const earthGroupRef = useRef<THREE.Group>(null);
+  const earthRotRef = useRef(0);
   const idleSpinRef = useRef(0);
   useFrame((_, dt) => {
     if (speed === 0) {
@@ -1158,9 +913,9 @@ function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) 
     } else {
       idleSpinRef.current = 0;
     }
-    if (earthGroupRef.current) {
-      earthGroupRef.current.rotation.y = earthRotAccurate + idleSpinRef.current;
-    }
+    const rot = earthRotAccurate + idleSpinRef.current;
+    earthRotRef.current = rot;
+    if (earthGroupRef.current) earthGroupRef.current.rotation.y = rot;
   });
 
   const bodies = useMemo(() => chart.planets.filter((p: PlanetPosition) => {
@@ -1188,12 +943,12 @@ function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) 
 
   return (
     <>
-      <color attach="background" args={['#01030a']} />
-      <fog attach="fog" args={['#01030a', 80, 320]} />
-      <ambientLight intensity={0.62} />
-      <pointLight position={[0, 0, 0]} intensity={5.8} distance={300} decay={1.2} color="#fff4d0" />
-      <directionalLight position={[16, 24, 16]} intensity={0.52} color="#cfe8ff" />
-      <Stars radius={460} depth={180} count={3800} factor={4} saturation={0} fade speed={0.08} />
+      <color attach="background" args={['#000000']} />
+      <fog attach="fog" args={['#000000', 90, 340]} />
+      <ambientLight intensity={0.42} />
+      <pointLight position={[0, 0, 0]} intensity={5.4} distance={300} decay={1.2} color="#fff6e4" />
+      <directionalLight position={[16, 24, 16]} intensity={0.28} color="#f4f7fb" />
+      <Stars radius={460} depth={180} count={2200} factor={3.4} saturation={0} fade speed={0.04} />
       <RealStars radius={780} />
       <ConstellationLines radius={145} />
 
@@ -1215,7 +970,7 @@ function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) 
             onPointerOver={(e) => { e.stopPropagation(); document.body.style.cursor = 'pointer'; setHoveredPlanet('Earth'); }}
             onPointerOut={() => { document.body.style.cursor = 'default'; setHoveredPlanet((cur) => (cur === 'Earth' ? null : cur)); }}
           >
-            <Suspense fallback={<mesh><sphereGeometry args={[earthSize, 64, 64]} /><meshStandardMaterial color="#1d4ed8" /></mesh>}>
+            <Suspense fallback={<mesh><sphereGeometry args={[earthSize, 48, 48]} /><meshStandardMaterial color="#1a1a1a" /></mesh>}>
               <PhotorealEarthShell size={earthSize} sunDirRef={sunDirRef} cloudsEnabled={layers.clouds !== false} />
             </Suspense>
             <Suspense fallback={null}>
@@ -1227,6 +982,7 @@ function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) 
           <EarthDetailContent
             earthRadius={earthSize}
             earthWorldPos={earthPosVec}
+            earthRotRef={earthRotRef}
             layers={layers}
             chart={chart}
             enabledSatGroups={enabledSatGroups}
@@ -1242,13 +998,13 @@ function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) 
         </group>
 
         {/* Atmosphere / glow outside rotation (spherical) */}
-        <AtmosphereGlow size={earthSize} color="#38bdf8" strength={hoveredPlanet === 'Earth' ? 1.45 : 0.96} power={2.35} />
-        <Aurora size={earthSize} color="#22d3ee" />
+        <AtmosphereGlow size={earthSize} color="#d7dee6" strength={hoveredPlanet === 'Earth' ? 0.72 : 0.38} power={2.9} />
+        <Aurora size={earthSize} color="#9fb4c4" />
         {(selectedPlanet === 'Earth' || hoveredPlanet === 'Earth') && (
-          <mesh><sphereGeometry args={[earthSize * 1.2, 32, 32]} /><meshBasicMaterial color="#38bdf8" transparent opacity={hoveredPlanet === 'Earth' ? 0.13 : 0.07} blending={THREE.AdditiveBlending} depthWrite={false} side={THREE.BackSide} /></mesh>
+          <mesh><sphereGeometry args={[earthSize * 1.16, 32, 32]} /><meshBasicMaterial color="#e8eef4" transparent opacity={hoveredPlanet === 'Earth' ? 0.08 : 0.04} blending={THREE.AdditiveBlending} depthWrite={false} side={THREE.BackSide} /></mesh>
         )}
         {(layers.labels || hoveredPlanet === 'Earth' || selectedPlanet === 'Earth') && (
-          <Html zIndexRange={[0, 5]} style={{ pointerEvents: 'none' }} position={[0, earthSize * 1.25, 0]}><div className={`obs-label obs-label--planet ${hoveredPlanet === 'Earth' ? 'is-hover' : ''} ${selectedPlanet === 'Earth' ? 'is-active' : ''}`}><span className="obs-label-dot" style={{ background: '#38bdf8', boxShadow: '0 0 12px #38bdf8' }} />Earth</div></Html>
+          <Html zIndexRange={[0, 5]} style={{ pointerEvents: 'none' }} position={[0, earthSize * 1.25, 0]}><div className={`obs-label obs-label--planet ${hoveredPlanet === 'Earth' ? 'is-hover' : ''} ${selectedPlanet === 'Earth' ? 'is-active' : ''}`}><span className="obs-label-dot" style={{ background: '#e8eef4', boxShadow: '0 0 12px #e8eef4' }} />Earth</div></Html>
         )}
       </group>
 
@@ -1275,7 +1031,7 @@ export function UnifiedWorld() {
 
   return (
     <div className="obs-unified-world">
-      <Canvas camera={{ position: [5.4, 3.4, 8.4], fov: 44 }} dpr={[1, 1.6]} gl={{ antialias: true, alpha: false, powerPreference: 'high-performance', stencil: false, depth: true }}>
+      <Canvas camera={{ position: [5.4, 3.4, 8.4], fov: 44 }} dpr={[1, 1.25]} gl={{ antialias: true, alpha: false, powerPreference: 'high-performance', stencil: false, depth: true }}>
         <Suspense fallback={null}>
           <UnifiedScene setFocus={setMode} />
         </Suspense>

@@ -12,6 +12,8 @@ import { SPEEDS, useObservatory } from '../state/ObservatoryContext';
 import { useEffect, useMemo, useState } from 'react';
 import { GlassDatePicker } from './GlassDatePicker';
 
+type PlaceResult = { place_id: number; display_name: string; lat: string; lon: string };
+
 export function ObservatoryHud() {
   const o = useObservatory();
   const selected = o.chart.planets.find((p) => p.id === o.selectedPlanet);
@@ -25,34 +27,65 @@ export function ObservatoryHud() {
 
   // place search
   const [placeQuery, setPlaceQuery] = useState('');
-  const [placeResults, setPlaceResults] = useState<any[]>([]);
+  const [placeResults, setPlaceResults] = useState<PlaceResult[]>([]);
   const [placeLoading, setPlaceLoading] = useState(false);
+  const [placeError, setPlaceError] = useState('');
   const searchPlace = async () => {
     const q = placeQuery.trim();
-    if (!q) return;
+    if (q.length < 2 || q.length > 120 || placeLoading) return;
     setPlaceLoading(true);
+    setPlaceError('');
     try {
-      const r = await fetch(`https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(q)}&limit=5`, { headers: { Accept: 'application/json' } });
-      const j = await r.json();
-      setPlaceResults(Array.isArray(j) ? j : []);
-    } catch { setPlaceResults([]); }
+      const proxied = await fetch(`/api/observatory/geocode?q=${encodeURIComponent(q)}`);
+      if (!proxied.ok) throw new Error('geocode');
+      const j = await proxied.json();
+      if (!Array.isArray(j)) throw new Error('geocode');
+      const rows: PlaceResult[] = j.filter((r) => r && typeof r.display_name === 'string' &&
+        Number.isFinite(Number(r.lat)) && Number.isFinite(Number(r.lon)));
+      setPlaceResults(rows);
+      if (!rows.length) setPlaceError('No places matched.');
+    } catch {
+      setPlaceResults([]);
+      setPlaceError('Place search is unavailable.');
+    }
     setPlaceLoading(false);
   };
 
-  // sats
   const [satList, setSatList] = useState<any[]>([]);
+  const [satTotal, setSatTotal] = useState(0);
+  const [satNames, setSatNames] = useState<Map<string, string>>(() => new Map());
+  const [satMeta, setSatMeta] = useState<{ count: number; source: string }>({ count: 0, source: 'loading' });
+  const [streams, setStreams] = useState<Record<string, { state: string; detail: string }>>({});
   useEffect(() => {
-    const id = setInterval(() => {
-      const g: any = (window as any).__OBS_SATS__;
-      if (g && g.length) {
-        const q = o.satSearch.toLowerCase().trim();
-        let filtered = g;
-        if (q) filtered = g.filter((s: any) => s.name.toLowerCase().includes(q) || s.group.includes(q));
-        filtered = filtered.filter((s: any) => (o.enabledSatGroups as any)[s.group]);
-        setSatList(filtered.slice(0, 60));
-      }
-    }, 900);
-    return () => clearInterval(id);
+    const rebuild = () => {
+      const g: any[] = (window as any).__OBS_SATS__ ?? [];
+      const names = new Map<string, string>();
+      for (const s of g) names.set(String(s.id), String(s.name));
+      setSatNames(names);
+      const q = o.satSearch.toLowerCase().trim();
+      const filtered = g.filter((s) => (o.enabledSatGroups as any)[s.group] && (!q || s.name.toLowerCase().includes(q) || s.group.includes(q) || String(s.id).includes(q)));
+      setSatTotal(filtered.length);
+      setSatList(filtered.slice(0, 120));
+    };
+    const onCatalog = (ev: Event) => {
+      const detail = (ev as CustomEvent).detail ?? {};
+      setSatMeta({ count: Number(detail.count ?? 0), source: String(detail.source ?? 'snapshot') });
+      rebuild();
+    };
+    const onStream = (ev: Event) => {
+      const detail = (ev as CustomEvent).detail ?? {};
+      if (!detail.id) return;
+      setStreams((prev) => ({ ...prev, [detail.id]: { state: detail.state, detail: detail.detail } }));
+    };
+    rebuild();
+    const boot = (window as any).__OBS_SAT_META__;
+    if (boot) setSatMeta({ count: Number(boot.count ?? 0), source: String(boot.source ?? 'snapshot') });
+    window.addEventListener('obs-sat-catalog', onCatalog);
+    window.addEventListener('obs-stream', onStream);
+    return () => {
+      window.removeEventListener('obs-sat-catalog', onCatalog);
+      window.removeEventListener('obs-stream', onStream);
+    };
   }, [o.satSearch, o.enabledSatGroups]);
 
   const natalComparison = useMemo(() => {
@@ -83,13 +116,13 @@ export function ObservatoryHud() {
       <header className="obs-top obs-top--unified">
         <div className="obs-brand">
           <div className="obs-wordmark">OBSERVATORY</div>
-          <div className="obs-sub">{visibleBodies.length} bodies · {o.chart.aspects.length} aspects</div>
+          <div className="obs-sub">{visibleBodies.length} bodies · {o.chart.aspects.length} aspects{satMeta.count ? ` · ${satMeta.count} sats` : ''}{satMeta.source === 'loading' ? '' : satMeta.source === 'live' ? ' · live TLE' : satMeta.source === 'mixed' ? ' · live + snapshot TLE' : satMeta.count ? ' · snapshot TLE' : ''}</div>
         </div>
         <div className="obs-top-center">
           <span className="obs-pill">{formatUtc(o.time)}</span>
         </div>
         <div className="obs-top-right">
-          <button type="button" className="obs-icon-btn" onClick={() => o.setHudOpen(false)}>✕</button>
+          <button type="button" className="obs-icon-btn" aria-label="Hide Observatory controls" onClick={() => o.setHudOpen(false)}>✕</button>
         </div>
       </header>
 
@@ -268,6 +301,9 @@ export function ObservatoryHud() {
               <label key={k} className="obs-toggle">
                 <input type="checkbox" checked={!!(o.layers as any)[k]} onChange={() => o.toggleLayer(k as any)} />
                 <span>{label}</span>
+                {k === 'earthquakes' && streams.quakes && <span className="obs-stream">{streams.quakes.detail}</span>}
+                {k === 'eonet' && streams.eonet && <span className="obs-stream">{streams.eonet.detail}</span>}
+                {k === 'winds' && streams.wind && <span className="obs-stream">{streams.wind.detail}</span>}
               </label>
             ))}
           </section>
@@ -280,18 +316,20 @@ export function ObservatoryHud() {
               <span>Search</span>
               <div style={{ display: 'flex', gap: '0.35rem' }}>
                 <input className="obs-input--themed" type="text" value={placeQuery} placeholder="City" onChange={(e) => setPlaceQuery(e.target.value)} onKeyDown={(e) => { if (e.key === 'Enter') searchPlace(); }} style={{ flex: 1 }} />
-                <button type="button" className="obs-mini" onClick={searchPlace}>{placeLoading ? '…' : 'Go'}</button>
+                <button type="button" className="obs-mini" disabled={placeLoading} onClick={searchPlace}>{placeLoading ? '…' : 'Go'}</button>
               </div>
             </label>
+            {placeError && <div className="obs-note">{placeError}</div>}
             {placeResults.length > 0 && (
               <div style={{ border: '1px solid rgba(255,255,255,0.08)', borderRadius: '8px', overflow: 'hidden', marginBottom: '0.5rem' }}>
-                {placeResults.map((r: any) => (
+                {placeResults.map((r) => (
                   <button key={r.place_id} type="button" className="obs-planet-row" style={{ width: '100%' }} onClick={() => { o.setObserver({ lat: Number(r.lat), lon: Number(r.lon), alt: 10 }); setPlaceResults([]); setPlaceQuery(r.display_name.split(',')[0]); }}>
                     <span className="name" style={{ maxWidth: '180px', overflow: 'hidden', textOverflow: 'ellipsis' }}>{r.display_name}</span>
                   </button>
                 ))}
               </div>
             )}
+            <div className="obs-note"><a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">© OpenStreetMap contributors</a></div>
             <label className="obs-field"><span>Lat</span><input className="obs-input--themed" type="number" step={0.0001} value={o.observer.lat} onChange={(e) => o.setObserver({ ...o.observer, lat: Number(e.target.value) })} /></label>
             <label className="obs-field"><span>Lon</span><input className="obs-input--themed" type="number" step={0.0001} value={o.observer.lon} onChange={(e) => o.setObserver({ ...o.observer, lon: Number(e.target.value) })} /></label>
             <div className="obs-chip-row">
@@ -325,7 +363,8 @@ export function ObservatoryHud() {
 
         {o.systemsPanel === 'satellites' && (
           <section className="obs-panel obs-panel--scroll-lg">
-            <div className="obs-panel-hd">SATS</div>
+            <div className="obs-panel-hd">SATS · {satMeta.source === 'live' ? 'LIVE' : satMeta.source === 'mixed' ? 'LIVE + SNAPSHOT' : satMeta.source === 'loading' ? 'LOADING' : 'SNAPSHOT'}</div>
+            <p className="obs-note">CelesTrak orbits, propagated here. Starlink, OneWeb, Planet, and debris stay off until you enable them.</p>
             <label className="obs-field"><span>Search</span><input className="obs-input--themed" type="text" value={o.satSearch} placeholder="STARLINK" onChange={(e) => o.setSatSearch(e.target.value)} /></label>
             <div className="obs-chip-row">
               <button type="button" className="obs-mini" onClick={() => o.setAllSatGroups(true)}>All</button>
@@ -342,9 +381,10 @@ export function ObservatoryHud() {
                 </label>
               ))}
             </div>
-            {o.selectedSatId && <div className="obs-note"><b>{o.selectedSatId}</b><br /><button type="button" className="obs-mini" onClick={() => o.setSelectedSatId(null)}>Clear</button></div>}
-            <div className="obs-panel-hd" style={{ marginTop: '0.6rem' }}>LIST</div>
+            {o.selectedSatId && <div className="obs-note"><b>{satNames.get(o.selectedSatId) ?? o.selectedSatId}</b><br />NORAD {o.selectedSatId}<br /><button type="button" className="obs-mini" onClick={() => o.setSelectedSatId(null)}>Clear</button></div>}
+            <div className="obs-panel-hd" style={{ marginTop: '0.6rem' }}>{satTotal > satList.length ? `LIST · ${satList.length} OF ${satTotal}` : 'LIST'}</div>
             <div style={{ maxHeight: '180px', overflow: 'auto' }}>
+              {!satList.length && <div className="obs-note">{satMeta.source === 'loading' ? 'Loading orbits…' : 'Nothing in this filter.'}</div>}
               {satList.map((s: any) => (
                 <button key={s.id} type="button" className={`obs-planet-row ${o.selectedSatId === s.id ? 'is-active' : ''}`} onClick={() => o.setSelectedSatId(s.id)}>
                   <span className="dot" style={{ background: s.color }} /><span className="name" style={{ fontSize: '10px' }}>{s.name}</span>
@@ -363,7 +403,7 @@ export function ObservatoryHud() {
             </div>
             {['Mercury', 'Venus', 'Earth', 'Moon', 'Mars', 'Jupiter', 'Saturn', 'Uranus', 'Neptune', 'Pluto', 'Sun'].map((id) => (
               <button key={id} type="button" className="obs-planet-row" onClick={() => { o.setAnchorPlanet(id as any); window.dispatchEvent(new CustomEvent('obs-flyto-planet', { detail: { id } })); }}>
-                <span className="dot" style={{ background: (BODIES.find((b) => b.id === id)?.color ?? '#38bdf8') }} /><span className="name">{id}</span>
+                <span className="dot" style={{ background: (BODIES.find((b) => b.id === id)?.color ?? '#d5dde6') }} /><span className="name">{id}</span>
               </button>
             ))}
           </section>
@@ -384,7 +424,7 @@ export function ObservatoryHud() {
         <section className="obs-panel obs-panel--planets">
           <div className="obs-panel-hd">PLANETS</div>
           {visibleBodies.slice(0, 30).map((p) => (
-            <button key={p.id} type="button" className={`obs-planet-row ${o.selectedPlanet === p.id ? 'is-active' : ''}`} onClick={() => o.setSelectedPlanet(p.id)}>
+            <button key={p.id} type="button" className={`obs-planet-row ${o.selectedPlanet === p.id ? 'is-active' : ''}`} onClick={() => { o.setSelectedPlanet(p.id); o.setAnchorPlanet(p.id as any); window.dispatchEvent(new CustomEvent('obs-flyto-planet', { detail: { id: p.id } })); }}>
               <span className="dot" style={{ background: p.color }} /><span className="name">{p.name}</span><span className="lon">{formatLon(p.lon)}</span>
             </button>
           ))}
