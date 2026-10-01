@@ -121,7 +121,7 @@ const PAGES: Record<string, PageMeta> = {
     badge: "NurCLI",
     path: "/cli",
     siteName: "NurCLI",
-    image: `${SITE}/api/og?page=cli&v=3`,
+    image: `${SITE}/assets/nur-cli-og.png?v=4`,
     favicon: "/assets/nodes/nur-cli-logo.png",
   },
   curriculum: {

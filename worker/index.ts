@@ -134,6 +134,13 @@ async function serveAudioAsset(request: Request, env: Env): Promise<Response> {
 async function proxyOg(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
   const url = new URL(request.url);
 
+  // The CLI card is rendered at build time and ships alongside its page.
+  // Check this before the upstream cache so old CLI cards cannot survive a ship.
+  if (url.searchParams.get("page")?.toLowerCase() === "cli") {
+    const asset = new URL("/assets/nur-cli-og.png", request.url);
+    return env.ASSETS.fetch(new Request(asset, { method: request.method }));
+  }
+
   if (!env.OG_ORIGIN) {
     // Degrade to the static card rather than serving a broken image.
     return Response.redirect(`${SITE}/opengraph.jpg`, 302);
