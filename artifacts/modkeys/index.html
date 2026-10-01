@@ -319,26 +319,6 @@
     <script type="module">
       import { selectShell } from '/src/js/shell.js';
       selectShell();
-      /* Standalone deploy (modkeys.vercel.app): inject Web Analytics when the
-         package is available. SPA embed skips this boot path entirely. */
-      try {
-        const { inject } = await import('@vercel/analytics');
-        inject({
-          framework: 'modkeys-standalone',
-          mode: 'production',
-          beforeSend(event) {
-            try {
-              const u = new URL(event.url, window.location.origin);
-              u.hash = '';
-              return { ...event, url: u.href };
-            } catch {
-              return event;
-            }
-          },
-        });
-      } catch {
-        /* optional — local / non-Vercel builds without the dep are fine */
-      }
       const { mountModkeys } = await import('/src/js/app.js');
       mountModkeys();
     </script>

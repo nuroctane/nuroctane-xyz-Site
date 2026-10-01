@@ -1,14 +1,13 @@
-import siteConfig from '../site.config.json';
+import siteConfig from "../site.config.json";
 /**
  * Path-specific Open Graph HTML for social/chat crawlers.
  *
- * Ported from the Vercel edge middleware (middleware.js). Humans get the SPA;
+ * Humans get the SPA;
  * Discord, Slack, iMessage, Twitter, LinkedIn, etc. receive a tiny HTML document
  * whose og:* tags match the shared route (/quotes, /resume, /modkeys, …) instead
  * of always showing the Digital Sea homepage card.
  *
- * The Vercel `config.matcher` array is replaced by assets.run_worker_first in
- * wrangler.jsonc — see the route list there.
+ * Route matching uses assets.run_worker_first in wrangler.jsonc.
  */
 
 const SITE = "https://www.nuroctane.xyz";
@@ -73,12 +72,20 @@ interface PageMeta {
 
 const PAGES: Record<string, PageMeta> = {
   home: {
-    title: siteConfig.active === "blackboard" ? "NUROCTANE" : "NUROCTANE — Digital Sea",
+    title:
+      siteConfig.active === "blackboard"
+        ? "NUROCTANE"
+        : "NUROCTANE — Digital Sea",
     description:
-      siteConfig.active === "blackboard" ? "Nuroctane's Blackboard. Projects, socials, books, and quotes." : "A 3D interactive scroll experience through nuroctane's digital network — socials, creative projects, writings, and more.",
+      siteConfig.active === "blackboard"
+        ? "Nuroctane's Blackboard. Projects, socials, books, and quotes."
+        : "A 3D interactive scroll experience through nuroctane's digital network — socials, creative projects, writings, and more.",
     badge: siteConfig.active === "blackboard" ? "BLACKBOARD" : "DIGITAL SEA",
     path: "/",
-    image: siteConfig.active === "blackboard" ? `${SITE}/assets/nodes/site-logo.png` : `${SITE}/opengraph.jpg`,
+    image:
+      siteConfig.active === "blackboard"
+        ? `${SITE}/assets/nodes/site-logo.png`
+        : `${SITE}/opengraph.jpg`,
     favicon: "/assets/nodes/site-logo.png",
   },
   quotes: {
@@ -121,7 +128,7 @@ const PAGES: Record<string, PageMeta> = {
     badge: "NurCLI",
     path: "/cli",
     siteName: "NurCLI",
-    image: `${SITE}/assets/nur-cli-og.png?v=4`,
+    image: `${SITE}/assets/og/cli.png?v=5`,
     favicon: "/assets/nodes/nur-cli-logo.png",
   },
   curriculum: {
@@ -225,13 +232,9 @@ function resolvePage(pathname: string): ResolvedMeta {
   const base = PAGES[key] || PAGES.home;
   const path = clean === "/" ? "/" : clean;
   const imageKey = key;
-  let image =
+  const image =
     base.image ||
     `${SITE}/api/og?page=${encodeURIComponent(imageKey === "home" ? "home" : imageKey)}&title=${encodeURIComponent(base.badge)}`;
-  // X is picky about dynamic OG cards — keep /cli image URL stable and short
-  if (key === "cli") {
-    image = `${SITE}/api/og?page=cli&v=2`;
-  }
   return {
     ...base,
     path,

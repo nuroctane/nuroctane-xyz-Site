@@ -10,6 +10,7 @@ import {
 } from "react";
 import { StandaloneNav } from "./StandaloneNav";
 import { ScrollToTop } from "../components/hud/ScrollToTop";
+import { MiniAudio } from "../components/hud/MiniAudio";
 import { useStandaloneScroll } from "../hooks/useStandaloneScroll";
 import { trackEvent } from "../lib/analytics";
 import { shouldLoadFoglampMap } from "../lib/foglampEmbed";
@@ -661,8 +662,8 @@ const FEATURE_TABS: FeatureTab[] = [
           <code>bg</code> tool · <code>/bg</code>)
         </li>
         <li>
-          <strong>Plugins</strong> — Superpowers, Vercel, Firecrawl, Fable,
-          Chrome DevTools, …
+          <strong>Plugins</strong> — Superpowers, Firecrawl, Fable, Chrome
+          DevTools, …
         </li>
         <li>
           <strong>AKM</strong> — skill package manager · 800+ cybersecurity /
@@ -2403,6 +2404,9 @@ export default function CliPage() {
       </a>
       <ScrollToTop />
       <StandaloneNav />
+      <div className="cli-audio">
+        <MiniAudio />
+      </div>
 
       {/* sticky jump rail */}
       <nav className="cli-jump" aria-label="On this page">

@@ -5,15 +5,14 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-                    "build": "node --check src/js/app.js && node --check src/js/ui/panels.js && node --check src/js/ui/modals.js && node --check src/js/core/photoMatch.js && node --check src/js/export/kle.js && node --check src/js/export/svg.js && node --check src/js/export/pdf.js && node --check src/js/export/spec.js",
+    "build": "node --check src/js/app.js && node --check src/js/ui/panels.js && node --check src/js/ui/modals.js && node --check src/js/core/photoMatch.js && node --check src/js/export/kle.js && node --check src/js/export/svg.js && node --check src/js/export/pdf.js && node --check src/js/export/spec.js",
     "preview": "vite preview"
   },
   "dependencies": {
-    "@vercel/analytics": "^2.0.1",
-    "three": "^0.184.0",
     "gsap": "^3.12.5",
     "jspdf": "^2.5.2",
-    "svg2pdf.js": "^2.2.4"
+    "svg2pdf.js": "^2.2.4",
+    "three": "^0.184.0"
   },
   "devDependencies": {
     "vite": "^6.3.1"

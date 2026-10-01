@@ -20,6 +20,9 @@ if (designs.includes(command)) {
   if (path.resolve(destination) !== path.resolve(root, 'dist', 'public')) throw new Error('Invalid output path');
   rmSync(destination, { recursive: true, force: true });
   cpSync(source, destination, { recursive: true });
+  // Share cards belong to the Worker and must survive a frontend design switch.
+  cpSync(path.join(root, 'artifacts/blackboard/public/assets/og'),
+    path.join(destination, 'assets/og'), { recursive: true });
   console.log(`Staged ${config.active} for deployment.`);
 } else if (command === 'dev') {
   const result = spawnSync(process.platform === 'win32' ? 'pnpm.cmd' : 'pnpm',

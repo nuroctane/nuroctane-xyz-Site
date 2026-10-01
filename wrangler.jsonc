@@ -14,7 +14,7 @@
   "workers_dev": true,
   "routes": [
     { "pattern": "nuroctane.xyz", "custom_domain": true },
-    { "pattern": "www.nuroctane.xyz", "custom_domain": true }
+    { "pattern": "www.nuroctane.xyz", "custom_domain": true },
   ],
   "observability": { "enabled": true },
 
@@ -26,9 +26,8 @@
     // must return index.html rather than a 404.
     "not_found_handling": "single-page-application",
 
-    // Direct translation of the `config.matcher` array from the old Vercel edge
-    // middleware. Only these paths invoke the Worker; every other asset request
-    // is served straight from the edge, free and unmetered.
+    // Only these routes invoke the Worker; other static assets are served
+    // directly from the edge.
     //
     // Keep this list in sync with the PAGES table in worker/og-meta.ts — a route
     // missing here still renders for humans but loses its crawler OG card.
@@ -53,25 +52,19 @@
       "/projects/*",
       "/fin",
       "/assets/nodes/*.mp3",
-      "/api/*"
-    ]
+      "/api/*",
+    ],
   },
 
-  // Was `crons` in vercel.json, hitting POST /api/github-contrib/refresh.
-  // Now dispatched to the scheduled() handler in worker/index.ts, which is not
-  // publicly reachable — so the old spoofable `x-vercel-cron` header check is gone.
+  // Daily contribution refresh, dispatched to the private scheduled handler.
   "triggers": {
-    "crons": ["0 12 * * *"]
+    "crons": ["0 12 * * *"],
   },
 
   "vars": {
-    // Public *.vercel.app alias of the trimmed project that serves api/og.mjs.
-    // Apex/www route directly to this Worker; only dynamic image rendering
-    // remains on Vercel, with a static /opengraph.jpg fallback.
-    "OG_ORIGIN": "https://nuroctane-og.vercel.app",
     "SITE_ORIGIN": "https://nuroctane.xyz",
-    "GITHUB_CONTRIB_USER": "nuroctane"
-  }
+    "GITHUB_CONTRIB_USER": "nuroctane",
+  },
 
   // Secrets (set with `wrangler secret put`, never committed):
   //   nuroctanesitestorage_KV_REST_API_URL

@@ -5,7 +5,7 @@
   "packageManager": "pnpm@10.34.4",
   "scripts": {
     "preinstall": "node -e \"var fs=require('fs');['package-lock.json','yarn.lock'].forEach(function(f){try{fs.unlinkSync(f)}catch(e){}});var ua=process.env.npm_config_user_agent||'';if(!/pnpm/.test(ua)){console.error('Use pnpm instead');process.exit(1)}\"",
-    "build": "node scripts/render-cli-og.mjs && pnpm run check:repo-hygiene && pnpm run typecheck && pnpm -r --if-present run build && node scripts/site.mjs stage && pnpm run check:quotes && pnpm run check:books && pnpm run check:wallpapers && pnpm run check:refresh && pnpm run smoke && pnpm run check:observatory && node artifacts/modkeys/check-spa-shell.mjs",
+    "build": "node scripts/render-og.mjs && pnpm run check:repo-hygiene && pnpm run typecheck && pnpm -r --if-present run build && node scripts/site.mjs stage && pnpm run check:quotes && pnpm run check:books && pnpm run check:wallpapers && pnpm run check:refresh && pnpm run smoke && pnpm run check:observatory && node artifacts/modkeys/check-spa-shell.mjs",
     "deploy": "pnpm run build && wrangler deploy",
     "typecheck:libs": "tsc --build",
     "typecheck:worker": "tsc -p worker/tsconfig.json",
@@ -29,10 +29,10 @@
     "typescript": "~5.9.3",
     "wrangler": "^4.114.0"
   },
-  "//": "@vercel/og + react are consumed only by api/og.mjs, which remains deployed on Vercel and is proxied by the Worker. See worker/index.ts proxyOg().",
   "dependencies": {
-    "@vercel/og": "^0.11.1",
+    "@resvg/resvg-js": "2.6.2",
     "@workspace/api-server": "workspace:*",
-    "react": "catalog:"
+    "react": "catalog:",
+    "satori": "0.25.0"
   }
 }

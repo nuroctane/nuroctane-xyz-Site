@@ -92,7 +92,7 @@ Browser
        ├─ Static assets → dist/public → selected frontend build
        ├─ /api/* → shared Hono API
        ├─ Crawler requests → route-specific Open Graph HTML
-       └─ /api/og → separate Vercel OG renderer
+       └─ /api/og → pre-rendered share cards from Cloudflare assets
 ```
 
 | Layer | Implementation |
@@ -188,8 +188,9 @@ Verify the Workers Builds check for the shipped commit and the actual live asset
 Use `pnpm deploy` only if the push did not publish. Backups go to
 `D:\BACKUP\CODE Backups\nuroctane.xyz\` with the date and commit in the filename.
 
-Vercel serves only `api/og.mjs`; its git integration is disconnected. Deploy that project
-manually only when the OG renderer changes. It does not publish the website.
+`scripts/render-og.mjs` renders every share card at build time using `api/og.mjs`.
+Cards deploy with the site on Cloudflare; no separate image service is required.
+Product analytics uses PostHog.
 
 ## Adding another design
 
@@ -220,7 +221,7 @@ artifacts/
 lib/                 Shared API clients, schemas and server utilities
 worker/              Cloudflare entrypoint and crawler metadata
 scripts/             Design selection, validation and local content sync
-api/og.mjs           Separate Vercel OG image renderer
+api/og.mjs           Build-time share-card renderer
 docs/                Design notes, quote playbook, research and historical archive
 site.config.json     Selected design and Digital Sea baseline
 wrangler.jsonc       Single Worker deployment configuration

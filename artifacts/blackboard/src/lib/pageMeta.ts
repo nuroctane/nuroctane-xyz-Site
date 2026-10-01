@@ -24,8 +24,7 @@ export interface PageMeta {
 
 const DEFAULT: PageMeta = {
   title: "NUROCTANE",
-  description:
-    "Nuroctane's Blackboard. Projects, socials, books, and quotes.",
+  description: "Nuroctane's Blackboard. Projects, socials, books, and quotes.",
   badge: "BLACKBOARD",
   path: "/",
   imagePath: "/assets/nodes/site-logo.png",
@@ -77,7 +76,7 @@ const PAGES: Record<string, PageMeta> = {
     path: "/cli",
     siteName: "NurCLI",
     favicon: "/assets/nodes/nur-cli-logo.png",
-    imagePath: "/assets/nur-cli-og.png?v=4",
+    imagePath: "/assets/og/cli.png?v=5",
   },
   curriculum: {
     title: "World Models: A Daily Series",

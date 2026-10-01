@@ -1,61 +1,129 @@
 /**
- * Dynamic Open Graph image for share embeds.
- * GET /api/og?page=cli
- *
- * Edge runtime + @vercel/og. Optimized: longer cache, no blocking logo fetch.
- * Keep styles Satori-safe: flex only, solid colors.
+ * Build-time Open Graph renderer. Cloudflare serves the generated PNG assets.
  */
-import { ImageResponse } from '@vercel/og';
-import { createElement as h } from 'react';
+import satori from "satori";
+import { Resvg } from "@resvg/resvg-js";
+import { readFile } from "node:fs/promises";
+import { createElement as h } from "react";
 
-export const config = { runtime: 'edge' };
+const fonts = Promise.all(
+  [400, 700].map(async (weight) => ({
+    name: "JetBrains Mono",
+    weight,
+    style: "normal",
+    data: await readFile(
+      new URL(
+        `../scripts/og-fonts/JetBrainsMono-${weight === 400 ? "Regular" : "Bold"}.ttf`,
+        import.meta.url,
+      ),
+    ),
+  })),
+);
 
-const SITE = 'https://www.nuroctane.xyz';
-const NUR_LOGO = `${SITE}/assets/nodes/nur-cli-logo.png`;
-
-const THEMES = {
-  home:     { badge: 'DIGITAL SEA', accent: '#5de8f0', sub: 'nuroctane.xyz',     headline: 'Digital Sea' },
-  quotes:   { badge: 'QUOTES',      accent: '#7dd3fc', sub: 'thoughts & lines',  headline: 'Quotes' },
-  books:    { badge: 'BOOKS',       accent: '#a5b4fc', sub: 'living library',    headline: 'Books' },
-  resume:   { badge: 'RESUME',      accent: '#5de8f0', sub: 'David Davieson',    headline: 'Resume' },
-  modkeys:  { badge: 'MODKEYS',     accent: '#f0abfc', sub: 'keyboard configurator', headline: 'MODKEYS' },
-  cli:      { badge: 'NurCLI',      accent: '#e8b923', sub: 'multi-provider terminal agent', headline: 'NurCLI' },
-  observatory: { badge: 'OBSERVATORY', accent: '#38bdf8', sub: 'swiss ephemeris · sky · missions', headline: 'Observatory' },
-  orbit:       { badge: 'OBSERVATORY', accent: '#38bdf8', sub: 'swiss ephemeris · sky · missions', headline: 'Observatory' },
-  blog:     { badge: 'WRITINGS',    accent: '#86efac', sub: 'nur.writings',      headline: 'Writings' },
-  socials:  { badge: 'SOCIALS',     accent: '#fbbf24', sub: 'the network',       headline: 'Socials' },
-  projects: { badge: 'PROJECTS',    accent: '#fb7185', sub: 'creative + technical', headline: 'Projects' },
-  fin:      { badge: 'FIN',         accent: '#5de8f0', sub: 'end of the sea',    headline: 'Fin' },
+export const THEMES = {
+  home: {
+    badge: "DIGITAL SEA",
+    accent: "#5de8f0",
+    sub: "nuroctane.xyz",
+    headline: "Digital Sea",
+  },
+  quotes: {
+    badge: "QUOTES",
+    accent: "#7dd3fc",
+    sub: "thoughts & lines",
+    headline: "Quotes",
+  },
+  books: {
+    badge: "BOOKS",
+    accent: "#a5b4fc",
+    sub: "living library",
+    headline: "Books",
+  },
+  resume: {
+    badge: "RESUME",
+    accent: "#5de8f0",
+    sub: "David Davieson",
+    headline: "Resume",
+  },
+  modkeys: {
+    badge: "MODKEYS",
+    accent: "#f0abfc",
+    sub: "keyboard configurator",
+    headline: "MODKEYS",
+  },
+  cli: {
+    badge: "NurCLI",
+    accent: "#e8b923",
+    sub: "multi-provider terminal agent",
+    headline: "NurCLI",
+  },
+  observatory: {
+    badge: "OBSERVATORY",
+    accent: "#38bdf8",
+    sub: "swiss ephemeris · sky · missions",
+    headline: "Observatory",
+  },
+  orbit: {
+    badge: "OBSERVATORY",
+    accent: "#38bdf8",
+    sub: "swiss ephemeris · sky · missions",
+    headline: "Observatory",
+  },
+  blog: {
+    badge: "WRITINGS",
+    accent: "#86efac",
+    sub: "nur.writings",
+    headline: "Writings",
+  },
+  socials: {
+    badge: "SOCIALS",
+    accent: "#fbbf24",
+    sub: "the network",
+    headline: "Socials",
+  },
+  projects: {
+    badge: "PROJECTS",
+    accent: "#fb7185",
+    sub: "creative + technical",
+    headline: "Projects",
+  },
+  fin: {
+    badge: "FIN",
+    accent: "#5de8f0",
+    sub: "end of the sea",
+    headline: "Fin",
+  },
 };
 
 function seaCard(theme, badge, sub, pathLabel) {
   return h(
-    'div',
+    "div",
     {
       style: {
-        height: '100%',
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        background: 'linear-gradient(145deg, #041018 0%, #0b2730 48%, #062028 100%)',
-        padding: '56px 64px',
-        fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
+        height: "100%",
+        width: "100%",
+        display: "flex",
+        flexDirection: "column",
+        justifyContent: "space-between",
+        background:
+          "linear-gradient(145deg, #041018 0%, #0b2730 48%, #062028 100%)",
+        padding: "56px 64px",
+        fontFamily: "JetBrains Mono",
       },
     },
     h(
-      'div',
+      "div",
       {
         style: {
-          display: 'flex',
-          alignItems: 'center',
-          gap: '14px',
-          color: '#4a9aaa',
+          display: "flex",
+          alignItems: "center",
+          gap: "14px",
+          color: "#4a9aaa",
           fontSize: 22,
-          letterSpacing: '0.22em',
+          letterSpacing: "0.22em",
         },
       },
-      h('div', {
+      h("div", {
         style: {
           width: 10,
           height: 10,
@@ -63,94 +131,135 @@ function seaCard(theme, badge, sub, pathLabel) {
           background: theme.accent,
         },
       }),
-      h('span', null, 'SYS://NUROCTANE'),
+      h("span", null, "SYS://NUROCTANE"),
     ),
     h(
-      'div',
-      { style: { display: 'flex', flexDirection: 'column', gap: 18 } },
+      "div",
+      { style: { display: "flex", flexDirection: "column", gap: 18 } },
       h(
-        'div',
+        "div",
         {
           style: {
             color: theme.accent,
             fontSize: 28,
-            letterSpacing: '0.28em',
+            letterSpacing: "0.28em",
             fontWeight: 600,
           },
         },
         badge,
       ),
       h(
-        'div',
+        "div",
         {
           style: {
-            color: '#bdeff2',
+            color: "#bdeff2",
             fontSize: 64,
             fontWeight: 700,
-            letterSpacing: '-0.02em',
+            letterSpacing: "-0.02em",
             lineHeight: 1.05,
           },
         },
         theme.headline,
       ),
       h(
-        'div',
+        "div",
         {
           style: {
-            color: '#6aacb5',
+            color: "#6aacb5",
             fontSize: 26,
-            letterSpacing: '0.06em',
+            letterSpacing: "0.06em",
           },
         },
         sub,
       ),
     ),
     h(
-      'div',
+      "div",
       {
         style: {
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'flex-end',
-          borderTop: '1px solid rgba(93,232,240,0.18)',
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "flex-end",
+          borderTop: "1px solid rgba(93,232,240,0.18)",
           paddingTop: 28,
-          color: '#4a9aaa',
+          color: "#4a9aaa",
           fontSize: 20,
-          letterSpacing: '0.12em',
+          letterSpacing: "0.12em",
         },
       },
-      h('span', null, 'nuroctane.xyz'),
-      h('span', { style: { color: theme.accent } }, pathLabel),
+      h("span", null, "nuroctane.xyz"),
+      h("span", { style: { color: theme.accent } }, pathLabel),
     ),
   );
 }
 
 function cliCard() {
-  const muted = '#aaa9a5';
-  const edge = 'rgba(255,255,255,0.16)';
-  const mono = 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace';
-  const line = (text, style = {}) => h('div', { style: { display: 'flex', ...style } }, text);
-  return h('div', { style: {
-    display: 'flex', width: '100%', height: '100%', padding: '44px 52px',
-    background: 'radial-gradient(ellipse at 8% 5%, #333330 0%, #0b0b0b 48%, #181817 100%)',
-    fontFamily: mono, color: '#f2f2f2',
-  } },
-    h('div', { style: {
-      display: 'flex', width: '100%', flexDirection: 'column', justifyContent: 'center',
-      padding: '32px 36px', border: `1px solid ${edge}`, borderRadius: 24,
-      background: 'linear-gradient(145deg, rgba(255,255,255,0.06), rgba(8,8,8,0.82))',
-      boxShadow: '0 24px 70px rgba(0,0,0,0.5)',
-    } },
-      h('div', { style: { display: 'flex', flexDirection: 'column', gap: 18 } },
-        line('NurCLI', { fontSize: 76, fontWeight: 700, letterSpacing: '-0.055em', lineHeight: 1 }),
-        line('Spend context like it matters.', { fontSize: 35, color: '#eeeae0', letterSpacing: '-0.03em' }),
-        line('65 provider routes  /  112 Jev systems  /  52 tools', { fontSize: 19, color: muted, marginTop: 4 }),
+  const muted = "#aaa9a5";
+  const edge = "rgba(255,255,255,0.16)";
+  const mono = "JetBrains Mono";
+  const line = (text, style = {}) =>
+    h("div", { style: { display: "flex", ...style } }, text);
+  return h(
+    "div",
+    {
+      style: {
+        display: "flex",
+        width: "100%",
+        height: "100%",
+        padding: "44px 52px",
+        background:
+          "radial-gradient(ellipse at 8% 5%, #333330 0%, #0b0b0b 48%, #181817 100%)",
+        fontFamily: mono,
+        color: "#f2f2f2",
+      },
+    },
+    h(
+      "div",
+      {
+        style: {
+          display: "flex",
+          width: "100%",
+          flexDirection: "column",
+          justifyContent: "center",
+          padding: "32px 36px",
+          border: `1px solid ${edge}`,
+          borderRadius: 24,
+          background:
+            "linear-gradient(145deg, rgba(255,255,255,0.06), rgba(8,8,8,0.82))",
+          boxShadow: "0 24px 70px rgba(0,0,0,0.5)",
+        },
+      },
+      h(
+        "div",
+        { style: { display: "flex", flexDirection: "column", gap: 18 } },
+        line("NurCLI", {
+          fontSize: 76,
+          fontWeight: 700,
+          letterSpacing: "-0.055em",
+          lineHeight: 1,
+        }),
+        line("Spend context like it matters.", {
+          fontSize: 35,
+          color: "#eeeae0",
+          letterSpacing: "-0.03em",
+        }),
+        line("65 provider routes  /  112 Jev systems  /  52 tools", {
+          fontSize: 19,
+          color: muted,
+          marginTop: 4,
+        }),
       ),
-      h('div', { style: {
-        display: 'flex', justifyContent: 'flex-end',
-        marginTop: 58, fontSize: 17,
-      } },
-        line('nuroctane.xyz/cli', { color: muted }),
+      h(
+        "div",
+        {
+          style: {
+            display: "flex",
+            justifyContent: "flex-end",
+            marginTop: 58,
+            fontSize: 17,
+          },
+        },
+        line("nuroctane.xyz/cli", { color: muted }),
       ),
     ),
   );
@@ -159,29 +268,32 @@ function cliCard() {
 export default async function handler(request) {
   try {
     const url = new URL(request.url);
-    const page = (url.searchParams.get('page') || 'home').toLowerCase();
+    const page = (url.searchParams.get("page") || "home").toLowerCase();
     const theme = THEMES[page] || THEMES.home;
-    const rawTitle = url.searchParams.get('title') || theme.badge;
-    const badge = page === 'cli' ? String(rawTitle) : String(rawTitle).toUpperCase();
-    const sub = url.searchParams.get('sub') || theme.sub;
-    const pathLabel = page === 'home' ? '/' : `/${page}`;
+    const rawTitle = url.searchParams.get("title") || theme.badge;
+    const badge =
+      page === "cli" ? String(rawTitle) : String(rawTitle).toUpperCase();
+    const sub = url.searchParams.get("sub") || theme.sub;
+    const pathLabel = page === "home" ? "/" : `/${page}`;
 
-    const element = page === 'cli' ? cliCard() : seaCard(theme, badge, sub, pathLabel);
+    const element =
+      page === "cli" ? cliCard() : seaCard(theme, badge, sub, pathLabel);
 
-    // Longer cache: OG images are static-ish — 1 day at edge, 1 week stale
-    return new ImageResponse(element, {
+    const svg = await satori(element, {
       width: 1200,
       height: 630,
+      fonts: await fonts,
+    });
+    const png = new Resvg(svg).render().asPng();
+    return new Response(png, {
       headers: {
-        'Cache-Control': 'public, s-maxage=86400, stale-while-revalidate=604800',
-        'CDN-Cache-Control': 'public, s-maxage=86400, stale-while-revalidate=604800',
-        'Vercel-CDN-Cache-Control': 'public, s-maxage=86400, stale-while-revalidate=604800',
+        "Content-Type": "image/png",
       },
     });
   } catch (err) {
     return new Response(`OG image error: ${err?.message || err}`, {
       status: 500,
-      headers: { 'content-type': 'text/plain; charset=utf-8' },
+      headers: { "content-type": "text/plain; charset=utf-8" },
     });
   }
 }
