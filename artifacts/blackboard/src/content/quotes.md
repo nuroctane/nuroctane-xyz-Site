@@ -10,7 +10,7 @@
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (64)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (79)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (46)
-- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (63)
+- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (64)
 
 ## Faith, God & Surrender
 
@@ -2588,4 +2588,7 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > Stars don't fear the dark.
 > That's where they belong.
 > — @celestaracosmos
+
+> If you lack gratitude, you’ll develop a tendency to blow up your whole life. You’ll become addicted to fresh starting your life, All because you lost sense of that essence that makes the game special. Though when you can cultivate gratitude, when all is well and stable, realise how fortunate you are for the simple pleasures you get to indulge in, more shall be added to your cup. So that others can drink from the fountain of that, which infinitely nourishes you, through your presence, because you have so much all you can do is give.
+> — @verritass
 
