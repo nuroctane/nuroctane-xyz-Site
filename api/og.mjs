@@ -126,164 +126,32 @@ function seaCard(theme, badge, sub, pathLabel) {
 }
 
 function cliCard() {
-  const gold = '#e8b923';
-  const goldBright = '#ffd65a';
-  const goldSky = '#ffe08c';
-  const violet = '#b294ff';
-  const muted = '#948e80';
-  const border = 'rgba(232,185,35,0.28)';
-
-  return h(
-    'div',
-    {
-      style: {
-        height: '100%',
-        width: '100%',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
-        background: 'linear-gradient(145deg, #0b0e12 0%, #12161c 48%, #0b0e12 100%)',
-        padding: '52px 60px',
-        fontFamily: 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace',
-      },
-    },
-    h(
-      'div',
-      {
-        style: {
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        },
-      },
-      h(
-        'div',
-        {
-          style: {
-            display: 'flex',
-            alignItems: 'center',
-            gap: 14,
-            color: goldSky,
-            fontSize: 22,
-            letterSpacing: '0.2em',
-          },
-        },
-        h('div', {
-          style: {
-            width: 10,
-            height: 10,
-            borderRadius: 999,
-            background: gold,
-          },
-        }),
-        h('span', null, 'SYS://CLI'),
+  const muted = '#aaa9a5';
+  const edge = 'rgba(255,255,255,0.16)';
+  const mono = 'ui-monospace, SFMono-Regular, Menlo, Consolas, monospace';
+  const line = (text, style = {}) => h('div', { style: { display: 'flex', ...style } }, text);
+  return h('div', { style: {
+    display: 'flex', width: '100%', height: '100%', padding: '44px 52px',
+    background: 'radial-gradient(ellipse at 8% 5%, #333330 0%, #0b0b0b 48%, #181817 100%)',
+    fontFamily: mono, color: '#f2f2f2',
+  } },
+    h('div', { style: {
+      display: 'flex', width: '100%', flexDirection: 'column', justifyContent: 'center',
+      padding: '32px 36px', border: `1px solid ${edge}`, borderRadius: 24,
+      background: 'linear-gradient(145deg, rgba(255,255,255,0.06), rgba(8,8,8,0.82))',
+      boxShadow: '0 24px 70px rgba(0,0,0,0.5)',
+    } },
+      h('div', { style: { display: 'flex', flexDirection: 'column', gap: 18 } },
+        line('NurCLI', { fontSize: 76, fontWeight: 700, letterSpacing: '-0.055em', lineHeight: 1 }),
+        line('Spend context like it matters.', { fontSize: 35, color: '#eeeae0', letterSpacing: '-0.03em' }),
+        line('65 provider routes  /  112 Jev systems  /  52 tools', { fontSize: 19, color: muted, marginTop: 4 }),
       ),
-      h(
-        'div',
-        {
-          style: {
-            color: violet,
-            fontSize: 20,
-            letterSpacing: '0.14em',
-          },
-        },
-        'nuroctane.xyz/cli',
+      h('div', { style: {
+        display: 'flex', justifyContent: 'flex-end',
+        marginTop: 58, fontSize: 17,
+      } },
+        line('nuroctane.xyz/cli', { color: muted }),
       ),
-    ),
-    h(
-      'div',
-      {
-        style: {
-          display: 'flex',
-          alignItems: 'center',
-          gap: 36,
-        },
-      },
-      // No external image fetch — use text logo to avoid extra Edge fetch + origin cost
-      h(
-        'div',
-        {
-          style: {
-            width: 160,
-            height: 160,
-            borderRadius: 12,
-            border: `1px solid ${border}`,
-            background: '#1a1f28',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            color: goldBright,
-            fontSize: 42,
-            fontWeight: 700,
-            letterSpacing: '0.08em',
-          },
-        },
-        'NUR',
-      ),
-      h(
-        'div',
-        {
-          style: {
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 14,
-          },
-        },
-        h(
-          'div',
-          {
-            style: {
-              color: violet,
-              fontSize: 22,
-              letterSpacing: '0.16em',
-            },
-          },
-          '// multi-provider terminal agent',
-        ),
-        h(
-          'div',
-          {
-            style: {
-              color: goldBright,
-              fontSize: 80,
-              fontWeight: 700,
-              letterSpacing: '0.06em',
-              lineHeight: 1.05,
-            },
-          },
-          'NurCLI',
-        ),
-        h(
-          'div',
-          {
-            style: {
-              color: muted,
-              fontSize: 24,
-              letterSpacing: '0.04em',
-              maxWidth: 700,
-              lineHeight: 1.35,
-            },
-          },
-          'Rust harness · gold TUI · 65 providers · Jev judgments · 51 tools · 1,000+ skills',
-        ),
-      ),
-    ),
-    h(
-      'div',
-      {
-        style: {
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'flex-end',
-          borderTop: `1px solid ${border}`,
-          paddingTop: 26,
-          color: muted,
-          fontSize: 20,
-          letterSpacing: '0.1em',
-        },
-      },
-      h('span', null, 'nur install  ·  /login  ·  /model  ·  /plugins  ·  /typesafe'),
-      h('span', { style: { color: gold } }, '/cli'),
     ),
   );
 }

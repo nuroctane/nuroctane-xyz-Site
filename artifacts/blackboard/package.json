@@ -79,6 +79,7 @@
     "@react-three/postprocessing": "^3.0.4",
     "@rollup/rollup-win32-x64-msvc": "^4.62.2",
     "astronomy-engine": "2.1.19",
+    "metal-fx": "^2.0.11",
     "posthog-js": "^1.407.5",
     "postprocessing": "^6.39.1",
     "satellite.js": "^5.0.0",

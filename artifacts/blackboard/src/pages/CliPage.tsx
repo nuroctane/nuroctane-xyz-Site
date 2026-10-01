@@ -9,11 +9,16 @@ import {
   type ReactNode,
 } from "react";
 import { StandaloneNav } from "./StandaloneNav";
-import { MiniAudio } from "../components/hud/MiniAudio";
 import { ScrollToTop } from "../components/hud/ScrollToTop";
 import { useStandaloneScroll } from "../hooks/useStandaloneScroll";
 import { trackEvent } from "../lib/analytics";
 import { shouldLoadFoglampMap } from "../lib/foglampEmbed";
+import { BlackboardWallpaper } from "../blackboard/BlackboardWallpaper";
+import {
+  useReducedMotion,
+  useWallpaper,
+} from "../blackboard/WallpaperProvider";
+import { MetalFx } from "metal-fx";
 import "../cli-page.css";
 
 /* ── Content ────────────────────────────────────────────────────────────── */
@@ -379,14 +384,16 @@ const FEATURE_TABS: FeatureTab[] = [
           calls still earn their tokens, whether a result actually worked, what
           a fresh context can drop, which of a triggered skill&apos;s rules
           matter, and which model is adequate. See{" "}
-          <a href="https://nuroctane.github.io/nur-cli/typesafe/">docs/typesafe</a>.
+          <a href="https://nuroctane.github.io/nur-cli/typesafe/">
+            docs/typesafe
+          </a>
+          .
         </li>
         <li>
           <strong>Confidence gates action</strong> — judgments land in three
-          bands (act · confirm · escalate).{" "}
-          <code>Judgment::usable()</code> is the single choke point that reads
-          an answer, so a coin flip is never obeyed: it is reported, and the
-          caller falls back to its own default.
+          bands (act · confirm · escalate). <code>Judgment::usable()</code> is
+          the single choke point that reads an answer, so a coin flip is never
+          obeyed: it is reported, and the caller falls back to its own default.
         </li>
         <li>
           <strong>Compaction that writes no summary</strong> — stale calls are
@@ -395,14 +402,14 @@ const FEATURE_TABS: FeatureTab[] = [
           entirely.
         </li>
         <li>
-          <strong>Keyless on this machine</strong> — three local engines behind
-          one bridge, each offered only where it can actually run:{" "}
-          <strong>openJev-verdict-2.0</strong> (any CPU, ~20ms per decision),{" "}
-          <strong>Bespoke-Nimble-9B</strong> (NVIDIA GPU or Apple Silicon MLX),{" "}
-          <strong>Laya Core ML</strong> (Apple Silicon Neural Engine, macOS
-          15+), plus a deterministic mock for tests. A backend that cannot run
-          here says why instead of failing late. <code>nur jev start</code> ·{" "}
-          <code>nur jev use</code> · <code>nur jev status</code>
+          <strong>112 Jev systems in one catalog</strong> — search with{" "}
+          <code>nur jev models</code>, inspect deployment requirements with{" "}
+          <code>nur jev info &lt;id&gt;</code>, then connect a hosted endpoint
+          or start an installed local runtime. Keys stay in the credential vault
+          or an explicitly selected environment variable. Models retain their
+          published interfaces; unavailable weights and uncalibrated answers are
+          shown honestly. <code>nur jev login &lt;id&gt;</code> ·{" "}
+          <code>nur jev start --engine &lt;id&gt;</code>
         </li>
         <li>
           <strong>One credential lifts every provider</strong> — the hosted
@@ -439,8 +446,8 @@ const FEATURE_TABS: FeatureTab[] = [
         </li>
         <li>
           <strong>vision</strong> — <code>look</code> ·{" "}
-          <code>extract_frames</code> · inline images in the TUI (kitty
-          graphics protocol, sixel, iTerm2)
+          <code>extract_frames</code> · inline images in the TUI (kitty graphics
+          protocol, sixel, iTerm2)
         </li>
         <li>
           <strong>web</strong> — <code>web_search</code> ·{" "}
@@ -462,21 +469,27 @@ const FEATURE_TABS: FeatureTab[] = [
           <strong>knowledge</strong> — <code>graphify</code> ·{" "}
           <code>graphjin</code> · <code>plur</code> · <code>ruflo</code> ·{" "}
           <code>executor</code> · <code>skill</code> · <code>memory</code> ·{" "}
-          <code>headroom</code> · 51 tools in one dispatcher
+          <code>headroom</code> · 52 tools in one dispatcher
         </li>
         <li>
-          <strong>judgments</strong> — <code>typesafe</code> (gate a call,
-          judge a result, rank, route, classify, risk, verify). Measured on
-          the live API: 24 mixed judgments in <strong>1 request, ~280 ms</strong>,
-          100% replay agreement, zero frontier tokens — against 5 ms / coin-flip
-          accuracy for keyword heuristics and full-transcript re-reads without it.
-          Keyless local engines (openJev, Nimble, Laya, mock) speak the same contract.
+          <strong>judgments</strong> — <code>typesafe</code> (gate a call, judge
+          a result, rank, route, classify, risk, verify). Measured on the live
+          API: 24 mixed judgments in <strong>1 request, ~280 ms</strong>, 100%
+          replay agreement, zero frontier tokens — against 5 ms / coin-flip
+          accuracy for keyword heuristics and full-transcript re-reads without
+          it. Keyless local engines (openJev, Nimble, Laya, mock) speak the same
+          contract.
+        </li>
+        <li>
+          <strong>security agents</strong> - <code>enclave</code>:{" "}
+          <a href="https://enclave.ai">Enclave</a>'s autonomous pentests, code
+          security review and findings over its MCP server, spoken natively. A
+          sidecar key like TypeSafe's; every call is approval-gated.
         </li>
         <li>
           <strong>memory</strong> — <code>optmem</code> (permanent,{" "}
           <code>~/.optmem</code>) · <code>connectome</code> (hierarchical notes
-          + an append-only chronicle) · <code>mem</code> (vector / graph
-          router)
+          + an append-only chronicle) · <code>mem</code> (vector / graph router)
         </li>
         <li>
           <strong>context</strong> — <code>context</code> (register, peek,
@@ -484,10 +497,10 @@ const FEATURE_TABS: FeatureTab[] = [
         </li>
         <li>
           <strong>async</strong> — <code>bg</code> (jobs that outlive the turn)
-          · <code>admission</code> (async subagent handles) ·{" "}
-          <code>goal</code> · <code>proposal</code> (staged writes) ·{" "}
-          <code>message</code> (peer mail between sessions) · <code>question</code>{" "}
-          (close-ended user questions)
+          · <code>admission</code> (async subagent handles) · <code>goal</code>{" "}
+          · <code>proposal</code> (staged writes) · <code>message</code> (peer
+          mail between sessions) · <code>question</code> (close-ended user
+          questions)
         </li>
         <li>
           <strong>policy</strong> — <code>dogwood</code> (Cedar + temporal
@@ -592,9 +605,20 @@ const FEATURE_TABS: FeatureTab[] = [
           · note · nap · recall · doctor)
         </li>
         <li>
-          <strong>egaki</strong> — image / video / speech (<code>/egaki</code> ·{" "}
-          <code>/image</code>) · <code>egaki login --provider chatgpt</code> /
-          xai-oauth / plan / BYOK
+          <strong>Usage ledger</strong> - <code>/ledger</code> brings Nur,
+          Claude Code, Codex, Droid, Pi, Command Code, and Devin usage together
+          from local logs. Reported costs, estimates, and unpriced requests stay
+          distinct. Prompts and credentials stay out of the ledger.
+        </li>
+        <li>
+          <strong>Startup skills</strong> - <code>/startup-skill</code> routes
+          market research, positioning, product design, and pitch work to the
+          matching workflow.
+        </li>
+        <li>
+          <strong>egaki</strong> — image / video / speech (<code>/egaki</code>)
+          · <code>egaki login --provider chatgpt</code> / xai-oauth / plan /
+          BYOK
         </li>
         <li>
           <strong>fractal</strong> — recursive agent trees in git worktrees via{" "}
@@ -818,7 +842,14 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
     cmd: "/typesafe",
     desc: "TypeSafe / Jev layer: status, on/off, ask <proposition> · tool `typesafe`",
   },
-  { cmd: "/jev", desc: "TypeSafe / Jev layer  (alias of /typesafe)" },
+  {
+    cmd: "/jev",
+    desc: "Jev judgment layer, models [search], info <id>, status and typed questions",
+  },
+  {
+    cmd: "/enclave",
+    desc: "Enclave security agents over native MCP: status | tools [name] | login · tool `enclave`",
+  },
   {
     cmd: "/optmem",
     desc: "OptMem permanent memory (~/.optmem): status | wake | note | nap lines=[…] | recall | zoom | forget | config | doctor",
@@ -836,7 +867,10 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
     cmd: "/egaki",
     desc: "image / video / speech via egaki — login --provider chatgpt | xai-oauth | plan | BYOK",
   },
-  { cmd: "/image", desc: "egaki image gen  (alias of /egaki)" },
+  {
+    cmd: "/image",
+    desc: "attach a workspace image for vision and inline preview",
+  },
   {
     cmd: "/bg",
     desc: "background jobs: list | <id> result | cancel | run <cmd>",
@@ -872,13 +906,20 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: "/poor", desc: "cost-saver lean prompt" },
   { cmd: "/usage", desc: "token usage + cost for this session" },
   {
+    cmd: "/ledger",
+    desc: "local usage across seven agents: today | 7 | month | all",
+  },
+  {
     cmd: "/cost",
     desc: "token usage + cost for this session  (alias of /usage)",
   },
   { cmd: "/context", desc: "context-window utilization" },
   { cmd: "/status", desc: "session snapshot: model · mode · cwd · tokens" },
   { cmd: "/doctor", desc: "health check: version · auth · ecosystem · shell" },
-  { cmd: "/effort", desc: "reasoning effort: low · medium · high · xhigh · max · ultracode" },
+  {
+    cmd: "/effort",
+    desc: "reasoning effort: low · medium · high · xhigh · max · ultracode",
+  },
   { cmd: "/turns", desc: "per-session agent-turn ceiling (0 = unlimited)" },
   {
     cmd: "/fusion",
@@ -1021,15 +1062,33 @@ const CLI_SUBCOMMANDS: { cmd: string; desc: string }[] = [
   },
   { cmd: "nur doctor", desc: "health check" },
   {
+    cmd: "nur jev models [--search <text>]",
+    desc: "browse all 112 published Jev systems offline",
+  },
+  {
+    cmd: "nur jev info <id>",
+    desc: "deployment recipe, source, interface, model and hardware",
+  },
+  {
+    cmd: "nur jev login <id>",
+    desc: "save an isolated engine credential with hidden input",
+  },
+  {
     cmd: "nur jev start",
-    desc: "start a local judgment engine - verdict | nimble | laya | mock (no API key)",
+    desc: "start a judgment bridge with --engine <id>, or verdict | nimble | laya | mock",
   },
   {
     cmd: "nur jev status",
     desc: "endpoint, credential, bridge state, and which engines this device can run",
   },
-  { cmd: "nur jev use", desc: "point the judgment layer at the loopback engine" },
-  { cmd: "nur jev stop", desc: "stop the recorded bridge and verify the port is free" },
+  {
+    cmd: "nur jev use",
+    desc: "point the judgment layer at the loopback engine",
+  },
+  {
+    cmd: "nur jev stop",
+    desc: "stop the recorded bridge and verify the port is free",
+  },
   { cmd: "nur ecosystem ensure", desc: "install / repair knowledge packs" },
   {
     cmd: "nur ecosystem status",
@@ -1041,6 +1100,10 @@ const CLI_SUBCOMMANDS: { cmd: string; desc: string }[] = [
   },
   { cmd: "nur sessions", desc: "list sessions" },
   { cmd: "nur usage", desc: "usage log" },
+  {
+    cmd: "nur ledger",
+    desc: "local usage across seven agents; --period today | 7 | month | all",
+  },
   { cmd: "nur gateway", desc: "Telegram bot mode" },
   {
     cmd: "nur local",
@@ -1536,6 +1599,12 @@ const INSPIRATIONS: Inspiration[] = [
   },
   {
     group: "stack",
+    name: "Enclave",
+    href: "https://enclave.ai",
+    why: "autonomous security agents (pentests, code security review, findings) reached natively over MCP · sidecar key, approval-gated calls",
+  },
+  {
+    group: "stack",
     name: "openJev-verdict-2.0",
     href: "https://github.com/Heman10x-NGU/openJev-verdict-2.0",
     why: "local CPU engine for the same contract: ModernBERT + GLiClass head, non-autoregressive, ~20ms per decision",
@@ -1568,7 +1637,7 @@ const INSPIRATIONS: Inspiration[] = [
     group: "stack",
     name: "egaki",
     href: "https://github.com/remorses/egaki",
-    why: "image / video / speech CLI · /egaki · /image",
+    why: "image / video / speech CLI · /egaki",
   },
   {
     group: "stack",
@@ -2246,6 +2315,8 @@ function FoglampMap() {
 /* ── Page ───────────────────────────────────────────────────────────────── */
 
 export default function CliPage() {
+  const { variant } = useWallpaper();
+  const reducedMotion = useReducedMotion();
   useStandaloneScroll();
   useReveal();
   const {
@@ -2321,17 +2392,17 @@ export default function CliPage() {
   };
 
   return (
-    <div className="standalone-page cli-page">
+    <div
+      className="standalone-page cli-page"
+      data-wallpaper={variant}
+      data-ink="light"
+    >
+      <BlackboardWallpaper />
       <a className="cli-skip" href="#efficiency">
         Skip to token path
       </a>
       <ScrollToTop />
       <StandaloneNav />
-
-      <div className="standalone-header cli-topbar">
-        <span className="standalone-prefix">NUR://</span>CONTEXT ENGINE
-        <MiniAudio />
-      </div>
 
       {/* sticky jump rail */}
       <nav className="cli-jump" aria-label="On this page">
@@ -2354,11 +2425,6 @@ export default function CliPage() {
 
       {/* Hero */}
       <header className="cli-hero cli-reveal">
-        <div className="cli-hero-rail" aria-hidden>
-          <span>UNIT / NUR-65</span>
-          <span>STATE / LOCAL-FIRST</span>
-          <span>MODE / USER-ROUTED</span>
-        </div>
         <div className="cli-hero-brand">
           <img
             src="/assets/nodes/nur-cli-logo.png"
@@ -2369,7 +2435,6 @@ export default function CliPage() {
             draggable={false}
           />
           <div className="cli-hero-copy">
-            <p className="cli-kicker">[ MULTI-PROVIDER TERMINAL AGENT ]</p>
             <div className="cli-title-row">
               <h1 className="cli-title">NurCLI</h1>
               <a
@@ -2404,7 +2469,7 @@ export default function CliPage() {
                 )}
               </a>
             </div>
-            <p className="cli-display-line">SPEND CONTEXT LIKE IT MATTERS.</p>
+            <p className="cli-display-line">Spend context like it matters.</p>
             <p className="cli-tagline">
               A Rust agent harness built to keep paid context working: load
               tools lazily, compress noise, reserve the answer before dispatch,
@@ -2412,16 +2477,26 @@ export default function CliPage() {
               retry, failover, and auxiliary inference attempt.
             </p>
             <div className="cli-hero-cta">
-              <button
-                type="button"
-                className="cli-btn cli-btn--primary"
-                onClick={() => {
-                  scrollToId("install");
-                  trackEvent("Cli CTA", { target: "install" });
-                }}
+              <MetalFx
+                preset="gold"
+                theme="dark"
+                strength={0.65}
+                paused={reducedMotion}
+                disableGlow
+                normalizeHostStyles={false}
+                ringCssPx={1}
               >
-                Install NurCLI
-              </button>
+                <button
+                  type="button"
+                  className="cli-btn cli-btn--primary"
+                  onClick={() => {
+                    scrollToId("install");
+                    trackEvent("Cli CTA", { target: "install" });
+                  }}
+                >
+                  Install NurCLI
+                </button>
+              </MetalFx>
               <button
                 type="button"
                 className="cli-btn"
@@ -2451,8 +2526,8 @@ export default function CliPage() {
             <span>provider routes</span>
           </li>
           <li>
-            <strong>3</strong>
-            <span>keyless local engines</span>
+            <strong>112</strong>
+            <span>Jev systems</span>
           </li>
           <li>
             <strong>3-STATE</strong>
@@ -2486,7 +2561,6 @@ export default function CliPage() {
       >
         <div className="cli-section-hd cli-section-hd--split">
           <div>
-            <p className="cli-section-code">SYS.TRACE / REQUEST-LIFECYCLE</p>
             <h2 className="cli-h2">
               <span className="cli-h2-num">01</span> Token path
             </h2>
@@ -2529,7 +2603,6 @@ export default function CliPage() {
         >
           <div className="cli-benchmark-hd">
             <div>
-              <p className="cli-section-code">LAB.TRACE / MEMORY-HOT-PATH</p>
               <h3 id="retrieval-benchmark-title">
                 One embedding. Every resident.
               </h3>
@@ -2611,7 +2684,6 @@ export default function CliPage() {
       <section className="cli-section cli-reveal cli-memory" id="memory">
         <div className="cli-section-hd cli-section-hd--split">
           <div>
-            <p className="cli-section-code">SYS.MEM / RETENTION-TOPOLOGY</p>
             <h2 className="cli-h2">
               <span className="cli-h2-num">02</span> Memory by layer
             </h2>
@@ -2835,16 +2907,15 @@ export default function CliPage() {
       {/* Demo */}
       <section className="cli-section cli-reveal" id="demo">
         <div className="cli-section-hd">
-          <p className="cli-section-code">SYS.MAP / LIVE-IMPLEMENTATION</p>
           <h2 className="cli-h2">
             <span className="cli-h2-num">04</span> See the machine
           </h2>
           <p className="cli-lead">
             The gold TUI is the control surface. This Foglamp map follows the
             Rust request path from prompt assembly through provider adapters,
-            tools, typed judgments, usage accounting, memory, and durable state
-            — regenerated from the current tree, so it includes the judgment
-            layer and its three local engines.
+            tools, typed judgments, usage accounting, memory, and durable state.
+            The published map illustrates the core request path; deployment
+            recipes for the full Jev library live in the docs.
           </p>
         </div>
         <figure className="cli-demo">
@@ -2871,7 +2942,6 @@ export default function CliPage() {
       {/* Features */}
       <section className="cli-section cli-reveal" id="features">
         <div className="cli-section-hd">
-          <p className="cli-section-code">SYS.SURFACE / OPERATOR-CONTROLS</p>
           <h2 className="cli-h2">
             <span className="cli-h2-num">05</span> Operator surface
           </h2>
@@ -2927,7 +2997,6 @@ export default function CliPage() {
       {/* Commands */}
       <section className="cli-section cli-reveal" id="commands">
         <div className="cli-section-hd">
-          <p className="cli-section-code">SYS.INDEX / COMMAND-SURFACE</p>
           <h2 className="cli-h2">
             <span className="cli-h2-num">06</span> Commands
           </h2>
@@ -3042,7 +3111,6 @@ export default function CliPage() {
       {/* Inspirations */}
       <section className="cli-section cli-reveal" id="inspirations">
         <div className="cli-section-hd">
-          <p className="cli-section-code">SYS.CREDITS / LINEAGE-LEDGER</p>
           <h2 className="cli-h2">
             <span className="cli-h2-num">07</span> Credits
           </h2>
