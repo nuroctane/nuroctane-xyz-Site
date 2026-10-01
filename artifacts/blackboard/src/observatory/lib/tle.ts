@@ -41,14 +41,14 @@ type SetSpec = {
 
 const SETS: Record<string, SetSpec> = {
   visual: { id: 'visual', file: '/observatory-runtime/data/tle-visual.txt', cap: 400, forceGroup: null },
-  stations: { id: 'stations', file: null, cap: 80, forceGroup: null },
-  starlink: { id: 'starlink', file: null, cap: 220, forceGroup: 'starlink' },
-  oneweb: { id: 'oneweb', file: null, cap: 80, forceGroup: 'oneweb' },
-  planet: { id: 'planet', file: null, cap: 80, forceGroup: 'planet' },
-  iridium: { id: 'iridium', file: null, cap: 120, forceGroup: 'iridium' },
-  gps: { id: 'gps', file: null, cap: 80, forceGroup: 'gps' },
-  galileo: { id: 'galileo', file: null, cap: 80, forceGroup: 'galileo' },
-  glonass: { id: 'glonass', file: null, cap: 80, forceGroup: 'glonass' },
+  stations: { id: 'stations', file: '/observatory-runtime/data/tle-stations.txt', cap: 80, forceGroup: null },
+  starlink: { id: 'starlink', file: '/observatory-runtime/data/tle-starlink.txt', cap: 220, forceGroup: 'starlink' },
+  oneweb: { id: 'oneweb', file: '/observatory-runtime/data/tle-oneweb.txt', cap: 80, forceGroup: 'oneweb' },
+  planet: { id: 'planet', file: '/observatory-runtime/data/tle-planet.txt', cap: 80, forceGroup: 'planet' },
+  iridium: { id: 'iridium', file: '/observatory-runtime/data/tle-iridium.txt', cap: 120, forceGroup: 'iridium' },
+  gps: { id: 'gps', file: '/observatory-runtime/data/tle-gps.txt', cap: 80, forceGroup: 'gps' },
+  galileo: { id: 'galileo', file: '/observatory-runtime/data/tle-galileo.txt', cap: 80, forceGroup: 'galileo' },
+  glonass: { id: 'glonass', file: '/observatory-runtime/data/tle-glonass.txt', cap: 80, forceGroup: 'glonass' },
   'fengyun-1c-debris': {
     id: 'fengyun-1c-debris',
     file: '/observatory-runtime/data/tle-fengyun-1c-debris.txt',
@@ -110,7 +110,7 @@ function sample<T>(items: T[], cap: number): T[] {
 
 export function parseTleCatalog(text: string, spec: SetSpec): LiveSat[] {
   const lines = text.split(/\r?\n/).map((line) => line.trim()).filter((line) => line.length > 0);
-  const parsed: LiveSat[] = [];
+  const records: { name: string; line1: string; line2: string }[] = [];
   let i = 0;
   while (i < lines.length) {
     let name = '';
@@ -130,6 +130,12 @@ export function parseTleCatalog(text: string, spec: SetSpec): LiveSat[] {
       i += 1;
       continue;
     }
+    records.push({ name, line1, line2 });
+  }
+  // Limit SGP4 initialization as well as rendering: a constellation feed may
+  // contain ten thousand records, most of which would be discarded anyway.
+  const parsed: LiveSat[] = [];
+  for (const { name, line1, line2 } of sample(records, spec.cap)) {
     let satrec: SatRec;
     try {
       satrec = twoline2satrec(line1, line2);
@@ -147,7 +153,7 @@ export function parseTleCatalog(text: string, spec: SetSpec): LiveSat[] {
       satrec,
     });
   }
-  return sample(parsed, spec.cap);
+  return parsed;
 }
 
 function priority(sat: LiveSat): number {

@@ -39,7 +39,8 @@ try {
   const mixed = await loadObservatoryCatalog(enabled, new AbortController().signal);
   assert.equal(mixed.sats.length, 2);
   assert.equal(mixed.source, 'mixed');
-  const fresh = first.replace('26197.11580556', '26198.11580556');
+  const fresh = first.replace(/^1 .*/m, line => line.slice(0, 18) +
+    (Number(line.slice(18, 32)) + 1).toFixed(8).padStart(14, '0') + line.slice(32));
   globalThis.fetch = async input => {
     const url = String(input);
     if (url.endsWith('set=stations')) return new Response(fresh);
@@ -72,8 +73,22 @@ try {
   assert.equal(live.headers.get('X-Observatory-TLE'), 'live');
   assert.equal((await router.request('http://localhost/observatory/tle?set=stations')).headers.get('X-Observatory-TLE'), 'cache');
   assert.equal(calls, 1);
-  globalThis.fetch = async () => new Response('<html>upstream error</html>');
+  assert.equal(live.headers.get('Cache-Control'), 'public, max-age=7200');
+  globalThis.fetch = async () => {
+    calls++;
+    await new Promise(resolve => setTimeout(resolve, 10));
+    return new Response(first);
+  };
+  await Promise.all([
+    router.request('http://localhost/observatory/tle?set=gps'),
+    router.request('http://localhost/observatory/tle?set=gps'),
+  ]);
+  assert.equal(calls, 2, 'Concurrent requests must share one upstream fetch');
+  calls = 0;
+  globalThis.fetch = async () => { calls++; return new Response('<html>upstream error</html>'); };
   assert.equal((await router.request('http://localhost/observatory/tle?set=visual')).status, 502);
+  assert.equal((await router.request('http://localhost/observatory/tle?set=visual')).status, 502);
+  assert.equal(calls, 1, 'An unavailable upstream must cool down rather than be retried on each refresh');
   assert.equal((await router.request('http://localhost/observatory/geocode?q=x')).status, 400);
   assert.equal((await router.request('http://localhost/observatory/geocode?q=Tokyo')).status, 502);
   globalThis.fetch = async () => Response.json([{ place_id: 1, display_name: 'Tokyo', lat: '35.68', lon: '139.76' }]);
@@ -101,6 +116,15 @@ try {
   const quakes = await fetchEarthquakes();
   assert.equal(quakes.length, 1, 'Missing coordinates must not put a fake quake at 0,0');
   assert.equal(quakes[0].id, 'valid');
+  globalThis.fetch = async input => String(input).startsWith('/api/')
+    ? new Response('', { status: 502 })
+    : new Response(readFileSync(new URL(`../artifacts/blackboard/public${input}`, import.meta.url), 'utf8'));
+  const offline = await loadObservatoryCatalog(
+    Object.fromEntries(SATELLITE_GROUPS.map(g => [g.id, true])) as Record<SatelliteGroupId, boolean>,
+    new AbortController().signal,
+  );
+  assert.equal(offline.source, 'snapshot');
+  assert.ok(offline.sats.length > 200 && offline.sats.length <= 640, 'All groups have working bounded fallback catalogs');
   console.log('OBSERVATORY DATA OK — SGP4, partial outages, snapshots, cancellation, proxy validation/cache, cardinal winds and batched weather');
 } finally {
   globalThis.fetch = originalFetch;

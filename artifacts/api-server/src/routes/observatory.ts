@@ -28,8 +28,41 @@ const TLE_UPSTREAM: Record<string, string> = {
   "cosmos-2251-debris": "cosmos-2251-debris",
 };
 
-const TLE_TTL_MS = 15 * 60 * 1000;
+// CelesTrak updates at most every two hours and asks clients not to poll sooner.
+const TLE_TTL_MS = 2 * 60 * 60 * 1000;
 const tleCache = new Map<string, { at: number; body: string }>();
+const tleFailures = new Map<string, number>();
+const tlePending = new Map<string, Promise<string>>();
+
+async function fetchTle(set: string, group: string): Promise<string> {
+  const pending = tlePending.get(set);
+  if (pending) return pending;
+  const work = (async () => {
+    const url = `https://celestrak.org/NORAD/elements/gp.php?GROUP=${encodeURIComponent(group)}&FORMAT=tle`;
+    try {
+      const options: RequestInit & { cf: object } = {
+        headers: { Accept: "text/plain", "User-Agent": UPSTREAM_UA },
+        signal: AbortSignal.timeout(12_000),
+        cf: { cacheEverything: true, cacheTtlByStatus: { "200-299": 7200, "400-599": -1 } },
+      };
+      const r = await fetch(url, options);
+      if (!r.ok) {
+        // Do not repeat rejected queries and risk an upstream IP block.
+        tleFailures.set(set, Date.now() + TLE_TTL_MS);
+        throw new Error(`CelesTrak ${r.status}`);
+      }
+      const body = await r.text();
+      if (!/^1 [^\r\n]+\r?\n2 /m.test(body)) throw new Error("Not a TLE catalog");
+      tleCache.set(set, { at: Date.now(), body });
+      return body;
+    } catch (err) {
+      if (!tleFailures.has(set)) tleFailures.set(set, Date.now() + 15 * 60 * 1000);
+      throw err;
+    }
+  })();
+  tlePending.set(set, work);
+  try { return await work; } finally { tlePending.delete(set); }
+}
 
 router.get("/observatory/tle", async (c) => {
   const set = c.req.query("set") ?? "";
@@ -38,28 +71,16 @@ router.get("/observatory/tle", async (c) => {
 
   const hit = tleCache.get(set);
   if (hit && Date.now() - hit.at < TLE_TTL_MS) {
-    c.header("Cache-Control", "public, max-age=900");
+    c.header("Cache-Control", "public, max-age=7200");
     c.header("X-Observatory-TLE", "cache");
     return c.text(hit.body);
   }
 
-  const url = `https://celestrak.org/NORAD/elements/gp.php?GROUP=${encodeURIComponent(group)}&FORMAT=tle`;
+  if ((tleFailures.get(set) ?? 0) > Date.now()) return c.json({ error: "upstream" }, 502);
+  tleFailures.delete(set);
   try {
-    const r = await fetch(url, {
-      headers: { Accept: "text/plain", "User-Agent": UPSTREAM_UA },
-      signal: AbortSignal.timeout(12_000),
-    });
-    if (!r.ok) {
-      logger.warn({ status: r.status, set }, "CelesTrak TLE fetch failed");
-      return c.json({ error: "upstream" }, 502);
-    }
-    const body = await r.text();
-    if (!/^1 [^\r\n]+\r?\n2 /m.test(body)) {
-      logger.warn({ set }, "CelesTrak TLE body was not a TLE catalog");
-      return c.json({ error: "upstream" }, 502);
-    }
-    tleCache.set(set, { at: Date.now(), body });
-    c.header("Cache-Control", "public, max-age=900");
+    const body = await fetchTle(set, group);
+    c.header("Cache-Control", "public, max-age=7200");
     c.header("X-Observatory-TLE", "live");
     return c.text(body);
   } catch (err) {

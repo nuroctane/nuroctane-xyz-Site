@@ -11,12 +11,19 @@ astronomy-engine fallback.
 
 - `SatelliteField.tsx` propagates CelesTrak TLEs with satellite.js SGP4. The
   same-origin `/api/observatory/tle` proxy validates and caches each allowed feed
-  for 15 minutes. Available committed snapshots keep supported groups visible
+  for two hours, matching the upstream update cadence. Concurrent requests share
+  a fetch; failed queries cool down instead of retrying on every refresh.
+  Committed snapshots for every supported group keep satellites visible
   during an upstream outage. The HUD distinguishes live, snapshot and mixed
   catalogs. Snapshot positions are estimates, especially as orbital data ages.
+  The snapshots were refreshed from CelesTrak on 2026-10-01; large groups are
+  sampled to the scene's limits to keep fallback downloads small. The production
+  CelesTrak connection timed out during verification, so the scene correctly
+  uses and labels these snapshots. It does not claim a failed feed is live.
 - Catalog requests fail independently, cancel on group changes, deduplicate by
   NORAD ID and cap rendering at 640 satellites. Propagation batches 160 points
-  per frame. Only the selected satellite enters the camera-follow map; dynamic
+  per frame, and SGP4 initialization is also capped before parsing large feeds.
+  Only the selected satellite enters the camera-follow map; dynamic
   point geometry has a fixed orbital bound and no per-frame bounding calculation.
   Search accepts a name, group or NORAD ID. The satellite layer toggle also hides
   tracks and clears its HUD catalog when unmounted.
