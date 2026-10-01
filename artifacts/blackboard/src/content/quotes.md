@@ -1,14 +1,14 @@
 ## Index
-- [[#Faith, God & Surrender|Faith, God & Surrender]] (47)
+- [[#Faith, God & Surrender|Faith, God & Surrender]] (49)
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (29)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (58)
-- [[#Self, Identity & Awakening|Self, Identity & Awakening]] (79)
+- [[#Self, Identity & Awakening|Self, Identity & Awakening]] (80)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (54)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (97)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (99)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (32)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (105)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (64)
-- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (78)
+- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (79)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (46)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (63)
 
@@ -169,6 +169,14 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 
 > Your weak points are exactly what you must strengthen, and your strengths are precisely what you must exploit. In faith, it's your vices you must perfect, and your virtues you must guard against. It's in taking you lower first, that God brings you higher. It's serving, that you lead; in giving, that you receive
 > — @AugustusDelano
+
+> The answer to “how?” is God provides for the lion.
+> — @MrE_mssg
+
+> Astrology, numerology, symbols, occult practices, etc work because they are systems derived by observing the creation of God. The reason you can look up at the planets or stars for guidance is because God formed you and the planets alike. As above, so below.
+> 
+> You should never become so diluted that you think the system itself is the source of truth rather than a dimension of the one singular source of life. This applies to religions as well.
+> — @RainbowBodied
 
 ## Reality, Consciousness & Perception
 
@@ -697,6 +705,9 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 
 > "Glow-ups" are often just individuals who have been out of alignment returning to themselves as a new incarnation through deep self-work, reflected externally. It is insanely hot because emerging from an underworld pivot usually encompasses a peak period of embodied holistic alignment, and this is devastatingly magnetic, perfect for attracting in that which resonates, before encountering future timelines requiring further iterations.
 > — @buridansridge
+
+> maybe the point was never to get what I wanted, but to become someone capable of wanting differently
+> — @artemisgrl
 
 ## Mind, Belief & Inner Work
 
@@ -1229,6 +1240,12 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 
 > people will let small problems persist in their life for forever not realizing that 5 minutes a day for a lifetime (60yrs) costs you 1825 hours. do you want 1825 hours of toil or annoyance in your life? can you solve the problem in less than 1825 hours? then you fucking should.
 > — @satellitedown
+
+> One of the biggest mistakes you will make in life is take a bet on something important to your actualization, over lever yourself, have it go horribly wrong, and then get super traumatized and swear off it for too long. It is critical you learn from your mistakes, dust yourself off, and get back in the saddle as soon as possible. The longer you spend avoiding this, the deeper you will get into a prison of emptiness, fear, and hedonism which becomes harder to escape the longer you’re there. You must accept that life is a risk, and failures are inevitable. The only way to avoid pain is to kill yourself. If you’re not going to do that, then get off your ass and TRULY LIVE.
+> — @minordissent
+
+> Unutmamanız gereken ilke: mutlu insanlar size güzel bir dille konuşur, çekici insanlar size cömertçe iltifat eder, başarılı insanlar sizi ve emeklerinizi takdir eder. Bir insan hevesinizi kırmak istiyorsa, bu üçüne de sahip değildir; dolayısıyla ciddiye alınmayı da hak etmez.
+> — @hmelisaacar
 
 ## Creativity, Purpose & Expression
 
@@ -2165,6 +2182,9 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 
 > what doesn't kill you introduces you to carl jung, marcus aurelius, epictetus, friedrich nietzsche, james baldwin, bell hooks, audre lorde, frantz fanon, paulo freire, joseph campbell, alan watts, ram dass, gary zukav, brene brown, gabor mate, shadow work, attachment theory, nervous-system regulation, ancestral trauma, existentialism, stoicism, meditation, emotional intelligence, neuroplasticity, metacognition, pattern recognition, game theory, delusional optimism, boundaries and discernment.
 > — @alexeixbt
+
+> Imagine if every uncomfortable sensation in your body was just energy trying to move, and the only thing keeping it stuck was your story about what it means.
+> — @PaulNHughes
 
 ## Work, Wealth & Value
 
