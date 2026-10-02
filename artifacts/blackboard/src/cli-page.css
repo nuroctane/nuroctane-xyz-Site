@@ -266,8 +266,22 @@ html.standalone-active.cli-theme body {
   opacity: 1;
   transform: translateY(0);
 }
+/* Sections are jump and #anchor targets, and browsers aim anchors at the
+   transformed box, so a sliding section lands 12px off. Slide its contents. */
+.cli-section.cli-reveal {
+  transform: none;
+  will-change: opacity;
+}
+.cli-section.cli-reveal > * {
+  transform: translateY(12px);
+  transition: transform 420ms var(--cli-ease-out);
+}
+.cli-section.cli-reveal--in > * {
+  transform: none;
+}
 @media (prefers-reduced-motion: reduce) {
-  .cli-reveal {
+  .cli-reveal,
+  .cli-section.cli-reveal > * {
     opacity: 1;
     transform: none;
     transition: none;
@@ -504,7 +518,7 @@ html.standalone-active.cli-theme body {
 /* sections */
 .cli-section {
   margin-bottom: 2.75rem;
-  scroll-margin-top: calc(var(--cli-header-h) + var(--cli-jump-h) + 0.6rem);
+  scroll-margin-top: calc(var(--cli-header-h) + var(--cli-jump-h) + 1rem);
 }
 .cli-section-hd {
   margin-bottom: 1rem;
@@ -2019,7 +2033,7 @@ html.standalone-active.cli-theme body {
   animation: none;
 }
 
-.cli-jump-item--on::after {
+.cli-jump-item::after {
   content: "";
   position: absolute;
   bottom: 3px;
@@ -2029,7 +2043,23 @@ html.standalone-active.cli-theme body {
   border-radius: 50%;
   background: var(--glint);
   box-shadow: 0 0 8px rgb(var(--glint-rgb) / 70%);
-  transform: translateX(-50%);
+  opacity: 0;
+  transform: translateX(-50%) scale(0.4);
+  transition:
+    opacity 160ms var(--cli-ease-out),
+    transform 220ms var(--cli-ease-out);
+}
+
+.cli-jump-item--on::after {
+  opacity: 1;
+  transform: translateX(-50%) scale(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cli-jump-item::after,
+  .cli-jump-item--on::after {
+    transform: translateX(-50%);
+  }
 }
 
 .cli-jump-item:focus-visible {

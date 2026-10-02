@@ -7,6 +7,7 @@ import {
   useState,
   type KeyboardEvent as ReactKeyboardEvent,
   type ReactNode,
+  type RefObject,
 } from "react";
 import { StandaloneNav } from "./StandaloneNav";
 import { ScrollToTop } from "../components/hud/ScrollToTop";
@@ -1954,6 +1955,9 @@ function useReveal() {
       return;
     }
 
+    // Reveal on entry. A share-of-area threshold never fired for Credits on a
+    // phone: 6% of a 12,000px section is more than the screen can show, so it
+    // stayed invisible.
     const io = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
@@ -1963,7 +1967,7 @@ function useReveal() {
           }
         }
       },
-      { rootMargin: "0px 0px -6% 0px", threshold: 0.06 },
+      { rootMargin: "0px 0px -6% 0px", threshold: 0 },
     );
 
     nodes.forEach((n) => io.observe(n));
@@ -1971,46 +1975,239 @@ function useReveal() {
   }, []);
 }
 
-function useActiveSection(ids: readonly string[]) {
-  const [active, setActive] = useState(ids[0] ?? "");
+/** Space between the stuck rail and a section's top after a jump. Matches the
+ *  1rem in `.cli-section` scroll-margin-top, which serves plain #anchors. */
+const JUMP_GAP = 16;
 
-  useEffect(() => {
-    const els = ids
-      .map((id) => document.getElementById(id))
-      .filter((el): el is HTMLElement => Boolean(el));
-    if (!els.length) return;
+/** A glide that has moved and then gone still this long has stopped, short of
+ *  its target if layout moved under it. Generous: a long task on a slow phone
+ *  can pause scrolling mid-glide. */
+const GLIDE_STALL_MS = 1500;
+/** A jump that has not moved the page by then never will. */
+const GLIDE_GIVE_UP_MS = 4000;
 
-    const io = new IntersectionObserver(
-      (entries) => {
-        const visible = entries
-          .filter((e) => e.isIntersecting)
-          .sort((a, b) => b.intersectionRatio - a.intersectionRatio);
-        if (visible[0]?.target?.id) setActive(visible[0].target.id);
-      },
-      {
-        // account for sticky header + jump nav
-        rootMargin: "-28% 0px -55% 0px",
-        threshold: [0.08, 0.2, 0.4],
-      },
-    );
-
-    els.forEach((el) => io.observe(el));
-    return () => io.disconnect();
-  }, [ids]);
-
-  return active;
+/** How far down the viewport the rail reaches once stuck: its sticky `top`
+ *  plus its height. Before the page scrolls it sits lower, in the flow. */
+function railReach(rail: HTMLElement | null): number {
+  if (!rail) return 0;
+  return (parseFloat(getComputedStyle(rail).top) || 0) + rail.offsetHeight;
 }
 
-function scrollToId(id: string) {
-  const el = document.getElementById(id);
-  if (!el) return;
-  el.scrollIntoView({ behavior: "smooth", block: "start" });
-  // keep URL shareable without fighting SPA router
-  try {
-    history.replaceState(null, "", `#${id}`);
-  } catch {
-    /* ignore */
+/** Document position by layout. Rects include transforms, and aiming by a
+ *  section's rect while it slid in from translateY(12px) landed 12px off. */
+function layoutTop(el: HTMLElement): number {
+  let top = 0;
+  for (
+    let node: HTMLElement | null = el;
+    node;
+    node = node.offsetParent as HTMLElement | null
+  ) {
+    top += node.offsetTop;
   }
+  return top;
+}
+
+/** The section in view, and smooth jumps between sections.
+ *
+ *  The section in view is the last one whose top has passed a reading line a
+ *  quarter of the way down the space below the rail, read from layout. (It
+ *  was an intersection-ratio band that Map and Credits are too tall to ever
+ *  fill, so the rail stayed lit on an earlier tab.) At the very bottom of the
+ *  page the last visible section wins, since it cannot reach the line.
+ *
+ *  A jump lights its target at once and keeps it lit while the page glides
+ *  there, so the rail does not flicker through the sections passed on the
+ *  way. A glide only ever moves toward its target, so the page moving away
+ *  from it (or past it), or coming to rest short of it after the reader's
+ *  wheel, touch or keys, hands the rail back to the reading line. So does
+ *  scrolling away from where a jump landed. A glide that stops short with no
+ *  input (layout moved under it) is finished off. */
+function useSectionNav(
+  ids: readonly string[],
+  rail: RefObject<HTMLElement | null>,
+) {
+  const reducedMotion = useReducedMotion();
+  const [active, setActive] = useState(ids[0] ?? "");
+  const jumpRef = useRef<(id: string, instant: boolean) => void>(() => {});
+
+  useEffect(() => {
+    let flight: {
+      id: string;
+      to: number;
+      lastY: number;
+      lastMove: number;
+      started: number;
+      moved: boolean;
+      corrected: boolean;
+      interrupted: boolean;
+      landedAt: number | null;
+    } | null = null;
+    let frame = 0;
+    let timer = 0;
+
+    const behavior = (instant = false): ScrollBehavior =>
+      instant || reducedMotion ? "auto" : "smooth";
+    const offset = () => railReach(rail.current) + JUMP_GAP;
+    const destination = (el: HTMLElement) => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      return Math.max(0, Math.min(max, layoutTop(el) - offset()));
+    };
+    const inView = () => {
+      const top = offset();
+      const viewport = window.innerHeight;
+      const line = top + (viewport - top) * 0.25;
+      const atEnd =
+        window.scrollY >=
+        document.documentElement.scrollHeight - viewport - 2;
+      let found = ids[0] ?? "";
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        const y = layoutTop(el) - window.scrollY;
+        if (y <= line || (atEnd && y < viewport)) found = id;
+      }
+      return found;
+    };
+
+    const refresh = () => {
+      frame = 0;
+      if (flight) {
+        // Gliding, or still where the jump landed: the target stays lit.
+        if (flight.landedAt === null) return;
+        if (Math.abs(window.scrollY - flight.landedAt) < 48) return;
+        flight = null;
+      }
+      setActive(inView());
+    };
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(refresh);
+    };
+    const arm = (wait = 150) => {
+      window.clearTimeout(timer);
+      timer = window.setTimeout(settle, wait);
+    };
+    const takeOver = () => {
+      if (!flight) return;
+      flight = null;
+      window.clearTimeout(timer);
+      schedule();
+    };
+    // Wheel, touch or keys may stop the glide, or may not (a wheel up at the
+    // top of the page goes nowhere). Note it; the page's movement decides.
+    const interrupt = () => {
+      if (flight && flight.landedAt === null) flight.interrupted = true;
+    };
+    const launch = (to: number, instant: boolean) => {
+      if (!flight) return;
+      flight.to = to;
+      flight.lastY = window.scrollY;
+      flight.lastMove = flight.started = performance.now();
+      flight.moved = false;
+      window.scrollTo({ top: to, behavior: behavior(instant) });
+      arm();
+    };
+    const settle = () => {
+      if (!flight || flight.landedAt !== null) return;
+      const el = document.getElementById(flight.id);
+      if (!el) return takeOver();
+      const want = destination(el);
+      if (Math.abs(want - window.scrollY) <= 2) {
+        flight.landedAt = window.scrollY;
+        return;
+      }
+      // The reader stopped the glide short of the target: follow them.
+      if (flight.interrupted) return takeOver();
+      const now = performance.now();
+      if (!flight.moved) {
+        // No frame has moved the page yet; a busy page renders few.
+        if (now - flight.started < GLIDE_GIVE_UP_MS) arm();
+        else flight.landedAt = window.scrollY;
+        return;
+      }
+      if (now - flight.lastMove < GLIDE_STALL_MS) {
+        arm();
+        return;
+      }
+      if (!flight.corrected) {
+        // Stopped short: layout moved under the glide (media sized, fonts
+        // swapped). Finish the trip once.
+        flight.corrected = true;
+        launch(want, false);
+        return;
+      }
+      flight.landedAt = window.scrollY;
+    };
+    const onScroll = () => {
+      if (flight && flight.landedAt === null) {
+        const y = window.scrollY;
+        const step = y - flight.lastY;
+        // Subpixel snapping at the end of a glide is not a direction.
+        if (Math.abs(step) >= 1) {
+          const toward = Math.sign(flight.to - flight.lastY);
+          if (Math.sign(step) !== toward || (flight.to - y) * toward < -2) {
+            // Away from the target, or past it: the reader is scrolling.
+            takeOver();
+            return;
+          }
+          flight.lastY = y;
+          flight.lastMove = performance.now();
+          flight.moved = true;
+        }
+        arm();
+      }
+      schedule();
+    };
+
+    jumpRef.current = (id, instant) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      flight = {
+        id,
+        to: 0,
+        lastY: 0,
+        lastMove: 0,
+        started: 0,
+        moved: false,
+        corrected: false,
+        interrupted: false,
+        landedAt: null,
+      };
+      setActive(id);
+      launch(destination(el), instant);
+      // keep URL shareable without fighting SPA router
+      try {
+        history.replaceState(null, "", `#${id}`);
+      } catch {
+        /* ignore */
+      }
+    };
+
+    const resize = new ResizeObserver(schedule);
+    resize.observe(document.body);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", schedule);
+    window.addEventListener("wheel", interrupt, { passive: true });
+    window.addEventListener("touchstart", interrupt, { passive: true });
+    window.addEventListener("keydown", interrupt);
+    schedule();
+    return () => {
+      jumpRef.current = () => {};
+      resize.disconnect();
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", schedule);
+      window.removeEventListener("wheel", interrupt);
+      window.removeEventListener("touchstart", interrupt);
+      window.removeEventListener("keydown", interrupt);
+      window.clearTimeout(timer);
+      cancelAnimationFrame(frame);
+    };
+  }, [ids, rail, reducedMotion]);
+
+  const jumpTo = useCallback(
+    (id: string, instant = false) => jumpRef.current(id, instant),
+    [],
+  );
+  return { active, jumpTo };
 }
 
 async function copyText(text: string): Promise<boolean> {
@@ -2346,9 +2543,9 @@ function ModelMap() {
   );
 }
 
-/** The demo film, recorded from the real binary and rendered by
- *  scripts/demo in nur-cli. It fetches nothing until it is played, plays only
- *  while on screen, and stays a still poster under reduced motion. */
+/** The demo film, recorded from the real binary. It fetches nothing until it
+ *  is played, plays only while on screen, and stays a still poster under
+ *  reduced motion. */
 function DemoVideo() {
   const reducedMotion = useReducedMotion();
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -2434,14 +2631,33 @@ const JUMP_CHEVRONS = {
 function JumpRail({
   active,
   onJump,
+  navRef,
 }: {
   active: string;
   onJump: (id: string) => void;
+  navRef: RefObject<HTMLElement | null>;
 }) {
   const reducedMotion = useReducedMotion();
   const railRef = useRef<HTMLDivElement>(null);
   const [more, setMore] = useState({ start: false, end: false });
   const [hint, setHint] = useState(true);
+
+  // Plain #anchors (the skip link, shared URLs) land where jumps do: section
+  // scroll-margin reads the rail's measured height, not a guess at it.
+  useEffect(() => {
+    const nav = navRef.current;
+    const page = nav?.closest<HTMLElement>(".cli-page");
+    if (!nav || !page) return undefined;
+    const sync = () =>
+      page.style.setProperty("--cli-jump-h", `${nav.offsetHeight}px`);
+    sync();
+    const resize = new ResizeObserver(sync);
+    resize.observe(nav);
+    return () => {
+      resize.disconnect();
+      page.style.removeProperty("--cli-jump-h");
+    };
+  }, [navRef]);
 
   useEffect(() => {
     const rail = railRef.current;
@@ -2492,6 +2708,7 @@ function JumpRail({
 
   return (
     <nav
+      ref={navRef}
       className="cli-jump"
       aria-label="On this page"
       data-more-start={more.start ? "" : undefined}
@@ -2563,7 +2780,8 @@ export default function CliPage() {
   }, []);
 
   const navIds = useMemo(() => NAV.map((n) => n.id), []);
-  const activeSection = useActiveSection(navIds);
+  const navRef = useRef<HTMLElement>(null);
+  const { active: activeSection, jumpTo } = useSectionNav(navIds, navRef);
 
   const detected = useMemo(() => detectOs(), []);
   const [preferredOs, setPreferredOs] = useState<OsKey>(detected);
@@ -2592,14 +2810,16 @@ export default function CliPage() {
     trackEvent("Cli View");
   }, []);
 
-  // deep-link #section on mount
+  // deep-link #section on mount: arrive there, as an anchor would
   useEffect(() => {
     const hash = window.location.hash.replace(/^#/, "");
     if (hash && (navIds as readonly string[]).includes(hash)) {
       // next frame so layout is ready
-      requestAnimationFrame(() => scrollToId(hash));
+      const frame = requestAnimationFrame(() => jumpTo(hash, true));
+      return () => cancelAnimationFrame(frame);
     }
-  }, [navIds]);
+    return undefined;
+  }, [navIds, jumpTo]);
 
   const onFeatureKey = (e: ReactKeyboardEvent<HTMLDivElement>) => {
     const keys = ["ArrowRight", "ArrowLeft", "Home", "End"];
@@ -2640,8 +2860,9 @@ export default function CliPage() {
       {/* sticky jump rail */}
       <JumpRail
         active={activeSection}
+        navRef={navRef}
         onJump={(id) => {
-          scrollToId(id);
+          jumpTo(id);
           trackEvent("Cli Jump", { section: id });
         }}
       />
@@ -2713,7 +2934,7 @@ export default function CliPage() {
                   type="button"
                   className="cli-btn cli-btn--primary"
                   onClick={() => {
-                    scrollToId("install");
+                    jumpTo("install");
                     trackEvent("Cli CTA", { target: "install" });
                   }}
                 >
@@ -2724,7 +2945,7 @@ export default function CliPage() {
                 type="button"
                 className="cli-btn"
                 onClick={() => {
-                  scrollToId("efficiency");
+                  jumpTo("efficiency");
                   trackEvent("Cli CTA", { target: "efficiency" });
                 }}
               >
