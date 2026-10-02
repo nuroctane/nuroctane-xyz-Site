@@ -1,5 +1,5 @@
 ## Index
-- [[#Faith, God & Surrender|Faith, God & Surrender]] (49)
+- [[#Faith, God & Surrender|Faith, God & Surrender]] (50)
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (29)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (58)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (80)
@@ -177,6 +177,12 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > 
 > You should never become so diluted that you think the system itself is the source of truth rather than a dimension of the one singular source of life. This applies to religions as well.
 > — @RainbowBodied
+
+> DO NOT GO BACK
+> God is saying to you today,
+> "My child, do not go back to what I have already brought you out of. Reopening doors that once wounded you will only reopen pain I have worked to heal. What was toxic then has not suddenly become safe now.
+> I closed those doors on purpose, to protect you, to preserve you, and to lead you into something better. Trust Me enough to leave the past where it belongs and not entertain what I have removed. Wisdom will guard your steps when emotions try to pull you backward. Keep moving forward with Me, because where I am taking you requires a healthier environment, a clearer mind, and a stronger you."
+> — @Fmthegreat60629
 
 ## Reality, Consciousness & Perception
 
