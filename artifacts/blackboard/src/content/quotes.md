@@ -7,7 +7,7 @@
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (100)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (32)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (105)
-- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (64)
+- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (65)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (80)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (46)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (64)
@@ -1917,6 +1917,15 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 
 > People with big auras and star power get crucified in average environments.
 > — @Maddy__sn
+
+> There is a goated personality which is like the best of all. Let me tell you and you have often met such people atleast once in your life. U sometimes meet people, you're most happy when with them, they're like the breeze of fresh air, and you think they’re on ur level: same potential, same trajectory, same everything. Then, after some time, they’re suddenly far ahead of u, and u’re left in shock, wondering how someone who seemed just like u could have gone so far. So u blame luck.
+> 
+> Then they enter another room, surrounded by people who also think they’re on the same level, until that person surpasses them too. Wherever they go, people keep having the same realization only after they’ve been left behind.
+> 
+> The problem is, they were never on ur level. They were far beyond u, and they knew it. But they were great enough to never make u feel inferior. Wherever they stood, no matter how far above u, they made u feel equal, welcomed, even elevated. And even after years if you find them, they will treat you the same. That is their greatness.
+> 
+> And u were foolish enough to mistake their humility for equality. Out of ego, u underestimated their potential, tried to belittle them and unconsciously drag them down to ur level, because u were seeking validation through comparison. Meanwhile, they did the opposite: they amplified u, made u feel capable, uplifted u, and eventually left, not because they looked down on u, but because u were never willing to learn, change, and become someone who could walk beside them. The problem is You. You're not good for good people.
+> — @SIGMAPROFESSOR
 
 ## Body, Emotion & Nervous System
 
