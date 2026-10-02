@@ -20,6 +20,7 @@ import {
   useWallpaper,
 } from "../blackboard/WallpaperProvider";
 import { MetalFx } from "metal-fx";
+import modelMap from "../data/nurModelMap.json";
 import "../cli-page.css";
 
 /* ── Content ────────────────────────────────────────────────────────────── */
@@ -403,7 +404,7 @@ const FEATURE_TABS: FeatureTab[] = [
           entirely.
         </li>
         <li>
-          <strong>112 Jev systems in one catalog</strong> — search with{" "}
+          <strong>{modelMap.jevEngines} Jev systems in one catalog</strong> — search with{" "}
           <code>nur jev models</code>, inspect deployment requirements with{" "}
           <code>nur jev info &lt;id&gt;</code>, then connect a hosted endpoint
           or start an installed local runtime. Keys stay in the credential vault
@@ -1064,7 +1065,7 @@ const CLI_SUBCOMMANDS: { cmd: string; desc: string }[] = [
   { cmd: "nur doctor", desc: "health check" },
   {
     cmd: "nur jev models [--search <text>]",
-    desc: "browse all 112 published Jev systems offline",
+    desc: `browse all ${modelMap.jevEngines} published Jev systems offline`,
   },
   {
     cmd: "nur jev info <id>",
@@ -2238,7 +2239,7 @@ function FoglampMap() {
           <i />
           <i />
         </span>
-        <span className="cli-term-title">foglamp · inference return path</span>
+        <span className="cli-term-title">foglamp · request path + model map</span>
         <span className="cli-map-actions">
           <span className="cli-map-status">
             <i aria-hidden /> interactive
@@ -2278,9 +2279,9 @@ function FoglampMap() {
             <div className="cli-map-preview-copy">
               <span>// living architecture</span>
               <p>
-                Trace auth resolution, provider protocols, attempt accounting,
-                typed judgments, the local engine bridge, memory, and cache
-                boundaries behind NurCLI.
+                Trace the request path behind NurCLI: auth, provider
+                protocols, attempt accounting, Jev judgments, the engine
+                gateway and memory, out to the newest model from every lab.
               </p>
               <button
                 type="button"
@@ -2310,6 +2311,119 @@ function FoglampMap() {
         </a>
       </div>
     </div>
+  );
+}
+
+const MODEL_MAP_DATE = new Date(`${modelMap.date}T12:00:00Z`).toLocaleDateString(
+  "en-US",
+  { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" },
+);
+
+/** The newest model from every lab, exported by the same generator as the
+ *  Foglamp scan so the page and the map cannot drift apart. */
+function ModelMap() {
+  return (
+    <section className="cli-model-map" aria-labelledby="cli-model-map-title">
+      <header className="cli-model-map-hd">
+        <p className="cli-section-code">MODEL MAP / {modelMap.date}</p>
+        <h3 id="cli-model-map-title">The newest model from every lab</h3>
+        <p>
+          {modelMap.routes} provider routes reach these releases, and the Jev
+          layer chooses from {modelMap.jevEngines} decision engines. Checked
+          against each lab&apos;s model docs and official posts.
+        </p>
+      </header>
+      {modelMap.sections.map((section) => (
+        <div className="cli-model-group" key={section.title}>
+          <h4>{section.title}</h4>
+          <ul>
+            {section.models.map((model) => (
+              <li key={`${model.lab}-${model.label}`}>
+                <span className="cli-model-lab">{model.lab}</span>
+                <strong title={model.label}>{model.label}</strong>
+                <small title={model.sub}>{model.sub}</small>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </section>
+  );
+}
+
+/** The demo film, recorded from the real binary and rendered by
+ *  scripts/demo in nur-cli. It fetches nothing until it is played, plays only
+ *  while on screen, and stays a still poster under reduced motion. */
+function DemoVideo() {
+  const reducedMotion = useReducedMotion();
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [playing, setPlaying] = useState(false);
+  const [held, setHeld] = useState(false);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video || reducedMotion || held) return undefined;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          // Rejects if the element is torn down mid-play; nothing to report.
+          void video.play().catch(() => {});
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.35 },
+    );
+    observer.observe(video);
+    return () => observer.disconnect();
+  }, [reducedMotion, held]);
+
+  const toggle = () => {
+    const video = videoRef.current;
+    if (!video) return;
+    if (video.paused) {
+      setHeld(false);
+      void video.play().catch(() => {});
+      trackEvent("Cli Demo", { action: "play" });
+    } else {
+      setHeld(true);
+      video.pause();
+      trackEvent("Cli Demo", { action: "pause" });
+    }
+  };
+
+  return (
+    <figure className="cli-demo">
+      <video
+        ref={videoRef}
+        className="cli-demo-video"
+        poster="/assets/nur-demo-poster.jpg"
+        muted
+        loop
+        playsInline
+        preload="none"
+        aria-label="NurCLI demo: an agent fixes a failing test suite behind approvals and an inline diff, then the command palette, the 65-provider login vault, the model picker, live theme previews and the F6 inspector"
+        onPlay={() => setPlaying(true)}
+        onPause={() => setPlaying(false)}
+        onClick={toggle}
+      >
+        <source src="/assets/nur-demo.mp4" type="video/mp4" />
+      </video>
+      <figcaption className="cli-demo-cap">
+        <span>
+          Recorded from the nur v0.43.0 binary in a real terminal. Model
+          replies are scripted so every take is identical.
+        </span>
+        <button
+          type="button"
+          className="cli-demo-toggle"
+          onClick={toggle}
+          aria-pressed={!playing}
+        >
+          {playing ? "Pause" : "Play"}
+        </button>
+      </figcaption>
+    </figure>
   );
 }
 
@@ -2530,7 +2644,7 @@ export default function CliPage() {
             <span>provider routes</span>
           </li>
           <li>
-            <strong>112</strong>
+            <strong>{modelMap.jevEngines}</strong>
             <span>Jev systems</span>
           </li>
           <li>
@@ -2915,32 +3029,18 @@ export default function CliPage() {
             <span className="cli-h2-num">04</span> See the machine
           </h2>
           <p className="cli-lead">
-            The gold TUI is the control surface. This Foglamp map follows the
-            Rust request path from prompt assembly through provider adapters,
-            tools, typed judgments, usage accounting, memory, and durable state.
-            The published map illustrates the core request path; deployment
-            recipes for the full Jev library live in the docs.
+            The TUI is the control surface: approvals, inline diffs, 65
+            providers and live themes in one terminal. The Foglamp map follows
+            the Rust request path from prompt assembly through provider
+            adapters, tools, Jev judgments, usage accounting and memory, out to
+            the newest model from every lab nur routes to. Rebuilt{" "}
+            {MODEL_MAP_DATE}.
           </p>
         </div>
-        <figure className="cli-demo">
-          <div className="cli-term-bar cli-demo-bar">
-            <span className="cli-term-dots" aria-hidden>
-              <i />
-              <i />
-              <i />
-            </span>
-            <span className="cli-term-title">nur · gold TUI</span>
-          </div>
-          <img
-            src="/assets/nur-demo.gif"
-            alt="NurCLI demo — gold TUI streaming an agent session"
-            className="cli-demo-gif"
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
+        <DemoVideo />
 
         <FoglampMap />
+        <ModelMap />
       </section>
 
       {/* Features */}

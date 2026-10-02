@@ -193,9 +193,23 @@ function seaCard(theme, badge, sub, pathLabel) {
   );
 }
 
-function cliCard() {
-  const muted = "#aaa9a5";
-  const edge = "rgba(255,255,255,0.16)";
+// The CLI card is set over a frame of the demo film (nur-cli scripts/demo:
+// `node render.mjs --card <take seconds> --scale 2`), so the share preview
+// shows the real TUI: the gold window and its live sidegraph.
+let cliArtLoad;
+const cliArt = () =>
+  (cliArtLoad ??= Promise.all(
+    [
+      ["image/jpeg", "../scripts/og-assets/cli-plate.jpg"],
+      ["image/png", "../artifacts/blackboard/public/assets/nodes/nur-cli-logo.png"],
+    ].map(async ([type, file]) => {
+      const data = await readFile(new URL(file, import.meta.url));
+      return `data:${type};base64,${data.toString("base64")}`;
+    }),
+  ));
+
+function cliCard([plate, logo]) {
+  const gold = "#d8c494";
   const mono = "JetBrains Mono";
   const line = (text, style = {}) =>
     h("div", { style: { display: "flex", ...style } }, text);
@@ -204,64 +218,94 @@ function cliCard() {
     {
       style: {
         display: "flex",
+        position: "relative",
         width: "100%",
         height: "100%",
-        padding: "44px 52px",
-        background:
-          "radial-gradient(ellipse at 8% 5%, #333330 0%, #0b0b0b 48%, #181817 100%)",
+        background: "#050505",
         fontFamily: mono,
-        color: "#f2f2f2",
+        color: "#f4f1ea",
       },
     },
+    h("img", {
+      src: plate,
+      width: 1200,
+      height: 630,
+      style: { position: "absolute", left: 0, top: 0 },
+    }),
+    // Keeps the type legible where the window's edge reaches under it.
+    h("div", {
+      style: {
+        position: "absolute",
+        left: 0,
+        top: 0,
+        width: 760,
+        height: 630,
+        background:
+          "linear-gradient(90deg, rgba(5,5,5,0.94) 0%, rgba(5,5,5,0.82) 46%, rgba(5,5,5,0) 100%)",
+      },
+    }),
     h(
       "div",
       {
         style: {
+          position: "absolute",
+          left: 64,
+          top: 0,
+          height: 630,
           display: "flex",
-          width: "100%",
           flexDirection: "column",
           justifyContent: "center",
-          padding: "32px 36px",
-          border: `1px solid ${edge}`,
-          borderRadius: 24,
-          background:
-            "linear-gradient(145deg, rgba(255,255,255,0.06), rgba(8,8,8,0.82))",
-          boxShadow: "0 24px 70px rgba(0,0,0,0.5)",
         },
       },
-      h(
-        "div",
-        { style: { display: "flex", flexDirection: "column", gap: 18 } },
-        line("NurCLI", {
-          fontSize: 76,
-          fontWeight: 700,
-          letterSpacing: "-0.055em",
-          lineHeight: 1,
-        }),
-        line("Spend context like it matters.", {
-          fontSize: 35,
-          color: "#eeeae0",
-          letterSpacing: "-0.03em",
-        }),
-        line("65 provider routes  /  112 Jev systems  /  52 tools", {
-          fontSize: 19,
-          color: muted,
-          marginTop: 4,
-        }),
-      ),
+      h("img", {
+        src: logo,
+        width: 72,
+        height: 72,
+        style: { borderRadius: 16, marginBottom: 26 },
+      }),
+      line("NurCLI", {
+        fontSize: 88,
+        fontWeight: 700,
+        letterSpacing: "-0.05em",
+        lineHeight: 1,
+      }),
+      line("Spend context like it matters.", {
+        fontSize: 26,
+        color: "#e9e3d3",
+        letterSpacing: "-0.02em",
+        marginTop: 18,
+      }),
+      line("65 providers  ·  114 Jev engines  ·  41 themes", {
+        fontSize: 16,
+        color: gold,
+        marginTop: 16,
+      }),
       h(
         "div",
         {
           style: {
             display: "flex",
-            justifyContent: "flex-end",
-            marginTop: 58,
-            fontSize: 17,
+            marginTop: 34,
+            padding: "12px 20px",
+            border: "1px solid rgba(216,196,148,0.5)",
+            borderRadius: 12,
+            background: "rgba(16,15,13,0.85)",
+            fontSize: 24,
+            fontWeight: 700,
+            alignSelf: "flex-start",
           },
         },
-        line("nuroctane.xyz/cli", { color: muted }),
+        h("span", { style: { color: gold, marginRight: 14 } }, "$"),
+        h("span", null, "npx nur-cli"),
       ),
     ),
+    line("nuroctane.xyz/cli", {
+      position: "absolute",
+      left: 64,
+      bottom: 34,
+      fontSize: 17,
+      color: "#a8a39a",
+    }),
   );
 }
 
@@ -277,7 +321,9 @@ export default async function handler(request) {
     const pathLabel = page === "home" ? "/" : `/${page}`;
 
     const element =
-      page === "cli" ? cliCard() : seaCard(theme, badge, sub, pathLabel);
+      page === "cli"
+        ? cliCard(await cliArt())
+        : seaCard(theme, badge, sub, pathLabel);
 
     const svg = await satori(element, {
       width: 1200,
