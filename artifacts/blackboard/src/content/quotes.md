@@ -3,8 +3,8 @@
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (29)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (58)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (80)
-- [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (54)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (99)
+- [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (55)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (100)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (32)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (105)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (64)
@@ -882,6 +882,9 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 > clear divide between people who think the purpose of education is to teach you how to Think and Learn vs. people who think the purpose of education is to enforce the boundary around What Is True
 > — @bridgietherease
 
+> consider the possibility that you have been written with great care, every flaw placed deliberately, the setbacks timed for maximum arc. the sensation of being watched during your worst hour carries a strange comfort once reframed as an audience. act accordingly. characters aware of their own narration gain abilities no one else in the story can access🙃
+> — @null_ropex
+
 ## Action, Discipline & Mastery
 
 _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied momentum._
@@ -1246,6 +1249,9 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 
 > Unutmamanız gereken ilke: mutlu insanlar size güzel bir dille konuşur, çekici insanlar size cömertçe iltifat eder, başarılı insanlar sizi ve emeklerinizi takdir eder. Bir insan hevesinizi kırmak istiyorsa, bu üçüne de sahip değildir; dolayısıyla ciddiye alınmayı da hak etmez.
 > — @hmelisaacar
+
+> "Accountability" is a euphemism for suicide. Nobody believes that people can change or grow. They want to see the bad people burn, and they wanna be able to joke about it too. Accountability does not exist. There is nothing you can do to get better. The only option is death.
+> — @weakcorvid
 
 ## Creativity, Purpose & Expression
 
