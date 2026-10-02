@@ -8,7 +8,7 @@
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (32)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (105)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (65)
-- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (80)
+- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (81)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (46)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (64)
 
@@ -2217,6 +2217,9 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > 
 > And when it's extra mystical: psychosis.
 > — @BackTheBunny
+
+> “Don't seek, don't search, don't ask, don't knock, don't demand, ... relax. If you relax, it comes. If you relax, it is there. If you relax, you start vibrating with it.”
+> — @thoughtsrseeds
 
 ## Work, Wealth & Value
 
