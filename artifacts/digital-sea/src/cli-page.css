@@ -973,48 +973,6 @@ html.standalone-active.cli-theme body {
   color: var(--nur-gold-sky);
 }
 
-/* demo */
-.cli-demo {
-  margin: 0;
-  border: 1px solid var(--nur-border);
-  background: #050608;
-  overflow: hidden;
-  box-shadow:
-    0 18px 50px rgba(0, 0, 0, 0.45),
-    0 0 0 1px rgba(232, 185, 35, 0.06);
-  position: relative;
-}
-.cli-demo::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  border: 1px solid transparent;
-  background: linear-gradient(
-      135deg,
-      rgba(255, 214, 90, 0.12),
-      transparent 35%,
-      transparent 65%,
-      rgba(178, 148, 255, 0.08)
-    )
-    border-box;
-  mask:
-    linear-gradient(#fff 0 0) padding-box,
-    linear-gradient(#fff 0 0);
-  mask-composite: exclude;
-  -webkit-mask-composite: xor;
-  opacity: 0.7;
-}
-.cli-demo-bar {
-  border-bottom: 1px solid var(--nur-border);
-}
-.cli-demo-gif {
-  display: block;
-  width: 100%;
-  height: auto;
-  background: #000;
-}
-
 /* interactive codebase map */
 .cli-map-intro {
   display: grid;
@@ -2521,7 +2479,6 @@ html.standalone-active.cli-theme body {
 .cli-term,
 .cli-binary,
 .cli-after,
-.cli-demo,
 .cli-map-shell,
 .cli-tab-panel,
 .cli-cmd-table,
@@ -2532,7 +2489,6 @@ html.standalone-active.cli-theme body {
 
 .cli-term--hot,
 .cli-binary,
-.cli-demo,
 .cli-map-shell {
   animation: none;
 }

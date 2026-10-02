@@ -2695,24 +2695,6 @@ export default function CliPage() {
             tools, usage accounting, memory, and durable state.
           </p>
         </div>
-        <figure className="cli-demo">
-          <div className="cli-term-bar cli-demo-bar">
-            <span className="cli-term-dots" aria-hidden>
-              <i />
-              <i />
-              <i />
-            </span>
-            <span className="cli-term-title">nur · gold TUI</span>
-          </div>
-          <img
-            src="/assets/nur-demo.gif"
-            alt="NurCLI demo — gold TUI streaming an agent session"
-            className="cli-demo-gif"
-            loading="lazy"
-            decoding="async"
-          />
-        </figure>
-
         <FoglampMap />
       </section>
 
