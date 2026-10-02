@@ -2314,18 +2314,13 @@ function FoglampMap() {
   );
 }
 
-const MODEL_MAP_DATE = new Date(`${modelMap.date}T12:00:00Z`).toLocaleDateString(
-  "en-US",
-  { month: "long", day: "numeric", year: "numeric", timeZone: "UTC" },
-);
-
 /** The newest model from every lab, exported by the same generator as the
  *  Foglamp scan so the page and the map cannot drift apart. */
 function ModelMap() {
   return (
     <section className="cli-model-map" aria-labelledby="cli-model-map-title">
       <header className="cli-model-map-hd">
-        <p className="cli-section-code">MODEL MAP / {modelMap.date}</p>
+        <p className="cli-section-code">MODEL MAP</p>
         <h3 id="cli-model-map-title">The newest model from every lab</h3>
         <p>
           {modelMap.routes} provider routes reach these releases, and the Jev
@@ -2427,6 +2422,126 @@ function DemoVideo() {
   );
 }
 
+const JUMP_CHEVRONS = {
+  start: "M7.5 2.5 4 6l3.5 3.5",
+  end: "M4.5 2.5 8 6l-3.5 3.5",
+} as const;
+
+/** The section rail. On a phone it scrolls sideways, so it says so: the edge
+ *  fades where more sections sit off-screen, a chevron offers them (nudging a
+ *  few times on first view), and the current section's tab stays in view as
+ *  the page scrolls. On wide screens everything fits and none of it shows. */
+function JumpRail({
+  active,
+  onJump,
+}: {
+  active: string;
+  onJump: (id: string) => void;
+}) {
+  const reducedMotion = useReducedMotion();
+  const railRef = useRef<HTMLDivElement>(null);
+  const [more, setMore] = useState({ start: false, end: false });
+  const [hint, setHint] = useState(true);
+
+  useEffect(() => {
+    const rail = railRef.current;
+    if (!rail) return undefined;
+    const update = () => {
+      const max = rail.scrollWidth - rail.clientWidth;
+      const start = rail.scrollLeft > 2;
+      const end = rail.scrollLeft < max - 2;
+      setMore((prev) =>
+        prev.start === start && prev.end === end ? prev : { start, end },
+      );
+    };
+    update();
+    const resize = new ResizeObserver(update);
+    resize.observe(rail);
+    rail.addEventListener("scroll", update, { passive: true });
+    // The nudge is a first-view hint: three passes, then it rests for good.
+    const quiet = window.setTimeout(() => setHint(false), 4800);
+    return () => {
+      resize.disconnect();
+      rail.removeEventListener("scroll", update);
+      window.clearTimeout(quiet);
+    };
+  }, []);
+
+  // Keep the current section's tab in view as the page scrolls past it.
+  useEffect(() => {
+    const rail = railRef.current;
+    const tab = rail?.querySelector<HTMLElement>(".cli-jump-item--on");
+    if (!rail || !tab) return;
+    const pad = 48;
+    const left = tab.offsetLeft - pad;
+    const right = tab.offsetLeft + tab.offsetWidth + pad - rail.clientWidth;
+    const behavior = reducedMotion ? "auto" : "smooth";
+    if (rail.scrollLeft > left) rail.scrollTo({ left, behavior });
+    else if (rail.scrollLeft < right) rail.scrollTo({ left: right, behavior });
+  }, [active, reducedMotion]);
+
+  const page = (direction: 1 | -1) => {
+    const rail = railRef.current;
+    if (!rail) return;
+    setHint(false);
+    rail.scrollBy({
+      left: direction * rail.clientWidth * 0.7,
+      behavior: reducedMotion ? "auto" : "smooth",
+    });
+  };
+
+  return (
+    <nav
+      className="cli-jump"
+      aria-label="On this page"
+      data-more-start={more.start ? "" : undefined}
+      data-more-end={more.end ? "" : undefined}
+      data-hint={hint ? "" : undefined}
+    >
+      <div className="cli-jump-rail">
+        <div className="cli-jump-inner" ref={railRef}>
+          {NAV.map((item) => (
+            <button
+              key={item.id}
+              type="button"
+              className={`cli-jump-item${active === item.id ? " cli-jump-item--on" : ""}`}
+              aria-current={active === item.id ? "location" : undefined}
+              onClick={() => onJump(item.id)}
+            >
+              {item.label}
+            </button>
+          ))}
+        </div>
+        {(["start", "end"] as const).map((side) => {
+          const shown = side === "start" ? more.start : more.end;
+          return (
+            <button
+              key={side}
+              type="button"
+              className={`cli-jump-more cli-jump-more--${side}`}
+              aria-label={side === "start" ? "Earlier sections" : "More sections"}
+              aria-hidden={!shown}
+              tabIndex={shown ? 0 : -1}
+              onClick={() => page(side === "start" ? -1 : 1)}
+            >
+              <svg viewBox="0 0 12 12" width="12" height="12" aria-hidden>
+                <path
+                  d={JUMP_CHEVRONS[side]}
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.6"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+            </button>
+          );
+        })}
+      </div>
+    </nav>
+  );
+}
+
 /* ── Page ───────────────────────────────────────────────────────────────── */
 
 export default function CliPage() {
@@ -2523,23 +2638,13 @@ export default function CliPage() {
       </div>
 
       {/* sticky jump rail */}
-      <nav className="cli-jump" aria-label="On this page">
-        <div className="cli-jump-inner">
-          {NAV.map((item) => (
-            <button
-              key={item.id}
-              type="button"
-              className={`cli-jump-item${activeSection === item.id ? " cli-jump-item--on" : ""}`}
-              onClick={() => {
-                scrollToId(item.id);
-                trackEvent("Cli Jump", { section: item.id });
-              }}
-            >
-              {item.label}
-            </button>
-          ))}
-        </div>
-      </nav>
+      <JumpRail
+        active={activeSection}
+        onJump={(id) => {
+          scrollToId(id);
+          trackEvent("Cli Jump", { section: id });
+        }}
+      />
 
       {/* Hero */}
       <header className="cli-hero cli-reveal">
@@ -3033,8 +3138,7 @@ export default function CliPage() {
             providers and live themes in one terminal. The Foglamp map follows
             the Rust request path from prompt assembly through provider
             adapters, tools, Jev judgments, usage accounting and memory, out to
-            the newest model from every lab nur routes to. Rebuilt{" "}
-            {MODEL_MAP_DATE}.
+            the newest model from every lab nur routes to.
           </p>
         </div>
         <DemoVideo />

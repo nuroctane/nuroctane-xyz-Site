@@ -86,10 +86,16 @@ body {
    so the page scrolls like a normal webpage. The class is added to <html>
    by useStandaloneScroll(). Specificity (0,1,1) beats the `html, body` rule
    (0,0,1) so no !important needed. */
-html.standalone-active,
-html.standalone-active body {
+html.standalone-active {
   overflow: auto;
   overflow-x: hidden;
+  overscroll-behavior: auto;
+  height: auto;
+}
+/* Only the root scrolls. An overflow rule on body as well made body a scroll
+   container that never scrolls, which silently broke every sticky element. */
+html.standalone-active body {
+  overflow: visible;
   overscroll-behavior: auto;
   height: auto;
 }
