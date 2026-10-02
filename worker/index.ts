@@ -171,7 +171,7 @@ export default {
 
     // Crawlers get route-specific OG tags; humans fall through to the SPA.
     if (isBot(request.headers.get("user-agent") ?? "")) {
-      const bot = botResponse(url.pathname);
+      const bot = botResponse(url.pathname, url.search);
       if (bot) return bot;
     }
 

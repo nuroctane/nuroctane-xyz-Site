@@ -33,10 +33,20 @@ assert.deepEqual(
 const rejected = await fetch(`${origin}/api/og`, { method: "POST" });
 assert.equal(rejected.status, 405);
 assert.equal(rejected.headers.get("allow"), "GET, HEAD");
-const crawler = await fetch(`${origin}/cli`, {
+// Card caches key on og:url and follow refreshes, so a shared variant must
+// echo itself, never redirect to the bare path, and never be cached.
+const crawler = await fetch(`${origin}/cli?ref=x`, {
   headers: { "User-Agent": "Twitterbot/1.0" },
 });
-assert.match(await crawler.text(), /\/assets\/og\/cli\.png\?v=5/);
+const doc = await crawler.text();
+assert.match(doc, /\/assets\/og\/cli-7532965d\.png/);
+assert.match(doc, /property="og:url" content="[^"]*\/cli\?ref=x"/);
+assert.doesNotMatch(doc, /http-equiv="refresh"/);
+assert.equal(crawler.headers.get("cache-control"), "no-cache");
+assert.deepEqual(
+  await readFile(new URL("cli-7532965d.png", cards)),
+  await readFile(new URL("cli.png", cards)),
+);
 console.log(
   "OG DELIVERY OK: 12 cards, HEAD, case handling, safe fallback, method rejection, crawler metadata",
 );

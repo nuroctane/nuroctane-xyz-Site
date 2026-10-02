@@ -128,7 +128,9 @@ const PAGES: Record<string, PageMeta> = {
     badge: "NurCLI",
     path: "/cli",
     siteName: "NurCLI",
-    image: `${SITE}/assets/og/cli.png?v=7`,
+    // Content-addressed: the locked card's hash prefix (scripts/render-og.mjs),
+    // so no cache anywhere can hold an older image under this path.
+    image: `${SITE}/assets/og/cli-7532965d.png`,
     favicon: "/assets/nodes/nur-cli-logo.png",
   },
   curriculum: {
@@ -222,9 +224,10 @@ const CHILD_FAVICONS: Record<string, Record<string, string>> = {
 interface ResolvedMeta extends PageMeta {
   image: string;
   url: string;
+  shared: string;
 }
 
-function resolvePage(pathname: string): ResolvedMeta {
+function resolvePage(pathname: string, search = ""): ResolvedMeta {
   const clean = (pathname || "/").replace(/\/+$/, "") || "/";
   const segs = clean === "/" ? [] : clean.slice(1).toLowerCase().split("/");
   const top = segs[0] || "home";
@@ -242,6 +245,9 @@ function resolvePage(pathname: string): ResolvedMeta {
     favicon: (segs[1] && CHILD_FAVICONS[top]?.[segs[1]]) || base.favicon,
     // Deep links keep the section branding but pin canonical URL
     url: `${SITE}${path === "/" ? "/" : path}`,
+    // The URL as shared. Card caches key on og:url, so a shared variant
+    // (?ref=x) gets its own card instead of the cached one for the bare path.
+    shared: `${SITE}${path === "/" ? "/" : path}${search}`,
   };
 }
 
@@ -264,6 +270,7 @@ function botHtml(meta: ResolvedMeta): string {
   const desc = escapeHtml(meta.description);
   const image = escapeHtml(meta.image);
   const url = escapeHtml(meta.url);
+  const shared = escapeHtml(meta.shared);
   const robots = meta.noindex ? "noindex, nofollow" : "index, follow";
 
   return `<!doctype html>
@@ -279,7 +286,7 @@ function botHtml(meta: ResolvedMeta): string {
   <meta property="og:type" content="website" />
   <meta property="og:title" content="${title}" />
   <meta property="og:description" content="${desc}" />
-  <meta property="og:url" content="${url}" />
+  <meta property="og:url" content="${shared}" />
   <meta property="og:image" content="${image}" />
   <meta property="og:image:width" content="1200" />
   <meta property="og:image:height" content="630" />
@@ -287,7 +294,6 @@ function botHtml(meta: ResolvedMeta): string {
   <meta name="twitter:title" content="${title}" />
   <meta name="twitter:description" content="${desc}" />
   <meta name="twitter:image" content="${image}" />
-  <meta http-equiv="refresh" content="0;url=${url}" />
 </head>
 <body>
   <p><a href="${url}">${title}</a></p>
@@ -297,7 +303,7 @@ function botHtml(meta: ResolvedMeta): string {
 }
 
 /** Returns the crawler document for a path, or null if this path is never bot-served. */
-export function botResponse(pathname: string): Response | null {
+export function botResponse(pathname: string, search = ""): Response | null {
   if (
     pathname.startsWith("/api/") ||
     pathname.startsWith("/assets/") ||
@@ -306,12 +312,13 @@ export function botResponse(pathname: string): Response | null {
     return null;
   }
 
-  const meta = resolvePage(pathname);
+  const meta = resolvePage(pathname, search);
   return new Response(botHtml(meta), {
     status: 200,
     headers: {
       "content-type": "text/html; charset=utf-8",
-      "cache-control": "public, s-maxage=600, stale-while-revalidate=86400",
+      // Card fetchers must always see the current tags; never serve stale.
+      "cache-control": "no-cache",
       "x-nuroctane-og": meta.path,
     },
   });
