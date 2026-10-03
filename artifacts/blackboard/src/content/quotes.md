@@ -1,15 +1,15 @@
 ## Index
-- [[#Faith, God & Surrender|Faith, God & Surrender]] (51)
-- [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (29)
-- [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (58)
-- [[#Self, Identity & Awakening|Self, Identity & Awakening]] (80)
+- [[#Faith, God & Surrender|Faith, God & Surrender]] (52)
+- [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (30)
+- [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (59)
+- [[#Self, Identity & Awakening|Self, Identity & Awakening]] (81)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (55)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (100)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (101)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (32)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (105)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (65)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (81)
-- [[#Work, Wealth & Value|Work, Wealth & Value]] (46)
+- [[#Work, Wealth & Value|Work, Wealth & Value]] (47)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (64)
 
 ## Faith, God & Surrender
@@ -187,6 +187,11 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > Gurdjieff said prayer discharged energy into the atmosphere and popular religious sites are especially charged because of the accrued energies from worshippers who pray
 > — @wyrweb
 
+> GOD IS GOING TO EXPOSE ALL YOUR ENEMIES.
+> Not with chaos, not with revenge, and not by your hand. God exposes with light.
+> What was done in secret will lose its power. What was hidden behind smiles and excuses will be revealed for what it truly is. You don't have to defend yourself or explain your side. God sees motives, conversations, and intentions you never heard. Exposure is protection, not punishment. It clears your path, restores your peace, and removes confusion. Stay quiet. Stay obedient. Let God handle what tried to handle you. When He exposes, He also vindicates, heals, and moves you forward, clean, covered, and unbothered.
+> — @Fmthegreat60629
+
 ## Reality, Consciousness & Perception
 
 _Consciousness, time, illusion, energy, synchronicity, metaphysics, and the architecture of experience._
@@ -267,6 +272,9 @@ _Consciousness, time, illusion, energy, synchronicity, metaphysics, and the arch
 > Masculine & feminine energy is not entirely separate, it just operates from different means.
 > Masculine energy derives psychic ability through intense observation, pattern recognition & analysis.
 > Feminine energy derives psychic ability from feeling, knowing, sensing.
+
+> Magic works by latching onto an unresolved complex and amplifying the charge
+> — @theralkia
 
 ## Manifestation, Desire & Abundance
 
@@ -462,6 +470,9 @@ _Imagination, intention, frequency, prosperity, timelines, desire, and allowing 
 >
 > 最后补了一句：“看风水是看地，但人最大的风水，在嘴上。这话，你记死了。”
 > — @Yue_official_
+
+> you have to fall in love w/ your being in order to activate your luck. love your face, your body, your mind, who you are as a person. love is the energy of acceptance, openness & joy. the more you love yourself & your life, the more your value expands, the luckier you become.
+> — @nobengunii
 
 ## Self, Identity & Awakening
 
@@ -717,6 +728,16 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 
 > maybe the point was never to get what I wanted, but to become someone capable of wanting differently
 > — @artemisgrl
+
+> Be Aggressive about your life.
+> It is the only way to get what you want from it...
+> 
+> Nothing comes from the gentle hoping, half-given effort, or the daydreaming of most.
+> 
+> You have to know who you are...
+> What you want, pursue & reject
+> Be Aggressive about your life.
+> — @drgurner
 
 ## Mind, Belief & Inner Work
 
@@ -1261,6 +1282,9 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 
 > "Accountability" is a euphemism for suicide. Nobody believes that people can change or grow. They want to see the bad people burn, and they wanna be able to joke about it too. Accountability does not exist. There is nothing you can do to get better. The only option is death.
 > — @weakcorvid
+
+> you look younger than your age because you don't carry envy or bad energy
+> — @ThabigRexy
 
 ## Creativity, Purpose & Expression
 
@@ -2415,6 +2439,15 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 
 > I’ll reiterate this again, the world is value-based. People won’t see your ‘bad character’ because of the advantages you possess. They’ll blatantly justify it just to enjoy the continuity of your value provision. This is reality. This is fact.
 > — @T_Gofficial01
+
+> Vá embora na primeira vez que
+> eles forem cruéis.
+> 
+> Relacionamento, emprego,
+> amizade, o que for.
+> 
+> Na primeira vez.
+> — @EduEduardo137
 
 ## Life, Joy & Meaning
 
