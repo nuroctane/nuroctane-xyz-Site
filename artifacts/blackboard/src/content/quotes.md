@@ -6,7 +6,7 @@
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (55)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (101)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (32)
-- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (105)
+- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (106)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (65)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (81)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (47)
@@ -1756,6 +1756,9 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > 
 > There is tenderness here, but there is also pressure. Both people are building themselves, building each other, and building the life that will one day exceed them both.
 > — @shedrinkswater
+
+> She looked at your potential and decided she could do better. That's the part men never forget.
+> — @supuypweza
 
 ## Shadow, Discernment & Protection
 
