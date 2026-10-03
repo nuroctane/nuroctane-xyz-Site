@@ -1943,6 +1943,20 @@ function detectOs(): OsKey {
   return "unix";
 }
 
+/** metal-fx throws "WebGL2 not supported" on mount without it; probe once and skip the effect. */
+let webgl2Probe: boolean | undefined;
+function hasWebGL2(): boolean {
+  if (webgl2Probe !== undefined) return webgl2Probe;
+  try {
+    const gl = document.createElement("canvas").getContext("webgl2");
+    gl?.getExtension("WEBGL_lose_context")?.loseContext();
+    webgl2Probe = !!gl;
+  } catch {
+    webgl2Probe = false;
+  }
+  return webgl2Probe;
+}
+
 function useReveal() {
   useEffect(() => {
     const nodes = Array.from(
@@ -2841,6 +2855,19 @@ export default function CliPage() {
     btn?.focus();
   };
 
+  const installCta = (
+    <button
+      type="button"
+      className="cli-btn cli-btn--primary"
+      onClick={() => {
+        jumpTo("install");
+        trackEvent("Cli CTA", { target: "install" });
+      }}
+    >
+      Install NurCLI
+    </button>
+  );
+
   return (
     <div
       className="standalone-page cli-page"
@@ -2921,26 +2948,21 @@ export default function CliPage() {
               retry, failover, and auxiliary inference attempt.
             </p>
             <div className="cli-hero-cta">
-              <MetalFx
-                preset="gold"
-                theme="dark"
-                strength={0.65}
-                paused={reducedMotion}
-                disableGlow
-                normalizeHostStyles={false}
-                ringCssPx={1}
-              >
-                <button
-                  type="button"
-                  className="cli-btn cli-btn--primary"
-                  onClick={() => {
-                    jumpTo("install");
-                    trackEvent("Cli CTA", { target: "install" });
-                  }}
+              {hasWebGL2() ? (
+                <MetalFx
+                  preset="gold"
+                  theme="dark"
+                  strength={0.65}
+                  paused={reducedMotion}
+                  disableGlow
+                  normalizeHostStyles={false}
+                  ringCssPx={1}
                 >
-                  Install NurCLI
-                </button>
-              </MetalFx>
+                  {installCta}
+                </MetalFx>
+              ) : (
+                installCta
+              )}
               <button
                 type="button"
                 className="cli-btn"

@@ -38,6 +38,28 @@ declare global {
   }
 }
 
+type CaptureResult = import('posthog-js').CaptureResult;
+
+/**
+ * Drops exceptions the site cannot act on: the browser's opaque cross-origin
+ * "Script error." (no message, no stack), and anything thrown inside
+ * Instagram's in-app browser.
+ */
+function dropUnactionableExceptions(event: CaptureResult | null): CaptureResult | null {
+  if (!event || event.event !== '$exception') return event;
+  if (/\bInstagram\b/.test(navigator.userAgent)) return null;
+  const list = (event.properties?.$exception_list ?? []) as Array<{
+    value?: string;
+    stacktrace?: { frames?: unknown[] };
+  }>;
+  const opaque =
+    list.length > 0 &&
+    list.every(
+      (e) => /^Script error\.?$/.test((e.value ?? '').trim()) && !e.stacktrace?.frames?.length,
+    );
+  return opaque ? null : event;
+}
+
 let ph: PostHog | null = null;
 let loading = false;
 /** Captures issued before the library resolved; drained on load. */
@@ -74,6 +96,7 @@ export function initPostHog(): void {
         // person profiles for anonymous visitors: they are billed far cheaper.
         person_profiles: 'identified_only',
         defaults: '2026-05-30',
+        before_send: dropUnactionableExceptions,
       });
       ph = p;
 
