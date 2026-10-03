@@ -87,6 +87,9 @@ export function initPostHog(): void {
         ui_host: UI_HOST,
         // Pageviews are reported by hand from the resolved wouter route.
         capture_pageview: false,
+        // Manual pageviews switch off the automatic $pageleave, which is what
+        // feeds time on page, scroll depth and bounce rate. Turn it back on.
+        capture_pageleave: true,
         // The site fires a curated set of events via trackEvent(); autocapture
         // would duplicate them and burn free-tier volume on noise.
         autocapture: false,

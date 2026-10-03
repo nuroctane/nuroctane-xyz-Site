@@ -38,7 +38,12 @@ export function normalizePath(location: string): string {
 /**
  * Map a browser location to the concrete PostHog path and grouping route.
  */
-export function resolveAnalytics(location: string): { path: string; route: string } {
+export function resolveAnalytics(location: string): {
+  path: string;
+  route: string;
+  /** No known surface matches; the SPA falls back, but the link is broken. */
+  notFound?: true;
+} {
   const path = normalizePath(location);
   if (path === '/') return { path: '/', route: '/' };
 
@@ -81,7 +86,7 @@ export function resolveAnalytics(location: string): { path: string; route: strin
       return { path: '/', route: '/' };
     default:
       // Unknown deep link — still report the concrete path so it appears in Top Pages
-      return { path, route: path };
+      return { path, route: path, notFound: true };
   }
 }
 
@@ -92,6 +97,36 @@ export function absoluteAnalyticsUrl(path: string, origin?: string): string {
     (typeof window !== 'undefined' ? window.location.origin : 'https://www.nuroctane.xyz');
   const p = path.startsWith('/') ? path : `/${path}`;
   return `${base.replace(/\/+$/, '')}${p === '/' ? '/' : p}`;
+}
+
+/**
+ * One sitewide "Outbound Link" event for any click that leaves the site, so
+ * every social, project and booking exit is comparable in one breakdown.
+ * Page-specific events (Cli Link, Booking Click, …) still fire alongside it.
+ */
+export function wireOutboundLinks(): () => void {
+  const onClick = (event: MouseEvent): void => {
+    const target = event.target;
+    if (!(target instanceof Element)) return;
+    const anchor = target.closest('a[href]');
+    if (!(anchor instanceof HTMLAnchorElement)) return;
+    try {
+      const url = new URL(anchor.href, window.location.href);
+      if (!/^https?:$/.test(url.protocol)) return;
+      // www and the apex are the same site; neither counts as leaving.
+      const bare = (host: string) => host.replace(/^www\./, '');
+      if (bare(url.hostname) === bare(window.location.hostname)) return;
+      trackEvent('Outbound Link', {
+        host: url.hostname,
+        href: url.href.slice(0, 240),
+        from: normalizePath(window.location.pathname),
+      });
+    } catch {
+      /* ignore invalid hrefs */
+    }
+  };
+  document.addEventListener('click', onClick, true);
+  return () => document.removeEventListener('click', onClick, true);
 }
 
 /**

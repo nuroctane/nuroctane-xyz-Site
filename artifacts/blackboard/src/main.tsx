@@ -5,7 +5,7 @@ import Blackboard from './blackboard/Blackboard';
 import { WallpaperProvider } from './blackboard/WallpaperProvider';
 import { SITE_MODE } from './config/siteMode';
 import { AudioProvider } from './hooks/AudioContext';
-import { resolveAnalytics } from './lib/analytics';
+import { resolveAnalytics, trackEvent, wireOutboundLinks } from './lib/analytics';
 import { initPostHog, capturePageview } from './lib/posthog';
 import { applyDocumentMeta, resolvePageMeta } from './lib/pageMeta';
 import './index.css';
@@ -41,16 +41,26 @@ function BlackboardFallback() {
  */
 function Telemetry() {
   const [location] = useLocation();
-  const { path, route } = useMemo(() => resolveAnalytics(location), [location]);
+  const { path, route, notFound } = useMemo(() => resolveAnalytics(location), [location]);
 
   useEffect(() => {
     initPostHog();
+    return wireOutboundLinks();
   }, []);
 
   // Re-fires on wouter pushState navigations, keeping SPA routes attributed.
   useEffect(() => {
     capturePageview(path, route);
-  }, [path, route]);
+    if (notFound) {
+      let referrerHost = '';
+      try {
+        referrerHost = document.referrer ? new URL(document.referrer).hostname : '';
+      } catch {
+        /* malformed referrer */
+      }
+      trackEvent('Not Found', { path, referrer_host: referrerHost });
+    }
+  }, [path, route, notFound]);
 
   return null;
 }
