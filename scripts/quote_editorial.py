@@ -31,9 +31,18 @@ def body_key(body):
 
 def apply_editorial(text):
     rules = json.loads(RULES.read_text(encoding='utf-8'))
-    replacements = {entry['key']: entry for entry in rules['corrections']}
+    # Match both the captured wording and the reviewed wording. Grammar edits
+    # change identity; either version must receive the same credit and dedupe.
+    replacements = {}
+    for entry in rules['corrections']:
+        replacements[entry['key']] = entry
+        replacements[body_key(entry['body'])] = entry
+        for part in entry.get('parts', []):
+            replacements[body_key(part['body'])] = part
     blocks = list(BLOCK.finditer(text))
     present = {body_key(split_block(m[0])[0]) for m in blocks}
+    present.update(entry['key'] for entry in rules['corrections']
+                   if body_key(entry['body']) in present)
     remove = {entry['fragment'] for entry in rules['duplicates'] if entry['complete'] in present}
     seen = set()
 
@@ -42,17 +51,27 @@ def apply_editorial(text):
         key = body_key(body)
         # A re-import of a quote already in the bank (same words, different
         # punctuation) is dropped; the earlier, edited copy wins.
-        if key in remove or key in seen:
-            return ''
-        seen.add(key)
         correction = replacements.get(key)
+        if key in remove:
+            return ''
         if not correction:
+            if key in seen:
+                return ''
+            seen.add(key)
             return match[0]
-        body = correction['body']
-        source = correction.get('source') or source
-        lines = ['> ' + line if line else '>' for line in body.splitlines()]
-        if source:
-            lines.append('> — ' + source)
-        return '\n'.join(lines)
+        rendered = []
+        for part in correction.get('parts', [correction]):
+            reviewed_key = body_key(part['body'])
+            if reviewed_key in seen:
+                continue
+            seen.add(reviewed_key)
+            # An explicit empty source keeps an unresolved component anonymous;
+            # a composite's credit must never bleed into its other components.
+            credit = part.get('source', '' if 'parts' in correction else source)
+            lines = ['> ' + line if line else '>' for line in part['body'].splitlines()]
+            if credit:
+                lines.append('> — ' + credit)
+            rendered.append('\n'.join(lines))
+        return '\n\n'.join(rendered)
 
     return re.sub(r'\n{3,}', '\n\n', BLOCK.sub(replace, text))

@@ -1,6 +1,6 @@
 {
-  "reviewed": "2026-09-15",
-  "scope": "Punctuation only; wording and capitalization preserved. Verified attributions are explicit exceptions.",
+  "reviewed": "2026-10-04",
+  "scope": "Reviewed punctuation, duplicate words, grammar and clear transcription errors; informal voice preserved. Attributions require matching source evidence. Deep attribution pass: exact source matching, adapted labels, and mixed-author passages split into independently credited components.",
   "corrections": [
     {
       "key": "963f0cbd705f055fe4510937f7858197c2d5e5500b245065b9bc6e50f3ed0550",
@@ -8,7 +8,9 @@
     },
     {
       "key": "7e5877e72e407185826846b867dfbd1cd1c0ab1cf900d502063406b79470f3e6",
-      "body": "The more you put your life on the line, the more interesting God finds you, the more likely your virtues to be rewarded (and vices punished)."
+      "body": "The more you put your life on the line, the more interesting God finds you, the more likely your virtues are to be rewarded (and vices punished).",
+      "reason": "Supply the missing verb.",
+      "original_body": "The more you put your life on the line, the more interesting God finds you, the more likely your virtues to be rewarded (and vices punished)."
     },
     {
       "key": "e1720ddb03751a356b83f3f4dac5458001eab023d9865a4e25a0176773cf6031",
@@ -36,7 +38,9 @@
     },
     {
       "key": "328258336b0f1fa46c3ffef328a7594afde8eb9862544095686cdccb3e6895fb",
-      "body": "The pure hearted simple man is not idiot. he does not lack knowledge, merely lacks the vanity of knowledge. he is not impressed by the convolutions of that which refuses to state itself plainly, and when something is stated plain he will not pretend it is complex to flatter his own cleverness. this is the only mind God can really do anything with. that can water, grow things, like the plant drinking from the child's hand. this is the mind that listens because it is not so besotted with its own voice that it cannot be quiet and learn from what is above it. the mind that will grow the garden because it is not too busy being a garden unto itself."
+      "body": "The pure hearted simple man is not an idiot. he does not lack knowledge, he merely lacks the vanity of knowledge. he is not impressed by the convolutions of that which refuses to state itself plainly, and when something is stated plain he will not pretend it is complex to flatter his own cleverness. this is the only mind God can really do anything with. that can water, grow things, like the plant drinking from the child's hand. this is the mind that listens because it is not so besotted with its own voice that it cannot be quiet and learn from what is above it. the mind that will grow the garden because it is not too busy being a garden unto itself.",
+      "reason": "Supply missing article and subject.",
+      "original_body": "The pure hearted simple man is not idiot. he does not lack knowledge, merely lacks the vanity of knowledge. he is not impressed by the convolutions of that which refuses to state itself plainly, and when something is stated plain he will not pretend it is complex to flatter his own cleverness. this is the only mind God can really do anything with. that can water, grow things, like the plant drinking from the child's hand. this is the mind that listens because it is not so besotted with its own voice that it cannot be quiet and learn from what is above it. the mind that will grow the garden because it is not too busy being a garden unto itself."
     },
     {
       "key": "04fbaff1696bf77eefb0eced92b48fe49dcfd7089b2c8aab022b63196ce359bf",
@@ -69,11 +73,13 @@
     },
     {
       "key": "588b2290c1641dacf3697bbe086440b5b1ce062b80f11a04764d85ca5e49be15",
-      "body": "Men think themselves too small in their minds. They don’t whisper to themselves, “Conquer my boy. Be proud. Be fruitful. Know abundance. Don’t give up. Don’t let others push you down.” This is the only voice worth keeping. Kick the rest out. They give nothing but poison."
+      "body": "Men think themselves too small in their minds. They don’t whisper to themselves, “Conquer, my boy. Be proud. Be fruitful. Know abundance. Don’t give up. Don’t let others push you down.” This is the only voice worth keeping. Kick the rest out. They give nothing but poison.",
+      "reason": "Separate direct address."
     },
     {
       "key": "0c47f003b42aa2661e13125653b52ec75cb83c8c3d8b9ba1fc62f6c337c34819",
-      "body": "Here's a practice.\nNext time you're making a decision, about anything. Stop for a moment and listen to your thoughts.\nFor me, there are two different voices:\n- One is soft, calm, gentle, and confident.\n- The other is pressed, hasty, insecure.\nTrust the calm voice."
+      "body": "Here's a practice.\nNext time you're making a decision about anything, stop for a moment and listen to your thoughts.\nFor me, there are two different voices:\n- One is soft, calm, gentle, and confident.\n- The other is pressed, hasty, insecure.\nTrust the calm voice.",
+      "reason": "Reconnect the time clause with its instruction."
     },
     {
       "key": "eead9edbd5cc13dc630f66513b6c6236048cdb55d2dd42537cc88dc0326a0714",
@@ -149,7 +155,8 @@
     },
     {
       "key": "9e64ecba42a4aae1b5b2c13f2fdd4edbe08d3789a1e2a116fd23b5d193f6e8e6",
-      "body": "You are safe to let go of.\n- being a people pleaser\n- enabling self-destructive behavior\n- doing others' work for them\n- being a martyr/scapegoat for others' unresolved traumas\n- giving energy to others out of a sense of duty/guilt\n- addiction to being a victim\n- codependence."
+      "body": "You are safe to let go of:\n- being a people pleaser\n- enabling self-destructive behavior\n- doing others' work for them\n- being a martyr/scapegoat for others' unresolved traumas\n- giving energy to others out of a sense of duty/guilt\n- addiction to being a victim\n- codependence.",
+      "reason": "Introduce the list with a colon."
     },
     {
       "key": "c190b5bca57396c6a6a313691314448b8063829dfb3d6059821216559880df57",
@@ -177,7 +184,9 @@
     },
     {
       "key": "ece945eee2ae611655518e926dc3884de5510b0f530196944688c334399fb39b",
-      "body": "No static electricity in the hair is a sign of a nearly barren soul\n\nWhen in small towns you notice many of these barren people I call \"hollow humans\" or \"porcelain people\"\n\nAll wearing a personality they stole from a TV show.\n\nAlmost all of these people aren't just balding\n\nBut their hairs thin and have little to no electrical charge.\n\nYou could rub a balloon on their head and it'd only make a mess\n\nHair indistinguishable from a thatch roof.\n\nNo electricity, no authenticity."
+      "body": "No static electricity in the hair is a sign of a nearly barren soul\n\nWhen in small towns you notice many of these barren people I call \"hollow humans\" or \"porcelain people\"\n\nAll wearing a personality they stole from a TV show.\n\nAlmost all of these people aren't just balding\n\nBut their hair is thin and have little to no electrical charge.\n\nYou could rub a balloon on their head and it'd only make a mess\n\nHair indistinguishable from a thatch roof.\n\nNo electricity, no authenticity.",
+      "reason": "Repair a missing verb and noun form.",
+      "original_body": "No static electricity in the hair is a sign of a nearly barren soul\n\nWhen in small towns you notice many of these barren people I call \"hollow humans\" or \"porcelain people\"\n\nAll wearing a personality they stole from a TV show.\n\nAlmost all of these people aren't just balding\n\nBut their hairs thin and have little to no electrical charge.\n\nYou could rub a balloon on their head and it'd only make a mess\n\nHair indistinguishable from a thatch roof.\n\nNo electricity, no authenticity."
     },
     {
       "key": "642e4dacd843fe5274ba281fe87027b6cc23efd501e4a512247133748e5e283a",
@@ -197,23 +206,52 @@
     },
     {
       "key": "4ee0d45b6f12573ae81ca9462ee24694aa23e35f1a3d4aa622a95e551b7c50cb",
-      "body": "- Save more than you spend\n- Avoid consumer debt\n- Have multiple sources of income\n- Spend money for knowledge\n- Spend money to keep your time free\n- Avoid paying full cost for anything\n- Borrow money to make money or don’t borrow money at all\n- Learn skills that earn money."
+      "body": "- Save more than you spend\n- Avoid consumer debt\n- Have multiple sources of income\n- Spend money for knowledge\n- Spend money to keep your time free\n- Avoid paying full cost for anything\n- Borrow money to make money or don’t borrow money at all\n- Learn skills that earn money.",
+      "source": "Original author unknown; collected in “Finance 101” by @tonytrillions",
+      "evidence": [
+        "https://ecency.com/%40tonytrillions/resteem-this-if-you-re-aiming-to-make-usd100-000-or-more-in-2019"
+      ],
+      "attribution_review": "Entire eight-item list matches the published Finance 101 compilation. Original author unconfirmed; source provenance only."
     },
     {
       "key": "22e7ba847abef1db0ce30def6a23bd950f54a222ab25d051ed45769ba9de969d",
-      "body": "If one potential client can't afford your service, the next one will, the world is full of abundance."
+      "body": "If one potential client can't afford your service, the next one will, the world is full of abundance.",
+      "source": "Lawrence King (@lawrencekingyo)",
+      "evidence": [
+        "https://www.twstalker.com/TONYBANDSS",
+        "https://www.linkedin.com/posts/rounaq-bakshi-12224412_business-lessons-i-wish-someone-had-told-activity-7475590041482985474-qZVp"
+      ],
+      "attribution_review": "Exact item 7 in 17-item 'Business Lessons I wish someone had told me at the beginning' tweet. Mirror explicitly marks @TONYBANDSS retweeted, and Lawrence King @lawrencekingyo as tweet author; independent LinkedIn copy reproduces full ordered list. No original status permalink recovered; capitalization/obvious spelling corrected by bank."
     },
     {
       "key": "e7e6b52821bf61f39c8ccf90aff9fce3fbf1558dd87f8b860a37a3d370af7751",
-      "body": "Copy people that have made it, your ideas probably suck, just copy what works."
+      "body": "Copy people that have made it, your ideas probably suck, just copy what works.",
+      "source": "Lawrence King (@lawrencekingyo)",
+      "evidence": [
+        "https://www.twstalker.com/TONYBANDSS",
+        "https://www.linkedin.com/posts/rounaq-bakshi-12224412_business-lessons-i-wish-someone-had-told-activity-7475590041482985474-qZVp"
+      ],
+      "attribution_review": "Exact item 9 in 17-item 'Business Lessons I wish someone had told me at the beginning' tweet. Mirror explicitly marks @TONYBANDSS retweeted, and Lawrence King @lawrencekingyo as tweet author; independent LinkedIn copy reproduces full ordered list. No original status permalink recovered; capitalization/obvious spelling corrected by bank."
     },
     {
       "key": "cf1c5e8146cc4754c4c6612540426e78b58cfe5727eaf3b562e4fbda61bff1c6",
-      "body": "The bar is 30 feet lower than what you think it is, the bar is way lower in reality than in your mind."
+      "body": "The bar is 30 feet lower than what you think it is, the bar is way lower in reality than in your mind.",
+      "source": "Lawrence King (@lawrencekingyo)",
+      "evidence": [
+        "https://www.twstalker.com/TONYBANDSS",
+        "https://www.linkedin.com/posts/rounaq-bakshi-12224412_business-lessons-i-wish-someone-had-told-activity-7475590041482985474-qZVp"
+      ],
+      "attribution_review": "Exact item 10 in 17-item 'Business Lessons I wish someone had told me at the beginning' tweet. Mirror explicitly marks @TONYBANDSS retweeted, and Lawrence King @lawrencekingyo as tweet author; independent LinkedIn copy reproduces full ordered list. No original status permalink recovered; capitalization/obvious spelling corrected by bank."
     },
     {
       "key": "b9cca3b08fcba8bdc9bc9e2398a601e9055ef959320cdc81e1decdd20bed016a",
-      "body": "Ignore criticisms over your business niche, no matter what niche it is people will mock it somehow, just follow the money."
+      "body": "Ignore criticisms over your business niche, no matter what niche it is people will mock it somehow, just follow the money.",
+      "source": "Lawrence King (@lawrencekingyo)",
+      "evidence": [
+        "https://www.twstalker.com/TONYBANDSS",
+        "https://www.linkedin.com/posts/rounaq-bakshi-12224412_business-lessons-i-wish-someone-had-told-activity-7475590041482985474-qZVp"
+      ],
+      "attribution_review": "Exact item 16 in 17-item 'Business Lessons I wish someone had told me at the beginning' tweet. Mirror explicitly marks @TONYBANDSS retweeted, and Lawrence King @lawrencekingyo as tweet author; independent LinkedIn copy reproduces full ordered list. No original status permalink recovered; capitalization/obvious spelling corrected by bank."
     },
     {
       "key": "0cddafb1417e7501d3db4555a92091386063552c957f37f5441eb0c7ca107e21",
@@ -225,7 +263,9 @@
     },
     {
       "key": "44b84691bdaebaa829388d1572da27aece58ec9226a98d8f2013cedabfb6ba98",
-      "body": "Reality:\n\nIf someone steals your idea, it means the market wanted more and you didn't supply it.\n\nThe only way to beat copy cats is do so much volume so fast you’ve squeezed every drop out the idea before they even got a chance.\n\nRelying on lawyers is always too little too late."
+      "body": "Reality:\n\nIf someone steals your idea, it means the market wanted more and you didn't supply it.\n\nThe only way to beat copy cats is to do so much volume so fast you’ve squeezed every drop out of the idea before they even got a chance.\n\nRelying on lawyers is always too little too late.",
+      "reason": "Restore infinitive and preposition.",
+      "original_body": "Reality:\n\nIf someone steals your idea, it means the market wanted more and you didn't supply it.\n\nThe only way to beat copy cats is do so much volume so fast you’ve squeezed every drop out the idea before they even got a chance.\n\nRelying on lawyers is always too little too late."
     },
     {
       "key": "2ef528288cea31a8ee3b616f12936bea78791790d8b53e0a43b63dacba4d5838",
@@ -233,7 +273,9 @@
     },
     {
       "key": "995fa6658ff3b1d8fddab132c98298b75f97d304eec5775cabd5e8ef165d48cd",
-      "body": "I went 30k in personal CC debt over the last 2 years in pursuit of \"making it\" in a high risk industry while happily paying the $500 - 1k interest monthly payments all bc I knew one good ad or one good month will rinse all of that out\n\nNever was frugal, travelled better than some rich phags, took care of my girl and my ppl, never skimped out, lived better than 90% of nerds on here, and always knew Id make it happen one way or another, was just a matter of time\n\nAlso ran the # s - what's an avg of $6k a year in interest payments to be able to spend freely with a CC? Multiply that for 2 years - $12k? Okay and? You could make that in a month, week, even a day once you have motion - and I knew this when I was making maybe $2 - 4k/mo\n\nZero limiting beliefs or scarcity mindset\n\nThats why I can't relate to brokes and poors who laments about x y or z, you were meant to be cattle\n\nMeant to be a cog, doesn't concern me - and no this isn't DR copy to sell you bizopp course - straight iced coffee flow letting you know shts very obviously possible and it almost 100% a mindset issue my nigga\n\nToughen up, grab your nuts, get a beautiful girl BEFORE YOU TRY TO MAKE IT (assuming you're broke rn), and relentlessly pursue whatever goals you have (do not place physical objects as your primary goal please... all these guys are fucking tasteless lames I promise you your fav ex-bh ecom guru twitter homo is not your ideal role model)\n\nDont forget to live every week, maybe even day if you can - lastly don't be entitled. Have some self awareness ffs, you're all heathens in this category. Father should've raised you better but now it's on you, you got this dawg"
+      "body": "I went 30k in personal CC debt over the last 2 years in pursuit of \"making it\" in a high risk industry while happily paying the $500 - 1k interest monthly payments all bc I knew one good ad or one good month will rinse all of that out\n\nNever was frugal, travelled better than some rich phags, took care of my girl and my ppl, never skimped out, lived better than 90% of nerds on here, and always knew I’d make it happen one way or another, was just a matter of time\n\nAlso ran the # s - what's an avg of $6k a year in interest payments to be able to spend freely with a CC? Multiply that for 2 years - $12k? Okay and? You could make that in a month, week, even a day once you have motion - and I knew this when I was making maybe $2 - 4k/mo\n\nZero limiting beliefs or scarcity mindset\n\nThat’s why I can't relate to brokes and poors who lament about x y or z, you were meant to be cattle\n\nMeant to be a cog, doesn't concern me - and no this isn't DR copy to sell you bizopp course - straight iced coffee flow letting you know shts very obviously possible and it’s almost 100% a mindset issue my nigga\n\nToughen up, grab your nuts, get a beautiful girl BEFORE YOU TRY TO MAKE IT (assuming you're broke rn), and relentlessly pursue whatever goals you have (do not place physical objects as your primary goal please... all these guys are fucking tasteless lames I promise you your fav ex-bh ecom guru twitter homo is not your ideal role model)\n\nDon’t forget to live every week, maybe even day if you can - lastly don't be entitled. Have some self awareness ffs, you're all heathens in this category. Father should've raised you better but now it's on you, you got this dawg",
+      "reason": "Restore apostrophes, a missing verb and plural agreement; preserve slang.",
+      "original_body": "I went 30k in personal CC debt over the last 2 years in pursuit of \"making it\" in a high risk industry while happily paying the $500 - 1k interest monthly payments all bc I knew one good ad or one good month will rinse all of that out\n\nNever was frugal, travelled better than some rich phags, took care of my girl and my ppl, never skimped out, lived better than 90% of nerds on here, and always knew Id make it happen one way or another, was just a matter of time\n\nAlso ran the # s - what's an avg of $6k a year in interest payments to be able to spend freely with a CC? Multiply that for 2 years - $12k? Okay and? You could make that in a month, week, even a day once you have motion - and I knew this when I was making maybe $2 - 4k/mo\n\nZero limiting beliefs or scarcity mindset\n\nThats why I can't relate to brokes and poors who laments about x y or z, you were meant to be cattle\n\nMeant to be a cog, doesn't concern me - and no this isn't DR copy to sell you bizopp course - straight iced coffee flow letting you know shts very obviously possible and it almost 100% a mindset issue my nigga\n\nToughen up, grab your nuts, get a beautiful girl BEFORE YOU TRY TO MAKE IT (assuming you're broke rn), and relentlessly pursue whatever goals you have (do not place physical objects as your primary goal please... all these guys are fucking tasteless lames I promise you your fav ex-bh ecom guru twitter homo is not your ideal role model)\n\nDont forget to live every week, maybe even day if you can - lastly don't be entitled. Have some self awareness ffs, you're all heathens in this category. Father should've raised you better but now it's on you, you got this dawg"
     },
     {
       "key": "0d985164cced2a741b5b2df7150955059185a630c4b2d691d37868ed9f02d02e",
@@ -266,6 +308,1220 @@
     {
       "key": "5f963bdbb6ccf25e55efa4ab102d31e8e4e8374c266c07760dd94273fe3ccbd3",
       "body": "the underworld is best romanticized from a distance."
+    },
+    {
+      "key": "628547ade7a9f3b270a6a363765e478fde50c371321db36cef11e717214a81de",
+      "body": "Every mistake is a chance to learn; every obstacle, an opportunity to grow. The virtues we develop are typically in direct proportion to how far we've fallen/been tested. Whatever is challenging you, bring it to God and ask to be perfectly equipped to advance in spite of it. He'll ensure it. Simply ask & move accordingly.",
+      "reason": "Remove incorrect preposition after ensure.",
+      "original_body": "Every mistake is a chance to learn; every obstacle, an opportunity to grow. The virtues we develop are typically in direct proportion to how far we've fallen/been tested. Whatever is challenging you, bring it to God and ask to be perfectly equipped to advance in spite of it. He'll ensure of it. Simply ask & move accordingly."
+    },
+    {
+      "key": "7d21ff6df325684727a8e8118c25e50a20bb9cf3da67aee78db1b1d03a4d6209",
+      "body": "A pattern that you will notice time and time again in your life: Right before a huge level up THAT is where you’ll be hit with the most difficult tests, challenges and trials. Higher powers want to test: “How bad you actually want this, mufucka?”",
+      "reason": "Separate the items in the list."
+    },
+    {
+      "key": "4f59803e313819fccb85619e0650a49ef13aa92c3a81bdab94744ccbb6f93aec",
+      "body": "Knowing in the troughs of your life that God has unfathomable good in store for you will carry you steady through every possible storm - even those that persist for months. The reassurance He provides to those He calls cannot be disturbed. There's no harm that can be done unto you which He cannot heal in a second.\n\nOften what happens, though, is that He allows you first to stumble, venture off the path, and flirt with danger so that at your lowest His protection becomes clearer — since even then, you are held and guided well beyond your comprehension, and merely the recognition of it marks the inflection point from mulling blindly to moving forward with courage.\n\nA single momentary encounter with God — no matter how slight or small — will allow for a lifetime of faith and zeal. Once you *know* He is there, listens, and wills your good, all changes. Life begins. Heaven beckons. You transform.",
+      "reason": "Repair the transition phrase, misplaced punctuation, and missing sentence endings.",
+      "original_body": "Knowing in the troughs of your life that God has unfathomable good in store for you, will carry you steady through every possible storm - even those that persist for months. The reassurance He provides to those He calls cannot be disturbed. There's no harm that can be done unto you which He cannot heal in a second.\n\nOften what happens though, is that He allows you first to stumble, venture off the path, and flirt with danger so that at your lowest His protection becomes clearer- since even then, you are held and guided well beyond your comprehension, and merely the recognition of it marks the inflection point of mulling blindly to moving forward with courage\n\nA single momentary encounter with God - no matter how slight or small- will allow for a lifetime of faith and zeal. Once you *know* He is there, listens, and wills your good, all changes. Life begins. Heaven beckons. You transform"
+    },
+    {
+      "key": "8f6caf6e7b09f7fa03ee8f1ad7c2f889f05d2d517a5d5b5f17c761f65e7bfe56",
+      "body": "Astrology, numerology, symbols, occult practices, etc work because they are systems derived by observing the creation of God. The reason you can look up at the planets or stars for guidance is because God formed you and the planets alike. As above, so below.\n\nYou should never become so deluded that you think the system itself is the source of truth rather than a dimension of the one singular source of life. This applies to religions as well.",
+      "reason": "Correct the apparent mistaken word in context.",
+      "original_body": "Astrology, numerology, symbols, occult practices, etc work because they are systems derived by observing the creation of God. The reason you can look up at the planets or stars for guidance is because God formed you and the planets alike. As above, so below.\n\nYou should never become so diluted that you think the system itself is the source of truth rather than a dimension of the one singular source of life. This applies to religions as well."
+    },
+    {
+      "key": "7ef0c712aab4fff727efe49cb2c4ab7a28b724bebbb717de370a39f847882a9a",
+      "body": "When you identify solely with this small part of you (the person), you cut off the connection to your Source. You essentially fall asleep in the illusion. You believe you are separate. This is always the primary cause of all suffering.",
+      "reason": "Supply missing preposition.",
+      "original_body": "When you identify solely with this small part you (the person), you cut off the connection to your Source. You essentially fall asleep in the illusion. You believe you are separate. This is always the primary cause of all suffering."
+    },
+    {
+      "key": "2fe1f3294c868f70adae38ce5e16e861609ccc1a4773b3b06f38f38fd4a72326",
+      "body": "Do you want the real answer, the one that will free you, or do you want the one that will simply make you more comfortable in the illusion?",
+      "reason": "Clarify the parenthetical and punctuate the question."
+    },
+    {
+      "key": "fefb7fe30d6cd2d074f5a76b531efa8b867f2228200fc588cee9e6ab225a8a46",
+      "body": "Masculine & feminine energies are not entirely separate; they just operate through different means.\nMasculine energy derives psychic ability through intense observation, pattern recognition & analysis.\nFeminine energy derives psychic ability from feeling, knowing, sensing.",
+      "reason": "Repair agreement and the preposition.",
+      "original_body": "Masculine & feminine energy is not entirely separate, it just operates from different means.\nMasculine energy derives psychic ability through intense observation, pattern recognition & analysis.\nFeminine energy derives psychic ability from feeling, knowing, sensing."
+    },
+    {
+      "key": "bea69ba9cace94ac171aef6fe0524b764c64d92e12450d57b6e6882442a60528",
+      "body": "When you say to the universe, how can I serve the world?\nthe universe responds with,\nhow can I serve you?\nThis is universal law.",
+      "reason": "Punctuate the two questions."
+    },
+    {
+      "key": "5e60809d92bece70881779a734ace86b8ff8e5537b8b64b352a520573f5ae390",
+      "body": "Someone gave me a task today to write down 7 things I want really bad. once I wrote all 7 things down, I took 7 minutes to visualize each one. visualize the moment itself, what you’re wearing, what your hair looks like, what the weather is like. I can say, that shit is powerful.",
+      "reason": "Repair the change of subject and tense.",
+      "original_body": "Someone gave me a task today to write down 7 things I want really bad. once I wrote all 7 things down, take 7 minutes to visualize each one. visualize the moment itself, what you’re wearing, what your hair looks like, what the weather is like. I can say, that shit is powerful."
+    },
+    {
+      "key": "ad044647ba9641d7d35e74573acb96506888b1a9512937f37952a524d632c5da",
+      "body": "There is often an echo or a lag as I like to call it between when you have done the work and when your physical reality catches up. This is why I say don’t give up right before the miracle happens.",
+      "reason": "Complete the parallel time clauses.",
+      "original_body": "There is often an echo or a lag as I like to call it between when you have done the work and your physical reality catches up. This is why I say don’t give up right before the miracle happens."
+    },
+    {
+      "key": "3906feb3e34d1eaee9c0a537782bdab5a40ca60d533a953d1a471f413d598a67",
+      "body": "It's already there and you probably forgot about it chasing the things you thought you needed instead.",
+      "reason": "Repair tense agreement.",
+      "original_body": "It's already there and you probably forgot about it chasing the things you thought you need instead."
+    },
+    {
+      "key": "a8007609a023f3213cd179fc36577566cd94c91e5b1ace16027db8d68a5da4a6",
+      "body": "What if I told you that you are \"it\"? And the only reason that \"it\" isn't showing up in your reality is that you keep getting in your own way. Remember that the outside reality is a holographic representation of what we are broadcasting. This is the \"secret\" that ancient alchemists and mystery schools taught. Any time I want to change something in my life I always do the inner work along with taking action. When action is not rooted in the right vibration you simply find yourself unconsciously creating more of the same outcomes. Blocked manifestation can be based on a variety of things. Could be your broadcast isn't strong or clear enough. Perhaps your unconscious beliefs are sabotaging. The answer is not more effort but rather to release resistance.",
+      "reason": "Punctuate the opening question."
+    },
+    {
+      "key": "01a710156aa8894fda499c59aab96fbee4750c8672c31bca3d4e3433c4cc0584",
+      "body": "Man wants what he does not have\nAnd ignores that which he has.\nFor man does not so much desire his wants\nAs much as he abhors being denied them.",
+      "reason": "Remove incorrect preposition.",
+      "original_body": "Man wants what he does not have\nAnd ignores that which he has.\nFor man does not so much desire his wants\nAs much as he abhors being denied of them."
+    },
+    {
+      "key": "09a6d2252600efef07b498b01377499488e588cf484ea8e50ec4641ad8d30800",
+      "body": "People who are most magnetically attractive are those whose energy is not split by trying to satisfy the opinions of others.",
+      "reason": "Repair the plural in context.",
+      "original_body": "People who are most magnetically attractive are those whose energy is not split by trying to satisfy the opinion of others.",
+      "source": "@Maryamhasnaa",
+      "evidence": [
+        "https://themindsjournal.com/quotes/attractive-maryam-hasnaa-quotes/",
+        "https://shutupandyoga.com/acne-and-blue-skies/"
+      ],
+      "attribution_review": "Whole quote matches explicit attribution. Another 2020 article https://shutupandyoga.com/acne-and-blue-skies/ quotes fuller version attributed to Hasnaa; original post not recovered."
+    },
+    {
+      "key": "5663fe0554ce92207d9ed60a4ab6d530962992b549f8a8a26c9014ca0f6b0cb7",
+      "body": "Don't be afraid to conquer the stars, cowboy. You're the only soul and desire there is.",
+      "reason": "Separate direct address."
+    },
+    {
+      "key": "c8a71a2ceb7f6ca8bf828ae4c72c8b09b33737c3d7ae73945265e58e36e98a0e",
+      "body": "Who are you when you allow yourself to exist without concern about how others will experience you?",
+      "reason": "Repair incorrect preposition.",
+      "original_body": "Who are you when you allow yourself to exist without concern of how others will experience you?"
+    },
+    {
+      "key": "a9da2478fb94946bf5aa0a8dadd2debb0bc032cdf5aff8c34fb94317512b5ea5",
+      "body": "Rather than comparing where you are on your journey to where others are on theirs, trust that everyone is exactly where they need to be for their soul's lessons.",
+      "reason": "Compare equivalent things.",
+      "original_body": "Rather than comparing where you are on your journey to others, trust that everyone is exactly where they need to be for their soul's lessons."
+    },
+    {
+      "key": "1356d9f9c2f7352cb6ef36b9a94431375bd97edfbccd9bf24b4c087579ba53b1",
+      "body": "I wish for everyone else’s freedom and liberation from the dream as much as my own.",
+      "reason": "Supply missing preposition.",
+      "original_body": "I wish everyone else’s freedom and liberation from the dream as much as my own."
+    },
+    {
+      "key": "ad78ac2c0732c23008b916ccea347b587ec7481daa236b57d34611a8cc00878a",
+      "body": "Letting go of things that keep me in obligation mode so that I can create more space to experience my own freedom.",
+      "reason": "Repair the relative clause.",
+      "original_body": "Letting go of things to keep me in obligation mode so that I can create more space to experience my own freedom."
+    },
+    {
+      "key": "8de6a0dfd3bf00a4ab5155dad3da60164ffddaa33fb068b05a1c31ad37a9bab4",
+      "body": "Are you still looking outside of you for a Source of happiness, validation, inspiration, wholeness, holiness, and simultaneously a source of where/who/what to blame when circumstances don’t turn out how your mind thinks they should? Or are you remembering the world is a mirror?",
+      "reason": "Supply article and punctuate the question.",
+      "original_body": "Are you still looking outside of you for a Source of happiness, validation, inspiration, wholeness, holiness, and simultaneously source of where/who/what to blame when circumstances don’t turn out how your mind thinks they should. Or are you remembering the world is a mirror?"
+    },
+    {
+      "key": "3005d9cf3c71ad0b4f8c748d48529a9b82f0b1c011e7b216e145eb173ca4cd9e",
+      "body": "Try to look at the things you want to change in your life or about your self-image without any of the psychological self-abuse or self-attack. Instead, look through the lens of curiosity.\nSimply ask, I wonder who I would be if this issue wasn’t happening? Memorize that and create it.",
+      "reason": "Complete the instruction and punctuate the question.",
+      "original_body": "Try to look at the things you want to change in your life or about your self-image without any of the psychological self-abuse or self-attack. Instead through the lens of curiosity.\nSimply ask, I wonder who I would be if this issue wasn’t happening. Memorize that and create it."
+    },
+    {
+      "key": "3f5ebe083af14efaa55b1e43bee5a9962c4e307f3cb474459e1aef506496419f",
+      "body": "I spent about 5 years or so intensely trying to Improve Society with very little to show for it. I then switched up to focus intensely on trying to Improve Myself and I ended up having much greater social impact downstream of that. circle of influence > circle of concern.",
+      "reason": "Add sentence boundaries that make the sequence readable."
+    },
+    {
+      "key": "865316ee01ffa3e812732a29fea021781fc31eb8ee7120fc1805badffd85569d",
+      "body": "You feel lost in life because you've been trained to think fake and gay things are important. Scared of what others think (they don't have original thoughts btw). Afraid of losing something in the world (you die = it's gone anyway). The only thing you \"keep\" (continually experience) is YOUR SPIRIT but you cuck yourself by letting institutionalised thought structures FUCK your experience upside down with fake rules. Almost everything you've been told is a lie or half truth. If you stopped giving a fuck right now about the retarded reasons of what you \"have to do\". You'd have nothing to do at first. GREAT! first step = Boredom. In that boredom is where your curiosity comes in, whatever triggers the deepest excitement in you. SPRINT TOWARDS IT. Move country, run up a biz, have a blast with your friends, pilgrim through Tibet. It doesn't matter. When you can finally break free from the bounds of what you \"have to do\" life magically works in your favour and pulls you into an experience more deeply enjoyable than any conjured up, logical plan. The best part is the uncertainty lived from outside the \"rules\".",
+      "reason": "Correct spelling while retaining the colloquial verb.",
+      "original_body": "You feel lost in life because you've been trained to think fake and gay things are important. Scared of what others think (they don't have original thoughts btw). Afraid of losing something in the world (you die = it's gone anyway). The only thing you \"keep\" (continually experience) is YOUR SPIRIT but you cuck yourself by letting institutionalised thought structures FUCK your experience upside down with fake rules. Almost everything you've been told is a lie or half truth. If you stopped giving a fuck right now about the retarded reasons of what you \"have to do\". You'd have nothing to do at first. GREAT! first step = Boredom. In that boredom is where your curiosity comes in, whatever triggers the deepest excitement in you. SPRINT TOWARDS IT. Move country, run up a biz, have a blast with your friends, pilgram through Tibet. It doesn't matter. When you can finally break free from the bounds of what you \"have to do\" life magically works in your favour and pulls you into an experience more deeply enjoyable than any conjured up, logical plan. The best part is the uncertainty lived from outside the \"rules\"."
+    },
+    {
+      "key": "a3900d2ee3f0553a9f128918277ce1bf80cf4e08c72e63a68dec93ad522c8676",
+      "body": "People really think that because you're spiritual,\nyou can not be mean.\nYou're still spirit even if you're not nice.\nYou will still be highly favored.\nNow, does it feel good to you?\nThat's the real question.\nSomeone let me experience how being mean feels,\nand I am grateful for that.\nYou do not always have to announce your boundaries\nin a calm & nice manner.\nYou can tell people to go fck themselves.\n& It felt good to experience that.\nNow, I move on with my day.\nI hear you.\nAnger is better than apathy.\nAnger is better than being depressed.\nAnger can be fuel.\nBut if it doesn't make you feel good to be angry,\nAlchemize it into something that makes you feel good\nExpress it until you don't need to express it anymore\nSing it.",
+      "reason": "Supply article and connect the conditional clause.",
+      "original_body": "People really think that because you're spiritual,\nyou can not be mean.\nYou're still spirit even if you're not nice.\nYou will still be highly favored.\nNow, does it feel good to you?\nThat's the real question.\nSomeone let me experience how being mean feels,\nand I am grateful for that.\nYou do not always have to announce your boundaries\nin calm & nice manner.\nYou can tell people to go fck themselves.\n& It felt good to experience that.\nNow, I move on with my day.\nI hear you.\nAnger is better than apathy.\nAnger is better than being depressed.\nAnger can be fuel.\nBut if it doesn't make you feel good to be angry.\nAlchemize it into something that makes you feel good\nExpress it until you don't need to express it anymore\nSing it."
+    },
+    {
+      "key": "a37b190503c95b84beff906b9efc27787d0e1d4f5c1dd50264ca2793f9136bc3",
+      "body": "As you lie down to sleep, review your day for what worked, as a reminder to your subconscious mind of what you want it to create more of.",
+      "reason": "Use the intransitive verb.",
+      "original_body": "As you lay down to sleep, review your day for what worked, as a reminder to your subconscious mind of what you want it to create more of."
+    },
+    {
+      "key": "577772f4761c9453d84f1bc480c6f91228695165a49674045a968d4481dc85d7",
+      "body": "You can always determine your unconscious programs by looking at patterns of what is repeatedly reflected in your real life, then working backwards. Asking yourself, what would I have to unconsciously believe in order to be a match for this energy dynamic? Once you identify the unconscious program, beliefs and thought patterns then ask, what is it that I needed to learn from this lesson? Decide what you prefer to experience now and write the new program.",
+      "reason": "Punctuate question and repair the noun modifier.",
+      "original_body": "You can always determine your unconscious programs by looking at patterns of what is repeatedly reflected in your real life, then working backwards. Asking yourself, what would I have to unconsciously believe in order to be a match for this energy dynamic. Once you identify the unconscious program, beliefs and thoughts patterns then ask, what is it that I needed to learn from this lesson? Decide what you prefer to experience now and write the new program."
+    },
+    {
+      "key": "1e8a4bca9090584b56a22fb74d0101ee0a843ae06dd71d945831d34ff545c078",
+      "body": "Ask yourself,\nare the majority of the things I give my focus, time and attention to feeding and uplifting me or are they draining me and depleting my energy?",
+      "reason": "Punctuate the question."
+    },
+    {
+      "key": "c1acacc8e5cc59ab81527021f0a34965e06a7d63871d915c20aab0637efcc379",
+      "body": "When your mind comes up with questions ask, is this even relevant or is this just another distraction?\nSometimes the mind will send you on a wild goose chase to gather more knowledge as a way to throw you off the trail of freedom from your own illusions.",
+      "reason": "Punctuate question and supply missing object.",
+      "original_body": "When your mind comes up with questions ask, is this even relevant or is this just another distraction.\nSometimes the mind will send you on a wild goose chase to gather more knowledge as a way to throw off the trail of freedom from your own illusions."
+    },
+    {
+      "key": "8ffbe6de0895f5920c0a595ba13826a2721cfa6ec86bb68eddb184234dc4b82c",
+      "body": "Encourage fluidity by examining your holding patterns for where you get stuck. You can always determine your unconscious programs by looking at patterns of what is repeatedly reflected in your real life, then working backwards. Asking yourself, what would I have to unconsciously believe in order to be a match for this energy dynamic? Once you identify the unconscious program, beliefs and thought patterns then ask, what is it that I needed to learn from this lesson? Decide what you prefer to experience now and write the new program. I always work with affirmations to rewrite subconscious programming. I forgive everyone and finally release myself from the past.",
+      "reason": "Punctuate question and repair the noun modifier.",
+      "original_body": "Encourage fluidity by examining your holding patterns for where you get stuck. You can always determine your unconscious programs by looking at patterns of what is repeatedly reflected in your real life, then working backwards. Asking yourself, what would I have to unconsciously believe in order to be a match for this energy dynamic. Once you identify the unconscious program, beliefs and thoughts patterns then ask, what is it that I needed to learn from this lesson? Decide what you prefer to experience now and write the new program. I always work with affirmations to rewrite subconscious programming. I forgive everyone and finally release myself from the past."
+    },
+    {
+      "key": "c1ae6db977266441167157b3d921eab4e19dcb841868802fe41b0d4780db3f44",
+      "body": "Until you make the unconscious conscious, it will control your life and you will call it “fate”.",
+      "reason": "Remove a comma that splits the complement."
+    },
+    {
+      "key": "34d837976b80cc3decb136f3f0dbb4a22a488d38f41dbcda61a97f215ac5b486",
+      "body": "If what you thought was right was leading you along a wrong path\nWhat will lead you along the right path will feel wrong.",
+      "reason": "Supply missing object.",
+      "original_body": "If what you thought was right was leading along a wrong path\nWhat will lead you along the right path will feel wrong."
+    },
+    {
+      "key": "b1ca480c5693e8b9f3aec228e0af6bf14f3d17ae6f3a65ff324dacc89ee0eec3",
+      "body": "Some of you clearly didn’t pay attention while reading The Great Gatsby in high school…\n\nYou can’t recreate the past.\n\nIt’s gone forever.\n\nIf you desperately miss certain feelings or moments in time;\n\nYou’re going to be insane.\n\nBecause you’re longing for something that doesn’t exist.",
+      "reason": "Supply the missing conjunction.",
+      "original_body": "Some of you clearly didn’t pay attention reading The Great Gatsby in high school…\n\nYou can’t recreate the past.\n\nIt’s gone forever.\n\nIf you desperately miss certain feelings or moments in time;\n\nYou’re going to be insane.\n\nBecause you’re longing for something that doesn’t exist."
+    },
+    {
+      "key": "9dfa1b3a34e3a91b25609ad7e63c6ec815705ed3b260a229a84309e0fdb616d4",
+      "body": "Do not waste any minute of your life being against anything, something or anyone but waste as many hours of your life as it allows to build what you want to see.",
+      "reason": "Repair the verb complement.",
+      "original_body": "Do not waste any minute of your life to be against anything, something or anyone but waste as many hours of your life as it allows to build what you want to see."
+    },
+    {
+      "key": "5fbc6a8e2bbea307c4a57c50f1284b114b7ae099429bb9db047edc234eebbee0",
+      "body": "Success is not a discrete function but a continuous one. but do you know what is/can be discrete? LEGIBILITY!! It’s not that they achieved overnight success; it’s that their success became legible to ya!!",
+      "reason": "Supply article and separate the clauses.",
+      "original_body": "Success is not discrete function but a continuous one but do you know what is/can be discrete? LEGIBILITY!! It’s not that they achieved overnight success is that their success became legible to ya!!"
+    },
+    {
+      "key": "8aa9ad7b82f27609616dd1c32d4ff8a640b09da3d0baeccdb645f4ab525eebfe",
+      "body": "Measure your success not by your success/failure in achieving the goal, but by your following/not following your procedures to attain that goal.",
+      "reason": "Repair the mismatched paired phrases.",
+      "original_body": "Measure your success not by your achieving/failure of the goal, but by your following/unfollowing your procedures to attain that goal."
+    },
+    {
+      "key": "9f3da9819dc00d2b49c3da431b9f9db3224cbefe97bab7a7e4776a846fc1eaf1",
+      "body": "When you don't feel like doing things, try this:\n\"I'll just do it for 5 minutes.\"\n\"I'll get there and worst case scenario I'll leave early.\"\nYou'll always do more because you'll have momentum.\nIt's called positive excuses.\nFind reasons to start.",
+      "reason": "Correct the idiom.",
+      "original_body": "When you don't feel like doing things, try this:\n\"I'll just do it for 5 minutes.\"\n\"I'll get there and worse case scenario I'll leave early.\"\nYou'll always do more because you'll have momentum.\nIt's called positive excuses.\nFind reasons to start."
+    },
+    {
+      "key": "bad26ea4e8e48aaa65076e4d9653e2648834944ff2ec3c824da85f18ffd7c641",
+      "body": "\"It's time you bit the bullet and started caring about something with all your heart and energy, but you can't care about it if you're always holding yourself back in case it doesn't work out. Concentrate on what's important, Yusuke, then commit to it all the way!\"",
+      "reason": "Separate direct address."
+    },
+    {
+      "key": "8a7adfe52766dffe2de0be6b8e738324c38821f5fd19712b8946c97588fd3e82",
+      "body": "The work of ur entire life, absolutely essential as it is, in and of itself will take u nowhere. It won’t lift u up in some latent fashion.\n\nWhat it will do, is generate a few good opportunities a year for u, and u’ll have anywhere from a few seconds to a few days to seize them.",
+      "reason": "Supply missing article.",
+      "original_body": "The work of ur entire life, absolutely essential as it is, in and of itself will take u nowhere. It won’t lift u up in some latent fashion.\n\nWhat it will do, is generate a few good opportunities a year for u, and u’ll have anywhere from a few seconds to few days to seize them."
+    },
+    {
+      "key": "9be3ede4dfb1efc135460d31111b6c3c71b56c6d5626ba007e02b8b203c5df05",
+      "body": "Motherfuckers looking for the perfect shot instead of just learning how to shoot and shooting so often that taking some good shots is an inevitability. mathematical inevitability is what you need to work into your life.",
+      "reason": "Separate the instruction from the preceding clause."
+    },
+    {
+      "key": "c8adca7ae0509eb62d960bfe25d1e4f47f97a3f6e83375443d043cc7ddeedc49",
+      "body": "major life hack: live as if you’re already the best version of yourself. design the super version of yourself down to the last detail. the habits. the nutrition. how this person handles obstacles. difficult people. negative outcomes. the belief system. the work ethic.\n\neverything matters. the more thoroughly you understand how this person behaves, the sooner you can become this person.",
+      "reason": "Remove accidental repeated wording.",
+      "original_body": "major life hack for life: live as if you’re already the best version of yourself. design the super version of yourself down to the last detail. the habits. the nutrition. how this person handles obstacles. difficult people. negative outcomes. the belief system. the work ethic.\n\neverything matters. the more thoroughly you understand how this person behaves, the sooner you can become this person."
+    },
+    {
+      "key": "fbb29b9e9da14f131e3d3789f6d30f448dc605631421d426cf549844cb62c637",
+      "body": "I'm the luckiest man alive. \"Will it work?\" I'm optimistic. Not even cautiously optimistic. Why the caution?? I've never been unlucky once. For me luck is a given. I am recklessly optimistic",
+      "reason": "Remove redundant punctuation."
+    },
+    {
+      "key": "78a6eb2999c6823268727713fdb6d10430a499b1b92a440e9e0e3d56e63d02a6",
+      "body": "As a man thinketh in his heart so he builds in the world, but the heart is a liar and the hands are prophets. build the table before you understand why you're hungry, love the woman before you understand her because understanding is what happens after you've already committed, after your hands have already made the choice your brain was too cowardly to make, and the men who wait to think it through first are the men who die having thought about everything and built nothing, while the men who let their hands lead discover that action births clarity and clarity births more action and suddenly they're living in a world they made instead of a world they merely observed. thinking is just another word for stalling. your hands know more about what you need than your fear ever will.",
+      "reason": "Repair the adjective and remove the dangling conjunction.",
+      "original_body": "As a man thinketh in his heart so he builds in the world, but the heart is a liar and the hands are prophets. build the table before you understand why you're hungry, love the woman before you understand her because understanding is what happens after you've already committed, after your hands have already made the choice your brain was too coward to make, and the men who wait to think it through first are the men who die having thought about everything and built nothing, while the men who let their hands lead discover that action births clarity and clarity births more action and suddenly they're living in a world they made instead of a world they merely observed. thinking is just another word for stalling, that your hands know more about what you need than your fear ever will."
+    },
+    {
+      "key": "e79e69d553438d328013569f0077ed4b1d61ba47e6a4c1171ff8bdcdb13a471c",
+      "body": "I used to be very against having a routine. I thought routine and discipline were the death of Life. I wanted to wake up every day and do whatever I felt like doing, \"going with the flow,\" and acting on the whims of my desires. I never made plans. I refused calendars. I already have a chaotic and layabout disposition with low motivation, and this kind of lifestyle aggravated that more. I was lazy, unhappy, and depressed, despite affording myself this \"freedom\" of choice and time.\n\nThis past year I have cultivated a daily routine. Good habits. Exercise. Discipline. I've become a calendar person. I plan my weeks in advance. And becoming a routined and disciplined person is what has saved me from the self-destructive nature of my past self.\n\nI have never felt happier, healthier, more embodied, and more in control of my life, while still enjoying spontaneity and pleasure. I no longer over-indulge myself into a state of mindless passivity. I enjoy life's pleasures more now that I limit my time with them. I have cultivated an appreciation that was not there before.\n\nIf you're a Dionysian chaos freak, try implementing a calendar. Watch your life change for the better. Maybe the Apollonians were right about some things.",
+      "reason": "Repair subject–verb agreement.",
+      "original_body": "I used to be very against having a routine. I thought routine and discipline was the death of Life. I wanted to wake up every day and do whatever I felt like doing, \"going with the flow,\" and acting on the whims of my desires. I never made plans. I refused calendars. I already have a chaotic and layabout disposition with low motivation, and this kind of lifestyle aggravated that more. I was lazy, unhappy, and depressed, despite affording myself this \"freedom\" of choice and time.\n\nThis past year I have cultivated a daily routine. Good habits. Exercise. Discipline. I've become a calendar person. I plan my weeks in advance. And becoming a routined and disciplined person is what has saved me from the self-destructive nature of my past self.\n\nI have never felt happier, healthier, more embodied, and more in control of my life, while still enjoying spontaneity and pleasure. I no longer over-indulge myself into a state of mindless passivity. I enjoy life's pleasures more now that I limit my time with them. I have cultivated an appreciation that was not there before.\n\nIf you're a Dionysian chaos freak, try implementing a calendar. Watch your life change for the better. Maybe the Apollonians were right about some things."
+    },
+    {
+      "key": "d5958fb3026f72e328f4f0e999df16bcfb33fe249a07629b9b764bceef4e4ee5",
+      "body": "One of the biggest mistakes you will make in life is to take a bet on something important to your actualization, over-leverage yourself, have it go horribly wrong, and then get super traumatized and swear off it for too long. It is critical you learn from your mistakes, dust yourself off, and get back in the saddle as soon as possible. The longer you spend avoiding this, the deeper you will get into a prison of emptiness, fear, and hedonism which becomes harder to escape the longer you’re there. You must accept that life is a risk, and failures are inevitable. The only way to avoid pain is to kill yourself. If you’re not going to do that, then get off your ass and TRULY LIVE.",
+      "reason": "Supply infinitive marker and correct the verb over-leverage.",
+      "original_body": "One of the biggest mistakes you will make in life is take a bet on something important to your actualization, over lever yourself, have it go horribly wrong, and then get super traumatized and swear off it for too long. It is critical you learn from your mistakes, dust yourself off, and get back in the saddle as soon as possible. The longer you spend avoiding this, the deeper you will get into a prison of emptiness, fear, and hedonism which becomes harder to escape the longer you’re there. You must accept that life is a risk, and failures are inevitable. The only way to avoid pain is to kill yourself. If you’re not going to do that, then get off your ass and TRULY LIVE."
+    },
+    {
+      "key": "af02155f24cc2fb1ab4fbb06f67268a961cc460a29141a1b39a4d529e506e847",
+      "body": "Seemingly pointless creativity is where all magic abounds.",
+      "reason": "Remove incorrect preposition.",
+      "original_body": "Seemingly pointless creativity is where all magic abounds from."
+    },
+    {
+      "key": "bf53567c09884a6fd60bc3c8c27452205e93460e575668013cab6988845f4a20",
+      "body": "Whenever I’m feeling off I ask myself: how much am I creating and how much am I sharing my creations with others who need them? I always find the answer there.",
+      "reason": "Mark the direct question and repair pronoun agreement.",
+      "original_body": "Whenever I’m feeling off I ask myself how much am I creating and how much am I sharing my creations with others who need it? I always find the answer there."
+    },
+    {
+      "key": "eea471bf46473acbc579dfd60cb8ae173ca0011f67645957eaa6e13f8b628e5b",
+      "body": "You are at your most vulnerable but also possess the most creative potential when you are on the cusp of what is unknown.",
+      "reason": "Repair the missing preposition and mismatched construction.",
+      "original_body": "You are simultaneously your most vulnerable but also possess the most creative potential when you are on the cusp of what is unknown."
+    },
+    {
+      "key": "7ee7c4313322dd8ba7f6a8239ebee2e16aa1fb2fad80a9ec53aa1c63fc052f3d",
+      "body": "Ask yourself: can you create just for the pleasure of creating and stay nonattached to the outcome?\nRelease attachments to external expectations. These attachments place your source (abundance) outside of you. Shift into the vibration of “I am, I have” enough enough enough.",
+      "reason": "Mark and punctuate the direct question."
+    },
+    {
+      "key": "c1094a3a6affe0463afeb3a51b05927430a36fe6f28f61d9a36ee5dfce29f872",
+      "body": "When you tell some people your dreams they will laugh or tell you it’s impossible.\nI’ll be the one that will not only tell you to quit your day job and follow your dreams, but will sit down and help you create, pray with you and hold your vision in my heart until it’s a reality.",
+      "reason": "Reconnect the not-only/but construction."
+    },
+    {
+      "key": "332c2403d6a1d5ad2cef4feee7691dd19f3332d992a25597db9579ae3f22054f",
+      "body": "I can tell you that if you have been in deep hibernation cultivating your spiritual gifts you will be needed sooner than later. And you will need to find the courage and a certain level of ferociousness in order to maintain balance offering yourself in service publicly.\nAnd old souls, you still have memories of being persecuted in the past for sharing your gifts. But it is time. It’s time to do what you came here to do. To be that bridge for consciousness while we walk toward reaching critical mass awakening.\nOften people who will be most threatened by you and your gifts are actually feeling like you pose a threat by exposing the lie they are living.",
+      "reason": "Separate direct address and correct the preposition.",
+      "original_body": "I can tell you that if you have been in deep hibernation cultivating your spiritual gifts you will be needed sooner than later. And you will need to find the courage and a certain level of ferociousness in order to maintain balance offering yourself in service publicly.\nAnd old souls you still have memories of being persecuted in the past for sharing your gifts. But it is time. It’s time to do what you came here to do. To be that bridge for consciousness while we walk toward reaching critical mass awakening.\nOften people who will be most threatened by you and your gifts are actually feeling like you pose a threat to exposing the lie they are living."
+    },
+    {
+      "key": "e25ebd5f823199a7f7da9ab887c96e5b7532d86d468e32e896fc3fad0f39f236",
+      "body": "So in any given moment when you need a compass for how to find your path, ask, what's the most exciting choice I can make right now?",
+      "reason": "Punctuate the question."
+    },
+    {
+      "key": "cc0eb55b3f5fb397455b21efd13c4339d1a34b8ba11cc56825ce1f2584a5ae06",
+      "body": "No matter what anyone says, if this is truly your passion don’t ever let them talk you out of it. Go full force into this: no half-assing and no quitting. You can’t lose unless you quit. Keep mastering your art, brother.",
+      "reason": "Separate run-on clauses and punctuate the direct address.",
+      "original_body": "No matter what anyone says if this is truly your passion don’t ever let them talk you out of it, and go full force into this, no half-assing and no quitting, you can’t lose unless you quit, keep mastering your art brother."
+    },
+    {
+      "key": "e1fcf82bd909462595c720445767f56f552bb475eceb8ae7b21b70479a43d8c7",
+      "body": "The mission is nourishment. It feeds you, it gives you life, it breaks you apart, and puts you back together. It brings you supporters, relationships, love, power. People take care of you on the mission. A heroic mission is undeniable. People pay for you, they feed you, they give you a place to stay, they go out of their way to help you win. You can skip lines, break rules, cross all the red tape. Nobody mistakes a man on a mission. A man on a mission makes sense of his environment. The work of divine intuition. A complete and effortless flow of energy. A man on a mission utilizes all of his resources. He stays inventive. When he asks, he receives. The mission keeps you moving. Win or loss, it all creates forward motion. Flow is everything.",
+      "reason": "Correct a mistyped pronoun.",
+      "original_body": "The mission is nourishment. It feeds you, it gives your life, it breaks you apart, and puts you back together. It brings you supporters, relationships, love, power. People take care of you on the mission. A heroic mission is undeniable. People pay for you, they feed you, they give you a place to stay, they go out of their way to help you win. You can skip lines, break rules, cross all the red tape. Nobody mistakes a man on a mission. A man on a mission makes sense of his environment. The work of divine intuition. A complete and effortless flow of energy. A man on a mission utilizes all of his resources. He stays inventive. When he asks, he receives. The mission keeps you moving. Win or loss, it all creates forward motion. Flow is everything."
+    },
+    {
+      "key": "87101a8e143fdc500f0aa0c59f5cb8a023431ed36912c4235124a8fa1eafe0d5",
+      "body": "When I was a junior I took an upper division course on medieval literature, and I studied together with a married Mormon woman who was 15 years older than me that I had a brief sexual fling with.\n\nWe swapped our final essays and had each other edit them to make them as good as we could, and both of our essays got eviscerated. The marginalia from the professor in my essay was shockingly mean and insulting, especially since the man had been more or less my mentor for about a year and a half and always so gentle and kind. But, my god, the feedback was gruesome.\n\nFor her essay, there was one comment that I still remember although this happened in 1998.\n\nI do not remember exactly what it was about, but she was comparing two writers and said how something in their texts was \"equalized\". He underlined the word and said, \"this is something I do to my stereo.\"\n\nSuch an unbelievably harsh and cruel bit of feedback, I thought at the time, and I've gone back to this bit of feedback several times over the decades since it happened.\n\nHe was right.\n\nThat feedback was not harsh at all. He was properly policing a boundary: diction should be appropriate to the subject matter.\n\nWhy does this matter?\n\nBecause if you talk about an LLM as a computer program, you have a very clear head about what it is, what your relationship to it is, how it will develop as a piece of technology, and how that technology will impact the world.\n\nBut if you talk about an LLM as a machine god, you'll end up making really dumb moves that end in your boss sticking a pager on your belt that you need to check every half hour.\n\nSo when you read a blog post talking about anime as a natural kind (apparently this is a real Gwern post?), you are doing the exact opposite and the end result will be a very, very confused mind.\n\nYou won't think you're confused--how could you be? You're rich, you're well paid, you're on the cutting edge of the most important transformative technology on Earth--you're the modern Prometheus building the replacement for humanity.\n\nExcept you aren't. You've metaphysically inflated your position in life, and now you're paying the cost because you've been outsmarted by someone who understands social reality much, much better than you.\n\nThis is what happens when you mix domains and discourses uncritically, unconsciously, unaware of what you are doing.\n\nPicasso painted hyperrealistic masterpieces before turning to Cubism.\n\nMaster the craft before experimenting, or you're not a craftsman at all--you're just an overpaid hacker. And now you've got a pager.\n\n\"Cum doceas artes, sit sermo domesticus arti: Quaelibet ars gaudet propriis\" - Geoffrey de Vinsauf",
+      "reason": "Use the adjective required by the sentence.",
+      "original_body": "When I was a junior I took an upper division course on medieval literature, and I studied together with a married Mormon woman who was 15 years older than me that I had a brief sexual fling with.\n\nWe swapped our final essays and had each other edit them to make them as good as we could, and both of our essays got eviscerated. The marginalia from the professor in my essay was shockingly mean and insulting, especially since the man had been more or less my mentor for about a year and a half and always so gentle and kind. But, my god, the feedback was gruesome.\n\nFor her essay, there was one comment that I still remember although this happened in 1998.\n\nI do not remember exactly what it was about, but she was comparing two writers and said how something in their texts was \"equalized\". He underlined the word and said, \"this is something I do to my stereo.\"\n\nSuch an unbelievably harsh and cruel bit of feedback, I thought at the time, and I've gone back to this bit of feedback several times over the decades since it happened.\n\nHe was right.\n\nThat feedback was not harsh at all. He was properly policing a boundary: diction should be appropriate to the subject matter.\n\nWhy does this matter?\n\nBecause if you talk about an LLM as a computer program, you have a very clear head about what it is, what your relationship to it is, how it will develop as a piece of technology, and how that technology will impact the world.\n\nBut if you talk about an LLM as a machine god, you'll end up making really dumb moves that end in your boss sticking a pager on your belt that you need to check every half hour.\n\nSo when you read a blog post talking about anime as a natural kind (apparently this is a real Gwern post?), you are doing the exact opposite and the end result will be a very, very confused mind.\n\nYou won't think you're confused--how could you be? You're rich, you're well paid, you're on the cutting edge of the most important transformative technology on Earth--you're the modern Prometheus building the replacement for humanity.\n\nExcept you aren't. You've metaphysically inflated your position in life, and now you're paying the cost because you've been outsmarted by someone who understands social reality much, much better than you.\n\nThis is what happens when you mix domains and discourses uncritically, unconsciously, unawares of what you are doing.\n\nPicasso painted hyperrealistic masterpieces before turning to Cubism.\n\nMaster the craft before experimenting, or you're not a craftsman at all--you're just an overpaid hacker. And now you've got a pager.\n\n\"Cum doceas artes, sit sermo domesticus arti: Quaelibet ars gaudet propriis\" - Geoffrey de Vinsauf"
+    },
+    {
+      "key": "d57fcf904a1147b6e457d0579485f6c7779247ce010492bf180eb7d8b093d767",
+      "body": "Pay attention if you do not feel comfortable being open and vulnerable with someone.\nThis is a red flag that you are not in a safe relationship where you can be yourself.\nEvaluate if it is even wise to move forward and, if so, what steps would resolve the disharmony.",
+      "reason": "Repair word order in an indirect question.",
+      "original_body": "Pay attention if you do not feel comfortable being open and vulnerable with someone.\nThis is a red flag that you are not in a safe relationship where you can be yourself.\nEvaluate if it is even wise to move forward and if so what are the steps to resolve the disharmony."
+    },
+    {
+      "key": "d735c3aad8dcc76b5104bd0ae794e9ddb9805acf970d73f0e2e1fea5f7a3a28c",
+      "body": "==It took years to realize that I attracted people who didn't match me because I wasn't being myself, not because anything was wrong with me.==",
+      "reason": "Clarify the contrast."
+    },
+    {
+      "key": "5b5f330cab5dc04758237eb9779de584e7623f08494eb458d19f2e67af43b37f",
+      "body": "Ask yourself: is this someone who actually has a genuine problem with me or are they someone who just always has problems in general?",
+      "reason": "Punctuate the direct question."
+    },
+    {
+      "key": "2955032740eb7e94524ffee75343f91fd46c5f63bf46bffabaa12f0534740ae3",
+      "body": "When you recognize someone has shown up in your experience as “training wheels” to allow you to master your relationship patterns, don’t try to turn that person into your life partner. See it for what it is. This will make learning the lesson they are here to teach happen faster.",
+      "reason": "Correct the noun modifier and clause boundary.",
+      "original_body": "When you recognize someone has shown up in your experience as “training wheels” to allow you to master your relationships patterns don’t try to turn that person into your life partner. See it for what it is. This will make learning the lesson they are here to teach happen faster."
+    },
+    {
+      "key": "d3aedd44ae9ba1c3bf4cd43e41e662d3bbbd4e00e46de8e01801bf04c184acd7",
+      "body": "Why would I ever want to possess someone in any of these traditional forms of attachment, codependency, expectation, obligation, committed relationships?",
+      "reason": "Close the question."
+    },
+    {
+      "key": "f7ba7470d2b12de4311d97a40cad8e9fa0292340b6931dca11e5df2d1efda96d",
+      "body": "Some people want friends, some want an audience, some want an accessory. u better figure it out and know where to put your pieces on the board.",
+      "reason": "Separate contrasting motives and the following instruction."
+    },
+    {
+      "key": "ba2400a0c2dd1ea4dbeee9f514f38df818403f7ad073e8bef2e50cea8978a50b",
+      "body": "“You know how it goes: at some point in your life, you fell in love with someone and had a glimpse of God. Then you abandoned your lover and started celebrating your love for God”.",
+      "reason": "Restore a missing possessive.",
+      "original_body": "“You know how it goes: at some point in your life, you fell in love with someone and had a glimpse of God. Then you abandoned lover and started celebrating your love for God”."
+    },
+    {
+      "key": "d60c19eeff73a98c3ca129cacf10303a34c3f1c99127cd289fdde37c581078ac",
+      "body": "Sex should be healing.\nIt should never trigger you to feel abandoned, used, rejected or disposable.\nIf you wish to check in w/ yourself to see if you’re sharing your sexual energy safely/sacredly,\nchecking for these feelings is a good sign.",
+      "reason": "Join the conditional clause to its conclusion."
+    },
+    {
+      "key": "f4d450cf125b394115ea343a9d29a564fe538f336c7832933b0de0349264dc47",
+      "body": "Rejection is a universal reminder that certain anticipated experiences won't fulfill desires.\nThe experience of rejection arises when one isn't clear with what they truly desire.\nResolving the dissonance before facing rejection absolves one from this cycle of suffering.",
+      "reason": "Repair an intransitive misuse of breeds.",
+      "original_body": "Rejection is a universal reminder that certain anticipated experiences won't fulfill desires.\nThe experience of rejection breeds when one isn't clear with what they truly desire.\nResolving the dissonance before facing rejection absolves one from this cycle of suffering."
+    },
+    {
+      "key": "c535480c85e9c4eb570b994a47580e9a4aebf9c99aed681981b1b57a34b7742c",
+      "body": "Don’t let your “I’m not ok with this” turn into an “I am not OK with this but maybe something is wrong with me and I should be OK with this.” The first is the truth. The latter is a trap.",
+      "reason": "Correct the article before a vowel sound.",
+      "original_body": "Don’t let your “I’m not ok with this” turn into a “I am not OK with this but maybe something is wrong with me and I should be OK with this.” The first is the truth. The latter is a trap."
+    },
+    {
+      "key": "0ff10c8d0e22c6ec1ba12775effc66bca0b1a11c6cbbb7e5554a6c78035804f3",
+      "body": "Women are like if you mix a 10-year-old and a psychopath.",
+      "reason": "Remove duplicated year and restore the article.",
+      "original_body": "Women are like if you mix 10 year year old and a psychopath."
+    },
+    {
+      "key": "8e41b71d3d32ae82d062fd91260929cb5fa5b3840ba1f7fb95b516ff41e86ff9",
+      "body": "Once when I was young I was at a dive bar joking around with some women, and after I had finished this older Mexican guy comes up and taps me on the shoulder.\n\nHe’s like: “Ayy Amigo, you shouldn’t ever Joo dat”\n\n“what are you talking about?” I said.\n\nWith a thick Mexican accent He said: “da Joking amigo, don’t Joke with women. They never forget, and they don’t understand jokes. They think is real, and they will bring dat shit up later.”\n\nI kinda laughed it off, but now that I’m old that Mexican dude was actually cooking and I wish I listened to him.",
+      "reason": "Repair dialogue punctuation and remove stray it; preserve the quoted accent.",
+      "original_body": "Once when I was young I was at a dive bar joking around with some women, and after I had finished this older Mexican guy comes up and taps me on the shoulder.\n\nHe’s like :” Ayy Amigo, you shouldn’t ever Joo dat”\n\n“what are you talking about it?” I said.\n\nWith a thick Mexican accent He said: “da Joking amigo, don’t Joke with women. They never forget, and they don’t understand jokes. They think is real, and they will bring dat shit up later.”\n\nI kinda laughed it off, but now that I’m old that Mexican dude was actually cooking and I wish I listened to him."
+    },
+    {
+      "key": "c8b0bf0cf669ff4fb5a301e552d45ac440218da03ee29f0f18b18f00d370da18",
+      "body": "The most naive and innocent get cheated on and stepped over. Bambi gets shot and fileted. There’s no room for naivete and innocence in a man - flowers get trampled and thorns get revered. It’s always the callous and rugged who end up sprouting among the debris - you have no chance to be a soft little doe as a man because women and other sharks alike will leave your bones for the worms. Always the softest dudes who exclusively talk up women and white knightingly talk down on cheating who are literally the ones getting cheated on - the nice guy businessman getting fucked over in some deal. You have zero clue how reality operates and your delusions blind you until the show’s over, and the only one in the audience is your past self deceased and covered in bottom feeders. I understand being like this in your teens and early 20s but it also reminds me life is vicious and rightfully so when I see a grown man thinking his gay little morality will defend him from reality - get trampled early and learn life before it happens to you at a point of no return. And kill your arrogance - chances of you being a part of the clueless majority are very high. Hate me but thank me much later - no room for monks and gardeners in the game of love and war",
+      "reason": "Restore apostrophes and subject–verb agreement.",
+      "original_body": "The most naive and innocent get cheated on and stepped over. Bambi gets shot and fileted. Theres no room for naivete and innocence in a man - flowers get trampled and thorns get revered. Its always the callous and rugged who end up sprouting among the debris - you have no chance to be a soft little doe as a man because women and other sharks alike will leave your bones for the worms. Always the softest dudes who exclusively talk up women and white knightingly talk down on cheating who are literally the ones getting cheated on - the nice guy businessman getting fucked over in some deal. You have zero clue how reality operates and your delusions blind you until the shows over, and the only one in the audience is your past self deceased and covered in bottom feeders. I understand being like this in your teens and early 20s but it also reminds me life is vicious and rightfully so when I see a grown man thinking his gay little morality will defend him from reality - get trampled early and learn life before it happens to you at a point of no return. And kill your arrogance - chances of you being a part of the clueless majority is very high. Hate me but thank me much later - no room for monks and gardeners in the game of love and war"
+    },
+    {
+      "key": "a99a8257c95dbb2bc1f12db7d290fe9584fb30da7a7d9dc9b77395bbfb6b6be2",
+      "body": "if someone makes a choice knowing it’ll potentially end your relationship, they don’t love you. matter of fact they don’t even care if you live or die. don’t ever look past this. promise in your worst moment you’ll see why",
+      "reason": "Correct a mistyped pronoun.",
+      "original_body": "if someone makes a choice knowing it’ll potentially end your relationship, they don’t love you. matter of fact that don’t even care if you live or die. don’t ever look past this. promise in your worst moment you’ll see why"
+    },
+    {
+      "key": "341ce04945b6d8cadba824130a88a41e6e1adae3eb4df9edaae2a4e50c2d3fc4",
+      "body": "The reason why logical guys can't pull is because they think their standards of 'ice cold efficiency' are universal, and aren't aware that this is 'men's genius' but does not relate to women\n\nA man's brain thinks \"let me get to the result asap\"\n\nA woman's brain does not work like this. A woman's brain likes the experience of the thing. It's about the vibe, the show, the larp/play, the 'doing it'\n\nGrocery store easy example\n\nguy brain goes \"i want to get in, get out\" because his goal is 'get the stuff'\n\nwoman's brain is not 'get the stuff'. woman's brain is 'experience the store'. She wants to look at things, check stuff out, enjoy the stroll etc\n\nA man's genius is ice-cold efficiency\nA woman's genius is smelling the roses\n\nThe logical guy can make instant strides if he learns to incorporate play/fun. Less logic/function/pragmatism, more randomness, fun, vibe",
+      "reason": "Restore the demonstrative and list spacing.",
+      "original_body": "The reason why logical guys can't pull is because they think their standards of 'ice cold efficiency' are universal, and aren't aware that is 'men's genius' but does not relate to women\n\nA man's brain thinks \"let me get to the result asap\"\n\nA woman's brain does not work like this. A woman's brain likes the experience of the thing. It's about the vibe, the show, the larp/play, the 'doing it'\n\nGrocery store easy example\n\nguy brain goes \"i want to get in, get out\" because his goal is 'get the stuff'\n\nwoman's brain is not 'get the stuff'. woman's brain is 'experience the store'. She wants to look at things, check stuff out, enjoy the stroll etc\n\nA man's genius is ice-cold efficiency\nA woman's genius is smelling the roses\n\nThe logical guy can make instant strides if he learns to incorporate play/fun. Less logic/function/pragmatism, more randomness,fun,vibe"
+    },
+    {
+      "key": "f37a5e4b2a14c13ebe773256a96e13bbe2d8a1ca5cdaa56501ac02f92f2ead0f",
+      "body": "There have been 2 women i've met in my life that i'd consider were in their \"divine feminine\". There are many women that *claim* they are in their divine feminine - but it is astronomically rare. It is essentially when they lead with their queen energy but keep their girlish playfulness alive. It is a very calm, capable, nourishing & competent energy - but it *stays* perfectly feminine & allows you to naturally operate as a man. It doesn't PULL you away, or nag you, or make you feel like you have to avoid it or pour energy into it so it doesn't emotionally explode on its own. It's very soft & self-contained, yet still firm & effective. it’s sort of just *there*, and you are fully free to 'leave it if you'd like' (not the person, but the energy), and when you come back to it, it is naturally receptive. it replenishes on its own. And this energy inspires genuine & natural leadership within you. You can quite literally *feel* the inspiration get sparked, as well as the strength get added. It feels like you can take more hits, and be okay, knowing you'll have additional replenishment & understanding if need be. The way your body interprets it as a man is essentially a subconscious/energetic \"wow - i need to reciprocate the favor\", and it sort of imbues your steps with a newfound electricity, and transforms regular 'ambition' (which is usually of the mind) into a god-infused type of duty, but it's a duty you look forward to pouring yourself into. The prize is 'real', and the foundation is 'real'. It's a power-up in a real way. You could even say it's 'divinely designed'.\n\nBut again - this is astronomically rare. you will usually run into feminine women who are too chaotic / needy / clingy (and they drain you or don't *give* anything in return spiritually), and the man thinks \"ah, she's not really worth the effort\", or you will run into women who have disowned a large part of their feminine in either circumstantial survival mode (failed father) or the pursuit of competence. These women can do things, but in a sharp/jagged way - and have trouble relaxing into their feminine - even with a fully competent / masculine man. The man thinks \"she's still holding up walls after i've displayed the natural key, this isn't worth it\". The \"natural way\" doesn't unfold with all other types of women due to different reasons, the way it does with the woman in her 'divine feminine'. But you as a man also have to be in your 'divine masculine' for this to work. If you're not, she will basically son you on accident - as her energy will just son your energy. But if you're both there - it creates a wild push/pull exchange of spiritual energy - and each party gets the nourishment they need. Usually very seamless, ton of fun, able to do a bunch of shit - whereas all other pairings will have trouble doing outcome-based things together",
+      "reason": "Repair agreement and a missing verb.",
+      "original_body": "There has been 2 women i've met in my life that i'd consider were in their \"divine feminine\". There are many women that *claim* they are in their divine feminine - but it is astronomically rare. It is essentially when they lead with their queen energy but keep their girlish playfulness alive. It is a very calm, capable, nourishing & competent energy - but it *stays* perfectly feminine & allows you to naturally operate as a man. It doesn't PULL you away, or nag you, or make you feel like you have to avoid it or pour energy into it so it doesn't emotionally explode on its own. It's very soft & self-contained, yet still firm & effective. it sort of just *there*, and you are fully free to 'leave it if you'd like' (not the person, but the energy), and when you come back to it, it is naturally receptive. it replenishes on its own. And this energy inspires genuine & natural leadership within you. You can quite literally *feel* the inspiration get sparked, as well as the strength get added. It feels like you can take more hits, and be okay, knowing you'll have additional replenishment & understanding if need be. The way your body interprets it as a man is essentially a subconscious/energetic \"wow - i need to reciprocate the favor\", and it sort of imbues your steps with a newfound electricity, and transforms regular 'ambition' (which is usually of the mind) into a god-infused type of duty, but it's a duty you look forward to pouring yourself into. The prize is 'real', and the foundation is 'real'. It's a power-up in a real way. You could even say it's 'divinely designed'.\n\nBut again - this is astronomically rare. you will usually run into feminine women who are too chaotic / needy / clingy (and they drain you or don't *give* anything in return spiritually), and the man thinks \"ah, she's not really worth the effort\", or you will run into women who have disowned a large part of their feminine in either circumstantial survival mode (failed father) or the pursuit of competence. These women can do things, but in a sharp/jagged way - and have trouble relaxing into their feminine - even with a fully competent / masculine man. The man thinks \"she's still holding up walls after i've displayed the natural key, this isn't worth it\". The \"natural way\" doesn't unfold with all other types of women due to different reasons, the way it does with the woman in her 'divine feminine'. But you as a man also have to be in your 'divine masculine' for this to work. If you're not, she will basically son you on accident - as her energy will just son your energy. But if you're both there - it creates a wild push/pull exchange of spiritual energy - and each party gets the nourishment they need. Usually very seamless, ton of fun, able to do a bunch of shit - whereas all other pairings will have trouble doing outcome-based things together"
+    },
+    {
+      "key": "ad3bd668411ef612e73fab1577a80382660173db11cf7c019a06ca3c193e6418",
+      "body": "Highly ambitious men need women who can love them through the times when they must disappear into themselves to unlock the next threshold of their becoming.\n\nSuch men are rarely chasing success alone. they want psychic expansion, spiritual transformation, mastery, financial sovereignty, emotional command, and transcendence through the levels they were born into.\n\nBeing with such a man requires transformation. You will be left alone for long stretches, because both of you are being summoned into higher versions of yourselves. His solitude becomes the furnace of his becoming, and your solitude becomes the chamber in which your own interior life is forced to mature.\n\nOrdinary people will look at this and call it neglect, or emotional starvation, because they understand love only through constant access. But in relationships like this, love is measured by growth, support and the mutual refusal to let each other remain small.\n\nThere is tenderness here, but there is also pressure. Both people are building themselves, building each other, and building the life that will one day exceed them both.",
+      "reason": "Repair malformed wording and plural pronoun agreement.",
+      "original_body": "Highly ambitious men need women who can love them through the times when they must disappear into themselves to unlock the next threshold of their becoming.\n\nSuch men are rarely chasing success alone. they want psychic expansion, spiritual transformation, mastery, financial sovereignty, emotional command, and the transcendence through levels he was born in.\n\nBeing with such a man requires transformation. You will be left alone for long stretches, because both of you are being summoned into higher versions of yourselves. His solitude becomes the furnace of his becoming, and your solitude becomes the chamber in which your own interior life is forced to mature.\n\nOrdinary people will look at this and call it neglect, or emotional starvation, because they understand love only through constant access. But in relationships like this, love is measured by growth, support and the mutual refusal to let each other remain small.\n\nThere is tenderness here, but there is also pressure. Both people are building themselves, building each other, and building the life that will one day exceed them both."
+    },
+    {
+      "key": "b6e1c2a94b988b0304858c0551afd62e892493342d083f72d925ce6dbe501512",
+      "body": "When a toxic person can no longer control you, they will try to control how others see you. This misinformation will be unfair, but stay above it, trusting that other people will eventually see the truth, just like you did.",
+      "reason": "Separate independent statements.",
+      "source": "Jill Blakeway (adapted)",
+      "evidence": [
+        "https://quotefancy.com/quote/2210496/Jill-Blakeway-When-a-toxic-person-can-no-longer-control-you-they-will-try-to-control-how",
+        "https://www.euclid136.com/wp-content/uploads/2017/05/June-2017-Trestleboard.pdf",
+        "https://digital-library.cloudnet.com.kh/storage/media_files/Vm4qvfLWZx6Vruoz5U1HOkagQomMrqGDWqKLUnbg.pdf"
+      ],
+      "attribution_review": "Whole passage independently credited to Blakeway in 2017 lodge newsletter and published Toxic People Survival Guide excerpt. Bank changes 'The misinformation will feel unfair' to 'this misinformation will be unfair'; adapted label handles this. Original Blakeway post/book not recovered."
+    },
+    {
+      "key": "2eda55997ac89643685c32ca28425a2aabda9190d35b88b481385ae2f20d576f",
+      "body": "Evil has to announce itself before it tries to influence you, because it has to plant a seed in your subconscious that marries & resonates with the conscious once it tries to take over. Strategically use this to your advantage by being observant and sharp, and taking preventive measures.",
+      "reason": "Make the coordinated forms parallel.",
+      "original_body": "Evil has to announce itself before it tries to influence you, because it has to plant a seed in your subconscious that marries & resonates with the conscious once it tries to take over. Strategically use this to your advantage by being observant, sharp and take preventive measures."
+    },
+    {
+      "key": "571fe4d55956c870f8e8d4fea209e444a55222c0344e857769433e4a3f8e643b",
+      "body": "If you're the kind of person who naturally questioned rules and hated blindly following them, be careful with who you show this trait around.\nyou'll notice some people harbour a deep dislike towards you\nyou won't have done anything to them directly, but you'll get a sly comment or a passive-aggressive insult you didn't expect.\nyou'll wonder why it feels so personal.\nthey watch how you move through life.\nhow you're unbothered by the things they concern themselves with and panic over\nhow you take chances on things they never even thought to try.\n\"you think the rules don't apply to you\"\nthey'll sabotage you in subtle ways to make sure you follow the status quo.",
+      "reason": "Remove an accidental sentence break inside the phrase so personal."
+    },
+    {
+      "key": "50fc0b8ca102dd925ed8ceb75c99f59f7160e794f214f4213eb45373656c97e3",
+      "body": "A huge reason why so many people are afraid of being seen, perceived, or sharing their life is because of how cruelly they judge the people they see, perceive, and share their lives with.\nYour cruelty is at first a crutch and then immediately after a cage.",
+      "reason": "Restore the missing preposition.",
+      "original_body": "A huge reason why so many people are afraid of being seen, perceived, or sharing their life is because of how cruelly they judge the people they see, perceive, and share their lives.\nYour cruelty is at first a crutch and then immediately after a cage."
+    },
+    {
+      "key": "0a97cfbb7d296354074b05c25443f9f2537e5c80c7ea927def25de93bf227984",
+      "body": "If you are a regular person, you hurt people because you got hurt. You amplify and spread whatever bad was done to you, and feel justified in it, because you are angry and slighted and vengeful. You are a loser.\nIf you were elite, you would turn shit into sugar - you would turn your pain into beauty. You would TRANSMUTE. You would let it make you stronger, without possessing you. You would not lose your soul to it.\nYou lost your soul to it, because you are weak. Because being angry is easy. Because it takes no patience, self-restraint or discipline. Your idea of being powerful is being violent and impulsive and out of control, rather than integrated and elevated and ruthless in a righteous and directed manner.\nResentment is a peasant trait, because spreading suffering and repeating what was done to you is easy, whilst transmuting pain and transcending what was done to you is hard.\nPlease know, I want you to know sincerely, if you are hurting people because you were hurt, you are a loser. Your narcissism is a sign of your weakness, not your strength. Narcissistic people are broken people who break people.\nThe elite may feel contempt, they may judge, they may filter out and punish - but they do not resent. Resentment is a slave trait - hatred stemming from personal violation that was never put to rest and come to terms with. If you are living in resentment, you are a loser.\nAre you going to keep being a loser?",
+      "reason": "Correct a mistyped adjective.",
+      "original_body": "If you are a regular person, you hurt people because you got hurt. You amplify and spread whatever bad was done to you, and feel justified in it, because you are angry and slighted and vengeful. You are a loser.\nIf you were elite, you would turn shit into sugar - you would turn your pain into beauty. You would TRANSMUTE. You would let it make you stronger, without possessing you. You would not lose your soul to it.\nYou lost your soul to it, because you are weak. Because being angry is easy. Because it takes no patience, self-restraint or discipline. Your idea of being powerful is being violent and impulsive and out of control, rather than integrated and elevated and ruthless in a righteous and directed manner.\nResentment is a peasant trait, because spreading suffering and repeating what was done to you is easy, whilst transmuting pain and transcending what was done to you is hard.\nPlease know, I want you to know sincerely, if you are hurting people because you were hurt, you are a loser. Your narcissism is a sign of your weakness, not your strength. Narcissistic people are broken people who break people.\nThe elite may feel contempt, they may judge, they may filter out and punish - but they do not resent. Resentment is a slave trait - hatred stemming from person violation that was never put to rest and come to terms with. If you are living in resentment, you are a loser.\nAre you going to keep being a loser?"
+    },
+    {
+      "key": "a46e354239fa05eea548d0f7c2978055a0c6a93cbf7aeebc826043a68e58f84b",
+      "body": "Do not take unhealthy thoughts, beliefs, ideas, projections, or judgments of others into your body. This is more unhealthy than toxic food.",
+      "reason": "Remove redundant in before into and clarify the list.",
+      "original_body": "Do not take in unhealthy thoughts, beliefs, ideas, projections, judgments of others into your body. This is more unhealthy than toxic food."
+    },
+    {
+      "key": "05bfee58c4d42e924cc9545a0c2cf74a6648f5043e11f630fa3ded421b746ef4",
+      "body": "One of my energy work teachers taught me that how you tell if it’s someone else’s baggage (ideas, beliefs, projections, energy, emotions, judgments) is if it weighs on you.\nIf it feels heavy to you it’s not your stuff. Your own stuff doesn’t feel like that. Simple way to read it.",
+      "reason": "Restore parenthesis spacing."
+    },
+    {
+      "key": "964f6d93406dd2a25c474ebc6cb339e1cfdb4c2f9eb4c3217f7f6c79aee5ac5a",
+      "body": "I no longer wish to absorb others’ energies or be an unknowing host.",
+      "reason": "Restore the possessive apostrophe."
+    },
+    {
+      "key": "6bb9d299f23a82ef61aba0c30d745755c33173dddcba87f4cb9948aa3ce7cc36",
+      "body": "One of my favourite lessons from Reality Transurfing is:\n\nWhether you’re good or evil, if you feel guilt things WILL turn against you.\n\nThat’s why a lot of evil people don’t seem to have things turn against them, simply because they act without feeling shame or fear of the consequences (no guilt).\n\nNot evil advice.",
+      "reason": "Repair conjunction and preposition.",
+      "original_body": "One of my favourite lessons from Reality Transurfing is:\n\nWhether you’re good or evil, if you feel guilt things WILL turn against you.\n\nThat’s why a lot of evil people don’t seem to have things turn against them, simply because they act without feeling shame nor fear against the consequences (no guilt).\n\nNot evil advice."
+    },
+    {
+      "key": "2e3376882152267f635bf218f4b83a901b4797d793dd8d44e9e3423171e60d9d",
+      "body": "People most taken advantage of are out there thinking they’re taking advantage.",
+      "reason": "Remove a dangling preposition.",
+      "original_body": "People most taken advantage of are out there thinking they’re taking advantage of."
+    },
+    {
+      "key": "5e01f5ecff6f7c46893d36fbd0ebdec014ee8418abd961173a77205a88cb01d8",
+      "body": "There is a goated personality which is like the best of all. Let me tell you: you have often met such people at least once in your life. U sometimes meet people, you're most happy when with them, they're like the breeze of fresh air, and you think they’re on ur level: same potential, same trajectory, same everything. Then, after some time, they’re suddenly far ahead of u, and u’re left in shock, wondering how someone who seemed just like u could have gone so far. So u blame luck.\n\nThen they enter another room, surrounded by people who also think they’re on the same level, until that person surpasses them too. Wherever they go, people keep having the same realization only after they’ve been left behind.\n\nThe problem is, they were never on ur level. They were far beyond u, and they knew it. But they were great enough to never make u feel inferior. Wherever they stood, no matter how far above u, they made u feel equal, welcomed, even elevated. And even after years if you find them, they will treat you the same. That is their greatness.\n\nAnd u were foolish enough to mistake their humility for equality. Out of ego, u underestimated their potential, tried to belittle them and unconsciously drag them down to ur level, because u were seeking validation through comparison. Meanwhile, they did the opposite: they amplified u, made u feel capable, uplifted u, and eventually left, not because they looked down on u, but because u were never willing to learn, change, and become someone who could walk beside them. The problem is You. You're not good for good people.",
+      "reason": "Correct at least and repair the broken introduction.",
+      "original_body": "There is a goated personality which is like the best of all. Let me tell you and you have often met such people atleast once in your life. U sometimes meet people, you're most happy when with them, they're like the breeze of fresh air, and you think they’re on ur level: same potential, same trajectory, same everything. Then, after some time, they’re suddenly far ahead of u, and u’re left in shock, wondering how someone who seemed just like u could have gone so far. So u blame luck.\n\nThen they enter another room, surrounded by people who also think they’re on the same level, until that person surpasses them too. Wherever they go, people keep having the same realization only after they’ve been left behind.\n\nThe problem is, they were never on ur level. They were far beyond u, and they knew it. But they were great enough to never make u feel inferior. Wherever they stood, no matter how far above u, they made u feel equal, welcomed, even elevated. And even after years if you find them, they will treat you the same. That is their greatness.\n\nAnd u were foolish enough to mistake their humility for equality. Out of ego, u underestimated their potential, tried to belittle them and unconsciously drag them down to ur level, because u were seeking validation through comparison. Meanwhile, they did the opposite: they amplified u, made u feel capable, uplifted u, and eventually left, not because they looked down on u, but because u were never willing to learn, change, and become someone who could walk beside them. The problem is You. You're not good for good people."
+    },
+    {
+      "key": "cf166af450eb1476d7bfe4754a6f286952c210cb77604b73db75dd2802b85028",
+      "body": "When we are clearing a lot of dense energy and our mind, body and soul are under construction, we can become thrown off and annoyed by every little thing. This is a sign you need quiet and rest. Temple time, stay in your sacred space as much as you can. Let yourself heal.",
+      "reason": "Repair agreement and introductory clause punctuation.",
+      "original_body": "When we are clearing a lot of dense energy and our mind, body and soul is under construction we can become thrown off and annoyed by every little thing. This is a sign you need quiet and rest. Temple time, stay in your sacred space as much as you can. Let yourself heal."
+    },
+    {
+      "key": "eae3590e2a0bed9d1eb43758008469f854dfa2f64307bd56391e821ef84bc38f",
+      "body": "Trust your feelings; don’t calculate your perception.",
+      "reason": "Separate the instructions.",
+      "source": "Kanye West (@kanyewest)",
+      "evidence": [
+        "https://twitter.com/kanyewest/status/1022917782327848960",
+        "https://www.hot97.com/news/kanye-west-opens-up-about-suicidal-thoughts-photo/"
+      ],
+      "attribution_review": "Exact tweet embedded by contemporaneous July28 2018 Hot97 report. HTML inspected: status URL attached directly to this quote, posted July27 2018. Full body differs only capitalization/punctuation."
+    },
+    {
+      "key": "8fe333ea77e16de6db6099d9739caf8eacd67fce6b408fef0440a849a01cc7d2",
+      "body": "Although you can attach conditions for them to exist,\nfeelings are independent of circumstances.",
+      "reason": "Punctuate the subordinating conjunction correctly."
+    },
+    {
+      "key": "a49d78610a6a10f072b5bd1e48ca15f152239582d11d52768983218b3222d83a",
+      "body": "On bringing your dreams to life,\nMost people fail from burnout, stress and fatigue, not from lack of funds.\nYou gotta make time for play.\nThe brain needs it.\nEven when you love what you do the brain knows it’s work.\nSo we all need relaxation time.\nTime to just be.",
+      "reason": "Restore the contraction it is."
+    },
+    {
+      "key": "d891ee2c6f9d2063b7afce5c2aa25b8457ad07604a6287361d718d9d317697b0",
+      "body": "You can very quickly change that overwhelming feeling of dread that comes from inaction: take a few actions and it goes away. Depression/anxiety comes from not doing what you know you should do.",
+      "reason": "Use the idiomatic verb for actions.",
+      "original_body": "You can very quickly change that overwhelming feeling of dread that comes from inaction: make a few actions and it goes away. Depression/anxiety comes from not doing what you know you should do."
+    },
+    {
+      "key": "f3d7b6ec39276f5682fe64615968dbb38fabd23f0f5d3fb6bff73e0c9622f36c",
+      "body": "Avoid failure → Play it safe → Feel like a failure.\nAvoid conflict → People-please → Inner conflict.\nAvoid losing → Dominate people → Lose trust.",
+      "reason": "Keep second-person forms parallel.",
+      "original_body": "Avoid failure → Play it safe → Feel like a failure.\nAvoid conflict → People-please → Inner conflict.\nAvoid losing → Dominates people → Loses trust."
+    },
+    {
+      "key": "ee142e65c8c733fbcdab4312108381418b99fde89c54462cc66369b2a48a6e50",
+      "body": "The heart is intuitive; it's holistic, it's contextual, it's relational. It doesn't have a win-lose orientation. It taps into the cosmic computer—the field of pure potentiality, pure knowledge, and infinite organizing power—and takes everything into account. At times it may not even seem rational, but the heart has a computing ability that is far more accurate and far more precise than anything within the limits of rational thought.",
+      "reason": "Mark the explanatory phrase to keep the main clause readable."
+    },
+    {
+      "key": "0c116aa6da00e9b72bc2e998e4251f62dbc230da82273e862388e62d63218916",
+      "body": "If you feel triggered into jealousy when you see someone living in their talents, ask: what part of me feels unseen, unheard, unrecognized?\nYou surely can not negatively observe and respond to someone else's abundance without simultaneously blocking your own.",
+      "reason": "Punctuate the self-directed question."
+    },
+    {
+      "key": "19b9a98153e218ae8481ae0c6b70a175c3ca28f344aa57d93f7faba1efc112fa",
+      "body": "“But remember the Lord your God, for it is He who gives you the ability to produce wealth.”",
+      "reason": "Match quotation marks."
+    },
+    {
+      "key": "4adae68b4eecb489e93b6210d8f09a8cc84e2826a69a0000dd3daa8f67582555",
+      "body": "Two things you should be willing to pay a premium for are quality food & nice living conditions\nEven if you have to go broke to afford them\nNever be cheap with what you Eat or where you Live\nYour Nutrition and your Environment can keep the spirits high and keep you in the Game.",
+      "reason": "Make the pronoun agree with two things.",
+      "original_body": "Two things you should be willing to pay a premium for are quality food & nice living conditions\nEven if you have to go broke to afford it\nNever be cheap with what you Eat or where you Live\nYour Nutrition and your Environment can keep the spirits high and keep you in the Game."
+    },
+    {
+      "key": "601f20e0a06f1e8ea1b1accf0dc2f0bd56f1525f1e836ae5cb6961e3ef396f62",
+      "body": "Hire talented people; it is highly unlikely that you’ll fix a loser with a sob story.",
+      "reason": "Repair chance is unlikely and the clause boundary.",
+      "original_body": "Hire talented people, the chance of you fixing a loser with a sob story is highly unlikely.",
+      "source": "Lawrence King (@lawrencekingyo)",
+      "evidence": [
+        "https://www.twstalker.com/TONYBANDSS",
+        "https://www.linkedin.com/posts/rounaq-bakshi-12224412_business-lessons-i-wish-someone-had-told-activity-7475590041482985474-qZVp"
+      ],
+      "attribution_review": "Exact item 6 in 17-item 'Business Lessons I wish someone had told me at the beginning' tweet. Mirror explicitly marks @TONYBANDSS retweeted, and Lawrence King @lawrencekingyo as tweet author; independent LinkedIn copy reproduces full ordered list. No original status permalink recovered; capitalization/obvious spelling corrected by bank."
+    },
+    {
+      "key": "815ca299533d87890e594b9242747278bb6b21ba20c9407ac392cadf130128dd",
+      "body": "this is how i trade. what i do is scalping attention. that is my job. believing in smth is not my job. mapping out possibilities of exchange listings, crime team twaps or industry leaders liking tweets is not my job.\n\nmy work is gauging if smth is capable of achieving a certain attention threshold. if the verdict is yes and said attention threshold is not reached yet, i am buying. when the attention threshold is reached i am selling. that does not involve speculating if peak attention is reached.\n\nexample is my $AI trade today. i bought when there was not much talk about it yesterday and i sold when half the timeline talked about it today. the attention threshold is reached. my work is done. my edge is exhausted. can it go much higher from here? absolutely. one Vlad twitter interaction will send it flying, but i have no edge in mapping out possibilities of such an event occurring. that is not my job.\n\ni am not in the business of dreaming and i am not in the business of gauging ceilings. i am in the business of scalping attention. and by doing this it is only natural that from time to time i will sell an asset that does many multiples after my exit. and that is totally fine. i do not feel pain about it anymore (i did in the past, and it is a hard habit to get rid of).\n\ni acknowledge that selling some runners too early is part of my job. it is part of the contract i signed and it is necessary and crucial for the environment where i can do my job to exist in the first place. if dreamers would not be rewarded from time to time there would be nothing to scalp for me. it’s a symbiotic relationship. dreamers must stomach frequent roundtrips and getting their lunch eaten by scalpers in order to catch a huge multiple from time to time, and scalpers must accept selling a giga runner too early from time to time in exchange for no roundtrips. these are the contracts we signed.",
+      "reason": "Repair spacing, preposition and apostrophe.",
+      "original_body": "this is how i trade. what i do is scalping attention. that is my job. believing in smth is not my job. mapping out possibilities of exchange listings, crime team twaps or industry leaders liking tweets is not my job.\n\nmy work is gauging if smth is capable of achieving a certain attention threshold. if the verdict is yes and said attention threshold is not reached yet, i am buying. when the attention threshold is reached i am selling. that does not involve speculating if peak attention is reached.\n\nexample is my $AI trade today. i bought when there was not much talk about it yesterday and i sold when half the timeline talked about it today. the attention threshold is reached. my work is done. my edge is exhausted. can it go much higher from here? absolutely. one Vlad twitter interaction will send it flying, but i have no edge in mapping out possibilities of such an event occurring. that is not my job.\n\ni am not in the business of dreaming and i am not in the business of gauging ceilings. i am in the business of scalping attention. and by doing this it is only natural that from time to time i will sell an asset that does many multiples after my exit. and that is totally fine. i do not feel pain about it anymore(i did in the past, and it is a hard habit to get rid off).\n\ni acknowledge that selling some runners too early is part of my job. it is part of the contract i signed and it is necessary and crucial for the environment where i can do my job to exist in the first place. if dreamers would not be rewarded from time to time there would be nothing to scalp for me. its a symbiotic relationship. dreamers must stomach frequent roundtrips and getting their lunch eaten by scalpers in order to catch a huge multiple from time to time, and scalpers must accept selling a giga runner too early from time to time in exchange for no roundtrips. these are the contracts we signed."
+    },
+    {
+      "key": "4051d6177e3abbc7c648fa60468f81d8eb2278136c304a5a19e40ef908c2d3eb",
+      "body": "People get pissed when I say this. I have a lot of wealthy friends and I also have a lot of broke friends. Broke friends often spend time watching a lot of sports and Netflix, scrolling a lot, complaining a lot, consuming a lot of news. Wealthy friends spend time working out, working on their business, working on their relationships, spending time with their families, their kids. I find that my wealthy friends only consume news that's relevant to their industry or the thing that they're passionate about. Broke friends consume news from every disaster ever, even if it's not relevant to them. They focus on everything going wrong and are really in that echo chamber of things going wrong. Wealthy friends, they talk about their self development, their concept of living and life. My broke friends talk a lot more about politics. My wealthy friends are very much in a victor, \"I am responsible for everything\" mentality. My broke friends are often really stuck in the victim mentality. It's a super interesting dichotomy. Another thing is I think a lot of broke people will talk about the past and a lot of wealthy people talk about the future.",
+      "reason": "Repair transcription punctuation, stray comma and fragmented clauses while preserving the examples and claims.",
+      "original_body": "People get pissed. When I say this, I have a lot of wealthy friends and I also have a lot of broke friends. Broke, friends often spend time watching a lot of sports, Netflix scrolling a lot, complaining a lot, consuming a lot of news, wealthy friends spend time working out, working on their business, working on their relationships, spending time with their families, their kids. I find that my wealthy friends only consume news that's relevant to their industry or the thing that they're passionate about. Broke friends consume news from every disaster ever, even if it's not relevant to them, everything going wrong and are really in that echo chamber of going wrong. Wealthy friends, they talk about their self development, concept of living and life. My broke friends talk a lot more about politics. My wealthy friends are very much in a victor. I am responsible for everything mentality. My broke friends are often really stuck in the victim mentality. It's a super interesting dichotomy. Another thing is I think a lot of broke people will talk about the past and a lot of wealthy people talk about the future."
+    },
+    {
+      "key": "0e8eab2fbaf51bca69bbf96314fd665f2d23c714b1cfa1d2c452997b65ee3670",
+      "body": "You may think, \"I did this work already, I shouldn't have to be here, doing it again,\" which makes it harder + more painful than it has to be. Some lessons are learned over + over again w more depth + complexity each time. Maybe the work is 2 make peace w doing the work.",
+      "reason": "Restore a missing word.",
+      "original_body": "You may think, \"I did this work already, I shouldn't have to be here, doing it again,\" which makes it harder + more painful than it has to be. Some lessons are learned over + again w more depth + complexity each time. Maybe the work is 2 make peace w doing the work."
+    },
+    {
+      "key": "2dfc81b768671f2bff65221980e69a7fefb660ee8faffd6f878c04d0c92dbee4",
+      "body": "How comfortable are you in the space in-between the known and that which is waiting to be revealed?",
+      "reason": "Close the question."
+    },
+    {
+      "key": "ed301a904d0648fd50f84fc45e3108305b4331a9b8b63dd13019c01feb751a35",
+      "body": "One day it will be recognised that our mood is one way that we pollute the commons; that feelings are not private; that we have a responsibility to the commons & each other to cultivate joy & not be in a gigantic sulk at life all the time. it’s like defecating in the town water",
+      "reason": "Restore the contraction it is."
+    },
+    {
+      "key": "e1980b7338e1be1b97f887bcf15742e17d3f154df6d31c5b39cb933879be010f",
+      "body": "If you lack gratitude, you’ll develop a tendency to blow up your whole life. You’ll become addicted to fresh starting your life, all because you lost a sense of that essence that makes the game special. Though when you can cultivate gratitude, when all is well and stable, realise how fortunate you are for the simple pleasures you get to indulge in, more shall be added to your cup. So that others can drink from the fountain of that which infinitely nourishes you, through your presence, because you have so much all you can do is give.",
+      "reason": "Repair an article omission and disruptive punctuation.",
+      "original_body": "If you lack gratitude, you’ll develop a tendency to blow up your whole life. You’ll become addicted to fresh starting your life, All because you lost sense of that essence that makes the game special. Though when you can cultivate gratitude, when all is well and stable, realise how fortunate you are for the simple pleasures you get to indulge in, more shall be added to your cup. So that others can drink from the fountain of that, which infinitely nourishes you, through your presence, because you have so much all you can do is give."
+    },
+    {
+      "key": "8c1ac04c3d06ddff2966c4e85abcb12959a488716fd08e80e355c19fb3d6fefb",
+      "body": "Everything you do today, every decision you make every day, reverberates infinitely in the immortal soul, persisting through all your descendants—that soul inherited from all your ancestors, who all watch over you, paying spiritual currency earned in their life to influence fortune in yours. If you choose to be a cringe and sinful loser today, you curse not just your life, but a thousand lives, both before and after you.",
+      "reason": "Restore missing noun from matching @CharlotteFang77 post.",
+      "original_body": "Everything you do today, every decision you make every day, reverberates infinitely in the immortal soul, persisting through all your descendants—that soul inherited from all your ancestors, who all watch over you, paying spiritual earned in their life to influence fortune in yours. If you choose to be a cringe and sinful loser today, you curse not just your life, but a thousand lives, both before and after you.",
+      "evidence": [
+        "https://instalker.org/YouShallWin"
+      ]
+    },
+    {
+      "key": "7f0c2ed3328b923f9b400cdc0ab476ac7d5467af451562e10d0eff876b779d07",
+      "body": "And as much as we like to say give ppl grace. Adults do know better man. 9/10 times they’ve already been through a life circumstance that should’ve taught them how to maneuver more honorably in life. They chose not to adhere to that lesson. Patterns negate grace.",
+      "source": "@Jay_F5",
+      "evidence": [
+        "https://x.com/Jay_F5/status/1884666163357008192"
+      ],
+      "attribution_review": "Original post, 29 Jan 2025. Full passage matches, including “Patterns negate grace.” The status uses “thru”; the quotation expands that to “through.” A later quote-post by @stukescompany is a repost of this status."
+    },
+    {
+      "key": "a39a27a899bb186f04a89af6cca1a50a9553b547957fd7b71fcb3902267fab8d",
+      "body": "I recommend leaving rooms where you constantly have to prove your worth.",
+      "source": "@Just1Nathann_",
+      "evidence": [
+        "https://x.com/Just1Nathann_/status/2069822497986597182"
+      ],
+      "attribution_review": "Exact sentence is one line in his 24 Jun 2026 reply to @uponalot (“So what do you recommend?”). Later posts only quote that line. Original status, not a repost."
+    },
+    {
+      "key": "638b8152e69d808a22bdf66dd9c224a18b0799b411cc5d1f672131d6d7c05be5",
+      "body": "Was talking to a friend about how you know someone is the right person to commit to\nmy take is you start with enough confidence to take a first step, and the deeper clarity comes from walking, not waiting for false guarantees upfront. life is famously impossible to predict, so at some point you trade hypotheticals for experience and let the path emerge.",
+      "source": "@majamediaco",
+      "evidence": [
+        "https://x.com/majamediaco/status/1990401406529093785"
+      ],
+      "attribution_review": "17 Nov 2025 status matches the full take (opening “was” vs “Was”). It is his own comment on a quote-post of @algekalipso (“Be brave”), not a repost of this wording."
+    },
+    {
+      "key": "5b1a5c211954b19dcf85e3177682f27644693c04333691962e0f473d7eda5f03",
+      "body": "People overwhelmingly tend to project and interpret things the way they would mean them if they were in your shoes. A passive-aggressive person sees passive aggression. A cheater sees cheating. A liar sees duplicity.",
+      "source": "@divya_venn",
+      "evidence": [
+        "https://x.com/divya_venn/status/1988144758632706158"
+      ],
+      "attribution_review": "11 Nov 2025 reply to @arukanism. Source has the typo “they way” and unhyphenated “passive aggressive”; the three projection lines are otherwise unique to this status. Her wording, not a quoted attribution."
+    },
+    {
+      "key": "15ea3550ab49996ce6c890f616c9953ab91e9c2ed473daaf9fd9df26625fd554",
+      "body": "==The moral imperative of women is to be so beautifully feminine, that it inspires men to want to be better people, to want to work hard, to want to give them the world, protect them and all the other noble and aspirational things. If the women fail at this, the men stop bothering.==",
+      "source": "@ItsNonchalant1",
+      "evidence": [
+        "https://x.com/ItsNonchalant1/status/2092698172229304364"
+      ],
+      "attribution_review": "26 Aug 2026 status matches both sentences exactly. Plain post, not a quote-tweet; no earlier exact hit on the web or X."
+    },
+    {
+      "key": "8dc299206cc3f54659e9a50f4acffbae8cc92bd3d2973ecbf0d41fffbe598e59",
+      "body": "Send love to whatever bothers you.\nit really is that simple.",
+      "source": "@9xPsi",
+      "evidence": [
+        "https://x.com/9xPsi/status/1807439950805139814"
+      ],
+      "attribution_review": "30 Jun 2024 status is the two lines (then indexed as @livingonlove; same status id, handle now @9xPsi). Later posts reuse the line. Bob Proctor’s “send love to three people who bother you” is a different wording."
+    },
+    {
+      "key": "bcad564e32c9e5f7e81173fc7d1e9c52fecd0af603ab6c5f6bd49c9ab83912c7",
+      "body": "I recommend taking pictures and videos of your parents more often.",
+      "source": "@Just1Nathann_",
+      "evidence": [
+        "https://x.com/Just1Nathann_/status/2069822497986597182"
+      ],
+      "attribution_review": "Exact sentence in his 24 Jun 2026 reply. No earlier match. A similar list from @_jabuto on 26 Jun 2026 is later."
+    },
+    {
+      "key": "279cf9d91a11a08b92819558cf2c416b9ce40b7cfdae7d2961d493e8c26e8d47",
+      "body": "Make your temple inhospitable to those low frequencies.",
+      "source": "@Maryamhasnaa",
+      "evidence": [
+        "https://x.com/Maryamhasnaa/status/1546816043271835656"
+      ],
+      "attribution_review": "Earliest exact status, 12 Jul 2022, posted standalone. The quotation marks are in that status; nothing earlier was found. Same-day repeats do not name another author."
+    },
+    {
+      "key": "220d1896ad37b2fd576b1df77a465a6ea4be907156f8ed89999ed925dfe647d2",
+      "body": "This is what creates abusers and oppressors, people trying to prove to themselves that they are in control and that they have power.",
+      "source": "@Maryamhasnaa",
+      "evidence": [
+        "https://x.com/Maryamhasnaa/status/598274403353296896"
+      ],
+      "attribution_review": "Exact unquoted sentence in her 12 May 2015 status. No earlier or competing source found."
+    },
+    {
+      "key": "a844ceee6d69a19c56dfdada0bef433d64d0a7c0d2da118f3210ae9d5bf59c55",
+      "body": "Virtue signaling is popular because it lets anyone, regardless of objective merit, go on an ego trip.",
+      "source": "@naval",
+      "evidence": [
+        "https://x.com/naval/status/1544214253317394432"
+      ],
+      "attribution_review": "Exact original status, 5 Jul 2022. Later posts such as @NavalismHQ repeat this line."
+    },
+    {
+      "key": "49822563e4fc5eb06fd43090050b754e28dc3a0dc934cd61529d3a7e3865166b",
+      "body": "You can get back at everyone who ever wronged you, wanted you to fail, or held you down by simply being happy.\nThere is nothing that makes an adversary feel more powerless than you just continuing to live your life as though they never affected it, because they never did.",
+      "source": "@AlexHormozi",
+      "evidence": [
+        "https://x.com/AlexHormozi/status/2074001217253171429"
+      ],
+      "attribution_review": "His own text on 6 Jul 2026; a post two minutes earlier says 'they didn't,' and this one says 'they never did.' His word is 'whoever' where the quotation has 'who ever.' Nothing earlier; same-day later posts copy him."
+    },
+    {
+      "key": "b46baa1d10059439709d35dc537b9ef9a3a033f55f881c92ce982f59a038b5cf",
+      "body": "Everything that exists is spirit. Matter is just densified spirit. Spirit is just refined matter. All is just energy.",
+      "source": "Joshua David Stone, *The Ascended Masters Light the Way*",
+      "evidence": [
+        "https://www.scribd.com/document/550889194/The-Ascended-MAsters-Light-the-Way-Joshua-David-Stone"
+      ],
+      "attribution_review": "Book excerpt matches whole body; last sentence uses 'simply' rather than 'just'. Source scan identifiable by book title/author."
+    },
+    {
+      "key": "a0ee6066ad5cd5b0ede374f2ba4638cb28bca8f78448fcc9aed4cbfe0ae4820c",
+      "body": "All of reality is programmable. You just have to figure out how. And the way to do that is to model it.",
+      "source": "François Chollet (@fchollet)",
+      "evidence": [
+        "https://www.twstalker.com/Chrislealxyz"
+      ],
+      "attribution_review": "Whole quote appears explicitly under François Chollet @fchollet retweeted by Chris Leal. Original X status URL not recovered; mirror preserves author, not attributing to reposter."
+    },
+    {
+      "key": "ec06df37da44b39468870b0d3fc0b4da226851abf7930823a0c2c469641515c2",
+      "body": "Expect luck and miracles to happen in your life. This is your natural state of mind. Things will work out. Rare opportunities will present themselves. You expect it, believe it, and see it. It is the norm.",
+      "source": "Benjamin Hardy, “20 Signs You Have Evolved As A Person” (adapted)",
+      "evidence": [
+        "https://addicted2success.com/life/20-signs-you-have-evolved-as-a-person/"
+      ],
+      "attribution_review": "Original author byline visible June 23 2015. Section 9 matches middle complete sentences. Collection drops introductory 'As an evolved person, you', changes last sentence from 'In fact, from an evolved perspective, miracles are the norm' to 'It is the norm'. Use adapted label."
+    },
+    {
+      "key": "d79dd8d79eb9ccbc239997c9b252b740693236cafafbeb418a60f2dd5088524e",
+      "body": "When you try to chase it,\nwatch it disappear.",
+      "source": "River Tiber, “Waves”",
+      "evidence": [
+        "https://rivertiber.bandcamp.com/album/when-the-time-is-right"
+      ],
+      "attribution_review": "Artist-owned Bandcamp release includes matching full one-line lyric under track 5 Waves, credited written/produced/recorded River Tiber & Dan Voicu."
+    },
+    {
+      "key": "7d3fd9b28b0ea773e3e3601dc71afa29038738653cea934e784fc48a8b41d21c",
+      "body": "Imagine how you would feel if you weren’t seeking permission, approval or trying to prove something.\nMemorize that feeling.\nIt’s your home frequency.",
+      "source": "@Maryamhasnaa",
+      "evidence": [
+        "https://debbiedeconing.com/2020/10/12/a-month-of-mindfulness/"
+      ],
+      "attribution_review": "Whole three-sentence quote exactly appears with Maryam Hasnaa attribution and link to author's site. Original post not recovered."
+    },
+    {
+      "key": "23b4e6471dac10775bc3e36a5b4ce65c91526a7c47491374b5a4279ad9dc8ff2",
+      "body": "unlearn shame. all forms of shame: unemployment, illness, vulnerability, longing, desire, errors, failures. you do not need to feel ashamed of what you are experiencing or living. freedom and shame cannot coexist.",
+      "source": "@artfuIchaos",
+      "evidence": [
+        "https://ngntipkolamrenang.twstalker.com/surenmehla"
+      ],
+      "attribution_review": "Exact whole body under @artfuIchaos in explicit Surender Mehla retweet, preserving tweet poster. The handle has uppercase I in fuI, not lowercase l. Original status and original authorship not recovered."
+    },
+    {
+      "key": "0ab88ee1b150be92cbbfba14f4aef2156a5a92a166ff3ea5879bee81829d2f05",
+      "body": "Have the courage to be exactly who you are without apology. Admit your mistakes without beating yourself up. Release all shame! Release all guilt! You cannot live if you are hiding behind what was. Focus on what is, right now, and that is YOU!",
+      "source": "Iyanla Vanzant",
+      "evidence": [
+        "https://quotefancy.com/quote/833604/Iyanla-Vanzant-Have-the-courage-to-be-exactly-who-you-are-without-apology-Admit-your"
+      ],
+      "attribution_review": "Complete matching body attributed to Vanzant; collection emphasizes YOU rather than you. Original work/post not recovered."
+    },
+    {
+      "key": "d916572bf71dd97c1d497856902db3591f47e55fed79e7f5152ffe6dc550d287",
+      "body": "==When you re-act; what you do is assess the incoming data, search your memory bank for the same experience & act the way you did before.==",
+      "source": "Neale Donald Walsch, *Conversations with God*, Book 2 (adapted)",
+      "evidence": [
+        "https://files.spiritmaji.com/books/Neale%20Donald%20Walsch%20Conversations%20With%20God/Neale%20Donald%20Walsch%20-%20Conversations%20With%20God%20-%20Volume%202.pdf"
+      ],
+      "attribution_review": "Book scan p15 exactly supplies complete sentence, except collection omits 'or nearly the same' and uses ampersand. Use adapted label unless restore original sentence."
+    },
+    {
+      "key": "4dfd51485eb50458f870523e899d37383761c958c3253c1befa2d59922122be5",
+      "body": "Habit is far more dependable than inspiration. Make progress by making habits. Don't focus on getting into shape. Focus on becoming the kind of person who never misses a workout.",
+      "source": "Kevin Kelly, *Excellent Advice for Living*",
+      "evidence": [
+        "https://www.goodreads.com/author/quotes/27388.Kevin_Kelly"
+      ],
+      "attribution_review": "Exact complete body identified under specific Kelly book, independently full quoted body attributed Kevin Kelly at https://legacy.heroic.us/quotes. Primary author blog 68 Bits did not contain this quote; do not use that URL."
+    },
+    {
+      "key": "97a53e1d10a56aff61635306ee4e26821c3a63c134ad7a359d2818435807bece",
+      "body": "Rig your environment because willpower is a liar. Stop trying to be strong, be smart about being weak instead. You are not going to out-discipline a bad environment. Nobody does. The people who look disciplined mostly just built a world where the easy path and the good path are the same path.",
+      "source": "@Kpaxs",
+      "evidence": [
+        "https://mobile.twstalker.com/NiketGandhir"
+      ],
+      "attribution_review": "Mirror lists both paragraphs in separate tweets by @Kpaxs under retweet context. It matches complete composite body; original statuses/authorship not recovered."
+    },
+    {
+      "key": "2606bcc8c1e7c20ef7b457c50979e07b5a52a7d7d1be872265cef1d3ad3ee6ff",
+      "body": "I recommend using absence to gain your respect back.",
+      "source": "@Just1Nathann_",
+      "evidence": [
+        "https://x.com/Just1Nathann_/status/2069822497986597182",
+        "https://twstalker.com/Tobilobanjo"
+      ],
+      "attribution_review": "Exact entries in the same original recommendation post. Author confirmed by X syndication; full text also recovered via FxTwitter and explicit retweet mirrors."
+    },
+    {
+      "key": "1b79d4dc39cab119e3265eb1a6561258954004b56409b59c47376eeeb5a77331",
+      "body": "I recommend giving a girl your number instead of asking for hers. If she likes you, she will text you.",
+      "source": "@Just1Nathann_",
+      "evidence": [
+        "https://x.com/Just1Nathann_/status/2069822497986597182",
+        "https://twstalker.com/Tobilobanjo"
+      ],
+      "attribution_review": "Exact entries in the same original recommendation post. Author confirmed by X syndication; full text also recovered via FxTwitter and explicit retweet mirrors."
+    },
+    {
+      "key": "7c0629a26fa2a341177414f63a43d43a552153d9a133e52be479e649b5ba9887",
+      "body": "I recommend putting people in their place at the very first sign of disrespect.",
+      "source": "@Just1Nathann_",
+      "evidence": [
+        "https://x.com/Just1Nathann_/status/2069822497986597182",
+        "https://twstalker.com/Tobilobanjo"
+      ],
+      "attribution_review": "Exact entries in the same original recommendation post. Author confirmed by X syndication; full text also recovered via FxTwitter and explicit retweet mirrors."
+    },
+    {
+      "key": "2e2a45f7a38470fbe3b56d76df55b58d2397b86c92525632dbaeaa511a0be8e6",
+      "body": "I recommend not chasing people. Pay attention to who chooses you.",
+      "source": "@Just1Nathann_",
+      "evidence": [
+        "https://x.com/Just1Nathann_/status/2069822497986597182",
+        "https://twstalker.com/Tobilobanjo"
+      ],
+      "attribution_review": "Exact entries in the same original recommendation post. Author confirmed by X syndication; full text also recovered via FxTwitter and explicit retweet mirrors."
+    },
+    {
+      "key": "e53495fef5187b989febb36025d77b7bf6833718301d81d960bd7bf5593c294a",
+      "body": "I recommend being honest from the beginning. Pretending is exhausting.",
+      "source": "@Just1Nathann_",
+      "evidence": [
+        "https://x.com/Just1Nathann_/status/2069822497986597182",
+        "https://twstalker.com/Tobilobanjo"
+      ],
+      "attribution_review": "Exact entries in the same original recommendation post. Author confirmed by X syndication; full text also recovered via FxTwitter and explicit retweet mirrors."
+    },
+    {
+      "key": "d308854c1cc0a1dc8e26ea1385513938f2c587d2058593a81df7c0e2fd79e94c",
+      "body": "In the ancient Greek city of Miletus, there was a high-profile suicide by a young woman. And (because depression and suicide are psychogenic illnesses) some other Milesian maiden saw the attention she got, and committed suicide herself, and pretty soon they had a suicide epidemic.\n\nHow did it end, you ask? Well, they tried everything, but the young women affected by this epidemic of madness seemed immune to reason. And then the leader of the city decreed that the next suicide would be stripped naked and left hanging in the city center to be leered at, and then rot.\n\n\"How humiliating!\" you say. \"How cruel! How inhuman!\" But that was the last suicide in Miletus.",
+      "source": "@QuasLacrimas",
+      "evidence": [
+        "https://x.com/QuasLacrimas/status/1926794044694229008",
+        "https://www.reddit.com/r/TraditionalCatholics/comments/1kwz0es/suicide_contagion_in_miletus/"
+      ],
+      "attribution_review": "Reddit reproduces the complete passage and explicitly links to this X status as its source; X itself returned no readable content. Do not attribute this modern wording directly to Plutarch."
+    },
+    {
+      "key": "bd2fcfe36ba69b7e095e5aa6e6902aba427f9e781a1ad784409a5adb34671392",
+      "body": "To be valuable, you must either:\n- Educate people on solutions to their problems\n- Persuade them to feel better about their problems\n- Entertain them in such a way that they forget about them\nThe value of someone comes down to their ability to do one of those things.",
+      "source": "Ed Latimore, *Engagement Is the New Cocaine* (adapted)",
+      "evidence": [
+        "https://pdfcoffee.com/engagement-is-the-new-cocaine-2020-pdf-free.html",
+        "https://www.goodreads.com/book/show/51472497-engagement-is-the-new-cocaine"
+      ],
+      "attribution_review": "Book text identifies Ed Latimore and contains the three listed value mechanisms verbatim. Capture omits additional mechanisms from the book and paraphrases the final sentence, so label adapted."
+    },
+    {
+      "key": "cb29b03eb47f539d7118cb671ca11ad2cb0c066201dfce65e88525044f1b970f",
+      "body": "Borrow money to make money or don’t borrow money at all.",
+      "source": "Original author unknown; collected in “Finance 101” by @tonytrillions",
+      "evidence": [
+        "https://ecency.com/%40tonytrillions/resteem-this-if-you-re-aiming-to-make-usd100-000-or-more-in-2019"
+      ],
+      "attribution_review": "Exact sentence in 2019 published compilation; original authorship unconfirmed. This is source provenance, not an author claim."
+    },
+    {
+      "key": "7c4fdb153ef114d7676777fcd80a731e05664fff64aea0ffe2bdcd15c97bfb10",
+      "body": "What greater wealth is there than to own your life & to spend it on growing?",
+      "source": "Ayn Rand, *Atlas Shrugged*",
+      "evidence": [
+        "https://www.goodreads.com/quotes/85330-what-greater-wealth-is-there-than-to-own-your-life",
+        "https://newideal.aynrand.org/p/the-businessmens-crucial-role-material-men-of-the-mind",
+        "https://bpb-us-e2.wpmucdn.com/sites.middlebury.edu/dist/5/2398/files/2013/02/Rand_AtlasShrugged_atlantis.pdf"
+      ],
+      "attribution_review": "Exact wording with 'and' instead of '&' appears in Goodreads. Ayn Rand Institute quotes the same passage from Atlas Shrugged, in slightly shortened form; excerpt from the novel also includes the passage."
+    },
+    {
+      "key": "3d7c27fadeda81d8a8913315ae198cc4b0797fa7ac73d0bab371803b705c1ff8",
+      "body": "The main defining characteristic of hate is a feeling of helpless trappedness.",
+      "source": "@Malcolm_Ocean",
+      "evidence": [
+        "https://tweets.malcolmocean.com/threads/hate-as-trappedness/"
+      ],
+      "attribution_review": "Exact text apart from case and terminal punctuation. Archive identifies @Malcolm_Ocean and links the original X post; X itself returned an internal error."
+    },
+    {
+      "key": "888e7223d26231c697b74a87462df6ec49f84366032cf4e56c3f37cc41110108",
+      "body": "Honor Yourself by not criticizing, judging, or denying what you feel.",
+      "source": "Iyanla Vanzant",
+      "evidence": [
+        "https://wisdomquotes.com/mental-health-quotes/",
+        "https://www.keepinspiring.me/depression-quotes/"
+      ],
+      "attribution_review": "Secondary quotation collections only; no original book/page or author-owned publication verified. Treat as a supported candidate attribution, not established original provenance."
+    },
+    {
+      "key": "9a6ac43fde6d82d2a4689e7ac965ed9f633b99c47df3418417fc95de4ab9f756",
+      "body": "Your soul knows when something is real, authentic and true. No matter what anyone else tries to say or persuade you of, the truth will always feel different. You can’t fake it. Your heart knows when something resonates. Trust those feelings.",
+      "source": "Unknown, via The Minds Journal",
+      "evidence": [
+        "https://themindsjournal.com/your-soul-knows-when-something-is-real/"
+      ],
+      "attribution_review": "Exact repost source, not an identified author. Author remains unknown; do not credit the repost publisher as the writer."
+    },
+    {
+      "key": "7d6170af4fef65c850518639deaef6cf63e46de566c0e5100e19300625ff0500",
+      "body": "I recommend saving money before people know you're making money.",
+      "source": "@Just1Nathann_",
+      "evidence": [
+        "https://x.com/Just1Nathann_/status/2069822497986597182",
+        "https://twstalker.com/Tobilobanjo"
+      ],
+      "attribution_review": "Exact item in verified Nathan recommendation post; mirror retweet identifies Nathan, not its reposting account."
+    },
+    {
+      "key": "6183ca7ca41dd6f1a81a0dc74c54a4eb5f72523e19b3a21c4557e3b5272c0c3b",
+      "body": "Most ppl make a negative application of their great power of faith by thinking about & believing in poverty, ill health, fear, failure, and defeat.",
+      "source": "Napoleon Hill — The Road to Riches (adapted)",
+      "evidence": [
+        "https://www.estrategiagpt.com/napoleon-hill/Napoleon-Hill-the-Road-to-Riches.pdf",
+        "https://filmot.com/sidebyside/7mrrDstuBjc/en/en/English/English/Every%2BSuccess%2BStory%2BBegins%2Bwith%2BFaith%2B%7C%2BNapoleon%2BHill%2BSuccess%2BPrinciple/Motivational%2BStories"
+      ],
+      "attribution_review": "Shortened excerpt from Master Key #4 Applied Faith; replaces people with ppl and and with &."
+    },
+    {
+      "key": "f18bad28c7eeec6c264669fbb03cd6c71ee6c4fca66e212db6a76e90f2b5a0fc",
+      "body": "Your every word communicates your root beliefs, thus manifesting more lack or more prosperity.\nTell the story every day, word for word, about the success of your legacy.\nSubtle energies of light emitted from your throat chakra interact with the quantum fabric of reality, arranging it how you've spelled it out.",
+      "source": "Kaia Ra — The Sophia Code (adapted)",
+      "evidence": [
+        "https://files.spiritmaji.com/books/Biblical,%20Gnostic/Sophia/The%20Sophia%20Code_%20A%20Living%20Trans%20-%20Kaia%20Ra.pdf"
+      ],
+      "attribution_review": "All three paragraphs condense the same throat chakra passage, PDF pp182–185. Wording rewritten so credit must explicitly say adapted."
+    },
+    {
+      "key": "7d48864a5fff36cb8a82493d6ab00be7fc0b048eefade3674b124e6e181d0ba4",
+      "body": "The faster that you do the hard things you want to avoid, the faster you will receive the good things you actually want.",
+      "source": "Leila Hormozi (adapted)",
+      "evidence": [
+        "https://www.linkedin.com/posts/leilahormozi_the-faster-you-do-the-hard-things-you-avoid-activity-7322361785708072961--Pky",
+        "https://02f0a56ef46d93f03c90-22ac5f107621879d5667e0d7ed595bdb.ssl.cf2.rackcdn.com/sites/12130/uploads/89015/SiteSwan14-DayLaunchPlan-LU2024041620240418-39971-sxjwue.pdf"
+      ],
+      "attribution_review": "Author's own LinkedIn reproduces the distinctive complete aphorism in shorter wording. SiteSwan PDF also explicitly credits her. Bank expands avoid to want to avoid and get to will receive; mark adapted, not verbatim."
+    },
+    {
+      "key": "ca26883d7d83f7fdc506c24ad6af18356610b7c8fd72accf8620d1cfea3e8dab",
+      "body": "Unsuccessful people make decisions based on their current situations. Successful people make decisions based on where they want to be.",
+      "source": "Benjamin Hardy",
+      "evidence": [
+        "https://anthony-moore.medium.com/make-decisions-based-on-where-you-want-to-be-c0e4cea034fd",
+        "https://www.bellanaija.com/2020/07/bnquoteoftheday-805/",
+        "https://rudsetitraining.org/web/wp-content/uploads/2023/08/Activities_Report_of_RUDSETI__CS.pdf"
+      ],
+      "attribution_review": "Anthony Moore's June 22, 2017 article reproduces exact two-sentence wording, lacking only first their, and explicitly credits Benjamin Hardy. BellaNaija2020 and RUDSETI report independently reproduce variant with their decisions and credit same author. Primary original not recovered. Do not credit Bob Proctor: his famous decision quote is distinct."
+    },
+    {
+      "key": "d8558691d3d881c54d3f041e350ed95fc950a5c19caf6d2a122e3621b708dd6e",
+      "body": "Do nothing without intention.",
+      "source": "Goddess Lula Belle",
+      "evidence": [
+        "https://www.pearsoncanadaschool.com/content/dam/websites/pearson-canada-school/assets/documents/pd/Humans-Who-Teach-WebSample.pdf",
+        "https://www.okayplayer.com/solanges-new-album-when-i-get-home-full-credits-raphael-saadiq-earl-sweatshirt-pharrell-more/731109",
+        "https://www.mid-day.com/news/opinion/article/do-nothing-without-intention-23254909"
+      ],
+      "attribution_review": "Publisher's Humans Who Teach excerpt explicitly attributes exact sentence to Goddess Lulabelle. Album sample credits identify Goddess Lula Belle's Florida Water For Cleansing and Clearing, sampled in Solange's Nothing Without Intention (interlude). Credit original sampled speaker."
+    },
+    {
+      "key": "a142b6cd503cb256725877eab04e9963b7d6d2898dbbe9aeed363742816abc1a",
+      "body": "What if instead of guilting yourself for not working hard enough on your creative projects, you ask yourself: what would make this so exciting and compelling that I can't wait to play and create and build on these ideas?",
+      "source": "Yumi Sakugawa",
+      "evidence": [
+        "https://melanie-richards.com/blog/learning-log-2207/",
+        "https://michaeljoelhall.com/journal/threads/reflection/"
+      ],
+      "attribution_review": "Melanie Richards's Aug 7, 2022 learning log reproduces entire quote explicitly credited Yumi Sakugawa. Independently, Michael Joel Hall's archive reproduces matching quote artwork bearing Yumi Sakugawa's name; OCR identifies the full body. Original author's social-post URL not recovered."
+    },
+    {
+      "key": "208ff531e3da32454a80de5d1b03c8d6350e4c00e2bd4340afea85eaa3c5bc1b",
+      "body": "When you have some success, the feeling of being an imposter can be real. Who am I fooling? But when you create things that only you — with your unique talents and experience — can do, then you are absolutely not an imposter. You are the ordained. It is your duty to work on things that only you can do.",
+      "source": "Kevin Kelly",
+      "evidence": [
+        "https://medium.com/ofounders/live-talks-when-imposter-syndrome-rides-in-the-front-seat-5ca954e125a1",
+        "https://www.goodreads.com/work/quotes/98113859-excellent-advice-for-living-wisdom-i-wish-i-d-known-earlier?page=4"
+      ],
+      "attribution_review": "May 30, 2022 Ofounders article quotes entire original duty version and credits Kevin Kelly. Goodreads book quotation matches all sentences, changing final duty to destiny in published Excellent Advice for Living. Bank adds the before ordained versus Ofounders but matches book there; minor wording variant, clear author corroboration."
+    },
+    {
+      "key": "82919da381c1584458839ac46cbbc9e1451eea2ab4dceac552c4bd322f30dbb9",
+      "body": "Energy vampires are emotionally immature individuals who have the sense that the whole world revolves around them. They are almost incapable of seeing things from another person’s perspective. They often lack empathy. They believe that they must take everything they can get from others and that giving anything will deprive them of essential resources. It’s as if the whole world exists just to serve them and you are the latest object upon which they have set their sights for exploitation.\nIf you have a daily self-reflective practice (e.g., walking, meditation, yoga, cooking, cycling for at least 40-60 minutes), that will increase your emotional capacity. Similarly, so will a good relationship with your partner, a steady job, a good place to live and lack of trauma. Having a mentor, a good education and experience with personal development also helps.\nConversely, if you are currently struggling with a disruption in your life, or if you have a particularly harsh inner critic that never stops nagging you and continuously puts you down, you will be more vulnerable to a vampire attack.",
+      "source": "Dr. Sophie Henshaw, “How To Protect Yourself From Being Drained by Energy Vampires” (adapted)",
+      "evidence": [
+        "https://medium.com/@sophiehenshaw/how-to-protect-yourself-from-being-drained-by-energy-vampires-7ed3d4d0681f",
+        "https://www.linkedin.com/pulse/how-avoid-being-drained-energy-vampires-haitham-mokhtar"
+      ],
+      "attribution_review": "Author-owned May 25 2014 Medium article supplies all three paragraphs. 2017 LinkedIn republication matches bank literally but is later copying, not original author. Paragraph1 separates 'lack empathy and believe' into two sentences; paragraph2 compresses stable-life/trauma phrasing. Attribute Henshaw with adapted label."
+    },
+    {
+      "key": "773d139d3999669cdbbde259cade691010a21f3277261d820340a5a217f41ccb",
+      "body": "Remember how imperative it is to master emitting your own frequency and intention rather than absorbing energy imprints from everything else.",
+      "source": "Maryam Hasnaa",
+      "evidence": [
+        "https://www.yogajournal.com/lifestyle/yoga-quotes/",
+        "https://balanceyogavilla.com/blog/37-trich-dan-y-nghia-va-truyen-cam-hung-ve-yoga/"
+      ],
+      "attribution_review": "Full sentence exact in Yoga Journal item22 with Maryam Hasnaa attribution linking her official site; full article directly inspected. Translated Vietnamese yoga studio copy corroborates. Original Hasnaa status not recovered."
+    },
+    {
+      "key": "ce1aa37fa0f7ddba3cefa860cdc274498f4cc34c249844509e1c60a6d2405c26",
+      "body": "Knowing nothing does wonders for the nervous system. Don't check your emails. Don't ask your mom why any of it happened. Mute him on twitter. Ignore the nutrition label. Have notifications off for everything. Remove your eyes, ears, and nerve endings.",
+      "source": "Dylan (@cutieswagusa04)",
+      "evidence": [
+        "https://www.sotwe.com/nocorrelationok",
+        "https://twstalker.com/heraissosweet"
+      ],
+      "attribution_review": "Whole paragraph exact in two independent mirrors explicitly labeling Dylan @cutieswagusa04 as original tweet poster and host account as retweeter. Sotwe full page inspected with author immediately preceding text. Original status permalink not recovered."
+    },
+    {
+      "key": "40b3953c20976496d90fce7605a710614a72c17516c8c3e5eaa39bd2330eec9c",
+      "body": "Sell what is selling, not what you want to sell.",
+      "source": "Lawrence King (@lawrencekingyo)",
+      "evidence": [
+        "https://www.twstalker.com/TONYBANDSS",
+        "https://www.linkedin.com/posts/rounaq-bakshi-12224412_business-lessons-i-wish-someone-had-told-activity-7475590041482985474-qZVp"
+      ],
+      "attribution_review": "Exact item 1 in 17-item 'Business Lessons I wish someone had told me at the beginning' tweet. Mirror explicitly marks @TONYBANDSS retweeted, and Lawrence King @lawrencekingyo as tweet author; independent LinkedIn copy reproduces full ordered list. No original status permalink recovered; capitalization/obvious spelling corrected by bank."
+    },
+    {
+      "key": "82ff00ceb4fc988065dac7f55cee0c78db5c1f71ed897946031c72903d5f7ff7",
+      "body": "Charge high - rich clients act and pay better",
+      "source": "Lawrence King (@lawrencekingyo)",
+      "evidence": [
+        "https://www.twstalker.com/TONYBANDSS",
+        "https://www.linkedin.com/posts/rounaq-bakshi-12224412_business-lessons-i-wish-someone-had-told-activity-7475590041482985474-qZVp"
+      ],
+      "attribution_review": "Exact item 2 in 17-item 'Business Lessons I wish someone had told me at the beginning' tweet. Mirror explicitly marks @TONYBANDSS retweeted, and Lawrence King @lawrencekingyo as tweet author; independent LinkedIn copy reproduces full ordered list. No original status permalink recovered; capitalization/obvious spelling corrected by bank."
+    },
+    {
+      "key": "9bf6467f6129ee4bfa562af25d345d15b7ef1b58a1afc22608570cf8029355ce",
+      "body": "Never do discounts on your service.",
+      "source": "Lawrence King (@lawrencekingyo)",
+      "evidence": [
+        "https://www.twstalker.com/TONYBANDSS",
+        "https://www.linkedin.com/posts/rounaq-bakshi-12224412_business-lessons-i-wish-someone-had-told-activity-7475590041482985474-qZVp"
+      ],
+      "attribution_review": "Exact item 3 in 17-item 'Business Lessons I wish someone had told me at the beginning' tweet. Mirror explicitly marks @TONYBANDSS retweeted, and Lawrence King @lawrencekingyo as tweet author; independent LinkedIn copy reproduces full ordered list. No original status permalink recovered; capitalization/obvious spelling corrected by bank."
+    },
+    {
+      "key": "da06c7d916c2ca1ddf01cd4dda89c4fad0d408291f2d00d577294be61a3e4f9b",
+      "body": "Never work for free (testimonial if new).",
+      "source": "Lawrence King (@lawrencekingyo)",
+      "evidence": [
+        "https://www.twstalker.com/TONYBANDSS",
+        "https://www.linkedin.com/posts/rounaq-bakshi-12224412_business-lessons-i-wish-someone-had-told-activity-7475590041482985474-qZVp"
+      ],
+      "attribution_review": "Exact item 4 in 17-item 'Business Lessons I wish someone had told me at the beginning' tweet. Mirror explicitly marks @TONYBANDSS retweeted, and Lawrence King @lawrencekingyo as tweet author; independent LinkedIn copy reproduces full ordered list. No original status permalink recovered; capitalization/obvious spelling corrected by bank."
+    },
+    {
+      "key": "e423a653777b81d211dd7f588a8b3aa921ee430a68914196fb1c4a6a9196c2d7",
+      "body": "Ignore unsuccessful friends and family.",
+      "source": "Lawrence King (@lawrencekingyo)",
+      "evidence": [
+        "https://www.twstalker.com/TONYBANDSS",
+        "https://www.linkedin.com/posts/rounaq-bakshi-12224412_business-lessons-i-wish-someone-had-told-activity-7475590041482985474-qZVp"
+      ],
+      "attribution_review": "Exact item 5 in 17-item 'Business Lessons I wish someone had told me at the beginning' tweet. Mirror explicitly marks @TONYBANDSS retweeted, and Lawrence King @lawrencekingyo as tweet author; independent LinkedIn copy reproduces full ordered list. No original status permalink recovered; capitalization/obvious spelling corrected by bank."
+    },
+    {
+      "key": "e0461a264d146177df02f59d68a62064eacc041f448eff1597a341c43078c160",
+      "body": "Scarcity mindset will cage your income potential.",
+      "source": "Lawrence King (@lawrencekingyo)",
+      "evidence": [
+        "https://www.twstalker.com/TONYBANDSS",
+        "https://www.linkedin.com/posts/rounaq-bakshi-12224412_business-lessons-i-wish-someone-had-told-activity-7475590041482985474-qZVp"
+      ],
+      "attribution_review": "Exact item 8 in 17-item 'Business Lessons I wish someone had told me at the beginning' tweet. Mirror explicitly marks @TONYBANDSS retweeted, and Lawrence King @lawrencekingyo as tweet author; independent LinkedIn copy reproduces full ordered list. No original status permalink recovered; capitalization/obvious spelling corrected by bank."
+    },
+    {
+      "key": "496132e25eb5e1382acf8f8f781620805b86a3d23534811686db76d3ad57314d",
+      "body": "Most people suck at what they do and still get paid.",
+      "source": "Lawrence King (@lawrencekingyo)",
+      "evidence": [
+        "https://www.twstalker.com/TONYBANDSS",
+        "https://www.linkedin.com/posts/rounaq-bakshi-12224412_business-lessons-i-wish-someone-had-told-activity-7475590041482985474-qZVp"
+      ],
+      "attribution_review": "Exact item 11 in 17-item 'Business Lessons I wish someone had told me at the beginning' tweet. Mirror explicitly marks @TONYBANDSS retweeted, and Lawrence King @lawrencekingyo as tweet author; independent LinkedIn copy reproduces full ordered list. No original status permalink recovered; capitalization/obvious spelling corrected by bank."
+    },
+    {
+      "key": "a28fdd63d1881be64cf53afee51f2ab63ceba3aad9b6cfbb337b1007c6eeabc5",
+      "body": "Saturation is a myth.",
+      "source": "Lawrence King (@lawrencekingyo)",
+      "evidence": [
+        "https://www.twstalker.com/TONYBANDSS",
+        "https://www.linkedin.com/posts/rounaq-bakshi-12224412_business-lessons-i-wish-someone-had-told-activity-7475590041482985474-qZVp"
+      ],
+      "attribution_review": "Exact item 12 in 17-item 'Business Lessons I wish someone had told me at the beginning' tweet. Mirror explicitly marks @TONYBANDSS retweeted, and Lawrence King @lawrencekingyo as tweet author; independent LinkedIn copy reproduces full ordered list. No original status permalink recovered; capitalization/obvious spelling corrected by bank."
+    },
+    {
+      "key": "de6ff4da832ed41f166d5dacc36d9a067127424229fd9f6647a883be77010cc0",
+      "body": "Find a niche where dumb people are getting rich.",
+      "source": "Lawrence King (@lawrencekingyo)",
+      "evidence": [
+        "https://www.twstalker.com/TONYBANDSS",
+        "https://www.linkedin.com/posts/rounaq-bakshi-12224412_business-lessons-i-wish-someone-had-told-activity-7475590041482985474-qZVp"
+      ],
+      "attribution_review": "Exact item 13 in 17-item 'Business Lessons I wish someone had told me at the beginning' tweet. Mirror explicitly marks @TONYBANDSS retweeted, and Lawrence King @lawrencekingyo as tweet author; independent LinkedIn copy reproduces full ordered list. No original status permalink recovered; capitalization/obvious spelling corrected by bank."
+    },
+    {
+      "key": "ab3815f9520d0a5c9d04795fd6bcdb4ce62009a425d7e55f6623996e6a9cdde4",
+      "body": "Choose the simple money with low risk.",
+      "source": "Lawrence King (@lawrencekingyo)",
+      "evidence": [
+        "https://www.twstalker.com/TONYBANDSS",
+        "https://www.linkedin.com/posts/rounaq-bakshi-12224412_business-lessons-i-wish-someone-had-told-activity-7475590041482985474-qZVp"
+      ],
+      "attribution_review": "Exact item 14 in 17-item 'Business Lessons I wish someone had told me at the beginning' tweet. Mirror explicitly marks @TONYBANDSS retweeted, and Lawrence King @lawrencekingyo as tweet author; independent LinkedIn copy reproduces full ordered list. No original status permalink recovered; capitalization/obvious spelling corrected by bank."
+    },
+    {
+      "key": "d7a1d97acfa7c3b2e42ae9d52f0adb29661db22259a9551a0559844748c33383",
+      "body": "Cash flow over everything.",
+      "source": "Lawrence King (@lawrencekingyo)",
+      "evidence": [
+        "https://www.twstalker.com/TONYBANDSS",
+        "https://www.linkedin.com/posts/rounaq-bakshi-12224412_business-lessons-i-wish-someone-had-told-activity-7475590041482985474-qZVp"
+      ],
+      "attribution_review": "Exact item 15 in 17-item 'Business Lessons I wish someone had told me at the beginning' tweet. Mirror explicitly marks @TONYBANDSS retweeted, and Lawrence King @lawrencekingyo as tweet author; independent LinkedIn copy reproduces full ordered list. No original status permalink recovered; capitalization/obvious spelling corrected by bank."
+    },
+    {
+      "key": "e59b07dfd4fe074f0946c7b070d4c46b9feb3a01bf5cc4d1ff00bf1999374336",
+      "body": "God keeps you hungry sometimes in order to cultivate your intent. He's telling you there's something else, and it's not what you want but what you need, it's not \"maybe next time\" but right now.",
+      "source": "Johnni 321 (@gentlest_alive)",
+      "evidence": [
+        "https://x.com/gentlest_alive/status/1655142145060225024"
+      ],
+      "attribution_review": "Exact full quote and author preserved in the original tweet bookmark description, dated May 7, 2023; current live post unavailable."
+    },
+    {
+      "key": "9f5547b57adbb9786dfb150e3afcca3ad7e4fb72140a631043459b95fa3f1c72",
+      "body": "Money is usually attracted, not pursued. Controlling your time is the highest dividend money pays. Earn with your mind, not your time. Value your time poorly and you will be poor. The real measure of your wealth is how much you'd be worth if you lost all your money.",
+      "parts": [
+        {
+          "body": "Money is usually attracted, not pursued.",
+          "source": "Jim Rohn — The Treasury of Quotes",
+          "evidence": [
+            "https://www.jimrohn.com/wisdom/quotes/money-is-usually-attracted"
+          ],
+          "attribution_review": "Exact text on the official Jim Rohn quote page, which explicitly identifies The Treasury of Quotes."
+        },
+        {
+          "body": "Controlling your time is the highest dividend money pays.",
+          "source": "Morgan Housel — The Psychology of Money",
+          "evidence": [
+            "https://www.fool.com/investing/2021/06/24/great-quotes-morgan-housel-edition/"
+          ],
+          "attribution_review": "Primary interview recorded June 1, 2021. Housel introduces this as his own quotation, adding 'that' in his spoken reading; Gardner repeats the exact bank version in Housel's presence, and Housel explains his deliberate dividend wording. Book origin corroborated by the interview context and independent book citations."
+        },
+        {
+          "body": "Earn with your mind, not your time.",
+          "source": "Naval Ravikant — The Almanack of Naval Ravikant",
+          "evidence": [
+            "https://navalmanack.s3.amazonaws.com/Eric-Jorgenson_The-Almanack-of-Naval-Ravikant_Final.pdf",
+            "https://www.navalmanack.com/",
+            "https://tim.blog/wp-content/uploads/2017/07/taoofseneca_vol3.pdf"
+          ],
+          "attribution_review": "Official free PDF linked by the book's official website: exact sentence on printed p64, again p67, and Naval's Rules (2016), p224. The latter cites Tim Ferriss's Tools of Titans. Tim Ferriss's own-hosted 2017 Tao of Seneca vol3 independently reproduces Naval's rules including this sentence."
+        },
+        {
+          "body": "Value your time poorly and you will be poor.",
+          "source": "M. J. DeMarco — The Millionaire Fastlane, chapter 26",
+          "evidence": [
+            "https://www.openvisionnetworks.com/dist/The%20Millioniare%20Fastlane.pdf",
+            "https://www.goodreads.com/quotes/10081671-value-your-time-poorly-and-you-will-be-poor-when",
+            "https://4hourlife.com/wp-content/uploads/2013/03/The-Millionaire-Fastlane-Fastlane-Distinctions-and-Chapter-Summaries.pdf"
+          ],
+          "attribution_review": "Exact sentence in primary book text, Chapter 26 'Your Primordial Fuel: Time', PDF page index195 (viewer page196). Title/copyright pages identify MJ DeMarco, 2011. The full book is a third-party mirror, but actual book text and independent 2013 chapter notes agree. Not Naval."
+        },
+        {
+          "body": "The real measure of your wealth is how much you'd be worth if you lost all your money.",
+          "source": "",
+          "evidence": [
+            "https://www.gty.org/sermons/90-41/investing-in-eternity-part-1",
+            "https://spiritview.net/worth-and-value/",
+            "https://tinybuddha.com/blog/the-real-measure-of-your-wealth/",
+            "https://www.azquotes.com/quote/518035",
+            "https://www.goodreads.com/quotes/450284-the-real-measure-of-our-wealth-is-how-much-we-d"
+          ],
+          "attribution_review": "Conflicting attribution. John MacArthur's primary 1989 sermon quotes the 'our/we' variant and attributes J.H. Jowett, but gives no original Jowett work. A 2008 SpiritView post calls it anonymous; a reader proposes J.H. Jowett. Tiny Buddha calls exact bank text Unknown. Modern quote sites/compiler attribute exact 'your/you' version to Bernard Meltzer; Goodreads attributes the 'our/we' variant to Benjamin Jowett. No primary Meltzer recording/writing or original Jowett book passage was located. Do not silently resolve this conflict."
+        }
+      ],
+      "reason": "Split the five sentences into five independent quotes. Four have strong exact component attribution; the fifth must keep an unknown or explicitly uncertain attribution. Do not credit the whole passage to Naval or any other individual."
+    },
+    {
+      "key": "42d734ff684d331e0229120454557d8453236c20a8d7d530247b6c5cdae05b8c",
+      "body": "Never in my life once seen anyone resolve their own problems. You literally wake up one day and they're gone. Defog your eyelids and poof, stop smoking cigs, no longer depressed.\nInterfering in your own processes is the modern black plague. Everything has to run its course.\nIf you write the problem down clearly, then the matter is half solved.",
+      "parts": [
+        {
+          "body": "Never in my life once seen anyone resolve their own problems. You literally wake up one day and they're gone. Defog your eyelids and poof, stop smoking cigs, no longer depressed.\n\nInterfering in your own processes is the modern black plague. Everything has to run its course.",
+          "source": "@brutedeforce",
+          "evidence": [
+            "https://x.com/brutedeforce/status/1912203810757333096"
+          ],
+          "attribution_review": "Parent's verified Community Archive original tweet record, created 2025-04-15T17:58:10Z, exactly covers these two paragraphs except normalized spacing/apostrophe. Evidence also stored in .nur/deep-archive-brutedeforce.json and .nur/deep-archive-matches.json. The original tweet contains no final 'If you write' sentence."
+        },
+        {
+          "body": "If you write the problem down clearly, then the matter is half solved.",
+          "source": "",
+          "evidence": [
+            "https://www.human37.com/articles/user-stories-as-a-way-to-build-your-martech-stack/",
+            "https://thinkinsights.net/consulting/kidlins-law",
+            "https://sharpenyouraxe.substack.com/p/writing-a-problem-clearly-helps-solve"
+          ],
+          "attribution_review": "Exact sentence in a 2023-09-13 Human37 article explicitly called Kidlin's Law. Think Insights says exact attribution/origin is uncertain. Rupert Cocke's 2025 writeup likewise cannot identify Kidlin. Other pages make mutually inconsistent unsupported Clavell book claims (The Snow Tiger, Noble House, King Rat). No original novel passage/character verified. Kettering's separate 'A problem well stated...' formulation does not establish authorship of this exact sentence."
+        }
+      ],
+      "reason": "Split immediately before the final 'If you write' sentence. Credit the first two paragraphs to @brutedeforce and treat the final sentence as a separate anonymous adage, optionally identifying its circulating name Kidlin's Law. Do not attribute the last sentence to @brutedeforce, Charles Kettering or James Clavell."
     }
   ],
   "duplicates": [

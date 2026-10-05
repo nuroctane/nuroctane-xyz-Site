@@ -6,14 +6,47 @@ from quote_editorial import apply_editorial, body_key, BLOCK, split_block, RULES
 
 
 class EditorialTests(unittest.TestCase):
-    def test_punctuation_preserves_identity(self):
+    def test_reviewed_identity_has_original_wording(self):
         for entry in json.loads(RULES.read_text(encoding='utf-8'))['corrections']:
-            self.assertEqual(body_key(entry['body']), entry['key'])
+            self.assertEqual(body_key(entry.get('original_body', entry['body'])), entry['key'])
+            if body_key(entry['body']) != entry['key']:
+                self.assertTrue(entry.get('reason'), 'Wording edits need a review rationale')
+
+    def test_wording_edits_survive_reimport_and_are_idempotent(self):
+        rules = json.loads(RULES.read_text(encoding='utf-8'))
+        edits = [entry for entry in rules['corrections'] if body_key(entry['body']) != entry['key']]
+        self.assertTrue(edits, 'Exercise actual reviewed grammar corrections')
+        for entry in edits:
+            old = '> ' + entry['original_body'].replace('\n', '\n> ')
+            reviewed = apply_editorial(old)
+            self.assertEqual(split_block(reviewed)[0], entry['body'])
+            self.assertEqual(apply_editorial(reviewed), reviewed)
+            for combined in (old + '\n\n' + reviewed, reviewed + '\n\n' + old):
+                self.assertEqual(apply_editorial(combined).rstrip('\n'), reviewed)
 
     def test_idempotent_and_applied(self):
         bank = Path(__file__).resolve().parents[1] / 'artifacts/blackboard/src/content/quotes.md'
         text = bank.read_text(encoding='utf-8')
         self.assertEqual(apply_editorial(text), text)
+
+    def test_composites_split_and_survive_reimport(self):
+        rules = json.loads(RULES.read_text(encoding='utf-8'))
+        composites = [entry for entry in rules['corrections'] if entry.get('parts')]
+        self.assertTrue(composites)
+        for entry in composites:
+            old = '> ' + entry['body'].replace('\n', '\n> ') + '\n> — Incorrect whole-block credit'
+            reviewed = apply_editorial(old)
+            actual = [split_block(block) for block in BLOCK.findall(reviewed)]
+            expected = [(part['body'], part.get('source', '')) for part in entry['parts']]
+            self.assertEqual(actual, expected)
+            self.assertEqual(apply_editorial(reviewed), reviewed)
+            for combined in (old + '\n\n' + reviewed, reviewed + '\n\n' + old):
+                self.assertEqual(apply_editorial(combined).rstrip('\n'), reviewed)
+            # An existing component followed by the old composite adds only
+            # missing pieces; existing anonymous pieces never inherit a credit.
+            first = BLOCK.findall(reviewed)[0]
+            partial = apply_editorial(first + '\n\n' + old)
+            self.assertEqual([split_block(block) for block in BLOCK.findall(partial)], expected)
 
     def test_reimport_fragment_is_removed_only_with_full_copy(self):
         rules = json.loads(RULES.read_text(encoding='utf-8'))
