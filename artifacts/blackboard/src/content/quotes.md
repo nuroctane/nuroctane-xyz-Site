@@ -9,7 +9,7 @@
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (106)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (65)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (81)
-- [[#Work, Wealth & Value|Work, Wealth & Value]] (51)
+- [[#Work, Wealth & Value|Work, Wealth & Value]] (52)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (65)
 
 ## Faith, God & Surrender
@@ -2527,6 +2527,28 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 > 
 > Na primeira vez.
 > — @EduEduardo137
+
+> You should be able to use smarter models in your agent.
+> You should be able to use cheaper models in your agent.
+> You should be able to use local models in your agent.
+> You should be able to use a different model for every job.
+> You should be able to switch models in the middle of a conversation.
+> You should be able to choose what data your agent has.
+> You should be able to choose what it remembers and what it forgets.
+> You should be able to choose what computer your agent runs on.
+> You should be able to run it on a machine that never touches the internet.
+> You should be able to run it while your laptop is closed.
+> You should be able to reach it from the apps you already use.
+> You should be able to choose how your agent thinks.
+> You should be able to read the prompt it runs on.
+> You should be able to see every tool it has, and turn off the ones you don't want.
+> You should be able to teach it something once and never explain it again.
+> You should be able to know what it did, and when, and why.
+> You should be able to export your agent.
+> You should be able to read the code.
+> You should be able to change the code.
+> Your agent should be yours.
+> — @NousResearch
 
 ## Life, Joy & Meaning
 
