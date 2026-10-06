@@ -91,7 +91,7 @@ export function NurArchitectureMap() {
         </div>
         <aside className="nur-map-detail" aria-live="polite">
           <span className="nur-map-kind">{node.kind}</span>
-          <h3>{node.label}</h3><p>{node.detail}</p>
+          <h3>{node.label}</h3><p>{node.detail || node.sub}</p>
           {node.sourceRef && <code>{node.sourceRef}</code>}
           <h4>Connections</h4>
           <ul>{connected.map((edge, index) => {
