@@ -10,7 +10,7 @@
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (65)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (81)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (52)
-- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (65)
+- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (66)
 
 ## Faith, God & Surrender
 
@@ -2767,4 +2767,9 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 
 > If you lack gratitude, you’ll develop a tendency to blow up your whole life. You’ll become addicted to fresh starting your life, all because you lost a sense of that essence that makes the game special. Though when you can cultivate gratitude, when all is well and stable, realise how fortunate you are for the simple pleasures you get to indulge in, more shall be added to your cup. So that others can drink from the fountain of that which infinitely nourishes you, through your presence, because you have so much all you can do is give.
 > — @verritass
+
+> Life fucking loves you. Things work out for you. Doors open for you. Money comes to you. Love finds you. People remember you. Opportunities want you. You keep getting lucky in ways that make you laugh because of course it worked out for you again.
+> 
+> Of course it did. It always does. It always has.
+> — @miluvin444
 
