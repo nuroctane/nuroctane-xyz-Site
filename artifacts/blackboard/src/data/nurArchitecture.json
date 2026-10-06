@@ -1,0 +1,957 @@
+{
+  "project": {
+    "name": "NurCLI",
+    "slug": "nur-cli",
+    "tagline": "65 provider routes, 52 tools and 114 Jev engines in one Rust agent",
+    "iconDomain": "nuroctane.xyz",
+    "date": "2026-10-01"
+  },
+  "graph": {
+    "nodes": [
+      {
+        "id": "runtime_entry",
+        "label": "CLI / TUI / headless",
+        "kind": "entry",
+        "sub": "three entry surfaces",
+        "sourceRef": "src/main.rs:85",
+        "detail": "Command parsing, session bootstrap, Gold TUI streaming, and `nur run` all converge on the same runner; UI events carry text, reasoning, tools, approvals, and usage."
+      },
+      {
+        "id": "agent_loop",
+        "label": "AgentRunner",
+        "kind": "agent",
+        "sub": "multi-round turn engine",
+        "sourceRef": "src/agent/loop.rs:508",
+        "detail": "Owns user turns, model rounds, truncation continuation, compaction, tool-call cycles, delegated work, usage emission, receipts, and state checkpoints."
+      },
+      {
+        "id": "subagent",
+        "label": "Subagent runner",
+        "kind": "agent",
+        "sub": "scoped nested execution",
+        "sourceRef": "src/agent/loop.rs:1681",
+        "detail": "Runs focused delegated prompts with provider/model overrides, admission control, bounded recursion, shared cancellation, coordinated events, and reduced tools."
+      },
+      {
+        "id": "fusion",
+        "label": "Fusion panel",
+        "kind": "agent",
+        "sub": "parallel model review",
+        "sourceRef": "src/agent/fusion.rs:62",
+        "detail": "Fans one task across configured model routes in parallel, labels each panel response, and returns evidence for a synthesizing model round."
+      },
+      {
+        "id": "prompt_context",
+        "label": "PromptContext",
+        "kind": "service",
+        "sub": "rules · skills · memory",
+        "sourceRef": "src/agent/prompt.rs:140",
+        "detail": "Assembles the system prompt once per user turn, then re-renders live permission mode, todo state, workspace identity, environment, and runtime policy each round."
+      },
+      {
+        "id": "context_control",
+        "label": "Context controller",
+        "kind": "service",
+        "sub": "prune / promote / compact",
+        "sourceRef": "src/agent/loop.rs:660",
+        "detail": "Prunes superseded tool observations, promotes saved context variables, estimates the active window, and compacts transcripts while preserving durable state."
+      },
+      {
+        "id": "request_builder",
+        "label": "ResponseRequest",
+        "kind": "service",
+        "sub": "normalized request + budget",
+        "sourceRef": "src/agent/loop.rs:837",
+        "detail": "Combines model id, transcript items, instructions, tools, reasoning effort, cache key, media, and output reserve into one protocol-neutral request."
+      },
+      {
+        "id": "failover",
+        "label": "Failover controller",
+        "kind": "service",
+        "sub": "retry before first delta",
+        "sourceRef": "src/api/failover.rs:1",
+        "detail": "Retries transient failures and configured fallback routes only before visible output streams, preserving idempotency and preventing duplicate transcript text."
+      },
+      {
+        "id": "api_client",
+        "label": "ApiClient",
+        "kind": "service",
+        "sub": "transport + stream bridge",
+        "sourceRef": "src/api/client.rs:221",
+        "detail": "Applies route selection, OAuth context, retries, idempotency, media normalization, telemetry, and dispatch into one of four wire protocols."
+      },
+      {
+        "id": "provider_catalog",
+        "label": "Provider catalog",
+        "kind": "service",
+        "sub": "65 routes + 2 sidecars",
+        "sourceRef": "src/providers.rs:531",
+        "detail": "Defines every route's id, display name, endpoint, default model, protocol style, credential source, OAuth capability, and model normalization behavior."
+      },
+      {
+        "id": "auth",
+        "label": "Credential routing",
+        "kind": "service",
+        "sub": "key / OAuth / CLI auth",
+        "sourceRef": "src/api/client.rs:228",
+        "detail": "Builds provider-specific authorization, supports subscription and CLI-backed sessions, and refreshes eligible OAuth credentials after unauthorized responses."
+      },
+      {
+        "id": "responses_adapter",
+        "label": "Responses adapter",
+        "kind": "service",
+        "sub": "Responses API + SSE",
+        "sourceRef": "src/api/client.rs:691",
+        "detail": "Serializes Responses-style input and tools, records attempts, handles retryable HTTP failures, and normalizes JSON or server-sent events."
+      },
+      {
+        "id": "tool_runtime",
+        "label": "Permission + ToolHost",
+        "kind": "tool",
+        "sub": "52 tools / one dispatcher",
+        "sourceRef": "src/tools/mod.rs:370",
+        "detail": "Approval classes, read-only parallel batches and deny/ask rules; core tool schemas first, the full surface later, including dogwood policy checks and the diagram plane."
+      },
+      {
+        "id": "headroom",
+        "label": "Headroom pipeline",
+        "kind": "service",
+        "sub": "register / compress / spill",
+        "sourceRef": "src/headroom.rs:388",
+        "detail": "Registers successful tool bodies, rejects secret-shaped preservation, compresses observations for the model window, and spills oversized results to durable blobs."
+      },
+      {
+        "id": "durable_state",
+        "label": "Durable runtime state",
+        "kind": "store",
+        "sub": "sessions / context / memory",
+        "sourceRef": "src/agent/session.rs:122",
+        "detail": "Atomically stores transcript sessions, cwd links, context blobs, and vector/graph/hierarchical memory residents under ~/.nur, with backups and scoped recall."
+      },
+      {
+        "id": "accounting_receipts",
+        "label": "Usage + receipt ledgers",
+        "kind": "store",
+        "sub": "private ledger · hash chain",
+        "sourceRef": "src/usage.rs:437",
+        "detail": "Every primary, retry, failover and Jev call recorded with its served route; a private local usage ledger aggregates spend without uploading keys."
+      },
+      {
+        "id": "routes_direct",
+        "label": "Direct model labs / 16",
+        "kind": "external",
+        "sub": "first-party API routes",
+        "sourceRef": "src/providers.rs:531",
+        "detail": "Meta, OpenAI, OpenAI Chat, Anthropic, Google, Antigravity, xAI, DeepSeek, Mistral, Cohere, AI21, Reka, Inception, Writer, Upstage, Thinking Machines, Poolside."
+      },
+      {
+        "id": "routes_cloud",
+        "label": "Cloud + SSO / 5",
+        "kind": "external",
+        "sub": "managed identity routes",
+        "sourceRef": "src/providers.rs:736",
+        "detail": "Hugging Face, Azure OpenAI, and Amazon Bedrock."
+      },
+      {
+        "id": "routes_asian",
+        "label": "Asian model labs / 7",
+        "kind": "external",
+        "sub": "direct regional catalogs",
+        "sourceRef": "src/providers.rs:957",
+        "detail": "Kimi Code, Moonshot, Z.AI, Alibaba Qwen, MiniMax, StepFun, and Baichuan."
+      },
+      {
+        "id": "routes_local",
+        "label": "Local servers / 5",
+        "kind": "external",
+        "sub": "localhost inference",
+        "sourceRef": "src/providers.rs:1273",
+        "detail": "Ollama, LM Studio, llama.cpp, vLLM, and Jan."
+      },
+      {
+        "id": "routes_infer",
+        "label": "Inference clouds / 13",
+        "kind": "external",
+        "sub": "high-throughput hosts",
+        "sourceRef": "",
+        "detail": ""
+      },
+      {
+        "id": "routes_router",
+        "label": "Routers + gateways / 12",
+        "kind": "external",
+        "sub": "aggregation + policy",
+        "sourceRef": "",
+        "detail": ""
+      },
+      {
+        "id": "routes_agent",
+        "label": "Vendor CLIs + plans / 7",
+        "kind": "external",
+        "sub": "subscription and CLI routes",
+        "sourceRef": "",
+        "detail": ""
+      },
+      {
+        "id": "proto_adapters",
+        "label": "Protocol adapters",
+        "kind": "service",
+        "sub": "Messages / Cloud Code / Chat",
+        "sourceRef": "src/api/",
+        "detail": "Anthropic Messages, Gemini Cloud Code, and Chat Completions for every non-Responses provider."
+      },
+      {
+        "id": "typesafe_judge",
+        "label": "TypeSafe / Jev layer",
+        "kind": "service",
+        "sub": "typed decisions in-loop",
+        "sourceRef": "src/typesafe/",
+        "detail": "Batched typed decisions in the loop: which calls still earn their tokens, whether a result worked, what compaction drops, which model fits. Any System One engine plugs in."
+      },
+      {
+        "id": "jev_bridge",
+        "label": "Jev engine gateway",
+        "kind": "service",
+        "sub": "34 local adapters + bridge",
+        "sourceRef": "scripts/jev_local_bridge.py",
+        "detail": "One System One HTTP contract over local Python adapters and source runtimes, with per-engine credentials and owned bridge lifecycle."
+      },
+      {
+        "id": "optmem",
+        "label": "OptMem + Connectome",
+        "kind": "store",
+        "sub": "~/.optmem · hierarchy + chronicle",
+        "sourceRef": "src/optmem.rs",
+        "detail": "Permanent OptMem memory outside sessions plus Connectome's self-authored hierarchy, chronicle and checkpoints, scoped per project."
+      },
+      {
+        "id": "jev_catalog",
+        "label": "Jev library / 114",
+        "kind": "service",
+        "sub": "JevBench roster + new releases",
+        "sourceRef": "src/jev_catalog.json",
+        "detail": "Pinned JevBench v1.5.4 roster plus reviewed newer releases: interface, source, license and connection steps per engine; keys isolated per engine."
+      },
+      {
+        "id": "enclave",
+        "label": "Enclave security agents",
+        "kind": "external",
+        "sub": "native MCP · sidecar key",
+        "sourceRef": "src/enclave.rs",
+        "detail": "Pentests, code security review and findings over Enclave's MCP server, spoken natively; every call is approval-gated and high impact."
+      },
+      {
+        "id": "gpt6_astra",
+        "label": "GPT-6 Astra",
+        "kind": "model",
+        "sub": "gpt-6-astra · Ultrafast tier",
+        "sourceRef": "",
+        "detail": "OpenAI's most capable model (1.05M context). The Ultrafast tier streams up to 6x faster in the API (gpt-6-astra-ultrafast)."
+      },
+      {
+        "id": "gpt61_sol",
+        "label": "GPT-6.1 Sol",
+        "kind": "model",
+        "sub": "gpt-6.1-sol · nur default",
+        "sourceRef": "",
+        "detail": "Near-Astra coding and computer use at a fifth of the price (DevDay, Sep 29). nur's default OpenAI model, effort low to max over Responses."
+      },
+      {
+        "id": "gpt6_luna",
+        "label": "GPT-6 Luna",
+        "kind": "model",
+        "sub": "gpt-6-luna · high volume",
+        "sourceRef": "",
+        "detail": "OpenAI's efficient tier for focused, high-volume work; also listed as a Jev-class judge in the JevBench roster."
+      },
+      {
+        "id": "claude_fable51",
+        "label": "Claude Fable 5.1",
+        "kind": "model",
+        "sub": "claude-fable-5-1",
+        "sourceRef": "",
+        "detail": "Anthropic's model for demanding reasoning and long-horizon agentic work (Sep 1), adaptive thinking, 1M context."
+      },
+      {
+        "id": "claude_opus55",
+        "label": "Claude Opus 5.5",
+        "kind": "model",
+        "sub": "claude-opus-5-5",
+        "sourceRef": "",
+        "detail": "Anthropic's recommended starting model (Sep 22) for long-running agentic coding and knowledge work."
+      },
+      {
+        "id": "claude_sonnet55",
+        "label": "Claude Sonnet 5.5",
+        "kind": "model",
+        "sub": "claude-sonnet-5-5 · nur default",
+        "sourceRef": "",
+        "detail": "Faster, cheaper complement to Opus 5.5 (Sep 28); nur's default Anthropic model over the Messages API."
+      },
+      {
+        "id": "gemini4_argon",
+        "label": "Gemini 4 Argon",
+        "kind": "model",
+        "sub": "trusted testers · 1M output",
+        "sourceRef": "",
+        "detail": "First Gemini 4 model (Sep 30): #1 in Text Arena with a 1M-token output limit, rolling out through Google's Fairwind program first."
+      },
+      {
+        "id": "gemini38_flash",
+        "label": "Gemini 3.8 Flash",
+        "kind": "model",
+        "sub": "gemini-3.8-flash · nur default",
+        "sourceRef": "",
+        "detail": "Google's latest stable model for long-horizon engineering and agents (Sep 2); nur's default Gemini route."
+      },
+      {
+        "id": "gemini31_pro",
+        "label": "Gemini 3.1 Pro",
+        "kind": "model",
+        "sub": "gemini-3.1-pro-preview",
+        "sourceRef": "",
+        "detail": "Google's current Pro tier for advanced problem solving, in preview on the Gemini API."
+      },
+      {
+        "id": "grok47",
+        "label": "Grok 4.7",
+        "kind": "model",
+        "sub": "SpaceXAI · grok-4.7 · default",
+        "sourceRef": "",
+        "detail": "SpaceXAI's strongest coding and knowledge-work model (Sep 21), about 2.1T parameters; nur's default xAI id."
+      },
+      {
+        "id": "muse13",
+        "label": "Muse Spark 1.3",
+        "kind": "model",
+        "sub": "Meta Model API · default",
+        "sourceRef": "",
+        "detail": "Meta's agentic multimodal model for longer tool-based work (Sep 2), 1M context; nur's default Meta route."
+      },
+      {
+        "id": "deepseek_v4",
+        "label": "DeepSeek V4-Pro-0813",
+        "kind": "model",
+        "sub": "V4.1-Flash is nur's default",
+        "sourceRef": "",
+        "detail": "DeepSeek's open-weight flagship (Aug 13); deepseek-flash serves V4.1-Flash (MIT, Sep 10)."
+      },
+      {
+        "id": "mistral_m35",
+        "label": "Mistral Medium 3.5",
+        "kind": "model",
+        "sub": "Small 4 · Large 3 · Codestral",
+        "sourceRef": "",
+        "detail": "Mistral's frontier multimodal model for agentic and coding work (v26.04)."
+      },
+      {
+        "id": "command_aplus",
+        "label": "Command A+",
+        "kind": "model",
+        "sub": "command-a-plus-05-2026",
+        "sourceRef": "",
+        "detail": "Cohere's Apache-2.0 218B MoE for enterprise and sovereign deployments."
+      },
+      {
+        "id": "laguna_s21",
+        "label": "Laguna S 2.1",
+        "kind": "model",
+        "sub": "Poolside · 118B open weights",
+        "sourceRef": "",
+        "detail": "Poolside's open-weight agentic coding model: 8B active, 1M context."
+      },
+      {
+        "id": "inkling",
+        "label": "Inkling",
+        "kind": "model",
+        "sub": "Thinking Machines · 975B open",
+        "sourceRef": "",
+        "detail": "Thinking Machines' Apache-2.0 975B MoE (41B active) with a thinking-effort dial."
+      },
+      {
+        "id": "mercury25",
+        "label": "Mercury 2.5",
+        "kind": "model",
+        "sub": "Inception · diffusion LLM",
+        "sourceRef": "",
+        "detail": "Inception's diffusion language model (Sep 8): parallel decoding at very high token rates."
+      },
+      {
+        "id": "solar_mini4",
+        "label": "Solar Mini 4",
+        "kind": "model",
+        "sub": "Upstage · Solar Pro 3",
+        "sourceRef": "",
+        "detail": "Upstage's newest compact model (Sep 23) alongside Solar Pro 3."
+      },
+      {
+        "id": "palmyra_x6",
+        "label": "Palmyra X6",
+        "kind": "model",
+        "sub": "Writer · agentic flagship",
+        "sourceRef": "",
+        "detail": "Writer's flagship (Aug 13) for long unattended agent work at $2/$8 per MTok."
+      },
+      {
+        "id": "reka_edge",
+        "label": "Reka Edge",
+        "kind": "model",
+        "sub": "Reka · Flash 3.1 · Core",
+        "sourceRef": "",
+        "detail": "Reka's efficient 7B vision-language model, with Flash and Core for general work."
+      },
+      {
+        "id": "kimi_k3",
+        "label": "Kimi K3",
+        "kind": "model",
+        "sub": "Moonshot · kimi-k3 · default",
+        "sourceRef": "",
+        "detail": "Moonshot's 2.8T open-weight model (Jul 16) with always-on thinking and 1M context; nur's default Moonshot id."
+      },
+      {
+        "id": "qwen38_max",
+        "label": "Qwen3.8 Max Prime",
+        "kind": "model",
+        "sub": "Alibaba · Qwen 4 in training",
+        "sourceRef": "",
+        "detail": "Alibaba's current flagship tier (Sep 23). Qwen 4 was previewed at Apsara on Sep 22 and has no release yet."
+      },
+      {
+        "id": "glm53",
+        "label": "GLM-5.3 Prime",
+        "kind": "model",
+        "sub": "Z.ai · FlashX open weights",
+        "sourceRef": "",
+        "detail": "Z.ai's GLM-5.3 line: Prime (Sep 23) and FlashX (MIT, Sep 18); glm-5.3 is nur's default Z.ai model."
+      },
+      {
+        "id": "minimax_m3",
+        "label": "MiniMax M3",
+        "kind": "model",
+        "sub": "M3.1 Flash preview",
+        "sourceRef": "",
+        "detail": "MiniMax's open-weight multimodal MoE with 1M context; M3.1-Flash-Preview (Sep 27) runs inside MiniMax Code only."
+      },
+      {
+        "id": "step5",
+        "label": "Step 5 Preview",
+        "kind": "model",
+        "sub": "StepFun · weights Oct 15",
+        "sourceRef": "",
+        "detail": "StepFun's 600B MoE (27B active) for long-horizon agents (Sep 20); open weights are scheduled for Oct 15."
+      },
+      {
+        "id": "nova2",
+        "label": "Amazon Nova 2 Pro",
+        "kind": "model",
+        "sub": "Bedrock · Nova 2 Lite",
+        "sourceRef": "",
+        "detail": "Amazon's Nova 2 reasoning models on Bedrock with three thinking intensities."
+      },
+      {
+        "id": "nemotron3",
+        "label": "Nemotron 3 Ultra",
+        "kind": "model",
+        "sub": "NVIDIA · 3.5 Lightning",
+        "sourceRef": "",
+        "detail": "NVIDIA's 550B open MoE (Jun) and Nemotron 3.5 Lightning (Aug), served through NIM and inference clouds."
+      },
+      {
+        "id": "jev113",
+        "label": "Jev 1.13",
+        "kind": "model",
+        "sub": "TypeSafe · jev-latest",
+        "sourceRef": "",
+        "detail": "TypeSafe's System One decision model (Sep 15) and nur's default judge for tool gating, result checks, compaction and routing."
+      },
+      {
+        "id": "glide",
+        "label": "GLiDE",
+        "kind": "model",
+        "sub": "Fastino · thinking decisions",
+        "sourceRef": "",
+        "detail": "Fastino's thinking decision model (Sep 30) on a System One-compatible API: nur jev use --engine glide."
+      },
+      {
+        "id": "pplx_decider",
+        "label": "Perplexity Decider 27B",
+        "kind": "model",
+        "sub": "Apache-2.0 decision weights",
+        "sourceRef": "",
+        "detail": "Perplexity's open decision model (Oct 1): typed choice, yes/no and score answers, listed in nur's Jev library."
+      },
+      {
+        "id": "cygnet",
+        "label": "Cygnet",
+        "kind": "model",
+        "sub": "JevBench #1 · Gemma-4-12B",
+        "sourceRef": "",
+        "detail": "Top-ranked open engine on JevBench v1.5.4, one of 114 entries in nur's Jev library."
+      }
+    ],
+    "edges": [
+      {
+        "from": "runtime_entry",
+        "to": "agent_loop",
+        "kind": "triggers",
+        "label": "prompt / headless turn"
+      },
+      {
+        "from": "runtime_entry",
+        "to": "durable_state",
+        "kind": "reads",
+        "label": "resume or create"
+      },
+      {
+        "from": "agent_loop",
+        "to": "prompt_context",
+        "kind": "calls",
+        "label": "once per user turn"
+      },
+      {
+        "from": "prompt_context",
+        "to": "durable_state",
+        "kind": "reads",
+        "label": "memory residents"
+      },
+      {
+        "from": "agent_loop",
+        "to": "context_control",
+        "kind": "calls",
+        "label": "before each round"
+      },
+      {
+        "from": "context_control",
+        "to": "durable_state",
+        "kind": "writes",
+        "label": "compact + promote"
+      },
+      {
+        "from": "agent_loop",
+        "to": "tool_runtime",
+        "kind": "calls",
+        "label": "shape schemas"
+      },
+      {
+        "from": "agent_loop",
+        "to": "request_builder",
+        "kind": "calls",
+        "label": "preflight"
+      },
+      {
+        "from": "accounting_receipts",
+        "to": "request_builder",
+        "kind": "reads",
+        "label": "session totals"
+      },
+      {
+        "from": "prompt_context",
+        "to": "request_builder",
+        "kind": "writes",
+        "label": "instructions"
+      },
+      {
+        "from": "context_control",
+        "to": "request_builder",
+        "kind": "writes",
+        "label": "windowed transcript"
+      },
+      {
+        "from": "tool_runtime",
+        "to": "request_builder",
+        "kind": "writes",
+        "label": "tool definitions"
+      },
+      {
+        "from": "request_builder",
+        "to": "failover",
+        "kind": "calls",
+        "label": "normalized request"
+      },
+      {
+        "from": "failover",
+        "to": "api_client",
+        "kind": "calls",
+        "label": "primary then fallback"
+      },
+      {
+        "from": "api_client",
+        "to": "provider_catalog",
+        "kind": "reads",
+        "label": "route metadata"
+      },
+      {
+        "from": "api_client",
+        "to": "auth",
+        "kind": "reads",
+        "label": "credential context"
+      },
+      {
+        "from": "api_client",
+        "to": "responses_adapter",
+        "kind": "calls",
+        "label": "Responses style"
+      },
+      {
+        "from": "responses_adapter",
+        "to": "api_client",
+        "kind": "triggers",
+        "label": "SSE / JSON"
+      },
+      {
+        "from": "api_client",
+        "to": "runtime_entry",
+        "kind": "writes",
+        "label": "UI or collected answer"
+      },
+      {
+        "from": "tool_runtime",
+        "to": "subagent",
+        "kind": "triggers",
+        "label": "delegated task"
+      },
+      {
+        "from": "fusion",
+        "to": "api_client",
+        "kind": "calls",
+        "label": "parallel panel"
+      },
+      {
+        "from": "subagent",
+        "to": "api_client",
+        "kind": "calls",
+        "label": "scoped rounds"
+      },
+      {
+        "from": "tool_runtime",
+        "to": "headroom",
+        "kind": "writes",
+        "label": "tool result"
+      },
+      {
+        "from": "subagent",
+        "to": "headroom",
+        "kind": "writes",
+        "label": "delegated result"
+      },
+      {
+        "from": "headroom",
+        "to": "durable_state",
+        "kind": "writes",
+        "label": "blob + observation"
+      },
+      {
+        "from": "headroom",
+        "to": "agent_loop",
+        "kind": "writes",
+        "label": "compressed result"
+      },
+      {
+        "from": "agent_loop",
+        "to": "accounting_receipts",
+        "kind": "writes",
+        "label": "served route usage"
+      },
+      {
+        "from": "tool_runtime",
+        "to": "accounting_receipts",
+        "kind": "writes",
+        "label": "tool receipt"
+      },
+      {
+        "from": "agent_loop",
+        "to": "durable_state",
+        "kind": "writes",
+        "label": "state checkpoint"
+      },
+      {
+        "from": "durable_state",
+        "to": "agent_loop",
+        "kind": "reads",
+        "label": "next round state"
+      },
+      {
+        "from": "provider_catalog",
+        "to": "routes_direct",
+        "kind": "calls",
+        "label": "selectable routes"
+      },
+      {
+        "from": "provider_catalog",
+        "to": "routes_cloud",
+        "kind": "calls",
+        "label": "selectable routes"
+      },
+      {
+        "from": "provider_catalog",
+        "to": "routes_asian",
+        "kind": "calls",
+        "label": "selectable routes"
+      },
+      {
+        "from": "provider_catalog",
+        "to": "routes_local",
+        "kind": "calls",
+        "label": "selectable routes"
+      },
+      {
+        "from": "request_builder",
+        "to": "proto_adapters",
+        "kind": "calls",
+        "label": "non-Responses providers"
+      },
+      {
+        "from": "agent_loop",
+        "to": "typesafe_judge",
+        "kind": "calls",
+        "label": "gate each tool call"
+      },
+      {
+        "from": "context_control",
+        "to": "typesafe_judge",
+        "kind": "calls",
+        "label": "what can be dropped"
+      },
+      {
+        "from": "typesafe_judge",
+        "to": "jev_bridge",
+        "kind": "calls",
+        "label": "keyless on this machine"
+      },
+      {
+        "from": "prompt_context",
+        "to": "optmem",
+        "kind": "reads",
+        "label": "wake excerpt"
+      },
+      {
+        "from": "agent_loop",
+        "to": "optmem",
+        "kind": "writes",
+        "label": "chronicle"
+      },
+      {
+        "from": "optmem",
+        "to": "durable_state",
+        "kind": "writes",
+        "label": "compressions"
+      },
+      {
+        "from": "tool_runtime",
+        "to": "typesafe_judge",
+        "kind": "calls",
+        "label": "tool `typesafe`"
+      },
+      {
+        "from": "provider_catalog",
+        "to": "routes_infer",
+        "kind": "calls",
+        "label": "selectable routes"
+      },
+      {
+        "from": "provider_catalog",
+        "to": "routes_router",
+        "kind": "calls",
+        "label": "selectable routes"
+      },
+      {
+        "from": "provider_catalog",
+        "to": "routes_agent",
+        "kind": "calls",
+        "label": "selectable routes"
+      },
+      {
+        "from": "typesafe_judge",
+        "to": "jev_catalog",
+        "kind": "reads",
+        "label": "pick an engine"
+      },
+      {
+        "from": "tool_runtime",
+        "to": "enclave",
+        "kind": "calls",
+        "label": "tool `enclave`"
+      },
+      {
+        "from": "auth",
+        "to": "enclave",
+        "kind": "reads",
+        "label": "sidecar key"
+      },
+      {
+        "from": "routes_direct",
+        "to": "gpt6_astra",
+        "kind": "calls"
+      },
+      {
+        "from": "routes_direct",
+        "to": "gpt61_sol",
+        "kind": "calls"
+      },
+      {
+        "from": "routes_direct",
+        "to": "gpt6_luna",
+        "kind": "calls"
+      },
+      {
+        "from": "routes_direct",
+        "to": "claude_fable51",
+        "kind": "calls"
+      },
+      {
+        "from": "routes_direct",
+        "to": "claude_opus55",
+        "kind": "calls"
+      },
+      {
+        "from": "routes_direct",
+        "to": "claude_sonnet55",
+        "kind": "calls"
+      },
+      {
+        "from": "routes_direct",
+        "to": "gemini4_argon",
+        "kind": "calls"
+      },
+      {
+        "from": "routes_direct",
+        "to": "gemini38_flash",
+        "kind": "calls"
+      },
+      {
+        "from": "routes_direct",
+        "to": "gemini31_pro",
+        "kind": "calls"
+      },
+      {
+        "from": "routes_direct",
+        "to": "grok47",
+        "kind": "calls"
+      },
+      {
+        "from": "routes_direct",
+        "to": "muse13",
+        "kind": "calls"
+      },
+      {
+        "from": "routes_direct",
+        "to": "deepseek_v4",
+        "kind": "calls"
+      },
+      {
+        "from": "routes_direct",
+        "to": "mistral_m35",
+        "kind": "calls"
+      },
+      {
+        "from": "routes_direct",
+        "to": "command_aplus",
+        "kind": "calls"
+      },
+      {
+        "from": "routes_direct",
+        "to": "laguna_s21",
+        "kind": "calls"
+      },
+      {
+        "from": "routes_direct",
+        "to": "inkling",
+        "kind": "calls"
+      },
+      {
+        "from": "routes_direct",
+        "to": "mercury25",
+        "kind": "calls"
+      },
+      {
+        "from": "routes_direct",
+        "to": "solar_mini4",
+        "kind": "calls"
+      },
+      {
+        "from": "routes_direct",
+        "to": "palmyra_x6",
+        "kind": "calls"
+      },
+      {
+        "from": "routes_direct",
+        "to": "reka_edge",
+        "kind": "calls"
+      },
+      {
+        "from": "routes_asian",
+        "to": "kimi_k3",
+        "kind": "calls"
+      },
+      {
+        "from": "routes_asian",
+        "to": "qwen38_max",
+        "kind": "calls"
+      },
+      {
+        "from": "routes_asian",
+        "to": "glm53",
+        "kind": "calls"
+      },
+      {
+        "from": "routes_asian",
+        "to": "minimax_m3",
+        "kind": "calls"
+      },
+      {
+        "from": "routes_asian",
+        "to": "step5",
+        "kind": "calls"
+      },
+      {
+        "from": "routes_cloud",
+        "to": "nova2",
+        "kind": "calls"
+      },
+      {
+        "from": "routes_infer",
+        "to": "nemotron3",
+        "kind": "calls"
+      },
+      {
+        "from": "responses_adapter",
+        "to": "gpt61_sol",
+        "kind": "calls",
+        "label": "Responses"
+      },
+      {
+        "from": "proto_adapters",
+        "to": "claude_sonnet55",
+        "kind": "calls",
+        "label": "Messages"
+      },
+      {
+        "from": "proto_adapters",
+        "to": "gemini38_flash",
+        "kind": "calls"
+      },
+      {
+        "from": "typesafe_judge",
+        "to": "jev113",
+        "kind": "calls",
+        "label": "hosted judge"
+      },
+      {
+        "from": "typesafe_judge",
+        "to": "glide",
+        "kind": "calls",
+        "label": "System One API"
+      },
+      {
+        "from": "jev_bridge",
+        "to": "pplx_decider",
+        "kind": "calls"
+      },
+      {
+        "from": "jev_bridge",
+        "to": "cygnet",
+        "kind": "calls"
+      }
+    ]
+  }
+}

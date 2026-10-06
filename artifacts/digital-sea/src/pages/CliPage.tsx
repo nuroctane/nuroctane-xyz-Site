@@ -13,7 +13,7 @@ import { MiniAudio } from "../components/hud/MiniAudio";
 import { ScrollToTop } from "../components/hud/ScrollToTop";
 import { useStandaloneScroll } from "../hooks/useStandaloneScroll";
 import { trackEvent } from "../lib/analytics";
-import { shouldLoadFoglampMap } from "../lib/foglampEmbed";
+import { NurArchitectureMap } from "../../../blackboard/src/components/NurArchitectureMap";
 import "../cli-page.css";
 
 /* ── Content ────────────────────────────────────────────────────────────── */
@@ -46,9 +46,6 @@ const BINARY = {
   name: "nur-windows-x86_64.exe",
 };
 
-const FOGLAMP_SCAN_URL = "https://www.foglamp.dev/scan/nurcli-wou3gm";
-const FOGLAMP_PREVIEW_URL = `${FOGLAMP_SCAN_URL}/opengraph-image`;
-const FOGLAMP_DESKTOP_QUERY = "(min-width: 721px)";
 
 const AFTER = [
   {
@@ -817,7 +814,7 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: "/terminal-browser", desc: "terminal-browser  (alias of /tb)" },
   { cmd: "/draw", desc: "open / build interactive tldraw offline boards" },
   { cmd: "/steer", desc: "inject a message into the running turn (no cancel)" },
-  { cmd: "/scan", desc: "map the codebase → shareable foglamp scan" },
+  { cmd: "/scan", desc: "map the codebase → local architecture scan" },
   { cmd: "/goal", desc: "set a standing session goal" },
   { cmd: "/btw", desc: "one-off note on the next message" },
   { cmd: "/bro", desc: "chill mode: plain words, straight answers (toggle)" },
@@ -1376,12 +1373,6 @@ const INSPIRATIONS: Inspiration[] = [
     name: "OpenSEO",
     href: "https://openseo.so",
     why: "open-source Semrush/Ahrefs alt — SEO research/audits via MCP + /openseo",
-  },
-  {
-    group: "stack",
-    name: "Foglamp Scan",
-    href: "https://www.foglamp.dev/scan",
-    why: "shareable codebase architecture map via /scan",
   },
   {
     group: "stack",
@@ -1979,123 +1970,6 @@ function useNurCliVersion() {
   return { data, status, flash };
 }
 
-function FoglampMap() {
-  const [loaded, setLoaded] = useState(() =>
-    typeof window !== "undefined"
-      ? shouldLoadFoglampMap(
-          window.matchMedia(FOGLAMP_DESKTOP_QUERY).matches,
-          false,
-        )
-      : false,
-  );
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-  const focusAfterLoad = useRef(false);
-
-  useEffect(() => {
-    const query = window.matchMedia(FOGLAMP_DESKTOP_QUERY);
-    const syncWithViewport = () => {
-      setLoaded((current) => shouldLoadFoglampMap(query.matches, current));
-    };
-
-    syncWithViewport();
-    query.addEventListener("change", syncWithViewport);
-    return () => query.removeEventListener("change", syncWithViewport);
-  }, []);
-
-  useEffect(() => {
-    if (!loaded || !focusAfterLoad.current) return;
-    focusAfterLoad.current = false;
-    const frame = window.requestAnimationFrame(() =>
-      iframeRef.current?.focus(),
-    );
-    return () => window.cancelAnimationFrame(frame);
-  }, [loaded]);
-
-  const openMap = (location: "header" | "footer") => {
-    trackEvent("Cli Foglamp Open", { location });
-  };
-
-  return (
-    <div className="cli-map-shell">
-      <div className="cli-term-bar cli-map-bar">
-        <span className="cli-term-dots" aria-hidden>
-          <i />
-          <i />
-          <i />
-        </span>
-        <span className="cli-term-title">foglamp · inference return path</span>
-        <span className="cli-map-actions">
-          <span className="cli-map-status">
-            <i aria-hidden /> interactive
-          </span>
-          <a
-            href={FOGLAMP_SCAN_URL}
-            target="_blank"
-            rel="noreferrer"
-            onClick={() => openMap("header")}
-          >
-            Open <span aria-hidden>↗</span>
-          </a>
-        </span>
-      </div>
-
-      <div className="cli-map-stage">
-        {loaded ? (
-          <iframe
-            ref={iframeRef}
-            src={FOGLAMP_SCAN_URL}
-            title="Interactive Foglamp map of the NurCLI codebase"
-            className="cli-map-frame"
-            loading="eager"
-            allow="fullscreen"
-            allowFullScreen
-            referrerPolicy="strict-origin-when-cross-origin"
-            tabIndex={0}
-          />
-        ) : (
-          <div className="cli-map-preview">
-            <img
-              src={FOGLAMP_PREVIEW_URL}
-              alt=""
-              loading="lazy"
-              decoding="async"
-            />
-            <div className="cli-map-preview-copy">
-              <span>// living architecture</span>
-              <p>
-                Trace auth resolution, provider protocols, attempt accounting,
-                local memory, and cache boundaries behind NurCLI.
-              </p>
-              <button
-                type="button"
-                className="cli-map-load"
-                onClick={() => {
-                  focusAfterLoad.current = true;
-                  setLoaded(true);
-                  trackEvent("Cli Foglamp Load", { source: "mobile-preview" });
-                }}
-              >
-                Explore interactive map <span aria-hidden>→</span>
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div className="cli-map-foot">
-        <span>Pan · zoom · follow request edges end to end</span>
-        <a
-          href={FOGLAMP_SCAN_URL}
-          target="_blank"
-          rel="noreferrer"
-          onClick={() => openMap("footer")}
-        >
-          Open full scan <span aria-hidden>↗</span>
-        </a>
-      </div>
-    </div>
-  );
-}
 
 /* ── Page ───────────────────────────────────────────────────────────────── */
 
@@ -2690,12 +2564,12 @@ export default function CliPage() {
             <span className="cli-h2-num">04</span> See the machine
           </h2>
           <p className="cli-lead">
-            The gold TUI is the control surface. This Foglamp map follows the
+            The gold TUI is the control surface. The architecture map follows the
             Rust request path from prompt assembly through provider adapters,
             tools, usage accounting, memory, and durable state.
           </p>
         </div>
-        <FoglampMap />
+        <NurArchitectureMap />
       </section>
 
       {/* Features */}

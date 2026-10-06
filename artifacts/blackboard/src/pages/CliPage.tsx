@@ -14,7 +14,7 @@ import { ScrollToTop } from "../components/hud/ScrollToTop";
 import { MiniAudio } from "../components/hud/MiniAudio";
 import { useStandaloneScroll } from "../hooks/useStandaloneScroll";
 import { trackEvent } from "../lib/analytics";
-import { shouldLoadFoglampMap } from "../lib/foglampEmbed";
+import { NurArchitectureMap } from "../components/NurArchitectureMap";
 import { BlackboardWallpaper } from "../blackboard/BlackboardWallpaper";
 import {
   useReducedMotion,
@@ -54,9 +54,6 @@ const BINARY = {
   name: "nur-windows-x86_64.exe",
 };
 
-const FOGLAMP_SCAN_URL = "https://www.foglamp.dev/scan/nurcli-wou3gm";
-const FOGLAMP_PREVIEW_URL = `${FOGLAMP_SCAN_URL}/opengraph-image`;
-const FOGLAMP_DESKTOP_QUERY = "(min-width: 721px)";
 
 const AFTER = [
   {
@@ -972,7 +969,7 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: "/terminal-browser", desc: "terminal-browser  (alias of /tb)" },
   { cmd: "/draw", desc: "open / build interactive tldraw offline boards" },
   { cmd: "/steer", desc: "inject a message into the running turn (no cancel)" },
-  { cmd: "/scan", desc: "map the codebase → shareable foglamp scan" },
+  { cmd: "/scan", desc: "map the codebase → local architecture scan" },
   { cmd: "/goal", desc: "set a standing session goal" },
   { cmd: "/btw", desc: "one-off note on the next message" },
   { cmd: "/bro", desc: "chill mode: plain words, straight answers (toggle)" },
@@ -1563,12 +1560,6 @@ const INSPIRATIONS: Inspiration[] = [
     name: "OpenSEO",
     href: "https://openseo.so",
     why: "open-source Semrush/Ahrefs alt — SEO research/audits via MCP + /openseo",
-  },
-  {
-    group: "stack",
-    name: "Foglamp Scan",
-    href: "https://www.foglamp.dev/scan",
-    why: "shareable codebase architecture map via /scan",
   },
   {
     group: "stack",
@@ -2406,127 +2397,8 @@ function useNurCliVersion() {
   return { data, status, flash };
 }
 
-function FoglampMap() {
-  const [loaded, setLoaded] = useState(() =>
-    typeof window !== "undefined"
-      ? shouldLoadFoglampMap(
-          window.matchMedia(FOGLAMP_DESKTOP_QUERY).matches,
-          false,
-        )
-      : false,
-  );
-  const iframeRef = useRef<HTMLIFrameElement>(null);
-  const focusAfterLoad = useRef(false);
 
-  useEffect(() => {
-    const query = window.matchMedia(FOGLAMP_DESKTOP_QUERY);
-    const syncWithViewport = () => {
-      setLoaded((current) => shouldLoadFoglampMap(query.matches, current));
-    };
-
-    syncWithViewport();
-    query.addEventListener("change", syncWithViewport);
-    return () => query.removeEventListener("change", syncWithViewport);
-  }, []);
-
-  useEffect(() => {
-    if (!loaded || !focusAfterLoad.current) return;
-    focusAfterLoad.current = false;
-    const frame = window.requestAnimationFrame(() =>
-      iframeRef.current?.focus(),
-    );
-    return () => window.cancelAnimationFrame(frame);
-  }, [loaded]);
-
-  const openMap = (location: "header" | "footer") => {
-    trackEvent("Cli Foglamp Open", { location });
-  };
-
-  return (
-    <div className="cli-map-shell">
-      <div className="cli-term-bar cli-map-bar">
-        <span className="cli-term-dots" aria-hidden>
-          <i />
-          <i />
-          <i />
-        </span>
-        <span className="cli-term-title">foglamp · request path + model map</span>
-        <span className="cli-map-actions">
-          <span className="cli-map-status">
-            <i aria-hidden /> interactive
-          </span>
-          <a
-            href={FOGLAMP_SCAN_URL}
-            target="_blank"
-            rel="noreferrer"
-            onClick={() => openMap("header")}
-          >
-            Open <span aria-hidden>↗</span>
-          </a>
-        </span>
-      </div>
-
-      <div className="cli-map-stage">
-        {loaded ? (
-          <iframe
-            ref={iframeRef}
-            src={FOGLAMP_SCAN_URL}
-            title="Interactive Foglamp map of the NurCLI codebase"
-            className="cli-map-frame"
-            loading="eager"
-            allow="fullscreen"
-            allowFullScreen
-            referrerPolicy="strict-origin-when-cross-origin"
-            tabIndex={0}
-          />
-        ) : (
-          <div className="cli-map-preview">
-            <img
-              src={FOGLAMP_PREVIEW_URL}
-              alt=""
-              loading="lazy"
-              decoding="async"
-            />
-            <div className="cli-map-preview-copy">
-              <span>// living architecture</span>
-              <p>
-                Trace the request path behind NurCLI: auth, provider
-                protocols, attempt accounting, Jev judgments, the engine
-                gateway and memory, out to the newest model from every lab.
-              </p>
-              <button
-                type="button"
-                className="cli-map-load"
-                onClick={() => {
-                  focusAfterLoad.current = true;
-                  setLoaded(true);
-                  trackEvent("Cli Foglamp Load", { source: "mobile-preview" });
-                }}
-              >
-                Explore interactive map <span aria-hidden>→</span>
-              </button>
-            </div>
-          </div>
-        )}
-      </div>
-
-      <div className="cli-map-foot">
-        <span>Pan · zoom · follow request edges end to end</span>
-        <a
-          href={FOGLAMP_SCAN_URL}
-          target="_blank"
-          rel="noreferrer"
-          onClick={() => openMap("footer")}
-        >
-          Open full scan <span aria-hidden>↗</span>
-        </a>
-      </div>
-    </div>
-  );
-}
-
-/** The newest model from every lab, exported by the same generator as the
- *  Foglamp scan so the page and the map cannot drift apart. */
+/** Model releases exported alongside the local architecture snapshot. */
 function ModelMap() {
   return (
     <section className="cli-model-map" aria-labelledby="cli-model-map-title">
@@ -3378,7 +3250,7 @@ export default function CliPage() {
           </h2>
           <p className="cli-lead">
             The TUI is the control surface: approvals, inline diffs, 65
-            providers and live themes in one terminal. The Foglamp map follows
+            providers and live themes in one terminal. The architecture map follows
             the Rust request path from prompt assembly through provider
             adapters, tools, Jev judgments, usage accounting and memory, out to
             the newest model from every lab nur routes to.
@@ -3386,7 +3258,7 @@ export default function CliPage() {
         </div>
         <DemoVideo />
 
-        <FoglampMap />
+        <NurArchitectureMap />
         <ModelMap />
       </section>
 
