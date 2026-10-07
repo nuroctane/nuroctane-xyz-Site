@@ -283,6 +283,14 @@ const FEATURE_TABS: FeatureTab[] = [
           the exact blocked operation after sign-in.
         </li>
         <li>
+          <strong>Perplexity on the Agent API</strong> — Sonar&apos;s Chat
+          Completions endpoint was retired, so the route speaks Responses at{" "}
+          <code>api.perplexity.ai/v1</code> with <code>provider/model</code>{" "}
+          ids (default <code>perplexity/sonar</code>). Every request is fitted
+          to its narrower schema at the wire, so history stays intact for
+          other providers.
+        </li>
+        <li>
           <strong>Token-saving by default</strong> — <strong>Headroom</strong>{" "}
           inline tool-result compress · OptMem · OMP-style supersedeReads +
           dropUseless · contextPromotion · optional <code>/prewalk</code>{" "}
@@ -764,13 +772,22 @@ const FEATURE_TABS: FeatureTab[] = [
         </li>
         <li>Sandbox · denylist · SSRF blocks · permissions / hooks TOML</li>
         <li>
+          <strong>A cloned repo cannot approve itself</strong> — a project&apos;s
+          own <code>.nur/permissions.toml</code> deny and ask rules apply at
+          once, but its allow rules wait for <code>/permissions trust</code>{" "}
+          (or <code>nur permissions trust</code>). Trust covers that exact list
+          in that directory, so a later pull that edits it is held again.
+        </li>
+        <li>
           Attempt ledger · idempotency on supported APIs · no blind replay after
           streamed bytes · install SHA-256 · <code>nur doctor</code>
         </li>
         <li>
           <strong>Auto-update</strong> — nur checks GitHub Releases on launch
           (off the render thread, never blocking startup) and self-installs a
-          newer build. <code>nur update</code> forces the check now; opt out
+          newer build, checked against the SHA-256 each release publishes
+          before anything touches disk (<code>npx nur-cli</code> checks it
+          too). <code>nur update</code> forces the check now; opt out
           with <code>auto_update = false</code> in config or{" "}
           <code>NUR_SKIP_AUTO_UPDATE=1</code>.
         </li>
@@ -1031,7 +1048,10 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: "/todos", desc: "show session task list" },
   { cmd: "/init", desc: "generate a NUR.md project guide" },
   { cmd: "/config", desc: "show config + data paths" },
-  { cmd: "/permissions", desc: "show or reload allow/deny/ask rules" },
+  {
+    cmd: "/permissions",
+    desc: "show or reload allow/deny/ask rules · trust | untrust this project's allow rules",
+  },
   { cmd: "/hooks", desc: "show local tool hook status" },
   { cmd: "/feedback", desc: "file a GitHub issue from here" },
   { cmd: "/bug", desc: "report an issue (GitHub link)" },
@@ -1061,6 +1081,10 @@ const CLI_SUBCOMMANDS: { cmd: string; desc: string }[] = [
     desc: "dry-run: report whether a newer release is available",
   },
   { cmd: "nur doctor", desc: "health check" },
+  {
+    cmd: "nur permissions trust | untrust",
+    desc: "apply or hold this project's .nur/permissions.toml allow rules",
+  },
   {
     cmd: "nur jev models [--search <text>]",
     desc: `browse all ${modelMap.jevEngines} published Jev systems offline`,
