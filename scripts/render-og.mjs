@@ -3,13 +3,14 @@ import { mkdir, writeFile } from "node:fs/promises";
 import handler, { THEMES } from "../api/og.mjs";
 
 // The CLI card is locked by the owner: the clean type-only card settled with
-// Codex on 2026-10-01 (thread 01a0f957). No imagery, demo frames, badges or
-// extra headers and footers. Any change to it fails the build until the owner
+// Codex on 2026-10-01 (thread 01a0f957); its stats line was refreshed to 114
+// Jev systems at the owner's request on 2026-10-07. No imagery, demo frames,
+// badges or extra headers and footers. Any change to it fails the build until the owner
 // asks for a new card and this pin is updated with it. Locked cards are also
 // written as <page>-<hash8>.png; the share tags point there, so a changed card
 // always gets a new URL (update worker/og-meta.ts and pageMeta.ts with it).
 const LOCKED = {
-  cli: "7532965de21ee42c6003678a524919a11c4a4a0bfb0770d16576676996b3f027",
+  cli: "927bae55b16738f8a2dd83389a62c901482877b9f78c53fe4ee26cfa2bc8e78f",
 };
 
 // Share cards ship atomically with their pages. Never hand-edit generated PNGs.

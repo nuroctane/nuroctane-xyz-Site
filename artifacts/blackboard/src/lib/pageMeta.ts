@@ -76,7 +76,7 @@ const PAGES: Record<string, PageMeta> = {
     path: "/cli",
     siteName: "NurCLI",
     favicon: "/assets/nodes/nur-cli-logo.png",
-    imagePath: "/assets/og/cli-7532965d.png",
+    imagePath: "/assets/og/cli-927bae55.png",
   },
   curriculum: {
     title: "World Models: A Daily Series",

@@ -243,7 +243,7 @@ function cliCard() {
           color: "#eeeae0",
           letterSpacing: "-0.03em",
         }),
-        line("65 provider routes  /  112 Jev systems  /  52 tools", {
+        line("65 provider routes  /  114 Jev systems  /  52 tools", {
           fontSize: 19,
           color: muted,
           marginTop: 4,

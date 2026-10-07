@@ -39,12 +39,12 @@ const crawler = await fetch(`${origin}/cli?ref=x`, {
   headers: { "User-Agent": "Twitterbot/1.0" },
 });
 const doc = await crawler.text();
-assert.match(doc, /\/assets\/og\/cli-7532965d\.png/);
+assert.match(doc, /\/assets\/og\/cli-927bae55\.png/);
 assert.match(doc, /property="og:url" content="[^"]*\/cli\?ref=x"/);
 assert.doesNotMatch(doc, /http-equiv="refresh"/);
 assert.equal(crawler.headers.get("cache-control"), "no-cache");
 assert.deepEqual(
-  await readFile(new URL("cli-7532965d.png", cards)),
+  await readFile(new URL("cli-927bae55.png", cards)),
   await readFile(new URL("cli.png", cards)),
 );
 console.log(

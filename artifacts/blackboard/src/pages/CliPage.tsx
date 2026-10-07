@@ -779,6 +779,13 @@ const FEATURE_TABS: FeatureTab[] = [
           in that directory, so a later pull that edits it is held again.
         </li>
         <li>
+          <strong>Rules see the whole chain</strong> — <code>bash</code> rules
+          split a command at <code>;</code> <code>&amp;&amp;</code>{" "}
+          <code>|</code> and friends: deny and ask fire on any part, allow needs
+          every part, and a substitution or file redirect is never
+          auto-approved
+        </li>
+        <li>
           Attempt ledger · idempotency on supported APIs · no blind replay after
           streamed bytes · install SHA-256 · <code>nur doctor</code>
         </li>
@@ -1128,7 +1135,10 @@ const CLI_SUBCOMMANDS: { cmd: string; desc: string }[] = [
     cmd: "nur ledger",
     desc: "local usage across seven agents; --period today | 7 | month | all",
   },
-  { cmd: "nur gateway", desc: "Telegram bot mode" },
+  {
+    cmd: "nur gateway --chat <id>",
+    desc: "Telegram bot for one chat · without --chat it only pairs (replies with your chat id, runs nothing)",
+  },
   {
     cmd: "nur local",
     desc: "local llama.cpp server control - up | down | status | models",

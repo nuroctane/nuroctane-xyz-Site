@@ -130,7 +130,7 @@ const PAGES: Record<string, PageMeta> = {
     siteName: "NurCLI",
     // Content-addressed: the locked card's hash prefix (scripts/render-og.mjs),
     // so no cache anywhere can hold an older image under this path.
-    image: `${SITE}/assets/og/cli-7532965d.png`,
+    image: `${SITE}/assets/og/cli-927bae55.png`,
     favicon: "/assets/nodes/nur-cli-logo.png",
   },
   curriculum: {
