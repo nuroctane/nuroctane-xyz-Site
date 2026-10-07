@@ -1,6 +1,6 @@
 import { Canvas, useFrame, useThree } from '@react-three/fiber';
 import { Html, Line, OrbitControls, Stars, useTexture } from '@react-three/drei';
-import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { useObservatory } from '../state/ObservatoryContext';
 import { MISSIONS, MAJOR_CITIES } from '../data/missions';
@@ -14,6 +14,7 @@ import { SOLAR_BODIES, type PlanetPosition } from '../lib/types';
 import { SatelliteField } from './SatelliteField';
 import { getPlanetConfig, getPlanetTextureUrls, gasGiantTexture, moonTexture, marsTexture } from '../lib/planetModels';
 import { AtmosphereGlow, SunCorona, RingGlow, Aurora, SunDisk } from '../lib/planetShaders';
+import { trackEvent } from '../../lib/analytics';
 
 const J2000_MS = Date.UTC(2000, 0, 1, 12, 0, 0);
 function siderealRotationAngle(time: Date, hours: number | undefined): number {
@@ -1020,18 +1021,46 @@ function UnifiedScene({ setFocus }: { setFocus: (f: 'solar' | 'earth' | string) 
   );
 }
 
+const GL_OPTIONS: THREE.WebGLRendererParameters = { antialias: true, alpha: false, powerPreference: 'high-performance', stencil: false, depth: true };
+
 export function UnifiedWorld() {
   const { chart, enabledSatGroups, anchorPlanet, setAnchorPlanet } = useObservatory() as any;
   const [mode, setMode] = useState<'solar' | 'earth' | string>('earth');
+  const [rendererFailed, setRendererFailed] = useState(false);
+
+  // R3F calls configure() on every Canvas render and does not catch a failed renderer.
+  // The live clock re-renders this tree each second, so a throw here repeats each second.
+  // A promise that never settles stops the root, and the fallback replaces the Canvas.
+  const createRenderer = useCallback(async (defaults: THREE.WebGLRendererParameters): Promise<THREE.WebGLRenderer> => {
+    try {
+      return new THREE.WebGLRenderer({ ...defaults, ...GL_OPTIONS });
+    } catch {
+      setRendererFailed(true);
+      trackEvent('Observatory Renderer Unavailable');
+      return new Promise<never>(() => {});
+    }
+  }, []);
 
   // sync anchorPlanet from context to local mode for pill highlight
   useEffect(() => {
     if (anchorPlanet) setMode((anchorPlanet as string).toLowerCase());
   }, [anchorPlanet]);
 
+  if (rendererFailed) {
+    return (
+      <div className="obs-unified-world">
+        <div className="obs-renderer-fallback" role="alert">
+          <p>The 3D view cannot start. This browser did not supply a WebGL context.</p>
+          <p>Turn on hardware acceleration or use a different browser, then retry.</p>
+          <button type="button" className="obs-pill obs-pill--action" onClick={() => setRendererFailed(false)}>Retry 3D view</button>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="obs-unified-world">
-      <Canvas camera={{ position: [5.4, 3.4, 8.4], fov: 44 }} dpr={[1, 1.25]} gl={{ antialias: true, alpha: false, powerPreference: 'high-performance', stencil: false, depth: true }}>
+      <Canvas camera={{ position: [5.4, 3.4, 8.4], fov: 44 }} dpr={[1, 1.25]} gl={createRenderer}>
         <Suspense fallback={null}>
           <UnifiedScene setFocus={setMode} />
         </Suspense>
