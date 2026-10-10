@@ -34,6 +34,8 @@ param(
   [int]$IntervalMinutes,
   # Log problems only, never show a Windows notification.
   [switch]$NoNotify,
+  # Don't pick up new versions of sync.ps1 from this clone's origin/main.
+  [switch]$NoSelfUpdate,
   [switch]$Uninstall
 )
 
@@ -74,11 +76,49 @@ $roots = @($roots | ForEach-Object {
 $git = Get-Command git.exe -CommandType Application -ErrorAction SilentlyContinue | Select-Object -First 1
 if (-not $git) { throw 'git.exe is not on PATH. Install Git for Windows first.' }
 
+function Invoke-GitText([string[]]$GitArgs) {
+  # Windows PowerShell turns a native command's stderr into an error under 'Stop'.
+  $ErrorActionPreference = 'Continue'
+  $out = & $git.Path @GitArgs 2>$null
+  if ($LASTEXITCODE -ne 0) { return $null }
+  return (($out | Out-String).Trim())
+}
+
+# Self-update follows origin/main of the clone this installer runs from.
+$selfUpdate = $null
+$wantSelfUpdate = if ($PSBoundParameters.ContainsKey('NoSelfUpdate')) { -not $NoSelfUpdate } else { (Get-Saved 'selfUpdate' $true) -ne $false }
+if ($wantSelfUpdate) {
+  $top = Invoke-GitText @('-C', $PSScriptRoot, 'rev-parse', '--show-toplevel')
+  $prefix = Invoke-GitText @('-C', $PSScriptRoot, 'rev-parse', '--show-prefix')
+  if ($top -and $prefix) {
+    $ownerPattern = '(?i)github\.com(:443)?[:/]+(' + (($owners | ForEach-Object { [regex]::Escape($_) }) -join '|') + ')/'
+    $remote = $null
+    foreach ($line in ((Invoke-GitText @('-C', $top, 'config', '--get-regexp', '^remote\..*\.url$')) -split "`r?`n")) {
+      if ($line -match '^remote\.(.+)\.url\s+(.+)$' -and $Matches[2] -match $ownerPattern) {
+        $name = $Matches[1]
+        if (-not $remote -or $name -eq 'origin') { $remote = $name }
+      }
+    }
+    if ($remote) {
+      $selfUpdate = [ordered]@{
+        repo = (Resolve-Path -LiteralPath $top).Path
+        ref  = "refs/remotes/$remote/main"
+        path = $prefix.TrimEnd('/')
+      }
+    }
+  }
+  if (-not $selfUpdate) { Write-Warning 'Self-update is off: run install.ps1 from inside a clone of nuroctane.xyz to turn it on.' }
+}
+
 New-Item -ItemType Directory -Force -Path $InstallDir | Out-Null
-foreach ($file in 'sync.ps1', 'launch.js') {
+foreach ($file in 'sync.ps1', 'launch.js', 'install.ps1') {
   $target = Join-Path $InstallDir $file
   Copy-Item -LiteralPath (Join-Path $PSScriptRoot $file) -Destination $target -Force
   Unblock-File -LiteralPath $target
+}
+# A fresh install clears any update the old copy was trying out or had refused.
+foreach ($stale in 'self-update.json', 'sync.ps1.prev', 'sync.ps1.new') {
+  Remove-Item -LiteralPath (Join-Path $InstallDir $stale) -Force -ErrorAction SilentlyContinue
 }
 
 $config = [ordered]@{
@@ -88,6 +128,7 @@ $config = [ordered]@{
   intervalMinutes = $interval
   notify          = $notify
   git             = $git.Path
+  selfUpdate      = $(if ($selfUpdate) { $selfUpdate } elseif ($wantSelfUpdate) { $null } else { $false })
 }
 [IO.File]::WriteAllText($ConfigPath, ($config | ConvertTo-Json -Depth 4), (New-Object Text.UTF8Encoding $false))
 
@@ -137,23 +178,35 @@ Register-ScheduledTask -TaskName $TaskName `
 Write-Host "Installed the '$TaskName' task: at sign-in, unlock, wake and every $interval min, no window."
 Write-Host "  roots:  $($roots -join ', ')"
 Write-Host "  owners: $($owners -join ', ')"
-Write-Host 'Running it once now...'
-
-Start-ScheduledTask -TaskName $TaskName
-$deadline = (Get-Date).AddMinutes(5)
-Start-Sleep -Seconds 2
-while ((Get-ScheduledTask -TaskName $TaskName).State -eq 'Running' -and (Get-Date) -lt $deadline) {
-  Start-Sleep -Seconds 2
-}
+if ($selfUpdate) { Write-Host "  self-update: sync.ps1 from $($selfUpdate.ref -replace '^refs/remotes/', '') in $($selfUpdate.repo)" }
+Write-Host 'Running it once now (fetching every repo can take a minute)...'
 
 $statusPath = Join-Path $InstallDir 'status.json'
+$logPath = Join-Path $InstallDir 'sync.log'
+$started = Get-Date
+Start-ScheduledTask -TaskName $TaskName
+# Wait until this run has started and finished: the task can sit in Queued or
+# Ready for a moment before it shows as Running.
+$deadline = $started.AddMinutes(5)
+do {
+  Start-Sleep -Seconds 2
+  $info = Get-ScheduledTaskInfo -TaskName $TaskName
+  $ran = $info.LastRunTime -ge $started.AddSeconds(-5)
+  $running = (Get-ScheduledTask -TaskName $TaskName).State -eq 'Running'
+} while ((-not $ran -or $running) -and (Get-Date) -lt $deadline)
+
 $status = $null
-if (Test-Path -LiteralPath $statusPath) {
+if ((Test-Path -LiteralPath $statusPath) -and (Get-Item -LiteralPath $statusPath).LastWriteTime -ge $started.AddSeconds(-5)) {
   try { $status = Get-Content -LiteralPath $statusPath -Raw | ConvertFrom-Json } catch { }
 }
 if (-not $status) {
-  $info = Get-ScheduledTaskInfo -TaskName $TaskName
-  Write-Warning "The first run hasn't reported yet (last result $($info.LastTaskResult)). Check $(Join-Path $InstallDir 'sync.log')."
+  if ($running) { Write-Warning 'The first run is still going after 5 minutes.' }
+  else { Write-Warning "The first run ended without a report (task result $($info.LastTaskResult))." }
+  if (Test-Path -LiteralPath $logPath) {
+    Write-Host 'Last lines of the log:'
+    Get-Content -LiteralPath $logPath -Tail 15 | ForEach-Object { Write-Host "  $_" }
+  }
+  Write-Host "To see a run in this window: powershell -NoProfile -ExecutionPolicy Bypass -File `"$(Join-Path $InstallDir 'sync.ps1')`""
   return
 }
 

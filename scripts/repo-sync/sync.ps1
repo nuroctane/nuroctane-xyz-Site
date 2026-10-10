@@ -26,6 +26,14 @@
   a stale index.lock, or a fetch that fails for a reason other than being
   offline (expired sign-in, deleted repo).
 
+  It also keeps itself current, because the user asked for that: when the
+  sync.ps1 on the configured branch (nuroctane.xyz's origin/main) differs from
+  this copy, it installs that one for the next run, but only if it parses as
+  Windows PowerShell will read it and can still update itself. A version that
+  fails on its first run is rolled back and skipped. launch.js and the task
+  itself only change when install.ps1 is run, and a notification says when
+  that's due. install.ps1 -NoSelfUpdate turns this off.
+
   install.ps1 copies this file to %LOCALAPPDATA%\RepoSync and schedules it;
   launch.js runs it with no window.
 #>
@@ -42,6 +50,8 @@ $LogPath = Join-Path $DataDir 'sync.log'
 $StatePath = Join-Path $DataDir 'state.json'
 $StatusPath = Join-Path $DataDir 'status.json'
 $NoHooksDir = Join-Path $DataDir 'no-hooks'
+$SelfStatePath = Join-Path $DataDir 'self-update.json'
+$SelfPath = $PSCommandPath
 $GraceMinutes = 30
 $StaleLockMinutes = 60
 $OfflinePattern = '(?i)could not resolve host|temporary failure in name resolution|failed to connect|couldn''t connect|connection (was )?(timed out|refused|reset|aborted)|timed out|network is unreachable|no route to host'
@@ -374,6 +384,111 @@ function Sync-Repo([string]$Repo) {
   return $result
 }
 
+function Save-GitBlob([string]$Repo, [string]$Blob, [string]$Destination) {
+  $psi = New-Object System.Diagnostics.ProcessStartInfo
+  $psi.FileName = $script:Git
+  $psi.Arguments = ConvertTo-ArgumentString @('cat-file', 'blob', $Blob)
+  $psi.WorkingDirectory = $Repo
+  $psi.UseShellExecute = $false
+  $psi.CreateNoWindow = $true
+  $psi.RedirectStandardInput = $true
+  $psi.RedirectStandardOutput = $true
+  $psi.RedirectStandardError = $true
+  $p = [System.Diagnostics.Process]::Start($psi)
+  $p.StandardInput.Close()
+  $err = $p.StandardError.ReadToEndAsync()
+  $file = [IO.File]::Create($Destination)
+  try { $p.StandardOutput.BaseStream.CopyTo($file) } finally { $file.Dispose() }
+  if (-not $p.WaitForExit(60000)) { Stop-ProcessTree $p; throw 'git cat-file timed out' }
+  if ($p.ExitCode -ne 0) { throw "git cat-file failed: $($err.Result.Trim())" }
+}
+
+function Test-ScriptParses([string]$Path) {
+  $bytes = [IO.File]::ReadAllBytes($Path)
+  $bom = $bytes.Length -ge 3 -and $bytes[0] -eq 0xEF -and $bytes[1] -eq 0xBB -and $bytes[2] -eq 0xBF
+  # Windows PowerShell reads a script without a BOM in the ANSI code page, so
+  # check it the same way: a UTF-8 dash can decode to a quote and end a string.
+  $text = if ($bom) { [Text.Encoding]::UTF8.GetString($bytes, 3, $bytes.Length - 3) } else { [Text.Encoding]::Default.GetString($bytes) }
+  $tokens = $null
+  $errors = $null
+  [void][System.Management.Automation.Language.Parser]::ParseInput($text, [ref]$tokens, [ref]$errors)
+  if ($errors -and $errors.Count) { return "it doesn't parse: $($errors[0].Message) (line $($errors[0].Extent.StartLineNumber))" }
+  if ($text -notmatch '(?m)^function Update-Self\b') { return 'it no longer contains Update-Self, so it could never update again' }
+  return $null
+}
+
+function Read-SelfState {
+  $raw = Read-JsonFile $SelfStatePath
+  $state = @{ pending = $null; bad = @{} }
+  if ($raw) {
+    if ($raw.pending) { $state.pending = [string]$raw.pending }
+    if ($raw.bad) { foreach ($p in $raw.bad.PSObject.Properties) { $state.bad[$p.Name] = [string]$p.Value } }
+  }
+  return $state
+}
+
+function Save-SelfState($State) {
+  $bad = [ordered]@{}
+  foreach ($k in $State.bad.Keys) { $bad[$k] = $State.bad[$k] }
+  Write-JsonFile $SelfStatePath ([ordered]@{ pending = $State.pending; bad = $bad })
+}
+
+function Update-Self($Source, [string[]]$SyncedPaths) {
+  $repo = [string]$Source.repo
+  $ref = [string]$Source.ref
+  $dir = ([string]$Source.path).Trim('/')
+  if (-not $repo -or -not $ref -or -not $dir) { return }
+  $where = Join-Path $repo ($dir -replace '/', '\')
+  if (-not (Test-Path -LiteralPath (Join-Path $repo '.git'))) {
+    Add-Problem 'self|source' "RepoSync can't update itself because $repo is gone. Run install.ps1 from a clone of nuroctane.xyz."
+    return
+  }
+  if ($SyncedPaths -notcontains $repo.TrimEnd('\', '/').ToLowerInvariant()) {
+    [void](Invoke-Git $repo @('fetch', '--quiet', ($ref -replace '^refs/remotes/([^/]+)/.*$', '$1')) 180)
+  }
+
+  # launch.js and the task definition only change through install.ps1.
+  foreach ($file in 'launch.js', 'install.ps1') {
+    $installed = Join-Path (Split-Path -Parent $SelfPath) $file
+    $want = Invoke-Git $repo @('rev-parse', '--verify', '-q', "$ref`:$dir/$file")
+    if (-not $want.Ok -or -not (Test-Path -LiteralPath $installed)) { continue }
+    $have = Invoke-Git $repo @('hash-object', "--path=$dir/$file", $installed)
+    if ($have.Ok -and $have.Out.Trim() -ne $want.Out.Trim()) {
+      Add-Problem 'self|installer' "RepoSync's task setup changed on main. Once that's pulled, run $where\install.ps1 to apply it."
+      break
+    }
+  }
+
+  $want = Invoke-Git $repo @('rev-parse', '--verify', '-q', "$ref`:$dir/sync.ps1")
+  if (-not $want.Ok) { return }
+  $blob = $want.Out.Trim()
+  $have = Invoke-Git $repo @('hash-object', "--path=$dir/sync.ps1", $SelfPath)
+  if ($have.Ok -and $have.Out.Trim() -eq $blob) { return }
+
+  $selfState = Read-SelfState
+  $short = $blob.Substring(0, 8)
+  if ($selfState.bad.ContainsKey($blob)) {
+    Add-Problem "self|bad|$blob" "RepoSync didn't take the sync.ps1 on main ($short): $($selfState.bad[$blob]). It keeps running the current one."
+    return
+  }
+  $new = "$SelfPath.new"
+  Save-GitBlob $repo $blob $new
+  $problem = Test-ScriptParses $new
+  if ($problem) {
+    Remove-Item -LiteralPath $new -Force
+    $selfState.bad[$blob] = $problem
+    Save-SelfState $selfState
+    Write-Log "self-update: skipped sync.ps1 $short from $ref because $problem"
+    Add-Problem "self|bad|$blob" "RepoSync didn't take the sync.ps1 on main ($short): $problem. It keeps running the current one."
+    return
+  }
+  Copy-Item -LiteralPath $SelfPath -Destination "$SelfPath.prev" -Force
+  Move-Item -LiteralPath $new -Destination $SelfPath -Force
+  $selfState.pending = $blob
+  Save-SelfState $selfState
+  Write-Log "self-update: installed sync.ps1 $short from $ref; the next run uses it"
+}
+
 function Show-Notification([string]$Title, [string[]]$Lines) {
   $body = ($Lines | Select-Object -First 3) -join "`n"
   if ($Lines.Count -gt 3) { $body += "`n+$($Lines.Count - 3) more in status.json" }
@@ -417,7 +532,7 @@ function Save-State($State, [hashtable]$Current, [bool]$Notify, [bool]$KeepOther
   foreach ($key in $Current.Keys) {
     $entry = $State.problems[$key]
     if (-not $entry) { $entry = @{ firstSeen = $now; notified = $false } }
-    $grace = if ($key -eq 'crash') { 0 } else { $GraceMinutes * 60 }
+    $grace = if ($key -eq 'crash' -or $key.StartsWith('self|bad|')) { 0 } else { $GraceMinutes * 60 }
     if (-not $entry.notified -and ($now - $entry.firstSeen) -ge $grace) {
       $due.Add($Current[$key])
       $entry.notified = $true
@@ -475,6 +590,20 @@ try {
   foreach ($r in $results) { $live[$r.path] = $true }
   foreach ($k in @($script:FetchFailing.Keys)) { if (-not $live.ContainsKey($k)) { $script:FetchFailing.Remove($k) } }
 
+  if ($config.selfUpdate) {
+    $selfState = Read-SelfState
+    if ($selfState.pending) {
+      Write-Log "self-update: sync.ps1 $($selfState.pending.Substring(0, 8)) ran cleanly"
+      $selfState.pending = $null
+      Save-SelfState $selfState
+    }
+    try {
+      Update-Self $config.selfUpdate @($results | ForEach-Object { ([string]$_.path).TrimEnd('\', '/').ToLowerInvariant() })
+    } catch {
+      Write-Log "self-update failed: $($_.Exception.Message)"
+    }
+  }
+
   Write-JsonFile $StatusPath ([ordered]@{
     lastRun   = (Get-Date).ToString('yyyy-MM-ddTHH:mm:sszzz')
     git       = $script:Git
@@ -488,11 +617,30 @@ try {
   $message = $_.Exception.Message
   Write-Log "sync failed: $message $($_.ScriptStackTrace -replace '\s+', ' ')"
   try {
+    $crash = @{ crash = "Repo sync stopped working: $message" }
+    $selfState = Read-SelfState
+    if (-not $selfState.pending -and $script:Git -and $config -and $config.selfUpdate) {
+      # A fix pushed to main can still arrive while this version keeps failing.
+      if ($null -eq $script:Problems) {
+        $script:Problems = @{}
+        $script:Attention = New-Object System.Collections.Generic.List[string]
+      }
+      try { Update-Self $config.selfUpdate @() } catch { Write-Log "self-update failed: $($_.Exception.Message)" }
+    } elseif ($selfState.pending -and (Test-Path -LiteralPath "$SelfPath.prev")) {
+      # This run was the first on a version that just installed itself: go back.
+      $blob = $selfState.pending
+      Copy-Item -LiteralPath "$SelfPath.prev" -Destination $SelfPath -Force
+      $selfState.bad[$blob] = "it failed on its first run ($message)"
+      $selfState.pending = $null
+      Save-SelfState $selfState
+      Write-Log "self-update: rolled back sync.ps1 $($blob.Substring(0, 8))"
+      $crash = @{ "self|bad|$blob" = "RepoSync's update $($blob.Substring(0, 8)) failed on its first run and was rolled back: $message" }
+    }
     $state = Read-State
     $notifyOnCrash = $true
     $cfg = Read-JsonFile $ConfigPath
     if ($cfg -and $cfg.PSObject.Properties.Name -contains 'notify' -and -not $cfg.notify) { $notifyOnCrash = $false }
-    Save-State $state @{ crash = "Repo sync stopped working: $message" } $notifyOnCrash $true
+    Save-State $state $crash $notifyOnCrash $true
   } catch { }
 } finally {
   if ($owned) { $mutex.ReleaseMutex() }

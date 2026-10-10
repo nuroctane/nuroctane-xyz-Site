@@ -53,6 +53,24 @@ isn't repeated until it clears and comes back:
 Being offline is never reported. If the script itself fails, it notifies you
 right away.
 
+## Updates to RepoSync itself
+
+`sync.ps1` updates itself from this repo's `origin/main`: push a new version
+to `main` from anywhere, and the next run on the PC installs it for the run
+after that. It only takes a version that parses the way Windows PowerShell
+reads it and still contains `Update-Self`. A version that fails on its first
+run is rolled back at once, skipped from then on, and reported in a
+notification. Even a copy that fails on every run still checks `main` for a
+fix.
+
+Keep `sync.ps1` plain ASCII: Windows PowerShell reads a script without a BOM
+in the ANSI code page, where a UTF-8 dash can turn into a quote mark.
+
+`launch.js` and the task's triggers only change when `install.ps1` runs. When
+they change on `main`, a notification asks you to run it once.
+`install.ps1 -NoSelfUpdate` turns self-update off; running it from a folder
+that isn't a git clone leaves it off too.
+
 ## Install, update, remove
 
 From this folder (no admin needed):
@@ -61,16 +79,18 @@ From this folder (no admin needed):
 powershell -NoProfile -ExecutionPolicy Bypass -File install.ps1
 ```
 
-It copies `sync.ps1` and `launch.js` to `%LOCALAPPDATA%\RepoSync`, so switching
-branches here never changes the running copy. Then it registers the per-user
-task `RepoSync`, runs it once and prints a table of every repo. Run it again
-after changing these files. It keeps your settings unless you pass new ones:
+It copies `sync.ps1`, `launch.js` and `install.ps1` to `%LOCALAPPDATA%\RepoSync`,
+so switching branches here never changes the running copy. Then it registers
+the per-user task `RepoSync`, runs it once and prints a table of every repo
+(or, if that run fails, the end of the log). Running it again is safe, and it
+keeps your settings unless you pass new ones:
 
 ```powershell
 install.ps1 -Root C:\Users\david\Laboratory, D:\Code   # folders whose subfolders are clones
 install.ps1 -Owner nuroctane, someone-else             # GitHub owners to include
 install.ps1 -IntervalMinutes 5
 install.ps1 -NoNotify                                  # log only
+install.ps1 -NoSelfUpdate                              # don't take new sync.ps1 versions from main
 install.ps1 -Uninstall                                 # removes the task and %LOCALAPPDATA%\RepoSync
 ```
 
@@ -102,6 +122,8 @@ Repos outside those folders can be listed under `"repos"` in
 ## Tests
 
 `./test.sh` runs every rule against real git, with local bare repos standing
-in for GitHub. It needs bash, git and PowerShell 7 (`PWSH=/path/to/pwsh`), and
-runs on Linux (a cloud session or WSL): on Windows it would raise real notifications. Run it
-after changing `sync.ps1`.
+in for GitHub, including self-update (refused, rolled-back and recovered
+versions). It needs bash, git and PowerShell 7 (`PWSH=/path/to/pwsh`), and runs
+on Linux (a cloud session or WSL): on Windows it would raise real
+notifications. Run it before pushing a change to `sync.ps1`, because `main`
+reaches the PC on its own.

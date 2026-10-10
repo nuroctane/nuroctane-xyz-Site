@@ -131,4 +131,61 @@ env -u HTTPS_PROXY -u https_proxy -u HTTP_PROXY -u http_proxy bash -c "$(declare
 check 'status e fetch | grep -qi "resolve host"' "e: offline fetch recorded"
 check '! grep -q "e|fetch" $T/data/state.json && ! grep -q "notify:.* e:" $T/out.txt' "e: offline is never a problem, even past the grace"
 
+echo "== self-update"
+TOOL=$(dirname "$SYNC")
+SD=$T/self; mkdir -p "$SD"
+( cd "$T/cloud/a" && git checkout -q main && git pull -q && mkdir -p scripts/repo-sync && cp "$TOOL"/{sync.ps1,launch.js,install.ps1} scripts/repo-sync/ && git add . && git commit -qm tool && git push -q origin main )
+cp "$TOOL"/{sync.ps1,launch.js,install.ps1} "$SD/"
+cat > "$SD/config.json" <<J
+{ "roots": [], "repos": ["$T/lab/a"], "owners": ["nuroctane"],
+  "selfUpdate": { "repo": "$T/lab/a", "ref": "refs/remotes/origin/main", "path": "scripts/repo-sync" } }
+J
+runself() { "$PW" -NoProfile -File "$SD/sync.ps1" -ConfigPath "$SD/config.json" -DataDir "$SD" > "$T/out.txt" 2>&1; echo $? > "$T/code.txt"; }
+pushtool() { ( cd "$T/cloud/a" && git add . && git commit -qm "$1" && git push -q origin main ); }
+runself
+check '! grep -q "self-update" $T/out.txt' "same version on main: nothing to do"
+
+echo '# v2' >> "$T/cloud/a/scripts/repo-sync/sync.ps1"; pushtool v2
+runself
+check 'grep -q "self-update: installed sync.ps1" $T/out.txt && tail -1 "$SD/sync.ps1" | grep -q "# v2" && [ -e "$SD/sync.ps1.prev" ]' "new sync.ps1 on main installed for the next run"
+runself
+check 'grep -q "ran cleanly" $T/out.txt && grep -q "\"pending\": null" "$SD/self-update.json"' "next run confirms it"
+
+printf 'function Update-Self {\n  "unterminated\n' > "$T/cloud/a/scripts/repo-sync/sync.ps1"; pushtool broken
+runself
+check 'tail -1 "$SD/sync.ps1" | grep -q "# v2" && grep -q "notify: Repo sync needs you | RepoSync didn.t take the sync.ps1 on main .*doesn.t parse" $T/out.txt' "unparseable version refused and notified at once"
+runself
+check '! grep -q "notify:" $T/out.txt && tail -1 "$SD/sync.ps1" | grep -q "# v2"' "refused version not retried or re-notified"
+
+echo 'Write-Host hi' > "$T/cloud/a/scripts/repo-sync/sync.ps1"; pushtool gutted
+runself
+check 'tail -1 "$SD/sync.ps1" | grep -q "# v2" && grep -q "no longer contains Update-Self" $T/out.txt' "version that could never update again refused"
+
+sed 's/^  New-Item -ItemType Directory -Force -Path \$DataDir, \$NoHooksDir | Out-Null$/&\n  throw "boom"/' "$TOOL/sync.ps1" > "$T/cloud/a/scripts/repo-sync/sync.ps1"
+grep -q 'throw "boom"' "$T/cloud/a/scripts/repo-sync/sync.ps1" || bad "test setup: boom not inserted"
+pushtool boom
+runself
+check 'grep -q "self-update: installed" $T/out.txt' "crashing version installed (it parses)"
+runself
+check '[ "$(cat $T/code.txt)" = 2 ] && grep -q "rolled back" $T/out.txt && grep -q "notify: Repo sync needs you | RepoSync.s update .* failed on its first run and was rolled back: boom" $T/out.txt && tail -1 "$SD/sync.ps1" | grep -q "# v2"' "crash on its first run rolls back and notifies at once"
+runself
+check '[ "$(cat $T/code.txt)" != 2 ] && ! grep -q "notify:" $T/out.txt && ! grep -q "installed sync.ps1" $T/out.txt' "rolled-back version not retried or re-notified"
+
+cp "$TOOL/sync.ps1" "$T/cloud/a/scripts/repo-sync/sync.ps1"; echo '# new trigger' >> "$T/cloud/a/scripts/repo-sync/install.ps1"; pushtool installer
+runself
+check 'grep -q "self-update: installed" $T/out.txt && ! grep -q "# v2" "$SD/sync.ps1" && grep -q "task setup changed on main" "$SD/status.json"' "next good version installed; installer change asks for install.ps1"
+
+git -C "$T/lab/a" config core.autocrlf true
+sed 's/$/\r/' "$SD/sync.ps1" > "$SD/crlf" && mv "$SD/crlf" "$SD/sync.ps1"
+runself
+check 'grep -q "ran cleanly" $T/out.txt && ! grep -q "installed sync.ps1" $T/out.txt' "a CRLF copy of the same version counts as current"
+
+sed 's/^  \$script:FetchFailing = \$state.fetchFailing/&\n  throw "always"/' "$SD/sync.ps1" > "$SD/x" && mv "$SD/x" "$SD/sync.ps1"
+grep -q 'throw "always"' "$SD/sync.ps1" || bad "test setup: always not inserted"
+echo '# fix' >> "$T/cloud/a/scripts/repo-sync/sync.ps1"; pushtool fix
+runself
+check '[ "$(cat $T/code.txt)" = 2 ] && grep -q "self-update: installed" $T/out.txt && tail -1 "$SD/sync.ps1" | grep -q "# fix"' "a copy that fails every run still picks up the fix from main"
+runself
+check '[ "$(cat $T/code.txt)" != 2 ] && grep -q "ran cleanly" $T/out.txt' "the fix runs"
+
 if [ $FAIL = 0 ]; then echo "ALL PASS"; else echo "SOME FAILED"; exit 1; fi
