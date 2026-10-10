@@ -160,6 +160,15 @@ const PAGES: Record<string, PageMeta> = {
     image: `${SITE}/assets/nodes/site-logo.png`,
     favicon: "/assets/nodes/github-logo.png",
   },
+  stats: {
+    title: "Stats — NUROCTANE",
+    description:
+      "Public site statistics: visitors over time, where they came from, and what they opened.",
+    badge: "STATS",
+    path: "/stats",
+    image: `${SITE}/assets/nodes/site-logo.png`,
+    favicon: "/assets/nodes/site-logo.png",
+  },
   blog: {
     title: "Writings — NUROCTANE",
     description:

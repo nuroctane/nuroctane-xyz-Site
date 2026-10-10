@@ -45,6 +45,7 @@
       "/curriculum/",
       "/observatory",
       "/github",
+      "/stats",
       "/blog",
       "/blog/*",
       "/socials",
@@ -65,6 +66,11 @@
   "vars": {
     "SITE_ORIGIN": "https://nuroctane.xyz",
     "GITHUB_CONTRIB_USER": "nuroctane",
+    // /api/site-stats reads the shared PostHog project (the same one the
+    // Tuner Society console queries). The key is the POSTHOG_API_KEY secret:
+    // a personal API key with query:read.
+    "POSTHOG_PROJECT_ID": "533795",
+    "POSTHOG_API_HOST": "https://us.posthog.com",
   },
 
   // Secrets (set with `wrangler secret put`, never committed):
@@ -78,4 +84,5 @@
   //   GITHUB_TOKEN
   //   CRON_SECRET              (only for manual POST /api/github-contrib/refresh)
   //   GOOGLE_BOOKS_API_KEY     (optional; raises public book-search quota)
+  //   POSTHOG_API_KEY          (personal API key, query:read; powers /stats)
 }

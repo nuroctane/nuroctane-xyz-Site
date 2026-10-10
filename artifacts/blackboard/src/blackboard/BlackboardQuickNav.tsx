@@ -6,7 +6,7 @@ import { LOGO_MAP, dockIcon } from '../data/navLogos';
 import malLogo from '../assets/secondary-nodes/anilist-mal-logo-sidecard.png';
 import './blackboard.css';
 
-type Destination = { id: string; label: string; url: string; logo?: string; secondary?: Destination };
+export type Destination = { id: string; label: string; url: string; logo?: string; secondary?: Destination };
 
 const destinations: Destination[] = directoryEntries.map(entry => ({
   id: entry.id,
@@ -25,12 +25,16 @@ const orderedProjects = ['nur-cli', 'hoodstock', 'observatory', 'modkeys', 'miya
 const groups = {
   // 'webutils' (the Raindrop collection) is off the dock while Raindrop serves
   // its public page as a 404; the directory entry stays for when it returns.
-  projects: [...soonProjects,{ id: 'ios-downloader', label: 'iOS Shortcut: Downloader', url: 'https://routinehub.co/shortcut/26384/', logo: dockIcon('/assets/nodes/routinehub-logo.png') }, ...orderedProjects],
+  projects: [...soonProjects, { id: 'ios-downloader', label: 'iOS Shortcut: Downloader', url: 'https://routinehub.co/shortcut/26384/', logo: dockIcon('/assets/nodes/routinehub-logo.png') }, ...orderedProjects],
   socials: ['instagram', 'atxtunerz', 'x', 'discord', 'substack', 'remilia', 'glasp', 'steam', 'anilist', 'goodreads', 'letterboxd', 'reddit', 'kick', 'twitch', 'youtube', 'soundcloud']
     .map(find)
     .map(entry => entry.id === 'anilist' ? { ...entry, secondary: { id: 'mal', label: 'MAL', logo: malLogo, url: 'https://myanimelist.net/profile/nuroctane' } } : entry),
 };
 type Group = keyof typeof groups;
+
+/** The dock's own grouping, so /stats files a link click under the same
+ *  heading the visitor clicked it from. */
+export const dockGroups: Readonly<Record<Group, readonly Destination[]>> = groups;
 
 function DestinationLink({ entry }: { entry: Destination }) {
   const [imageFailed, setImageFailed] = useState(false);

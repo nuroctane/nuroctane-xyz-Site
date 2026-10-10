@@ -238,6 +238,59 @@ async function smokeMisc(app: App): Promise<void> {
   ok(missing.status === 404, "unknown API path → 404");
 }
 
+/* /api/site-stats: unconnected answer, the PostHog request, the page's shape,
+   the KV cache, and that nothing private leaves the route. */
+async function smokeSiteStats(app: App): Promise<void> {
+  delete process.env.POSTHOG_API_KEY;
+  const off = await jfetch(app, "/api/site-stats");
+  ok(off.status === 200 && off.json?.connected === false, "site-stats without a key → { connected: false }");
+
+  process.env.POSTHOG_API_KEY = "phx_smoke_key";
+  process.env.POSTHOG_PROJECT_ID = "533795";
+  const realFetch = globalThis.fetch;
+  const calls: { url: string; auth: string | null; query: string }[] = [];
+  globalThis.fetch = async (input: string | URL | Request, init?: RequestInit) => {
+    const url = String(input);
+    if (!url.includes("/api/projects/")) return realFetch(input, init);
+    const body = JSON.parse(String(init?.body ?? "{}"));
+    calls.push({ url, auth: new Headers(init?.headers).get("authorization"), query: body?.query?.query ?? "" });
+    return Response.json({ results: [
+      ["total", "2026-10-10", "", "", 120, 40],
+      ["day", "2026-10-09", "", "", 50, 20],
+      ["day", "2026-10-10", "", "", 70, 25],
+      ["country", "", "us", "United States", 90, 30],
+      ["country", "", "JP", "Japan", 30, 10],
+      ["page", "", "/books", "", 12, 6],
+      ["page", "", "/secret-typo", "", 3, 1],
+      ["link", "", "https://www.instagram.com/nuroctane/?ref=bb", "www.instagram.com", 4, 3],
+      ["link", "", "https://instagram.com/nuroctane", "instagram.com", 2, 2],
+      ["link", "", "javascript:alert(1)", "", 9, 9],
+    ] });
+  };
+  try {
+    const first = await jfetch(app, "/api/site-stats?range=30d");
+    const s = first.json;
+    ok(first.status === 200 && s?.connected === true && s.range?.key === "30d", "site-stats 30d connected");
+    ok(calls.length === 1 && calls[0].url.endsWith("/api/projects/533795/query/") && calls[0].auth === "Bearer phx_smoke_key",
+      "site-stats queries the configured project with the key");
+    ok(calls[0].query.includes("'nuroctane.xyz'") && calls[0].query.includes("'www.nuroctane.xyz'"), "site-stats is scoped to this site's hosts");
+    ok(Array.isArray(s.daily) && s.daily.length === 30 && s.daily[29].day === "2026-10-10" && s.daily[28].visitors === 20 && s.daily[0].views === 0,
+      "site-stats fills a continuous 30-day series ending today");
+    ok(s.totals.visitors === 40 && s.countries[0].code === "US" && s.countries[1].code === "JP", "site-stats totals and countries");
+    ok(s.pages["/books"]?.views === 12 && !("/secret-typo" in s.pages), "site-stats only publishes tracked pages");
+    ok(s.links.length === 1 && s.links[0].href === "https://instagram.com/nuroctane" && s.links[0].clicks === 6,
+      "site-stats merges link variants and drops non-http hrefs");
+    ok(!JSON.stringify(s).includes("phx_smoke_key"), "site-stats never returns the key");
+    const second = await jfetch(app, "/api/site-stats?range=30d");
+    ok(second.status === 200 && calls.length === 1, "site-stats serves the cached answer");
+    const bogus = await jfetch(app, "/api/site-stats?range=forever");
+    ok(bogus.status === 200 && bogus.json?.range?.key === "30d", "site-stats falls back to 30d for an unknown range");
+  } finally {
+    globalThis.fetch = realFetch;
+    delete process.env.POSTHOG_API_KEY;
+  }
+}
+
 async function smokeAdminSecretAliases(app: App): Promise<void> {
   process.env.BOOKS_ADMIN_PASSWORD = "smoke-books-secret";
   process.env.MODKEYS_ADMIN_PASSWORD = "smoke-modkeys-secret";
@@ -264,6 +317,7 @@ async function smokeAdminSecretAliases(app: App): Promise<void> {
   await smokeCurriculum(app);
   await smokeModkeys(app);
   await smokeMisc(app);
+  await smokeSiteStats(app);
   await smokeAdminSecretAliases(app);
   console.log(`SMOKE OK (${passed} assertions)`);
   process.exit(0);

@@ -8,11 +8,13 @@ import { BlackboardWallpaperToggle } from './BlackboardWallpaperToggle';
 import { useAdaptiveInk, useWallpaper } from './WallpaperProvider';
 import './blackboard.css';
 import './blackboard-github.css';
+import './blackboard-stats.css';
 
 // The graph only loads on /github; the home view never pays for it.
 const GithubContributions = lazy(() => import('./GithubContributions'));
+const SiteStats = lazy(() => import('./SiteStats'));
 
-export type BlackboardView = 'home' | 'github';
+export type BlackboardView = 'home' | 'github' | 'stats';
 const BTC_ADDR = 'bc1qmsexp4nygxcw0gklw346hds4gxctfley2tvn40';
 const ETH_ADDR = '0xf5386e680d5629a6e1c04bb2bfd1b79a794467f5';
 
@@ -39,9 +41,23 @@ function LibraryTab({ href, icon, label }: { href: string; icon: ReactNode; labe
 // under a 20px glyph than under the column centre the identity ink reads.
 function GithubLink({ active }: { active: boolean }) {
   const [ref, ink] = useAdaptiveInk<HTMLAnchorElement>();
-  return <Link href="/github" ref={ref} data-ink={ink} className="bb-github" aria-label="GitHub contributions" aria-current={active ? 'page' : undefined}>
+  return <Link href="/github" ref={ref} data-ink={ink} className="bb-mark bb-github" aria-label="GitHub contributions" aria-current={active ? 'page' : undefined}>
     <svg viewBox="0 0 16 16" aria-hidden="true">
       <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z" />
+    </svg>
+  </Link>;
+}
+
+// The stats mark: three columns on a baseline, stroked at the weight that
+// matches the filled GitHub mark beside it, same ink and same active dot.
+function StatsLink({ active }: { active: boolean }) {
+  const [ref, ink] = useAdaptiveInk<HTMLAnchorElement>();
+  return <Link href="/stats" ref={ref} data-ink={ink} className="bb-mark bb-stats-link" aria-label="Site statistics" aria-current={active ? 'page' : undefined}>
+    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" aria-hidden="true">
+      <path d="M2 14.2h12" strokeOpacity="0.5" />
+      <path d="M4.2 11.4V8.2" />
+      <path d="M8 11.4V3.6" />
+      <path d="M11.8 11.4V6" />
     </svg>
   </Link>;
 }
@@ -101,6 +117,7 @@ export default function Blackboard({ view = 'home' }: { view?: BlackboardView })
             </svg>
           </a>
           <GithubLink active={view === 'github'} />
+          <StatsLink active={view === 'stats'} />
           <div className="bb-wallets" data-ink={walletsInk} ref={walletsRef} aria-label="Cryptocurrency addresses">
             <div className="bb-wallet"><WalletAddress address={BTC_ADDR} chain="Bitcoin" onCopy={handleCopy} /></div>
             <div className="bb-wallet"><WalletAddress address={ETH_ADDR} chain="Ethereum" onCopy={handleCopy} /></div>
@@ -118,7 +135,16 @@ export default function Blackboard({ view = 'home' }: { view?: BlackboardView })
         inside its panel: the panel stays a pure player, and this wrapper is a
         plain layout div, so it adds no second region. /github keeps the same
         arrangement with the graph standing where the player was. */}
-    {view === 'github'
+    {view === 'stats'
+      ? <div className="bb-stats-stack">
+        <div className="bb-stats-inner">
+          <Suspense fallback={<div className="bb-stats-placeholder" aria-hidden="true" />}>
+            <SiteStats />
+          </Suspense>
+          <BlackboardWallpaperToggle />
+        </div>
+      </div>
+      : view === 'github'
       ? <div className="bb-gh-stack">
         <Suspense fallback={<div className="bb-gh-placeholder" aria-hidden="true" />}>
           <GithubContributions />

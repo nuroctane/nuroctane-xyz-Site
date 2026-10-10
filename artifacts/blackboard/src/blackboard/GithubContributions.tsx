@@ -1,6 +1,7 @@
 import { ArrowUpRight } from 'lucide-react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { createGraph, type ContributionDay, type GraphEngine } from './githubGraph';
+import { useCountUp } from './useCountUp';
 import { useAdaptiveInk, useReducedMotion } from './WallpaperProvider';
 
 /* ═══════════════════════════════════════════════════════════════════════════
@@ -52,30 +53,6 @@ function useContributions() {
   }, [attempt]);
   const retry = useCallback(() => setAttempt(value => value + 1), []);
   return { ...state, retry };
-}
-
-const easeOutCubic = (t: number) => 1 - (1 - t) ** 3;
-
-/** Counts up from zero once, then holds. Reduced motion lands on the total. */
-function useCountUp(target: number, reduced: boolean): number {
-  const [value, setValue] = useState(reduced ? target : 0);
-  useEffect(() => {
-    if (reduced || target <= 0) {
-      setValue(target);
-      return undefined;
-    }
-    const start = performance.now();
-    const DURATION = 1400;
-    let frame = 0;
-    const tick = (now: number) => {
-      const t = Math.min(1, Math.max(0, (now - start) / DURATION));
-      setValue(Math.round(target * easeOutCubic(t)));
-      if (t < 1) frame = requestAnimationFrame(tick);
-    };
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [target, reduced]);
-  return value;
 }
 
 const formatDay = (iso: string) =>

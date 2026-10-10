@@ -7,6 +7,7 @@ import curriculumRouter from "./curriculum";
 import githubContribRouter from "./github-contrib";
 import nurCliVersionRouter from "./nur-cli-version";
 import observatoryRouter from "./observatory";
+import siteStatsRouter from "./site-stats";
 
 const router = new Hono();
 
@@ -18,5 +19,6 @@ router.route("/", booksRouter);
 router.route("/", curriculumRouter);
 router.route("/", githubContribRouter);
 router.route("/", observatoryRouter);
+router.route("/", siteStatsRouter);
 
 export default router;

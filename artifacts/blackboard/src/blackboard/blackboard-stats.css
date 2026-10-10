@@ -1,0 +1,110 @@
+/* /stats: the /github page's vocabulary at reading length. Everything stands on
+   the wallpaper and resolves its own ink; only the peer tiles get a pane of
+   glass, tinted toward the opposite pole so their numbers hold on any plate.
+
+   Unlike the player and the graph this view is taller than a screen, so it is
+   its own scroll column between the header and the dock: the dock stays put
+   and the column fades out at both edges rather than ending in a hard cut. */
+.bb-stats-stack {
+  position: fixed;
+  top: 84px;
+  bottom: calc(max(var(--bb-margin), env(safe-area-inset-bottom)) + 66px);
+  left: 50%;
+  z-index: 1;
+  width: min(60rem, calc(100% - 2 * (var(--bb-margin) + 1.75rem)));
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  transform: translateX(-50%);
+  -webkit-mask-image: linear-gradient(180deg, transparent, #000 22px, #000 calc(100% - 22px), transparent);
+  mask-image: linear-gradient(180deg, transparent, #000 22px, #000 calc(100% - 22px), transparent);
+}
+.bb-stats-stack::-webkit-scrollbar { display: none; }
+/* Short content sits centred; long content scrolls from the top. */
+.bb-stats-inner { display: flex; min-height: 100%; flex-direction: column; align-items: center; gap: 14px; padding: 26px 0 30px; }
+.bb-stats-inner > .bb-stats { margin-block: auto; }
+.bb-stats-placeholder { width: 100%; height: 22rem; }
+
+.bb-stats { display: grid; justify-items: center; gap: 14px; width: 100%; transition: opacity 180ms ease; }
+.bb-stats[data-pending='true'] { opacity: .55; }
+
+/* Hero — the one number this view leads with. */
+.bb-stats-hero { display: grid; justify-items: center; gap: 4px; color: var(--bb-ink); text-align: center; }
+.bb-stats-count { font-size: clamp(2.5rem, 7vw, 3.75rem); font-weight: 400; line-height: 1; letter-spacing: -0.06em; }
+.bb-stats-count[data-ready='false'] { color: var(--bb-plate-quiet); letter-spacing: .1em; }
+.bb-stats-caption { color: var(--bb-plate-quiet); font-size: .75rem; letter-spacing: .01em; }
+.bb-stats-sub { color: var(--bb-plate-quiet); font-size: .5625rem; letter-spacing: .14em; text-transform: uppercase; }
+
+/* Range — one row above everything it scopes. The active preset carries the
+   same 3px dot as the active page tabs. */
+.bb-stats-range { display: inline-flex; gap: 4px; padding: 3px; border: 1px solid var(--bb-edge); border-radius: 10px; }
+.bb-stats-range button { position: relative; min-width: 48px; min-height: 32px; padding: 6px 10px 9px; border: 1px solid transparent; border-radius: 7px; color: var(--bb-plate-quiet); background: transparent; font: inherit; font-size: .6875rem; letter-spacing: .08em; cursor: pointer; transition: color 120ms ease, background 120ms ease, border-color 120ms ease, transform 120ms var(--bb-ease); }
+.bb-stats-range button[aria-pressed='true'] { color: var(--bb-ink); background: var(--bb-hover); border-color: var(--bb-edge); }
+.bb-stats-range button[aria-pressed='true']::after { position: absolute; left: 50%; bottom: 3px; width: 3px; height: 3px; border-radius: 50%; background: currentColor; content: ''; transform: translateX(-50%); }
+.bb-stats-range button:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) { .bb-stats-range button:hover { color: var(--bb-ink); } }
+
+.bb-stats-body { display: grid; gap: 14px; width: 100%; }
+
+/* Chart — drawn in currentColor, so it is the ink. Recessive hairline grid,
+   a 2px line, a wash of fill that fades toward the baseline. */
+.bb-stats-chart { display: grid; gap: 6px; width: 100%; color: var(--bb-ink); }
+.bb-stats-plot { position: relative; height: clamp(9.5rem, 24vh, 14rem); border-radius: 10px; cursor: crosshair; touch-action: pan-y; outline: none; }
+.bb-stats-plot:focus-visible { box-shadow: 0 0 0 1px var(--bb-edge-strong); }
+.bb-stats-plot svg { display: block; overflow: visible; }
+.bb-stats-grid line { stroke: currentColor; stroke-opacity: .12; stroke-width: 1; shape-rendering: crispEdges; }
+.bb-stats-grid text { fill: var(--bb-plate-quiet); font: 500 .5625rem/1 'JetBrains Mono', ui-monospace, monospace; letter-spacing: .04em; }
+.bb-stats-line { fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; stroke-dasharray: 1; animation: bb-stats-draw 1100ms var(--bb-ease) both; }
+.bb-stats-area { animation: bb-stats-fade 700ms 250ms var(--bb-ease) both; }
+.bb-stats-glint { pointer-events: none; }
+.bb-stats-cross { stroke: currentColor; stroke-opacity: .35; stroke-width: 1; shape-rendering: crispEdges; }
+.bb-stats-dot { fill: currentColor; filter: drop-shadow(0 0 1.5px var(--bb-halo, rgb(0 0 0 / 42%))); }
+@keyframes bb-stats-draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+@keyframes bb-stats-fade { from { opacity: 0; } to { opacity: 1; } }
+.bb-stats-axis { display: flex; justify-content: space-between; color: var(--bb-plate-quiet); font-size: .5625rem; letter-spacing: .06em; }
+
+.bb-stats-readout { min-height: 1.6em; margin: 0; overflow: hidden; color: var(--bb-plate-quiet); font-size: .625rem; letter-spacing: .03em; text-align: center; text-overflow: ellipsis; white-space: nowrap; }
+.bb-stats-readout strong { color: var(--bb-ink); font-weight: 500; }
+
+/* Tiles — peer numbers, so they are the one place a pane of glass belongs. */
+.bb-stat-tiles { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 8px; width: 100%; margin: 0; }
+.bb-stat-tile { --bb-glass: rgb(0 0 0 / 22%); display: grid; gap: 6px; min-width: 0; padding: 12px 12px 11px; border: 1px solid var(--bb-edge); border-radius: 10px; color: var(--bb-ink); background: linear-gradient(145deg, var(--bb-sheen), transparent 70%), var(--bb-glass); box-shadow: inset 0 1px 0 var(--bb-sheen); backdrop-filter: blur(14px) saturate(120%); -webkit-backdrop-filter: blur(14px) saturate(120%); }
+.bb-stat-tile[data-ink='dark'] { --bb-glass: rgb(255 255 255 / 30%); }
+.bb-stat-tile dt { overflow: hidden; color: var(--bb-plate-quiet); font-size: .625rem; letter-spacing: .02em; text-overflow: ellipsis; white-space: nowrap; }
+.bb-stat-tile dd { display: grid; gap: 2px; margin: 0; }
+.bb-stat-value { font-size: 1.375rem; line-height: 1.05; letter-spacing: -0.04em; }
+.bb-stat-sub { overflow: hidden; color: var(--bb-plate-quiet); font-size: .5625rem; letter-spacing: .04em; text-overflow: ellipsis; white-space: nowrap; }
+
+/* Bar lists — magnitude, one hue: label and value on a line, a 4px bar
+   beneath, rounded at the data end and square at the baseline. */
+.bb-stats-lists { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; width: 100%; }
+.bb-stats-list { min-width: 0; color: var(--bb-ink); }
+.bb-stats-list h3 { margin: 0 0 10px; color: var(--bb-plate-quiet); font-size: .625rem; font-weight: 500; letter-spacing: .14em; text-transform: uppercase; }
+.bb-stats-list ol { display: grid; gap: 9px; margin: 0; padding: 0; list-style: none; }
+.bb-stats-list li { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; gap: 4px 10px; font-size: .6875rem; }
+.bb-stats-row-label { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bb-stats-row-value { font-variant-numeric: tabular-nums; }
+.bb-stats-bar { grid-column: 1 / -1; display: block; height: 4px; overflow: hidden; border-radius: 0 2px 2px 0; background: color-mix(in srgb, currentColor 10%, transparent); }
+.bb-stats-bar i { display: block; height: 100%; border-radius: 0 2px 2px 0; background: currentColor; opacity: .78; transform-origin: left center; animation: bb-stats-grow 700ms calc(var(--i, 0) * 45ms + 150ms) var(--bb-ease) both; }
+@keyframes bb-stats-grow { from { transform: scaleX(0); } }
+.bb-stats-empty { margin: 0; color: var(--bb-plate-quiet); font-size: .625rem; }
+
+.bb-stats-foot { margin: 0; color: var(--bb-faint); font-size: .5625rem; letter-spacing: .06em; text-align: center; }
+.bb-stats-status { display: grid; justify-items: center; gap: 10px; padding: 2rem 0; color: var(--bb-plate-quiet); font-size: .625rem; letter-spacing: .14em; text-transform: uppercase; }
+.bb-stats-status p { margin: 0; }
+
+@media (max-width: 900px) {
+  .bb-stat-tiles { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 680px) {
+  .bb-stats-stack { top: 118px; }
+  .bb-stat-tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bb-stats-lists { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+  .bb-stats-plot { height: clamp(8.5rem, 26vh, 11rem); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bb-stats-line, .bb-stats-area, .bb-stats-bar i { animation: none; }
+}
+@media (prefers-reduced-transparency: reduce) {
+  .bb-stat-tile { backdrop-filter: none; -webkit-backdrop-filter: none; }
+}
