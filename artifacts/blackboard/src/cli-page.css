@@ -1957,22 +1957,7 @@ html.standalone-active.cli-theme body {
 
 /* Sticky chrome ------------------------------------------------------------ */
 
-.cli-audio {
-  position: fixed;
-  top: max(0.75rem, env(safe-area-inset-top));
-  right: max(0.75rem, env(safe-area-inset-right));
-  z-index: 60;
-}
-
-.cli-audio .audio-control.bb-audio-control .audio-btn {
-  width: 44px;
-  height: 44px;
-}
-
-.cli-audio .audio-label,
-.cli-audio .audio-slider-wrap {
-  display: none;
-}
+/* The mute control is the sitewide one (.site-mute, blackboard.css). */
 
 @media (max-width: 640px) {
   .cli-page .cli-jump {

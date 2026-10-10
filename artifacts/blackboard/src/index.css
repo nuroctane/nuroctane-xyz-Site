@@ -2254,11 +2254,11 @@ html.standalone-active body {
   transform: translateX(0);
 }
 
-.observatory-audio {
-  position: fixed;
-  top: calc(50% + 54px);
-  right: 1rem;
-  z-index: 1000;
+/* Room at the top right for the sitewide mute (.site-mute): the HUD's top
+   bar otherwise runs to the edge and its right-hand controls sat under it. */
+.observatory-page .obs-top,
+.observatory-page .obs-top--unified {
+  right: calc(max(0.75rem, env(safe-area-inset-right)) + 56px);
 }
 
 @media (max-width: 640px) {
@@ -2274,10 +2274,6 @@ html.standalone-active body {
     opacity: 0.82;
   }
 
-  .observatory-audio {
-    top: max(3.6rem, calc(env(safe-area-inset-top) + 3.6rem));
-    right: 0.55rem;
-  }
 }
 
 /* Resume Blackboard treatment. The resume remains direct-route only, but its

@@ -2,10 +2,15 @@
    Everything here sits directly on the wallpaper, so each surface carries its
    own data-ink and reads the on-plate tones (--bb-ink, --bb-plate-quiet),
    never the panel-only --bb-muted. */
-/* Inset past the wallet rail on both sides (it is fixed at the left edge,
-   mid-height): the player's opaque glass could cover it, but the graph is
-   transparent and would show the addresses through its left end. */
-.bb-gh-stack { position: fixed; top: 50%; left: 50%; z-index: 1; display: grid; justify-items: center; gap: 10px; width: min(52rem, calc(100% - 2 * (var(--bb-margin) + 1.75rem))); transform: translate(-50%, -50%); }
+/* Lives in the shell's free band (--bb-band-*): clear of the icon column and
+   the wallet rail at the side, the header above and the dock below. */
+.bb-gh-stack { position: fixed; top: var(--bb-band-top); bottom: var(--bb-band-bottom); left: 50%; z-index: 1; display: flex; flex-direction: column; align-items: center; gap: 10px; width: min(52rem, calc(100% - 2 * var(--bb-band-inset))); padding-block: 12px; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: none; transform: translateX(-50%); }
+.bb-gh-stack::-webkit-scrollbar { display: none; }
+/* Centred in the band while it fits; scrolls from the top once it doesn't
+   (auto margins collapse to zero on overflow, where centring would cut the
+   top off out of reach). A landscape phone is the case that needs it. */
+.bb-gh-stack > :first-child { margin-top: auto; }
+.bb-gh-stack > :last-child { margin-bottom: auto; }
 .bb-gh { display: grid; justify-items: center; gap: 6px; width: 100%; }
 /* Holds the stack's height while the chunk loads, so the switcher below it
    does not jump when the graph arrives. */
@@ -27,7 +32,11 @@
 /* No backing panel: the wallpaper is the background and the bars are the
    glass. `color` is what the canvas paints with, so the graph follows the
    same ink cross-fade as the type. */
-.bb-gh-stage { position: relative; width: 100%; height: clamp(13rem, 42vh, 24rem); border-radius: 14px; color: var(--bb-ink); }
+/* The graph takes what the band has left once the counter, readout and
+   switcher are in (~200px desktop, ~180px phone), so a short window or an
+   in-app browser shows the whole view instead of the graph running under
+   the dock. Floors keep it a graph; below them the band scrolls. */
+.bb-gh-stage { position: relative; width: 100%; height: max(10rem, min(clamp(13rem, 42vh, 24rem), calc(100vh - var(--bb-band-top) - 282px))); height: max(10rem, min(clamp(13rem, 42vh, 24rem), calc(100dvh - var(--bb-band-top) - 282px))); border-radius: 14px; color: var(--bb-ink); }
 .bb-gh-stage canvas { display: block; width: 100%; height: 100%; outline: none; cursor: grab; touch-action: none; -webkit-tap-highlight-color: transparent;
   /* Zooming in can carry the grid past the stage; it fades out rather than
      ending at a hard edge. */
@@ -54,14 +63,13 @@
 
 @media (max-width: 680px) {
   .bb-gh-stack { gap: 6px; }
-  .bb-gh-stage { height: clamp(12rem, 38vh, 19rem); }
+  .bb-gh-stage { height: max(9rem, min(clamp(12rem, 38vh, 19rem), calc(100vh - var(--bb-band-top) - 262px))); height: max(9rem, min(clamp(12rem, 38vh, 19rem), calc(100dvh - var(--bb-band-top) - 262px))); }
   .bb-gh-placeholder { height: calc(clamp(12rem, 38vh, 19rem) + 7rem); }
   .bb-gh-readout { font-size: .5625rem; }
 }
 /* Short landscape screens: the header and dock leave little middle. */
 @media (max-height: 560px) {
   .bb-gh-count { font-size: 1.75rem; }
-  .bb-gh-stage { height: 44vh; }
   .bb-gh-placeholder { height: calc(44vh + 5.5rem); }
 }
 @media (prefers-reduced-motion: reduce) {

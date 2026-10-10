@@ -1,6 +1,5 @@
 import { useEffect } from 'react';
 import { StandaloneNav } from './StandaloneNav';
-import { MiniAudio } from '../components/hud/MiniAudio';
 import ObservatoryApp from '../observatory/ObservatoryApp';
 
 export default function ObservatoryPage() {
@@ -16,9 +15,6 @@ export default function ObservatoryPage() {
     <main className="observatory-page">
       <ObservatoryApp />
       <StandaloneNav />
-      <div className="observatory-audio">
-        <MiniAudio />
-      </div>
     </main>
   );
 }

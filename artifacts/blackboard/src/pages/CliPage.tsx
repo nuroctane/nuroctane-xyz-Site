@@ -11,7 +11,6 @@ import {
 } from "react";
 import { StandaloneNav } from "./StandaloneNav";
 import { ScrollToTop } from "../components/hud/ScrollToTop";
-import { MiniAudio } from "../components/hud/MiniAudio";
 import { useStandaloneScroll } from "../hooks/useStandaloneScroll";
 import { trackEvent } from "../lib/analytics";
 import { NurArchitectureMap } from "../components/NurArchitectureMap";
@@ -2786,9 +2785,6 @@ export default function CliPage() {
       </a>
       <ScrollToTop />
       <StandaloneNav />
-      <div className="cli-audio">
-        <MiniAudio />
-      </div>
 
       {/* sticky jump rail */}
       <JumpRail

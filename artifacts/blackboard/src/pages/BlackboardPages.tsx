@@ -13,6 +13,7 @@ import { blogPosts } from '../data/blogPosts';
 import { ScrollToTop } from '../components/hud/ScrollToTop';
 import { BlackboardWallpaper } from '../blackboard/BlackboardWallpaper';
 import { useWallpaper } from '../blackboard/WallpaperProvider';
+import { GithubGlyph, StatsGlyph } from '../blackboard/marks';
 import './blackboard-pages.css';
 
 type Book = { title: string; author: string; read: boolean; note?: string; visitor?: boolean; coverUrl?: string; description?: string; year?: string; source?: string; sourceUrl?: string; dateAdded?: string; sessionId?: string };
@@ -88,7 +89,7 @@ function LibraryChrome({ active, children }: { active: 'books' | 'quotes' | 'blo
   const { variant } = useWallpaper();
   // The reading surfaces keep the full dark scrim (see blackboard-pages.css),
   // so their ink stays on the light pole rather than following the photo.
-  return <main className="bb-library" data-wallpaper={variant} data-ink="light"><BlackboardWallpaper /><ScrollToTop /><header className="bb-library-header"><Link className="bb-library-home" href="/" aria-label="Back to Blackboard"><img src="/assets/nodes/site-logo-avatar.webp" alt="" width="42" height="48" /></Link><nav className="bb-library-tabs" aria-label="Library navigation"><Link className={active === 'books' ? 'is-active' : ''} aria-current={active === 'books' ? 'page' : undefined} href="/books"><BookOpen aria-hidden="true" /> Books</Link><Link className={active === 'quotes' ? 'is-active' : ''} aria-current={active === 'quotes' ? 'page' : undefined} href="/quotes"><Quote aria-hidden="true" /> Quotes</Link><Link className={active === 'blog' ? 'is-active' : ''} aria-current={active === 'blog' ? 'page' : undefined} href="/blog"><FileText aria-hidden="true" /> Blog</Link></nav></header><section className="bb-library-content">{children}</section></main>;
+  return <main className="bb-library" data-wallpaper={variant} data-ink="light"><BlackboardWallpaper /><ScrollToTop /><header className="bb-library-header"><Link className="bb-library-home" href="/" aria-label="Back to Blackboard"><img src="/assets/nodes/site-logo-avatar.webp" alt="" width="42" height="48" /></Link><nav className="bb-library-tabs" aria-label="Library navigation"><Link className="bb-library-mark" href="/stats" aria-label="Site statistics"><StatsGlyph /></Link><Link className={active === 'books' ? 'is-active' : ''} aria-current={active === 'books' ? 'page' : undefined} href="/books"><BookOpen aria-hidden="true" /> Books</Link><Link className={active === 'quotes' ? 'is-active' : ''} aria-current={active === 'quotes' ? 'page' : undefined} href="/quotes"><Quote aria-hidden="true" /> Quotes</Link><Link className={active === 'blog' ? 'is-active' : ''} aria-current={active === 'blog' ? 'page' : undefined} href="/blog"><FileText aria-hidden="true" /> Blog</Link><Link className="bb-library-mark" href="/github" aria-label="GitHub contributions"><GithubGlyph /></Link></nav></header><section className="bb-library-content">{children}</section></main>;
 }
 
 function BookModal({ book, onClose, onToggle, onDelete }: { book: Book; onClose: () => void; onToggle?: () => void; onDelete?: () => void }) {

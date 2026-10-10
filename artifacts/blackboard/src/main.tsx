@@ -5,6 +5,7 @@ import Blackboard from './blackboard/Blackboard';
 import { WallpaperProvider } from './blackboard/WallpaperProvider';
 import { SITE_MODE } from './config/siteMode';
 import { AudioProvider } from './hooks/AudioContext';
+import { SiteMute } from './components/hud/SiteMute';
 import { resolveAnalytics, trackEvent, wireOutboundLinks } from './lib/analytics';
 import { initPostHog, capturePageview } from './lib/posthog';
 import { applyDocumentMeta, resolvePageMeta } from './lib/pageMeta';
@@ -144,6 +145,7 @@ createRoot(document.getElementById('root')!).render(
       <WallpaperProvider>
         <Root />
       </WallpaperProvider>
+      <SiteMute />
       <Telemetry />
     </AudioProvider>
   </Router>,

@@ -14,6 +14,23 @@
    It sits inside the active tab's glass, in the bottom padding under the label
    (the GitHub mark has no glass of its own, so its dot hangs beneath it). */
 .bb-library-tabs a { position: relative; }
+/* Stats to the left of the tabs, GitHub to the right: the same two marks as
+   the Blackboard's icon column, at its 20px and .82 ink, in a tab-height
+   target that takes the tabs' glass on hover. */
+.bb-library-tabs a.bb-library-mark { justify-content: center; width: 44px; padding: 0; color: #f2f2f2; opacity: .82; transition: opacity 120ms ease, background 120ms ease, border-color 120ms ease, transform 120ms var(--bb-ease, cubic-bezier(0.23, 1, 0.32, 1)); }
+.bb-library-tabs a.bb-library-mark svg { width: 20px; height: 20px; filter: drop-shadow(0 0 1.5px rgb(0 0 0 / 42%)); }
+.bb-library-tabs a.bb-library-mark:hover { opacity: 1; }
+.bb-library-tabs a.bb-library-mark:active { transform: scale(.94); }
+/* Five targets have to fit a phone row: tighter tabs first, then the tab
+   icons go (the labels say the same thing). */
+@media (max-width: 480px) {
+  .bb-library-tabs { gap: 4px; }
+  .bb-library-tabs a:not(.bb-library-mark) { gap: 6px; padding-inline: 8px; }
+  .bb-library-tabs a.bb-library-mark { width: 36px; }
+}
+@media (max-width: 360px) {
+  .bb-library-tabs a:not(.bb-library-mark) svg { display: none; }
+}
 .bb-library-tabs a.is-active::after { position: absolute; left: 50%; bottom: 5px; width: 3px; height: 3px; border-radius: 50%; background: currentColor; box-shadow: 0 0 1.5px rgb(0 0 0 / 42%); content: ''; transform: translateX(-50%); pointer-events: none; }
 .bb-library-content { width: min(calc(100% - 2rem), 1080px); min-width: 0; margin: 0 auto; padding: clamp(3.5rem, 9vw, 7rem) 0 6rem; }
 .bb-library-intro { max-width: 720px; margin-bottom: 2rem; }

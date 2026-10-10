@@ -12,6 +12,12 @@
   --bb-radius: 12px;
   --bb-margin: clamp(1rem, 3vw, 2.5rem);
   --bb-ease: cubic-bezier(0.23, 1, 0.32, 1);
+  /* The free band the tall centre views (/github, /stats) live in: below the
+     header, above the dock, and clear of the icon column at its left (its
+     58px plus a gap, at its own clamp offset). */
+  --bb-band-top: 84px;
+  --bb-band-bottom: calc(max(var(--bb-margin), env(safe-area-inset-bottom)) + 66px);
+  --bb-band-inset: calc(clamp(1rem, 4vw, 4rem) + 72px);
   position: fixed;
   inset: 0;
   overflow: auto;
@@ -160,8 +166,14 @@
   inset: 0;
   left: 0;
   right: 0;
-  z-index: 1;
+  /* Above every centre stack, but only its controls catch the pointer: the
+     box itself covers the viewport. A stack that ran under the icon column
+     (the /stats column on iPad widths, /github on a landscape phone) used to
+     swallow every click on Cal, GitHub and stats. */
+  z-index: 2;
+  pointer-events: none;
 }
+.bb-identity, .bb-top-tabs { pointer-events: auto; }
 .bb-header-row { position: relative; display: grid; grid-template-columns: 1fr auto 1fr; grid-template-rows: 58px; align-items: center; gap: 1rem; width: 100%; min-height: 58px; padding: 12px clamp(1rem, 4vw, 4rem); }
 /* One even rhythm down the column: 10px clears an active mark's dot (it hangs
    6px below) without singling out the gap after it. */
@@ -341,6 +353,20 @@
 .bb-link--disabled { color: var(--bb-muted); }
 .bb-links .bb-link:focus-visible { outline-offset: -2px; }
 .audio-control.bb-audio-control { align-items: center; gap: 4px; color: var(--bb-ink, #f2f2f2); }
+/* The sitewide mute: NurCLI's icon-only glass square, top right of every
+   Blackboard page. Label and slider stay off; the button is the control. */
+.site-mute { position: fixed; top: max(0.75rem, env(safe-area-inset-top)); right: max(0.75rem, env(safe-area-inset-right)); z-index: 60; }
+.site-mute .audio-control.bb-audio-control .audio-btn { width: 44px; height: 44px; }
+.site-mute .audio-label, .site-mute .audio-slider-wrap { display: none; }
+/* MODKEYS has its own top bar (72px desktop, ~54px phone shell) with a theme
+   toggle at its right end: sit centred in the bar and push the bar's icons in. */
+.site-mute--modkeys { top: 13px; }
+.modkeys-page .topbar { padding-right: calc(28px + 56px); }
+@media (max-width: 768px), ((pointer: coarse) and (max-width: 1024px)) {
+  .site-mute--modkeys { top: calc(5px + env(safe-area-inset-top, 0px)); }
+  .modkeys-page .mShell .mHead { padding-right: calc(12px + 52px); }
+}
+@media print { .site-mute { display: none; } }
 .audio-control.bb-audio-control .audio-row { clip-path: none; border: 1px solid rgb(255 255 255 / 14%); border-radius: 8px; background: rgb(20 20 20 / 88%); box-shadow: inset 0 1px 0 rgb(255 255 255 / 8%), 0 8px 24px rgb(0 0 0 / 22%); backdrop-filter: blur(14px) saturate(120%); -webkit-backdrop-filter: blur(14px) saturate(120%); }
 .audio-control.bb-audio-control .audio-btn { width: 32px; height: 32px; color: #a0a0a0; }
 .audio-control.bb-audio-control .audio-btn:hover, .audio-control.bb-audio-control .audio-on { color: #f2f2f2; background: rgb(255 255 255 / 8%); }
@@ -387,8 +413,16 @@
   [data-ink='dark'] { --bb-edge: #000; --bb-muted: #1a1a1a; }
 }
 @media (max-width: 680px) {
+  /* The icons become a row on top and the tabs a second row (12 + 68 + 66 =
+     146px), so the band starts under both; only the wallet rail is left to
+     clear at the side. */
+  .blackboard { --bb-band-top: 152px; --bb-band-inset: calc(var(--bb-margin) + 1.75rem); }
   .bb-identity { width: auto; flex-direction: row; align-items: center; gap: 8px; }
-  .bb-header-row { grid-template-columns: auto 1fr; grid-template-rows: 58px 44px; }
+  /* Rows sized to what is actually in them: the avatar and the tabs are
+     content-box (padding on top of their min-height), 68px and 66px. 58/44
+     let the tabs overflow upward under the icon row, which then took the
+     taps on the top edge of Books and Quotes. */
+  .bb-header-row { grid-template-columns: auto 1fr; grid-template-rows: 68px 66px; row-gap: 0; }
   .bb-top-tabs { grid-column: 1 / -1; grid-row: 2; }
   .bb-player-stack { width: min(18.5rem, calc(100% - 2.5rem)); }
   .bb-player { padding: .85rem .9rem .75rem; gap: .75rem; }

@@ -1,6 +1,5 @@
 import { useEffect, useMemo, type ReactNode } from 'react';
 import { StandaloneNav } from './StandaloneNav';
-import { MiniAudio } from '../components/hud/MiniAudio';
 import { ScrollToTop } from '../components/hud/ScrollToTop';
 import { useStandaloneScroll } from '../hooks/useStandaloneScroll';
 import { trackEvent } from '../lib/analytics';
@@ -556,7 +555,6 @@ export default function ResumePage() {
       <StandaloneNav />
       <div className="standalone-header">
         <span className="standalone-prefix">SYS://</span>RESUME
-        <MiniAudio />
       </div>
 
       <header className="resume-hero">
