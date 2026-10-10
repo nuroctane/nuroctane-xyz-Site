@@ -36,10 +36,20 @@
   mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent), linear-gradient(180deg, transparent, #000 6%, #000 94%, transparent);
   mask-composite: intersect; }
 .bb-gh-stage canvas:active { cursor: grabbing; }
+/* The graph arrives with the data; a fade keeps it from popping in over the
+   status line it replaces. Opacity only, so reduced motion keeps it too. */
+.bb-gh-stage canvas { transition: opacity 240ms var(--bb-ease); }
+@starting-style { .bb-gh-stage canvas { opacity: 0; } }
 .bb-gh-stage:has(canvas:focus-visible) { box-shadow: 0 0 0 1px var(--bb-edge-strong); }
-.bb-gh-status { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; color: var(--bb-plate-quiet); font-size: .625rem; letter-spacing: .14em; text-transform: uppercase; }
+.bb-gh-status { position: absolute; inset: 0; display: grid; place-content: center; justify-items: center; gap: 10px; margin: 0; color: var(--bb-plate-quiet); font-size: .625rem; letter-spacing: .14em; text-transform: uppercase; }
+.bb-gh-status p { margin: 0; }
+.bb-gh-retry { min-height: 32px; padding: 0 12px; border: 1px solid var(--bb-edge-strong); border-radius: 7px; color: var(--bb-ink); background: transparent; font: inherit; letter-spacing: .08em; cursor: pointer; transition: background 120ms ease, transform 120ms var(--bb-ease); }
+.bb-gh-retry:active { transform: scale(.97); }
+@media (hover: hover) and (pointer: fine) { .bb-gh-retry:hover { background: var(--bb-hover); } }
 
-.bb-gh-readout { min-height: 1.6em; margin: 0; color: var(--bb-plate-quiet); font-size: .625rem; letter-spacing: .03em; text-align: center; font-variant-numeric: tabular-nums; }
+/* Always one line: it swaps between the hint and a day on every hover, and a
+   wrap would shift the switcher beneath it each time. */
+.bb-gh-readout { max-width: 100%; min-height: 1.6em; margin: 0; overflow: hidden; color: var(--bb-plate-quiet); font-size: .625rem; letter-spacing: .03em; text-align: center; text-overflow: ellipsis; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .bb-gh-readout strong { color: var(--bb-ink); font-weight: 500; }
 
 @media (max-width: 680px) {

@@ -172,10 +172,13 @@
 .bb-cal svg { width: 16px; height: 16px; }
 /* The mark is the ink itself at .82, which is exactly the near-white raster it
    replaced on the light pole and a near-black one on the dark pole. */
-.bb-github { display: grid; place-items: center; align-self: center; margin-left: 0; width: 20px; height: 20px; color: var(--bb-ink); opacity: .82; transition: color 120ms ease, opacity 120ms ease, transform 120ms var(--bb-ease); }
+.bb-github { position: relative; display: grid; place-items: center; align-self: center; margin-left: 0; width: 20px; height: 20px; color: var(--bb-ink); opacity: .82; transition: color 120ms ease, opacity 120ms ease, transform 120ms var(--bb-ease); }
 .bb-github svg { width: 20px; height: 20px; filter: drop-shadow(0 0 1.5px var(--bb-halo, rgb(0 0 0 / 42%))); }
 .bb-github:hover, .bb-github[aria-current='page'] { opacity: 1; }
-.bb-github:hover { transform: translateY(-1px); }
+@media (hover: hover) and (pointer: fine) { .bb-github:hover { transform: translateY(-1px); } }
+.bb-github:active { transform: scale(.94); }
+/* You are here: full ink alone is too close to the resting .82 to read. */
+.bb-github[aria-current='page']::after { position: absolute; left: 50%; bottom: -6px; width: 3px; height: 3px; border-radius: 50%; background: currentColor; box-shadow: 0 0 1.5px var(--bb-halo, rgb(0 0 0 / 42%)); content: ''; transform: translateX(-50%); }
 .bb-wallets { position: fixed; top: 50%; left: max(var(--bb-margin), env(safe-area-inset-left)); display: grid; grid-template-columns: 1fr 1fr; align-self: flex-start; gap: 8px; margin-top: 0; color: var(--bb-faint, #777); transform: translateY(-50%); }
 .bb-wallet { display: flex; flex-direction: column; align-items: center; gap: 4px; }
 .bb-wallet-address { display: flex; flex-direction: column; align-items: center; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; font-size: .42rem; line-height: 1.25; letter-spacing: .02em; user-select: none; cursor: copy; }
