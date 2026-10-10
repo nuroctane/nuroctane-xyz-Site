@@ -1,0 +1,59 @@
+/* /github: the contribution graph in the player's place, the count above it.
+   Everything here sits directly on the wallpaper, so each surface carries its
+   own data-ink and reads the on-plate tones (--bb-ink, --bb-plate-quiet),
+   never the panel-only --bb-muted. */
+/* Inset past the wallet rail on both sides (it is fixed at the left edge,
+   mid-height): the player's opaque glass could cover it, but the graph is
+   transparent and would show the addresses through its left end. */
+.bb-gh-stack { position: fixed; top: 50%; left: 50%; z-index: 1; display: grid; justify-items: center; gap: 10px; width: min(52rem, calc(100% - 2 * (var(--bb-margin) + 1.75rem))); transform: translate(-50%, -50%); }
+.bb-gh { display: grid; justify-items: center; gap: 6px; width: 100%; }
+/* Holds the stack's height while the chunk loads, so the switcher below it
+   does not jump when the graph arrives. */
+.bb-gh-placeholder { width: 100%; height: calc(clamp(13rem, 42vh, 24rem) + 7.5rem); }
+
+.bb-gh-counter { display: grid; justify-items: center; gap: 4px; padding: 8px 16px 10px; border: 1px solid transparent; border-radius: 10px; color: var(--bb-ink); text-align: center; transition: background 120ms ease, border-color 120ms ease, transform 120ms var(--bb-ease); }
+.bb-gh-count { font-size: clamp(2.25rem, 6vw, 3.25rem); font-weight: 400; line-height: 1; letter-spacing: -0.06em; font-variant-numeric: tabular-nums; }
+.bb-gh-count[data-ready='false'] { color: var(--bb-plate-quiet); letter-spacing: 0.1em; }
+.bb-gh-caption { color: var(--bb-plate-quiet); font-size: .75rem; letter-spacing: .01em; }
+.bb-gh-handle { display: inline-flex; align-items: center; gap: 3px; color: var(--bb-plate-quiet); font-size: .5625rem; letter-spacing: .14em; text-transform: uppercase; transition: color 120ms ease; }
+.bb-gh-handle svg { width: 11px; height: 11px; stroke-width: 1.5; transition: transform 120ms var(--bb-ease); }
+.bb-gh-counter:active { transform: scale(.98); }
+@media (hover: hover) and (pointer: fine) {
+  .bb-gh-counter:hover { border-color: var(--bb-edge); background: var(--bb-hover); }
+  .bb-gh-counter:hover .bb-gh-handle { color: var(--bb-ink); }
+  .bb-gh-counter:hover .bb-gh-handle svg { transform: translate(1px, -1px); }
+}
+
+/* No backing panel: the wallpaper is the background and the bars are the
+   glass. `color` is what the canvas paints with, so the graph follows the
+   same ink cross-fade as the type. */
+.bb-gh-stage { position: relative; width: 100%; height: clamp(13rem, 42vh, 24rem); border-radius: 14px; color: var(--bb-ink); }
+.bb-gh-stage canvas { display: block; width: 100%; height: 100%; outline: none; cursor: grab; touch-action: none; -webkit-tap-highlight-color: transparent;
+  /* Zooming in can carry the grid past the stage; it fades out rather than
+     ending at a hard edge. */
+  -webkit-mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent), linear-gradient(180deg, transparent, #000 6%, #000 94%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-image: linear-gradient(90deg, transparent, #000 5%, #000 95%, transparent), linear-gradient(180deg, transparent, #000 6%, #000 94%, transparent);
+  mask-composite: intersect; }
+.bb-gh-stage canvas:active { cursor: grabbing; }
+.bb-gh-stage:has(canvas:focus-visible) { box-shadow: 0 0 0 1px var(--bb-edge-strong); }
+.bb-gh-status { position: absolute; inset: 0; display: grid; place-items: center; margin: 0; color: var(--bb-plate-quiet); font-size: .625rem; letter-spacing: .14em; text-transform: uppercase; }
+
+.bb-gh-readout { min-height: 1.6em; margin: 0; color: var(--bb-plate-quiet); font-size: .625rem; letter-spacing: .03em; text-align: center; font-variant-numeric: tabular-nums; }
+.bb-gh-readout strong { color: var(--bb-ink); font-weight: 500; }
+
+@media (max-width: 680px) {
+  .bb-gh-stack { gap: 6px; }
+  .bb-gh-stage { height: clamp(12rem, 38vh, 19rem); }
+  .bb-gh-placeholder { height: calc(clamp(12rem, 38vh, 19rem) + 7rem); }
+  .bb-gh-readout { font-size: .5625rem; }
+}
+/* Short landscape screens: the header and dock leave little middle. */
+@media (max-height: 560px) {
+  .bb-gh-count { font-size: 1.75rem; }
+  .bb-gh-stage { height: 44vh; }
+  .bb-gh-placeholder { height: calc(44vh + 5.5rem); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bb-gh-counter, .bb-gh-handle svg { transition: none; }
+}

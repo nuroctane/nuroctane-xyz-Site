@@ -97,7 +97,11 @@ function Root() {
     return <Suspense fallback={fallback}><CurriculumPage /></Suspense>;
   }
 
-  if (!top && SITE_MODE === 'blackboard') return <Blackboard />;
+  // Same element in the same slot for both, so moving between them keeps the
+  // wallpaper and chrome mounted instead of rebuilding the page.
+  if (SITE_MODE === 'blackboard' && (!top || top === 'github')) {
+    return <Blackboard view={top === 'github' ? 'github' : 'home'} />;
+  }
   if (SITE_MODE === 'blackboard') {
     // The scene keeps the URL in sync with where you are in it ('/', '/socials',
     // '/projects', '/fin', '/blog'). Here '/' is the Blackboard and '/blog' the

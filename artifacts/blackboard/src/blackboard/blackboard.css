@@ -170,9 +170,12 @@
 .bb-cal:hover { color: var(--bb-ink); }
 .bb-cal:hover { border-color: rgb(255 255 255 / 30%); background: var(--bb-hover); }
 .bb-cal svg { width: 16px; height: 16px; }
-.bb-github { display: grid; place-items: center; align-self: center; margin-left: 0; width: 20px; height: 20px; color: var(--bb-muted); opacity: .82; transition: color 120ms ease, opacity 120ms ease, transform 120ms var(--bb-ease); }
-.bb-github img { width: 20px; height: 20px; object-fit: contain; }
-.bb-github:hover { color: var(--bb-ink); opacity: 1; transform: translateY(-1px); }
+/* The mark is the ink itself at .82, which is exactly the near-white raster it
+   replaced on the light pole and a near-black one on the dark pole. */
+.bb-github { display: grid; place-items: center; align-self: center; margin-left: 0; width: 20px; height: 20px; color: var(--bb-ink); opacity: .82; transition: color 120ms ease, opacity 120ms ease, transform 120ms var(--bb-ease); }
+.bb-github svg { width: 20px; height: 20px; filter: drop-shadow(0 0 1.5px var(--bb-halo, rgb(0 0 0 / 42%))); }
+.bb-github:hover, .bb-github[aria-current='page'] { opacity: 1; }
+.bb-github:hover { transform: translateY(-1px); }
 .bb-wallets { position: fixed; top: 50%; left: max(var(--bb-margin), env(safe-area-inset-left)); display: grid; grid-template-columns: 1fr 1fr; align-self: flex-start; gap: 8px; margin-top: 0; color: var(--bb-faint, #777); transform: translateY(-50%); }
 .bb-wallet { display: flex; flex-direction: column; align-items: center; gap: 4px; }
 .bb-wallet-address { display: flex; flex-direction: column; align-items: center; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; font-size: .42rem; line-height: 1.25; letter-spacing: .02em; user-select: none; cursor: copy; }

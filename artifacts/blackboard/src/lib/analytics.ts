@@ -21,6 +21,7 @@ export const ANALYTICS_TOP_ROUTES = [
   '/cli',
   '/curriculum',
   '/observatory',
+  '/github',
 ] as const;
 
 export type AnalyticsTopRoute = (typeof ANALYTICS_TOP_ROUTES)[number];
@@ -66,6 +67,8 @@ export function resolveAnalytics(location: string): {
       return { path: '/curriculum', route: '/curriculum' };
     case 'observatory':
       return { path: '/observatory', route: '/observatory' };
+    case 'github':
+      return { path: '/github', route: '/github' };
     case 'fin':
       return { path: '/fin', route: '/fin' };
     case 'socials':

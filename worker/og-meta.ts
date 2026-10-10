@@ -151,6 +151,15 @@ const PAGES: Record<string, PageMeta> = {
     siteName: "Observatory",
     favicon: "/assets/nodes/observatory-logo.png?v=115",
   },
+  github: {
+    title: "GitHub — NUROCTANE",
+    description:
+      "A year of contributions, standing in glass — every day nuroctane shipped code, in 3D.",
+    badge: "GITHUB",
+    path: "/github",
+    image: `${SITE}/assets/nodes/site-logo.png`,
+    favicon: "/assets/nodes/github-logo.png",
+  },
   blog: {
     title: "Writings — NUROCTANE",
     description:

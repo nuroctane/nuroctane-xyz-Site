@@ -1,13 +1,18 @@
-import { useRef, useState, type ReactNode } from 'react';
+import { lazy, Suspense, useRef, useState, type ReactNode } from 'react';
 import { BookOpen, FileText, Quote } from 'lucide-react';
 import { Link } from 'wouter';
-import { LOGO_MAP, dockIcon } from '../data/navLogos';
 import { BlackboardQuickNav } from './BlackboardQuickNav';
 import { BlackboardPlayer } from './BlackboardPlayer';
 import { BlackboardWallpaper } from './BlackboardWallpaper';
 import { BlackboardWallpaperToggle } from './BlackboardWallpaperToggle';
 import { useAdaptiveInk, useWallpaper } from './WallpaperProvider';
 import './blackboard.css';
+import './blackboard-github.css';
+
+// The graph only loads on /github; the home view never pays for it.
+const GithubContributions = lazy(() => import('./GithubContributions'));
+
+export type BlackboardView = 'home' | 'github';
 const BTC_ADDR = 'bc1qmsexp4nygxcw0gklw346hds4gxctfley2tvn40';
 const ETH_ADDR = '0xf5386e680d5629a6e1c04bb2bfd1b79a794467f5';
 
@@ -28,6 +33,19 @@ function LibraryTab({ href, icon, label }: { href: string; icon: ReactNode; labe
   return <Link href={href} ref={ref} data-ink={ink}>{icon}<span>{label}</span></Link>;
 }
 
+// Drawn in currentColor rather than shipped as a white raster, so the mark
+// takes whichever pole the wallpaper behind it calls for. It measures its own
+// patch for the same reason the tabs do: the sweep can put a different pole
+// under a 20px glyph than under the column centre the identity ink reads.
+function GithubLink({ active }: { active: boolean }) {
+  const [ref, ink] = useAdaptiveInk<HTMLAnchorElement>();
+  return <Link href="/github" ref={ref} data-ink={ink} className="bb-github" aria-label="GitHub contributions" aria-current={active ? 'page' : undefined}>
+    <svg viewBox="0 0 16 16" aria-hidden="true">
+      <path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8Z" />
+    </svg>
+  </Link>;
+}
+
 async function copyAddress(address: string): Promise<boolean> {
     try {
       await navigator.clipboard.writeText(address);
@@ -38,7 +56,12 @@ async function copyAddress(address: string): Promise<boolean> {
     }
 }
 
-export default function Blackboard() {
+/**
+ * The Blackboard shell. `/` and `/github` render this same component, so going
+ * between them keeps the wallpaper, header and dock mounted and only swaps
+ * what stands in the middle: the player, or the contribution graph.
+ */
+export default function Blackboard({ view = 'home' }: { view?: BlackboardView }) {
   const [copied, setCopied] = useState<string | null>(null);
   const copyTimer = useRef<number | undefined>(undefined);
   const { variant } = useWallpaper();
@@ -60,7 +83,7 @@ export default function Blackboard() {
     });
   };
 
-  return <main className="blackboard" data-wallpaper={variant} data-ink={rootInk} ref={rootRef}>
+  return <main className="blackboard" data-wallpaper={variant} data-view={view} data-ink={rootInk} ref={rootRef}>
     <BlackboardWallpaper />
     <h1 className="sr-only">NUROCTANE</h1>
     <header className="bb-header">
@@ -77,9 +100,7 @@ export default function Blackboard() {
               <line x1="11" y1="1.5" x2="11" y2="4" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" />
             </svg>
           </a>
-          <a className="bb-github" href="https://github.com/nuroctane" target="_blank" rel="noreferrer" aria-label="Nuroctane on GitHub">
-            <img src={dockIcon(LOGO_MAP.github)} alt="" width="20" height="20" />
-          </a>
+          <GithubLink active={view === 'github'} />
           <div className="bb-wallets" data-ink={walletsInk} ref={walletsRef} aria-label="Cryptocurrency addresses">
             <div className="bb-wallet"><WalletAddress address={BTC_ADDR} chain="Bitcoin" onCopy={handleCopy} /></div>
             <div className="bb-wallet"><WalletAddress address={ETH_ADDR} chain="Ethereum" onCopy={handleCopy} /></div>
@@ -95,11 +116,19 @@ export default function Blackboard() {
 
     {/* The switcher is its own element centred beneath the player rather than
         inside its panel: the panel stays a pure player, and this wrapper is a
-        plain layout div, so it adds no second region. */}
-    <div className="bb-player-stack">
-      <BlackboardPlayer />
-      <BlackboardWallpaperToggle />
-    </div>
+        plain layout div, so it adds no second region. /github keeps the same
+        arrangement with the graph standing where the player was. */}
+    {view === 'github'
+      ? <div className="bb-gh-stack">
+        <Suspense fallback={<div className="bb-gh-placeholder" aria-hidden="true" />}>
+          <GithubContributions />
+        </Suspense>
+        <BlackboardWallpaperToggle />
+      </div>
+      : <div className="bb-player-stack">
+        <BlackboardPlayer />
+        <BlackboardWallpaperToggle />
+      </div>}
     <div className="bb-copy-toast" data-ink="light" role="status" aria-live="polite" data-visible={Boolean(copied)}>{copied ?? ''}</div>
 
     <BlackboardQuickNav />
