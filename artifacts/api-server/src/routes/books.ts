@@ -240,16 +240,20 @@ router.post("/visitor-books", async (c) => {
       const idx = books.findIndex(
         (b) => b.title === book?.title && b.author === book?.author && b.dateAdded === book?.dateAdded,
       );
-      if (idx >= 0) {
-        const stored = books[idx];
-        const isOwner = stored.sessionId && stored.sessionId === body.sessionId;
-        const noOwner = !stored.sessionId;
-        if (!noOwner && !isOwner && checkAdminPassword(password) !== "ok") {
-          return c.json({ error: "Unauthorized" }, 403);
-        }
-        books[idx].read = !books[idx].read;
-        await kvSet(BOOKS_KEY, books);
+      // Reporting success for a book that is gone left the page showing a
+      // state that was never saved.
+      if (idx < 0) return c.json({ error: "Book not found" }, 404);
+      const stored = books[idx];
+      const isOwner = stored.sessionId && stored.sessionId === body.sessionId;
+      const noOwner = !stored.sessionId;
+      if (!noOwner && !isOwner && checkAdminPassword(password) !== "ok") {
+        return c.json({ error: "Unauthorized" }, 403);
       }
+      // Set the state the visitor asked for. A blind flip wrote the opposite
+      // whenever the page was behind the store (another tab, a double press).
+      // Older clients that send no `read` keep the flip.
+      books[idx].read = typeof body.read === "boolean" ? body.read : !books[idx].read;
+      await kvSet(BOOKS_KEY, books);
       return c.json({ ok: true });
     }
 

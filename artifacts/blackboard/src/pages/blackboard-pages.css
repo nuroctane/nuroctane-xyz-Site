@@ -9,6 +9,12 @@
 .bb-library-tabs a { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 10px 14px; border: 1px solid transparent; border-radius: 8px; color: #a0a0a0; text-decoration: none; }
 .bb-library-tabs a.is-active, .bb-library-tabs a:hover, .bb-library-home:hover, .bb-library-sea:hover { color: #f2f2f2; background: rgb(255 255 255 / 7%); border-color: rgb(255 255 255 / 12%); }
 .bb-library-tabs svg { width: 16px; height: 16px; }
+/* You are here: the same 3px mark the GitHub icon carries on /github, so every
+   page reached from the Blackboard's top row says which one it is the same way.
+   It sits inside the active tab's glass, in the bottom padding under the label
+   (the GitHub mark has no glass of its own, so its dot hangs beneath it). */
+.bb-library-tabs a { position: relative; }
+.bb-library-tabs a.is-active::after { position: absolute; left: 50%; bottom: 5px; width: 3px; height: 3px; border-radius: 50%; background: currentColor; box-shadow: 0 0 1.5px rgb(0 0 0 / 42%); content: ''; transform: translateX(-50%); pointer-events: none; }
 .bb-library-content { width: min(calc(100% - 2rem), 1080px); min-width: 0; margin: 0 auto; padding: clamp(3.5rem, 9vw, 7rem) 0 6rem; }
 .bb-library-intro { max-width: 720px; margin-bottom: 2rem; }
 .bb-kicker { margin: 0 0 0.75rem; color: #8e8e8e; font-size: 0.6875rem; letter-spacing: 0.14em; text-transform: uppercase; }

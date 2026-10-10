@@ -11,7 +11,7 @@ import {
 import { useLocation } from 'wouter';
 import type { Track } from '../types';
 import { SITE_MODE } from '../config/siteMode';
-import { blackboardAudioPath, blackboardMusicPick } from '../data/blackboardMusic';
+import { blackboardArtworkSrc, blackboardAudioPath, blackboardMusicPick } from '../data/blackboardMusic';
 
 /* ═══════════════════════════════════════════════════════════════════════════
    AUDIO — one <audio> element for the whole app.
@@ -416,7 +416,10 @@ export function AudioProvider({ children }: { children: ReactNode }) {
   useEffect(() => {
     const retry = (e: Event) => {
       const el = e.target as Element | null;
-      const fromAudioControl = Boolean(el?.closest?.('.audio-control'));
+      // Controls that state an audio intent handle the gesture themselves.
+      // Retrying here as well unmuted on pointerdown, and the same press then
+      // landed on a play/pause button as a pause: a blip, then silence.
+      const fromAudioControl = Boolean(el?.closest?.('.audio-control, [data-audio-intent]'));
       if (mutedAutoplayRef.current && !fromAudioControl) {
         mutedAutoplayRef.current = false;
         setMutedAutoplay(false);
@@ -520,9 +523,19 @@ export function AudioProvider({ children }: { children: ReactNode }) {
 
   const play = useCallback(() => {
     quietHoldRef.current = false;
+    // An explicit play is the gesture that may make sound. When the score is
+    // already running silently (refused autoplay) or a start was refused, no
+    // state changes, so the effect below would never reconcile: lift the hold
+    // and reconcile here, inside the gesture, with the refs already set.
+    armedRef.current = true;
+    enabledRef.current = true;
+    mutedAutoplayRef.current = false;
+    setMutedAutoplay(false);
+    playingRef.current = false;
     setArmed(true);
     setEnabled(true);
-  }, []);
+    reconcile();
+  }, [reconcile]);
 
   const pause = useCallback(() => {
     quietHoldRef.current = false;
@@ -546,9 +559,53 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       reconcile();
       return;
     }
+    // Silent autoplay reads as "on" but makes no sound; the press means "let
+    // me hear it", not "turn it off".
+    if (mutedAutoplayRef.current) {
+      play();
+      return;
+    }
     quietHoldRef.current = false;
     setEnabled(prev => !prev);
-  }, [reconcile]);
+  }, [reconcile, play]);
+
+  // Media keys, headset buttons and the lock screen. Without handlers the
+  // browser pauses the element itself, which reads as a refused start: the
+  // next tap anywhere on the page then restarted the music the visitor had
+  // just paused. Routing them through play()/pause() keeps that choice.
+  useEffect(() => {
+    const session = typeof navigator !== 'undefined' ? navigator.mediaSession : undefined;
+    if (!session) return undefined;
+    if (SITE_MODE === 'blackboard') {
+      const pick = blackboardMusicPick();
+      try {
+        session.metadata = new MediaMetadata({
+          title: pick.title,
+          artist: pick.artist,
+          artwork: [{ src: new URL(blackboardArtworkSrc(pick), window.location.href).href, sizes: '512x512', type: 'image/jpeg' }],
+        });
+      } catch { /* MediaMetadata unsupported */ }
+    }
+    const set = (action: MediaSessionAction, handler: MediaSessionActionHandler | null) => {
+      try { session.setActionHandler(action, handler); } catch { /* action unsupported here */ }
+    };
+    set('play', () => play());
+    set('pause', () => pause());
+    set('stop', () => pause());
+    set('seekto', details => { if (typeof details.seekTime === 'number') seek(details.seekTime); });
+    return () => {
+      set('play', null);
+      set('pause', null);
+      set('stop', null);
+      set('seekto', null);
+    };
+  }, [play, pause, seek]);
+
+  useEffect(() => {
+    const session = typeof navigator !== 'undefined' ? navigator.mediaSession : undefined;
+    if (!session) return;
+    try { session.playbackState = playing && !mutedAutoplay ? 'playing' : 'paused'; } catch { /* read-only here */ }
+  }, [playing, mutedAutoplay]);
 
   const value = useMemo(
     () => ({ enabled, blocked, mutedAutoplay, armed, playing, currentTime, duration, volume, track, arm, play, pause, setTrack, setVolume, seek, toggle }),

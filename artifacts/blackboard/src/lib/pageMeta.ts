@@ -20,6 +20,13 @@ export interface PageMeta {
   siteName?: string;
   /** document favicon path or data URL override */
   favicon?: string;
+  /**
+   * Browser tab text. The Blackboard keeps one tab title, NUROCTANE, for every
+   * page; a standalone product that brands its own tab says so here. Set in
+   * the page's own effect instead, it lost to this one on in-app navigation
+   * (parent effects run after children) and won on a direct load.
+   */
+  tabTitle?: string;
 }
 
 const DEFAULT: PageMeta = {
@@ -67,6 +74,7 @@ const PAGES: Record<string, PageMeta> = {
     badge: "MODKEYS",
     path: "/modkeys",
     favicon: "/assets/nodes/modkeys-logo.png?v=115",
+    tabTitle: "MODKEYS",
   },
   cli: {
     title: "NurCLI",
@@ -239,7 +247,7 @@ export function applyDocumentMeta(meta: PageMeta, origin?: string): void {
       ? window.location.origin
       : "https://www.nuroctane.xyz");
 
-  document.title = "NUROCTANE";
+  document.title = meta.tabTitle ?? "NUROCTANE";
 
   const setMeta = (selector: string, attr: string, value: string) => {
     let el = document.querySelector(selector) as HTMLMetaElement | null;

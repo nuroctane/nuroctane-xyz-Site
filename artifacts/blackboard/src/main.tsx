@@ -114,6 +114,11 @@ function Root() {
     if (top === 'socials' || top === 'projects' || top === 'fin') {
       return <Redirect to={`/sea${location}`} replace />;
     }
+    // Anything else is a typo or a dead link. It used to fall through to the
+    // scene below, mounted outside its /sea router: the whole WebGL sea loaded
+    // to show its hero, and its URL sync then rewrote the address. The
+    // pageview for the bad path is reported (with Not Found) before this lands.
+    return <Redirect to="/" replace />;
   }
   return <Suspense fallback={fallback}><App /></Suspense>;
 }

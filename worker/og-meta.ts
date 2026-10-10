@@ -274,6 +274,17 @@ function escapeHtml(s: unknown): string {
     .replace(/'/g, "&#39;");
 }
 
+/* Declared card size. Rendered share cards are 1200x630; the pages that
+ * borrow the portrait site logo (home, /github, /curriculum) must say so, or
+ * unfurlers that lay out from these tags before fetching crop the logo into a
+ * landscape frame. */
+const SITE_LOGO_SIZE = { width: 879, height: 1024 };
+const CARD_SIZE = { width: 1200, height: 630 };
+
+function imageSize(image: string): { width: number; height: number } {
+  return /\/assets\/nodes\/site-logo\.png(?:$|\?)/.test(image) ? SITE_LOGO_SIZE : CARD_SIZE;
+}
+
 function botHtml(meta: ResolvedMeta): string {
   const title = escapeHtml(meta.title);
   const desc = escapeHtml(meta.description);
@@ -281,6 +292,7 @@ function botHtml(meta: ResolvedMeta): string {
   const url = escapeHtml(meta.url);
   const shared = escapeHtml(meta.shared);
   const robots = meta.noindex ? "noindex, nofollow" : "index, follow";
+  const size = imageSize(meta.image);
 
   return `<!doctype html>
 <html lang="en">
@@ -297,8 +309,8 @@ function botHtml(meta: ResolvedMeta): string {
   <meta property="og:description" content="${desc}" />
   <meta property="og:url" content="${shared}" />
   <meta property="og:image" content="${image}" />
-  <meta property="og:image:width" content="1200" />
-  <meta property="og:image:height" content="630" />
+  <meta property="og:image:width" content="${size.width}" />
+  <meta property="og:image:height" content="${size.height}" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${title}" />
   <meta name="twitter:description" content="${desc}" />

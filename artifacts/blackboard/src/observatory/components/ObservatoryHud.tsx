@@ -333,7 +333,16 @@ export function ObservatoryHud() {
             <label className="obs-field"><span>Lat</span><input className="obs-input--themed" type="number" step={0.0001} value={o.observer.lat} onChange={(e) => o.setObserver({ ...o.observer, lat: Number(e.target.value) })} /></label>
             <label className="obs-field"><span>Lon</span><input className="obs-input--themed" type="number" step={0.0001} value={o.observer.lon} onChange={(e) => o.setObserver({ ...o.observer, lon: Number(e.target.value) })} /></label>
             <div className="obs-chip-row">
-              <button type="button" className="obs-mini" onClick={() => { if (navigator.geolocation) navigator.geolocation.getCurrentPosition((p) => o.setObserver({ lat: p.coords.latitude, lon: p.coords.longitude, alt: 10 })); }}>GPS</button>
+              <button type="button" className="obs-mini" onClick={() => {
+                // A denied or unavailable fix used to do nothing at all.
+                if (!navigator.geolocation) { setPlaceError('Location is not available in this browser.'); return; }
+                setPlaceError('');
+                navigator.geolocation.getCurrentPosition(
+                  (p) => o.setObserver({ lat: p.coords.latitude, lon: p.coords.longitude, alt: 10 }),
+                  (err) => setPlaceError(err.code === err.PERMISSION_DENIED ? 'Location permission was denied.' : 'Could not get your location.'),
+                  { timeout: 15_000 },
+                );
+              }}>GPS</button>
               <button type="button" className="obs-mini" onClick={() => o.setObserver({ lat: 40.7128, lon: -74.006, alt: 10 })}>NYC</button>
               <button type="button" className="obs-mini" onClick={() => o.setObserver({ lat: 51.5074, lon: -0.1278, alt: 10 })}>LDN</button>
               <button type="button" className="obs-mini" onClick={() => o.setObserver({ lat: 35.68, lon: 139.76, alt: 10 })}>TKO</button>

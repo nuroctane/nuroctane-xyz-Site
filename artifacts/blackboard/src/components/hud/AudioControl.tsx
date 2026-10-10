@@ -14,12 +14,14 @@ interface Props {
  * ever interrupting the score.
  */
 export function AudioControl({ mini = false }: Props) {
-  const { enabled, blocked, armed, track, volume, setVolume, toggle } = useAudioCtx();
+  const { enabled, blocked: refused, mutedAutoplay, armed, track, volume, setVolume, toggle } = useAudioCtx();
   const [expanded, setExpanded] = useState(false);
   const isMobile = useIsMobile();
   const blackboard = SITE_MODE === 'blackboard';
 
-  // `blocked` is rare (cold browser refused autoplay). Normal path never hits it.
+  // `blocked` is rare (cold browser refused autoplay). A silent autoplay is
+  // the same promise to the listener, so it reads PLAY too rather than SOUND.
+  const blocked = refused || mutedAutoplay;
   const label = blocked ? 'PLAY' : enabled ? 'SOUND' : 'MUTED';
   const title = blocked
     ? 'Start background audio'

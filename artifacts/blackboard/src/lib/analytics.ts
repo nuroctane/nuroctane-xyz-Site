@@ -145,6 +145,8 @@ export function trackEvent(name: string, properties?: AnalyticsProps): void {
       return;
     }
     window.__nurTrackQueue = window.__nurTrackQueue || [];
+    // Bounded: with no PostHog key (local, previews) nothing ever drains it.
+    if (window.__nurTrackQueue.length >= 200) window.__nurTrackQueue.shift();
     window.__nurTrackQueue.push([name, data as Record<string, unknown> | undefined]);
   } catch {
     /* analytics must never break the UI */

@@ -97,8 +97,11 @@ export function BlackboardPlayer() {
     return () => observer.disconnect();
   }, []);
 
+  // A silent autoplay is "playing" to the element but not to the listener, so
+  // the button offers Play and a press unmutes rather than pausing.
+  const audible = playing && !mutedAutoplay;
   const onPlayPause = () => {
-    if (playing) pause();
+    if (audible) pause();
     else play();
   };
 
@@ -153,8 +156,8 @@ export function BlackboardPlayer() {
       <div className="bb-player-times"><span>{formatTime(currentTime)}</span><span>{duration ? formatTime(duration) : '--:--'}</span></div>
     </div>}
     <div className="bb-player-controls">
-      <button type="button" className="bb-player-play" onClick={onPlayPause} aria-label={playing ? 'Pause audio' : 'Play audio'}>
-        {playing ? <Pause aria-hidden="true" /> : <Play aria-hidden="true" />}
+      <button type="button" className="bb-player-play" data-audio-intent onClick={onPlayPause} aria-label={audible ? 'Pause audio' : 'Play audio'}>
+        {audible ? <Pause aria-hidden="true" /> : <Play aria-hidden="true" />}
       </button>
       <div className="bb-player-volume">
         <button type="button" className="bb-player-volume-button" onClick={onVolumeToggle} aria-label={volume === 0 ? 'Unmute audio' : 'Mute audio'}>

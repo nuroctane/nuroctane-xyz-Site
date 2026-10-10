@@ -44,9 +44,29 @@ interface StoredUser {
   createdAt: string;
 }
 
+/* OAuth `state`: a one-time value set as a cookie here and echoed back by
+ * GitHub. Without it, any page could send a visitor through the callback with
+ * the attacker's own authorization code and sign them in as the attacker
+ * (login CSRF). The cookie is scoped to the callback's host, so a sign-in
+ * started on www is first sent to that host to set it. */
+const STATE_COOKIE = "oauth_state";
+const STATE_COOKIE_PATH = "/api/auth";
+
 router.get("/auth/github", (c) => {
   const clientId = getClientId();
-  const url = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=read:user`;
+  const callbackHost = new URL(SITE_ORIGIN).host;
+  if (new URL(c.req.url).host !== callbackHost) {
+    return c.redirect(`${SITE_ORIGIN}/api/auth/github`);
+  }
+  const state = crypto.randomUUID();
+  setCookie(c, STATE_COOKIE, state, {
+    httpOnly: true,
+    secure: true,
+    sameSite: "Lax",
+    maxAge: 10 * 60,
+    path: STATE_COOKIE_PATH,
+  });
+  const url = `https://github.com/login/oauth/authorize?client_id=${clientId}&redirect_uri=${encodeURIComponent(REDIRECT_URI)}&scope=read:user&state=${state}`;
   return c.redirect(url);
 });
 
@@ -54,6 +74,12 @@ router.get("/auth/github/callback", async (c) => {
   const code = c.req.query("code");
   if (!code) {
     return c.json({ error: "Missing authorization code" }, 400);
+  }
+  const state = c.req.query("state");
+  const expected = getCookie(c, STATE_COOKIE);
+  deleteCookie(c, STATE_COOKIE, { path: STATE_COOKIE_PATH });
+  if (!state || !expected || state !== expected) {
+    return c.json({ error: "Sign-in expired or was not started here. Please try again." }, 400);
   }
 
   try {
@@ -82,7 +108,16 @@ router.get("/auth/github/callback", async (c) => {
       },
       signal: AbortSignal.timeout(6000),
     });
+    // A rate-limited or failed lookup has no id; storing it would write a
+    // `user:undefined` record and mint a session that can never verify.
+    if (!userRes.ok) {
+      logger.error({ status: userRes.status }, "GitHub user lookup failed");
+      return c.json({ error: "Failed to authenticate with GitHub" }, 502);
+    }
     const ghUser = (await userRes.json()) as GitHubUser;
+    if (typeof ghUser?.id !== "number" || typeof ghUser.login !== "string") {
+      return c.json({ error: "Failed to authenticate with GitHub" }, 502);
+    }
 
     const userKey = `user:${ghUser.id}`;
     const existing = await kvGet<StoredUser>(userKey);
