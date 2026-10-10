@@ -48,16 +48,16 @@ function GithubLink({ active }: { active: boolean }) {
   </Link>;
 }
 
-// The stats mark: three columns on a baseline, stroked at the weight that
-// matches the filled GitHub mark beside it, same ink and same active dot.
+// The stats mark: three solid columns filling the same 16-unit square as the
+// GitHub mark beside it, so the pair reads at one size and one weight; same
+// ink and same active dot.
 function StatsLink({ active }: { active: boolean }) {
   const [ref, ink] = useAdaptiveInk<HTMLAnchorElement>();
   return <Link href="/stats" ref={ref} data-ink={ink} className="bb-mark bb-stats-link" aria-label="Site statistics" aria-current={active ? 'page' : undefined}>
-    <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" aria-hidden="true">
-      <path d="M2 14.2h12" strokeOpacity="0.5" />
-      <path d="M4.2 11.4V8.2" />
-      <path d="M8 11.4V3.6" />
-      <path d="M11.8 11.4V6" />
+    <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+      <rect x="1.5" y="8" width="3.4" height="6.5" rx="1.1" />
+      <rect x="6.3" y="1.5" width="3.4" height="13" rx="1.1" />
+      <rect x="11.1" y="5" width="3.4" height="9.5" rx="1.1" />
     </svg>
   </Link>;
 }

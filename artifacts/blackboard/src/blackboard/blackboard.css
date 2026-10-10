@@ -163,7 +163,9 @@
   z-index: 1;
 }
 .bb-header-row { position: relative; display: grid; grid-template-columns: 1fr auto 1fr; grid-template-rows: 58px; align-items: center; gap: 1rem; width: 100%; min-height: 58px; padding: 12px clamp(1rem, 4vw, 4rem); }
-.bb-identity { position: absolute; top: 12px; left: clamp(1rem, 4vw, 4rem); display: flex; width: 58px; flex-direction: column; align-items: center; gap: 8px; }
+/* One even rhythm down the column: 10px clears an active mark's dot (it hangs
+   6px below) without singling out the gap after it. */
+.bb-identity { position: absolute; top: 12px; left: clamp(1rem, 4vw, 4rem); display: flex; width: 58px; flex-direction: column; align-items: center; gap: 10px; }
 .bb-avatar { display: inline-flex; align-items: center; justify-content: flex-start; width: 58px; height: 58px; padding: 5px 5px 5px 5.9px; border-radius: 8px; }
 .bb-avatar img { width: 42px; height: 48px; object-fit: contain; }
 .bb-cal { display: grid; place-items: center; align-self: center; margin-left: 0; width: 28px; height: 28px; border: 1px solid rgb(255 255 255 / 15%); border-radius: 6px; color: var(--bb-muted); transition: color 120ms ease, border-color 120ms ease, background 120ms ease; }
@@ -179,9 +181,6 @@
 .bb-mark:active { transform: scale(.94); }
 /* You are here: full ink alone is too close to the resting .82 to read. */
 .bb-mark[aria-current='page']::after { position: absolute; left: 50%; bottom: -6px; width: 3px; height: 3px; border-radius: 50%; background: currentColor; box-shadow: 0 0 1.5px var(--bb-halo, rgb(0 0 0 / 42%)); content: ''; transform: translateX(-50%); }
-/* In the stacked desktop column, a little more room under the GitHub mark so
-   its active dot reads as its own, not as a mark on the chart icon below. */
-@media (min-width: 681px) { .bb-stats-link { margin-top: 4px; } }
 .bb-wallets { position: fixed; top: 50%; left: max(var(--bb-margin), env(safe-area-inset-left)); display: grid; grid-template-columns: 1fr 1fr; align-self: flex-start; gap: 8px; margin-top: 0; color: var(--bb-faint, #777); transform: translateY(-50%); }
 .bb-wallet { display: flex; flex-direction: column; align-items: center; gap: 4px; }
 .bb-wallet-address { display: flex; flex-direction: column; align-items: center; padding: 0; border: 0; background: transparent; color: inherit; font: inherit; font-size: .42rem; line-height: 1.25; letter-spacing: .02em; user-select: none; cursor: copy; }
@@ -388,7 +387,7 @@
   [data-ink='dark'] { --bb-edge: #000; --bb-muted: #1a1a1a; }
 }
 @media (max-width: 680px) {
-  .bb-identity { width: auto; flex-direction: row; align-items: center; }
+  .bb-identity { width: auto; flex-direction: row; align-items: center; gap: 8px; }
   .bb-header-row { grid-template-columns: auto 1fr; grid-template-rows: 58px 44px; }
   .bb-top-tabs { grid-column: 1 / -1; grid-row: 2; }
   .bb-player-stack { width: min(18.5rem, calc(100% - 2.5rem)); }
