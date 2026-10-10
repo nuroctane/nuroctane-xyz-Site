@@ -47,8 +47,8 @@
 .bb-gh-retry:active { transform: scale(.97); }
 @media (hover: hover) and (pointer: fine) { .bb-gh-retry:hover { background: var(--bb-hover); } }
 
-/* Always one line: it swaps between the hint and a day on every hover, and a
-   wrap would shift the switcher beneath it each time. */
+/* Always one line, and present even when empty: it fills on every hover, and
+   a wrap or a collapse would shift the switcher beneath it each time. */
 .bb-gh-readout { max-width: 100%; min-height: 1.6em; margin: 0; overflow: hidden; color: var(--bb-plate-quiet); font-size: .625rem; letter-spacing: .03em; text-align: center; text-overflow: ellipsis; white-space: nowrap; font-variant-numeric: tabular-nums; }
 .bb-gh-readout strong { color: var(--bb-ink); font-weight: 500; }
 

@@ -109,12 +109,6 @@ function ContributionCounter({ status, payload }: { status: Status; payload: Pay
   </a>;
 }
 
-// One line at every width: the readout swaps between this and a day on
-// hover, and a hint that wrapped would move the switcher below it each time.
-const COARSE = typeof window !== 'undefined' && window.matchMedia('(pointer: coarse)').matches;
-const POINTER_HINT = COARSE ? 'drag to turn · pinch to zoom · tap a day' : 'drag to turn · scroll to zoom · double-click to reset';
-const KEY_HINT = '← → turn · ↑ ↓ tilt · + − zoom · [ ] step days · 0 reset';
-
 function ContributionGraph({ status, payload, retry }: { status: Status; payload: Payload | null; retry: () => void }) {
   const reduced = useReducedMotion();
   const [stageRef, stageInk] = useAdaptiveInk<HTMLDivElement>();
@@ -148,11 +142,12 @@ function ContributionGraph({ status, payload, retry }: { status: Status; payload
     return `${payload.totalContributions.toLocaleString('en-US')} contributions in the last year across ${active} active days. Busiest day: ${formatDay(best.date)}, ${countLabel(best.count).toLowerCase()}. Arrow keys turn and tilt, plus and minus zoom, square brackets step through days.`;
   }, [payload]);
 
-  const readout = status !== 'ready'
-    ? ' '
-    : selected
-      ? <><span>{formatDay(selected.date)}</span><span aria-hidden="true"> · </span><strong>{countLabel(selected.count)}</strong></>
-      : focused ? KEY_HINT : POINTER_HINT;
+  // No usage tips on the page, by the owner's call: the line under the graph
+  // only ever names the day being pointed at, and otherwise holds its height
+  // empty so the switcher below never moves.
+  const readout = status === 'ready' && selected
+    ? <><span>{formatDay(selected.date)}</span><span aria-hidden="true"> · </span><strong>{countLabel(selected.count)}</strong></>
+    : ' ';
 
   return <>
     <div className="bb-gh-stage" data-ink={stageInk} data-status={status} ref={stageRef}>
