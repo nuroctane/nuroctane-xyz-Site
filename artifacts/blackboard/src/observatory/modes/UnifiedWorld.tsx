@@ -170,20 +170,22 @@ function EonetMarkers({ events, earthRadius, layers }: { events: EonetEvent[]; e
         if (!visible) return null;
 
         if (cat.includes('storm')) {
-          // Weather radar style: pulsing rings + core + sweep hint
+          // Weather radar style: rings + core + sweep. White glass, not neon
+          // cyan: the shape already says "storm" next to the fire, volcano and
+          // flood markers, and the Blackboard's chrome is monochrome.
           return (
             <group key={`e-${ev.id}`} position={[pos.x, pos.y, pos.z]}>
               {/* radar rings */}
-              <mesh><ringGeometry args={[0.016, 0.018, 24]} /><meshBasicMaterial color="#22d3ee" transparent opacity={0.85} side={THREE.DoubleSide} /></mesh>
-              <mesh><ringGeometry args={[0.026, 0.0285, 24]} /><meshBasicMaterial color="#22d3ee" transparent opacity={0.45} side={THREE.DoubleSide} /></mesh>
-              <mesh><ringGeometry args={[0.038, 0.040, 24]} /><meshBasicMaterial color="#22d3ee" transparent opacity={0.22} side={THREE.DoubleSide} /></mesh>
-              <mesh><ringGeometry args={[0.050, 0.052, 24]} /><meshBasicMaterial color="#22d3ee" transparent opacity={0.12} side={THREE.DoubleSide} /></mesh>
+              <mesh><ringGeometry args={[0.016, 0.018, 24]} /><meshBasicMaterial color="#f4f7fb" transparent opacity={0.8} side={THREE.DoubleSide} /></mesh>
+              <mesh><ringGeometry args={[0.026, 0.0285, 24]} /><meshBasicMaterial color="#f4f7fb" transparent opacity={0.42} side={THREE.DoubleSide} /></mesh>
+              <mesh><ringGeometry args={[0.038, 0.040, 24]} /><meshBasicMaterial color="#f4f7fb" transparent opacity={0.2} side={THREE.DoubleSide} /></mesh>
+              <mesh><ringGeometry args={[0.050, 0.052, 24]} /><meshBasicMaterial color="#f4f7fb" transparent opacity={0.1} side={THREE.DoubleSide} /></mesh>
               {/* core */}
-              <mesh><sphereGeometry args={[0.010, 10, 10]} /><meshStandardMaterial color="#22d3ee" emissive="#22d3ee" emissiveIntensity={1.2} /></mesh>
-              <mesh scale={[2.2, 2.2, 2.2]}><sphereGeometry args={[0.010, 10, 10]} /><meshBasicMaterial color="#22d3ee" transparent opacity={0.20} blending={THREE.AdditiveBlending} depthWrite={false} /></mesh>
+              <mesh><sphereGeometry args={[0.010, 10, 10]} /><meshStandardMaterial color="#ffffff" emissive="#d5dde6" emissiveIntensity={0.9} /></mesh>
+              <mesh scale={[2.2, 2.2, 2.2]}><sphereGeometry args={[0.010, 10, 10]} /><meshBasicMaterial color="#ffffff" transparent opacity={0.14} blending={THREE.AdditiveBlending} depthWrite={false} /></mesh>
               {/* cross sweep */}
-              <mesh rotation={[Math.PI / 2, 0, 0]}><planeGeometry args={[0.0015, 0.052]} /><meshBasicMaterial color="#7dd3fc" transparent opacity={0.9} side={THREE.DoubleSide} /></mesh>
-              <mesh rotation={[Math.PI / 2, 0, Math.PI / 2]}><planeGeometry args={[0.0015, 0.052]} /><meshBasicMaterial color="#7dd3fc" transparent opacity={0.9} side={THREE.DoubleSide} /></mesh>
+              <mesh rotation={[Math.PI / 2, 0, 0]}><planeGeometry args={[0.0015, 0.052]} /><meshBasicMaterial color="#c5ced6" transparent opacity={0.85} side={THREE.DoubleSide} /></mesh>
+              <mesh rotation={[Math.PI / 2, 0, Math.PI / 2]}><planeGeometry args={[0.0015, 0.052]} /><meshBasicMaterial color="#c5ced6" transparent opacity={0.85} side={THREE.DoubleSide} /></mesh>
             </group>
           );
         }
@@ -211,7 +213,7 @@ function EonetMarkers({ events, earthRadius, layers }: { events: EonetEvent[]; e
         if (cat.includes('ice') || cat.includes('snow')) {
           return (
             <group key={`e-${ev.id}`} position={[pos.x, pos.y, pos.z]}>
-              <mesh rotation={[Math.PI / 2, 0, 0]}><circleGeometry args={[0.022, 12]} /><meshStandardMaterial color="#7dd3fc" transparent opacity={0.90} /></mesh>
+              <mesh rotation={[Math.PI / 2, 0, 0]}><circleGeometry args={[0.022, 12]} /><meshStandardMaterial color="#d5dde6" transparent opacity={0.9} /></mesh>
             </group>
           );
         }
@@ -567,7 +569,7 @@ function EarthDetailContent({
       {layers.astroCartography && acLines.map((line: any, idx: number) => {
         const pts = line.points.map((p: any) => { const v = latLonToVector3(p.lat, p.lon, R * 1.028); return [v.x, v.y, v.z] as [number, number, number]; }).filter(Boolean);
         if (pts.length < 2) return null;
-        return <Line key={`ac-${line.id}-${idx}`} points={pts} color={line.bodyColor || '#38bdf8'} transparent opacity={line.type === 'MC' || line.type === 'IC' ? 0.92 : 0.66} lineWidth={line.type === 'MC' ? 2.2 : 1.3} />;
+        return <Line key={`ac-${line.id}-${idx}`} points={pts} color={line.bodyColor || '#c5ced6'} transparent opacity={line.type === 'MC' || line.type === 'IC' ? 0.92 : 0.66} lineWidth={line.type === 'MC' ? 2.2 : 1.3} />;
       })}
 
       {layers.missions && MISSIONS.filter((m: any) => m.domain === 'earth').slice(0, 24).map((m: any, i: number) => {
@@ -637,7 +639,7 @@ function AspectLines({ hoveredId, setHoveredId }: { hoveredId: string | null; se
             />
             <Line
               points={pts}
-              color={isHover ? '#fff' : hit.color || '#38bdf8'}
+              color={isHover ? '#fff' : hit.color || '#c5ced6'}
               transparent
               opacity={isHover ? 1 : 0.40}
               lineWidth={isHover ? 3.2 : 1.1}

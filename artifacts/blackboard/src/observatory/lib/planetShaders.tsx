@@ -4,7 +4,7 @@ import * as THREE from 'three';
 
 export function AtmosphereGlow({
   size,
-  color = '#38bdf8',
+  color = '#d7dee6',
   strength = 0.7,
   power = 2.4,
 }: {
@@ -279,7 +279,7 @@ export function EarthNightShader({
   );
 }
 
-export function Aurora({ size, color = '#22d3ee' }: { size: number; color?: string }) {
+export function Aurora({ size, color = '#9fb4c4' }: { size: number; color?: string }) {
   const ref = useRef<THREE.ShaderMaterial>(null);
   useFrame((state) => {
     if (ref.current) (ref.current.uniforms as any).time.value = state.clock.elapsedTime;
