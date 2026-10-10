@@ -23,7 +23,9 @@ const soonProjects: Destination[] = [
 ];
 const orderedProjects = ['nur-cli', 'hoodstock', 'observatory', 'modkeys', 'miyamaker', 'sis'].map(find).reverse();
 const groups = {
-  projects: [find('webutils'), ...soonProjects, { id: 'ios-downloader', label: 'iOS Shortcut: Downloader', url: 'https://routinehub.co/shortcut/26384/', logo: dockIcon('/assets/nodes/routinehub-logo.png') }, ...orderedProjects],
+  // 'webutils' (the Raindrop collection) is off the dock while Raindrop serves
+  // its public page as a 404; the directory entry stays for when it returns.
+  projects: [...soonProjects,{ id: 'ios-downloader', label: 'iOS Shortcut: Downloader', url: 'https://routinehub.co/shortcut/26384/', logo: dockIcon('/assets/nodes/routinehub-logo.png') }, ...orderedProjects],
   socials: ['instagram', 'atxtunerz', 'x', 'discord', 'substack', 'remilia', 'glasp', 'steam', 'anilist', 'goodreads', 'letterboxd', 'reddit', 'kick', 'twitch', 'youtube', 'soundcloud']
     .map(find)
     .map(entry => entry.id === 'anilist' ? { ...entry, secondary: { id: 'mal', label: 'MAL', logo: malLogo, url: 'https://myanimelist.net/profile/nuroctane' } } : entry),
