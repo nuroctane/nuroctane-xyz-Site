@@ -1,7 +1,7 @@
 ## Index
 - [[#Faith, God & Surrender|Faith, God & Surrender]] (52)
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (31)
-- [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (59)
+- [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (60)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (81)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (55)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (101)
@@ -491,6 +491,9 @@ _Imagination, intention, frequency, prosperity, timelines, desire, and allowing 
 
 > you have to fall in love w/ your being in order to activate your luck. love your face, your body, your mind, who you are as a person. love is the energy of acceptance, openness & joy. the more you love yourself & your life, the more your value expands, the luckier you become.
 > — @nobengunii
+
+> I don’t speak in possibilities, I speak in absolutes.
+> — @nuroctane
 
 ## Self, Identity & Awakening
 
