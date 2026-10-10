@@ -375,6 +375,16 @@
 .audio-control.bb-audio-control .audio-slider { accent-color: #f2f2f2; }
 .audio-control.bb-audio-control .audio-slider::-webkit-slider-thumb { background: #f2f2f2; box-shadow: 0 0 7px rgb(255 255 255 / 35%); }
 .audio-control.bb-audio-control .audio-slider::-moz-range-thumb { background: #f2f2f2; box-shadow: 0 0 7px rgb(255 255 255 / 35%); }
+/* Audible / pending: a pale gold breath on the mono glass. Scoped to the
+   Blackboard control so the cyan .audio-on elsewhere on the site is untouched. */
+.audio-control.bb-audio-control .audio-on { color: #f2f2f2; background: rgb(255 255 255 / 8%); animation: bb-gold-breathe 3.2s ease-in-out infinite; }
+.audio-control.bb-audio-control .audio-pending { animation: bb-gold-breathe 1.9s ease-in-out infinite; }
+.audio-control.bb-audio-control:has(.audio-pending) .audio-label, .audio-control.bb-audio-control .audio-on ~ .audio-label { color: #e8d49a; }
+@keyframes bb-gold-breathe {
+  0%, 100% { box-shadow: inset 0 0 6px rgb(232 212 154 / 5%), 0 0 0 rgb(232 212 154 / 0%); }
+  50% { box-shadow: inset 0 0 14px rgb(232 212 154 / 16%), 0 0 10px rgb(232 212 154 / 12%); }
+}
+@media (prefers-reduced-motion: reduce) { .audio-control.bb-audio-control .audio-on, .audio-control.bb-audio-control .audio-pending { animation: none; box-shadow: inset 0 0 8px rgb(232 212 154 / 10%); } }
 @media (hover: hover) and (pointer: fine) {
   .bb-trigger:hover { background: var(--bb-hover); color: var(--bb-ink); }
   a.bb-link:hover { background: var(--bb-hover); }
