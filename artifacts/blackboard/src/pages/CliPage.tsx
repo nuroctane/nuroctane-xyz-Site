@@ -100,7 +100,7 @@ const TOKEN_PATH = [
     label: "ROUTE",
     title: "Select a protocol, not just a model name",
     body: "Capabilities choose Responses, Chat Completions, Anthropic Messages, native Gemini, Cursor Agent, or a local server. OpenCode routes each model through its documented native protocol.",
-    meta: "65 routes · capability checked",
+    meta: "67 routes · capability checked",
   },
   {
     id: "05",
@@ -264,7 +264,7 @@ const FEATURE_TABS: FeatureTab[] = [
         <li>
           <strong>One credential control plane</strong> — <code>/auth</code>
           opens a scrollable provider vault for API keys, OAuth sessions, vendor
-          CLIs, and OMP credentials across all 65 routes. Save, replace, or
+          CLIs, and OMP credentials across all 67 routes. Save, replace, or
           delete without editing a JSON file.
         </li>
         <li>
@@ -476,7 +476,7 @@ const FEATURE_TABS: FeatureTab[] = [
           <strong>knowledge</strong> — <code>graphify</code> ·{" "}
           <code>graphjin</code> · <code>plur</code> · <code>ruflo</code> ·{" "}
           <code>executor</code> · <code>skill</code> · <code>memory</code> ·{" "}
-          <code>headroom</code> · 52 tools in one dispatcher
+          <code>headroom</code> · 50 tools in one dispatcher
         </li>
         <li>
           <strong>judgments</strong> — <code>typesafe</code> (gate a call, judge
@@ -2513,7 +2513,7 @@ function DemoVideo() {
         loop
         playsInline
         preload="none"
-        aria-label="NurCLI demo: an agent fixes a failing test suite behind approvals and an inline diff, then the command palette, the 65-provider login vault, the model picker, live theme previews and the F6 inspector"
+        aria-label="NurCLI demo: an agent fixes a failing test suite behind approvals and an inline diff, then the command palette, the 67-provider login vault, the model picker, live theme previews and the F6 inspector"
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
         onClick={toggle}
@@ -2890,7 +2890,7 @@ export default function CliPage() {
 
         <ul className="cli-stats" aria-label="Highlights">
           <li>
-            <strong>65</strong>
+            <strong>67</strong>
             <span>provider routes</span>
           </li>
           <li>
@@ -3258,9 +3258,11 @@ export default function CliPage() {
           </ol>
           <p className="cli-after-note">
             Or run <code>nur</code> and use <code>/auth</code> in the TUI —
-            inspect all 65 provider routes in one scrollable vault, then save,
+            inspect all 67 provider routes in one scrollable vault, then save,
             replace, or delete an API key, OAuth session, vendor CLI login, or
-            OMP credential.{" "}
+            OMP credential. The pinned Jev row opens an engines panel that
+            shows which judgment engine is live, where each key resides, and a
+            remove button per slot.{" "}
             <a
               href="https://nuroctane.github.io/nur-cli/"
               target="_blank"
@@ -3279,7 +3281,7 @@ export default function CliPage() {
             <span className="cli-h2-num">04</span> See the machine
           </h2>
           <p className="cli-lead">
-            The TUI is the control surface: approvals, inline diffs, 65
+            The TUI is the control surface: approvals, inline diffs, 67
             providers and live themes in one terminal. The architecture map follows
             the Rust request path from prompt assembly through provider
             adapters, tools, Jev judgments, usage accounting and memory, out to

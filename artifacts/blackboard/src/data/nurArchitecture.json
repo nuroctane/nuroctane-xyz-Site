@@ -2,7 +2,7 @@
   "project": {
     "name": "NurCLI",
     "slug": "nur-cli",
-    "tagline": "65 provider routes, 52 tools and 114 Jev engines in one Rust agent",
+    "tagline": "67 provider routes, 50 tools and 133 Jev engines in one Rust agent",
     "iconDomain": "nuroctane.xyz",
     "date": "2026-10-01"
   },
@@ -84,7 +84,7 @@
         "id": "provider_catalog",
         "label": "Provider catalog",
         "kind": "service",
-        "sub": "65 routes + 2 sidecars",
+        "sub": "67 routes + 2 sidecars",
         "sourceRef": "src/providers.rs:531",
         "detail": "Defines every route's id, display name, endpoint, default model, protocol style, credential source, OAuth capability, and model normalization behavior."
       },
@@ -108,7 +108,7 @@
         "id": "tool_runtime",
         "label": "Permission + ToolHost",
         "kind": "tool",
-        "sub": "52 tools / one dispatcher",
+        "sub": "50 tools / one dispatcher",
         "sourceRef": "src/tools/mod.rs:370",
         "detail": "Approval classes, read-only parallel batches and deny/ask rules; core tool schemas first, the full surface later, including dogwood policy checks and the diagram plane."
       },
@@ -226,7 +226,7 @@
       },
       {
         "id": "jev_catalog",
-        "label": "Jev library / 114",
+        "label": "Jev library / 133",
         "kind": "service",
         "sub": "JevBench roster + new releases",
         "sourceRef": "src/jev_catalog.json",
@@ -486,7 +486,7 @@
         "kind": "model",
         "sub": "JevBench #1 · Gemma-4-12B",
         "sourceRef": "",
-        "detail": "Top-ranked open engine on JevBench v1.5.4, one of 114 entries in nur's Jev library."
+        "detail": "Top-ranked open engine on JevBench v1.5.4, one of 133 entries in nur's Jev library."
       }
     ],
     "edges": [
