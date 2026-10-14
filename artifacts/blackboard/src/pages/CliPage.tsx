@@ -20,7 +20,7 @@ import {
   useWallpaper,
 } from "../blackboard/WallpaperProvider";
 import { MetalFx } from "metal-fx";
-import modelMap from "../data/nurModelMap.json";
+import nurCounts from "../data/nurCounts.json";
 import "../cli-page.css";
 
 /* ── Content ────────────────────────────────────────────────────────────── */
@@ -100,7 +100,7 @@ const TOKEN_PATH = [
     label: "ROUTE",
     title: "Select a protocol, not just a model name",
     body: "Capabilities choose Responses, Chat Completions, Anthropic Messages, native Gemini, Cursor Agent, or a local server. OpenCode routes each model through its documented native protocol.",
-    meta: "67 routes · capability checked",
+    meta: "68 routes · capability checked",
   },
   {
     id: "05",
@@ -264,7 +264,7 @@ const FEATURE_TABS: FeatureTab[] = [
         <li>
           <strong>One credential control plane</strong> — <code>/auth</code>
           opens a scrollable provider vault for API keys, OAuth sessions, vendor
-          CLIs, and OMP credentials across all 67 routes. Save, replace, or
+          CLIs, and OMP credentials across all 68 routes. Save, replace, or
           delete without editing a JSON file.
         </li>
         <li>
@@ -409,7 +409,7 @@ const FEATURE_TABS: FeatureTab[] = [
           entirely.
         </li>
         <li>
-          <strong>{modelMap.jevEngines} Jev systems in one catalog</strong> — search with{" "}
+          <strong>{nurCounts.jevEngines} Jev systems in one catalog</strong> — search with{" "}
           <code>nur jev models</code>, inspect deployment requirements with{" "}
           <code>nur jev info &lt;id&gt;</code>, then connect a hosted endpoint
           or start an installed local runtime. Keys stay in the credential vault
@@ -417,6 +417,15 @@ const FEATURE_TABS: FeatureTab[] = [
           published interfaces; unavailable weights and uncalibrated answers are
           shown honestly. <code>nur jev login &lt;id&gt;</code> ·{" "}
           <code>nur jev start --engine &lt;id&gt;</code>
+        </li>
+        <li>
+          <strong>Keyless hosted engines</strong> — AMOS 1 (Scira) speaks System
+          One natively and checks no key, so{" "}
+          <code>nur jev use --engine amos-1-mini</code> works with nothing
+          stored and the vault row reads &ldquo;no key needed&rdquo;. Interfaze
+          1.1 Lite bridges through its OpenAI-compatible endpoint, and
+          Experiential Labs serves <code>jev-latest</code> on the same key as
+          its chat gateway.
         </li>
         <li>
           <strong>One credential lifts every provider</strong> — the hosted
@@ -441,7 +450,8 @@ const FEATURE_TABS: FeatureTab[] = [
       <ul className="cli-feat-list">
         <li>
           <strong>read</strong> — <code>read_file</code> · <code>list_dir</code>{" "}
-          · <code>grep</code> · <code>glob</code>
+          · <code>sgrep</code> (semantic search first, every model) ·{" "}
+          <code>grep</code> · <code>glob</code>
         </li>
         <li>
           <strong>edit</strong> — <code>write_file</code> ·{" "}
@@ -476,7 +486,7 @@ const FEATURE_TABS: FeatureTab[] = [
           <strong>knowledge</strong> — <code>graphify</code> ·{" "}
           <code>graphjin</code> · <code>plur</code> · <code>ruflo</code> ·{" "}
           <code>executor</code> · <code>skill</code> · <code>memory</code> ·{" "}
-          <code>headroom</code> · 50 tools in one dispatcher
+          <code>headroom</code> · 53 tools in one dispatcher
         </li>
         <li>
           <strong>judgments</strong> — <code>typesafe</code> (gate a call, judge
@@ -1093,7 +1103,7 @@ const CLI_SUBCOMMANDS: { cmd: string; desc: string }[] = [
   },
   {
     cmd: "nur jev models [--search <text>]",
-    desc: `browse all ${modelMap.jevEngines} published Jev systems offline`,
+    desc: `browse all ${nurCounts.jevEngines} published Jev systems offline`,
   },
   {
     cmd: "nur jev info <id>",
@@ -1370,7 +1380,13 @@ const INSPIRATIONS: Inspiration[] = [
     group: "agents",
     name: "Factory",
     href: "https://factory.ai",
-    why: "agentic software delivery product bar",
+    why: "agentic software delivery product bar · the Droid provider route imports an existing `droid` sign-in from /login",
+  },
+  {
+    group: "agents",
+    name: "Unreal Agent",
+    href: "https://github.com/unreallabsai/unreal-agent",
+    why: "async-first harness from Unreal Labs · its token conventions shaped v0.46 tool results: stdout alone, one output bound, handoff only when a command is still talking",
   },
   {
     group: "agents",
@@ -1530,6 +1546,12 @@ const INSPIRATIONS: Inspiration[] = [
   },
   {
     group: "libs",
+    name: "sgrep",
+    href: "https://github.com/context-dot-dev/sgrep",
+    why: "semantic code search, first in the tool list for every model · reranks ripgrep hits through --stdin · auto-installed, falls back to grep when absent",
+  },
+  {
+    group: "libs",
     name: "ripgrep",
     href: "https://github.com/BurntSushi/ripgrep",
     why: "fast workspace search under the hood — grep / glob shell out to rg when present",
@@ -1629,6 +1651,18 @@ const INSPIRATIONS: Inspiration[] = [
     name: "Enclave",
     href: "https://enclave.ai",
     why: "autonomous security agents (pentests, code security review, findings) reached natively over MCP · sidecar key, approval-gated calls",
+  },
+  {
+    group: "stack",
+    name: "AMOS 1",
+    href: "https://amos.scira.ai/",
+    why: "Scira's open-weight (Apache-2.0) decision models in four sizes · speaks System One natively and checks no key, so the first keyless hosted Jev engine · self-serves on CPU",
+  },
+  {
+    group: "stack",
+    name: "Interfaze 1.1 Lite",
+    href: "https://github.com/InterfazeAI/interfaze-1-lite",
+    why: "mixture-of-agents model for dev workloads (OCR, speech, grounding, structured output) · bridged as a Jev engine over its OpenAI-compatible endpoint · Docker self-host",
   },
   {
     group: "stack",
@@ -1737,6 +1771,12 @@ const INSPIRATIONS: Inspiration[] = [
     name: "OpenRouter",
     href: "https://openrouter.ai/",
     why: "400+ models through one key · failover-friendly routing",
+  },
+  {
+    group: "stack",
+    name: "Experiential Labs",
+    href: "https://platform.experientiallabs.ai/models",
+    why: "1,100+ models behind one OpenAI-compatible gateway · BYOK or credits · the same xpl_ key also serves Jev at /v1/systemone",
   },
   {
     group: "stack",
@@ -2430,38 +2470,6 @@ function useNurCliVersion() {
   return { data, status, flash };
 }
 
-
-/** Model releases exported alongside the local architecture snapshot. */
-function ModelMap() {
-  return (
-    <section className="cli-model-map" aria-labelledby="cli-model-map-title">
-      <header className="cli-model-map-hd">
-        <p className="cli-section-code">MODEL MAP</p>
-        <h3 id="cli-model-map-title">The newest model from every lab</h3>
-        <p>
-          {modelMap.routes} provider routes reach these releases, and the Jev
-          layer chooses from {modelMap.jevEngines} decision engines. Checked
-          against each lab&apos;s model docs and official posts.
-        </p>
-      </header>
-      {modelMap.sections.map((section) => (
-        <div className="cli-model-group" key={section.title}>
-          <h4>{section.title}</h4>
-          <ul>
-            {section.models.map((model) => (
-              <li key={`${model.lab}-${model.label}`}>
-                <span className="cli-model-lab">{model.lab}</span>
-                <strong title={model.label}>{model.label}</strong>
-                <small title={model.sub}>{model.sub}</small>
-              </li>
-            ))}
-          </ul>
-        </div>
-      ))}
-    </section>
-  );
-}
-
 /** The demo film, recorded from the real binary. It fetches nothing until it
  *  is played, plays only while on screen, and stays a still poster under
  *  reduced motion. */
@@ -2513,7 +2521,7 @@ function DemoVideo() {
         loop
         playsInline
         preload="none"
-        aria-label="NurCLI demo: an agent fixes a failing test suite behind approvals and an inline diff, then the command palette, the 67-provider login vault, the model picker, live theme previews and the F6 inspector"
+        aria-label="NurCLI demo: an agent fixes a failing test suite behind approvals and an inline diff, then the command palette, the 68-provider login vault, the model picker, live theme previews and the F6 inspector"
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
         onClick={toggle}
@@ -2890,11 +2898,11 @@ export default function CliPage() {
 
         <ul className="cli-stats" aria-label="Highlights">
           <li>
-            <strong>67</strong>
+            <strong>{nurCounts.routes}</strong>
             <span>provider routes</span>
           </li>
           <li>
-            <strong>{modelMap.jevEngines}</strong>
+            <strong>{nurCounts.jevEngines}</strong>
             <span>Jev systems</span>
           </li>
           <li>
@@ -3258,7 +3266,7 @@ export default function CliPage() {
           </ol>
           <p className="cli-after-note">
             Or run <code>nur</code> and use <code>/auth</code> in the TUI —
-            inspect all 67 provider routes in one scrollable vault, then save,
+            inspect all 68 provider routes in one scrollable vault, then save,
             replace, or delete an API key, OAuth session, vendor CLI login, or
             OMP credential. The pinned Jev row opens an engines panel that
             shows which judgment engine is live, where each key resides, and a
@@ -3281,17 +3289,15 @@ export default function CliPage() {
             <span className="cli-h2-num">04</span> See the machine
           </h2>
           <p className="cli-lead">
-            The TUI is the control surface: approvals, inline diffs, 67
+            The TUI is the control surface: approvals, inline diffs, 68
             providers and live themes in one terminal. The architecture map follows
             the Rust request path from prompt assembly through provider
-            adapters, tools, Jev judgments, usage accounting and memory, out to
-            the newest model from every lab nur routes to.
+            adapters, tools, Jev judgments, usage accounting and memory.
           </p>
         </div>
         <DemoVideo />
 
         <NurArchitectureMap />
-        <ModelMap />
       </section>
 
       {/* Features */}
