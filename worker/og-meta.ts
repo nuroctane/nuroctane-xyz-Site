@@ -124,7 +124,7 @@ const PAGES: Record<string, PageMeta> = {
   cli: {
     title: "NurCLI",
     description:
-      "Spend context like it matters. A Rust coding agent with 68 provider routes, a 139-system Jev catalog, semantic search first, local usage aggregation, Enclave security agents, and local-first memory.",
+      "Spend context like it matters. A Rust coding agent with 69 provider routes, a 139-system Jev catalog, semantic search first, local usage aggregation, Enclave security agents, and local-first memory.",
     badge: "NurCLI",
     path: "/cli",
     siteName: "NurCLI",
