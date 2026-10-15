@@ -100,7 +100,7 @@ const TOKEN_PATH = [
     label: "ROUTE",
     title: "Select a protocol, not just a model name",
     body: "Capabilities choose Responses, Chat Completions, Anthropic Messages, native Gemini, Cursor Agent, or a local server. OpenCode routes each model through its documented native protocol.",
-    meta: "69 routes · capability checked",
+    meta: "70 routes · capability checked",
   },
   {
     id: "05",
@@ -264,7 +264,7 @@ const FEATURE_TABS: FeatureTab[] = [
         <li>
           <strong>One credential control plane</strong> — <code>/auth</code>
           opens a scrollable provider vault for API keys, OAuth sessions, vendor
-          CLIs, and OMP credentials across all 69 routes. Save, replace, or
+          CLIs, and OMP credentials across all 70 routes. Save, replace, or
           delete without editing a JSON file.
         </li>
         <li>
@@ -2545,7 +2545,7 @@ function DemoVideo() {
         loop
         playsInline
         preload="none"
-        aria-label="NurCLI demo: an agent fixes a failing test suite behind approvals and an inline diff, then the command palette, the 69-provider login vault, the model picker, live theme previews and the F6 inspector"
+        aria-label="NurCLI demo: an agent fixes a failing test suite behind approvals and an inline diff, then the command palette, the 70-provider login vault, the model picker, live theme previews and the F6 inspector"
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
         onClick={toggle}
@@ -3290,7 +3290,7 @@ export default function CliPage() {
           </ol>
           <p className="cli-after-note">
             Or run <code>nur</code> and use <code>/auth</code> in the TUI —
-            inspect all 69 provider routes in one scrollable vault, then save,
+            inspect all 70 provider routes in one scrollable vault, then save,
             replace, or delete an API key, OAuth session, vendor CLI login, or
             OMP credential. The pinned Jev row opens an engines panel that
             shows which judgment engine is live, where each key resides, and a
@@ -3313,7 +3313,7 @@ export default function CliPage() {
             <span className="cli-h2-num">04</span> See the machine
           </h2>
           <p className="cli-lead">
-            The TUI is the control surface: approvals, inline diffs, 69
+            The TUI is the control surface: approvals, inline diffs, 70
             providers and live themes in one terminal. The architecture map follows
             the Rust request path from prompt assembly through provider
             adapters, tools, Jev judgments, usage accounting and memory.
