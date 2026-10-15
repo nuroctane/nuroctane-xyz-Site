@@ -549,6 +549,12 @@ const FEATURE_TABS: FeatureTab[] = [
           <strong>plan</strong> — <code>todo_write</code> ·{" "}
           <code>submit_plan</code>
         </li>
+        <li>
+          <strong>codemode</strong> — <code>codemode</code>: one JavaScript
+          script that calls several read-only tools in a loop, so the work costs
+          one model round instead of one per call; only what it prints comes
+          back (Boa sandbox, no filesystem / network / shell of its own)
+        </li>
       </ul>
     ),
   },
@@ -801,11 +807,23 @@ const FEATURE_TABS: FeatureTab[] = [
         <li>
           <strong>Auto-update</strong> — nur checks GitHub Releases on launch
           (off the render thread, never blocking startup) and self-installs a
-          newer build, checked against the SHA-256 each release publishes
-          before anything touches disk (<code>npx nur-cli</code> checks it
-          too). <code>nur update</code> forces the check now; opt out
-          with <code>auto_update = false</code> in config or{" "}
+          newer build only after its minisign signature verifies against a
+          public key pinned in the source, then the SHA-256 (an unsigned or
+          tampered asset is refused before anything touches disk;{" "}
+          <code>npx nur-cli</code> checks its own version too).{" "}
+          <code>nur update</code> forces the check now; opt out with{" "}
+          <code>auto_update = false</code> in config or{" "}
           <code>NUR_SKIP_AUTO_UPDATE=1</code>.
+        </li>
+        <li>
+          <strong>Skills from a cloned repo are inert until you say so</strong>{" "}
+          — project-local skills wait for <code>/skills trust</code>, recorded
+          as a digest so an edit holds them again; SKILL.md{" "}
+          <code>disable-model-invocation</code> is honoured; wording-based
+          activation is opt-in. Ecosystem packs, plugins and sgrep install at
+          lockfile-pinned commits, and{" "}
+          <code>nur ecosystem install &lt;name&gt;</code> shows the plan before
+          it runs.
         </li>
         <li>
           <strong>Long runs stay alive</strong> — the real context window is
