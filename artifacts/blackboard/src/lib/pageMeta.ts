@@ -79,12 +79,12 @@ const PAGES: Record<string, PageMeta> = {
   cli: {
     title: "NurCLI",
     description:
-      "Spend context like it matters. A Rust coding agent with 70 provider routes, a 139-system Jev catalog, semantic search first, local usage aggregation, Enclave security agents, and local-first memory.",
+      "Spend context like it matters. A Rust coding agent with 70 provider routes, a 142-system Jev catalog, semantic search first, local usage aggregation, Enclave security agents, and local-first memory.",
     badge: "NurCLI",
     path: "/cli",
     siteName: "NurCLI",
     favicon: "/assets/nodes/nur-cli-logo.png",
-    imagePath: "/assets/og/cli-927bae55.png",
+    imagePath: "/assets/og/cli-dda47cb8.png",
   },
   curriculum: {
     title: "World Models: A Daily Series",

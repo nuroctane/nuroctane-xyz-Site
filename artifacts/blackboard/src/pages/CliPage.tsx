@@ -428,6 +428,14 @@ const FEATURE_TABS: FeatureTab[] = [
           its chat gateway.
         </li>
         <li>
+          <strong>Liquid d1-ultra, direct</strong> — Liquid AI&apos;s strongest
+          decision model (multimodal, 44 languages) answers on Liquid&apos;s own
+          System One endpoint, no bridge.{" "}
+          <code>nur jev login liquid-d1-ultra</code> once, then{" "}
+          <code>nur jev use --engine liquid-d1-ultra</code>; d1 and{" "}
+          <code>d1:free</code> share the same key.
+        </li>
+        <li>
           <strong>One credential lifts every provider</strong> — the hosted
           route is provider-agnostic, and <code>TypeSafe · Jev</code> sits
           pinned at the top of the credential vault with its own borders. It
@@ -486,7 +494,7 @@ const FEATURE_TABS: FeatureTab[] = [
           <strong>knowledge</strong> — <code>graphify</code> ·{" "}
           <code>graphjin</code> · <code>plur</code> · <code>ruflo</code> ·{" "}
           <code>executor</code> · <code>skill</code> · <code>memory</code> ·{" "}
-          <code>headroom</code> · 53 tools in one dispatcher
+          <code>headroom</code> · 54 tools in one dispatcher
         </li>
         <li>
           <strong>judgments</strong> — <code>typesafe</code> (gate a call, judge
@@ -1681,6 +1689,12 @@ const INSPIRATIONS: Inspiration[] = [
     name: "Interfaze 1.1 Lite",
     href: "https://github.com/InterfazeAI/interfaze-1-lite",
     why: "mixture-of-agents model for dev workloads (OCR, speech, grounding, structured output) · bridged as a Jev engine over its OpenAI-compatible endpoint · Docker self-host",
+  },
+  {
+    group: "stack",
+    name: "Liquid AI d1",
+    href: "https://console.liquid.ai/",
+    why: "decision models (d1-ultra, d1, d1:free) on Liquid's own System One endpoint · one console key for all three · images on the paid tiers",
   },
   {
     group: "stack",
