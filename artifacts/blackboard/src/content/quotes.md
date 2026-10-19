@@ -4,10 +4,10 @@
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (60)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (81)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (55)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (101)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (104)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (32)
-- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (106)
-- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (65)
+- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (107)
+- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (66)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (81)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (52)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (66)
@@ -1317,6 +1317,19 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > you look younger than your age because you don't carry envy or bad energy
 > — @ThabigRexy
 
+> planning is overrated
+> 
+> just take the shortest term action that is in the general direction of your goal
+> 
+> reality is a super high dimensional space, so this basically always works
+> — @grantslatton
+
+> Success-addiction has metastasized into our souls so deeply that we cannot kneel without calculating the return on our bent knees
+> — @lichthauch
+
+> How to become untouchable: Choose something that makes your hands shake then do it until they stop shaking then do it until other people's hands shake when they watch you.
+> — @lichthauch
+
 ## Creativity, Purpose & Expression
 
 _Calling, craft, art, play, service, voice, vision, and making what only you can make._
@@ -1805,6 +1818,9 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > She looked at your potential and decided she could do better. That's the part men never forget.
 > — @supuypweza
 
+> The human race only exists as a net of relationships between each person and other people, living and dead. Cutting off any relationship is a kind of wound to the human race as a whole, and we have been much too flippant about doing that for the past few centuries.
+> — @oecolamp
+
 ## Shadow, Discernment & Protection
 
 _Enemies, manipulation, resentment, power, spiritual attack, discernment, and energetic hygiene._
@@ -2009,6 +2025,9 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 >
 > And u were foolish enough to mistake their humility for equality. Out of ego, u underestimated their potential, tried to belittle them and unconsciously drag them down to ur level, because u were seeking validation through comparison. Meanwhile, they did the opposite: they amplified u, made u feel capable, uplifted u, and eventually left, not because they looked down on u, but because u were never willing to learn, change, and become someone who could walk beside them. The problem is You. You're not good for good people.
 > — @SIGMAPROFESSOR
+
+> People will constantly attack you in life. One of their main weapons will be to instill in you doubts about yourself – your worth, your abilities, your potential. They will often disguise this as their objective opinion, but invariably it has a political purpose – they want to keep you down.
+> — @RobertGreene
 
 ## Body, Emotion & Nervous System
 
