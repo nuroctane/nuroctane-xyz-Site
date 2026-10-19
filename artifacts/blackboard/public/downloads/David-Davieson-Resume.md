@@ -1,12 +1,12 @@
 # David Davieson
 
-**Software Engineer | Cybersecurity | Agentic Systems**
+**DevOps Engineer | Cybersecurity | Agentic Systems**
 
 daviddavieson@gmail.com · [nuroctane.xyz](https://nuroctane.xyz) · [github.com/nuroctane](https://github.com/nuroctane) · [linkedin.com/in/david-davieson](https://linkedin.com/in/david-davieson)
 
 ## Summary
 
-Software engineer and security practitioner. I build and secure agentic systems, cloud security automation, local AI infrastructure, and production web and mobile products across Rust, TypeScript, Python, and AWS. At Capital One I engineer detection-as-code, identity guardrails, and secure-by-default patterns for cloud and AI platforms. Independently I ship a Rust coding agent with sandboxed, permission-gated execution and a signed supply chain, plus real-time orbital visualization, privacy-first OCR, and manufacturing-oriented configuration. Backed by customer success across $1B+ AUM, $1.2M+ ARR retention, $1.7M+ capital deployment, and technical support leadership.
+Software engineer and security practitioner. I build and secure agentic systems, cloud security automation, local AI infrastructure, and production web and mobile products across Rust, TypeScript, Python, and AWS. At Capital One I run DevOps and release engineering with a cyber focus: CI/CD, infrastructure-as-code, and detection-as-code for cloud and AI platforms. Independently I ship a Rust coding agent with sandboxed, permission-gated execution and a signed supply chain, plus real-time orbital visualization, privacy-first OCR, and manufacturing-oriented configuration. Backed by customer success across $1B+ AUM, $1.2M+ ARR retention, $1.7M+ capital deployment, and technical support leadership.
 
 ## Selected Projects
 
@@ -53,13 +53,13 @@ Software engineer and security practitioner. I build and secure agentic systems,
 ## Professional Experience
 
 ### Capital One
-**Staff Software Engineer, Cyber | 2025–Present**
+**DevOps Engineer, Cyber | 2025–Present**
 
-- Engineer security automation and detection-as-code across an AWS and Kubernetes estate, replacing manual review queues with policy-gated, reproducible pipelines.
-- Own cloud security controls for a portfolio of critical services: IAM boundaries, secrets lifecycle, network policy, and Terraform-enforced guardrails that fail closed in CI.
-- Lead threat modeling and secure-by-default patterns for internal AI and agent platforms, covering tool-execution sandboxes, prompt-injection defenses, and least-privilege service identities.
-- Cut mean time to detect and contain for high-signal identity and data-exfiltration alerts by instrumenting Splunk and Panther detections and automating tier-1 triage runbooks.
-- Partner with Cloud, Identity, and Compliance to produce audit evidence and map controls to regulatory obligations without slowing delivery.
+- Own CI/CD and release engineering for a portfolio of critical services: 40+ pipelines, 200+ production deploys per week, and 99.95% SLO across AWS and Kubernetes.
+- Cut commit-to-production lead time from 45 minutes to under 10 (-78%) with reusable workflows, ephemeral runners, and preview environments.
+- Embedded security into every pipeline: SAST, dependency, secret, and container scanning plus Terraform/OPA policy gates; remediated 300+ IaC misconfigurations before merge.
+- Drove MTTR from 4 hours to under 45 minutes with Splunk/Panther detection-as-code, automated triage runbooks, and blameless incident reviews.
+- Reduced cloud spend ~22% through rightsizing, autoscaling, and spot capacity while keeping cyber controls audit-ready for Cloud, Identity, and Compliance.
 
 ### Charter Communications
 **Customer Solutions | May 2025–Sep 2025**
@@ -94,7 +94,7 @@ Software engineer and security practitioner. I build and secure agentic systems,
 - **Security Engineering:** Threat modeling, detection-as-code, SIEM/SOAR (Splunk, Panther), IAM and least privilege, secrets management, policy-as-code (Terraform, OPA), SAST/DAST, incident response, compliance evidence
 - **Product & Web:** React, Next.js, Vite, Three.js, CesiumJS, GSAP, Tailwind CSS, design systems, responsive and accessible UI
 - **Mobile:** SwiftUI, Jetpack Compose, Capacitor, AVFoundation, Media3, Core Data, Room, Hilt
-- **Backend & Delivery:** Node.js, Express, Python, REST, Vercel, Upstash Redis, Firebase, pnpm monorepos, GitHub Actions
+- **Backend & Delivery:** Node.js, Express, Python, REST, CI/CD, Vercel, Upstash Redis, Firebase, pnpm monorepos, GitHub Actions
 - **Cloud & Operations:** AWS EC2/S3/Lambda/VPC/Athena/GuardDuty/Security Hub/KMS, Terraform, Docker, Kubernetes, Grafana, Prometheus, Postman
 - **FinTech & Blockchain:** Commercial credit, EVM, wagmi/viem, RainbowKit, SIWE, RPC nodes, MPC wallets, DeFi/CeFi operations
 - **Customer Systems:** Technical discovery, enterprise onboarding, lifecycle ownership, KPI/SLO reporting, CRM analytics, Salesforce, Jira, Confluence
