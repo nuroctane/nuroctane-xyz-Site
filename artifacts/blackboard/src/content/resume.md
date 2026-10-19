@@ -10,7 +10,7 @@
 
 > **Software engineer and security practitioner.** I build and secure agentic systems, cloud security automation, local AI infrastructure, and production web and mobile products across Rust, TypeScript, Python, and AWS.
 >
-> At Capital One I run DevOps and release engineering with a cyber focus: CI/CD, infrastructure-as-code, and detection-as-code for cloud and AI platforms. Independently I ship a Rust coding agent with sandboxed, permission-gated execution and a signed supply chain, plus real-time orbital visualization, privacy-first OCR, and manufacturing-oriented configuration. Backed by customer success across **$1B+ AUM**, **$1.2M+ ARR retention**, **$1.7M+ capital deployment**, and technical support leadership.
+> Independently I ship a Rust coding agent with sandboxed, permission-gated execution and a signed supply chain, plus real-time orbital visualization, privacy-first OCR, and manufacturing-oriented configuration. Backed by customer success across **$1B+ AUM**, **$1.2M+ ARR retention**, **$1.7M+ capital deployment**, and technical support leadership.
 
 ## SELECTED PRODUCTS
 
@@ -40,7 +40,7 @@
 ## PROFESSIONAL EXPERIENCE
 
 ### CAPITAL ONE
-**`DevOps Engineer, Cyber`** | *(2025–Present)*
+**`DevOps Engineer, Cyber`** | *(2025–Oct 2026)*
 > * Own CI/CD and release engineering for a portfolio of critical services: **40+ pipelines**, **200+ production deploys per week**, and **99.95% SLO** across AWS and Kubernetes.
 > * Cut commit-to-production lead time from **45 minutes to under 10** (**-78%**) with reusable workflows, ephemeral runners, and preview environments.
 > * Embedded security into every pipeline: SAST, dependency, secret, and container scanning plus Terraform/OPA policy gates; remediated **300+ IaC misconfigurations** before merge.
