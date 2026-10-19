@@ -33,7 +33,18 @@ from pathlib import Path
 REPO_ROOT = Path(r"C:\Users\david\Laboratory\nuroctane.xyz")
 HERMES_ROOT = Path(os.environ.get("LOCALAPPDATA", "")) / "hermes"
 HERMES_SCRIPTS = HERMES_ROOT / "scripts"
-HERMES_PYTHON = HERMES_ROOT / "hermes-agent" / "venv" / "Scripts" / "python.exe"
+# The pipeline's own venv (scripts/install-quotes-venv.ps1). Hermes deleted its
+# venv when it moved to a bundled runtime, so it is only a legacy fallback.
+PYTHON_CANDIDATES = [
+    Path(p)
+    for p in (
+        os.environ.get("NUROCTANE_QUOTES_PYTHON", ""),
+        str(Path(os.environ.get("LOCALAPPDATA", "")) / "nuroctane" / "quotes-venv" / "Scripts" / "python.exe"),
+        str(HERMES_ROOT / "hermes-agent" / "venv" / "Scripts" / "python.exe"),
+    )
+    if p
+]
+HERMES_PYTHON = next((p for p in PYTHON_CANDIDATES if p.is_file()), PYTHON_CANDIDATES[-1])
 LOG_FILE = REPO_ROOT / ".nur" / "quotes-pipeline.log"
 LOCK_FILE = REPO_ROOT / ".nur" / "quotes-pipeline.lock"
 STALE_LOCK_SECONDS = 2 * 60 * 60
@@ -129,35 +140,15 @@ def release_lock() -> None:
         log(f"could not remove pipeline lock: {exc}")
 
 
-def _blocks_quotes_publish(line: str) -> bool:
-    path = line[3:].split(" -> ")[-1].strip().strip('"')
-    if REL_QUOTES in path or path.endswith("quotes.md"):
-        return False
-    if path.replace("\\", "/").startswith("scripts/"):
-        return False
-    return True
-
-
 def preflight_git() -> int:
-    """Keep scheduled work from committing a user's unrelated tracked edits."""
-    status = subprocess.run(
-        ["git", "status", "--porcelain", "--untracked-files=no"],
-        cwd=str(REPO_ROOT),
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        errors="replace",
-        creationflags=command_flags(),
-    )
-    if status.returncode:
-        log("git preflight failed: could not read repository status")
-        return status.returncode
-    unrelated = [line for line in status.stdout.splitlines() if _blocks_quotes_publish(line)]
-    if unrelated:
-        log("git preflight deferred: unrelated tracked work is present")
-        for line in unrelated:
-            log(f"git preflight: {line}")
-        return 3
+    """Make sure a quotes-only commit can land on main without carrying user work.
+
+    Uncommitted edits elsewhere in the tree do not block: the sync commits with
+    ``git commit --only quotes.md`` so they stay local. (Deferring on them is what
+    left quotes unpublished for days while unrelated work sat uncommitted.)
+    Local commits that are not on origin/main do block, because pushing the
+    quotes commit would deploy them too.
+    """
 
     branch = subprocess.run(
         ["git", "branch", "--show-current"],
@@ -184,6 +175,18 @@ def preflight_git() -> int:
     if fetch.returncode:
         log("git preflight deferred: fetch origin/main failed")
         return fetch.returncode
+    ahead = subprocess.run(
+        ["git", "rev-list", "--count", "origin/main..HEAD"],
+        cwd=str(REPO_ROOT),
+        capture_output=True,
+        text=True,
+        encoding="utf-8",
+        errors="replace",
+        creationflags=command_flags(),
+    )
+    if ahead.returncode or ahead.stdout.strip() != "0":
+        log(f"git preflight deferred: main has {ahead.stdout.strip() or '?'} unpushed local commit(s)")
+        return 3
     pull = subprocess.run(
         ["git", "pull", "--ff-only", "origin", "main"],
         cwd=str(REPO_ROOT),
@@ -278,7 +281,7 @@ def main() -> int:
 
         ready = preflight_git()
         if ready:
-            log("vault ingest finished; site publish deferred until git is clean")
+            log("vault ingest finished; site publish deferred until main can publish")
             mirror_books()
             return ingest_rc or ready
 

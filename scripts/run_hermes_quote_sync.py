@@ -20,7 +20,37 @@ def load_sync():
     module.DEST = module.REPO_ROOT / module.REL_DEST
     rebuild = module.rebuild_index
     module.rebuild_index = lambda body: rebuild(apply_editorial(body))
+    module.ensure_publishable_main = lambda: ensure_publishable_main(module)
+    # The push-rejected retry runs `git pull --rebase`, which refuses to start
+    # over uncommitted edits. Stash them around the rebase instead.
+    os.environ["GIT_CONFIG_COUNT"] = "1"
+    os.environ["GIT_CONFIG_KEY_0"] = "rebase.autoStash"
+    os.environ["GIT_CONFIG_VALUE_0"] = "true"
     return module
+
+
+def ensure_publishable_main(module) -> bool:
+    """Publish over uncommitted edits, never over unpushed commits.
+
+    The sync commits with `--only quotes.md`, so other dirty files stay local.
+    Unpushed local commits would ride along with the quotes push and deploy.
+    """
+    git, log = module.git, module.log
+    branch = git("branch", "--show-current", check=False)
+    if branch.returncode != 0 or branch.stdout.strip() != "main":
+        log(f"Expected main; found {branch.stdout.strip() or 'detached HEAD'}. Leaving quotes for the next run")
+        return False
+    if git("fetch", "origin", "main", check=False).returncode != 0:
+        log("Could not fetch origin/main; leaving quotes for the next run")
+        return False
+    ahead = git("rev-list", "--count", "origin/main..HEAD", check=False)
+    if ahead.returncode != 0 or ahead.stdout.strip() != "0":
+        log(f"main has {ahead.stdout.strip() or '?'} unpushed local commit(s); leaving quotes for the next run")
+        return False
+    if git("pull", "--ff-only", "origin", "main", check=False).returncode != 0:
+        log("Could not fast-forward main; leaving quotes for the next run")
+        return False
+    return True
 
 
 if __name__ == "__main__":
