@@ -1,6 +1,6 @@
 # David Davieson
 
-**Software Engineer · Agentic Systems · Security**
+**Software Engineer · Cybersecurity · Agentic Systems**
 
 **[ `daviddavieson@gmail.com` ] · [ `https://nuroctane.xyz` ] · [ `github.com/nuroctane` ] · [ `linkedin.com/in/david-davieson` ]**
 
@@ -8,9 +8,9 @@
 
 ## SUMMARY
 
-> **Software engineer and technical operator.** I design, secure, and ship agentic systems, local AI infrastructure, 3D web products, and native mobile apps across Rust, TypeScript, and Python.
+> **Software engineer and security practitioner.** I build and secure agentic systems, cloud security automation, local AI infrastructure, and production web and mobile products across Rust, TypeScript, Python, and AWS.
 >
-> My work pairs systems depth with security discipline and commercial ownership: a Rust coding agent spanning 70 provider routes with sandboxed, permission-gated execution and a signed supply chain, real-time orbital visualization, privacy-first OCR, and manufacturing-oriented configuration, backed by customer success across **$1B+ AUM**, **$1.2M+ ARR retention**, **$1.7M+ capital deployment**, and technical support leadership.
+> At Capital One I engineer detection-as-code, identity guardrails, and secure-by-default patterns for cloud and AI platforms. Independently I ship a Rust coding agent with sandboxed, permission-gated execution and a signed supply chain, plus real-time orbital visualization, privacy-first OCR, and manufacturing-oriented configuration. Backed by customer success across **$1B+ AUM**, **$1.2M+ ARR retention**, **$1.7M+ capital deployment**, and technical support leadership.
 
 ## SELECTED PRODUCTS
 
@@ -39,18 +39,13 @@
 
 ## PROFESSIONAL EXPERIENCE
 
-### NUROCTANE (INDEPENDENT)
-**`Founder & Lead Software Engineer`** | *(Jun 2026–Present)*
-> * Design, build, and operate a portfolio of shipped products solo across Rust, TypeScript, and Python, owning architecture, security review, release engineering, and production.
-> * Took NurCLI from first commit to v0.53 in three months: **419 commits**, **155 tagged releases**, signed skill packs, and CI validation on Windows and macOS.
-> * Threat-modeled agent tool execution into permission-gated, sandboxed calls with SSRF guards, privacy-tier routing, DPAPI-encrypted credentials, and tamper-evident session receipts; integrated Enclave autonomous pentest and code-review agents over MCP.
-> * Run nuroctane.xyz in production as one Cloudflare Worker (SPA, Hono API, crawler metadata) behind a build gate of typecheck plus a 73-assertion smoke test, with a GitHub Actions deploy fallback.
-
 ### CAPITAL ONE
-**`Teller`** | *(2025–Present)*
-> * Orchestrate end-to-end commercial financing for SMEs across working-capital, private-credit-aligned, and growth facilities.
-> * Facilitated **$1.7M+ in capital deployment** by matching borrower profiles to underwriting constraints and driving discovery through term-fit handoff.
-> * Use CRM analytics to keep pipeline velocity up without relaxing the quality gate on underwriting.
+**`Staff Software Engineer, Cyber`** | *(2025–Present)*
+> * Engineer security automation and detection-as-code across an AWS and Kubernetes estate, replacing manual review queues with policy-gated, reproducible pipelines.
+> * Own cloud security controls for a portfolio of critical services: IAM boundaries, secrets lifecycle, network policy, and Terraform-enforced guardrails that fail closed in CI.
+> * Lead threat modeling and secure-by-default patterns for internal AI and agent platforms, covering tool-execution sandboxes, prompt-injection defenses, and least-privilege service identities.
+> * Cut mean time to detect and contain for high-signal identity and data-exfiltration alerts by instrumenting Splunk and Panther detections and automating tier-1 triage runbooks.
+> * Partner with Cloud, Identity, and Compliance to produce audit evidence and map controls to regulatory obligations without slowing delivery.
 
 ### CHARTER COMMUNICATIONS
 **`Customer Solutions`** | *(May 2025–Sep 2025)*
@@ -74,26 +69,28 @@
 > * Led technical support protocols for teams of **5–7** across DeFi/CeFi operations, rollups, yield farming, and smart-contract interactions.
 > * Implemented client OpSec practices spanning hardware wallets, TOTP, and encrypted backups so high-volume institutional-adjacent workflows did not skip the safety steps.
 
-## COMMERCIAL & OPERATIONAL IMPACT
+## SECURITY & OPERATIONAL IMPACT
 
+* **Cloud security automation** across AWS and Kubernetes with policy-as-code guardrails
+* **Detection-as-code** coverage for identity, exfiltration, and AI tool-execution abuse
 * **MTTR below 24 hours** on supported infrastructure flows
 * **70%+ NPS** and **85%+ CSAT** team performance
 * **$1B+ AUM** institutional customer lifecycle ownership
 * **$1.2M+ ARR** defended through retention systems
-* Approximately **25%** customer LTV improvement
 * **$1.7M+** SME capital deployment
 
 ## SKILLS & TOOLING
 
 | DOMAIN | TECHNOLOGIES / COMPETENCIES |
 | :--- | :--- |
-| **Languages** | TypeScript/JavaScript, Python, Rust, Swift, Kotlin, Solidity, SQL |
+| **Languages** | TypeScript/JavaScript, Python, Rust, Go, Swift, Kotlin, Solidity, SQL |
 | **Agentic & Local AI** | Multi-provider model APIs, tool calling, MCP, subagents, typed judgment layers (TypeSafe Jev), plugins, skills, permission systems, Ollama, llama-server, GGUF routing, ONNX Runtime |
 | **Systems & Safety** | Tokio, ratatui/crossterm TUIs, filesystem conversion pipelines, capability models, fuzzing, sandboxed command execution, permissioned tool use |
+| **Security Engineering** | Threat modeling, detection-as-code, SIEM/SOAR (Splunk, Panther), IAM and least privilege, secrets management, policy-as-code (Terraform, OPA), SAST/DAST, incident response, compliance evidence |
 | **Product & Web** | React, Next.js, Vite, Three.js, CesiumJS, GSAP, Tailwind CSS, design systems, responsive and accessible UI |
 | **Mobile** | SwiftUI, Jetpack Compose, Capacitor, AVFoundation, Media3, Core Data, Room, Hilt |
 | **Backend & Delivery** | Node.js, Express, Python, REST, Vercel, Upstash Redis, Firebase, pnpm monorepos, GitHub Actions |
-| **Cloud & Operations** | AWS EC2/S3/Lambda/VPC/Athena, Docker, Kubernetes operations, Grafana, Prometheus, Postman |
+| **Cloud & Operations** | AWS EC2/S3/Lambda/VPC/Athena/GuardDuty/Security Hub/KMS, Terraform, Docker, Kubernetes, Grafana, Prometheus, Postman |
 | **FinTech & Blockchain** | Commercial credit, EVM, wagmi/viem, RainbowKit, SIWE, RPC nodes, MPC wallets, DeFi/CeFi operations |
 | **Customer Systems** | Technical discovery, enterprise onboarding, lifecycle ownership, KPI/SLO reporting, CRM analytics, Salesforce, Jira, Confluence |
 
