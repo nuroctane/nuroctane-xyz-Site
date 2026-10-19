@@ -1,6 +1,6 @@
 # David Davieson
 
-**Product Engineer · Agentic Systems · Customer Success**
+**Software Engineer · Agentic Systems · Security**
 
 **[ `daviddavieson@gmail.com` ] · [ `https://nuroctane.xyz` ] · [ `github.com/nuroctane` ] · [ `linkedin.com/in/david-davieson` ]**
 
@@ -8,18 +8,19 @@
 
 ## SUMMARY
 
-> **Product engineer and technical operator.** I build and ship agentic systems, local AI infrastructure, 3D web products, native mobile apps, and institutional integrations across Rust, TypeScript, and Python.
+> **Software engineer and technical operator.** I design, secure, and ship agentic systems, local AI infrastructure, 3D web products, and native mobile apps across Rust, TypeScript, and Python.
 >
-> My work combines systems depth with commercial ownership: an agent harness spanning 60+ model providers, real-time orbital visualization, privacy-first OCR, and manufacturing-oriented configuration—backed by customer success across **$1B+ AUM**, **$1.2M+ ARR retention**, **$1.7M+ capital deployment**, and technical support leadership.
+> My work pairs systems depth with security discipline and commercial ownership: a Rust coding agent spanning 70 provider routes with sandboxed, permission-gated execution and a signed supply chain, real-time orbital visualization, privacy-first OCR, and manufacturing-oriented configuration, backed by customer success across **$1B+ AUM**, **$1.2M+ ARR retention**, **$1.7M+ capital deployment**, and technical support leadership.
 
 ## SELECTED PRODUCTS
 
-* **[ NurCLI — Multi-Provider Agent Harness ]** · [nuroctane.xyz/cli](https://www.nuroctane.xyz/cli) · [GitHub](https://github.com/nuroctane/nur-cli)
-  * Built a production-minded **Rust** agent harness spanning 60+ providers with a streaming TUI, tool loop, subagents, todos, auto-compaction, session resume, native vision, and manual/plan/auto permission modes that gate side effects before they run.
-  * Designed the plugin marketplace and natural-language skill system, hardened command sandbox, one-command provisioning, and persistent knowledge integrations across Graphify, PLUR, Ruflo, and Executor so every tool call is permissioned, inspectable, and recoverable.
-  * Hardened the agent loop for security-critical work: sandboxed command execution (shell denylists, timeouts, SSRF-guarded fetches, atomic IO), per-provider privacy tiers (LOCAL/TEE/ZDR) whose failover never silently downgrades, and tamper-evident, hash-chained session receipts; shipped an audit-grade skill stack spanning a Solidity smart-contract auditor that orchestrates specialist subagents into severity-ranked findings, an on-chain exploit investigator, and 800+ cybersecurity playbooks (red-team attack simulation, detection engineering, hardening) delivered through the AKM package manager.
-  * Designed agent memory as a persistent world model: memoir-style hierarchical memory on the M1–M4 agent-native framework with append-only tiers that age from near-verbatim working notes to coarse recollection, retrieved through one intent-routed path that fans a single query embedding across native memory, a local vector index, the knowledge graph, and a tenant-partitioned HelixDB graph-vector resident behind a durable local outbox — deduplicated by memory ID before prompt injection.
-  * Engineered context management as the core discipline: auto-compaction against an OMP-style response reserve instead of a premature fixed percentage, oversized tool results spilled to content-addressed disk and reloaded exactly across sessions, provider prompt caches preserved turn-to-turn, and every model request assembled as one inspectable artifact with failover, fusion, subagents, and memory inference all reporting their real token and cost impact.
+* **[ NurCLI — Multi-Provider Coding Agent ]** · [nuroctane.xyz/cli](https://www.nuroctane.xyz/cli) · [GitHub](https://github.com/nuroctane/nur-cli)
+  * Build and ship a **Rust** coding agent (v0.53) across **70 provider routes** and **54 native tools**: streaming tool loop, subagents, manual/plan/auto permission modes that gate side effects before they run, session resume, native vision, and `/takeover`, which imports live Claude Code, Codex, Cursor, and Grok Build sessions.
+  * **Jev judgment layer:** wove TypeSafe Jev typed judgments into the harness itself. One batched call gates tool calls, verifies results, and drives compaction that keeps surviving context verbatim and writes no summary, over a **142-system Jev library** with keyless local engines (openJev-verdict-2.0 on CPU, Bespoke-Nimble-9B on NVIDIA/MLX, Laya on Apple Neural Engine) and direct engines such as Liquid d1-ultra.
+  * **Gold TUI (ratatui/crossterm):** viewport-rendered transcript read as prose with clickable file paths, an F6 session inspector for changes, tools, agents, and context, inline image previews over kitty/sixel/iTerm2, live theme previews, question modals, and a reduced-motion mode.
+  * **Context as the core discipline:** OMP-style response-reserve compaction, content-addressed spill of oversized tool results, preserved provider prompt caches, semantic search (sgrep) as the first read path, and a local usage ledger across seven agents' logs, so every failover, subagent, and judgment reports its real token and cost impact.
+  * **Security and supply chain:** sandboxed execution (shell denylists, timeouts, SSRF-guarded fetches, atomic IO), LOCAL/TEE/ZDR privacy tiers whose failover never silently downgrades, DPAPI-encrypted credentials at rest, signed updates and skill packs, hash-chained session receipts, and Enclave security agents over native MCP.
+  * **Memory and ecosystem:** hierarchical Connectome notes with an append-only chronicle, a local vector index, the Graphify knowledge graph, and an optional HelixDB graph-vector mirror behind a durable outbox, recalled through one intent-routed query; plus a plugin marketplace and natural-language skill activation.
 * **[ StarConverter — exFAT ↔ NTFS Conversion Workbench ]** · [GitHub](https://github.com/nuroctane/StarConverter)
   * Building a **Rust** analyze / plan / convert / verify / rollback workbench that keeps file-data extents in place where possible, relocates only conflicts, and constructs new filesystem metadata transactionally.
   * Pre-alpha: image inspection, object-graph reconstruction, capability-gated planner, and fuzz targets. Conversion of live volumes stays blocked until the capability model clears it; no current executable writes disks.
@@ -37,6 +38,13 @@
   * Automated cross-platform discovery, llama-server presets, model selection, and fallback routing to keep the agent loop running without a paid-inference hard stop.
 
 ## PROFESSIONAL EXPERIENCE
+
+### NUROCTANE (INDEPENDENT)
+**`Founder & Lead Software Engineer`** | *(Jun 2026–Present)*
+> * Design, build, and operate a portfolio of shipped products solo across Rust, TypeScript, and Python, owning architecture, security review, release engineering, and production.
+> * Took NurCLI from first commit to v0.53 in three months: **419 commits**, **155 tagged releases**, signed skill packs, and CI validation on Windows and macOS.
+> * Threat-modeled agent tool execution into permission-gated, sandboxed calls with SSRF guards, privacy-tier routing, DPAPI-encrypted credentials, and tamper-evident session receipts; integrated Enclave autonomous pentest and code-review agents over MCP.
+> * Run nuroctane.xyz in production as one Cloudflare Worker (SPA, Hono API, crawler metadata) behind a build gate of typecheck plus a 73-assertion smoke test, with a GitHub Actions deploy fallback.
 
 ### CAPITAL ONE
 **`Teller`** | *(2025–Present)*
@@ -80,10 +88,9 @@
 | DOMAIN | TECHNOLOGIES / COMPETENCIES |
 | :--- | :--- |
 | **Languages** | TypeScript/JavaScript, Python, Rust, Swift, Kotlin, Solidity, SQL |
-| **Agentic & Local AI** | Multi-provider model APIs, tool calling, subagents, plugins, skills, permission systems, Ollama, llama-server, GGUF routing, ONNX Runtime |
-| **Systems & Safety** | Filesystem conversion pipelines, capability models, fuzzing, sandboxed command execution, permissioned tool use |
+| **Agentic & Local AI** | Multi-provider model APIs, tool calling, MCP, subagents, typed judgment layers (TypeSafe Jev), plugins, skills, permission systems, Ollama, llama-server, GGUF routing, ONNX Runtime |
+| **Systems & Safety** | Tokio, ratatui/crossterm TUIs, filesystem conversion pipelines, capability models, fuzzing, sandboxed command execution, permissioned tool use |
 | **Product & Web** | React, Next.js, Vite, Three.js, CesiumJS, GSAP, Tailwind CSS, design systems, responsive and accessible UI |
-| **IDEs & Editors** | Zed, VS Code, Cursor, Windsurf, Neovim, JetBrains Suite |
 | **Mobile** | SwiftUI, Jetpack Compose, Capacitor, AVFoundation, Media3, Core Data, Room, Hilt |
 | **Backend & Delivery** | Node.js, Express, Python, REST, Vercel, Upstash Redis, Firebase, pnpm monorepos, GitHub Actions |
 | **Cloud & Operations** | AWS EC2/S3/Lambda/VPC/Athena, Docker, Kubernetes operations, Grafana, Prometheus, Postman |

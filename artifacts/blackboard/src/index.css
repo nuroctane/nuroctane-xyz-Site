@@ -4173,6 +4173,12 @@ html.standalone-active body {
     display: none !important;
   }
 
+  /* The floating nav and scroll button render outside .resume-page. */
+  body:has(.resume-page) .bb-standalone-nav,
+  body:has(.resume-page) .scroll-top-btn {
+    display: none !important;
+  }
+
   /* Printed resumes keep the SYS:// label; only the audio widget hides. */
   .resume-page .standalone-header {
     display: flex !important;

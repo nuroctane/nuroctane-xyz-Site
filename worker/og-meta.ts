@@ -107,7 +107,7 @@ const PAGES: Record<string, PageMeta> = {
   resume: {
     title: "Resume — David Davieson · NUROCTANE",
     description:
-      "Agentic product engineer · customer success · B2B lending · technical support leadership. Projects, impact, and experience.",
+      "Software engineer · agentic systems · security · customer success. Projects, impact, and experience.",
     badge: "RESUME",
     path: "/resume",
     noindex: true,
