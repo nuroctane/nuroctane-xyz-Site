@@ -21,15 +21,18 @@
   * **Context as the core discipline:** OMP-style response-reserve compaction, content-addressed spill of oversized tool results, preserved provider prompt caches, semantic search (sgrep) as the first read path, and a local usage ledger across seven agents' logs, so every failover, subagent, and judgment reports its real token and cost impact.
   * **Security and supply chain:** sandboxed execution (shell denylists, timeouts, SSRF-guarded fetches, atomic IO), LOCAL/TEE/ZDR privacy tiers whose failover never silently downgrades, DPAPI-encrypted credentials at rest, signed updates and skill packs, hash-chained session receipts, and Enclave security agents over native MCP.
   * **Memory and ecosystem:** hierarchical Connectome notes with an append-only chronicle, a local vector index, the Graphify knowledge graph, and an optional HelixDB graph-vector mirror behind a durable outbox, recalled through one intent-routed query; plus a plugin marketplace and natural-language skill activation.
-* **[ Observatory — 3D Web Observatory ]** · [nuroctane.xyz/observatory](https://www.nuroctane.xyz/observatory)
-  * Multi-mode 3D observatory: Cesium Earth explore, CelesTrak/SGP4 live satellite field, NASA Eyes/Horizons mission hooks, solar system and constellation sky chart, plus Swiss Ephemeris (WASM) with every major house system and ayanamsa.
-  * Live orbital coverage and footprints with search, constellation filtering, two-hour data refreshes, and time controls for replaying or accelerating the scene, plus progressive globe and rover data panels.
-* **[ MODKEYS — 3D Keyboard Product Configurator ]** · [nuroctane.xyz/modkeys](https://www.nuroctane.xyz/modkeys)
-  * Built a React/Vite configurator for mechanical keyboard plates and keycaps with exact geometry, undo/redo, shareable URL-encoded builds, and dual mobile/desktop shells.
-  * Connected Express/Vercel and Upstash Redis services and shipped KLE JSON, SVG manufacturing-template, specification-sheet, and PDF export workflows so a configured build leaves the browser as shop-ready geometry and docs.
-* **[ SnipOCR — Private Cross-Platform Screenshot OCR ]** · [GitHub](https://github.com/nuroctane/snipocr)
-  * Built Windows and macOS tray utilities that watch screenshot folders and the clipboard, run OCR fully on-device, and return editable text without uploading capture content.
-  * Unified Windows.Media.Ocr, Apple Vision, RapidOCR, and ONNX Runtime behind a shared multi-engine workflow with optional hardware acceleration and no cloud round-trip.
+* **[ Free Everything Downloader — iOS Media Shortcut ]** · [RoutineHub](https://routinehub.co/shortcut/26384/) · [GitHub](https://github.com/nuroctane/free-everything-downloader)
+  * Shipped a **RoutineHub** shortcut (v1.7) that turns a shared link into the saved file: on-device resolution for Facebook, X, Bluesky, Mastodon, Pinterest, TikTok and Threads in roughly 0.1–1 s, with yt-dlp in a-Shell mini for YouTube and Instagram.
+  * On-device fast path first and a server extractor only on a miss, capped at a minute; no key, paywall or checkout, and no watermark where the source allows it.
+* **[ Keeper Agent — Vault Broker for Agent Workflows ]** · [GitHub](https://github.com/nuroctane/keeper-agent)
+  * Built a local CLI, desktop and browser administrator, and HTTPS broker that lets agents use a **Keeper Personal vault** through named, preconfigured actions — never record IDs, raw secrets, URLs or browser control.
+  * Scoped per-client grants, a loopback-only TLS-pinned broker, isolated browser sessions closed after each action, and metadata-only audit logs; passwords, TOTP and API keys stay in the vault instead of in prompts.
+* **[ StarConverter — exFAT ↔ NTFS Conversion Workbench ]** · [GitHub](https://github.com/nuroctane/StarConverter)
+  * Building a **Rust** analyze / plan / convert / verify / rollback workbench that keeps file-data extents in place where possible, relocates only conflicts, and constructs new filesystem metadata transactionally.
+  * Pre-alpha: image inspection, object-graph reconstruction, capability-gated planner, and fuzz targets. Conversion of live volumes stays blocked until the capability model clears it; no current executable writes disks.
+* **[ StackWallet — Self-Custodial Agentic Wallet Harness ]** · [GitHub](https://github.com/nuroctane/StackWallet)
+  * Building a local-first wallet harness across **44 chain families** behind one adapter contract, with wallets in policy-bound folders and an agent console whose proposals pass simulation, policy and an approval queue before signing.
+  * Real threshold signatures: devices and the agent each hold a share, so no single place holds a complete key and the agent cannot move funds without a human co-signature; no server, with a Tauri 2 desktop around a Rust core.
 * **[ hermes-local-models — Local Multi-Model AI Router ]** · [GitHub](https://github.com/nuroctane/hermes-local-models)
   * Built an OpenAI-compatible local router over GGUF inventories so Hermes and other agent CLIs can use local weights as a primary path with configurable cloud fallback when a provider drops.
   * Automated cross-platform discovery, llama-server presets, model selection, and fallback routing to keep the agent loop running without a paid-inference hard stop.
@@ -98,22 +101,16 @@
 
 ## ADDITIONAL BUILDS
 
-* **[ StarConverter — exFAT ↔ NTFS Conversion Workbench ]** · [GitHub](https://github.com/nuroctane/StarConverter)
-  * Building a **Rust** analyze / plan / convert / verify / rollback workbench that keeps file-data extents in place where possible, relocates only conflicts, and constructs new filesystem metadata transactionally.
-  * Pre-alpha: image inspection, object-graph reconstruction, capability-gated planner, and fuzz targets. Conversion of live volumes stays blocked until the capability model clears it; no current executable writes disks.
-* **[ Keeper Agent — Vault Broker for Agent Workflows ]** · [GitHub](https://github.com/nuroctane/keeper-agent)
-  * Built a local CLI, desktop and browser administrator, and HTTPS broker that lets agents use a **Keeper Personal vault** through named, preconfigured actions — never record IDs, raw secrets, URLs or browser control.
-  * Scoped per-client grants, a loopback-only TLS-pinned broker, isolated browser sessions closed after each action, and metadata-only audit logs; passwords, TOTP and API keys stay in the vault instead of in prompts.
-* **[ Free Everything Downloader — iOS Media Shortcut ]** · [RoutineHub](https://routinehub.co/shortcut/26384/) · [GitHub](https://github.com/nuroctane/free-everything-downloader)
-  * Shipped a **RoutineHub** shortcut (v1.7) that turns a shared link into the saved file: on-device resolution for Facebook, X, Bluesky, Mastodon, Pinterest, TikTok and Threads in roughly 0.1–1 s, with yt-dlp in a-Shell mini for YouTube and Instagram.
-  * On-device fast path first and a server extractor only on a miss, capped at a minute; no key, paywall or checkout, and no watermark where the source allows it.
-* **[ StackWallet — Self-Custodial Agentic Wallet Harness ]** · [GitHub](https://github.com/nuroctane/StackWallet)
-  * Building a local-first wallet harness across **44 chain families** behind one adapter contract, with wallets in policy-bound folders and an agent console whose proposals pass simulation, policy and an approval queue before signing.
-  * Real threshold signatures: devices and the agent each hold a share, so no single place holds a complete key and the agent cannot move funds without a human co-signature; no server, with a Tauri 2 desktop around a Rust core.
 * **[ StarSleep — Dual-Native Sleep Application ]** · [GitHub](https://github.com/nuroctane/StarSleep)
   * SwiftUI and Jetpack Compose applications with on-device natal calculations, 12-dimension nightly scoring, and layered ambient audio.
 * **[ ERC-721M — NFT Liquidity Standard ]** · [GitHub](https://github.com/Zodomo/ERC721M)
   * Collaborated on an EVM token standard and smart-contract surface for redistributing NFT secondary-market liquidity.
+* **[ Observatory — 3D Web Observatory ]** · [nuroctane.xyz/observatory](https://www.nuroctane.xyz/observatory)
+  * Multi-mode 3D observatory: Cesium Earth explore, CelesTrak/SGP4 live satellite field, NASA Eyes/Horizons mission hooks, solar system and constellation sky chart, plus Swiss Ephemeris (WASM) with every major house system and ayanamsa.
+* **[ MODKEYS — 3D Keyboard Product Configurator ]** · [nuroctane.xyz/modkeys](https://www.nuroctane.xyz/modkeys)
+  * React/Vite configurator for mechanical keyboard plates and keycaps with exact geometry, undo/redo, shareable URL-encoded builds, KLE JSON, SVG manufacturing templates, specification sheets, and PDF export.
+* **[ SnipOCR — Private Cross-Platform Screenshot OCR ]** · [GitHub](https://github.com/nuroctane/snipocr)
+  * Windows and macOS tray utilities that watch screenshot folders and the clipboard, run OCR fully on-device across Windows.Media.Ocr, Apple Vision, RapidOCR, and ONNX Runtime, and return editable text without uploading capture content.
 
 ## EDUCATION
 
