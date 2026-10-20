@@ -1,20 +1,27 @@
 /**
  * Live NurCLI version from GitHub Releases.
  *
- * Ported from the Vercel edge function api/nur-cli-version.mjs. The logic is
- * unchanged: 5-minute per-isolate memory cache, 6s timeout, serve-stale on
- * upstream error. Per-isolate caching behaves the same on Workers as it did on
- * Vercel Edge — module scope lives for the life of the isolate.
- *
  * GET /api/nur-cli-version → { version, tag, name, publishedAt, htmlUrl, fetchedAt }
+ *
+ * Unauthenticated GitHub calls share a 60/hour limit per egress IP, and Workers
+ * egress through IPs shared with everyone else on Cloudflare, so a fresh
+ * isolate (empty memory cache) regularly drew a 403 and answered 502 - the
+ * /cli badge then read "offline". Three layers keep it live:
+ *   1. the GITHUB_TOKEN secret, when set (5,000/hour, shared with the
+ *      contributions route);
+ *   2. a 5-minute per-isolate memory cache;
+ *   3. the last good release in KV, served (marked `stale`) when GitHub
+ *      refuses and this isolate has nothing in memory yet.
  */
 import { Hono } from "hono";
+import { kvGet, kvSet } from "@workspace/kv";
 
 const router = new Hono();
 
 const UPSTREAM = "https://api.github.com/repos/nuroctane/nur-cli/releases/latest";
 const CACHE_MS = 5 * 60 * 1000;
 const FETCH_TIMEOUT_MS = 6_000;
+const KV_KEY = "nur-cli-version:last-good";
 
 interface ReleasePayload {
   version: string;
@@ -48,11 +55,13 @@ async function fetchLatest(): Promise<ReleasePayload> {
   const t = setTimeout(() => ctrl.abort(), FETCH_TIMEOUT_MS);
 
   try {
+    const token = process.env.GITHUB_TOKEN || process.env.GH_TOKEN || "";
     const res = await fetch(UPSTREAM, {
       headers: {
         Accept: "application/vnd.github+json",
         "User-Agent": "nuroctane.xyz-cli-version-v2",
         "X-GitHub-Api-Version": "2022-11-28",
+        ...(token ? { Authorization: `Bearer ${token}` } : {}),
       },
       signal: ctrl.signal,
       cache: "no-store",
@@ -68,6 +77,11 @@ async function fetchLatest(): Promise<ReleasePayload> {
     const data = (await res.json()) as Record<string, unknown>;
     const payload = normalize(data);
     mem = { at: now, payload };
+    // Only a change needs a write; KV is the cross-isolate fallback.
+    const known = await kvGet<ReleasePayload>(KV_KEY).catch(() => null);
+    if (known?.tag !== payload.tag) {
+      await kvSet(KV_KEY, payload).catch(() => undefined);
+    }
     return payload;
   } finally {
     clearTimeout(t);
@@ -83,10 +97,12 @@ router.get("/nur-cli-version", async (c) => {
     c.header("CDN-Cache-Control", "public, s-maxage=600, stale-while-revalidate=3600");
     return c.json(payload);
   } catch (err) {
-    // Serve stale memory on error if possible — avoids 502 spikes
-    if (mem) {
+    // Serve the last good release (this isolate's, else KV's) rather than a
+    // 502: a stale version is still the right version almost every time.
+    const last = mem?.payload ?? (await kvGet<ReleasePayload>(KV_KEY).catch(() => null));
+    if (last) {
       c.header("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300");
-      return c.json({ ...mem.payload, stale: true });
+      return c.json({ ...last, stale: true });
     }
     c.header("Cache-Control", "no-store");
     return c.json(

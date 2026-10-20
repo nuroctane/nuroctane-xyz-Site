@@ -2475,7 +2475,11 @@ function useNurCliVersion() {
       setStatus("live");
     };
 
-    const pollOnce = async () => {
+    // One refused poll is not "offline": until a version has been seen, a
+    // failure retries quickly (2s, 6s, 15s) before the badge gives up.
+    const RETRY_MS = [2_000, 6_000, 15_000];
+    let retryTimer: number | undefined;
+    const pollOnce = async (attempt = 0) => {
       if (document.visibilityState !== "visible") return;
       try {
         const res = await fetch("/api/nur-cli-version", {
@@ -2486,12 +2490,18 @@ function useNurCliVersion() {
         const json = (await res.json()) as NurVersion;
         apply(json);
       } catch {
-        if (!cancelled && !seen.version) setStatus("error");
+        if (cancelled || seen.version) return;
+        const wait = RETRY_MS[attempt];
+        if (wait === undefined) {
+          setStatus("error");
+          return;
+        }
+        retryTimer = window.setTimeout(() => void pollOnce(attempt + 1), wait);
       }
     };
 
     void pollOnce();
-    pollTimer = window.setInterval(pollOnce, POLL_MS);
+    pollTimer = window.setInterval(() => void pollOnce(), POLL_MS);
 
     const onVis = () => {
       if (document.visibilityState === "visible") void pollOnce();
@@ -2501,6 +2511,7 @@ function useNurCliVersion() {
     return () => {
       cancelled = true;
       if (pollTimer) window.clearInterval(pollTimer);
+      if (retryTimer) window.clearTimeout(retryTimer);
       document.removeEventListener("visibilitychange", onVis);
     };
   }, []);
