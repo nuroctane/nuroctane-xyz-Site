@@ -10,7 +10,7 @@
 
 > **Software engineer and security practitioner.** I build and secure agentic systems, cloud security automation, local AI infrastructure, and production web and mobile products across Rust, TypeScript, Python, and AWS.
 >
-> Independently I ship a Rust coding agent with sandboxed, permission-gated execution and a signed supply chain, plus real-time orbital visualization, privacy-first OCR, and manufacturing-oriented configuration. Backed by customer success across **$1B+ AUM**, **$1.2M+ ARR retention**, **$1.7M+ capital deployment**, and technical support leadership.
+> Independently I ship a Rust coding agent with sandboxed, permission-gated execution and a signed supply chain, agent-to-vault brokering for vault-backed tool use, a self-custodial wallet harness with threshold signing, real-time orbital visualization, privacy-first OCR, and manufacturing-oriented configuration. Backed by customer success across **$1B+ AUM**, **$1.2M+ ARR retention**, **$1.7M+ capital deployment**, and technical support leadership.
 
 ## SELECTED PRODUCTS
 
@@ -21,9 +21,6 @@
   * **Context as the core discipline:** OMP-style response-reserve compaction, content-addressed spill of oversized tool results, preserved provider prompt caches, semantic search (sgrep) as the first read path, and a local usage ledger across seven agents' logs, so every failover, subagent, and judgment reports its real token and cost impact.
   * **Security and supply chain:** sandboxed execution (shell denylists, timeouts, SSRF-guarded fetches, atomic IO), LOCAL/TEE/ZDR privacy tiers whose failover never silently downgrades, DPAPI-encrypted credentials at rest, signed updates and skill packs, hash-chained session receipts, and Enclave security agents over native MCP.
   * **Memory and ecosystem:** hierarchical Connectome notes with an append-only chronicle, a local vector index, the Graphify knowledge graph, and an optional HelixDB graph-vector mirror behind a durable outbox, recalled through one intent-routed query; plus a plugin marketplace and natural-language skill activation.
-* **[ StarConverter — exFAT ↔ NTFS Conversion Workbench ]** · [GitHub](https://github.com/nuroctane/StarConverter)
-  * Building a **Rust** analyze / plan / convert / verify / rollback workbench that keeps file-data extents in place where possible, relocates only conflicts, and constructs new filesystem metadata transactionally.
-  * Pre-alpha: image inspection, object-graph reconstruction, capability-gated planner, and fuzz targets. Conversion of live volumes stays blocked until the capability model clears it; no current executable writes disks.
 * **[ Observatory — 3D Web Observatory ]** · [nuroctane.xyz/observatory](https://www.nuroctane.xyz/observatory)
   * Multi-mode 3D observatory: Cesium Earth explore, CelesTrak/SGP4 live satellite field, NASA Eyes/Horizons mission hooks, solar system and constellation sky chart, plus Swiss Ephemeris (WASM) with every major house system and ayanamsa.
   * Live orbital coverage and footprints with search, constellation filtering, two-hour data refreshes, and time controls for replaying or accelerating the scene, plus progressive globe and rover data panels.
@@ -101,12 +98,20 @@
 
 ## ADDITIONAL BUILDS
 
-* **[ Blackjack — Odds-First Mobile Web3 Table ]** · [GitHub](https://github.com/nuroctane/blackjack)
-  * Multi-deck blackjack engine with full rules, recursive dealer outcomes, exact bust probability, SIWE/GitHub authentication, and a Capacitor mobile shell.
+* **[ StarConverter — exFAT ↔ NTFS Conversion Workbench ]** · [GitHub](https://github.com/nuroctane/StarConverter)
+  * Building a **Rust** analyze / plan / convert / verify / rollback workbench that keeps file-data extents in place where possible, relocates only conflicts, and constructs new filesystem metadata transactionally.
+  * Pre-alpha: image inspection, object-graph reconstruction, capability-gated planner, and fuzz targets. Conversion of live volumes stays blocked until the capability model clears it; no current executable writes disks.
+* **[ Keeper Agent — Vault Broker for Agent Workflows ]** · [GitHub](https://github.com/nuroctane/keeper-agent)
+  * Built a local CLI, desktop and browser administrator, and HTTPS broker that lets agents use a **Keeper Personal vault** through named, preconfigured actions — never record IDs, raw secrets, URLs or browser control.
+  * Scoped per-client grants, a loopback-only TLS-pinned broker, isolated browser sessions closed after each action, and metadata-only audit logs; passwords, TOTP and API keys stay in the vault instead of in prompts.
+* **[ Free Everything Downloader — iOS Media Shortcut ]** · [RoutineHub](https://routinehub.co/shortcut/26384/) · [GitHub](https://github.com/nuroctane/free-everything-downloader)
+  * Shipped a **RoutineHub** shortcut (v1.7) that turns a shared link into the saved file: on-device resolution for Facebook, X, Bluesky, Mastodon, Pinterest, TikTok and Threads in roughly 0.1–1 s, with yt-dlp in a-Shell mini for YouTube and Instagram.
+  * On-device fast path first and a server extractor only on a miss, capped at a minute; no key, paywall or checkout, and no watermark where the source allows it.
+* **[ StackWallet — Self-Custodial Agentic Wallet Harness ]** · [GitHub](https://github.com/nuroctane/StackWallet)
+  * Building a local-first wallet harness across **44 chain families** behind one adapter contract, with wallets in policy-bound folders and an agent console whose proposals pass simulation, policy and an approval queue before signing.
+  * Real threshold signatures: devices and the agent each hold a share, so no single place holds a complete key and the agent cannot move funds without a human co-signature; no server, with a Tauri 2 desktop around a Rust core.
 * **[ StarSleep — Dual-Native Sleep Application ]** · [GitHub](https://github.com/nuroctane/StarSleep)
   * SwiftUI and Jetpack Compose applications with on-device natal calculations, 12-dimension nightly scoring, and layered ambient audio.
-* **[ Milady Derivatives Intelligence ]** · [GitHub](https://github.com/nuroctane/milady-derivatives)
-  * NFT collection intelligence pipeline with deterministic enrichment, lineage mapping, optimized imagery, open JSON APIs, and Firebase/GitHub Actions delivery.
 * **[ ERC-721M — NFT Liquidity Standard ]** · [GitHub](https://github.com/Zodomo/ERC721M)
   * Collaborated on an EVM token standard and smart-contract surface for redistributing NFT secondary-market liquidity.
 
