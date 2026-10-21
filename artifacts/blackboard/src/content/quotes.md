@@ -6,7 +6,7 @@
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (55)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (104)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (32)
-- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (107)
+- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (108)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (66)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (81)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (52)
@@ -1820,6 +1820,25 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 
 > The human race only exists as a net of relationships between each person and other people, living and dead. Cutting off any relationship is a kind of wound to the human race as a whole, and we have been much too flippant about doing that for the past few centuries.
 > — @oecolamp
+
+> Here's another manifestation example. Imagine you have exactly 126.5k followers on Twitter or something. It's Wednesday and some guy cold DM's you with a bit about himself and a request to connect
+> 
+> But because you get a lot of DM's it's hard to respond to every single one right away. So you ignore it for now and make a mental note to catch up on some of those missed DM's on Sunday when things are less hectic
+> 
+> Then Saturday rolls around and you notice another DM come in from that same guy. He says "I know I'm just a small account with probably nothing to offer you" and "sorry if my first message was too long"
+> 
+> In your mind you're thinking "no dude you're chill the message was fine I just didn't have time to respond" and then you start typing something to reassure him but end up backspacing it because you get the sense that this guy kind of lacks some self respect and you're not really interested in forming a relationship around that type of dynamic
+> 
+> Message doesn't get responded to and guy comes up with the conclusion of "I knew it. Big account would never respond to a guy with 56 followers. These people only care about clout etc" Notice how his interpretation of the why was the complete opposite of yours. Yet both can be considered true
+> 
+> There was an alternate reality where he simply had to do nothing after the first message and you would've responded just a few days later. But because of his subjective belief around what "not getting responded to within an arbitrary number of days" meant to him, that was what dictated what his next move was
+> 
+> This is what "believing as if" means in manifestation. What if you believed you were the man? That the world would be stoked to know you? That you were already the ideal version of yourself?
+> 
+> How would that naturally lead you to behave? What types of actions would you take? How many outcomes can you make real just by believing they were already real and letting your subconscious take care of the rest?
+> 
+> Whoever you "want" to be, just embody that person right now. Move like them. Think like them. Be them so the physical reality can just bend to accommodate and align with your internal reality. You have full control over the world that exists in your mind. Everyone is delusional in how they interpret what's in front of them. Every interpretation is "true." So just choose your flavor of delusion
+> — @thedulab
 
 ## Shadow, Discernment & Protection
 
