@@ -1,34 +1,28 @@
 /**
  * Canonical page metadata for document title, SEO, and Open Graph embeds.
- * Kept in sync with middleware.js (bot unfurl HTML) + /api/og image labels.
+ * Kept in sync with worker/og-meta.ts (bot unfurl HTML). Every page shares this
+ * design's embed (../../embed.json): one image and site name, plus the home
+ * title and description. Pages differ only in text and favicon.
  */
+import embed from "../../embed.json";
 
 export interface PageMeta {
   /** Browser tab / og:title */
   title: string;
   /** meta description / og:description */
   description: string;
-  /** Short label burned into the OG card */
-  badge: string;
   /** Absolute path for og:url (no origin) */
   path: string;
-  /** Optional absolute-or-root image override; default is /api/og?page=… */
-  imagePath?: string;
   /** noindex for crawlers that honor robots (resume) */
   noindex?: boolean;
-  /** og:site_name override (default NUROCTANE) */
-  siteName?: string;
   /** document favicon path or data URL override */
   favicon?: string;
 }
 
 const DEFAULT: PageMeta = {
-  title: "NUROCTANE — Digital Sea",
-  description:
-    "A 3D interactive scroll experience through nuroctane’s digital network — socials, creative projects, writings, and more.",
-  badge: "DIGITAL SEA",
+  title: embed.title,
+  description: embed.description,
   path: "/",
-  imagePath: "/opengraph.jpg",
 };
 
 const PAGES: Record<string, PageMeta> = {
@@ -40,7 +34,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "Quotes — NUROCTANE",
     description:
       "A curated vault of thoughts, lines, and ideas that shape the work — faith, discipline, shadow, and the digital sea.",
-    badge: "QUOTES",
     path: "/quotes",
     favicon: "/assets/nodes/nuroctane-animated-avatar.gif",
   },
@@ -48,7 +41,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "Books — NUROCTANE",
     description:
       "Reading shelves, notes, and community recommendations — a living library inside the digital sea.",
-    badge: "BOOKS",
     path: "/books",
     favicon: "/assets/nodes/books-logo.png?v=115",
   },
@@ -56,7 +48,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "Resume — David Davieson · NUROCTANE",
     description:
       "Agentic product engineer · customer success · B2B lending · technical support leadership. Projects, impact, and experience.",
-    badge: "RESUME",
     path: "/resume",
     noindex: true,
     favicon: "/assets/nodes/resume-logo.svg",
@@ -65,7 +56,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "MODKEYS — Keyboard Configurator",
     description:
       "Design a mechanical keyboard in the browser — 3D preview, dual desktop/mobile shells, shareable builds, KLE/SVG/PDF export.",
-    badge: "MODKEYS",
     path: "/modkeys",
     favicon: "/assets/nodes/modkeys-logo.png?v=115",
   },
@@ -73,36 +63,27 @@ const PAGES: Record<string, PageMeta> = {
     title: "NurCLI",
     description:
       "Token-efficient Rust coding agent with 62 provider routes, local-first memory, inline tool compression, usage telemetry, native vision, and a dense gold TUI.",
-    badge: "NurCLI",
     path: "/cli",
-    siteName: "NurCLI",
     favicon: "/assets/nodes/nur-cli-logo.png",
-    imagePath: "/api/og?page=cli&v=2",
   },
   curriculum: {
     title: "World Models: A Daily Series",
     description:
       "90 days, one paper a day: from Ha & Schmidhuber to the frontier. Model-based RL, JEPA, generative interactive environments, world foundation models, robots, and evaluation.",
-    badge: "CURRICULUM",
     path: "/curriculum",
-    imagePath: "/assets/nodes/site-logo.png",
     favicon: "/assets/nodes/site-logo.png",
   },
   observatory: {
     title: "Observatory",
     description:
       "Astrology-rooted 3D web observatory — Swiss Ephemeris, all house/ayanamsa systems, aspects, Earth satellites, solar system, Cesium globe, and NASA mission hooks.",
-    badge: "OBSERVATORY",
     path: "/observatory",
-    siteName: "Observatory",
     favicon: "/assets/nodes/observatory-logo.png?v=115",
-    imagePath: "/api/og?page=observatory&v=2",
   },
   blog: {
     title: "Writings — NUROCTANE",
     description:
       "Passages from the digital sea — sovereignty, the veil, the machine, and the attractor that pulls from the future.",
-    badge: "WRITINGS",
     path: "/blog",
     favicon: "/assets/nodes/blog-logo.png?v=115",
   },
@@ -110,7 +91,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "Socials — NUROCTANE",
     description:
       "Swim the social constellation — Instagram, X, Discord, and the rest of the network.",
-    badge: "SOCIALS",
     path: "/socials",
     favicon: "/assets/nodes/nuroctane-avatar.png",
   },
@@ -118,7 +98,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "Projects — NUROCTANE",
     description:
       "Creative and technical projects — MODKEYS, SnipOCR, StarSleep, Blackjack, and more.",
-    badge: "PROJECTS",
     path: "/projects",
     favicon: "/assets/nodes/github-logo.png",
   },
@@ -126,7 +105,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "Fin — NUROCTANE",
     description:
       "End of the digital sea — identity, contact, and a place to book time with nuroctane.",
-    badge: "FIN",
     path: "/fin",
     favicon: "/assets/nodes/site-logo.png",
   },
@@ -205,21 +183,9 @@ export function absoluteUrl(
   return `${base}${p}`;
 }
 
-/** Absolute OG image URL for a page. Prefer dynamic card; home keeps classic opengraph.jpg. */
-export function ogImageUrl(
-  meta: PageMeta,
-  origin = "https://www.nuroctane.xyz",
-): string {
-  if (meta.imagePath?.startsWith("http")) return meta.imagePath;
-  if (meta.imagePath) return absoluteUrl(meta.imagePath, origin);
-  const pageKey =
-    meta.path === "/"
-      ? "home"
-      : meta.path.replace(/^\//, "").split("/")[0] || "home";
-  return absoluteUrl(
-    `/api/og?page=${encodeURIComponent(pageKey)}&title=${encodeURIComponent(meta.badge)}`,
-    origin,
-  );
+/** Absolute OG image URL: this design's embed, the same for every page. */
+export function ogImageUrl(origin = "https://www.nuroctane.xyz"): string {
+  return absoluteUrl(embed.image, origin);
 }
 
 /** Apply meta tags in the document head (client SPA navigations). */
@@ -258,12 +224,10 @@ export function applyDocumentMeta(meta: PageMeta, origin?: string): void {
     "content",
     absoluteUrl(meta.path, originSafe),
   );
-  setMeta('meta[property="og:image"]', "content", ogImageUrl(meta, originSafe));
-  setMeta(
-    'meta[property="og:site_name"]',
-    "content",
-    meta.siteName || "NUROCTANE",
-  );
+  setMeta('meta[property="og:image"]', "content", ogImageUrl(originSafe));
+  setMeta('meta[property="og:image:width"]', "content", String(embed.width));
+  setMeta('meta[property="og:image:height"]', "content", String(embed.height));
+  setMeta('meta[property="og:site_name"]', "content", embed.siteName);
 
   // Always pin the active route's mark so SPA navigation never leaks the
   // previous page's favicon into the next page.
@@ -294,7 +258,7 @@ export function applyDocumentMeta(meta: PageMeta, origin?: string): void {
   setMeta(
     'meta[name="twitter:image"]',
     "content",
-    ogImageUrl(meta, originSafe),
+    ogImageUrl(originSafe),
   );
 
   let robots = document.querySelector(

@@ -5,7 +5,7 @@ import { ScrollToTop } from '../components/hud/ScrollToTop';
 import { useStandaloneScroll } from '../hooks/useStandaloneScroll';
 import { trackEvent } from '../lib/analytics';
 import { renderEmphasis } from '../lib/quoteEmphasis';
-import raw from '../content/quotes.md?raw';
+import raw from '@shared/quotes.md?raw';
 
 interface Quote {
   text: string;

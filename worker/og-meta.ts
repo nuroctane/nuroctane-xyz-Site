@@ -1,11 +1,13 @@
 import siteConfig from "../site.config.json";
+import blackboardEmbed from "../artifacts/blackboard/embed.json";
+import digitalSeaEmbed from "../artifacts/digital-sea/embed.json";
 /**
  * Path-specific Open Graph HTML for social/chat crawlers.
  *
  * Humans get the SPA;
  * Discord, Slack, iMessage, Twitter, LinkedIn, etc. receive a tiny HTML document
  * whose og:* tags match the shared route (/quotes, /resume, /modkeys, …) instead
- * of always showing the Digital Sea homepage card.
+ * of always showing the homepage's.
  *
  * Route matching uses assets.run_worker_first in wrangler.jsonc.
  */
@@ -62,28 +64,27 @@ export function isBot(userAgent: string): boolean {
 interface PageMeta {
   title: string;
   description: string;
-  badge: string;
   path: string;
   favicon?: string;
   noindex?: boolean;
 }
 
-/* Every route shares the Blackboard's embed: one image, one site name. Pages
- * differ only in title, description and favicon, so no card can drift. */
-export const EMBED_IMAGE = `${SITE}/assets/nodes/site-logo.png`;
-const EMBED_SIZE = { width: 879, height: 1024 };
+/* Every route shares the selected design's embed (artifacts/<design>/embed.json):
+ * one image, one site name, and the home title and description. Pages differ
+ * only in title, description and favicon, so no card can drift, and switching
+ * designs in site.config.json switches every embed with it. */
+const EMBEDS = {
+  blackboard: blackboardEmbed,
+  "digital-sea": digitalSeaEmbed,
+} as const;
+export const EMBED = EMBEDS[siteConfig.active as keyof typeof EMBEDS];
+if (!EMBED) throw new Error(`No embed.json for design ${siteConfig.active}`);
+const EMBED_IMAGE = `${SITE}${EMBED.image}`;
 
 const PAGES: Record<string, PageMeta> = {
   home: {
-    title:
-      siteConfig.active === "blackboard"
-        ? "NUROCTANE"
-        : "NUROCTANE — Digital Sea",
-    description:
-      siteConfig.active === "blackboard"
-        ? "Nuroctane's Blackboard. Projects, socials, books, and quotes."
-        : "A 3D interactive scroll experience through nuroctane's digital network — socials, creative projects, writings, and more.",
-    badge: siteConfig.active === "blackboard" ? "BLACKBOARD" : "DIGITAL SEA",
+    title: EMBED.title,
+    description: EMBED.description,
     path: "/",
     favicon: "/assets/nodes/site-logo.png",
   },
@@ -91,7 +92,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "Quotes — NUROCTANE",
     description:
       "A curated vault of thoughts, lines, and ideas that shape the work — faith, discipline, shadow, and meaning.",
-    badge: "QUOTES",
     path: "/quotes",
     favicon: "/assets/nodes/nuroctane-animated-avatar.gif",
   },
@@ -99,7 +99,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "Books — NUROCTANE",
     description:
       "Reading shelves, notes, and community recommendations — a living library.",
-    badge: "BOOKS",
     path: "/books",
     favicon: "/assets/nodes/books-logo.png?v=115",
   },
@@ -107,7 +106,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "Resume — David Davieson · NUROCTANE",
     description:
       "Software engineer · cybersecurity · agentic systems · customer success. Projects, impact, and experience.",
-    badge: "RESUME",
     path: "/resume",
     noindex: true,
     favicon: "/assets/nodes/resume-logo.svg",
@@ -116,7 +114,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "MODKEYS — Keyboard Configurator",
     description:
       "Design a mechanical keyboard in the browser — 3D preview, dual desktop/mobile shells, shareable builds, KLE/SVG/PDF export.",
-    badge: "MODKEYS",
     path: "/modkeys",
     favicon: "/assets/nodes/modkeys-logo.png?v=115",
   },
@@ -124,7 +121,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "NurCLI",
     description:
       "Spend context like it matters. A Rust coding agent with 70 provider routes, a 142-system Jev catalog, semantic search first, local usage aggregation, Enclave security agents, and local-first memory.",
-    badge: "NurCLI",
     path: "/cli",
     favicon: "/assets/nodes/nur-cli-logo.png",
   },
@@ -132,7 +128,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "World Models: A Daily Series",
     description:
       "90 days, one paper a day: from Ha & Schmidhuber to the frontier. Model-based RL, JEPA, generative interactive environments, world foundation models, robots, and evaluation.",
-    badge: "CURRICULUM",
     path: "/curriculum",
     favicon: "/assets/nodes/site-logo.png",
   },
@@ -140,7 +135,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "Observatory",
     description:
       "Astrology-rooted 3D web observatory — Swiss Ephemeris, all house/ayanamsa systems, aspects, Earth satellites, solar system, Cesium globe, and NASA mission hooks.",
-    badge: "OBSERVATORY",
     path: "/observatory",
     favicon: "/assets/nodes/observatory-logo.png?v=115",
   },
@@ -148,7 +142,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "GitHub — NUROCTANE",
     description:
       "A year of contributions, standing in glass — every day nuroctane shipped code, in 3D.",
-    badge: "GITHUB",
     path: "/github",
     favicon: "/assets/nodes/github-logo.png",
   },
@@ -156,7 +149,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "Stats — NUROCTANE",
     description:
       "Public site statistics: visitors over time, where they came from, and what they opened.",
-    badge: "STATS",
     path: "/stats",
     favicon: "/assets/nodes/site-logo.png",
   },
@@ -164,7 +156,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "Writings — NUROCTANE",
     description:
       "Passages on sovereignty, the veil, the machine, and the attractor that pulls from the future.",
-    badge: "WRITINGS",
     path: "/blog",
     favicon: "/assets/nodes/blog-logo.png?v=115",
   },
@@ -172,7 +163,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "Socials — NUROCTANE",
     description:
       "Swim the social constellation — Instagram, X, Discord, and the rest of the network.",
-    badge: "SOCIALS",
     path: "/socials",
     favicon: "/assets/nodes/nuroctane-avatar.png",
   },
@@ -180,7 +170,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "Projects — NUROCTANE",
     description:
       "Creative and technical projects — MODKEYS, SnipOCR, StarSleep, Blackjack, and more.",
-    badge: "PROJECTS",
     path: "/projects",
     favicon: "/assets/nodes/github-logo.png",
   },
@@ -188,7 +177,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "Fin — NUROCTANE",
     description:
       "End of the digital sea — identity, contact, and a place to book time with nuroctane.",
-    badge: "FIN",
     path: "/fin",
     favicon: "/assets/nodes/site-logo.png",
   },
@@ -287,14 +275,14 @@ function botHtml(meta: ResolvedMeta): string {
   <meta name="robots" content="${robots}" />
   <link rel="canonical" href="${url}" />
   ${meta.favicon ? '<link rel="icon" href="' + SITE + escapeHtml(meta.favicon) + '" />' : ""}
-  <meta property="og:site_name" content="NUROCTANE" />
+  <meta property="og:site_name" content="${escapeHtml(EMBED.siteName)}" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="${title}" />
   <meta property="og:description" content="${desc}" />
   <meta property="og:url" content="${shared}" />
   <meta property="og:image" content="${image}" />
-  <meta property="og:image:width" content="${EMBED_SIZE.width}" />
-  <meta property="og:image:height" content="${EMBED_SIZE.height}" />
+  <meta property="og:image:width" content="${EMBED.width}" />
+  <meta property="og:image:height" content="${EMBED.height}" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${title}" />
   <meta name="twitter:description" content="${desc}" />

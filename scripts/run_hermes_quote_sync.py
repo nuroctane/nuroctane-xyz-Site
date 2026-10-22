@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Keep the external Hermes sync pointed at the live Blackboard content."""
+"""Keep the external Hermes sync pointed at the shared site content."""
 import os
 from pathlib import Path
 import sys
@@ -16,7 +16,7 @@ def load_sync():
     sys.modules[module.__name__] = module
     exec(compile(source.read_text(encoding="utf-8"), str(source), "exec"), module.__dict__)
     module.REPO_ROOT = Path(__file__).resolve().parents[1]
-    module.REL_DEST = "artifacts/blackboard/src/content/quotes.md"
+    module.REL_DEST = "shared/content/quotes.md"
     module.DEST = module.REPO_ROOT / module.REL_DEST
     rebuild = module.rebuild_index
     module.rebuild_index = lambda body: rebuild(apply_editorial(body))

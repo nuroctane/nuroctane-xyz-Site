@@ -4,7 +4,7 @@ import { fileURLToPath } from 'url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-const BOOKS_MD = path.resolve(__dirname, '../../artifacts/blackboard/src/content/books.md');
+const BOOKS_MD = path.resolve(__dirname, '../../shared/content/books.md');
 const OUTPUT_JSON = path.resolve(__dirname, '../../artifacts/blackboard/src/data/bookMeta.json');
 
 const GB_BASE = 'https://www.googleapis.com/books/v1/volumes';

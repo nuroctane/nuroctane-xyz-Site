@@ -37,7 +37,7 @@ for (const input of [fixture, fixture.replaceAll('\n', '\r\n')]) {
   assert.equal(sections[1].quotes[0].text, 'Last quote at EOF.');
 }
 
-const raw = readFileSync(new URL('../artifacts/blackboard/src/content/quotes.md', import.meta.url), 'utf8');
+const raw = readFileSync(new URL('../shared/content/quotes.md', import.meta.url), 'utf8');
 const sections = parseQuotes(raw);
 assert.equal(sections.length, 12);
 for (const section of sections) {

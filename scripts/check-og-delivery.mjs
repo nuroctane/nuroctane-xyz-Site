@@ -1,16 +1,19 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
+import { SITE } from "./designs.mjs";
 
-// Every embed matches the Blackboard's: same image, size and site name on
-// every route, and retired card URLs answer with that same image.
+// Every embed matches the selected design's (artifacts/<design>/embed.json):
+// same image, size and site name on every route, and retired card URLs
+// answer with that same image.
 const origin = process.argv[2] ?? "http://127.0.0.1:8789";
-const logo = await readFile(
-  new URL(
-    "../artifacts/blackboard/public/assets/nodes/site-logo.png",
-    import.meta.url,
-  ),
+const root = new URL("../", import.meta.url);
+const { active } = JSON.parse(await readFile(new URL("site.config.json", root), "utf8"));
+const embed = JSON.parse(
+  await readFile(new URL(`artifacts/${active}/embed.json`, root), "utf8"),
 );
-const IMAGE = "https://www.nuroctane.xyz/assets/nodes/site-logo.png";
+const logo = await readFile(new URL(`artifacts/${active}/public${embed.image}`, root));
+const IMAGE = `${SITE}${embed.image}`;
+const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const routes = [
   "/",
   "/quotes",
@@ -36,11 +39,11 @@ for (const route of routes) {
   });
   const doc = await response.text();
   assert.equal(response.headers.get("cache-control"), "no-cache", route);
-  assert.match(doc, new RegExp(`property="og:image" content="${IMAGE}"`), route);
-  assert.match(doc, new RegExp(`name="twitter:image" content="${IMAGE}"`), route);
-  assert.match(doc, /property="og:image:width" content="879"/, route);
-  assert.match(doc, /property="og:image:height" content="1024"/, route);
-  assert.match(doc, /property="og:site_name" content="NUROCTANE"/, route);
+  assert.match(doc, new RegExp(`property="og:image" content="${esc(IMAGE)}"`), route);
+  assert.match(doc, new RegExp(`name="twitter:image" content="${esc(IMAGE)}"`), route);
+  assert.match(doc, new RegExp(`property="og:image:width" content="${embed.width}"`), route);
+  assert.match(doc, new RegExp(`property="og:image:height" content="${embed.height}"`), route);
+  assert.match(doc, new RegExp(`property="og:site_name" content="${esc(embed.siteName)}"`), route);
   assert.doesNotMatch(doc, /http-equiv="refresh"/, route);
 }
 for (const retired of [
@@ -52,7 +55,7 @@ for (const retired of [
 ]) {
   const response = await fetch(`${origin}${retired}`);
   assert.equal(response.status, 200, retired);
-  assert.match(response.headers.get("content-type"), /^image\/png/, retired);
+  assert.match(response.headers.get("content-type"), /^image\/(png|jpeg)/, retired);
   assert.deepEqual(Buffer.from(await response.arrayBuffer()), logo, retired);
 }
 const head = await fetch(`${origin}/api/og?page=cli`, { method: "HEAD" });
@@ -69,5 +72,5 @@ const shared = await (
 ).text();
 assert.match(shared, /property="og:url" content="[^"]*\/cli\?ref=x"/);
 console.log(
-  `OG DELIVERY OK: ${routes.length} routes share the Blackboard embed, retired card URLs, HEAD, method rejection, shared og:url`,
+  `OG DELIVERY OK: ${routes.length} routes share the ${active} embed, retired card URLs, HEAD, method rejection, shared og:url`,
 );

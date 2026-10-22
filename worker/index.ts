@@ -9,7 +9,7 @@
  */
 import app from "@workspace/api-server";
 import { refreshContributions } from "@workspace/api-server/github-contrib";
-import { isBot, botResponse } from "./og-meta";
+import { EMBED, isBot, botResponse } from "./og-meta";
 
 export interface Env {
   ASSETS: Fetcher;
@@ -112,13 +112,13 @@ async function serveAudioAsset(request: Request, env: Env): Promise<Response> {
 
 /**
  * Retired share-card URLs (/api/og?page=…, /assets/og/*.png) still circulate in
- * old unfurls; they all answer with the Blackboard's embed image now.
+ * old unfurls; they all answer with the selected design's embed image.
  */
 async function serveOg(request: Request, env: Env): Promise<Response> {
   if (request.method !== "GET" && request.method !== "HEAD") {
     return new Response(null, { status: 405, headers: { Allow: "GET, HEAD" } });
   }
-  const asset = new URL("/assets/nodes/site-logo.png", request.url);
+  const asset = new URL(EMBED.image, request.url);
   return env.ASSETS.fetch(new Request(asset, { method: request.method }));
 }
 

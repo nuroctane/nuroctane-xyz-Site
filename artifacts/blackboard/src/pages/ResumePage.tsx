@@ -3,7 +3,7 @@ import { StandaloneNav } from './StandaloneNav';
 import { ScrollToTop } from '../components/hud/ScrollToTop';
 import { useStandaloneScroll } from '../hooks/useStandaloneScroll';
 import { trackEvent } from '../lib/analytics';
-import raw from '../content/resume.md?raw';
+import raw from '@shared/resume.md?raw';
 
 /* ── Types ─────────────────────────────────────────────────────────────── */
 

@@ -8,7 +8,7 @@ The presentation design does not change the quote ingestion contract.
 Raindrop `#quotes` is the first intake source; new Obsidian `#quotes` notes are secondary.
 Both feed the canonical vault bank:
 
-`∞∞∞/Metaphysics/Quotes.md` → `artifacts/blackboard/src/content/quotes.md`.
+`∞∞∞/Metaphysics/Quotes.md` → `shared/content/quotes.md`.
 
 Windows task `NuroctanePollSync` runs `wscript.exe //B //Nologo scripts/poll-sync.vbs`
 every 15 minutes. The VBS launcher selects the repository-owned `quotes-pipeline.py`.
@@ -92,7 +92,7 @@ quote content after Workers Builds completes, not merely a green notification jo
 ### Legacy Hermes entrypoint
 
 The legacy `%LOCALAPPDATA%/hermes/scripts/sync-quotes.py` must also target
-`artifacts/blackboard/src/content/quotes.md` if invoked directly by an older poller.
+`shared/content/quotes.md` if invoked directly by an older poller.
 The versioned scheduled pipeline uses `run_hermes_quote_sync.py` to enforce this
 destination even if Hermes is restored or upgraded. Do not sync current captures
 into the preserved Digital Sea quote snapshot.

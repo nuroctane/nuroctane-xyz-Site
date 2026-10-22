@@ -25,7 +25,7 @@ class EditorialTests(unittest.TestCase):
                 self.assertEqual(apply_editorial(combined).rstrip('\n'), reviewed)
 
     def test_idempotent_and_applied(self):
-        bank = Path(__file__).resolve().parents[1] / 'artifacts/blackboard/src/content/quotes.md'
+        bank = Path(__file__).resolve().parents[1] / 'shared/content/quotes.md'
         text = bank.read_text(encoding='utf-8')
         self.assertEqual(apply_editorial(text), text)
 

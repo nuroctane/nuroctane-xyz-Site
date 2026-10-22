@@ -51,14 +51,7 @@ SECTION_DESCRIPTIONS = {
 }
 
 FALLBACK_SECTION = "Life, Joy & Meaning"
-LABELED_BANK = (
-    Path(__file__).resolve().parents[1]
-    / "artifacts"
-    / "blackboard"
-    / "src"
-    / "content"
-    / "quotes.md"
-)
+LABELED_BANK = Path(__file__).resolve().parents[1] / "shared" / "content" / "quotes.md"
 
 LEGACY_TO_CANONICAL = {
     "Reality, Manifestation & Abundance": "Manifestation, Desire & Abundance",

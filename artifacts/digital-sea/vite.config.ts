@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
+import { sharedSite } from "../../shared/vite.mjs";
 import cesium from "vite-plugin-cesium";
 
 export default defineConfig(async ({ command }) => {
@@ -31,7 +32,7 @@ export default defineConfig(async ({ command }) => {
 
   return {
     base: basePath,
-    plugins: [react(), (cesium as any)()],
+    plugins: [react(), (cesium as any)(), sharedSite()],
     optimizeDeps: {
       exclude: ["swisseph-wasm", "cesium"],
     },

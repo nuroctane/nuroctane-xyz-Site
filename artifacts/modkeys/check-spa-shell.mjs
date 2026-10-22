@@ -13,14 +13,15 @@
  * Wired into the root build script, so it also runs inside Vercel's deploy. */
 import fs from 'node:fs';
 import path from 'node:path';
+import { DESIGNS } from '../../scripts/designs.mjs';
 
 const design = process.argv[2] ?? JSON.parse(fs.readFileSync('site.config.json', 'utf8')).active;
-if (!['blackboard', 'digital-sea'].includes(design)) throw new Error('Unknown design');
+if (!DESIGNS.includes(design)) throw new Error('Unknown design');
 const siteRoot = `artifacts/${design}`;
 const modkeysRoot = design === 'digital-sea' ? `${siteRoot}/modkeys` : 'artifacts/modkeys';
 const assetsDir = path.resolve(`${siteRoot}/dist/public/assets`);
 if (!fs.existsSync(assetsDir)) {
-  console.error('check-spa-shell: dist assets not found — run the digital-sea build first');
+  console.error(`check-spa-shell: dist assets not found — run the ${design} build first`);
   process.exit(1);
 }
 const chunk = fs.readdirSync(assetsDir).find((f) => /^ModkeysPage-.*\.js$/.test(f));

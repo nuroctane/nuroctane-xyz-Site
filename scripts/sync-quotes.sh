@@ -20,8 +20,8 @@ set -uo pipefail
 
 REPO_ROOT="$(git rev-parse --show-toplevel 2>/dev/null)" || REPO_ROOT="/c/Users/david/Laboratory/nuroctane.xyz"
 SRC="${OBSIDIAN_VAULT:-$HOME/iCloudDrive/iCloud~md~obsidian/∞∞∞/Metaphysics/Quotes.md}"
-DEST="$REPO_ROOT/artifacts/blackboard/src/content/quotes.md"
-REL_DEST="artifacts/blackboard/src/content/quotes.md"
+DEST="$REPO_ROOT/shared/content/quotes.md"
+REL_DEST="shared/content/quotes.md"
 LOG_DIR="$REPO_ROOT/.nur"
 mkdir -p "$LOG_DIR"
 

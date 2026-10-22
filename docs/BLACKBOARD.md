@@ -29,15 +29,17 @@ identifies that app. The root config selects the complete app, CSS and soundtrac
 
 ## Preservation
 
-Digital Sea source and public assets are frozen at the recorded baseline. Its only
-adaptations are build dependency declarations and the Modkeys import path to its
-preserved local copy. Local agent logs are excluded. API infrastructure, community
+Digital Sea's design (source and public assets) is frozen at the recorded baseline. Its
+only adaptations are build dependency declarations, the Modkeys import path to its
+preserved local copy, and the shared-site wiring every design has: content through
+`@shared/…`, its `embed.json`, and page metadata that reads it. Local agent logs are excluded. API infrastructure, community
 data and runtime secrets remain shared and current; switching never restores old
 database contents or credentials.
 
 Blackboard keeps today's source and assets. Its scene code supports existing deep
-links and does not import the Digital Sea app. Quotes ingestion, books synchronization
-and metadata enrichment target Blackboard so archived content does not drift.
+links and does not import the Digital Sea app. Quotes, books and the resume are data,
+not design: they live once in `shared/` and every design renders the current copy, so
+selecting Digital Sea never publishes stale quotes or an old resume.
 
 ## Changes in this refactor
 

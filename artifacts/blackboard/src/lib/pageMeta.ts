@@ -1,16 +1,16 @@
 /**
  * Canonical page metadata for document title, SEO, and Open Graph embeds.
- * Kept in sync with worker/og-meta.ts (bot unfurl HTML). Every page shares the
- * Blackboard's embed image and site name; pages differ in text and favicon.
+ * Kept in sync with worker/og-meta.ts (bot unfurl HTML). Every page shares this
+ * design's embed (../../embed.json): one image and site name, plus the home
+ * title and description. Pages differ only in text and favicon.
  */
+import embed from "../../embed.json";
 
 export interface PageMeta {
   /** Browser tab / og:title */
   title: string;
   /** meta description / og:description */
   description: string;
-  /** Short label burned into the OG card */
-  badge: string;
   /** Absolute path for og:url (no origin) */
   path: string;
   /** noindex for crawlers that honor robots (resume) */
@@ -27,9 +27,8 @@ export interface PageMeta {
 }
 
 const DEFAULT: PageMeta = {
-  title: "NUROCTANE",
-  description: "Nuroctane's Blackboard. Projects, socials, books, and quotes.",
-  badge: "BLACKBOARD",
+  title: embed.title,
+  description: embed.description,
   path: "/",
 };
 
@@ -42,7 +41,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "Quotes — NUROCTANE",
     description:
       "A curated vault of thoughts, lines, and ideas that shape the work — faith, discipline, shadow, and meaning.",
-    badge: "QUOTES",
     path: "/quotes",
     favicon: "/assets/nodes/nuroctane-animated-avatar.gif",
   },
@@ -50,7 +48,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "Books — NUROCTANE",
     description:
       "Reading shelves, notes, and community recommendations — a living library.",
-    badge: "BOOKS",
     path: "/books",
     favicon: "/assets/nodes/books-logo.png?v=115",
   },
@@ -58,7 +55,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "Resume — David Davieson · NUROCTANE",
     description:
       "Software engineer · cybersecurity · agentic systems · customer success. Projects, impact, and experience.",
-    badge: "RESUME",
     path: "/resume",
     noindex: true,
     favicon: "/assets/nodes/resume-logo.svg",
@@ -67,7 +63,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "MODKEYS — Keyboard Configurator",
     description:
       "Design a mechanical keyboard in the browser — 3D preview, dual desktop/mobile shells, shareable builds, KLE/SVG/PDF export.",
-    badge: "MODKEYS",
     path: "/modkeys",
     favicon: "/assets/nodes/modkeys-logo.png?v=115",
     tabTitle: "MODKEYS",
@@ -76,7 +71,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "NurCLI",
     description:
       "Spend context like it matters. A Rust coding agent with 70 provider routes, a 142-system Jev catalog, semantic search first, local usage aggregation, Enclave security agents, and local-first memory.",
-    badge: "NurCLI",
     path: "/cli",
     favicon: "/assets/nodes/nur-cli-logo.png",
   },
@@ -84,7 +78,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "World Models: A Daily Series",
     description:
       "90 days, one paper a day: from Ha & Schmidhuber to the frontier. Model-based RL, JEPA, generative interactive environments, world foundation models, robots, and evaluation.",
-    badge: "CURRICULUM",
     path: "/curriculum",
     favicon: "/assets/nodes/site-logo.png",
   },
@@ -92,7 +85,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "Observatory",
     description:
       "Astrology-rooted 3D web observatory — Swiss Ephemeris, all house/ayanamsa systems, aspects, Earth satellites, solar system, Cesium globe, and NASA mission hooks.",
-    badge: "OBSERVATORY",
     path: "/observatory",
     favicon: "/assets/nodes/observatory-logo.png?v=115",
   },
@@ -100,7 +92,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "GitHub — NUROCTANE",
     description:
       "A year of contributions, standing in glass — every day nuroctane shipped code, in 3D.",
-    badge: "GITHUB",
     path: "/github",
     favicon: "/assets/nodes/github-logo.png",
   },
@@ -108,7 +99,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "Stats — NUROCTANE",
     description:
       "Public site statistics: visitors over time, where they came from, and what they opened.",
-    badge: "STATS",
     path: "/stats",
     favicon: "/assets/nodes/site-logo.png",
   },
@@ -116,7 +106,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "Writings — NUROCTANE",
     description:
       "Passages on sovereignty, the veil, the machine, and the attractor that pulls from the future.",
-    badge: "WRITINGS",
     path: "/blog",
     favicon: "/assets/nodes/blog-logo.png?v=115",
   },
@@ -124,7 +113,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "Socials — NUROCTANE",
     description:
       "Swim the social constellation — Instagram, X, Discord, and the rest of the network.",
-    badge: "SOCIALS",
     path: "/socials",
     favicon: "/assets/nodes/nuroctane-avatar.png",
   },
@@ -132,7 +120,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "Projects — NUROCTANE",
     description:
       "Creative and technical projects — MODKEYS, SnipOCR, StarSleep, Blackjack, and more.",
-    badge: "PROJECTS",
     path: "/projects",
     favicon: "/assets/nodes/github-logo.png",
   },
@@ -140,7 +127,6 @@ const PAGES: Record<string, PageMeta> = {
     title: "Fin — NUROCTANE",
     description:
       "End of the digital sea — identity, contact, and a place to book time with nuroctane.",
-    badge: "FIN",
     path: "/fin",
     favicon: "/assets/nodes/site-logo.png",
   },
@@ -219,9 +205,9 @@ export function absoluteUrl(
   return `${base}${p}`;
 }
 
-/** Absolute OG image URL: the Blackboard's embed, the same for every page. */
+/** Absolute OG image URL: this design's embed, the same for every page. */
 export function ogImageUrl(origin = "https://www.nuroctane.xyz"): string {
-  return absoluteUrl("/assets/nodes/site-logo.png", origin);
+  return absoluteUrl(embed.image, origin);
 }
 
 /** Apply meta tags in the document head (client SPA navigations). */
@@ -261,7 +247,9 @@ export function applyDocumentMeta(meta: PageMeta, origin?: string): void {
     absoluteUrl(meta.path, originSafe),
   );
   setMeta('meta[property="og:image"]', "content", ogImageUrl(originSafe));
-  setMeta('meta[property="og:site_name"]', "content", "NUROCTANE");
+  setMeta('meta[property="og:image:width"]', "content", String(embed.width));
+  setMeta('meta[property="og:image:height"]', "content", String(embed.height));
+  setMeta('meta[property="og:site_name"]', "content", embed.siteName);
 
   // Always pin the active route's mark so SPA navigation never leaks the
   // previous page's favicon into the next page.

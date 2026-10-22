@@ -3,7 +3,7 @@ import { StandaloneNav } from './StandaloneNav';
 import { MiniAudio } from '../components/hud/MiniAudio';
 import { ScrollToTop } from '../components/hud/ScrollToTop';
 import { useStandaloneScroll } from '../hooks/useStandaloneScroll';
-import raw from '../content/books.md?raw';
+import raw from '@shared/books.md?raw';
 import bookMeta from '../data/bookMeta.json';
 import { trackEvent } from '../lib/analytics';
 

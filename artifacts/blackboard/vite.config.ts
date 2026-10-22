@@ -1,6 +1,7 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
 import path from "path";
+import { sharedSite } from "../../shared/vite.mjs";
 
 // Vendor chunks are matched by package directory, not by the object form of
 // manualChunks: the object form also pulls shared helpers into whichever chunk
@@ -89,7 +90,7 @@ export default defineConfig(async ({ command }) => {
     // No vite-plugin-cesium: it injected a render-blocking 5.7 MB Cesium.js into
     // every page's <head>, and no mounted Observatory mode uses Cesium (the
     // globe is UnifiedWorld on Three.js; the Cesium modes are unimported).
-    plugins: [react()],
+    plugins: [react(), sharedSite()],
     optimizeDeps: {
       exclude: ["swisseph-wasm"],
     },

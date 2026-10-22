@@ -44,14 +44,30 @@ pnpm dev                  # Preview the selected frontend
 ```
 
 Selection changes the tracked `site.config.json`. Restart an existing dev server after
-switching. **Selection alone does not publish.** The normal ship pipeline publishes the
-selected design. Shared community data and API credentials remain current whichever
-design is selected; switching is not a database rollback.
+switching. **Selection alone does not publish.** Commit `site.config.json` and ship; the
+push deploys the selected design (never also `pnpm deploy`). Shared community data and API
+credentials remain current whichever design is selected; switching is not a database
+rollback.
+
+What a switch changes, and what it never does:
+
+| Follows the selection | Stays the same in every design |
+| --- | --- |
+| The frontend build, its `public/` assets and `_headers` | Quotes, books and resume (`shared/content`) |
+| Every share embed: image, size, site name, home title and description (`artifacts/<design>/embed.json`) | Resume download, `robots.txt`, `sitemap.xml` (`shared/public`) |
+| Retired `/api/og` and `/assets/og/*` card URLs (they answer with the selected embed image) | The API, Worker secrets, KV data and crawler routes |
+
+`scripts/check-designs.mjs` runs in every build and checks **all** designs, not just the
+selected one, so any design can be selected and shipped without surprises. It fails when
+an `embed.json` size disagrees with its image, an `index.html` tag disagrees with its
+`embed.json`, a design keeps its own copy of shared content, the `.env.example` files list
+different `VITE_*` variables, or a crawler route is missing from `run_worker_first`.
 
 The Digital Sea snapshot owns its original pages, assets, soundtrack and local Modkeys
 source. It is intentionally frozen. Blackboard retains its own compatibility scene code
 for existing deep links and uses the current `artifacts/modkeys` implementation. Neither
-frontend imports the other frontend. Do not switch using Blackboard's internal
+frontend imports the other frontend; both read shared content through `@shared/…` and
+`sharedSite()` in their Vite configs. Do not switch using Blackboard's internal
 `src/config/siteMode.ts`; it identifies that app, not the deployment selection.
 
 ## Explore the site
@@ -92,7 +108,7 @@ Browser
        ├─ Static assets → dist/public → selected frontend build
        ├─ /api/* → shared Hono API
        ├─ Crawler requests → route-specific Open Graph HTML
-       └─ /api/og → pre-rendered share cards from Cloudflare assets
+       └─ /api/og, /assets/og/* → retired card URLs, answered with the selected embed image
 ```
 
 | Layer | Implementation |
@@ -108,8 +124,9 @@ Browser
 
 Build-time `VITE_*` variables belong in local frontend `.env.local` and Cloudflare
 Workers Builds variables. Runtime API credentials belong in Worker secrets. The two
-sets are separate. See `artifacts/blackboard/.env.example` for the frontend template.
-Adding a build variable requires updating the example and the CI configuration.
+sets are separate. Every design has an `.env.example` and they must list the same
+variables, so adding one means updating each design's example, `.env.local` and the
+Workers Builds variables.
 
 ## Content and quote sync
 
@@ -122,18 +139,19 @@ Blackboard**. New Obsidian `#quotes` notes are the secondary intake source.
    through `run_hermes_quote_ingest.py`.
 4. Category normalization applies reviewed editorial corrections and refreshes the index.
 5. `run_hermes_quote_sync.py` validates and publishes only
-   `artifacts/blackboard/src/content/quotes.md` from `main`, then mirrors the published
+   `shared/content/quotes.md` from `main`, then mirrors the published
    form into the vault. Unrelated work blocks publishing.
 6. Workers Builds deploys the content commit through the usual production path.
 
 Blackboard follows the original Digital Sea parsing contract: contiguous blockquotes,
 paragraph breaks, author boundaries, callout exclusion, index exclusion and newest-first
-presentation without reversing the canonical file. The archived Digital Sea bank is not
-changed by sync. See [the quote playbook](docs/QUOTES.md) for corrections, attribution
+presentation without reversing the canonical file. There is one bank,
+`shared/content/quotes.md`, and every design renders it, so selecting Digital Sea never
+publishes stale quotes or an old resume. See [the quote playbook](docs/QUOTES.md) for corrections, attribution
 sources and verification commands.
 
 Books synchronization is a separate repo-to-vault path in `scripts/sync-books.sh`:
-Blackboard's `content/books.md` → Obsidian `Books/Book Wishlist.md`.
+`shared/content/books.md` → Obsidian `Books/Book Wishlist.md`.
 The Worker's daily cron only refreshes GitHub contributions; it does not sync quotes.
 
 ### Public library discovery
@@ -188,9 +206,8 @@ Verify the Workers Builds check for the shipped commit and the actual live asset
 Use `pnpm deploy` only if the push did not publish. Backups go to
 `D:\BACKUP\CODE Backups\nuroctane.xyz\` with the date and commit in the filename.
 
-`scripts/render-og.mjs` renders every share card at build time using `api/og.mjs`.
-Cards deploy with the site on Cloudflare; no separate image service is required.
-Product analytics uses PostHog.
+Every route shares the selected design's embed (`artifacts/<design>/embed.json`); there
+are no per-page share cards. Product analytics uses PostHog.
 
 ## Adding another design
 
@@ -200,11 +217,13 @@ A new design is a complete frontend, not a collection of overrides on a preserve
    `typecheck` scripts, and Vite output at `dist/public` inside that package.
 2. Give it its own entrypoint, routes, navigation, loading UI, styles, public assets and
    audio behavior. Reuse shared APIs and libraries where that does not couple designs.
-3. Register the identifier in `scripts/site.mjs` and extend design-aware Worker metadata
-   in `worker/og-meta.ts` and shell validation in `artifacts/modkeys/check-spa-shell.mjs`.
-4. Decide explicitly whether it reads live content or owns a frozen snapshot. Update
-   synchronization destinations and parser checks only when that ownership changes.
-5. Test the new app and the existing designs. Select it in `site.config.json` only when
+3. Register the identifier in `scripts/designs.mjs` (site selection, the design guard and
+   the Modkeys shell check read it there) and add its `embed.json` to `EMBEDS` in
+   `worker/og-meta.ts`.
+4. Give it an `embed.json` whose image lives in its `public/`, with matching tags in its
+   `index.html`, and an `.env.example` listing the same variables as the others.
+5. Read content through `sharedSite()` and `@shared/…`; never copy `shared/` files in.
+6. Test the new app and the existing designs (`pnpm site <design>`, `pnpm build`). Select it in `site.config.json` only when
    ready to preview or ship it. Preserve prior designs' source and assets.
 
 This registration is deliberate: merely adding a directory does not make a design a
@@ -214,14 +233,14 @@ supported production selection.
 
 ```text
 artifacts/
-  blackboard/        Current frontend and live content
+  blackboard/        Current frontend
   digital-sea/       Preserved earlier frontend, including original Modkeys
   modkeys/           Current keyboard configurator
   api-server/        Shared Hono API
 lib/                 Shared API clients, schemas and server utilities
 worker/              Cloudflare entrypoint and crawler metadata
 scripts/             Design selection, validation and local content sync
-api/og.mjs           Build-time share-card renderer
+shared/              Content every design serves (quotes, books, resume, robots, sitemap)
 docs/                Design notes, quote playbook, research and historical archive
 site.config.json     Selected design and Digital Sea baseline
 wrangler.jsonc       Single Worker deployment configuration
