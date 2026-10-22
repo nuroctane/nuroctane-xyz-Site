@@ -1,6 +1,7 @@
 /**
  * Canonical page metadata for document title, SEO, and Open Graph embeds.
- * Kept in sync with middleware.js (bot unfurl HTML) + /api/og image labels.
+ * Kept in sync with worker/og-meta.ts (bot unfurl HTML). Every page shares the
+ * Blackboard's embed image and site name; pages differ in text and favicon.
  */
 
 export interface PageMeta {
@@ -12,12 +13,8 @@ export interface PageMeta {
   badge: string;
   /** Absolute path for og:url (no origin) */
   path: string;
-  /** Optional absolute-or-root image override; default is /api/og?page=… */
-  imagePath?: string;
   /** noindex for crawlers that honor robots (resume) */
   noindex?: boolean;
-  /** og:site_name override (default NUROCTANE) */
-  siteName?: string;
   /** document favicon path or data URL override */
   favicon?: string;
   /**
@@ -34,7 +31,6 @@ const DEFAULT: PageMeta = {
   description: "Nuroctane's Blackboard. Projects, socials, books, and quotes.",
   badge: "BLACKBOARD",
   path: "/",
-  imagePath: "/assets/nodes/site-logo.png",
 };
 
 const PAGES: Record<string, PageMeta> = {
@@ -82,9 +78,7 @@ const PAGES: Record<string, PageMeta> = {
       "Spend context like it matters. A Rust coding agent with 70 provider routes, a 142-system Jev catalog, semantic search first, local usage aggregation, Enclave security agents, and local-first memory.",
     badge: "NurCLI",
     path: "/cli",
-    siteName: "NurCLI",
     favicon: "/assets/nodes/nur-cli-logo.png",
-    imagePath: "/assets/og/cli-dda47cb8.png",
   },
   curriculum: {
     title: "World Models: A Daily Series",
@@ -92,7 +86,6 @@ const PAGES: Record<string, PageMeta> = {
       "90 days, one paper a day: from Ha & Schmidhuber to the frontier. Model-based RL, JEPA, generative interactive environments, world foundation models, robots, and evaluation.",
     badge: "CURRICULUM",
     path: "/curriculum",
-    imagePath: "/assets/nodes/site-logo.png",
     favicon: "/assets/nodes/site-logo.png",
   },
   observatory: {
@@ -101,9 +94,7 @@ const PAGES: Record<string, PageMeta> = {
       "Astrology-rooted 3D web observatory — Swiss Ephemeris, all house/ayanamsa systems, aspects, Earth satellites, solar system, Cesium globe, and NASA mission hooks.",
     badge: "OBSERVATORY",
     path: "/observatory",
-    siteName: "Observatory",
     favicon: "/assets/nodes/observatory-logo.png?v=115",
-    imagePath: "/api/og?page=observatory&v=2",
   },
   github: {
     title: "GitHub — NUROCTANE",
@@ -111,7 +102,6 @@ const PAGES: Record<string, PageMeta> = {
       "A year of contributions, standing in glass — every day nuroctane shipped code, in 3D.",
     badge: "GITHUB",
     path: "/github",
-    imagePath: "/assets/nodes/site-logo.png",
     favicon: "/assets/nodes/github-logo.png",
   },
   stats: {
@@ -120,7 +110,6 @@ const PAGES: Record<string, PageMeta> = {
       "Public site statistics: visitors over time, where they came from, and what they opened.",
     badge: "STATS",
     path: "/stats",
-    imagePath: "/assets/nodes/site-logo.png",
     favicon: "/assets/nodes/site-logo.png",
   },
   blog: {
@@ -230,21 +219,9 @@ export function absoluteUrl(
   return `${base}${p}`;
 }
 
-/** Absolute OG image URL for a page. Prefer dynamic card; home keeps classic opengraph.jpg. */
-export function ogImageUrl(
-  meta: PageMeta,
-  origin = "https://www.nuroctane.xyz",
-): string {
-  if (meta.imagePath?.startsWith("http")) return meta.imagePath;
-  if (meta.imagePath) return absoluteUrl(meta.imagePath, origin);
-  const pageKey =
-    meta.path === "/"
-      ? "home"
-      : meta.path.replace(/^\//, "").split("/")[0] || "home";
-  return absoluteUrl(
-    `/api/og?page=${encodeURIComponent(pageKey)}&title=${encodeURIComponent(meta.badge)}`,
-    origin,
-  );
+/** Absolute OG image URL: the Blackboard's embed, the same for every page. */
+export function ogImageUrl(origin = "https://www.nuroctane.xyz"): string {
+  return absoluteUrl("/assets/nodes/site-logo.png", origin);
 }
 
 /** Apply meta tags in the document head (client SPA navigations). */
@@ -283,12 +260,8 @@ export function applyDocumentMeta(meta: PageMeta, origin?: string): void {
     "content",
     absoluteUrl(meta.path, originSafe),
   );
-  setMeta('meta[property="og:image"]', "content", ogImageUrl(meta, originSafe));
-  setMeta(
-    'meta[property="og:site_name"]',
-    "content",
-    meta.siteName || "NUROCTANE",
-  );
+  setMeta('meta[property="og:image"]', "content", ogImageUrl(originSafe));
+  setMeta('meta[property="og:site_name"]', "content", "NUROCTANE");
 
   // Always pin the active route's mark so SPA navigation never leaks the
   // previous page's favicon into the next page.
@@ -319,7 +292,7 @@ export function applyDocumentMeta(meta: PageMeta, origin?: string): void {
   setMeta(
     'meta[name="twitter:image"]',
     "content",
-    ogImageUrl(meta, originSafe),
+    ogImageUrl(originSafe),
   );
 
   let robots = document.querySelector(

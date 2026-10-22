@@ -54,6 +54,7 @@
       "/projects/*",
       "/fin",
       "/assets/nodes/*.mp3",
+      "/assets/og/*",
       "/api/*",
     ],
   },

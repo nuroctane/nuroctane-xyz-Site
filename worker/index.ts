@@ -110,29 +110,15 @@ async function serveAudioAsset(request: Request, env: Env): Promise<Response> {
   });
 }
 
-/** Preserve public share-card URLs using assets from this deployment. */
+/**
+ * Retired share-card URLs (/api/og?page=…, /assets/og/*.png) still circulate in
+ * old unfurls; they all answer with the Blackboard's embed image now.
+ */
 async function serveOg(request: Request, env: Env): Promise<Response> {
   if (request.method !== "GET" && request.method !== "HEAD") {
     return new Response(null, { status: 405, headers: { Allow: "GET, HEAD" } });
   }
-  const requested =
-    new URL(request.url).searchParams.get("page")?.toLowerCase() ?? "home";
-  const pages = new Set([
-    "home",
-    "quotes",
-    "books",
-    "resume",
-    "modkeys",
-    "cli",
-    "observatory",
-    "orbit",
-    "blog",
-    "socials",
-    "projects",
-    "fin",
-  ]);
-  const page = pages.has(requested) ? requested : "home";
-  const asset = new URL(`/assets/og/${page}.png`, request.url);
+  const asset = new URL("/assets/nodes/site-logo.png", request.url);
   return env.ASSETS.fetch(new Request(asset, { method: request.method }));
 }
 
@@ -161,7 +147,11 @@ export default {
       return serveAudioAsset(request, env);
     }
 
-    if (url.pathname === "/api/og" || url.pathname.startsWith("/api/og/")) {
+    if (
+      url.pathname === "/api/og" ||
+      url.pathname.startsWith("/api/og/") ||
+      url.pathname.startsWith("/assets/og/")
+    ) {
       return serveOg(request, env);
     }
 

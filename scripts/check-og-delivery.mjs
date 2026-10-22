@@ -1,52 +1,73 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
-import { THEMES } from "../api/og.mjs";
 
+// Every embed matches the Blackboard's: same image, size and site name on
+// every route, and retired card URLs answer with that same image.
 const origin = process.argv[2] ?? "http://127.0.0.1:8789";
-const cards = new URL(
-  "../artifacts/blackboard/public/assets/og/",
-  import.meta.url,
+const logo = await readFile(
+  new URL(
+    "../artifacts/blackboard/public/assets/nodes/site-logo.png",
+    import.meta.url,
+  ),
 );
-for (const page of Object.keys(THEMES)) {
-  const response = await fetch(`${origin}/api/og?page=${page}`);
-  assert.equal(response.status, 200, page);
-  assert.match(response.headers.get("content-type"), /^image\/png/);
-  assert.deepEqual(
-    Buffer.from(await response.arrayBuffer()),
-    await readFile(new URL(`${page}.png`, cards)),
-    page,
-  );
+const IMAGE = "https://www.nuroctane.xyz/assets/nodes/site-logo.png";
+const routes = [
+  "/",
+  "/quotes",
+  "/books",
+  "/resume",
+  "/modkeys",
+  "/cli",
+  "/curriculum",
+  "/observatory",
+  "/github",
+  "/stats",
+  "/blog",
+  "/blog/sovereignty",
+  "/socials",
+  "/socials/x",
+  "/projects",
+  "/projects/nur-cli",
+  "/fin",
+];
+for (const route of routes) {
+  const response = await fetch(`${origin}${route}`, {
+    headers: { "User-Agent": "Discordbot/2.0" },
+  });
+  const doc = await response.text();
+  assert.equal(response.headers.get("cache-control"), "no-cache", route);
+  assert.match(doc, new RegExp(`property="og:image" content="${IMAGE}"`), route);
+  assert.match(doc, new RegExp(`name="twitter:image" content="${IMAGE}"`), route);
+  assert.match(doc, /property="og:image:width" content="879"/, route);
+  assert.match(doc, /property="og:image:height" content="1024"/, route);
+  assert.match(doc, /property="og:site_name" content="NUROCTANE"/, route);
+  assert.doesNotMatch(doc, /http-equiv="refresh"/, route);
+}
+for (const retired of [
+  "/api/og?page=resume",
+  "/api/og?page=CLI",
+  "/api/og?page=../../invalid",
+  "/assets/og/cli-dda47cb8.png",
+  "/assets/og/resume.png",
+]) {
+  const response = await fetch(`${origin}${retired}`);
+  assert.equal(response.status, 200, retired);
+  assert.match(response.headers.get("content-type"), /^image\/png/, retired);
+  assert.deepEqual(Buffer.from(await response.arrayBuffer()), logo, retired);
 }
 const head = await fetch(`${origin}/api/og?page=cli`, { method: "HEAD" });
 assert.equal(head.status, 200);
 assert.equal((await head.arrayBuffer()).byteLength, 0);
-const fallback = await fetch(`${origin}/api/og?page=../../invalid`);
-assert.deepEqual(
-  Buffer.from(await fallback.arrayBuffer()),
-  await readFile(new URL("home.png", cards)),
-);
-const upper = await fetch(`${origin}/api/og?page=CLI`);
-assert.deepEqual(
-  Buffer.from(await upper.arrayBuffer()),
-  await readFile(new URL("cli.png", cards)),
-);
 const rejected = await fetch(`${origin}/api/og`, { method: "POST" });
 assert.equal(rejected.status, 405);
 assert.equal(rejected.headers.get("allow"), "GET, HEAD");
-// Card caches key on og:url and follow refreshes, so a shared variant must
-// echo itself, never redirect to the bare path, and never be cached.
-const crawler = await fetch(`${origin}/cli?ref=x`, {
-  headers: { "User-Agent": "Twitterbot/1.0" },
-});
-const doc = await crawler.text();
-assert.match(doc, /\/assets\/og\/cli-dda47cb8\.png/);
-assert.match(doc, /property="og:url" content="[^"]*\/cli\?ref=x"/);
-assert.doesNotMatch(doc, /http-equiv="refresh"/);
-assert.equal(crawler.headers.get("cache-control"), "no-cache");
-assert.deepEqual(
-  await readFile(new URL("cli-dda47cb8.png", cards)),
-  await readFile(new URL("cli.png", cards)),
-);
+// Card caches key on og:url, so a shared variant must echo itself.
+const shared = await (
+  await fetch(`${origin}/cli?ref=x`, {
+    headers: { "User-Agent": "Twitterbot/1.0" },
+  })
+).text();
+assert.match(shared, /property="og:url" content="[^"]*\/cli\?ref=x"/);
 console.log(
-  "OG DELIVERY OK: 12 cards, HEAD, case handling, safe fallback, method rejection, crawler metadata",
+  `OG DELIVERY OK: ${routes.length} routes share the Blackboard embed, retired card URLs, HEAD, method rejection, shared og:url`,
 );

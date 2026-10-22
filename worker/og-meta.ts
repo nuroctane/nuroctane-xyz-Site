@@ -64,11 +64,14 @@ interface PageMeta {
   description: string;
   badge: string;
   path: string;
-  image?: string;
   favicon?: string;
-  siteName?: string;
   noindex?: boolean;
 }
+
+/* Every route shares the Blackboard's embed: one image, one site name. Pages
+ * differ only in title, description and favicon, so no card can drift. */
+export const EMBED_IMAGE = `${SITE}/assets/nodes/site-logo.png`;
+const EMBED_SIZE = { width: 879, height: 1024 };
 
 const PAGES: Record<string, PageMeta> = {
   home: {
@@ -82,10 +85,6 @@ const PAGES: Record<string, PageMeta> = {
         : "A 3D interactive scroll experience through nuroctane's digital network — socials, creative projects, writings, and more.",
     badge: siteConfig.active === "blackboard" ? "BLACKBOARD" : "DIGITAL SEA",
     path: "/",
-    image:
-      siteConfig.active === "blackboard"
-        ? `${SITE}/assets/nodes/site-logo.png`
-        : `${SITE}/opengraph.jpg`,
     favicon: "/assets/nodes/site-logo.png",
   },
   quotes: {
@@ -127,10 +126,6 @@ const PAGES: Record<string, PageMeta> = {
       "Spend context like it matters. A Rust coding agent with 70 provider routes, a 142-system Jev catalog, semantic search first, local usage aggregation, Enclave security agents, and local-first memory.",
     badge: "NurCLI",
     path: "/cli",
-    siteName: "NurCLI",
-    // Content-addressed: the locked card's hash prefix (scripts/render-og.mjs),
-    // so no cache anywhere can hold an older image under this path.
-    image: `${SITE}/assets/og/cli-dda47cb8.png`,
     favicon: "/assets/nodes/nur-cli-logo.png",
   },
   curriculum: {
@@ -139,7 +134,6 @@ const PAGES: Record<string, PageMeta> = {
       "90 days, one paper a day: from Ha & Schmidhuber to the frontier. Model-based RL, JEPA, generative interactive environments, world foundation models, robots, and evaluation.",
     badge: "CURRICULUM",
     path: "/curriculum",
-    image: `${SITE}/assets/nodes/site-logo.png`,
     favicon: "/assets/nodes/site-logo.png",
   },
   observatory: {
@@ -148,7 +142,6 @@ const PAGES: Record<string, PageMeta> = {
       "Astrology-rooted 3D web observatory — Swiss Ephemeris, all house/ayanamsa systems, aspects, Earth satellites, solar system, Cesium globe, and NASA mission hooks.",
     badge: "OBSERVATORY",
     path: "/observatory",
-    siteName: "Observatory",
     favicon: "/assets/nodes/observatory-logo.png?v=115",
   },
   github: {
@@ -157,7 +150,6 @@ const PAGES: Record<string, PageMeta> = {
       "A year of contributions, standing in glass — every day nuroctane shipped code, in 3D.",
     badge: "GITHUB",
     path: "/github",
-    image: `${SITE}/assets/nodes/site-logo.png`,
     favicon: "/assets/nodes/github-logo.png",
   },
   stats: {
@@ -166,7 +158,6 @@ const PAGES: Record<string, PageMeta> = {
       "Public site statistics: visitors over time, where they came from, and what they opened.",
     badge: "STATS",
     path: "/stats",
-    image: `${SITE}/assets/nodes/site-logo.png`,
     favicon: "/assets/nodes/site-logo.png",
   },
   blog: {
@@ -252,14 +243,10 @@ function resolvePage(pathname: string, search = ""): ResolvedMeta {
   const key = top === "" ? "home" : top;
   const base = PAGES[key] || PAGES.home;
   const path = clean === "/" ? "/" : clean;
-  const imageKey = key;
-  const image =
-    base.image ||
-    `${SITE}/api/og?page=${encodeURIComponent(imageKey === "home" ? "home" : imageKey)}&title=${encodeURIComponent(base.badge)}`;
   return {
     ...base,
     path,
-    image,
+    image: EMBED_IMAGE,
     favicon: (segs[1] && CHILD_FAVICONS[top]?.[segs[1]]) || base.favicon,
     // Deep links keep the section branding but pin canonical URL
     url: `${SITE}${path === "/" ? "/" : path}`,
@@ -283,17 +270,6 @@ function escapeHtml(s: unknown): string {
     .replace(/'/g, "&#39;");
 }
 
-/* Declared card size. Rendered share cards are 1200x630; the pages that
- * borrow the portrait site logo (home, /github, /curriculum) must say so, or
- * unfurlers that lay out from these tags before fetching crop the logo into a
- * landscape frame. */
-const SITE_LOGO_SIZE = { width: 879, height: 1024 };
-const CARD_SIZE = { width: 1200, height: 630 };
-
-function imageSize(image: string): { width: number; height: number } {
-  return /\/assets\/nodes\/site-logo\.png(?:$|\?)/.test(image) ? SITE_LOGO_SIZE : CARD_SIZE;
-}
-
 function botHtml(meta: ResolvedMeta): string {
   const title = escapeHtml(meta.title);
   const desc = escapeHtml(meta.description);
@@ -301,7 +277,6 @@ function botHtml(meta: ResolvedMeta): string {
   const url = escapeHtml(meta.url);
   const shared = escapeHtml(meta.shared);
   const robots = meta.noindex ? "noindex, nofollow" : "index, follow";
-  const size = imageSize(meta.image);
 
   return `<!doctype html>
 <html lang="en">
@@ -312,14 +287,14 @@ function botHtml(meta: ResolvedMeta): string {
   <meta name="robots" content="${robots}" />
   <link rel="canonical" href="${url}" />
   ${meta.favicon ? '<link rel="icon" href="' + SITE + escapeHtml(meta.favicon) + '" />' : ""}
-  <meta property="og:site_name" content="${escapeHtml(meta.siteName || "NUROCTANE")}" />
+  <meta property="og:site_name" content="NUROCTANE" />
   <meta property="og:type" content="website" />
   <meta property="og:title" content="${title}" />
   <meta property="og:description" content="${desc}" />
   <meta property="og:url" content="${shared}" />
   <meta property="og:image" content="${image}" />
-  <meta property="og:image:width" content="${size.width}" />
-  <meta property="og:image:height" content="${size.height}" />
+  <meta property="og:image:width" content="${EMBED_SIZE.width}" />
+  <meta property="og:image:height" content="${EMBED_SIZE.height}" />
   <meta name="twitter:card" content="summary_large_image" />
   <meta name="twitter:title" content="${title}" />
   <meta name="twitter:description" content="${desc}" />
