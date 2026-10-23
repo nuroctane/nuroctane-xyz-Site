@@ -21,6 +21,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import subprocess
 from pathlib import Path
 import sys
 import time
@@ -34,6 +35,8 @@ LIVE_URL = os.environ.get("NUROCTANE_QUOTES_API", "https://www.nuroctane.xyz/api
 TOKEN_FILE = Path(os.environ.get("LOCALAPPDATA", "")) / "nuroctane" / "quotes-publish-token"
 SNAPSHOT_SECONDS = float(os.environ.get("QUOTES_SNAPSHOT_HOURS", "24")) * 3600
 COMMIT_MESSAGE = "chore: sync quotes from Obsidian vault [auto]"
+# Cloudflare challenges Python's default User-Agent, so every request names itself.
+USER_AGENT = "nuroctane-quotes-pipeline"
 
 
 def load_sync():
@@ -101,7 +104,9 @@ def publish_live(bank: str, log) -> str:
         return "failed"
     body = bank.encode("utf-8")
     sha = hashlib.sha256(body).hexdigest()
-    probe = urllib.request.Request(LIVE_URL, method="HEAD", headers={"If-None-Match": f'"{sha}"'})
+    probe = urllib.request.Request(
+        LIVE_URL, method="HEAD", headers={"If-None-Match": f'"{sha}"', "User-Agent": USER_AGENT}
+    )
     try:
         with urllib.request.urlopen(probe, timeout=30) as response:
             if response.headers.get("ETag") == f'"{sha}"':
@@ -121,7 +126,7 @@ def publish_live(bank: str, log) -> str:
         headers={
             "Authorization": f"Bearer {token}",
             "Content-Type": "text/markdown; charset=utf-8",
-            "User-Agent": "nuroctane-quotes-pipeline",
+            "User-Agent": USER_AGENT,
         },
     )
     try:
@@ -150,14 +155,27 @@ def snapshot_due(module) -> tuple[bool, str]:
     return False, f"next in {(SNAPSHOT_SECONDS - age) / 3600:.1f}h"
 
 
+def committed_bank(module) -> str | None:
+    """quotes.md at HEAD. Read as UTF-8 here: Hermes' git() decodes with the
+    Windows code page, which cannot read the bank."""
+    shown = subprocess.run(
+        ["git", "show", f"HEAD:{module.REL_DEST}"],
+        cwd=str(module.REPO_ROOT),
+        capture_output=True,
+        encoding="utf-8",
+        errors="replace",
+        creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+    )
+    return shown.stdout.replace("\r\n", "\n") if shown.returncode == 0 else None
+
+
 def git_publish(module, bank: str, *, now: bool) -> int:
     """Commit and push quotes.md when it differs from HEAD; daily unless `now`."""
     git, log, rel = module.git, module.log, module.REL_DEST
     if not on_main(module):
         log("git snapshot deferred: not on main")
         return 3
-    head = git("show", f"HEAD:{rel}", check=False)
-    if head.returncode == 0 and head.stdout.replace("\r\n", "\n") == bank:
+    if committed_bank(module) == bank:
         return 0
     if not now:
         due, why = snapshot_due(module)
@@ -221,6 +239,8 @@ def main(argv: list[str]) -> int:
     if live == "failed":
         log("live publish unavailable; falling back to an immediate git publish")
         return git_publish(module, bank, now=True)
+    if live == "same":
+        log("live bank already current")
     return git_publish(module, bank, now="--git-now" in argv)
 
 
