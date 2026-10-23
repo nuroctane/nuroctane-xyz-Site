@@ -95,10 +95,11 @@ interface AudioCtxValue {
 
 const Ctx = createContext<AudioCtxValue>(null!);
 
-// Pages whose direct visitors (developers following a docs link to /cli) should
-// not be greeted by the music library. Landing on one starts the score muted and
-// unloaded; arriving from another page keeps whatever is already playing.
-const QUIET_LANDING_ROUTES = ['cli'];
+// Professional-facing pages whose direct visitors (developers following a docs
+// link to /cli, recruiters opening /resume) should not be greeted by the music
+// library. Landing on one starts the score muted and unloaded, and no first
+// touch starts it; arriving from another page keeps whatever is already playing.
+const QUIET_LANDING_ROUTES = ['cli', 'resume'];
 const isQuietRoute = (path: string) =>
   QUIET_LANDING_ROUTES.includes(path.replace(/^\/+/, '').split(/[/?#]/)[0].toLowerCase());
 const QUIET_LANDING = SITE_MODE === 'blackboard' && isQuietRoute(window.location.pathname);
