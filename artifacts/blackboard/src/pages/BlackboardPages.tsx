@@ -6,6 +6,7 @@ import { BookOpen, FileText, Quote, Search } from 'lucide-react';
 import { Link, useLocation } from 'wouter';
 import booksRaw from '@shared/books.md?raw';
 import quotesRaw from '@shared/quotes.md?raw';
+import { useLiveQuotes } from '../lib/liveQuotes';
 import bookMeta from '../data/bookMeta.json';
 import { trackEvent } from '../lib/analytics';
 import { useStandaloneScroll } from '../hooks/useStandaloneScroll';
@@ -231,7 +232,7 @@ export function BlackboardBooksPage() {
 }
 
 export function BlackboardQuotesPage() {
-  const [query, setQuery] = useState(''); const [activeCategory, setActiveCategory] = useState('All'); const [quoteOrder, setQuoteOrder] = useState<'newest' | 'oldest'>('newest'); const sections = useMemo(() => parseQuotes(quotesRaw), []); const categories = ['All', ...sections.map(section => section.name)]; const normalized = query.toLowerCase().trim();
+  const [query, setQuery] = useState(''); const [activeCategory, setActiveCategory] = useState('All'); const [quoteOrder, setQuoteOrder] = useState<'newest' | 'oldest'>('newest'); const bank = useLiveQuotes(quotesRaw); const sections = useMemo(() => parseQuotes(bank), [bank]); const categories = ['All', ...sections.map(section => section.name)]; const normalized = query.toLowerCase().trim();
   const visible = sections.filter(section => activeCategory === 'All' || section.name === activeCategory).map(section => ({ ...section, quotes: section.quotes.filter(quote => !normalized || `${quote.text} ${quote.source}`.toLowerCase().includes(normalized)) })).filter(section => section.quotes.length);
   return <LibraryChrome active="quotes"><div className="bb-library-intro"><p className="bb-kicker">Collected notes</p><h1>Quotes</h1></div><div className="bb-category-tabs" role="tablist" aria-label="Quote categories">{categories.map(category => <button key={category} className={activeCategory === category ? 'is-active' : ''} onClick={event => { setActiveCategory(category); event.currentTarget.scrollIntoView({ block: 'nearest', inline: 'center', behavior: 'smooth' }); }} role="tab" aria-selected={activeCategory === category}>{category}</button>)}</div><label className="bb-search"><Search aria-hidden="true" /><span className="sr-only">Search quotes</span><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Search quote or source" /></label><div className="bb-quote-order" role="group" aria-label="Quote order"><button aria-pressed={quoteOrder === 'newest'} onClick={() => setQuoteOrder('newest')}>Newest first</button><button aria-pressed={quoteOrder === 'oldest'} onClick={() => setQuoteOrder('oldest')}>Oldest first</button></div><div className="bb-quote-grid">{visible.map(section => <section className="bb-quote-section" key={section.name}><div className="bb-shelf-heading"><h2>{section.name}</h2><span>{String(section.quotes.length).padStart(2, '0')}</span></div>{(quoteOrder === 'newest' ? [...section.quotes].reverse() : section.quotes).map((quote, index) => <blockquote key={`${section.name}-${index}`}><p>{renderText(quote.text)}</p>{quote.source && <cite>{/^@[A-Za-z0-9_]{1,15}$/.test(quote.source) ? <a href={`https://x.com/${quote.source.slice(1)}`} target="_blank" rel="noreferrer">{quote.source}</a> : renderText(quote.source)}</cite>}</blockquote>)}</section>)}</div></LibraryChrome>;
 }

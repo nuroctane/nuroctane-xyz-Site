@@ -14,9 +14,21 @@ Windows task `NuroctanePollSync` runs `wscript.exe //B //Nologo scripts/poll-syn
 every 15 minutes. The VBS launcher selects the repository-owned `quotes-pipeline.py`.
 The pipeline validates categories, runs the external Hermes ingester through the
 versioned classifier adapter, normalizes the bank and publishes through
-`run_hermes_quote_sync.py`. The wrapper explicitly targets Blackboard even if a Hermes
-upgrade restores its older Digital Sea destination. The shell/PowerShell fallback also
-targets Blackboard. The worker's cloud cron has no role in quote ingestion.
+`run_hermes_quote_sync.py`. The wrapper writes `shared/content/quotes.md` even if a
+Hermes upgrade restores an older destination. The worker's cloud cron has no role in
+quote ingestion.
+
+### Live publishing (no deploy per quote)
+
+Each run PUTs the published bank to `/api/quotes`, which `worker/quotes.ts` keeps in
+Cloudflare KV (`QUOTES`). Both designs' Quotes pages render the bundled bank, then the
+live one (`useLiveQuotes`), so a new quote shows about a minute after the run without a
+build. The pipeline commits `quotes.md` and pushes `main` (a deploy) at most once a day,
+which keeps git history and the bundled fallback current. When the live publish cannot be
+made it publishes through git at once, as before. The Worker refuses a bank that loses
+more than a fifth of its quotes unless the request carries `X-Allow-Shrink: 1`, and the
+pipeline never retries a refused bank through git. The shell fallback publishes live
+before it pushes.
 
 ## Editorial corrections
 
@@ -67,6 +79,7 @@ The index counts are tested against the same parser the page actually uses.
 
 ```sh
 pnpm check:quotes
+python scripts/test_quote_live_publish.py
 python scripts/test_quote_editorial.py
 python scripts/test_quote_categories.py
 python scripts/normalize-quotes-categories.py --check
@@ -82,12 +95,13 @@ SYNC_DRY_RUN=1 bash scripts/sync-quotes.sh
 ```
 
 Dry run normalizes a temporary source and does not commit, push or edit the vault.
-A normal run requires publishable `main`, preserves unrelated work and commits only
-the quote file. Logs are in `.nur/quotes-pipeline.log` and `.nur/poll-sync.log`.
+A normal run publishes live whatever the git state; its daily git snapshot requires
+publishable `main`, preserves unrelated work and commits only the quote file. Logs are in `.nur/quotes-pipeline.log` and `.nur/poll-sync.log`.
 
 Do not run a publishing sync while performing unrelated repository changes. Apply and
 verify local corrections, then use the required ship process. Confirm the actual live
-quote content after Workers Builds completes, not merely a green notification job.
+quote content (`curl -s https://www.nuroctane.xyz/api/quotes`), not merely a green
+notification job.
 
 ### Legacy Hermes entrypoint
 

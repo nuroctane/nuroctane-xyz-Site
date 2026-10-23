@@ -15,7 +15,7 @@
     "check:repo-hygiene": "node scripts/repo-hygiene.mjs",
     "site": "node scripts/site.mjs",
     "dev": "node scripts/site.mjs dev",
-    "check:quotes": "pnpm --filter @workspace/scripts exec tsx test_quote_parser.ts",
+    "check:quotes": "pnpm --filter @workspace/scripts exec tsx test_quote_parser.ts && pnpm --filter @workspace/scripts exec tsx test_quotes_api.ts",
     "check:books": "pnpm --filter @workspace/scripts exec tsx test_book_search.ts",
     "check:refresh": "pnpm --filter @workspace/scripts exec tsx test_refresh_choice.ts",
     "check:wallpapers": "pnpm --filter @workspace/scripts exec tsx test_wallpaper_shaders.ts && pnpm --filter @workspace/scripts exec tsx test_wallpaper_textures.ts"

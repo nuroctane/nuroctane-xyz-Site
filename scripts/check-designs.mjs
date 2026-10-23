@@ -93,6 +93,14 @@ for (const design of DESIGNS) {
     assert.ok(!existsSync(at(where, "public", name)), `${where}/public/${name}: lives in shared/public`);
   }
   assert.ok(read(where, "vite.config.ts").includes("sharedSite()"), `${where}/vite.config.ts must use sharedSite()`);
+  // Quotes go live through /api/quotes without a deploy; a view that renders
+  // only the bundled bank would lag until the next daily snapshot.
+  for (const page of readdirSync(at(where, "src/pages"))) {
+    const source = read(where, "src/pages", page);
+    if (source.includes("@shared/quotes.md?raw")) {
+      assert.ok(source.includes("useLiveQuotes("), `${where}/src/pages/${page} must render quotes through useLiveQuotes`);
+    }
+  }
   assert.deepEqual(envNames(design), envNames(DESIGNS[0]), `${where}/.env.example must list the same VITE_* vars`);
 
   const built = at(where, "dist/public");

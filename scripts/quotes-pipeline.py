@@ -7,7 +7,8 @@ The Windows task owns the schedule.  Each run is intentionally ordered:
 2. Read the user's Raindrop ``#quotes`` tag first (text + image OCR).
 3. Fold in any new Obsidian ``#quotes`` notes as a secondary source.
 4. Write the canonical Obsidian Quotes.md bank (Raindrop additions land here).
-5. Copy that bank to the site's quotes.md, commit only that file, and push main.
+5. Publish that bank live to /api/quotes (no deploy), and commit only the
+   site's quotes.md and push main once a day (or at once if live fails).
 6. Rewrite the vault bank so it matches the published copy.
 7. Mirror the committed site ``books.md`` into the Obsidian Book Wishlist.
 
@@ -140,68 +141,6 @@ def release_lock() -> None:
         log(f"could not remove pipeline lock: {exc}")
 
 
-def preflight_git() -> int:
-    """Make sure a quotes-only commit can land on main without carrying user work.
-
-    Uncommitted edits elsewhere in the tree do not block: the sync commits with
-    ``git commit --only quotes.md`` so they stay local. (Deferring on them is what
-    left quotes unpublished for days while unrelated work sat uncommitted.)
-    Local commits that are not on origin/main do block, because pushing the
-    quotes commit would deploy them too.
-    """
-
-    branch = subprocess.run(
-        ["git", "branch", "--show-current"],
-        cwd=str(REPO_ROOT),
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        errors="replace",
-        creationflags=command_flags(),
-    )
-    if branch.returncode or branch.stdout.strip() != "main":
-        log(f"git preflight deferred: expected main, found {branch.stdout.strip() or 'detached HEAD'}")
-        return 4
-
-    fetch = subprocess.run(
-        ["git", "fetch", "origin", "main"],
-        cwd=str(REPO_ROOT),
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        errors="replace",
-        creationflags=command_flags(),
-    )
-    if fetch.returncode:
-        log("git preflight deferred: fetch origin/main failed")
-        return fetch.returncode
-    ahead = subprocess.run(
-        ["git", "rev-list", "--count", "origin/main..HEAD"],
-        cwd=str(REPO_ROOT),
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        errors="replace",
-        creationflags=command_flags(),
-    )
-    if ahead.returncode or ahead.stdout.strip() != "0":
-        log(f"git preflight deferred: main has {ahead.stdout.strip() or '?'} unpushed local commit(s)")
-        return 3
-    pull = subprocess.run(
-        ["git", "pull", "--ff-only", "origin", "main"],
-        cwd=str(REPO_ROOT),
-        capture_output=True,
-        text=True,
-        encoding="utf-8",
-        errors="replace",
-        creationflags=command_flags(),
-    )
-    if pull.returncode:
-        log("git preflight deferred: main could not fast-forward")
-        return pull.returncode
-    return 0
-
-
 def split_frontmatter(text: str) -> tuple[str, str]:
     lines = text.splitlines(keepends=True)
     if lines and lines[0].strip() == "---":
@@ -264,8 +203,7 @@ def main() -> int:
         if category_rc:
             return category_rc
 
-        # Raindrop first, then secondary Obsidian notes. Always write the vault
-        # bank even if git later refuses to publish.
+        # Raindrop first, then secondary Obsidian notes.
         ingest_rc = run(
             "raindrop-first ingest",
             [str(HERMES_PYTHON), "-u", str(ingest_adapter), "--pipeline"],
@@ -279,14 +217,9 @@ def main() -> int:
         if normalize_rc:
             return normalize_rc
 
-        ready = preflight_git()
-        if ready:
-            log("vault ingest finished; site publish deferred until main can publish")
-            mirror_books()
-            return ingest_rc or ready
-
-        # Publish the canonical bank to the site and main, then mirror that
-        # exact reindexed copy back into Obsidian.
+        # Publish the canonical bank live (git state never blocks this), take
+        # the daily git snapshot when due, and mirror the exact reindexed copy
+        # back into Obsidian. Exit 3 is a deferred snapshot, not a lost quote.
         sync_rc = run("obsidian-to-site sync", [str(HERMES_PYTHON), "-u", str(REPO_ROOT / "scripts" / "run_hermes_quote_sync.py")])
         books_rc = mirror_books()
         return sync_rc or ingest_rc or books_rc

@@ -138,10 +138,12 @@ Blackboard**. New Obsidian `#quotes` notes are the secondary intake source.
 3. The pipeline tests the canonical 12-category classifier and runs the Hermes ingester
    through `run_hermes_quote_ingest.py`.
 4. Category normalization applies reviewed editorial corrections and refreshes the index.
-5. `run_hermes_quote_sync.py` validates and publishes only
-   `shared/content/quotes.md` from `main`, then mirrors the published
-   form into the vault. Unrelated work blocks publishing.
-6. Workers Builds deploys the content commit through the usual production path.
+5. `run_hermes_quote_sync.py` validates the bank, mirrors it into the vault and PUTs it
+   to `/api/quotes` (Cloudflare KV). The Quotes pages read that, so a new quote is live
+   within about a minute, with no build or deploy.
+6. Once a day it also commits `shared/content/quotes.md` and pushes `main` (a deploy),
+   keeping history and the bundled fallback current. If the live publish fails, it
+   publishes through git at once instead.
 
 Blackboard follows the original Digital Sea parsing contract: contiguous blockquotes,
 paragraph breaks, author boundaries, callout exclusion, index exclusion and newest-first
@@ -175,6 +177,7 @@ the shared service lives in `artifacts/api-server/src/lib/book-search.ts`.
 pnpm build
 pnpm check:quotes
 pnpm check:books
+python scripts/test_quote_live_publish.py
 python scripts/test_quote_editorial.py
 python scripts/test_quote_categories.py
 ```

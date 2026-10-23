@@ -5,6 +5,7 @@ import { ScrollToTop } from '../components/hud/ScrollToTop';
 import { useStandaloneScroll } from '../hooks/useStandaloneScroll';
 import { trackEvent } from '../lib/analytics';
 import raw from '@shared/quotes.md?raw';
+import { useLiveQuotes } from '../lib/liveQuotes';
 
 interface Quote {
   text: string;
@@ -169,7 +170,8 @@ function renderText(t: string) {
 const PAGE_SIZE = 30;
 
 export default function QuotesPage() {
-  const sections = useMemo(() => parseMD(raw), []);
+  const bank = useLiveQuotes(raw);
+  const sections = useMemo(() => parseMD(bank), [bank]);
   const [activeSec, setActiveSec] = useState(sections[0]?.name ?? '');
   const [quoteOrder, setQuoteOrder] = useState<QuoteOrder>('newest');
   const [count, setCount] = useState(PAGE_SIZE);

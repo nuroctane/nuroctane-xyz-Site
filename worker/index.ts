@@ -10,8 +10,9 @@
 import app from "@workspace/api-server";
 import { refreshContributions } from "@workspace/api-server/github-contrib";
 import { EMBED, isBot, botResponse } from "./og-meta";
+import { serveQuotes, type QuotesEnv } from "./quotes";
 
-export interface Env {
+export interface Env extends QuotesEnv {
   ASSETS: Fetcher;
 }
 
@@ -153,6 +154,10 @@ export default {
       url.pathname.startsWith("/assets/og/")
     ) {
       return serveOg(request, env);
+    }
+
+    if (url.pathname === "/api/quotes") {
+      return serveQuotes(request, env);
     }
 
     if (url.pathname.startsWith("/api/")) {

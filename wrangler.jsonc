@@ -59,6 +59,12 @@
     ],
   },
 
+  // The live quotes bank. The local quotes pipeline PUTs /api/quotes every run
+  // and the Quotes pages read it, so new quotes need no deploy (worker/quotes.ts).
+  "kv_namespaces": [
+    { "binding": "QUOTES", "id": "e984b59ea8064c98bf606f82ec7935bb" },
+  ],
+
   // Daily contribution refresh, dispatched to the private scheduled handler.
   "triggers": {
     "crons": ["0 12 * * *"],

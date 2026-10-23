@@ -234,6 +234,30 @@ if [[ "${SYNC_DRY_RUN:-0}" == "1" ]]; then
     exit 0
 fi
 
+# 3b. Publish the bank live (worker/quotes.ts) so the pages, which prefer the
+#     live bank, never show an older one than this run pushes through git.
+publish_live() {
+  local token="${NUROCTANE_QUOTES_TOKEN:-}" token_file headers code
+  token_file="${LOCALAPPDATA:-}/nuroctane/quotes-publish-token"
+  command -v cygpath >/dev/null 2>&1 && [[ -n "${LOCALAPPDATA:-}" ]] &&
+    token_file="$(cygpath -u "$LOCALAPPDATA")/nuroctane/quotes-publish-token"
+  [[ -z "$token" && -f "$token_file" ]] && token="$(tr -d '\r\n' < "$token_file")"
+  if [[ -z "$token" ]]; then
+    echo "[$(date)] live publish skipped: no token"
+    return
+  fi
+  # The header goes through a private file so the token never sits in argv.
+  headers="$(mktemp)"
+  chmod 600 "$headers"
+  printf 'Authorization: Bearer %s\n' "$token" > "$headers"
+  code="$(curl -s -o /dev/null -w '%{http_code}' -X PUT -H @"$headers" \
+    -H 'Content-Type: text/markdown; charset=utf-8' --data-binary @"$REINDEXED" \
+    "${NUROCTANE_QUOTES_API:-https://www.nuroctane.xyz/api/quotes}")"
+  rm -f "$headers"
+  echo "[$(date)] live publish: HTTP $code"
+}
+publish_live
+
 # 4. Commit + push only if git will see a real content change.
 # Compare against HEAD (not the working tree) so CRLF/LF noise on disk
 # does not look like a vault update.
