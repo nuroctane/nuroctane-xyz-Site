@@ -364,20 +364,30 @@
 - [x] Zeland, Vadim — Reality Transurfing
 - [ ] Zozanian — Lotteryland
 
-## Fantasy/Sci-Fi Cluster
+## Fantasy & Science Fiction
 
 - [ ] Stephens, L.L. — Sordaneon (The Tapestry Revelations Book 1)
 - [ ] Bayen, L.N. — The Wingspan of Treason (The Stormsinger Chain)
 - [ ] West, Michelle — The Hidden City (The House War)
 - [ ] Wolf, Deborah A. — The Dragon's Legacy
 - [ ] Elliot, Livia J. — The Genesis of Change (Records of the Orders prequel novella)
+- [ ] Stephens, L.L. — The Walled City (The Triempery Revelations, Book I)
+- [ ] Wurts, Janny — The Curse of the Mistwraith
+- [ ] Stephens, L.L. — The God Spear (The Triempery Revelations, Book IV)
+- [ ] Ruocchio, Christopher — Shadows Upon Time
+- [ ] LeGuin, Ursula K. — The Left Hand of Darkness
+- [ ] Rajaniemi, Hannu — The Quantum Thief
+- [ ] Dick, Philip K. — Ubik
+- [ ] McCaffrey, Anne — Dragonflight
 
-## Foreign/Literary Fiction
+## Literary Fiction
 
 - [ ] Cărtărescu, Mircea — Blinding (trans. Sean Cotter)
 - [ ] Tanizaki, Jun'ichirō — The Makioka Sisters
+- [ ] Dostoevsky, Fyodor — The Brothers Karamazov (Penguin Classics ed.)
+- [ ] Márquez, Gabriel García — One Hundred Years of Solitude
 
-## Esoteric / Hermetic / Occult Reading List
+## Esoteric & Hermetic
 
 - [ ] Trismegistus, Hermes — Corpus Hermeticum
 - [ ] Norton, David (ed.) — The New Cambridge Paragraph Bible
@@ -409,46 +419,34 @@
 - [ ] Ashmole, Elias — Theatrum Chemicum Brittannicum
 - [ ] Cicero, Chic / Cicero, Sandra Tabatha — Self-Initiation into the Golden Dawn Tradition
 
-## Lifestyle / Misc / Lists
+## Miscellany
 
 - [ ] d'Avila-Latourrette, Brother Victor-Antoine — Twelve Months of Monastery Soups: International Favorites
 - [ ] Updegraff, Robert R. — Obvious Adams
 - [ ] (vintageofantasy / anon.) — How to Fit into Society When You're an Alien from an Alternate Universe: A Guide for Aquarius
-- [ ] Lang, Andrew — The Pink Fairy Book
-- [ ] Lang, Andrew — The Crimson Fairy Book
-- [ ] Lang, Andrew — The Red Fairy Book
-- [ ] Lang, Andrew — The Orange Fairy Book
-- [ ] Lang, Andrew — The Yellow Fairy Book
-- [ ] Lang, Andrew — The Olive Fairy Book
-- [ ] Lang, Andrew — The Green Fairy Book
-- [ ] Lang, Andrew — The Blue Fairy Book
-- [ ] Lang, Andrew — The Violet Fairy Book
-- [ ] Lang, Andrew — The Lilac Fairy Book
-- [ ] Lang, Andrew — The Grey Fairy Book
-- [ ] Lang, Andrew — The Brown Fairy Book
 - [ ] Schwartz, Susan E. — The Absent Father Effect on Daughters: Father Desire, Father Wounds
 - [ ] Ng, G. — The 38 Letters from J.D. Rockefeller to His Son
 - [ ] Tolkien, J.R.R. — Beowulf: A Translation and Commentary (together with Sellic Spell; ed. Christopher Tolkien)
 - [ ] Hollins, Peter — The Science of Rapid Skill Acquisition
 
-## Money/Business/Self-Help Stack (background photo)
+## Money, Business & Self-Help
 
-- [ ] Housel, Morgan — The Psychology of Money _(spine: "The Money")_
+- [ ] Housel, Morgan — The Psychology of Money
 - [ ] Clarey, Christopher — The Master
-- [ ] Collins, Jim — The Simple Path _(partial)_
+- [ ] Collins, Jim — The Simple Path
 - [ ] Kiyosaki, Robert T. — Rich Dad Poor Dad
 - [ ] Elker, T. Harv — Secrets of the Millionaire Mind
 - [ ] Carnegie, Dale — How to Win Friends & Influence People
 - [ ] Lewis, Reginald F. / Walker, Blair S. — "Why Should White Guys Have All the Fun?" How Reginald Lewis Created a Billion-Dollar Business Empire
-- [ ] Ellis, Bret Easton — American Psycho _(spine visible, duplicate)_
+- [ ] Ellis, Bret Easton — American Psycho
 - [ ] Fanon, Frantz — The Wretched of the Earth
 - [ ] Coll, Steve — Private Empire
-- [ ] Clear, James — Atomic Habits _(spine: "Tomic Habits" visible)_
+- [ ] Clear, James — Atomic Habits
 - [ ] (anon.) — The New Jim Crow
-- [ ] (Matthew) — The Dream Manager _(partial)_
-- [ ] Ross, Rick — The Perfect Day _(partial spine)_
+- [ ] (Matthew) — The Dream Manager
+- [ ] Ross, Rick — The Perfect Day
 
-## Psychology / Self-Development Stack (photo)
+## Psychology & Self-Development
 
 - [ ] Estés, Clarissa Pinkola — Women Who Run With the Wolves
 - [ ] Camus, Albert — The Myth of Sisyphus
@@ -485,7 +483,7 @@
 - [ ] Greene, Robert — The Laws of Human Nature
 - [ ] (unnamed author) — Reading People
 
-## Medieval / Chivalry Stack (photo)
+## Medieval & Chivalry
 
 - [ ] Pieper, Josef — On the Virtues of the Human Heart
 - [ ] (anon., trans.) — The Song of the Cid: A Dual-Language Edition with Parallel Text
@@ -498,7 +496,7 @@
 - [ ] Nicholson, Helen J. — Chronicle of the Third Crusade
 - [ ] Barleti, Marin / de Lavardin, Jacques — The History of George Castriot, Surnamed Scanderbeg
 
-## Investing Stack (photo)
+## Investing
 
 - [ ] Dorsey, Pat — The Five Rules for Successful Stock Investing: Morningstar's Guide to Building Wealth and Winning in the Market
 - [ ] Mayer, Christopher — 100-Baggers
@@ -515,7 +513,7 @@
 - [ ] Spier, Guy — The Education of a Value Investor
 - [ ] Peters, Tom / Waterman Jr., Robert H. — In Search of Excellence
 
-## Historical Figures / Biography Collage
+## Biography
 
 - [ ] Burner, David — Herbert Hoover: A Public Life
 - [ ] Brown, Brandon R. — Planck: Driven by Vision, Broken by War
@@ -542,7 +540,7 @@
 - [ ] Krass, Peter — Carnegie
 - [ ] Basler, Roy P. (ed.) — The Collected Works of Abraham Lincoln (multi-volume set)
 
-## History/Politics Collage
+## History & Politics
 
 - [ ] Evans, Richard J. — The Coming of the Third Reich
 - [ ] Nguyen, Lien-Hang T. — Hanoi's War: An International History of the War for Peace in Vietnam
@@ -554,19 +552,7 @@
 - [ ] Malm, Andreas — Fossil Capital: The Rise of Steam Power and the Roots of Global Warming
 - [ ] Weber, Isabella M. — How China Escaped Shock Therapy: The Market Reform Debate
 
-## Sci-Fi/Fantasy Rating Grid
-
-- [ ] Stephens, L.L. — The Walled City (The Triempery Revelations, Book I)
-- [ ] Wurts, Janny — The Curse of the Mistwraith
-- [ ] Stephens, L.L. — The God Spear (The Triempery Revelations, Book IV)
-- [ ] Dostoevsky, Fyodor — The Brothers Karamazov (Penguin Classics ed.)
-- [ ] Ruocchio, Christopher — Shadows Upon Time
-- [ ] LeGuin, Ursula K. — The Left Hand of Darkness
-- [ ] Rajaniemi, Hannu — The Quantum Thief
-- [ ] Dick, Philip K. — Ubik
-- [ ] McCaffrey, Anne — Dragonflight
-
-## StoryGraph "2024 5★ Reads" Screenshot
+## Romance
 
 - [ ] Huang, Ana — Twisted Games (Twisted Book Two)
 - [ ] Huang, Ana — Twisted Lies (Twisted Book Four)
@@ -583,15 +569,14 @@
 - [ ] Tomforde, Liz — Caught Up
 - [ ] Tomforde, Liz — Play Along
 
-## /lit/'s Top 100 Books 2024 (Poster — new/unlisted titles only)
+## Classics & Philosophy
 
 - [ ] Aeschylus — Tragedies
-- [ ] Márquez, Gabriel García — One Hundred Years of Solitude
 - [ ] Wagner, Richard — The Ring of the Nibelung
 - [ ] Hegel, G.W.F. — The Phenomenology of Spirit
 - [ ] Schopenhauer, Arthur — The World as Will and Representation
 
-## Extra Resources
+## Reading Lists & Resources
 
 - [ ] 12 Unique Design Books (Medium article)
 - [ ] Awesome Math Books (GitHub repo — ~200+ math titles)
@@ -683,3 +668,18 @@
 - [x] Pullman, Philip — The Amber Spyglass
 - [x] Pullman, Philip — La Belle Sauvage
 - [x] Pullman, Philip — The Secret Commonwealth
+
+## Andrew Lang's Fairy Books
+
+- [ ] Lang, Andrew — The Pink Fairy Book
+- [ ] Lang, Andrew — The Crimson Fairy Book
+- [ ] Lang, Andrew — The Red Fairy Book
+- [ ] Lang, Andrew — The Orange Fairy Book
+- [ ] Lang, Andrew — The Yellow Fairy Book
+- [ ] Lang, Andrew — The Olive Fairy Book
+- [ ] Lang, Andrew — The Green Fairy Book
+- [ ] Lang, Andrew — The Blue Fairy Book
+- [ ] Lang, Andrew — The Violet Fairy Book
+- [ ] Lang, Andrew — The Lilac Fairy Book
+- [ ] Lang, Andrew — The Grey Fairy Book
+- [ ] Lang, Andrew — The Brown Fairy Book
