@@ -7,6 +7,7 @@ import { Link, useLocation } from 'wouter';
 import booksRaw from '@shared/books.md?raw';
 import quotesRaw from '@shared/quotes.md?raw';
 import { useLiveQuotes } from '../lib/liveQuotes';
+import { isOwnBook, newSessionId, useOwnerTag } from '../lib/bookOwner';
 import bookMeta from '../data/bookMeta.json';
 import { trackEvent } from '../lib/analytics';
 import { useStandaloneScroll } from '../hooks/useStandaloneScroll';
@@ -17,7 +18,7 @@ import { useWallpaper } from '../blackboard/WallpaperProvider';
 import { GithubGlyph, StatsGlyph } from '../blackboard/marks';
 import './blackboard-pages.css';
 
-type Book = { title: string; author: string; read: boolean; note?: string; visitor?: boolean; coverUrl?: string; description?: string; year?: string; source?: string; sourceUrl?: string; dateAdded?: string; sessionId?: string };
+type Book = { title: string; author: string; read: boolean; note?: string; visitor?: boolean; coverUrl?: string; description?: string; year?: string; source?: string; sourceUrl?: string; dateAdded?: string; sessionId?: string; owner?: string };
 type Shelf = { name: string; books: Book[] };
 const metaMap = bookMeta.books as Record<string, { cover: string | null; desc: string | null }>;
 const keyOf = (book: Book) => `${book.title}|${book.author}`;
@@ -31,7 +32,7 @@ function getSessionId() {
   try {
     let id = sessionStorage.getItem(SESSION_KEY);
     if (!id) {
-      id = `${Math.random().toString(36).slice(2)}${Date.now().toString(36)}`;
+      id = newSessionId();
       sessionStorage.setItem(SESSION_KEY, id);
     }
     return id;
@@ -116,6 +117,7 @@ function BookModal({ book, onClose, onToggle, onDelete }: { book: Book; onClose:
 export function BlackboardBooksPage() {
   const shelves = useMemo(() => parseBooks(booksRaw), []);
   const sessionId = useRef(getSessionId());
+  const ownTag = useOwnerTag(sessionId.current);
   const adminPasswordRef = useRef('');
   const [query, setQuery] = useState('');
   const [community, setCommunity] = useState<Book[]>([]);
@@ -194,8 +196,9 @@ export function BlackboardBooksPage() {
   };
 
   const effectiveRead = (book: Book) => book.visitor ? Boolean(book.read) : (readOverrides[keyOf(book)] ?? Boolean(book.read));
-  const canToggle = (book: Book) => Boolean(book.visitor ? (isAdmin || !book.sessionId || book.sessionId === sessionId.current) : isAdmin);
-  const canDelete = (book: Book) => Boolean(book.visitor && (isAdmin || Boolean(book.sessionId) && book.sessionId === sessionId.current));
+  const unowned = (book: Book) => !book.sessionId && !book.owner;
+  const canToggle = (book: Book) => Boolean(book.visitor ? (isAdmin || unowned(book) || isOwnBook(book, sessionId.current, ownTag)) : isAdmin);
+  const canDelete = (book: Book) => Boolean(book.visitor && (isAdmin || isOwnBook(book, sessionId.current, ownTag)));
 
   const toggleRead = async (book: Book) => {
     if (!canToggle(book) || mutationPending.current) return;

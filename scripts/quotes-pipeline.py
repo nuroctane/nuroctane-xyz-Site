@@ -49,7 +49,6 @@ HERMES_PYTHON = next((p for p in PYTHON_CANDIDATES if p.is_file()), PYTHON_CANDI
 LOG_FILE = REPO_ROOT / ".nur" / "quotes-pipeline.log"
 LOCK_FILE = REPO_ROOT / ".nur" / "quotes-pipeline.lock"
 STALE_LOCK_SECONDS = 2 * 60 * 60
-REL_QUOTES = "shared/content/quotes.md"
 REL_BOOKS = "shared/content/books.md"
 BOOKS_VAULT = Path(
     os.environ.get(

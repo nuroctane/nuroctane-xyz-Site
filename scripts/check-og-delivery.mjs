@@ -11,7 +11,7 @@ const { active } = JSON.parse(await readFile(new URL("site.config.json", root), 
 const embed = JSON.parse(
   await readFile(new URL(`artifacts/${active}/embed.json`, root), "utf8"),
 );
-const logo = await readFile(new URL(`artifacts/${active}/public${embed.image}`, root));
+const embedBytes = await readFile(new URL(`artifacts/${active}/public${embed.image}`, root));
 const IMAGE = `${SITE}${embed.image}`;
 const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 const routes = [
@@ -56,7 +56,7 @@ for (const retired of [
   const response = await fetch(`${origin}${retired}`);
   assert.equal(response.status, 200, retired);
   assert.match(response.headers.get("content-type"), /^image\/(png|jpeg)/, retired);
-  assert.deepEqual(Buffer.from(await response.arrayBuffer()), logo, retired);
+  assert.deepEqual(Buffer.from(await response.arrayBuffer()), embedBytes, retired);
 }
 const head = await fetch(`${origin}/api/og?page=cli`, { method: "HEAD" });
 assert.equal(head.status, 200);

@@ -17,9 +17,22 @@ function configuredAdminPasswords(): string[] {
 
 export type AdminPasswordStatus = "ok" | "unset" | "bad";
 
+/** Compares every character of both strings, so the time taken does not
+ * reveal how much of a guess was right. */
+function sameString(a: string, b: string): boolean {
+  let diff = a.length ^ b.length;
+  for (let i = 0; i < Math.max(a.length, b.length); i++) {
+    diff |= (a.charCodeAt(i) || 0) ^ (b.charCodeAt(i) || 0);
+  }
+  return diff === 0;
+}
+
 export function checkAdminPassword(candidate: unknown): AdminPasswordStatus {
   const passwords = configuredAdminPasswords();
   if (passwords.length === 0) return "unset";
-  if (typeof candidate === "string" && passwords.includes(candidate)) return "ok";
-  return "bad";
+  if (typeof candidate !== "string") return "bad";
+  // Check every configured password (no early exit) before answering.
+  let match = false;
+  for (const password of passwords) match = sameString(candidate, password) || match;
+  return match ? "ok" : "bad";
 }

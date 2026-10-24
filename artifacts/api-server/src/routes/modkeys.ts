@@ -50,6 +50,23 @@ function stripImageData(obj: unknown): void {
   }
 }
 
+/* Colours, ids and names in a build never hold markup characters, and the
+ * configurator writes build values into HTML, so a snap carrying them is
+ * refused rather than stored for every gallery visitor. Key legends may be any
+ * character (`"` and `<` are real legends); the client only draws them on
+ * canvas or into escaped inputs. Keep in step with modkeys core/cleanSnap.js. */
+const UNSAFE_TEXT = /[<>"`]|javascript:/i;
+const UNSAFE_KEYS = new Set(["__proto__", "constructor", "prototype"]);
+const LEGEND_KEYS = new Set(["customText", "text"]);
+function unsafeSnapValue(value: unknown, key = ""): boolean {
+  if (typeof value === "string") return !LEGEND_KEYS.has(key) && UNSAFE_TEXT.test(value);
+  if (Array.isArray(value)) return value.some((v) => unsafeSnapValue(v));
+  if (value && typeof value === "object") {
+    return Object.entries(value).some(([k, v]) => UNSAFE_KEYS.has(k) || unsafeSnapValue(v, k));
+  }
+  return false;
+}
+
 function sanitizeName(name: unknown): string {
   if (typeof name !== "string") return "Untitled";
   return name.replace(/<[^>]*>/g, "").slice(0, 40);
@@ -144,6 +161,9 @@ async function handleCreate(c: Context, body: GalleryBody) {
     const snapJson = JSON.stringify(cleanSnap);
     if (snapJson.length > MAX_SNAP_JSON_SIZE) {
       return c.json({ error: "Snap too large" }, 413);
+    }
+    if (unsafeSnapValue(cleanSnap)) {
+      return c.json({ error: "Build contains unsupported characters" }, 400);
     }
 
     const id = crypto.randomUUID();

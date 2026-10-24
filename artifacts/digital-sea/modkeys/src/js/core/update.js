@@ -1,4 +1,5 @@
 import * as THREE from 'three';
+import { cleanSnap } from './cleanSnap.js';
 import gsap from 'gsap';
 import { state, stateSlice } from './state.js';
 import { LAYOUTS } from '../data/layouts.js';
@@ -327,7 +328,7 @@ function apply3D(patch, animate) {
  */
 export function loadSnap(snap, opts = {}) {
   if (!snap || typeof snap !== 'object') return;
-  const patch = Object.assign({}, snap);
+  const patch = cleanSnap(snap);
   if (opts.selectedPreset !== undefined) patch.selectedPreset = opts.selectedPreset;
   else if (patch.selectedPreset === undefined) patch.selectedPreset = null;
   /* Full snap: missing overrides must clear leftover photo colours from prior build */

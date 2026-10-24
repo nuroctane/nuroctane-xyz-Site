@@ -1,3 +1,5 @@
+import { cleanSnap } from './cleanSnap.js';
+
 export function encodeState(stateObj) {
   try {
     const json = JSON.stringify(stateObj);
@@ -8,7 +10,7 @@ export function encodeState(stateObj) {
 export function decodeState(str) {
   try {
     const json = decodeURIComponent(atob(str).split('').map(c => '%' + c.charCodeAt(0).toString(16).padStart(2, '0')).join(''));
-    return JSON.parse(json);
+    return cleanSnap(JSON.parse(json));
   } catch { return null; }
 }
 

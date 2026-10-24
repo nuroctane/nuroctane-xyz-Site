@@ -14,6 +14,11 @@ import { fileURLToPath } from "node:url";
 const here = path.dirname(fileURLToPath(import.meta.url));
 const content = path.join(here, "content");
 const publicDir = path.join(here, "public");
+const TYPES = {
+  ".md": "text/markdown; charset=utf-8",
+  ".txt": "text/plain; charset=utf-8",
+  ".xml": "application/xml; charset=utf-8",
+};
 
 export function sharedSite() {
   let outDir = "";
@@ -27,10 +32,17 @@ export function sharedSite() {
     },
     configureServer(server) {
       server.middlewares.use((req, res, next) => {
-        const pathname = decodeURIComponent((req.url ?? "/").split("?")[0]);
+        let pathname;
+        try {
+          pathname = decodeURIComponent((req.url ?? "/").split("?")[0]);
+        } catch {
+          return next(); // malformed escape: not one of ours
+        }
         const file = path.join(publicDir, pathname);
         if (!file.startsWith(publicDir + path.sep)) return next();
         if (!existsSync(file) || !statSync(file).isFile()) return next();
+        const type = TYPES[path.extname(file)];
+        if (type) res.setHeader("content-type", type);
         res.end(readFileSync(file));
       });
     },

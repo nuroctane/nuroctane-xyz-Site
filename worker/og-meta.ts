@@ -229,13 +229,17 @@ function resolvePage(pathname: string, search = ""): ResolvedMeta {
   const segs = clean === "/" ? [] : clean.slice(1).toLowerCase().split("/");
   const top = segs[0] || "home";
   const key = top === "" ? "home" : top;
-  const base = PAGES[key] || PAGES.home;
+  // Own keys only: a path such as /constructor must not match Object.prototype.
+  const base = Object.hasOwn(PAGES, key) ? PAGES[key] : PAGES.home;
   const path = clean === "/" ? "/" : clean;
   return {
     ...base,
     path,
     image: EMBED_IMAGE,
-    favicon: (segs[1] && CHILD_FAVICONS[top]?.[segs[1]]) || base.favicon,
+    favicon:
+      (segs[1] && Object.hasOwn(CHILD_FAVICONS, top) && Object.hasOwn(CHILD_FAVICONS[top], segs[1])
+        ? CHILD_FAVICONS[top][segs[1]]
+        : undefined) || base.favicon,
     // Deep links keep the section branding but pin canonical URL
     url: `${SITE}${path === "/" ? "/" : path}`,
     // The URL as shared. Card caches key on og:url, so a shared variant

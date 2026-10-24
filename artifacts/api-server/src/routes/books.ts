@@ -57,6 +57,24 @@ function cleanHttpsUrl(value: unknown): string | undefined {
   }
 }
 
+/* A visitor's sessionId is the only proof of ownership for owner deletes and
+ * toggles, so it never leaves the server. Readers get `owner`, a one-way tag
+ * the page recomputes from its own sessionId to recognise its books. */
+type PublicBook = Omit<Book, "sessionId"> & { owner?: string };
+
+export async function ownerTag(sessionId: string): Promise<string> {
+  const digest = await crypto.subtle.digest(
+    "SHA-256",
+    new TextEncoder().encode(`nuroctane-book-owner:${sessionId}`),
+  );
+  return [...new Uint8Array(digest)].slice(0, 16).map((b) => b.toString(16).padStart(2, "0")).join("");
+}
+
+async function publicBook(book: Book): Promise<PublicBook> {
+  const { sessionId, ...rest } = book;
+  return sessionId ? { ...rest, owner: await ownerTag(sessionId) } : rest;
+}
+
 function normalizeNewBook(value: unknown): Book | null {
   if (!value || typeof value !== "object") return null;
   const input = value as Partial<Book>;
@@ -120,7 +138,7 @@ router.get("/visitor-books", async (c) => {
   try {
     const booksRaw = await kvGet<Book[]>(BOOKS_KEY);
     const overridesRaw = await kvGet<Record<string, boolean>>(OVERRIDES_KEY);
-    const books = booksRaw ?? [];
+    const books = await Promise.all((booksRaw ?? []).map(publicBook));
     const overrides = overridesRaw ?? {};
     c.header("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300");
     return c.json({ books, overrides });
@@ -182,7 +200,7 @@ router.post("/visitor-books", async (c) => {
         if (coverId) await kvDelete(`${COVER_KEY_PREFIX}${coverId}`).catch(() => {});
         throw err;
       }
-      return c.json({ ok: true, book });
+      return c.json({ ok: true, book: await publicBook(book) });
     }
 
     if (action === "delete") {
@@ -262,8 +280,11 @@ router.post("/visitor-books", async (c) => {
       if (checkAdminPassword(password) !== "ok") {
         return c.json({ error: "Unauthorized" }, 403);
       }
+      if (typeof key !== "string" || !key || key.length > 400 || typeof read !== "boolean") {
+        return c.json({ error: "Invalid book key" }, 400);
+      }
       const overrides = (await kvGet<Record<string, boolean>>(OVERRIDES_KEY)) ?? {};
-      overrides[key as string] = read as boolean;
+      overrides[key] = read;
       await kvSet(OVERRIDES_KEY, overrides);
       return c.json({ ok: true });
     }

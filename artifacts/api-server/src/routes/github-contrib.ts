@@ -6,6 +6,7 @@
  * directly from the scheduled() handler in worker/index.ts, so it never touches
  * this HTTP surface.
  */
+import { checkAdminPassword } from "../lib/admin-password";
 import { Hono } from "hono";
 import type { Context } from "hono";
 import { kvGet, kvSet } from "@workspace/kv";
@@ -47,9 +48,8 @@ function authorized(headers: Headers, body: { password?: string }): boolean {
   const auth = headers.get("authorization") ?? "";
   const cron = process.env.CRON_SECRET || "";
   if (cron && auth === `Bearer ${cron}`) return true;
-  const admin = process.env.BOOKS_ADMIN_PASSWORD || "";
-  if (admin && body.password === admin) return true;
-  return false;
+  // The shared admin check: both admin secrets, compared in constant time.
+  return checkAdminPassword(body.password) === "ok";
 }
 
 function dedupe(days: ContribDay[]): ContribDay[] {

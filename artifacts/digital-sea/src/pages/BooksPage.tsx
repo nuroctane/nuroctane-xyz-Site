@@ -1,4 +1,5 @@
 import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
+import { isOwnBook, newSessionId, useOwnerTag } from '../lib/bookOwner';
 import { StandaloneNav } from './StandaloneNav';
 import { MiniAudio } from '../components/hud/MiniAudio';
 import { ScrollToTop } from '../components/hud/ScrollToTop';
@@ -26,6 +27,7 @@ interface Book {
   sourceUrl?: string;
   dateAdded?: string;
   sessionId?: string;
+  owner?: string;
 }
 
 interface Shelf {
@@ -146,12 +148,17 @@ const ADMIN_KEY = 'book-admin';
 const ADMIN_PW_KEY = 'book-admin-pw';
 
 function getSessionId(): string {
-  let id = sessionStorage.getItem(SESSION_KEY);
-  if (!id) {
-    id = Math.random().toString(36).slice(2) + Date.now().toString(36);
-    sessionStorage.setItem(SESSION_KEY, id);
+  // Storage throws when the browser blocks it; the page must still render.
+  try {
+    let id = sessionStorage.getItem(SESSION_KEY);
+    if (!id) {
+      id = newSessionId();
+      sessionStorage.setItem(SESSION_KEY, id);
+    }
+    return id;
+  } catch {
+    return '';
   }
-  return id;
 }
 
 const bookMetaMap = bookMeta.books as Record<string, { cover: string | null; desc: string | null }>;
@@ -160,6 +167,7 @@ export default function BooksPage() {
   const shelves = useMemo(() => parseBooks(raw), []);
   useStandaloneScroll();
   const sessionId = useRef(getSessionId());
+  const ownTag = useOwnerTag(sessionId.current);
   const [detail, setDetail] = useState<Book | null>(null);
   const [visitorBooks, setVisitorBooks] = useState<Book[]>([]);
   const [readOverrides, setReadOverrides] = useState<Record<string, boolean>>({});
@@ -535,7 +543,7 @@ export default function BooksPage() {
     setDetail(null);
   };
 
-  const canRemove = (b: Book) => isAdmin || b.sessionId === sessionId.current;
+  const canRemove = (b: Book) => isAdmin || isOwnBook(b, sessionId.current, ownTag);
 
   const toggleRead = async (book: Book) => {
     if (book.visitor) {
@@ -778,7 +786,7 @@ export default function BooksPage() {
             <div className="bs-modal-status">{getEffectiveRead(detail) ? '✓ READ' : '○ UNREAD'}</div>
             {detail.note && <div className="bs-modal-note">{detail.note}</div>}
             {detail.dateAdded && <div className="bs-modal-date">Added {formatDate(detail.dateAdded)}</div>}
-            {(isAdmin || (detail.visitor && detail.sessionId === sessionId.current)) && (
+            {(isAdmin || (detail.visitor && isOwnBook(detail, sessionId.current, ownTag))) && (
               <button
                 className="bs-modal-toggle-read"
                 onClick={() => toggleRead(detail)}

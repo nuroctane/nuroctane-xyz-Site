@@ -232,10 +232,10 @@ const PANELS = {
   )}
 <div class="keRow" style="margin-top:10px">
   <label>Custom</label>
-  <input type="color" id="lightCustomColor" class="keColor" value="${state.light.color}">
+  <input type="color" id="lightCustomColor" class="keColor" value="${escAttr(state.light.color)}">
 </div>
 <div class="glabel" style="margin-top:16px">BRIGHTNESS</div>
-<input type="range" class="slider" id="brightSlider" min="0" max="1.5" step="0.02" value="${state.light.bright}">`,
+<input type="range" class="slider" id="brightSlider" min="0" max="1.5" step="0.02" value="${escAttr(state.light.bright)}">`,
 
   extras: () => {
     let html = '<div class="glabel">ACCESSORIES</div>';

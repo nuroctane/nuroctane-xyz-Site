@@ -12,8 +12,12 @@ let pending: Promise<string | null> | null = null;
 function fetchLive(): Promise<string | null> {
   pending ??= fetch('/api/quotes', { headers: { accept: 'text/markdown' } })
     .then(response => (response.ok ? response.text() : null))
-    .then(text => (live = text && text.includes('## ') ? text : null))
-    .catch(() => null)
+    .then(text => {
+      // A failed refresh keeps the last good live bank rather than dropping it.
+      if (text && text.includes('## ')) live = text;
+      return live;
+    })
+    .catch(() => live)
     .finally(() => { pending = null; });
   return pending;
 }

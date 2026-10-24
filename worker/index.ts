@@ -11,8 +11,9 @@ import app from "@workspace/api-server";
 import { refreshContributions } from "@workspace/api-server/github-contrib";
 import { EMBED, isBot, botResponse } from "./og-meta";
 import { serveQuotes, type QuotesEnv } from "./quotes";
+import { limitWrite, type LimitsEnv } from "./limits";
 
-export interface Env extends QuotesEnv {
+export interface Env extends QuotesEnv, LimitsEnv {
   ASSETS: Fetcher;
 }
 
@@ -161,6 +162,8 @@ export default {
     }
 
     if (url.pathname.startsWith("/api/")) {
+      const limited = await limitWrite(request, env);
+      if (limited) return limited;
       return app.fetch(request, env, ctx);
     }
 

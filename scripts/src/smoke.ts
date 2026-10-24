@@ -74,6 +74,10 @@ async function smokeBooks(app: App): Promise<void> {
 
   g = await jfetch(app, "/api/visitor-books");
   ok(g.json.books.some((b: any) => b.title === "Smoke Title"), "added book appears in GET");
+  const listed = g.json.books.find((b: any) => b.title === "Smoke Title");
+  ok(listed && !("sessionId" in listed) && /^[0-9a-f]{32}$/.test(listed.owner ?? ""),
+    "GET hides the owner's sessionId and shows only its owner tag");
+  ok(!("sessionId" in book), "add response hides the sessionId too");
 
   const tog = await jfetch(app, "/api/visitor-books", { action: "toggleVisitorRead", book, sessionId: "smoke-session" });
   ok(tog.status === 200, "owner toggleVisitorRead via sessionId");
@@ -181,6 +185,14 @@ async function smokeModkeys(app: App): Promise<void> {
   ok(t.name === "smoke x", "name sanitized (html stripped)");
   ok(t.snap?.perKeyOverrides?.k1 && t.snap.perKeyOverrides.k1.imageData === undefined, "imageData stripped from stored snap");
   ok(t.layout === "75", "layout extracted from snap");
+  const evilSnap = { layout: "75", light: { color: '#fff" autofocus onfocus="alert(1)' } };
+  const evil = await jfetch(app, "/api/modkeys/gallery", { name: "evil", snap: evilSnap });
+  ok(evil.status === 400, "gallery refuses a build carrying markup outside key legends");
+  const legendSnap = { layout: "75", perKeyOverrides: { k2: { customText: '"<>`' } } };
+  const legend = await jfetch(app, "/api/modkeys/gallery", { name: "legends", snap: legendSnap });
+  ok(legend.status === 201, "gallery keeps punctuation key legends");
+  const cleanup = await jfetch(app, "/api/modkeys/gallery", { action: "delete", password: "smoke-admin", id: legend.json?.template?.id });
+  ok(cleanup.status === 200, "legend build cleaned up");
 
   const badAdmin = await jfetch(app, "/api/modkeys/gallery", { action: "verifyAdmin", password: "wrong" });
   ok(badAdmin.status === 403, "verifyAdmin wrong password → 403");

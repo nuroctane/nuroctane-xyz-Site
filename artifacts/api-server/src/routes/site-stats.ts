@@ -204,7 +204,8 @@ function refresh(range: RangeKey): Promise<SiteStats> {
 
 router.get("/site-stats", async (c) => {
   const requested = c.req.query("range") ?? DEFAULT_RANGE;
-  const range: RangeKey = requested in RANGES ? (requested as RangeKey) : DEFAULT_RANGE;
+  // Own keys only: `in` also accepts inherited names such as "constructor".
+  const range: RangeKey = Object.hasOwn(RANGES, requested) ? (requested as RangeKey) : DEFAULT_RANGE;
 
   if (!config()) {
     c.header("Cache-Control", "public, max-age=60");

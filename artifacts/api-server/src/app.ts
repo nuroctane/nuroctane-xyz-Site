@@ -5,16 +5,14 @@ import { logger } from "./lib/logger";
 
 const app = new Hono();
 
-/* Previews are versioned Worker deploys (https://<version>-nuroctane-xyz.<sub>.workers.dev),
- * which replaces the old /\.vercel\.app$/ preview pattern. */
+/* Credentialed cross-origin callers. Preview deploys (*.workers.dev) serve the
+ * API on their own origin, so they need no entry; an earlier pattern accepted
+ * `nuroctane-xyz.<any account>.workers.dev`, which anyone could deploy to. */
 const ALLOWED_EXACT = new Set([
   "https://nuroctane.xyz",
   "https://www.nuroctane.xyz",
 ]);
-const ALLOWED_PATTERNS = [
-  /^https:\/\/(?:[a-z0-9-]+-)?nuroctane-xyz\.[a-z0-9-]+\.workers\.dev$/,
-  /^https?:\/\/localhost(?::\d+)?$/,
-];
+const ALLOWED_PATTERNS = [/^https?:\/\/localhost(?::\d+)?$/];
 
 app.use(
   "*",

@@ -22,6 +22,7 @@ import { downloadSVG } from './export/svg.js';
 import { downloadSpec } from './export/spec.js';
 import { exportPDF } from './export/pdf.js';
 import { loadHash, shareURL } from './core/shrinker.js';
+import { cleanSnap } from './core/cleanSnap.js';
 import { clearAllOverrides } from './core/perKey.js';
 import { resetHistory, canUndo, canRedo } from './core/history.js';
 import { trackEvent } from './core/analytics.js';
@@ -205,7 +206,7 @@ export function mountModkeys() {
       const res = await fetch('/api/modkeys/gallery');
       if (!res.ok) throw new Error('gallery ' + res.status);
       const data = await res.json();
-      const gc = data.templates || [];
+      const gc = (data.templates || []).map((t) => ({ ...t, snap: cleanSnap(t.snap) }));
       window.__MODKEYS__.galleryCache = gc;
       const save = beginThumbRender();
       gc.forEach(t => {

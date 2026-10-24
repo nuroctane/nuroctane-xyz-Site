@@ -65,6 +65,13 @@
     { "binding": "QUOTES", "id": "e984b59ea8064c98bf606f82ec7935bb" },
   ],
 
+  // Per-IP write limits for the anonymous Books and Modkeys endpoints and admin
+  // password attempts (worker/limits.ts). Period must be 10 or 60 seconds.
+  "ratelimits": [
+    { "name": "API_WRITES", "namespace_id": "2001", "simple": { "limit": 30, "period": 60 } },
+    { "name": "ADMIN_TRIES", "namespace_id": "2002", "simple": { "limit": 5, "period": 60 } },
+  ],
+
   // Daily contribution refresh, dispatched to the private scheduled handler.
   "triggers": {
     "crons": ["0 12 * * *"],

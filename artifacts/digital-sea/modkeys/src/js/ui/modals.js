@@ -69,10 +69,15 @@ export function openLibrary() {
   );
 }
 
+const HEX_COLOR = /^#[0-9a-f]{3,8}$/i;
+
 function thumbnailOrGradient(src, snap) {
-  if (src) return `<img src="${src}" alt="">`;
-  const cwGuess = snap?.customColors?.a?.bg && snap?.customColors?.m?.bg
-    ? [snap.customColors.a.bg, snap.customColors.m.bg]
+  if (src) return `<img src="${esc(src)}" alt="">`;
+  // Community builds are visitor input: only plain hex colours reach the style.
+  const a = snap?.customColors?.a?.bg;
+  const m = snap?.customColors?.m?.bg;
+  const cwGuess = HEX_COLOR.test(a) && HEX_COLOR.test(m)
+    ? [a, m]
     : (COLORWAYS[snap?.colorway] ? [COLORWAYS[snap.colorway].a.bg, COLORWAYS[snap.colorway].m.bg] : ['#333', '#555']);
   return `<div class="img" style="background:linear-gradient(135deg,${cwGuess[0]} 50%,${cwGuess[1]} 50%)"></div>`;
 }
