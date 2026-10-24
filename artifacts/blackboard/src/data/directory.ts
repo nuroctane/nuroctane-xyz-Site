@@ -166,7 +166,7 @@ export const directoryEntries: DirectoryEntry[] = [
     url: '/cli',
     urlDisplay: 'nuroctane.xyz/cli',
     subtitle: 'multi-provider terminal agent',
-    description: 'Rust coding agent with 70 provider routes, 142 Jev engines, 54 tools, semantic search first, native Enclave MCP, a local usage ledger across seven agents, vision, and 1,000+ skills.',
+    description: 'Rust coding agent with 71 provider routes, 142 Jev engines, 55 tools, semantic search first, native Enclave MCP, a local usage ledger across seven agents, vision, and 1,000+ skills.',
     avatar: '/assets/nodes/nur-cli-logo.png',
     logo: '/assets/nodes/github-logo.png',
   },

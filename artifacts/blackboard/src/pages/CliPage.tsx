@@ -494,7 +494,8 @@ const FEATURE_TABS: FeatureTab[] = [
           <strong>knowledge</strong> — <code>graphify</code> ·{" "}
           <code>graphjin</code> · <code>plur</code> · <code>ruflo</code> ·{" "}
           <code>executor</code> · <code>skill</code> · <code>memory</code> ·{" "}
-          <code>headroom</code> · 54 tools in one dispatcher
+          <code>headroom</code> · 55 tools in one dispatcher, the rarely used ones
+          loaded on demand through <code>tool_search</code>
         </li>
         <li>
           <strong>judgments</strong> — <code>typesafe</code> (gate a call, judge
@@ -1689,6 +1690,24 @@ const INSPIRATIONS: Inspiration[] = [
     name: "Interfaze 1.1 Lite",
     href: "https://github.com/InterfazeAI/interfaze-1-lite",
     why: "mixture-of-agents model for dev workloads (OCR, speech, grounding, structured output) · bridged as a Jev engine over its OpenAI-compatible endpoint · Docker self-host",
+  },
+  {
+    group: "stack",
+    name: "Morph",
+    href: "https://docs.morphllm.com/endpoints",
+    why: "open-weight models on Morph's own stack (GLM-5.3, Kimi K3, DeepSeek V4.1 Flash, 1M context) · effort per model family · prefix cache routed by x-session-id",
+  },
+  {
+    group: "stack",
+    name: "Paper Instruments · Ultramarine",
+    href: "https://www.paperinstruments.com/ultramarine",
+    why: "Ultramarine 1 Flash for finance, law and consulting work · the concision and stopping rules PI asks for ride in the prompt on that model · Feather Harness office guidance (MIT) ships as a skill",
+  },
+  {
+    group: "stack",
+    name: "treg web access",
+    href: "https://treg.to/web-access",
+    why: "with TREG_TOKEN, free routed search first and markdown reads of blocked or JavaScript-only pages · free vendor preferred, 2-cent ceiling per call",
   },
   {
     group: "stack",
@@ -3315,7 +3334,7 @@ export default function CliPage() {
           </ol>
           <p className="cli-after-note">
             Or run <code>nur</code> and use <code>/auth</code> in the TUI —
-            inspect all 70 provider routes in one scrollable vault, then save,
+            inspect all 71 provider routes in one scrollable vault, then save,
             replace, or delete an API key, OAuth session, vendor CLI login, or
             OMP credential. The pinned Jev row opens an engines panel that
             shows which judgment engine is live, where each key resides, and a
