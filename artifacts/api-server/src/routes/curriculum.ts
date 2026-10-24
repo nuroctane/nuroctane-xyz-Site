@@ -4,7 +4,7 @@ import { Hono } from "hono";
 import { kvGet, kvSet } from "@workspace/kv";
 import { logger } from "../lib/logger";
 import { readBody } from "../lib/body";
-import { checkAdminPassword } from "../lib/admin-password";
+import { adminStatus, verifyAdmin } from "../lib/admin-session";
 
 const router = new Hono();
 const CHECKS_KEY = "curriculum-checks";
@@ -40,14 +40,9 @@ router.post("/curriculum", async (c) => {
     }>(c);
     const { action } = body;
 
-    if (action === "verifyAdmin") {
-      const status = checkAdminPassword(body.password);
-      if (status === "unset") return c.json({ error: "Admin password not configured" }, 500);
-      if (status === "ok") return c.json({ ok: true });
-      return c.json({ error: "Unauthorized" }, 403);
-    }
+    if (action === "verifyAdmin") return verifyAdmin(c, body.password);
 
-    const admin = checkAdminPassword(body.password);
+    const admin = await adminStatus(c, body.password);
     if (admin === "unset") return c.json({ error: "Admin password not configured" }, 500);
     if (admin !== "ok") return c.json({ error: "Unauthorized" }, 403);
 

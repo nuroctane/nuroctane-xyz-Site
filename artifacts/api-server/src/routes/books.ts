@@ -6,7 +6,7 @@ import { Hono } from "hono";
 import { kvDelete, kvGet, kvSet } from "@workspace/kv";
 import { logger } from "../lib/logger";
 import { readBody } from "../lib/body";
-import { checkAdminPassword } from "../lib/admin-password";
+import { adminStatus, verifyAdmin } from "../lib/admin-session";
 import { searchBooks } from "../lib/book-search";
 import { storedCoverBytes, validateCoverUpload } from "../lib/book-cover";
 
@@ -164,12 +164,7 @@ router.post("/visitor-books", async (c) => {
       coverUpload?: unknown;
     }>(c);
     const { action } = body;
-    if (action === "verifyAdmin") {
-      const status = checkAdminPassword(body.password);
-      if (status === "unset") return c.json({ error: "Admin password not configured" }, 500);
-      if (status === "ok") return c.json({ ok: true });
-      return c.json({ error: "Unauthorized" }, 403);
-    }
+    if (action === "verifyAdmin") return verifyAdmin(c, body.password);
 
     if (action === "add") {
       const book = normalizeNewBook(body.book);
@@ -229,9 +224,9 @@ router.post("/visitor-books", async (c) => {
         }
       }
 
-      if (password) {
-        // Admin delete via password
-        const status = checkAdminPassword(password);
+      const status = await adminStatus(c, password);
+      if (status === "ok" || password) {
+        // Admin delete via session cookie (or a password)
         if (status === "unset") return c.json({ error: "Admin password not configured" }, 500);
         if (status !== "ok") return c.json({ error: "Unauthorized" }, 403);
         idx = books.findIndex(
@@ -264,7 +259,7 @@ router.post("/visitor-books", async (c) => {
       const stored = books[idx];
       const isOwner = stored.sessionId && stored.sessionId === body.sessionId;
       const noOwner = !stored.sessionId;
-      if (!noOwner && !isOwner && checkAdminPassword(password) !== "ok") {
+      if (!noOwner && !isOwner && (await adminStatus(c, password)) !== "ok") {
         return c.json({ error: "Unauthorized" }, 403);
       }
       // Set the state the visitor asked for. A blind flip wrote the opposite
@@ -277,7 +272,7 @@ router.post("/visitor-books", async (c) => {
 
     if (action === "toggleCuratedRead") {
       const { password, key, read } = body;
-      if (checkAdminPassword(password) !== "ok") {
+      if ((await adminStatus(c, password)) !== "ok") {
         return c.json({ error: "Unauthorized" }, 403);
       }
       if (typeof key !== "string" || !key || key.length > 400 || typeof read !== "boolean") {

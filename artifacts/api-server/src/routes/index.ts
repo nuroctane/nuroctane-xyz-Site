@@ -1,6 +1,7 @@
 import { Hono } from "hono";
 import healthRouter from "./health";
 import authRouter from "./auth";
+import adminRouter from "./admin";
 import modkeysRouter from "./modkeys";
 import booksRouter from "./books";
 import curriculumRouter from "./curriculum";
@@ -14,6 +15,7 @@ const router = new Hono();
 router.route("/", healthRouter);
 router.route("/", nurCliVersionRouter);
 router.route("/", authRouter);
+router.route("/", adminRouter);
 router.route("/", modkeysRouter);
 router.route("/", booksRouter);
 router.route("/", curriculumRouter);

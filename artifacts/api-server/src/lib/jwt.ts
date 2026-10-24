@@ -43,3 +43,31 @@ export async function verifySession(token: string | undefined): Promise<JwtPaylo
     return null;
   }
 }
+
+/* Admin sessions (Books, Modkeys, Curriculum) use the same secret under their
+ * own audience, so a GitHub sign-in token never unlocks admin and an admin
+ * token never passes verifySession (it has no githubId). `stamp` ties a token
+ * to the admin password it was issued under: rotating the password ends every
+ * admin session. */
+const ADMIN_AUDIENCE = "nuroctane-admin";
+export const ADMIN_TTL_SECONDS = 12 * 60 * 60;
+
+export async function signAdminSession(stamp: string): Promise<string> {
+  return new SignJWT({ stamp })
+    .setProtectedHeader({ alg: "HS256" })
+    .setAudience(ADMIN_AUDIENCE)
+    .setIssuedAt()
+    .setExpirationTime(`${ADMIN_TTL_SECONDS}s`)
+    .sign(secretKey());
+}
+
+/** False for a missing, malformed, expired, badly-signed or stale token. */
+export async function verifyAdminSession(token: string | undefined, stamp: string): Promise<boolean> {
+  if (!token || !stamp) return false;
+  try {
+    const { payload } = await jwtVerify(token, secretKey(), { audience: ADMIN_AUDIENCE });
+    return payload.stamp === stamp;
+  } catch {
+    return false;
+  }
+}

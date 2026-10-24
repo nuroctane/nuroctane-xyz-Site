@@ -1,5 +1,6 @@
 import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
 import { isOwnBook, newSessionId, useOwnerTag } from '../lib/bookOwner';
+import { confirmAdmin, rememberAdmin, storedAdmin } from '../lib/adminSession';
 import { StandaloneNav } from './StandaloneNav';
 import { MiniAudio } from '../components/hud/MiniAudio';
 import { ScrollToTop } from '../components/hud/ScrollToTop';
@@ -143,9 +144,6 @@ function bookKey(b: Book): string {
 }
 
 const SESSION_KEY = 'book-session-id';
-const ADMIN_KEY = 'book-admin';
-/** Shared with modkeys galleryAdmin — same BOOKS_ADMIN_PASSWORD unlock. */
-const ADMIN_PW_KEY = 'book-admin-pw';
 
 function getSessionId(): string {
   // Storage throws when the browser blocks it; the page must still render.
@@ -200,12 +198,6 @@ export default function BooksPage() {
   const searchAbort = useRef<AbortController | null>(null);
   const enrichmentCache = useRef(new Map<string, Promise<SearchResult | null>>());
   const manualFileRef = useRef<HTMLInputElement | null>(null);
-  const adminPasswordRef = useRef(
-    (() => {
-      try { return sessionStorage.getItem(ADMIN_PW_KEY) || ''; }
-      catch { return ''; }
-    })(),
-  );
 
   // Fetch visitor books from API; on failure, fall back to the last
   // successfully-loaded copy so the community section never blanks out.
@@ -239,7 +231,10 @@ export default function BooksPage() {
 
   // Mount: fetch visitor books from API
   useEffect(() => {
-    setIsAdmin(sessionStorage.getItem(ADMIN_KEY) === '1');
+    if (storedAdmin()) {
+      setIsAdmin(true);
+      confirmAdmin().then(live => { if (!live) setIsAdmin(false); });
+    }
     loadVisitorBooks();
   }, [loadVisitorBooks]);
 
@@ -250,9 +245,7 @@ export default function BooksPage() {
         e.preventDefault();
         if (isAdmin) {
           setIsAdmin(false);
-          sessionStorage.removeItem(ADMIN_KEY);
-          sessionStorage.removeItem(ADMIN_PW_KEY);
-          adminPasswordRef.current = '';
+          rememberAdmin(false);
         } else {
           setAdminPrompt(true);
           setAdminPass('');
@@ -272,10 +265,8 @@ export default function BooksPage() {
         body: JSON.stringify({ action: 'verifyAdmin', password: adminPass }),
       });
       if (res.ok) {
-        adminPasswordRef.current = adminPass;
         setIsAdmin(true);
-        sessionStorage.setItem(ADMIN_KEY, '1');
-        sessionStorage.setItem(ADMIN_PW_KEY, adminPass);
+        rememberAdmin(true);
         setAdminPrompt(false);
         setAdminPass('');
         setAdminError(false);
@@ -534,7 +525,7 @@ export default function BooksPage() {
       await fetch('/api/visitor-books', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'delete', password: adminPasswordRef.current, sessionId: sessionId.current, book }),
+        body: JSON.stringify({ action: 'delete', sessionId: sessionId.current, book }),
       });
     } catch {}
     setVisitorBooks(prev => prev.filter(b =>
@@ -563,7 +554,6 @@ export default function BooksPage() {
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             action: 'toggleVisitorRead',
-            password: adminPasswordRef.current,
             sessionId: sessionId.current,
             book,
           }),
@@ -579,7 +569,7 @@ export default function BooksPage() {
         await fetch('/api/visitor-books', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'toggleCuratedRead', password: adminPasswordRef.current, key, read: newRead }),
+          body: JSON.stringify({ action: 'toggleCuratedRead', key, read: newRead }),
         });
       } catch {}
     }

@@ -176,13 +176,7 @@ async function handleCommunityRename(id) {
   const { galleryCache } = window.__MODKEYS__ || { galleryCache: [] };
   const t = (galleryCache || []).find((e) => e.id === id);
   if (!t) return;
-  let { isAdmin, password } = getAdminState();
-  if (!isAdmin || !password) {
-    const pw = await promptAdminPassword();
-    if (!pw) return;
-    password = pw;
-    isAdmin = true;
-  }
+  if (!getAdminState().isAdmin && !(await promptAdminPassword())) return;
   const name = await promptRename(t.name);
   if (!name) return;
   try {
@@ -199,13 +193,7 @@ async function handleCommunityDelete(id) {
   const { galleryCache } = window.__MODKEYS__ || { galleryCache: [] };
   const t = (galleryCache || []).find((e) => e.id === id);
   if (!t) return;
-  let { isAdmin, password } = getAdminState();
-  if (!isAdmin || !password) {
-    const pw = await promptAdminPassword();
-    if (!pw) return;
-    password = pw;
-    isAdmin = true;
-  }
+  if (!getAdminState().isAdmin && !(await promptAdminPassword())) return;
   const ok = await promptDeleteConfirm(t.name);
   if (!ok) return;
   try {
@@ -320,10 +308,8 @@ document.addEventListener('keydown', async (ev) => {
   const tag = (ev.target && ev.target.tagName) || '';
   if (tag === 'INPUT' || tag === 'TEXTAREA') return;
   ev.preventDefault();
-  const { isAdmin, password } = getAdminState();
-  /* Flag set from /books without stored pw still needs unlock on modkeys. */
-  if (isAdmin && password) {
-    publishAdminState({ isAdmin: false, password: '' });
+  if (getAdminState().isAdmin) {
+    publishAdminState({ isAdmin: false });
     toast('Admin mode off');
     if ($('modal')?.classList.contains('open') && $('modalTitle')?.textContent === 'Gallery') {
       openGallery();
@@ -331,8 +317,7 @@ document.addEventListener('keydown', async (ev) => {
     window.dispatchEvent(new CustomEvent('modkeys-admin-ui', { detail: { isAdmin: false } }));
     return;
   }
-  const pw = await promptAdminPassword();
-  if (pw) {
+  if (await promptAdminPassword()) {
     toast('Admin mode on — community gallery unlocked');
     if ($('modal')?.classList.contains('open') && $('modalTitle')?.textContent === 'Gallery') {
       openGallery();

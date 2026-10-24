@@ -7,7 +7,7 @@ import type { Context } from "hono";
 import { kvGet, kvSet } from "@workspace/kv";
 import { logger } from "../lib/logger";
 import { readBody } from "../lib/body";
-import { checkAdminPassword } from "../lib/admin-password";
+import { adminStatus, verifyAdmin } from "../lib/admin-session";
 
 const router = new Hono();
 
@@ -72,18 +72,9 @@ function sanitizeName(name: unknown): string {
   return name.replace(/<[^>]*>/g, "").slice(0, 40);
 }
 
-function checkAdmin(password: unknown): "ok" | "unset" | "bad" {
-  return checkAdminPassword(password);
-}
-
 async function handleVerifyAdmin(c: Context, body: GalleryBody) {
   try {
-    const status = checkAdmin(body?.password);
-    if (status === "unset") {
-      return c.json({ error: "Admin password not configured" }, 500);
-    }
-    if (status === "ok") return c.json({ ok: true });
-    return c.json({ error: "Unauthorized" }, 403);
+    return await verifyAdmin(c, body?.password);
   } catch (err) {
     logger.error({ err }, "Failed to verify gallery admin");
     return c.json({ error: "Internal server error" }, 500);
@@ -93,7 +84,7 @@ async function handleVerifyAdmin(c: Context, body: GalleryBody) {
 async function handleRename(c: Context, body: GalleryBody) {
   try {
     const { password, id, name } = body ?? {};
-    const status = checkAdmin(password);
+    const status = await adminStatus(c, password);
     if (status !== "ok") {
       return c.json(
         { error: status === "unset" ? "Admin password not configured" : "Unauthorized" },
@@ -123,7 +114,7 @@ async function handleRename(c: Context, body: GalleryBody) {
 async function handleDelete(c: Context, body: GalleryBody) {
   try {
     const { password, id } = body ?? {};
-    const status = checkAdmin(password);
+    const status = await adminStatus(c, password);
     if (status !== "ok") {
       return c.json(
         { error: status === "unset" ? "Admin password not configured" : "Unauthorized" },

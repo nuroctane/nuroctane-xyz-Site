@@ -8,6 +8,7 @@ import booksRaw from '@shared/books.md?raw';
 import quotesRaw from '@shared/quotes.md?raw';
 import { useLiveQuotes } from '../lib/liveQuotes';
 import { isOwnBook, newSessionId, useOwnerTag } from '../lib/bookOwner';
+import { confirmAdmin, rememberAdmin, storedAdmin } from '../lib/adminSession';
 import bookMeta from '../data/bookMeta.json';
 import { trackEvent } from '../lib/analytics';
 import { useStandaloneScroll } from '../hooks/useStandaloneScroll';
@@ -24,8 +25,6 @@ const metaMap = bookMeta.books as Record<string, { cover: string | null; desc: s
 const keyOf = (book: Book) => `${book.title}|${book.author}`;
 const initial = (title: string) => title.match(/\p{L}/u)?.[0]?.toUpperCase() ?? '?';
 const dateLabel = (iso?: string) => iso ? new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '';
-const ADMIN_KEY = 'book-admin';
-const ADMIN_PW_KEY = 'book-admin-pw';
 const SESSION_KEY = 'book-session-id';
 
 function getSessionId() {
@@ -118,7 +117,6 @@ export function BlackboardBooksPage() {
   const shelves = useMemo(() => parseBooks(booksRaw), []);
   const sessionId = useRef(getSessionId());
   const ownTag = useOwnerTag(sessionId.current);
-  const adminPasswordRef = useRef('');
   const [query, setQuery] = useState('');
   const [community, setCommunity] = useState<Book[]>([]);
   const [readOverrides, setReadOverrides] = useState<Record<string, boolean>>({});
@@ -140,11 +138,10 @@ export function BlackboardBooksPage() {
   const [, setLocation] = useLocation();
 
   useEffect(() => {
-    try {
-      const storedPassword = sessionStorage.getItem(ADMIN_PW_KEY) ?? '';
-      adminPasswordRef.current = storedPassword;
-      setIsAdmin(sessionStorage.getItem(ADMIN_KEY) === '1' && Boolean(storedPassword));
-    } catch { /* storage may be blocked */ }
+    if (storedAdmin()) {
+      setIsAdmin(true);
+      confirmAdmin().then(live => { if (!live) setIsAdmin(false); });
+    }
     fetch('/api/visitor-books').then(response => {
       if (!response.ok) throw new Error();
       return response.json();
@@ -161,11 +158,7 @@ export function BlackboardBooksPage() {
       event.preventDefault();
       if (isAdmin) {
         setIsAdmin(false);
-        adminPasswordRef.current = '';
-        try {
-          sessionStorage.removeItem(ADMIN_KEY);
-          sessionStorage.removeItem(ADMIN_PW_KEY);
-        } catch { /* storage may be blocked */ }
+        rememberAdmin(false);
       } else {
         setAdminPass('');
         setAdminError('');
@@ -181,14 +174,8 @@ export function BlackboardBooksPage() {
     try {
       const response = await fetch('/api/visitor-books', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ action: 'verifyAdmin', password: adminPass }) });
       if (!response.ok) { setAdminError(response.status === 500 ? 'Admin password is not configured' : 'Incorrect password'); return; }
-      adminPasswordRef.current = adminPass;
       setIsAdmin(true);
-      // Blocked storage only costs persistence across reloads; it must not
-      // surface as "Network error" after the password was accepted.
-      try {
-        sessionStorage.setItem(ADMIN_KEY, '1');
-        sessionStorage.setItem(ADMIN_PW_KEY, adminPass);
-      } catch { /* storage may be blocked */ }
+      rememberAdmin(true);
       setAdminPrompt(false);
       setAdminPass('');
       setAdminError('');
@@ -205,7 +192,7 @@ export function BlackboardBooksPage() {
     mutationPending.current = true;
     const nextRead = !effectiveRead(book);
     try {
-      await save(book.visitor ? { action: 'toggleVisitorRead', password: adminPasswordRef.current, sessionId: sessionId.current, book, read: nextRead } : { action: 'toggleCuratedRead', password: adminPasswordRef.current, key: keyOf(book), read: nextRead });
+      await save(book.visitor ? { action: 'toggleVisitorRead', sessionId: sessionId.current, book, read: nextRead } : { action: 'toggleCuratedRead', key: keyOf(book), read: nextRead });
       const next = { ...book, read: nextRead };
       if (book.visitor) setCommunity(items => items.map(item => item.title === book.title && item.author === book.author && item.dateAdded === book.dateAdded ? next : item));
       else setReadOverrides(values => ({ ...values, [keyOf(book)]: nextRead }));
@@ -218,7 +205,7 @@ export function BlackboardBooksPage() {
     if (!canDelete(book) || mutationPending.current) return;
     mutationPending.current = true;
     try {
-      await save(isAdmin ? { action: 'delete', password: adminPasswordRef.current, book } : { action: 'delete', sessionId: sessionId.current, book });
+      await save(isAdmin ? { action: 'delete', book } : { action: 'delete', sessionId: sessionId.current, book });
       setCommunity(items => items.filter(item => !(item.title === book.title && item.author === book.author && item.dateAdded === book.dateAdded)));
       setSelected(null);
       setConfirmDelete(null);

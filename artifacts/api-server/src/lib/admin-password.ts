@@ -6,7 +6,7 @@
  * Read lazily inside the request lifecycle. Cloudflare Workers exposes secret
  * bindings through process.env when nodejs_compat is enabled.
  */
-function configuredAdminPasswords(): string[] {
+export function configuredAdminPasswords(): string[] {
   return [
     process.env.BOOKS_ADMIN_PASSWORD,
     process.env.MODKEYS_ADMIN_PASSWORD,

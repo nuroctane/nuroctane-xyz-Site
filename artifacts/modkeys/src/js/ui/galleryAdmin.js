@@ -1,11 +1,18 @@
 /**
  * Community gallery admin (desktop SPA).
- * Password = BOOKS_ADMIN_PASSWORD (same as /books).
+ * Password = BOOKS_ADMIN_PASSWORD (same as /books). Unlocking sets an httpOnly
+ * admin session cookie (/api/admin/session); the page keeps only a flag saying
+ * admin mode is on, never the password.
  * Dialog chrome reuses Blackboard's shared monochrome glass classes.
  */
 
 const ADMIN_FLAG = 'book-admin';
-const ADMIN_PW = 'book-admin-pw';
+/* Older builds kept the password here; clear any copy a tab still holds. */
+try { sessionStorage.removeItem('book-admin-pw'); } catch { /* storage blocked */ }
+
+function storedFlag() {
+  try { return sessionStorage.getItem(ADMIN_FLAG) === '1'; } catch { return false; }
+}
 
 function isDesktop() {
   return !document.documentElement.classList.contains('mk-mobile');
@@ -13,32 +20,34 @@ function isDesktop() {
 
 export function getAdminState() {
   const fromWin = window.__MODKEYS_ADMIN__;
-  if (fromWin && typeof fromWin.isAdmin === 'boolean') {
-    return {
-      isAdmin: !!fromWin.isAdmin && isDesktop(),
-      password: fromWin.password || sessionStorage.getItem(ADMIN_PW) || '',
-    };
-  }
-  return {
-    isAdmin: sessionStorage.getItem(ADMIN_FLAG) === '1' && isDesktop(),
-    password: sessionStorage.getItem(ADMIN_PW) || '',
-  };
+  const on = fromWin && typeof fromWin.isAdmin === 'boolean' ? fromWin.isAdmin : storedFlag();
+  return { isAdmin: !!on && isDesktop() };
 }
 
-export function publishAdminState({ isAdmin, password }) {
-  const next = {
-    isAdmin: !!isAdmin,
-    password: password || '',
-  };
+/** Turning admin off also ends the server session. */
+export function publishAdminState({ isAdmin }) {
+  const next = { isAdmin: !!isAdmin };
   window.__MODKEYS_ADMIN__ = next;
-  if (next.isAdmin) {
-    sessionStorage.setItem(ADMIN_FLAG, '1');
-    if (next.password) sessionStorage.setItem(ADMIN_PW, next.password);
-  } else {
-    sessionStorage.removeItem(ADMIN_FLAG);
-    sessionStorage.removeItem(ADMIN_PW);
-  }
+  try {
+    if (next.isAdmin) sessionStorage.setItem(ADMIN_FLAG, '1');
+    else sessionStorage.removeItem(ADMIN_FLAG);
+  } catch { /* storage blocked: admin lasts for this page only */ }
+  if (!next.isAdmin) fetch('/api/admin/session', { method: 'DELETE' }).catch(() => {});
   window.dispatchEvent(new CustomEvent('modkeys-admin-change', { detail: next }));
+}
+
+/* The flag outlives the cookie (12 h, or a password change); ask the server. */
+if (storedFlag()) {
+  fetch('/api/admin/session')
+    .then((res) => (res.ok ? res.json() : null))
+    .then((data) => {
+      if (data && data.admin === false) {
+        window.__MODKEYS_ADMIN__ = { isAdmin: false };
+        try { sessionStorage.removeItem(ADMIN_FLAG); } catch { /* storage blocked */ }
+        window.dispatchEvent(new CustomEvent('modkeys-admin-change', { detail: { isAdmin: false } }));
+      }
+    })
+    .catch(() => {});
 }
 
 function esc(s) {
@@ -55,7 +64,7 @@ function removeOverlay() {
 
 /**
  * Blackboard admin password dialogue shared by the community surfaces.
- * @returns {Promise<string|null>} password or null if cancelled
+ * @returns {Promise<boolean>} true once the admin session is open
  */
 export function promptAdminPassword() {
   return new Promise((resolve) => {
@@ -82,9 +91,9 @@ export function promptAdminPassword() {
       resolve(val);
     };
     root.addEventListener('click', (e) => {
-      if (e.target === root) finish(null);
+      if (e.target === root) finish(false);
     });
-    root.querySelector('[data-mk-admin-x]')?.addEventListener('click', () => finish(null));
+    root.querySelector('[data-mk-admin-x]')?.addEventListener('click', () => finish(false));
 
     const submit = async () => {
       const password = input?.value || '';
@@ -102,8 +111,8 @@ export function promptAdminPassword() {
           body: JSON.stringify({ action: 'verifyAdmin', password }),
         });
         if (res.ok) {
-          publishAdminState({ isAdmin: true, password });
-          finish(password);
+          publishAdminState({ isAdmin: true });
+          finish(true);
         } else {
           const body = await res.json().catch(() => ({}));
           const msg = res.status === 500 && body.error
@@ -119,7 +128,7 @@ export function promptAdminPassword() {
     root.querySelector('[data-mk-admin-go]')?.addEventListener('click', submit);
     input?.addEventListener('keydown', (e) => {
       if (e.key === 'Enter') submit();
-      if (e.key === 'Escape') finish(null);
+      if (e.key === 'Escape') finish(false);
     });
     input?.focus();
   });
@@ -209,23 +218,23 @@ export function promptDeleteConfirm(name) {
 }
 
 export async function adminRenameBuild(id, name) {
-  const { password } = getAdminState();
   const res = await fetch('/api/modkeys/gallery', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ action: 'rename', password, id, name }),
+    body: JSON.stringify({ action: 'rename', id, name }),
   });
+  if (res.status === 403) publishAdminState({ isAdmin: false });
   if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || 'Rename failed');
   return res.json();
 }
 
 export async function adminDeleteBuild(id) {
-  const { password } = getAdminState();
   const res = await fetch('/api/modkeys/gallery', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ action: 'delete', password, id }),
+    body: JSON.stringify({ action: 'delete', id }),
   });
+  if (res.status === 403) publishAdminState({ isAdmin: false });
   if (!res.ok) throw new Error((await res.json().catch(() => ({}))).error || 'Delete failed');
   return res.json();
 }

@@ -1862,8 +1862,10 @@
     (function () {
       "use strict";
 
+      /* Unlocking sets an httpOnly admin session cookie; the page keeps only
+         this flag, never the password (older builds kept it in book-admin-pw). */
       var ADMIN_FLAG = "book-admin";
-      var ADMIN_PW = "book-admin-pw";
+      try { sessionStorage.removeItem("book-admin-pw"); } catch (_) { /* blocked */ }
       function boot() {
         var rail = document.getElementById("rail");
         var map = document.getElementById("sequenceMap");
@@ -1910,15 +1912,7 @@
           isAdmin = false;
         }
 
-        function adminPassword() {
-          try {
-            return sessionStorage.getItem(ADMIN_PW) || "";
-          } catch (_) {
-            return "";
-          }
-        }
-
-        function setAdmin(on, password) {
+        function setAdmin(on) {
           isAdmin = !!on;
           document.body.classList.toggle("is-admin", isAdmin);
           if (resetBtn) resetBtn.hidden = !isAdmin;
@@ -1928,10 +1922,8 @@
           try {
             if (isAdmin) {
               sessionStorage.setItem(ADMIN_FLAG, "1");
-              if (password) sessionStorage.setItem(ADMIN_PW, password);
             } else {
               sessionStorage.removeItem(ADMIN_FLAG);
-              sessionStorage.removeItem(ADMIN_PW);
             }
           } catch (_) {
             /* sessionStorage blocked */
@@ -1969,7 +1961,6 @@
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               action: "toggle",
-              password: adminPassword(),
               key: key,
               checked: checked
             })
@@ -2019,7 +2010,7 @@
               body: JSON.stringify({ action: "verifyAdmin", password: password })
             }).then(function (res) {
               if (!res.ok) throw new Error("bad");
-              setAdmin(true, password);
+              setAdmin(true);
               finish();
             }).catch(function () {
               if (err) { err.style.display = "block"; err.textContent = "Incorrect password"; }
@@ -2111,7 +2102,7 @@
             fetch("/api/curriculum", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ action: "reset", password: adminPassword() })
+              body: JSON.stringify({ action: "reset" })
             }).then(function (res) {
               if (!res.ok) throw new Error("reset");
               return res.json();
@@ -2142,10 +2133,20 @@
         }
 
         setAdmin(isAdmin);
+        /* The flag can outlive the cookie (12 h, or a password change). */
+        if (isAdmin) {
+          fetch("/api/admin/session")
+            .then(function (res) { return res.ok ? res.json() : null; })
+            .then(function (data) { if (data && data.admin === false) setAdmin(false); })
+            .catch(function () {});
+        }
         window.addEventListener("keydown", function (e) {
           if (e.ctrlKey && e.shiftKey && (e.code === "KeyA" || e.key === "A" || e.key === "a")) {
             e.preventDefault();
-            if (isAdmin) setAdmin(false);
+            if (isAdmin) {
+              setAdmin(false);
+              fetch("/api/admin/session", { method: "DELETE" }).catch(function () {});
+            }
             else promptAdmin();
           }
         });

@@ -19,6 +19,7 @@
 process.env.KV_MEMORY = "1";
 process.env.BOOKS_ADMIN_PASSWORD = "smoke-admin";
 process.env.MODKEYS_ADMIN_PASSWORD = "smoke-admin";
+process.env.JWT_SECRET = "smoke-jwt-secret";
 
 const BASE = "https://smoke.local";
 
@@ -44,16 +45,24 @@ async function jfetch(
   app: App,
   p: string,
   body?: unknown,
-): Promise<{ status: number; json: any }> {
-  const req = new Request(BASE + p, body === undefined ? undefined : {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
+  init: { headers?: Record<string, string>; method?: string } = {},
+): Promise<{ status: number; json: any; headers: Headers }> {
+  const req = new Request(BASE + p, body === undefined ? { method: init.method, headers: init.headers } : {
+    method: init.method ?? "POST",
+    headers: { "Content-Type": "application/json", ...init.headers },
     body: JSON.stringify(body),
   });
   const res = await app.fetch(req, {}, ctx);
   let json: any = null;
   try { json = await res.json(); } catch { /* non-json is asserted via status */ }
-  return { status: res.status, json };
+  return { status: res.status, json, headers: res.headers };
+}
+
+/** The admin session cookie a verifyAdmin response set, as a Cookie header. */
+function adminCookie(res: { headers: Headers }): string {
+  const set = res.headers.get("set-cookie") ?? "";
+  const match = /(?:^|,\s*)(nur_admin=[^;]+)/.exec(set);
+  return match ? match[1] : "";
 }
 
 async function smokeBooks(app: App): Promise<void> {
@@ -303,7 +312,63 @@ async function smokeSiteStats(app: App): Promise<void> {
   }
 }
 
-async function smokeAdminSecretAliases(app: App): Promise<void> {
+/* Admin mode is an httpOnly session cookie, not a stored password: verifyAdmin
+   issues it, every admin write accepts it alone, and it ends on logout or when
+   the password changes. */
+async function smokeAdminSession(app: App): Promise<string> {
+  const issued = await jfetch(app, "/api/visitor-books", { action: "verifyAdmin", password: "smoke-admin" });
+  const set = issued.headers.get("set-cookie") ?? "";
+  const cookie = adminCookie(issued);
+  ok(issued.status === 200 && cookie.length > 20, "verifyAdmin sets the admin session cookie");
+  ok(/HttpOnly/i.test(set) && /Secure/i.test(set) && /SameSite=Strict/i.test(set) && /Path=\/api/i.test(set),
+    "admin cookie is HttpOnly, Secure, SameSite=Strict, scoped to /api");
+  ok(!set.includes("smoke-admin"), "admin cookie does not carry the password");
+  const refused = await jfetch(app, "/api/visitor-books", { action: "verifyAdmin", password: "wrong" });
+  ok(refused.status === 403 && !adminCookie(refused), "a wrong password gets no admin cookie");
+
+  const asAdmin = { headers: { cookie } };
+  const none = await jfetch(app, "/api/admin/session");
+  ok(none.status === 200 && none.json?.admin === false, "GET /api/admin/session without cookie → admin false");
+  const yes = await jfetch(app, "/api/admin/session", undefined, asAdmin);
+  ok(yes.json?.admin === true && yes.headers.get("cache-control") === "no-store", "GET /api/admin/session with cookie → admin true, no-store");
+  const forged = await jfetch(app, "/api/admin/session", undefined, { headers: { cookie: `${cookie.slice(0, -4)}AAAA` } });
+  ok(forged.json?.admin === false, "a tampered admin cookie is refused");
+  const { signSession } = await import("@workspace/api-server/jwt");
+  const github = await signSession({ githubId: 1, username: "smoke", avatarUrl: "" });
+  const crossed = await jfetch(app, "/api/admin/session", undefined, { headers: { cookie: `nur_admin=${github}` } });
+  ok(crossed.json?.admin === false, "a GitHub sign-in token is not an admin session");
+
+  const add = await jfetch(app, "/api/visitor-books", { action: "add", book: { title: "Cookie Book", sessionId: "cookie-owner" } });
+  const cookieBook = add.json.book;
+  const anonToggle = await jfetch(app, "/api/visitor-books", { action: "toggleVisitorRead", book: cookieBook, read: true });
+  ok(anonToggle.status === 403, "toggling someone's book without cookie or password → 403");
+  const cookieToggle = await jfetch(app, "/api/visitor-books", { action: "toggleVisitorRead", book: cookieBook, read: true }, asAdmin);
+  ok(cookieToggle.status === 200, "admin cookie alone toggles a visitor's book");
+  const cookieDelete = await jfetch(app, "/api/visitor-books", { action: "delete", book: cookieBook }, asAdmin);
+  ok(cookieDelete.status === 200, "admin cookie alone deletes a visitor's book");
+
+  const curriculum = await jfetch(app, "/api/curriculum", { action: "toggle", key: "02-1", checked: true }, asAdmin);
+  ok(curriculum.status === 200 && curriculum.json?.checks?.["02-1"] === true, "admin cookie alone toggles curriculum");
+  const anonCurriculum = await jfetch(app, "/api/curriculum", { action: "reset" });
+  ok(anonCurriculum.status === 403, "curriculum reset without cookie or password → 403");
+  await jfetch(app, "/api/curriculum", { action: "reset" }, asAdmin);
+
+  const build = await jfetch(app, "/api/modkeys/gallery", { name: "cookie build", snap: { layout: "75" } });
+  const buildId = build.json?.template?.id;
+  const anonRename = await jfetch(app, "/api/modkeys/gallery", { action: "rename", id: buildId, name: "Nope" });
+  ok(anonRename.status === 403, "gallery rename without cookie or password → 403");
+  const cookieRename = await jfetch(app, "/api/modkeys/gallery", { action: "rename", id: buildId, name: "Cookie" }, asAdmin);
+  ok(cookieRename.status === 200 && cookieRename.json?.template?.name === "Cookie", "admin cookie alone renames a gallery build");
+  const cookieDel = await jfetch(app, "/api/modkeys/gallery", { action: "delete", id: buildId }, asAdmin);
+  ok(cookieDel.status === 200, "admin cookie alone deletes a gallery build");
+
+  const out = await jfetch(app, "/api/admin/session", undefined, { method: "DELETE", headers: { cookie } });
+  ok(out.status === 200 && /nur_admin=;/.test(out.headers.get("set-cookie") ?? "") && /Max-Age=0/i.test(out.headers.get("set-cookie") ?? ""),
+    "DELETE /api/admin/session clears the cookie");
+  return cookie;
+}
+
+async function smokeAdminSecretAliases(app: App, oldCookie: string): Promise<void> {
   process.env.BOOKS_ADMIN_PASSWORD = "smoke-books-secret";
   process.env.MODKEYS_ADMIN_PASSWORD = "smoke-modkeys-secret";
 
@@ -320,6 +385,8 @@ async function smokeAdminSecretAliases(app: App): Promise<void> {
     const modkeys = await jfetch(app, "/api/modkeys/gallery", { action: "verifyAdmin", password });
     ok(modkeys.status === 200 && modkeys.json?.ok === true, `Modkeys accepts ${label}`);
   }
+  const stale = await jfetch(app, "/api/admin/session", undefined, { headers: { cookie: oldCookie } });
+  ok(stale.json?.admin === false, "changing the admin password ends earlier admin sessions");
 }
 
 (async () => {
@@ -330,7 +397,8 @@ async function smokeAdminSecretAliases(app: App): Promise<void> {
   await smokeModkeys(app);
   await smokeMisc(app);
   await smokeSiteStats(app);
-  await smokeAdminSecretAliases(app);
+  const cookie = await smokeAdminSession(app);
+  await smokeAdminSecretAliases(app, cookie);
   console.log(`SMOKE OK (${passed} assertions)`);
   process.exit(0);
 })().catch((err) => {

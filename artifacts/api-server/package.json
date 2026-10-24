@@ -6,7 +6,9 @@
   "//": "No build step: wrangler bundles this package from source as part of the Worker. The old esbuild pipeline (build.mjs) existed only to emit Vercel-compatible Node bundles.",
   "exports": {
     ".": "./src/app.ts",
-    "./github-contrib": "./src/routes/github-contrib.ts"
+    "./github-contrib": "./src/routes/github-contrib.ts",
+    "./admin-session": "./src/lib/admin-session.ts",
+    "./jwt": "./src/lib/jwt.ts"
   },
   "scripts": {
     "typecheck": "tsc -p tsconfig.json --noEmit"
