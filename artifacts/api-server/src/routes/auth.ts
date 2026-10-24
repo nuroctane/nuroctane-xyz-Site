@@ -52,6 +52,19 @@ interface StoredUser {
 const STATE_COOKIE = "oauth_state";
 const STATE_COOKIE_PATH = "/api/auth";
 
+/* The session cookie is set by the apex callback but read on www, the canonical
+ * host the Worker redirects everything else to (worker/canonical.ts). On the
+ * production domain it is therefore scoped to the whole site; elsewhere (local
+ * dev, previews) it stays host-only and sign-in returns to SITE_ORIGIN. */
+const SITE_DOMAIN = "nuroctane.xyz";
+const CANONICAL_ORIGIN = "https://www.nuroctane.xyz";
+const SESSION_COOKIE = "token";
+
+function siteDomain(requestUrl: string): string | undefined {
+  const host = new URL(requestUrl).hostname;
+  return host === SITE_DOMAIN || host.endsWith(`.${SITE_DOMAIN}`) ? SITE_DOMAIN : undefined;
+}
+
 router.get("/auth/github", (c) => {
   const clientId = getClientId();
   const callbackHost = new URL(SITE_ORIGIN).host;
@@ -135,15 +148,19 @@ router.get("/auth/github/callback", async (c) => {
       avatarUrl: user.avatarUrl,
     });
 
-    setCookie(c, "token", token, {
+    const domain = siteDomain(c.req.url);
+    // Sessions from before the site-wide cookie were apex-only; drop that copy.
+    if (domain) deleteCookie(c, SESSION_COOKIE, { path: "/" });
+    setCookie(c, SESSION_COOKIE, token, {
       httpOnly: true,
       secure: true,
       sameSite: "Lax",
       maxAge: 30 * 24 * 60 * 60,
       path: "/",
+      domain,
     });
 
-    return c.redirect(`${SITE_ORIGIN}/modkeys`);
+    return c.redirect(`${domain ? CANONICAL_ORIGIN : SITE_ORIGIN}/modkeys`);
   } catch (err) {
     logger.error({ err }, "GitHub OAuth callback failed");
     return c.json({ error: "Authentication failed" }, 500);
@@ -151,12 +168,12 @@ router.get("/auth/github/callback", async (c) => {
 });
 
 router.get("/auth/me", async (c) => {
-  const user = await verifySession(getCookie(c, "token"));
+  const user = await verifySession(getCookie(c, SESSION_COOKIE));
   return c.json({ user });
 });
 
 router.post("/auth/logout", (c) => {
-  deleteCookie(c, "token", { path: "/" });
+  deleteCookie(c, SESSION_COOKIE, { path: "/", domain: siteDomain(c.req.url) });
   return c.json({ ok: true });
 });
 

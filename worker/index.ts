@@ -12,6 +12,7 @@ import { refreshContributions } from "@workspace/api-server/github-contrib";
 import { EMBED, isBot, botResponse } from "./og-meta";
 import { serveQuotes, type QuotesEnv } from "./quotes";
 import { limitWrite, type LimitsEnv } from "./limits";
+import { canonicalRedirect } from "./canonical";
 
 export interface Env extends QuotesEnv, LimitsEnv {
   ASSETS: Fetcher;
@@ -131,6 +132,10 @@ export default {
     ctx: ExecutionContext,
   ): Promise<Response> {
     const url = new URL(request.url);
+
+    // Apex → www in one hop, http included (worker/canonical.ts).
+    const canonical = canonicalRedirect(request);
+    if (canonical) return canonical;
 
     // Plain http:// on the production hosts was served as-is (no zone-level
     // HTTPS redirect). Local `wrangler dev` stays on http.
