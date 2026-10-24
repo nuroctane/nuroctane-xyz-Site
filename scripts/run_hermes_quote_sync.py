@@ -95,9 +95,13 @@ def read_token() -> str:
     return token
 
 
-def publish_live(bank: str, log) -> str:
+def publish_live(bank: str, log, *, url: str | None = None, noun: str = "quotes", force: bool = False) -> str:
     """'same', 'published', 'refused' (the server judged the bank unsafe; do not
-    fall back to git), or 'failed' (could not reach or authorise; fall back)."""
+    fall back to git), or 'failed' (could not reach or authorise; fall back).
+
+    Also publishes the books list (scripts/publish_books_live.py). `force` skips
+    the ETag probe, for a PUT whose job is to settle server-side state."""
+    url = url or LIVE_URL
     token = read_token()
     if not token:
         log(f"live publish skipped: no token (NUROCTANE_QUOTES_TOKEN or {TOKEN_FILE})")
@@ -105,12 +109,13 @@ def publish_live(bank: str, log) -> str:
     body = bank.encode("utf-8")
     sha = hashlib.sha256(body).hexdigest()
     probe = urllib.request.Request(
-        LIVE_URL, method="HEAD", headers={"If-None-Match": f'"{sha}"', "User-Agent": USER_AGENT}
+        url, method="HEAD", headers={"If-None-Match": f'"{sha}"', "User-Agent": USER_AGENT}
     )
     try:
-        with urllib.request.urlopen(probe, timeout=30) as response:
-            if response.headers.get("ETag") == f'"{sha}"':
-                return "same"
+        if not force:
+            with urllib.request.urlopen(probe, timeout=30) as response:
+                if response.headers.get("ETag") == f'"{sha}"':
+                    return "same"
     except urllib.error.HTTPError as err:
         if err.code == 304:
             return "same"
@@ -120,7 +125,7 @@ def publish_live(bank: str, log) -> str:
         log(f"live probe failed: {err}")
         return "failed"
     put = urllib.request.Request(
-        LIVE_URL,
+        url,
         data=body,
         method="PUT",
         headers={
@@ -139,7 +144,7 @@ def publish_live(bank: str, log) -> str:
     except (urllib.error.URLError, TimeoutError, OSError) as err:
         log(f"live publish failed: {err}")
         return "failed"
-    log(f"live publish: {result.get('quotes')} quotes, sha {str(result.get('sha', ''))[:12]}, changed={result.get('changed')}")
+    log(f"live publish: {result.get(noun)} {noun}, sha {str(result.get('sha', ''))[:12]}, changed={result.get('changed')}")
     return "published" if result.get("changed") else "same"
 
 

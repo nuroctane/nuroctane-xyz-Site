@@ -3,6 +3,9 @@
 
 The Windows task owns the schedule.  Each run is intentionally ordered:
 
+0. Publish the site's ``books.md`` live to /api/books (no deploy) and write the
+   admin read marks waiting there back into it (scripts/publish_books_live.py).
+   This runs first and on its own, so a quotes failure never holds books back.
 1. Validate the twelve-category classifier (required tests, not --deep).
 2. Read the user's Raindrop ``#quotes`` tag first (text + image OCR).
 3. Fold in any new Obsidian ``#quotes`` notes as a secondary source.
@@ -10,7 +13,8 @@ The Windows task owns the schedule.  Each run is intentionally ordered:
 5. Publish that bank live to /api/quotes (no deploy), and commit only the
    site's quotes.md and push main once a day (or at once if live fails).
 6. Rewrite the vault bank so it matches the published copy.
-7. Mirror the committed site ``books.md`` into the Obsidian Book Wishlist.
+7. Mirror the committed site ``books.md`` into the Obsidian Book Wishlist
+   (step 0 commits the read marks, so they reach the vault the same run).
 
 This is the only scheduler.  The Hermes cron jobs that used to run pieces of
 this on their own (sync-quotes-obsidian-to-repo, poll-sync-90min,
@@ -181,6 +185,14 @@ def main() -> int:
     if not acquire_lock():
         return 0
     try:
+        # Books first: stdlib only, independent of Hermes and the quotes steps.
+        # Exit 3 is a deferred publish (not on main, behind origin), not a fault.
+        books_live_rc = run(
+            "publish books live",
+            [sys.executable, "-u", str(REPO_ROOT / "scripts" / "publish_books_live.py")],
+        )
+        if books_live_rc == 3:
+            books_live_rc = 0
         if not HERMES_PYTHON.is_file():
             log(f"Hermes Python missing: {HERMES_PYTHON}")
             return 1
@@ -221,7 +233,7 @@ def main() -> int:
         # back into Obsidian. Exit 3 is a deferred snapshot, not a lost quote.
         sync_rc = run("obsidian-to-site sync", [str(HERMES_PYTHON), "-u", str(REPO_ROOT / "scripts" / "run_hermes_quote_sync.py")])
         books_rc = mirror_books()
-        return sync_rc or ingest_rc or books_rc
+        return sync_rc or ingest_rc or books_rc or books_live_rc
     except OSError as exc:
         log(f"pipeline fatal: {exc}")
         return 1

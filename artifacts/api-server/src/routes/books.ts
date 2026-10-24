@@ -13,7 +13,6 @@ import { storedCoverBytes, validateCoverUpload } from "../lib/book-cover";
 const router = new Hono();
 
 const BOOKS_KEY = "visitor-books";
-const OVERRIDES_KEY = "read-overrides";
 const COVER_KEY_PREFIX = "book-cover:";
 const MAX_VISITOR_BOOKS = 250;
 const MAX_REQUEST_BYTES = 450 * 1024;
@@ -137,11 +136,9 @@ router.get("/book-covers/:id", async (c) => {
 router.get("/visitor-books", async (c) => {
   try {
     const booksRaw = await kvGet<Book[]>(BOOKS_KEY);
-    const overridesRaw = await kvGet<Record<string, boolean>>(OVERRIDES_KEY);
     const books = await Promise.all((booksRaw ?? []).map(publicBook));
-    const overrides = overridesRaw ?? {};
     c.header("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300");
-    return c.json({ books, overrides });
+    return c.json({ books });
   } catch (err) {
     logger.error({ err }, "Failed to get visitor books");
     return c.json({ error: "Failed to get books" }, 500);
@@ -270,18 +267,10 @@ router.post("/visitor-books", async (c) => {
       return c.json({ ok: true });
     }
 
+    // Curated books' read state lives in books.md and the live bank
+    // (worker/books.ts); the old read-overrides map is gone.
     if (action === "toggleCuratedRead") {
-      const { password, key, read } = body;
-      if ((await adminStatus(c, password)) !== "ok") {
-        return c.json({ error: "Unauthorized" }, 403);
-      }
-      if (typeof key !== "string" || !key || key.length > 400 || typeof read !== "boolean") {
-        return c.json({ error: "Invalid book key" }, 400);
-      }
-      const overrides = (await kvGet<Record<string, boolean>>(OVERRIDES_KEY)) ?? {};
-      overrides[key] = read;
-      await kvSet(OVERRIDES_KEY, overrides);
-      return c.json({ ok: true });
+      return c.json({ error: "Curated read state moved to POST /api/books/read" }, 410);
     }
 
     return c.json({ error: "Unknown action" }, 400);

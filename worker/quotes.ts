@@ -34,20 +34,20 @@ const READ_HEADERS = {
   "x-content-type-options": "nosniff",
 };
 
-const json = (status: number, body: unknown, headers: Record<string, string> = {}) =>
+export const json = (status: number, body: unknown, headers: Record<string, string> = {}) =>
   new Response(JSON.stringify(body), {
     status,
     headers: { "content-type": "application/json; charset=utf-8", "cache-control": "no-store", ...headers },
   });
 
-async function sha256(text: string): Promise<Uint8Array> {
+export async function sha256(text: string): Promise<Uint8Array> {
   return new Uint8Array(await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text)));
 }
 
-const hex = (bytes: Uint8Array) => [...bytes].map((b) => b.toString(16).padStart(2, "0")).join("");
+export const hex = (bytes: Uint8Array) => [...bytes].map((b) => b.toString(16).padStart(2, "0")).join("");
 
 /** Compares digests, so neither length nor content leaks through timing. */
-async function tokenMatches(given: string, expected: string): Promise<boolean> {
+export async function tokenMatches(given: string, expected: string): Promise<boolean> {
   const [a, b] = await Promise.all([sha256(given), sha256(expected)]);
   let diff = 0;
   for (let i = 0; i < a.length; i++) diff |= a[i] ^ b[i];

@@ -7,6 +7,7 @@ import { Link, useLocation } from 'wouter';
 import booksRaw from '@shared/books.md?raw';
 import quotesRaw from '@shared/quotes.md?raw';
 import { useLiveQuotes } from '../lib/liveQuotes';
+import { saveCuratedRead, useLiveBooks } from '../lib/liveBooks';
 import { isOwnBook, newSessionId, useOwnerTag } from '../lib/bookOwner';
 import { confirmAdmin, rememberAdmin, storedAdmin } from '../lib/adminSession';
 import bookMeta from '../data/bookMeta.json';
@@ -114,12 +115,14 @@ function BookModal({ book, onClose, onToggle, onDelete }: { book: Book; onClose:
 }
 
 export function BlackboardBooksPage() {
-  const shelves = useMemo(() => parseBooks(booksRaw), []);
+  const bank = useLiveBooks(booksRaw);
+  const shelves = useMemo(() => parseBooks(bank), [bank]);
   const sessionId = useRef(getSessionId());
   const ownTag = useOwnerTag(sessionId.current);
   const [query, setQuery] = useState('');
   const [community, setCommunity] = useState<Book[]>([]);
-  const [readOverrides, setReadOverrides] = useState<Record<string, boolean>>({});
+  // Admin toggles saved this visit, until the live list includes them.
+  const [readMarks, setReadMarks] = useState<Record<string, boolean>>({});
   const [selected, setSelected] = useState<Book | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<Book | null>(null);
   const [apiOnline, setApiOnline] = useState(true);
@@ -147,7 +150,6 @@ export function BlackboardBooksPage() {
       return response.json();
     }).then(data => {
       setCommunity(data.books ?? []);
-      setReadOverrides(data.overrides ?? {});
       setApiOnline(true);
     }).catch(() => setApiOnline(false));
   }, []);
@@ -182,7 +184,7 @@ export function BlackboardBooksPage() {
     } catch { setAdminError('Network error'); }
   };
 
-  const effectiveRead = (book: Book) => book.visitor ? Boolean(book.read) : (readOverrides[keyOf(book)] ?? Boolean(book.read));
+  const effectiveRead = (book: Book) => book.visitor ? Boolean(book.read) : (readMarks[keyOf(book)] ?? Boolean(book.read));
   const unowned = (book: Book) => !book.sessionId && !book.owner;
   const canToggle = (book: Book) => Boolean(book.visitor ? (isAdmin || unowned(book) || isOwnBook(book, sessionId.current, ownTag)) : isAdmin);
   const canDelete = (book: Book) => Boolean(book.visitor && (isAdmin || isOwnBook(book, sessionId.current, ownTag)));
@@ -192,10 +194,11 @@ export function BlackboardBooksPage() {
     mutationPending.current = true;
     const nextRead = !effectiveRead(book);
     try {
-      await save(book.visitor ? { action: 'toggleVisitorRead', sessionId: sessionId.current, book, read: nextRead } : { action: 'toggleCuratedRead', key: keyOf(book), read: nextRead });
+      if (book.visitor) await save({ action: 'toggleVisitorRead', sessionId: sessionId.current, book, read: nextRead });
+      else { setMutationError(''); await saveCuratedRead(keyOf(book), nextRead); }
       const next = { ...book, read: nextRead };
       if (book.visitor) setCommunity(items => items.map(item => item.title === book.title && item.author === book.author && item.dateAdded === book.dateAdded ? next : item));
-      else setReadOverrides(values => ({ ...values, [keyOf(book)]: nextRead }));
+      else setReadMarks(values => ({ ...values, [keyOf(book)]: nextRead }));
       setSelected(current => current && keyOf(current) === keyOf(book) ? next : current);
     } catch { setMutationError('Could not save read status. Check your connection and admin session, then try again.'); }
     finally { mutationPending.current = false; }

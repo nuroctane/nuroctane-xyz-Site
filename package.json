@@ -17,7 +17,7 @@
     "dev": "node scripts/site.mjs dev",
     "check:quotes": "pnpm --filter @workspace/scripts exec tsx test_quote_parser.ts && pnpm --filter @workspace/scripts exec tsx test_quotes_api.ts",
     "check:worker": "pnpm --filter @workspace/scripts exec tsx test_worker_limits.ts && pnpm --filter @workspace/scripts exec tsx test_canonical_host.ts",
-    "check:books": "pnpm --filter @workspace/scripts exec tsx test_book_search.ts",
+    "check:books": "pnpm --filter @workspace/scripts exec tsx test_book_search.ts && pnpm --filter @workspace/scripts exec tsx test_books_api.ts",
     "check:refresh": "pnpm --filter @workspace/scripts exec tsx test_refresh_choice.ts",
     "check:wallpapers": "pnpm --filter @workspace/scripts exec tsx test_wallpaper_shaders.ts && pnpm --filter @workspace/scripts exec tsx test_wallpaper_textures.ts"
   },

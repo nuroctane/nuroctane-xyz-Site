@@ -11,6 +11,10 @@
   //   2. Node globals pulled in transitively by zod / @workspace/api-zod.
   "compatibility_flags": ["nodejs_compat"],
 
+  // The Worker carries shared/content/books.md as text, so a deploy that
+  // changes it also refreshes the live books bank (worker/books.ts).
+  "rules": [{ "type": "Text", "globs": ["**/*.md"], "fallthrough": true }],
+
   "workers_dev": true,
   // www first: `wrangler dev` presents local requests as the first route's
   // host, and the Worker redirects the apex to www (worker/canonical.ts).
@@ -64,8 +68,10 @@
     ],
   },
 
-  // The live quotes bank. The local quotes pipeline PUTs /api/quotes every run
-  // and the Quotes pages read it, so new quotes need no deploy (worker/quotes.ts).
+  // The live quotes and books banks. The local pipeline PUTs /api/quotes and
+  // /api/books and the pages read them, so neither needs a deploy
+  // (worker/quotes.ts, worker/books.ts; books keys are "books-bank" and
+  // "books-marks").
   "kv_namespaces": [
     { "binding": "QUOTES", "id": "e984b59ea8064c98bf606f82ec7935bb" },
   ],

@@ -70,8 +70,8 @@ async function smokeBooks(app: App): Promise<void> {
   ok(health.status === 200 && health.json?.status === "ok", "GET /api/healthz 200");
 
   let g = await jfetch(app, "/api/visitor-books");
-  ok(g.status === 200 && Array.isArray(g.json?.books) && typeof g.json?.overrides === "object",
-    "GET /api/visitor-books shape {books[], overrides{}}");
+  ok(g.status === 200 && Array.isArray(g.json?.books) && !("overrides" in g.json),
+    "GET /api/visitor-books shape {books[]} (curated read state lives in /api/books)");
 
   const submittedBook = { title: "Smoke Title", author: "Smoke Author", dateAdded: "2026-01-01T00:00:00.000Z", sessionId: "smoke-session", note: "Worth reading", coverUrl: "https://example.com/cover.jpg", description: "A full catalog description.", year: "1965", source: "Open Library", sourceUrl: "https://openlibrary.org/works/test" };
   const add = await jfetch(app, "/api/visitor-books", { action: "add", book: submittedBook });
@@ -149,10 +149,12 @@ async function smokeBooks(app: App): Promise<void> {
   const goodAdmin = await jfetch(app, "/api/visitor-books", { action: "verifyAdmin", password: "smoke-admin" });
   ok(goodAdmin.status === 200 && goodAdmin.json?.ok === true, "verifyAdmin correct password → ok");
 
+  /* Curated read marks moved to the live books bank (worker/books.ts, asserted
+     by test_books_api.ts); the old override map must not come back. */
   const cur = await jfetch(app, "/api/visitor-books", { action: "toggleCuratedRead", password: "smoke-admin", key: "T|A", read: true });
-  ok(cur.status === 200, "toggleCuratedRead as admin");
+  ok(cur.status === 410 && /\/api\/books\/read/.test(cur.json?.error ?? ""), "toggleCuratedRead → 410 pointing at /api/books/read");
   g = await jfetch(app, "/api/visitor-books");
-  ok(g.json.overrides["T|A"] === true, "curated override present in GET");
+  ok(!("overrides" in g.json), "no curated override map in GET");
 }
 
 async function smokeCurriculum(app: App): Promise<void> {

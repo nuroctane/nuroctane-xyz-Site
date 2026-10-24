@@ -1,6 +1,7 @@
 import { useMemo, useState, useEffect, useRef, useCallback } from 'react';
 import { isOwnBook, newSessionId, useOwnerTag } from '../lib/bookOwner';
 import { confirmAdmin, rememberAdmin, storedAdmin } from '../lib/adminSession';
+import { saveCuratedRead, useLiveBooks } from '../lib/liveBooks';
 import { StandaloneNav } from './StandaloneNav';
 import { MiniAudio } from '../components/hud/MiniAudio';
 import { ScrollToTop } from '../components/hud/ScrollToTop';
@@ -51,7 +52,6 @@ interface SearchResult {
 
 interface APIResponse {
   books: Book[];
-  overrides: Record<string, boolean>;
 }
 
 interface SearchAPIResponse {
@@ -162,13 +162,15 @@ function getSessionId(): string {
 const bookMetaMap = bookMeta.books as Record<string, { cover: string | null; desc: string | null }>;
 
 export default function BooksPage() {
-  const shelves = useMemo(() => parseBooks(raw), []);
+  const bank = useLiveBooks(raw);
+  const shelves = useMemo(() => parseBooks(bank), [bank]);
   useStandaloneScroll();
   const sessionId = useRef(getSessionId());
   const ownTag = useOwnerTag(sessionId.current);
   const [detail, setDetail] = useState<Book | null>(null);
   const [visitorBooks, setVisitorBooks] = useState<Book[]>([]);
-  const [readOverrides, setReadOverrides] = useState<Record<string, boolean>>({});
+  // Admin toggles saved this visit, until the live list includes them.
+  const [readMarks, setReadMarks] = useState<Record<string, boolean>>({});
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState<SearchResult[]>([]);
   const [searchSources, setSearchSources] = useState<string[]>([]);
@@ -210,21 +212,17 @@ export default function BooksPage() {
       })
       .then((data: APIResponse) => {
         setVisitorBooks(data.books ?? []);
-        setReadOverrides(data.overrides ?? {});
         setApiOnline(true);
         try {
-          localStorage.setItem(LASTGOOD_KEY, JSON.stringify({ books: data.books ?? [], overrides: data.overrides ?? {} }));
+          localStorage.setItem(LASTGOOD_KEY, JSON.stringify({ books: data.books ?? [] }));
         } catch { /* storage full/blocked: cache is best-effort */ }
       })
       .catch(() => {
         setApiOnline(false);
         try {
           const cached = JSON.parse(localStorage.getItem(LASTGOOD_KEY) ?? 'null') as
-            { books?: Book[]; overrides?: Record<string, boolean> } | null;
-          if (cached && Array.isArray(cached.books)) {
-            setVisitorBooks(cached.books);
-            setReadOverrides(cached.overrides ?? {});
-          }
+            { books?: Book[] } | null;
+          if (cached && Array.isArray(cached.books)) setVisitorBooks(cached.books);
         } catch { /* corrupt cache: leave defaults */ }
       });
   }, []);
@@ -561,24 +559,22 @@ export default function BooksPage() {
       } catch {}
     } else if (isAdmin) {
       const key = bookKey(book);
-      const currentOverride = readOverrides[key];
-      const newRead = currentOverride !== undefined ? !currentOverride : !book.read;
-      setReadOverrides(prev => ({ ...prev, [key]: newRead }));
+      const newRead = !getEffectiveRead(book);
+      setReadMarks(prev => ({ ...prev, [key]: newRead }));
       setDetail(d => d ? { ...d, read: newRead } : null);
       try {
-        await fetch('/api/visitor-books', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ action: 'toggleCuratedRead', key, read: newRead }),
-        });
-      } catch {}
+        await saveCuratedRead(key, newRead);
+      } catch {
+        // Not saved (expired admin session, offline): show the stored state.
+        setReadMarks(prev => ({ ...prev, [key]: !newRead }));
+        setDetail(d => d ? { ...d, read: !newRead } : null);
+      }
     }
   };
 
   function getEffectiveRead(b: Book): boolean {
     if (b.visitor) return b.read;
-    const override = readOverrides[bookKey(b)];
-    return override !== undefined ? override : b.read;
+    return readMarks[bookKey(b)] ?? b.read;
   }
 
   const libQ = libraryQuery.trim().toLowerCase();

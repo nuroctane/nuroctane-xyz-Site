@@ -11,6 +11,7 @@ import app from "@workspace/api-server";
 import { refreshContributions } from "@workspace/api-server/github-contrib";
 import { EMBED, isBot, botResponse } from "./og-meta";
 import { serveQuotes, type QuotesEnv } from "./quotes";
+import { bundle, serveBooks } from "./books";
 import { limitWrite, type LimitsEnv } from "./limits";
 import { canonicalRedirect } from "./canonical";
 
@@ -125,6 +126,8 @@ async function serveOg(request: Request, env: Env): Promise<Response> {
   return env.ASSETS.fetch(new Request(asset, { method: request.method }));
 }
 
+let booksBundle: ReturnType<typeof bundle> | undefined;
+
 export default {
   async fetch(
     request: Request,
@@ -164,6 +167,13 @@ export default {
 
     if (url.pathname === "/api/quotes") {
       return serveQuotes(request, env);
+    }
+
+    if (url.pathname === "/api/books" || url.pathname.startsWith("/api/books/")) {
+      // The books.md this build carries: a Text module ("rules" in
+      // wrangler.jsonc), loaded here so Node tests can import this file.
+      booksBundle ??= import("../shared/content/books.md").then((m) => bundle(m.default));
+      return serveBooks(request, env, await booksBundle);
     }
 
     if (url.pathname.startsWith("/api/")) {
