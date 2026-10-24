@@ -494,7 +494,7 @@ const FEATURE_TABS: FeatureTab[] = [
           <strong>knowledge</strong> — <code>graphify</code> ·{" "}
           <code>graphjin</code> · <code>plur</code> · <code>ruflo</code> ·{" "}
           <code>executor</code> · <code>skill</code> · <code>memory</code> ·{" "}
-          <code>headroom</code> · 55 tools in one dispatcher, the rarely used ones
+          <code>headroom</code> · 56 tools in one dispatcher, the rarely used ones
           loaded on demand through <code>tool_search</code>
         </li>
         <li>
@@ -557,6 +557,13 @@ const FEATURE_TABS: FeatureTab[] = [
         <li>
           <strong>plan</strong> — <code>todo_write</code> ·{" "}
           <code>submit_plan</code>
+        </li>
+        <li>
+          <strong>hashline</strong> — <code>read_file</code> heads every file
+          with a <code>[path#TAG]</code> snapshot and{" "}
+          <code>hashline_edit</code> changes lines by number against it, so
+          the model never retypes old text and a stale read is refused before
+          anything is written
         </li>
         <li>
           <strong>codemode</strong> — <code>codemode</code>: one JavaScript

@@ -2,7 +2,7 @@
   "project": {
     "name": "NurCLI",
     "slug": "nur-cli",
-    "tagline": "71 provider routes, 55 tools and 142 Jev engines in one Rust agent",
+    "tagline": "71 provider routes, 56 tools and 142 Jev engines in one Rust agent",
     "iconDomain": "nuroctane.xyz",
     "date": "2026-10-01"
   },
