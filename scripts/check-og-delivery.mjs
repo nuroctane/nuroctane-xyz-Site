@@ -14,6 +14,9 @@ const embed = JSON.parse(
 const embedBytes = await readFile(new URL(`artifacts/${active}/public${embed.image}`, root));
 const IMAGE = `${SITE}${embed.image}`;
 const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+// Never follow redirects: a local Worker that redirects (to the canonical host,
+// say) would otherwise pass by checking the live site instead.
+const get = (path, init = {}) => fetch(`${origin}${path}`, { ...init, redirect: "manual" });
 const routes = [
   "/",
   "/quotes",
@@ -34,10 +37,11 @@ const routes = [
   "/fin",
 ];
 for (const route of routes) {
-  const response = await fetch(`${origin}${route}`, {
+  const response = await get(route, {
     headers: { "User-Agent": "Discordbot/2.0" },
   });
   const doc = await response.text();
+  assert.equal(response.status, 200, route);
   assert.equal(response.headers.get("cache-control"), "no-cache", route);
   assert.match(doc, new RegExp(`property="og:image" content="${esc(IMAGE)}"`), route);
   assert.match(doc, new RegExp(`name="twitter:image" content="${esc(IMAGE)}"`), route);
@@ -53,20 +57,20 @@ for (const retired of [
   "/assets/og/cli-dda47cb8.png",
   "/assets/og/resume.png",
 ]) {
-  const response = await fetch(`${origin}${retired}`);
+  const response = await get(retired);
   assert.equal(response.status, 200, retired);
   assert.match(response.headers.get("content-type"), /^image\/(png|jpeg)/, retired);
   assert.deepEqual(Buffer.from(await response.arrayBuffer()), embedBytes, retired);
 }
-const head = await fetch(`${origin}/api/og?page=cli`, { method: "HEAD" });
+const head = await get("/api/og?page=cli", { method: "HEAD" });
 assert.equal(head.status, 200);
 assert.equal((await head.arrayBuffer()).byteLength, 0);
-const rejected = await fetch(`${origin}/api/og`, { method: "POST" });
+const rejected = await get("/api/og", { method: "POST" });
 assert.equal(rejected.status, 405);
 assert.equal(rejected.headers.get("allow"), "GET, HEAD");
 // Card caches key on og:url, so a shared variant must echo itself.
 const shared = await (
-  await fetch(`${origin}/cli?ref=x`, {
+  await get("/cli?ref=x", {
     headers: { "User-Agent": "Twitterbot/1.0" },
   })
 ).text();

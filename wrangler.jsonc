@@ -12,10 +12,15 @@
   "compatibility_flags": ["nodejs_compat"],
 
   "workers_dev": true,
+  // www first: `wrangler dev` presents local requests as the first route's
+  // host, and the Worker redirects the apex to www (worker/canonical.ts).
   "routes": [
-    { "pattern": "nuroctane.xyz", "custom_domain": true },
     { "pattern": "www.nuroctane.xyz", "custom_domain": true },
+    { "pattern": "nuroctane.xyz", "custom_domain": true },
   ],
+  // ...and as https, so the Worker's http → https upgrade does not redirect
+  // every local request to itself.
+  "dev": { "upstream_protocol": "https" },
   "observability": { "enabled": true },
 
   "assets": {
