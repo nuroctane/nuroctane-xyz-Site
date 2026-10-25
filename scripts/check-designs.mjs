@@ -99,6 +99,8 @@ for (const design of DESIGNS) {
     const source = read(where, "src/pages", page);
     if (source.includes("@shared/quotes.md?raw")) {
       assert.ok(source.includes("useLiveQuotes("), `${where}/src/pages/${page} must render quotes through useLiveQuotes`);
+      // Newest/oldest order categories, tabs and quotes by added date.
+      assert.ok(source.includes("orderByRecency("), `${where}/src/pages/${page} must order quotes with orderByRecency`);
     }
     if (source.includes("@shared/books.md?raw")) {
       assert.ok(source.includes("useLiveBooks("), `${where}/src/pages/${page} must render books through useLiveBooks`);
@@ -108,6 +110,11 @@ for (const design of DESIGNS) {
     assert.ok(!/book-admin-pw|ADMIN_PW|adminPasswordRef/.test(source), `${where}/src/pages/${page} must not store the admin password`);
   }
   assert.deepEqual(envNames(design), envNames(DESIGNS[0]), `${where}/.env.example must list the same VITE_* vars`);
+  // One quote identity and one ranking everywhere, or added dates stop matching.
+  for (const lib of ["quoteKey.ts", "quoteRank.ts"]) {
+    assert.equal(read(where, "src/lib", lib), read("artifacts", DESIGNS[0], "src/lib", lib),
+      `${where}/src/lib/${lib} must match ${DESIGNS[0]}'s`);
+  }
 
   const built = at(where, "dist/public");
   if (existsSync(path.join(built, "index.html"))) {

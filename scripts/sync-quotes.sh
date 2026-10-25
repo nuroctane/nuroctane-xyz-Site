@@ -279,16 +279,22 @@ fi
 
 mv "$REINDEXED" "$DEST"
 rm -f "$STRIPPED"
-git add -- "$REL_DEST"
+# Note when each new quote arrived (orders the Quotes page); best effort.
+REL_DATES="shared/content/quotes-added.json"
+TSX_CLI="$REPO_ROOT/scripts/node_modules/tsx/dist/cli.mjs"
+if command -v node >/dev/null 2>&1 && [[ -f "$TSX_CLI" ]]; then
+  (cd "$REPO_ROOT/scripts" && node "$TSX_CLI" quotes-added.ts) || echo "[$(date)] quote dates skipped"
+fi
+git add -- "$REL_DEST" "$REL_DATES"
 
 # Commit-guard: if git-diff shows nothing staged (line endings normalized
 # by .gitattributes, etc.), skip the commit + push instead of pushing empty.
-if git diff --cached --quiet -- "$REL_DEST"; then
+if git diff --cached --quiet -- "$REL_DEST" "$REL_DATES"; then
     echo "[$(date)] Transformed quotes match git after line-ending normalize, no push"
     exit 0
 fi
 
-git commit --only -m "chore: sync quotes from Obsidian vault [auto]" -- "$REL_DEST"
+git commit --only -m "chore: sync quotes from Obsidian vault [auto]" -- "$REL_DEST" "$REL_DATES"
 # Push the commit we just made on main - never push a detached SHA as "main".
 if ! git push origin HEAD:main; then
     echo "[$(date)] FATAL: git push origin HEAD:main failed"

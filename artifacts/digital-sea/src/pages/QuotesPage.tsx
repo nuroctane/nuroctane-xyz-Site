@@ -6,6 +6,7 @@ import { useStandaloneScroll } from '../hooks/useStandaloneScroll';
 import { trackEvent } from '../lib/analytics';
 import raw from '@shared/quotes.md?raw';
 import { useLiveQuotes } from '../lib/liveQuotes';
+import { orderByRecency } from '../lib/quoteOrder';
 
 interface Quote {
   text: string;
@@ -171,19 +172,17 @@ const PAGE_SIZE = 30;
 
 export default function QuotesPage() {
   const bank = useLiveQuotes(raw);
-  const sections = useMemo(() => parseMD(bank), [bank]);
-  const [activeSec, setActiveSec] = useState(sections[0]?.name ?? '');
+  const parsed = useMemo(() => parseMD(bank), [bank]);
+  // No pick yet means the first tab: the category with the newest addition.
+  const [activeSec, setActiveSec] = useState('');
   const [quoteOrder, setQuoteOrder] = useState<QuoteOrder>('newest');
+  const sections = useMemo(() => orderByRecency(parsed, quoteOrder), [parsed, quoteOrder]);
   const [count, setCount] = useState(PAGE_SIZE);
   useStandaloneScroll();
 
   const active = sections.find(s => s.name === activeSec) ?? sections[0];
-  // The canonical markdown appends new entries so the local sync remains
-  // conflict-friendly. Reverse only the presentation by default.
-  const orderedQuotes = useMemo(() => {
-    const quotes = active?.quotes ?? [];
-    return quoteOrder === 'newest' ? [...quotes].reverse() : quotes;
-  }, [active, quoteOrder]);
+  // orderByRecency already ordered the tabs and each category's quotes.
+  const orderedQuotes = active?.quotes ?? [];
   const shown = orderedQuotes.slice(0, count);
 
   const handleLoadMore = () => setCount(c => c + PAGE_SIZE);
@@ -202,8 +201,8 @@ export default function QuotesPage() {
           {sections.map(s => (
             <button
               key={s.name}
-              className={`qs-tab${s.name === activeSec ? ' qs-tab--on' : ''}`}
-              aria-pressed={s.name === activeSec}
+              className={`qs-tab${s.name === active?.name ? ' qs-tab--on' : ''}`}
+              aria-pressed={s.name === active?.name}
               onClick={() => {
                 setActiveSec(s.name);
                 setCount(PAGE_SIZE);

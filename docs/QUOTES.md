@@ -71,8 +71,12 @@ Blackboard's `src/lib/parseQuotes.ts` carries the original Digital Sea parser be
 - Normalize Windows line endings.
 - Preserve highlights and wiki-link display labels in the renderer.
 
-The Markdown stays in append order for sync. The UI defaults to newest first within
-each category and offers oldest first. Sorting never changes the canonical bank.
+The Markdown stays in append order for sync. Newest first (the default) and oldest first
+order the categories, their tabs and each category's quotes by when the quote was added,
+so the category that most recently gained a quote leads; oldest first is the mirror.
+Added dates live in `shared/content/quotes-added.json`, which `scripts/quotes-added.ts`
+keeps on every pipeline run (backfilled from git history). Sorting never changes the
+canonical bank.
 The index counts are tested against the same parser the page actually uses.
 
 ## Verification

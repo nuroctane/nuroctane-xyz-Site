@@ -21,6 +21,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import shutil
 import subprocess
 from pathlib import Path
 import sys
@@ -160,6 +161,37 @@ def snapshot_due(module) -> tuple[bool, str]:
     return False, f"next in {(SNAPSHOT_SECONDS - age) / 3600:.1f}h"
 
 
+REL_DATES = "shared/content/quotes-added.json"
+
+
+def record_dates(module) -> None:
+    """Note when each new quote arrived (scripts/quotes-added.ts) so the Quotes
+    pages can order categories by their newest addition. Best effort: without
+    a date a live quote simply counts as the newest."""
+    log = module.log
+    scripts = module.REPO_ROOT / "scripts"
+    node = shutil.which("node") or r"C:\Program Files\nodejs\node.exe"
+    tsx = scripts / "node_modules" / "tsx" / "dist" / "cli.mjs"
+    if not Path(node).is_file() or not tsx.is_file():
+        log("quote dates skipped: node or tsx is missing")
+        return
+    try:
+        done = subprocess.run(
+            [node, str(tsx), "quotes-added.ts"],
+            cwd=str(scripts),
+            capture_output=True,
+            encoding="utf-8",
+            errors="replace",
+            timeout=120,
+            creationflags=getattr(subprocess, "CREATE_NO_WINDOW", 0),
+        )
+    except (OSError, subprocess.TimeoutExpired) as err:
+        log(f"quote dates skipped: {err}")
+        return
+    lines = (done.stdout or done.stderr or "").strip().splitlines()
+    log(lines[-1] if lines else f"quote dates: exit {done.returncode}")
+
+
 def committed_bank(module) -> str | None:
     """quotes.md at HEAD. Read as UTF-8 here: Hermes' git() decodes with the
     Windows code page, which cannot read the bank."""
@@ -175,7 +207,8 @@ def committed_bank(module) -> str | None:
 
 
 def git_publish(module, bank: str, *, now: bool) -> int:
-    """Commit and push quotes.md when it differs from HEAD; daily unless `now`."""
+    """Commit and push quotes.md (with its added dates) when it differs from
+    HEAD; daily unless `now`."""
     git, log, rel = module.git, module.log, module.REL_DEST
     if not on_main(module):
         log("git snapshot deferred: not on main")
@@ -191,12 +224,13 @@ def git_publish(module, bank: str, *, now: bool) -> int:
     if not module.ensure_publishable_main():
         return 3
     module.DEST.write_text(bank, encoding="utf-8", newline="\n")
-    git("add", rel)
-    if git("diff", "--cached", "--quiet", "--", rel, check=False).returncode == 0:
+    paths = [rel, REL_DATES] if (module.REPO_ROOT / REL_DATES).is_file() else [rel]
+    git("add", *paths)
+    if git("diff", "--cached", "--quiet", "--", *paths, check=False).returncode == 0:
         log("quotes.md matches HEAD after pulling; nothing to commit")
         return 0
-    # Commit only the generated content path, never anything else staged.
-    git("commit", "--only", "-m", COMMIT_MESSAGE, "--", rel)
+    # Commit only the generated content paths, never anything else staged.
+    git("commit", "--only", "-m", COMMIT_MESSAGE, "--", *paths)
     push = git("push", "origin", "main", check=False)
     if push.returncode != 0:
         err = (push.stderr or push.stdout or "").strip()
@@ -236,6 +270,7 @@ def main(argv: list[str]) -> int:
         current = module.DEST.read_text(encoding="utf-8") if module.DEST.is_file() else ""
         if current.replace("\r\n", "\n") != bank:
             module.DEST.write_text(bank, encoding="utf-8", newline="\n")
+        record_dates(module)
 
     live = publish_live(bank, log)
     if live == "refused":
