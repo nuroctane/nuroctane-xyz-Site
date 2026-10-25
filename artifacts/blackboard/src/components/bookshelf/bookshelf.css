@@ -108,10 +108,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: space-between;
-  gap: 6px;
+  gap: calc(6px * var(--s));
   width: calc(var(--w) * 1px * var(--s));
   height: calc(var(--h) * 1px * var(--s));
-  padding: calc(14px * var(--s)) 0 calc(9px * var(--s));
+  padding: calc(12px * var(--s)) 0 calc(8px * var(--s));
   border: 0;
   border-radius: 3px 3px 2px 2px;
   color: var(--ink);
@@ -140,17 +140,64 @@
   );
 }
 
-.bb-spine-title,
-.bb-spine-foot {
+/* The cover, as a vignette under the head bands. */
+.bb-spine-art {
+  flex: none;
+  width: calc(100% - 8px * var(--s));
+  aspect-ratio: 3 / 4;
   overflow: hidden;
-  max-width: 100%;
-  text-overflow: ellipsis;
+  border-radius: 1px;
+  background: rgb(0 0 0 / 20%);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--ink) 22%, transparent), 0 1px 2px rgb(0 0 0 / 40%);
+}
+.bb-spine-art img { display: block; width: 100%; height: 100%; object-fit: cover; }
+
+/* The title: always the larger line. When it is longer than the spine it
+ * drifts end to end and back, by exactly the amount that overflows (container
+ * units); titles that fit stay still. */
+.bb-spine-title {
+  display: flex;
+  flex: 1 1 0;
+  justify-content: center;
+  width: 100%;
+  min-height: 0;
+  overflow: hidden;
+  container-type: size;
+}
+.bb-spine-title > span {
+  /* At least as tall as the box, so the scroll below is zero for a title
+   * that fits and exactly the overflow for one that does not. */
+  display: block;
+  height: max-content;
+  min-height: 100cqh;
+  font-size: max(8.5px, calc(11px * var(--s)));
+  letter-spacing: 0.06em;
   text-transform: uppercase;
   white-space: nowrap;
   writing-mode: vertical-rl;
 }
-.bb-spine-title { min-height: 0; letter-spacing: 0.07em; }
-.bb-spine-foot { flex: none; max-height: 34%; font-size: max(7px, calc(8px * var(--s))); letter-spacing: 0.12em; opacity: 0.68; }
+/* Only long titles on shelves in view move (data-long, data-inview: Bookshelf.tsx). */
+.bb-case[data-inview] .bb-spine[data-long] .bb-spine-title > span {
+  animation: bb-spine-read 12s ease-in-out var(--drift, 0s) infinite alternate;
+  will-change: transform;
+}
+@keyframes bb-spine-read {
+  0%, 18% { transform: translateY(0); }
+  82%, 100% { transform: translateY(calc(100cqh - 100%)); }
+}
+/* The author: small, at the foot, on every spine. */
+.bb-spine-foot {
+  flex: none;
+  overflow: hidden;
+  max-width: 100%;
+  max-height: 30%;
+  font-size: max(6.5px, calc(7.5px * var(--s)));
+  letter-spacing: 0.12em;
+  opacity: 0.72;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+}
 
 /* Read: a silk ribbon marker peeks out of the top. */
 .bb-spine[data-read]::before {
@@ -481,6 +528,7 @@
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .bb-spine-title > span { overflow: hidden; max-height: 100%; animation: none; text-overflow: ellipsis; }
   .bb-spine,
   .bb-tome,
   .bb-tome-cover { transition: none; }

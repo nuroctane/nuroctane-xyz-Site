@@ -1,6 +1,21 @@
 import { memo, useCallback, useEffect, useMemo, useRef, useState, type KeyboardEvent, type PointerEvent } from 'react';
-import { spineLook, surname, type SpineLook } from './spine';
+import spinesRaw from '@shared/book-spines.json?raw';
+import { spineId, spineLook, surname, type SpineLook } from './spine';
 import './bookshelf.css';
+
+/** Cover colours and art made by scripts/src/spine-art.ts, keyed by spineId. */
+let SPINES: Record<string, [string, string]> = {};
+try {
+  SPINES = (JSON.parse(spinesRaw) as { spines?: Record<string, [string, string]> }).spines ?? {};
+} catch { /* house cloth for everyone */ }
+
+/** Look and vignette for a book: its cover's cloth and local art when made,
+ * else the remote cover (books added since the last art run), else none. */
+function dress(book: ShelfBook, cover?: string): { look: SpineLook; art?: string } {
+  const id = spineId(book.title, book.author);
+  const cloth = SPINES[id];
+  return { look: spineLook(book.title, book.author, cloth), art: cloth ? `/assets/spines/${id}.webp` : cover };
+}
 
 export interface ShelfBook {
   title: string;
@@ -20,6 +35,8 @@ interface BookshelfProps<B extends ShelfBook> {
   isRead: (book: B) => boolean;
   /** The book being read: its slot on the shelf stands empty meanwhile. */
   pulled?: string | null;
+  /** A cover image for books without generated spine art. */
+  coverOf?: (book: B) => string | undefined;
   onPull: (book: B, spine: HTMLElement, look: SpineLook) => void;
 }
 
@@ -28,7 +45,7 @@ interface BookshelfProps<B extends ShelfBook> {
  * per title (spine.ts), nothing loads images, and hover runs on the DOM
  * directly so pointer movement never re-renders hundreds of spines.
  */
-export function Bookshelf<B extends ShelfBook>({ shelves, bookKey, isRead, pulled, onPull }: BookshelfProps<B>) {
+export function Bookshelf<B extends ShelfBook>({ shelves, bookKey, isRead, pulled, coverOf, onPull }: BookshelfProps<B>) {
   const slip = useRef<HTMLDivElement>(null);
   const slipTitle = useRef<HTMLSpanElement>(null);
   const slipAuthor = useRef<HTMLSpanElement>(null);
@@ -59,6 +76,57 @@ export function Bookshelf<B extends ShelfBook>({ shelves, bookKey, isRead, pulle
 
   useEffect(() => () => cancelAnimationFrame(frame.current), []);
 
+  // Titles scroll only on shelves near the viewport, and only where the title
+  // is longer than its spine: measured once per shelf as it comes into view
+  // (and again after a resize), then written straight onto the DOM.
+  const stacks = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    const root = stacks.current;
+    if (!root || typeof IntersectionObserver !== 'function') return;
+    const measure = (scope: HTMLElement) => {
+      const titles = [...scope.querySelectorAll<HTMLElement>('.bb-spine-title > span')];
+      const long = titles.map(span => span.offsetHeight > (span.parentElement?.clientHeight ?? 0) + 1);
+      titles.forEach((span, i) => {
+        const spine = span.closest<HTMLElement>('.bb-spine');
+        if (spine) spine.toggleAttribute('data-long', long[i]);
+      });
+      scope.dataset.measured = 'true';
+    };
+    const seen = new IntersectionObserver(entries => {
+      for (const entry of entries) {
+        const shelf = entry.target as HTMLElement;
+        shelf.toggleAttribute('data-inview', entry.isIntersecting);
+        if (entry.isIntersecting && !shelf.dataset.measured) measure(shelf);
+      }
+    }, { rootMargin: '200px 0px' });
+    const watch = () => root.querySelectorAll<HTMLElement>('.bb-case').forEach(shelf => seen.observe(shelf));
+    watch();
+    // Shelves come and go with search; re-measure after layout changes.
+    const changed = new MutationObserver(() => {
+      root.querySelectorAll<HTMLElement>('.bb-case').forEach(shelf => {
+        delete shelf.dataset.measured;
+        if (shelf.hasAttribute('data-inview')) measure(shelf);
+      });
+      watch();
+    });
+    changed.observe(root, { childList: true, subtree: true });
+    let timer = 0;
+    const resized = () => {
+      clearTimeout(timer);
+      timer = window.setTimeout(() => root.querySelectorAll<HTMLElement>('.bb-case').forEach(shelf => {
+        delete shelf.dataset.measured;
+        if (shelf.hasAttribute('data-inview')) measure(shelf);
+      }), 200);
+    };
+    window.addEventListener('resize', resized);
+    return () => {
+      seen.disconnect();
+      changed.disconnect();
+      window.removeEventListener('resize', resized);
+      clearTimeout(timer);
+    };
+  }, []);
+
   const onPointerMove = useCallback((event: PointerEvent<HTMLDivElement>) => {
     if (event.pointerType !== 'mouse') return;
     const spine = (event.target as HTMLElement).closest<HTMLElement>('.bb-spine');
@@ -66,7 +134,7 @@ export function Bookshelf<B extends ShelfBook>({ shelves, bookKey, isRead, pulle
   }, [showSlip]);
 
   return (
-    <div className="bb-stacks" onPointerMove={onPointerMove} onPointerLeave={() => showSlip(null)}>
+    <div className="bb-stacks" ref={stacks} onPointerMove={onPointerMove} onPointerLeave={() => showSlip(null)}>
       {shelves.map(shelf => (
         <ShelfRow
           key={shelf.name}
@@ -74,6 +142,7 @@ export function Bookshelf<B extends ShelfBook>({ shelves, bookKey, isRead, pulle
           bookKey={bookKey}
           isRead={isRead}
           pulled={pulled ?? null}
+          coverOf={coverOf}
           onPull={onPull}
           onFocusSpine={spine => showSlip(spine)}
         />
@@ -91,6 +160,7 @@ function ShelfRow<B extends ShelfBook>({
   bookKey,
   isRead,
   pulled,
+  coverOf,
   onPull,
   onFocusSpine,
 }: {
@@ -98,6 +168,7 @@ function ShelfRow<B extends ShelfBook>({
   bookKey: (book: B) => string;
   isRead: (book: B) => boolean;
   pulled: string | null;
+  coverOf?: (book: B) => string | undefined;
   onPull: BookshelfProps<B>['onPull'];
   onFocusSpine: (spine: HTMLElement | null) => void;
 }) {
@@ -111,14 +182,14 @@ function ShelfRow<B extends ShelfBook>({
   const pull = useCallback((index: number, spine: HTMLElement) => {
     setActive(index);
     const { shelf: s, onPull: o } = latest.current;
-    o(s.books[index], spine, spineLook(s.books[index].title, s.books[index].author));
+    o(s.books[index], spine, dress(s.books[index]).look);
   }, []);
   const focus = useCallback((index: number, spine: HTMLElement) => {
     setActive(index);
     latest.current.onFocusSpine(spine);
   }, []);
   const blur = useCallback(() => latest.current.onFocusSpine(null), []);
-  const looks = useMemo(() => shelf.books.map(book => spineLook(book.title, book.author)), [shelf.books]);
+  const dressed = useMemo(() => shelf.books.map(book => dress(book, coverOf?.(book))), [shelf.books, coverOf]);
   const current = Math.min(active, Math.max(0, shelf.books.length - 1));
 
   const focusAt = (index: number) => {
@@ -153,7 +224,8 @@ function ShelfRow<B extends ShelfBook>({
               key={`${key}-${index}`}
               index={index}
               book={book}
-              look={looks[index]}
+              look={dressed[index].look}
+              art={dressed[index].art}
               read={isRead(book)}
               pulled={pulled === key}
               tabbable={index === current}
@@ -173,6 +245,7 @@ const Spine = memo(function Spine({
   index,
   book,
   look,
+  art,
   read,
   pulled,
   tabbable,
@@ -183,6 +256,7 @@ const Spine = memo(function Spine({
   index: number;
   book: ShelfBook;
   look: SpineLook;
+  art?: string;
   read: boolean;
   pulled: boolean;
   tabbable: boolean;
@@ -212,6 +286,7 @@ const Spine = memo(function Spine({
           '--tone': look.tone,
           '--ink': look.ink,
           '--band': `${look.bandAt}px`,
+          '--drift': `-${look.drift}s`,
         } as React.CSSProperties}
         onClick={event => onPull(index, event.currentTarget)}
         onFocus={event => {
@@ -219,8 +294,17 @@ const Spine = memo(function Spine({
         }}
         onBlur={onBlur}
       >
-        <span className="bb-spine-title">{look.lettering === 'author' && book.author ? surname(book.author) : book.title}</span>
-        <span className="bb-spine-foot">{look.lettering === 'author' ? '' : surname(book.author)}</span>
+        {art && (
+          <span className="bb-spine-art">
+            <img src={art} alt="" loading="lazy" decoding="async" width={48} height={64} />
+          </span>
+        )}
+        {/* Every spine reads the same way: the title, which scrolls when it is
+            longer than the spine, over the author's name. */}
+        <span className="bb-spine-title">
+          <span>{book.title}</span>
+        </span>
+        {book.author && <span className="bb-spine-foot">{surname(book.author)}</span>}
       </button>
     </span>
   );

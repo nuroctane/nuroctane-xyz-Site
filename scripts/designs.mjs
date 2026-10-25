@@ -5,6 +5,6 @@ export const DESIGNS = ["blackboard", "digital-sea"];
 
 // Design-independent files under shared/public, copied into every design's
 // build by shared/vite.mjs. No design may keep its own copy.
-export const SHARED_PUBLIC = ["downloads", "robots.txt", "sitemap.xml"];
+export const SHARED_PUBLIC = ["downloads", "robots.txt", "sitemap.xml", "assets/spines"];
 
 export const SITE = "https://www.nuroctane.xyz";

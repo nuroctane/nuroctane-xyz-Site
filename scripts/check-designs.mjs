@@ -122,6 +122,11 @@ for (const design of DESIGNS) {
   }
 }
 
+// Spine art and its colour map travel together (scripts/src/spine-art.ts).
+const spines = JSON.parse(read("shared/content/book-spines.json")).spines ?? {};
+const missingArt = Object.keys(spines).filter((id) => !existsSync(at("shared/public/assets/spines", `${id}.webp`)));
+assert.equal(missingArt.length, 0, `book-spines.json lists ${missingArt.length} spines with no art; run scripts/src/spine-art.ts`);
+
 // What deploys is the selected design, whole.
 const staged = at("dist/public");
 if (existsSync(path.join(staged, "index.html"))) {
