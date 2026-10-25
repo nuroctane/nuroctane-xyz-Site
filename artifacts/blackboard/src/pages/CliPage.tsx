@@ -100,14 +100,14 @@ const TOKEN_PATH = [
     label: "ROUTE",
     title: "Select a protocol, not just a model name",
     body: "Capabilities choose Responses, Chat Completions, Anthropic Messages, native Gemini, Cursor Agent, or a local server. OpenCode routes each model through its documented native protocol.",
-    meta: "70 routes · capability checked",
+    meta: "71 routes · capability checked",
   },
   {
     id: "05",
     label: "INFER",
     title: "The provider does the expensive work",
-    body: "Every attempt is opened in an append-only ledger before dispatch. Idempotency keys protect supported routes, streamed bytes are never blindly replayed, and cancellation stays attached to the turn.",
-    meta: "attempt id · stream · cancel",
+    body: "Every attempt is opened in an append-only ledger before dispatch. Idempotency keys protect supported routes, a dropped connection reconnects and replays with the partial text taken back, a rate-limited key hands over to the next one, and cancellation stays attached to the turn.",
+    meta: "attempt id · reconnect · cancel",
   },
   {
     id: "06",
@@ -127,9 +127,9 @@ const TOKEN_PATH = [
 
 const EFFICIENCY_SIGNALS = [
   {
-    value: "LAZY",
-    label: "tool schema loading",
-    body: "The root tool profile starts task-shaped and expands only when the work requires more surface area.",
+    value: "27/56",
+    label: "tool schemas up front",
+    body: "The default lean profile sends the editing shell and session tools; the rest load through tool_search the first time a task needs them, about 6k schema tokens per request instead of 15k.",
   },
   {
     value: "12K",
@@ -264,7 +264,7 @@ const FEATURE_TABS: FeatureTab[] = [
         <li>
           <strong>One credential control plane</strong> — <code>/auth</code>
           opens a scrollable provider vault for API keys, OAuth sessions, vendor
-          CLIs, and OMP credentials across all 70 routes. Save, replace, or
+          CLIs, and OMP credentials across all 71 routes. Save, replace, or
           delete without editing a JSON file.
         </li>
         <li>
@@ -288,6 +288,28 @@ const FEATURE_TABS: FeatureTab[] = [
           ids (default <code>perplexity/sonar</code>). Every request is fitted
           to its narrower schema at the wire, so history stays intact for
           other providers.
+        </li>
+        <li>
+          <strong>Rotating API keys</strong> — several keys per provider (
+          <code>nur auth pool add</code>, or <code>MORPH_API_KEYS=k2,k3</code>
+          ). A conversation sticks to one for the prompt cache; a rate limit,
+          an empty quota or a refused key hands the request to the next key at
+          once, before any backoff or failover.
+        </li>
+        <li>
+          <strong>Long turns survive the network</strong> — no clock cuts off
+          a response that is still streaming (only 300s of silence counts as
+          dead). A dropped connection reconnects and replays on the same
+          route, taking back any partial text first, on every provider.{" "}
+          <code>/fresh</code> gives the provider a clean cache and stream
+          state without touching the conversation.
+        </li>
+        <li>
+          <strong>Morph and Ultramarine</strong> — Morph&apos;s GLM-5.3,
+          Kimi K3 and DeepSeek V4.1 Flash with 1M context and per-family
+          effort; Paper Instruments&apos; Ultramarine 1 Flash gets the
+          concision and stopping rules its makers ask for.{" "}
+          <code>ultrathink</code> in a prompt raises the effort for that turn.
         </li>
         <li>
           <strong>Token-saving by default</strong> — <strong>Headroom</strong>{" "}
@@ -464,7 +486,7 @@ const FEATURE_TABS: FeatureTab[] = [
         <li>
           <strong>edit</strong> — <code>write_file</code> ·{" "}
           <code>edit_file</code> · <code>multi_edit</code> ·{" "}
-          <code>apply_patch</code>
+          <code>apply_patch</code> · <code>hashline_edit</code>
         </li>
         <li>
           <strong>shell</strong> — <code>bash</code> (sandboxed)
@@ -476,7 +498,9 @@ const FEATURE_TABS: FeatureTab[] = [
         </li>
         <li>
           <strong>web</strong> — <code>web_search</code> ·{" "}
-          <code>web_fetch</code>
+          <code>web_fetch</code> · with a{" "}
+          <a href="https://treg.to/web-access">treg</a> token, free routed
+          search and markdown reads of blocked or JavaScript-only pages
         </li>
         <li>
           <strong>browser</strong> — real default browser via agent-browser-cli
@@ -736,6 +760,16 @@ const FEATURE_TABS: FeatureTab[] = [
           wrapping, and selection smooth as the editor grows
         </li>
         <li>Peek · drag-select · scrollbar · sticky prompt</li>
+        <li>
+          <strong>Scroll back and read</strong> — the view holds the same
+          line while output streams in, cards reflow or the turn ends;{" "}
+          <code>↓ N · End</code> counts what arrived and End returns to it
+        </li>
+        <li>
+          <strong>Tables that fit the window</strong> — markdown tables lay
+          out at the transcript&apos;s width: an aligned grid when it fits,
+          wrapped columns when it does not, stacked records on a narrow pane
+        </li>
         <li>Ctrl+A / C / V / X · reverse-search prompt history (Ctrl+R)</li>
         <li>
           Approval mini-diff · y / a / n · sessions browser ·{" "}
@@ -817,15 +851,17 @@ const FEATURE_TABS: FeatureTab[] = [
           auto-approved
         </li>
         <li>
-          Attempt ledger · idempotency on supported APIs · no blind replay after
-          streamed bytes · install SHA-256 · <code>nur doctor</code>
+          Attempt ledger · idempotency on supported APIs · replays retract
+          the text they repeat · install SHA-256 · <code>nur doctor</code>
         </li>
         <li>
           <strong>Auto-update</strong> — nur checks GitHub Releases on launch
           (off the render thread, never blocking startup) and self-installs a
           newer build only after its minisign signature verifies against a
           public key pinned in the source, then the SHA-256 (an unsigned or
-          tampered asset is refused before anything touches disk;{" "}
+          tampered asset is refused before anything touches disk, and a
+          new binary that does not start and report its version is swapped
+          back for the old one;{" "}
           <code>npx nur-cli</code> checks its own version too).{" "}
           <code>nur update</code> forces the check now; opt out with{" "}
           <code>auto_update = false</code> in config or{" "}
@@ -844,8 +880,9 @@ const FEATURE_TABS: FeatureTab[] = [
         <li>
           <strong>Long runs stay alive</strong> — the real context window is
           read from the model catalog, auto-compaction runs as often as a run
-          needs (and carries the in-flight work across), and streaming retries
-          with backoff instead of dying on one 429
+          needs (and carries the in-flight work across), dropped connections
+          reconnect, and a 429 rotates to another key or retries with backoff
+          instead of ending the turn
         </li>
         <li>
           <strong>Budgets cover the whole task graph</strong> — primaries,
@@ -889,6 +926,10 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: "/compact", desc: "summarize conversation, free context" },
   { cmd: "/clear", desc: "clear the transcript display" },
   { cmd: "/new", desc: "start a fresh session" },
+  {
+    cmd: "/fresh",
+    desc: "reset the provider's cache and stream state, keep the conversation",
+  },
   { cmd: "/cd", desc: "change working directory (tools sandbox here)" },
   { cmd: "/pwd", desc: "print the current working directory" },
   { cmd: "/theme", desc: "choose a live color theme (/theme <name>)" },

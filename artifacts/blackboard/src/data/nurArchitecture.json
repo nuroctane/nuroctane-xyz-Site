@@ -13,7 +13,7 @@
         "label": "CLI / TUI / headless",
         "kind": "entry",
         "sub": "three entry surfaces",
-        "sourceRef": "src/main.rs:85",
+        "sourceRef": "src/main.rs:113",
         "detail": "Command parsing, session bootstrap, Gold TUI streaming, and `nur run` all converge on the same runner; UI events carry text, reasoning, tools, approvals, and usage."
       },
       {
@@ -21,7 +21,7 @@
         "label": "AgentRunner",
         "kind": "agent",
         "sub": "multi-round turn engine",
-        "sourceRef": "src/agent/loop.rs:508",
+        "sourceRef": "src/agent/loop.rs:183",
         "detail": "Owns user turns, model rounds, truncation continuation, compaction, tool-call cycles, delegated work, usage emission, receipts, and state checkpoints."
       },
       {
@@ -29,7 +29,7 @@
         "label": "Subagent runner",
         "kind": "agent",
         "sub": "scoped nested execution",
-        "sourceRef": "src/agent/loop.rs:1681",
+        "sourceRef": "src/agent/subagent.rs:19",
         "detail": "Runs focused delegated prompts with provider/model overrides, admission control, bounded recursion, shared cancellation, coordinated events, and reduced tools."
       },
       {
@@ -37,7 +37,7 @@
         "label": "Fusion panel",
         "kind": "agent",
         "sub": "parallel model review",
-        "sourceRef": "src/agent/fusion.rs:62",
+        "sourceRef": "src/agent/fusion.rs:18",
         "detail": "Fans one task across configured model routes in parallel, labels each panel response, and returns evidence for a synthesizing model round."
       },
       {
@@ -45,7 +45,7 @@
         "label": "PromptContext",
         "kind": "service",
         "sub": "rules · skills · memory",
-        "sourceRef": "src/agent/prompt.rs:140",
+        "sourceRef": "src/agent/prompt.rs:138",
         "detail": "Assembles the system prompt once per user turn, then re-renders live permission mode, todo state, workspace identity, environment, and runtime policy each round."
       },
       {
@@ -53,7 +53,7 @@
         "label": "Context controller",
         "kind": "service",
         "sub": "prune / promote / compact",
-        "sourceRef": "src/agent/loop.rs:660",
+        "sourceRef": "src/agent/loop.rs:7129",
         "detail": "Prunes superseded tool observations, promotes saved context variables, estimates the active window, and compacts transcripts while preserving durable state."
       },
       {
@@ -61,31 +61,31 @@
         "label": "ResponseRequest",
         "kind": "service",
         "sub": "normalized request + budget",
-        "sourceRef": "src/agent/loop.rs:837",
+        "sourceRef": "src/agent/loop.rs:1238",
         "detail": "Combines model id, transcript items, instructions, tools, reasoning effort, cache key, media, and output reserve into one protocol-neutral request."
       },
       {
         "id": "failover",
         "label": "Failover controller",
         "kind": "service",
-        "sub": "retry before first delta",
-        "sourceRef": "src/api/failover.rs:1",
-        "detail": "Retries transient failures and configured fallback routes only before visible output streams, preserving idempotency and preventing duplicate transcript text."
+        "sub": "reconnect · key rotation · failover",
+        "sourceRef": "src/agent/loop.rs:448",
+        "detail": "A dropped connection reconnects and replays on the same route with backoff, taking back any text already streamed; a rate-limited or empty API key hands over to the next one; then the configured fallback routes. Tool calls run only from a completed response, so a replay never repeats one."
       },
       {
         "id": "api_client",
         "label": "ApiClient",
         "kind": "service",
         "sub": "transport + stream bridge",
-        "sourceRef": "src/api/client.rs:221",
+        "sourceRef": "src/api/client.rs:253",
         "detail": "Applies route selection, OAuth context, retries, idempotency, media normalization, telemetry, and dispatch into one of four wire protocols."
       },
       {
         "id": "provider_catalog",
         "label": "Provider catalog",
         "kind": "service",
-        "sub": "67 routes + 2 sidecars",
-        "sourceRef": "src/providers.rs:531",
+        "sub": "71 routes + 2 sidecars",
+        "sourceRef": "src/providers.rs:965",
         "detail": "Defines every route's id, display name, endpoint, default model, protocol style, credential source, OAuth capability, and model normalization behavior."
       },
       {
@@ -93,7 +93,7 @@
         "label": "Credential routing",
         "kind": "service",
         "sub": "key / OAuth / CLI auth",
-        "sourceRef": "src/api/client.rs:228",
+        "sourceRef": "src/api/client.rs:933",
         "detail": "Builds provider-specific authorization, supports subscription and CLI-backed sessions, and refreshes eligible OAuth credentials after unauthorized responses."
       },
       {
@@ -101,23 +101,23 @@
         "label": "Responses adapter",
         "kind": "service",
         "sub": "Responses API + SSE",
-        "sourceRef": "src/api/client.rs:691",
+        "sourceRef": "src/api/client.rs:1421",
         "detail": "Serializes Responses-style input and tools, records attempts, handles retryable HTTP failures, and normalizes JSON or server-sent events."
       },
       {
         "id": "tool_runtime",
         "label": "Permission + ToolHost",
         "kind": "tool",
-        "sub": "50 tools / one dispatcher",
-        "sourceRef": "src/tools/mod.rs:370",
-        "detail": "Approval classes, read-only parallel batches and deny/ask rules; core tool schemas first, the full surface later, including dogwood policy checks and the diagram plane."
+        "sub": "56 tools / one dispatcher",
+        "sourceRef": "src/tools/mod.rs:423",
+        "detail": "Approval classes, read-only parallel batches and deny/ask rules; 27 schemas up front and the rest loaded on demand through tool_search, including dogwood policy checks and the diagram plane."
       },
       {
         "id": "headroom",
         "label": "Headroom pipeline",
         "kind": "service",
         "sub": "register / compress / spill",
-        "sourceRef": "src/headroom.rs:388",
+        "sourceRef": "src/headroom.rs:300",
         "detail": "Registers successful tool bodies, rejects secret-shaped preservation, compresses observations for the model window, and spills oversized results to durable blobs."
       },
       {
@@ -125,7 +125,7 @@
         "label": "Durable runtime state",
         "kind": "store",
         "sub": "sessions / context / memory",
-        "sourceRef": "src/agent/session.rs:122",
+        "sourceRef": "src/agent/session.rs:134",
         "detail": "Atomically stores transcript sessions, cwd links, context blobs, and vector/graph/hierarchical memory residents under ~/.nur, with backups and scoped recall."
       },
       {
@@ -133,23 +133,23 @@
         "label": "Usage + receipt ledgers",
         "kind": "store",
         "sub": "private ledger · hash chain",
-        "sourceRef": "src/usage.rs:437",
+        "sourceRef": "src/usage.rs:324",
         "detail": "Every primary, retry, failover and Jev call recorded with its served route; a private local usage ledger aggregates spend without uploading keys."
       },
       {
         "id": "routes_direct",
-        "label": "Direct model labs / 16",
+        "label": "Direct model labs / 18",
         "kind": "external",
         "sub": "first-party API routes",
-        "sourceRef": "src/providers.rs:531",
-        "detail": "Meta, OpenAI, OpenAI Chat, Anthropic, Google, Antigravity, xAI, DeepSeek, Mistral, Cohere, AI21, Reka, Inception, Writer, Upstage, Thinking Machines, Poolside."
+        "sourceRef": "src/providers.rs:966",
+        "detail": "Meta, OpenAI, OpenAI Chat, Anthropic, Google, Antigravity, xAI, DeepSeek, Mistral, Cohere, AI21, Reka, Inception, Writer, Upstage, Thinking Machines, Poolside, Paper Instruments (Ultramarine)."
       },
       {
         "id": "routes_cloud",
-        "label": "Cloud + SSO / 5",
+        "label": "Cloud + SSO / 3",
         "kind": "external",
         "sub": "managed identity routes",
-        "sourceRef": "src/providers.rs:736",
+        "sourceRef": "src/providers.rs:1183",
         "detail": "Hugging Face, Azure OpenAI, and Amazon Bedrock."
       },
       {
@@ -157,7 +157,7 @@
         "label": "Asian model labs / 7",
         "kind": "external",
         "sub": "direct regional catalogs",
-        "sourceRef": "src/providers.rs:957",
+        "sourceRef": "src/providers.rs:1432",
         "detail": "Kimi Code, Moonshot, Z.AI, Alibaba Qwen, MiniMax, StepFun, and Baichuan."
       },
       {
@@ -165,32 +165,32 @@
         "label": "Local servers / 5",
         "kind": "external",
         "sub": "localhost inference",
-        "sourceRef": "src/providers.rs:1273",
+        "sourceRef": "src/providers.rs:1817",
         "detail": "Ollama, LM Studio, llama.cpp, vLLM, and Jan."
       },
       {
         "id": "routes_infer",
-        "label": "Inference clouds / 13",
+        "label": "Inference clouds / 17",
         "kind": "external",
         "sub": "high-throughput hosts",
-        "sourceRef": "",
-        "detail": ""
+        "sourceRef": "src/providers.rs:1225",
+        "detail": "Groq, Liquid Inference, Cerebras, Together AI, Fireworks AI, DeepInfra, NovitaAI, Hyperbolic, Nebius Token Factory, SambaNova, NVIDIA NIM, Perplexity, Baseten, Friendli, Chutes, Venice AI, and Morph."
       },
       {
         "id": "routes_router",
-        "label": "Routers + gateways / 12",
+        "label": "Routers + gateways / 14",
         "kind": "external",
         "sub": "aggregation + policy",
-        "sourceRef": "",
-        "detail": ""
+        "sourceRef": "src/providers.rs:1516",
+        "detail": "OpenRouter, Experiential Labs, OpenDesign, Requesty, Glama, Portkey, LiteLLM Proxy, Vercel AI Gateway, Cloudflare AI Gateway, Featherless, NanoGPT, GitHub Models, Helicone AI Gateway, and AI/ML API."
       },
       {
         "id": "routes_agent",
         "label": "Vendor CLIs + plans / 7",
         "kind": "external",
         "sub": "subscription and CLI routes",
-        "sourceRef": "",
-        "detail": ""
+        "sourceRef": "src/providers.rs:1748",
+        "detail": "Command Code, Cline, OpenCode Zen and Go, Nous Portal, GitHub Copilot, Cursor Agent, and Factory Droid."
       },
       {
         "id": "proto_adapters",
@@ -212,7 +212,7 @@
         "id": "jev_bridge",
         "label": "Jev engine gateway",
         "kind": "service",
-        "sub": "34 local adapters + bridge",
+        "sub": "36 local adapters + bridge",
         "sourceRef": "scripts/jev_local_bridge.py",
         "detail": "One System One HTTP contract over local Python adapters and source runtimes, with per-engine credentials and owned bridge lifecycle."
       },
@@ -226,7 +226,7 @@
       },
       {
         "id": "jev_catalog",
-        "label": "Jev library / 133",
+        "label": "Jev library / 142",
         "kind": "service",
         "sub": "JevBench roster + new releases",
         "sourceRef": "src/jev_catalog.json",
@@ -486,7 +486,7 @@
         "kind": "model",
         "sub": "JevBench #1 · Gemma-4-12B",
         "sourceRef": "",
-        "detail": "Top-ranked open engine on JevBench v1.5.4, one of 133 entries in nur's Jev library."
+        "detail": "Top-ranked open engine on JevBench v1.5.4, one of 142 entries in nur's Jev library."
       }
     ],
     "edges": [
