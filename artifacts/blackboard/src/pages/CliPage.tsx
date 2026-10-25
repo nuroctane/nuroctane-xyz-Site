@@ -312,6 +312,24 @@ const FEATURE_TABS: FeatureTab[] = [
           <code>ultrathink</code> in a prompt raises the effort for that turn.
         </li>
         <li>
+          <strong>An advisor model</strong> — <code>[advisor]</code> names a
+          second model that reads the request, the turn&apos;s tool trace and
+          the answer before the turn ends. When it sees the work going wrong
+          it leaves one note, and the agent takes one more pass.
+        </li>
+        <li>
+          <strong>Stream rules</strong> — a pattern and the rule it breaks.
+          When the answer starts writing it, the stream stops, the partial
+          text is taken back and the model answers again with the rule in
+          view; a tool call that matches is dropped before it runs.
+        </li>
+        <li>
+          <strong>Models per directory</strong> —{" "}
+          <code>[[path_models]]</code> picks the model (and provider and
+          effort) for a project, at startup and on every <code>/cd</code>,
+          without rewriting the configured default.
+        </li>
+        <li>
           <strong>Token-saving by default</strong> — <strong>Headroom</strong>{" "}
           inline tool-result compress · OptMem · OMP-style supersedeReads +
           dropUseless · contextPromotion · optional <code>/prewalk</code>{" "}
@@ -333,7 +351,9 @@ const FEATURE_TABS: FeatureTab[] = [
           Claude and Qwen 3.5+ use Messages, Gemini uses GenerateContent, and
           compatible models use Chat Completions. Go ids remain{" "}
           <code>opencode-go/…</code>; <code>opencode auth login</code> /{" "}
-          <code>OPENCODE_API_KEY</code> / <code>auth.json</code>.
+          <code>OPENCODE_API_KEY</code> / <code>auth.json</code>. An expired
+          Console key says so and where the new one goes, and{" "}
+          <code>/model</code> still lists every model while it is replaced.
         </li>
         <li>
           Permission modes: <strong>manual</strong> / <strong>plan</strong> /{" "}
@@ -585,9 +605,9 @@ const FEATURE_TABS: FeatureTab[] = [
         <li>
           <strong>hashline</strong> — <code>read_file</code> heads every file
           with a <code>[path#TAG]</code> snapshot and{" "}
-          <code>hashline_edit</code> changes lines by number against it, so
-          the model never retypes old text and a stale read is refused before
-          anything is written
+          <code>hashline_edit</code> changes lines by number, or a whole block
+          with <code>N*</code>, against it, so the model never retypes old
+          text and a stale read is refused before anything is written
         </li>
         <li>
           <strong>codemode</strong> — <code>codemode</code>: one JavaScript
@@ -766,9 +786,10 @@ const FEATURE_TABS: FeatureTab[] = [
           <code>↓ N · End</code> counts what arrived and End returns to it
         </li>
         <li>
-          <strong>Tables that fit the window</strong> — markdown tables lay
-          out at the transcript&apos;s width: an aligned grid when it fits,
-          wrapped columns when it does not, stacked records on a narrow pane
+          <strong>Tables that fit the window</strong> — tables in answers,
+          and wide tables a command prints, lay out at the transcript&apos;s
+          width: an aligned grid when it fits, wrapped columns when it does
+          not, stacked records on a narrow pane
         </li>
         <li>Ctrl+A / C / V / X · reverse-search prompt history (Ctrl+R)</li>
         <li>
