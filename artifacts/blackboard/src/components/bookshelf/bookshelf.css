@@ -1,0 +1,490 @@
+/* The Stacks: the Books page as a bookcase in the Blackboard's dark glass.
+ * Spines are single buttons styled from per-title variables (spine.ts); the
+ * ledges are one repeating gradient sized to the wrapped rows; the open book
+ * is CSS 3D. No images load on the shelves. */
+
+.bb-stacks,
+.bb-tome-stage {
+  --cloth: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='96' height='96'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 .24 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+.bb-stacks {
+  --s: 1;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 1.25rem;
+}
+
+@media (max-width: 680px) {
+  .bb-stacks { --s: 0.74; }
+}
+
+/* ---------- a case: one shelf of the library ---------- */
+.bb-case {
+  padding: 1.1rem 1.1rem 0.35rem;
+  border: 1px solid rgb(255 255 255 / 11%);
+  border-radius: 12px;
+  background: linear-gradient(145deg, rgb(255 255 255 / 5%), transparent 65%), rgb(20 20 20 / 82%);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 8%);
+  /* Off-screen cases skip layout and paint until scrolled near. */
+  content-visibility: auto;
+  contain-intrinsic-height: auto 420px; /* height only: a width here would widen the grid */
+}
+.bb-case--community { border-color: rgb(255 255 255 / 22%); }
+
+.bb-case-label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 0.9rem;
+}
+.bb-case-label h2 { margin: 0; font-size: 0.8rem; font-weight: 500; }
+.bb-case-label span { color: #777; font-size: 0.6875rem; }
+
+.bb-case-row {
+  --slot: calc(212px * var(--s));
+  --ledge: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  column-gap: calc(2px * var(--s));
+  row-gap: var(--ledge);
+  margin: 0 -1.1rem;
+  padding: 0 1.1rem var(--ledge);
+  /* Every wrapped row stands on its own ledge: a lit edge, the plank face,
+   * then the shadow it throws. */
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0 var(--slot),
+    rgb(255 255 255 / 46%) var(--slot) calc(var(--slot) + 1px),
+    rgb(255 255 255 / 9%) calc(var(--slot) + 1px) calc(var(--slot) + 4px),
+    rgb(0 0 0 / 55%) calc(var(--slot) + 4px) calc(var(--slot) + var(--ledge))
+  );
+}
+
+.bb-slot,
+.bb-bookend {
+  display: flex;
+  align-items: flex-end;
+  height: var(--slot);
+}
+
+.bb-bookend {
+  position: relative;
+  width: calc(16px * var(--s));
+  margin-right: calc(4px * var(--s));
+}
+.bb-bookend::before {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: calc(7px * var(--s));
+  height: 58%;
+  border-radius: 2px 2px 0 0;
+  background: linear-gradient(90deg, #2b2b2b, #4a4a4a 40%, #1b1b1b);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 24%);
+  content: '';
+}
+.bb-bookend::after {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 3px;
+  background: #3a3a3a;
+  content: '';
+}
+.bb-bookend--end { margin: 0 0 0 calc(4px * var(--s)); }
+.bb-bookend--end::before { right: 0; left: auto; }
+
+/* ---------- a spine ---------- */
+.bb-spine {
+  --bc: color-mix(in srgb, var(--ink) 42%, transparent);
+  --bands: linear-gradient(transparent, transparent);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  width: calc(var(--w) * 1px * var(--s));
+  height: calc(var(--h) * 1px * var(--s));
+  padding: calc(14px * var(--s)) 0 calc(9px * var(--s));
+  border: 0;
+  border-radius: 3px 3px 2px 2px;
+  color: var(--ink);
+  background:
+    linear-gradient(90deg, rgb(0 0 0 / 44%) 0, rgb(255 255 255 / 15%) 13%, rgb(255 255 255 / 5%) 32%, rgb(0 0 0 / 8%) 68%, rgb(0 0 0 / 48%) 100%),
+    var(--bands),
+    var(--cloth),
+    var(--tone);
+  box-shadow: 0 0 0 0.5px rgb(0 0 0 / 65%), 0 2px 2px rgb(0 0 0 / 30%);
+  font: 500 max(8px, calc(10px * var(--s))) / 1 'JetBrains Mono', ui-monospace, monospace;
+  cursor: pointer;
+  transform-origin: 50% 100%;
+  transition: transform 260ms var(--ease-out), filter 260ms ease, box-shadow 260ms ease;
+}
+.bb-spine[data-bands='1'] {
+  --bands: linear-gradient(to bottom, transparent var(--band), var(--bc) var(--band) calc(var(--band) + 2px), transparent calc(var(--band) + 2px));
+}
+.bb-spine[data-bands='2'] {
+  --bands: linear-gradient(
+    to bottom,
+    transparent var(--band),
+    var(--bc) var(--band) calc(var(--band) + 2px),
+    transparent calc(var(--band) + 2px) calc(100% - var(--band) - 2px),
+    var(--bc) calc(100% - var(--band) - 2px) calc(100% - var(--band)),
+    transparent calc(100% - var(--band))
+  );
+}
+
+.bb-spine-title,
+.bb-spine-foot {
+  overflow: hidden;
+  max-width: 100%;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+}
+.bb-spine-title { min-height: 0; letter-spacing: 0.07em; }
+.bb-spine-foot { flex: none; max-height: 34%; font-size: max(7px, calc(8px * var(--s))); letter-spacing: 0.12em; opacity: 0.68; }
+
+/* Read: a silk ribbon marker peeks out of the top. */
+.bb-spine[data-read]::before {
+  position: absolute;
+  top: calc(-9px * var(--s));
+  right: 24%;
+  width: 4px;
+  height: calc(14px * var(--s));
+  background: #a24b43;
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 50% 76%, 0 100%);
+  content: '';
+}
+/* A visitor's recommendation: a paper slip tucked between the pages. */
+.bb-spine[data-visitor]::after {
+  position: absolute;
+  top: calc(-7px * var(--s));
+  left: 16%;
+  width: calc(11px * var(--s));
+  height: calc(12px * var(--s));
+  border-radius: 1px;
+  background: #e8e2d4;
+  box-shadow: 0 1px 1px rgb(0 0 0 / 35%);
+  content: '';
+  transform: rotate(-5deg);
+}
+
+@media (hover: hover) {
+  .bb-spine:hover {
+    filter: brightness(1.12);
+    box-shadow: 0 0 0 0.5px rgb(0 0 0 / 65%), 0 16px 18px -8px rgb(0 0 0 / 75%);
+    transform: translateY(calc(-13px * var(--s)));
+  }
+}
+.bb-spine:focus-visible {
+  outline: 2px solid #f2f2f2;
+  outline-offset: 3px;
+  transform: translateY(calc(-13px * var(--s)));
+}
+.bb-spine:active { transform: translateY(calc(-7px * var(--s))) scale(0.98); }
+/* Its slot stays empty while the book is out. */
+.bb-spine[data-pulled] { visibility: hidden; }
+
+/* ---------- the slip that trails the cursor ---------- */
+.bb-slip {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9;
+  display: grid;
+  gap: 3px;
+  max-width: 250px;
+  padding: 8px 12px 13px;
+  color: #191815;
+  background: #ebe6da;
+  clip-path: polygon(0 0, 100% 0, 100% 86%, 93% 100%, 85% 89%, 76% 100%, 66% 90%, 55% 100%, 44% 89%, 33% 100%, 22% 90%, 12% 100%, 4% 88%, 0 100%);
+  filter: drop-shadow(0 6px 10px rgb(0 0 0 / 45%));
+  font: 11px/1.35 'JetBrains Mono', ui-monospace, monospace;
+  opacity: 0;
+  pointer-events: none;
+  rotate: -1.5deg;
+  transition: opacity 140ms ease;
+}
+.bb-slip[data-shown='true'] { opacity: 1; }
+.bb-slip-title { font-weight: 600; }
+.bb-slip-author { color: #6c675d; font-size: 10px; letter-spacing: 0.06em; text-transform: uppercase; }
+.bb-slip-author:empty { display: none; }
+
+/* ---------- the book in hand ---------- */
+.bb-tome-stage {
+  position: fixed;
+  inset: 0;
+  z-index: 10;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  perspective: 1700px;
+  animation: bb-tome-dim 380ms ease forwards;
+}
+@keyframes bb-tome-dim {
+  from { background: rgb(0 0 0 / 0%); backdrop-filter: blur(0); }
+  to { background: rgb(0 0 0 / 74%); backdrop-filter: blur(10px); }
+}
+
+.bb-tome-carrier {
+  --W: min(330px, 34vw);
+  --H: min(calc(var(--W) * 1.5), 76dvh);
+  width: var(--W);
+  height: var(--H);
+  transform-style: preserve-3d;
+}
+
+.bb-tome {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transform: rotateX(6deg) rotateY(-16deg);
+  transition: transform 720ms var(--ease-out, cubic-bezier(0.22, 1, 0.36, 1));
+}
+.bb-tome-stage[data-open] .bb-tome { transform: translateX(50%) rotateX(3deg) rotateY(0deg); }
+
+.bb-tome-back,
+.bb-tome-page,
+.bb-tome-cover,
+.bb-tome-edge,
+.bb-tome-spine {
+  position: absolute;
+}
+
+.bb-tome-back {
+  inset: 0;
+  border-radius: 6px 2px 2px 6px;
+  background: linear-gradient(90deg, rgb(0 0 0 / 30%), transparent 30%), var(--tone);
+  transform: translateZ(calc(var(--depth) / -2)) rotateY(180deg);
+}
+
+.bb-tome-edge { background: #e7e1d3; }
+.bb-tome-edge--fore {
+  top: 4px;
+  bottom: 4px;
+  left: calc(100% - 4px);
+  width: var(--depth);
+  background: repeating-linear-gradient(90deg, #efe9dc 0 1px, #cdc5b4 1px 2px);
+  transform-origin: left center;
+  transform: translateZ(calc(var(--depth) / 2)) rotateY(90deg);
+}
+.bb-tome-edge--head {
+  top: 4px;
+  left: 0;
+  width: calc(100% - 4px);
+  height: var(--depth);
+  background: repeating-linear-gradient(180deg, #efe9dc 0 1px, #cdc5b4 1px 2px);
+  transform-origin: center top;
+  transform: translateY(0) translateZ(calc(var(--depth) / -2)) rotateX(90deg);
+}
+
+.bb-tome-spine {
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  width: var(--depth);
+  height: 100%;
+  padding-top: 18px;
+  color: var(--ink);
+  background: linear-gradient(90deg, rgb(0 0 0 / 40%), rgb(255 255 255 / 14%) 20%, rgb(0 0 0 / 36%)), var(--tone);
+  transform-origin: left center;
+  transform: translateZ(calc(var(--depth) / -2)) rotateY(-90deg);
+}
+.bb-tome-spine span {
+  overflow: hidden;
+  max-height: 80%;
+  font: 500 11px/1 'JetBrains Mono', ui-monospace, monospace;
+  letter-spacing: 0.07em;
+  text-overflow: ellipsis;
+  text-transform: uppercase;
+  white-space: nowrap;
+  writing-mode: vertical-rl;
+}
+
+/* The right-hand page: everything about the book. */
+.bb-tome-page {
+  inset: 4px 4px 4px 0;
+  overflow: auto;
+  padding: 1.35rem 1.25rem 1.5rem 1.5rem;
+  border-radius: 0 4px 4px 0;
+  color: #1d1c19;
+  background:
+    linear-gradient(90deg, rgb(0 0 0 / 18%), transparent 9%),
+    radial-gradient(ellipse at 70% 30%, #f3efe6, #e8e2d4);
+  backface-visibility: hidden;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  transform: translateZ(calc(var(--depth) / 2 - 2px));
+}
+.bb-tome-close {
+  position: sticky;
+  top: 0;
+  float: right;
+  min-width: 36px;
+  min-height: 36px;
+  margin: -0.6rem -0.5rem 0 0.5rem;
+  border: 0;
+  border-radius: 50%;
+  color: #5b574e;
+  background: transparent;
+  font-size: 1.4rem;
+  cursor: pointer;
+}
+.bb-tome-close:hover { color: #1d1c19; background: rgb(0 0 0 / 6%); }
+.bb-tome-close:focus-visible { outline: 2px solid #1d1c19; outline-offset: 1px; }
+.bb-tome-kicker {
+  margin: 0 0 0.75rem;
+  color: #857f73;
+  font-size: 0.625rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+.bb-tome-page h2 {
+  margin: 0;
+  font: 400 clamp(1.15rem, 2.2vw, 1.45rem) / 1.2 Georgia, serif;
+  letter-spacing: -0.01em;
+}
+.bb-tome-author { margin: 0.4rem 0 0; color: #5d584f; font-size: 0.75rem; }
+.bb-tome-meta { display: flex; flex-wrap: wrap; gap: 10px; margin: 0.6rem 0 0; color: #7a7468; font-size: 0.7rem; }
+.bb-tome-meta a { color: #2b2925; }
+.bb-tome-synopsis {
+  margin: 1rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid rgb(0 0 0 / 12%);
+  color: #36332d;
+  font: 0.86rem/1.55 Georgia, serif;
+}
+.bb-tome-note {
+  margin: 1rem 0 0;
+  padding: 0.6rem 0.75rem;
+  border-left: 2px solid #a24b43;
+  color: #3a3730;
+  background: rgb(0 0 0 / 4%);
+  font-size: 0.75rem;
+}
+.bb-tome-status { margin: 1rem 0 0; color: #6d675c; font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; }
+.bb-tome-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 1rem; }
+.bb-tome-actions button {
+  min-height: 38px;
+  padding: 8px 12px;
+  border: 1px solid rgb(0 0 0 / 22%);
+  border-radius: 6px;
+  color: #1d1c19;
+  background: rgb(255 255 255 / 35%);
+  font: inherit;
+  font-size: 0.7rem;
+  cursor: pointer;
+}
+.bb-tome-actions button:hover { background: rgb(255 255 255 / 70%); }
+.bb-tome-actions .is-danger { border-color: rgb(162 75 67 / 55%); color: #8d3b34; }
+
+/* The front board, hinged at the spine. */
+.bb-tome-cover {
+  inset: 0;
+  transform-origin: left center;
+  transform-style: preserve-3d;
+  transform: translateZ(calc(var(--depth) / 2));
+  transition: transform 720ms cubic-bezier(0.65, 0, 0.35, 1);
+}
+.bb-tome-stage[data-open] .bb-tome-cover { transform: translateZ(calc(var(--depth) / 2)) rotateY(-178deg); }
+
+.bb-tome-face,
+.bb-tome-endpaper {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  backface-visibility: hidden;
+}
+.bb-tome-face {
+  border-radius: 2px 6px 6px 2px;
+  background: var(--cloth), var(--tone);
+  box-shadow: inset 5px 0 7px -3px rgb(0 0 0 / 45%), inset -1px 0 0 rgb(255 255 255 / 12%);
+}
+.bb-tome-face img { width: 100%; height: 100%; object-fit: cover; }
+.bb-tome-typeset {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1.1rem;
+  height: calc(100% - 24px);
+  margin: 12px 12px 12px 18px;
+  padding: 1.5rem 1rem;
+  border: 1px solid color-mix(in srgb, var(--ink) 32%, transparent);
+  color: var(--ink);
+  text-align: center;
+}
+.bb-tome-typeset span { font: 400 clamp(1.1rem, 2.4vw, 1.5rem) / 1.25 Georgia, serif; overflow-wrap: anywhere; }
+.bb-tome-typeset small { font: 500 0.65rem/1 'JetBrains Mono', ui-monospace, monospace; letter-spacing: 0.22em; opacity: 0.75; }
+
+/* The inside of the board: an endpaper with the cover tipped in. */
+.bb-tome-endpaper {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  gap: 1.1rem;
+  border-radius: 6px 2px 2px 6px;
+  background:
+    linear-gradient(270deg, rgb(0 0 0 / 22%), transparent 10%),
+    radial-gradient(ellipse at 25% 20%, rgb(255 255 255 / 35%), transparent 55%),
+    radial-gradient(ellipse at 80% 85%, rgb(0 0 0 / 6%), transparent 60%),
+    #e3dccd;
+  transform: rotateY(180deg);
+}
+.bb-tome-plate {
+  display: grid;
+  place-items: center;
+  width: 58%;
+  aspect-ratio: 2 / 3;
+  padding: 6px;
+  background: #f1ece2;
+  box-shadow: 0 1px 0 rgb(255 255 255 / 60%) inset, 0 8px 16px rgb(0 0 0 / 22%);
+  rotate: -1.2deg;
+}
+.bb-tome-plate img { width: 100%; height: 100%; object-fit: contain; }
+.bb-tome-plate span { color: #9a9385; font: 400 3rem/1 Georgia, serif; }
+.bb-tome-exlibris {
+  margin: 0;
+  color: #8a8376;
+  font: 500 0.58rem/1 'JetBrains Mono', ui-monospace, monospace;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.bb-tome-inline-cover { display: none; }
+
+/* Phones: one page at a time. The board swings away and the page fills in,
+ * with the cover set into the page instead. */
+@media (max-width: 720px) {
+  .bb-tome-inline-cover {
+    display: block;
+    float: right;
+    width: 32%;
+    margin: 1.1rem 0 0.6rem 0.9rem;
+    box-shadow: 0 6px 14px rgb(0 0 0 / 22%);
+    rotate: 1.5deg;
+  }
+  .bb-tome-carrier { --W: min(86vw, 380px); --H: min(calc(var(--W) * 1.48), 78dvh); }
+  .bb-tome-stage[data-open] .bb-tome { transform: rotateX(2deg) rotateY(0deg); }
+  .bb-tome-cover { transition: transform 720ms cubic-bezier(0.65, 0, 0.35, 1), opacity 220ms ease 520ms; }
+  .bb-tome-stage[data-open] .bb-tome-cover { opacity: 0; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bb-spine,
+  .bb-tome,
+  .bb-tome-cover { transition: none; }
+  .bb-spine:hover,
+  .bb-spine:focus-visible { transform: none; }
+  .bb-tome-stage { animation-duration: 1ms; }
+}

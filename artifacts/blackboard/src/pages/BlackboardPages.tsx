@@ -14,6 +14,9 @@ import { confirmAdmin, rememberAdmin, storedAdmin } from '../lib/adminSession';
 import bookMeta from '../data/bookMeta.json';
 import { trackEvent } from '../lib/analytics';
 import { useStandaloneScroll } from '../hooks/useStandaloneScroll';
+import { Bookshelf } from '../components/bookshelf/Bookshelf';
+import { Tome } from '../components/bookshelf/Tome';
+import type { SpineLook } from '../components/bookshelf/spine';
 import { blogPosts } from '../data/blogPosts';
 import { ScrollToTop } from '../components/hud/ScrollToTop';
 import { BlackboardWallpaper } from '../blackboard/BlackboardWallpaper';
@@ -25,7 +28,6 @@ type Book = { title: string; author: string; read: boolean; note?: string; visit
 type Shelf = { name: string; books: Book[] };
 const metaMap = bookMeta.books as Record<string, { cover: string | null; desc: string | null }>;
 const keyOf = (book: Book) => `${book.title}|${book.author}`;
-const initial = (title: string) => title.match(/\p{L}/u)?.[0]?.toUpperCase() ?? '?';
 const dateLabel = (iso?: string) => iso ? new Date(iso).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : '';
 const SESSION_KEY = 'book-session-id';
 
@@ -95,24 +97,18 @@ function LibraryChrome({ active, children }: { active: 'books' | 'quotes' | 'blo
   return <main className="bb-library" data-wallpaper={variant} data-ink="light"><BlackboardWallpaper /><ScrollToTop /><header className="bb-library-header"><Link className="bb-library-home" href="/" aria-label="Back to Blackboard"><img src="/assets/nodes/site-logo-avatar.webp" alt="" width="42" height="48" /></Link><nav className="bb-library-tabs" aria-label="Library navigation"><Link className="bb-library-mark" href="/stats" aria-label="Site statistics"><StatsGlyph /></Link><Link className={active === 'books' ? 'is-active' : ''} aria-current={active === 'books' ? 'page' : undefined} href="/books"><BookOpen aria-hidden="true" /> Books</Link><Link className={active === 'quotes' ? 'is-active' : ''} aria-current={active === 'quotes' ? 'page' : undefined} href="/quotes"><Quote aria-hidden="true" /> Quotes</Link><Link className={active === 'blog' ? 'is-active' : ''} aria-current={active === 'blog' ? 'page' : undefined} href="/blog"><FileText aria-hidden="true" /> Blog</Link><Link className="bb-library-mark" href="/github" aria-label="GitHub contributions"><GithubGlyph /></Link></nav></header><section className="bb-library-content">{children}</section></main>;
 }
 
-function BookModal({ book, onClose, onToggle, onDelete }: { book: Book; onClose: () => void; onToggle?: () => void; onDelete?: () => void }) {
+type Pulled = { book: Book; spine: HTMLElement; look: SpineLook };
+
+/** The book in hand: its catalogue cover and synopsis, filled in from the
+ * public libraries when missing, shown in the opened Tome. */
+function PulledBook({ pull, onClosed, onToggle, onDelete }: { pull: Pulled; onClosed: () => void; onToggle?: () => void; onDelete?: () => void }) {
+  const { book } = pull;
   const meta = metaMap[keyOf(book)]; const [cover, setCover] = useState(book.coverUrl ?? meta?.cover ?? null); const [description, setDescription] = useState(book.description ?? meta?.desc ?? null);
-  const closeRef = useRef<HTMLButtonElement>(null);
-  useEffect(() => {
-    const onKey = (event: KeyboardEvent) => { if (event.key === 'Escape') onClose(); };
-    window.addEventListener('keydown', onKey);
-    return () => window.removeEventListener('keydown', onKey);
-  }, [onClose]);
-  // A modal dialog takes focus when it opens and hands it back when it
-  // closes; otherwise keyboard and screen-reader users stay on the page
-  // behind it, on the row that opened it.
-  useEffect(() => {
-    const opener = document.activeElement as HTMLElement | null;
-    closeRef.current?.focus();
-    return () => { if (opener?.isConnected) opener.focus(); };
-  }, []);
   useEffect(() => { if (cover && description) return; fetch(`/api/book-search?q=${encodeURIComponent(`${book.title} ${book.author}`)}`).then(r => r.ok ? r.json() : null).then(data => { const result = data?.results?.[0]; if (result) { if (!cover) setCover(result.coverUrl ?? null); if (!description) setDescription(result.description ?? null); } }).catch(() => undefined); }, [book, cover, description]);
-  return <div className="bb-modal-overlay" onClick={onClose}><article className="bb-book-modal" role="dialog" aria-modal="true" aria-label={book.title} onClick={event => event.stopPropagation()}><button className="bb-modal-close" ref={closeRef} onClick={onClose} aria-label="Close">×</button><div className="bb-modal-cover">{cover ? <img src={cover} alt="" /> : initial(book.title)}</div><div className="bb-modal-copy">{description && <p className="bb-modal-synopsis">{description.length > 600 ? `${description.slice(0, 600)}…` : description}</p>}<h2>{book.title}</h2>{book.author && <p className="bb-modal-author">{book.author}</p>}<div className="bb-modal-meta">{book.year && <span>{book.year}</span>}{book.source && (book.sourceUrl ? <a href={book.sourceUrl} target="_blank" rel="noreferrer">{book.source} ↗</a> : <span>{book.source}</span>)}</div><p className="bb-modal-status">{book.read ? '✓ READ' : '○ UNREAD'}{book.dateAdded && ` · Added ${dateLabel(book.dateAdded)}`}</p>{book.note && <p className="bb-modal-note">{book.note}</p>}<div className="bb-modal-actions">{onToggle && <button className="bb-modal-action" onClick={onToggle}>{book.read ? 'MARK AS UNREAD' : 'MARK AS READ'}</button>}{onDelete && <button className="bb-modal-action bb-modal-action--danger" onClick={onDelete}>DELETE RECOMMENDATION</button>}</div></div></article></div>;
+  const actions = onToggle || onDelete
+    ? <>{onToggle && <button onClick={onToggle}>{book.read ? 'Mark as unread' : 'Mark as read'}</button>}{onDelete && <button className="is-danger" onClick={onDelete}>Delete recommendation</button>}</>
+    : undefined;
+  return <Tome book={book} look={pull.look} spine={pull.spine} cover={cover} description={description} status={<>{book.read ? 'Read' : 'Unread'}{book.dateAdded && ` · Added ${dateLabel(book.dateAdded)}`}</>} actions={actions} onClosed={onClosed} />;
 }
 
 export function BlackboardBooksPage() {
@@ -124,7 +120,7 @@ export function BlackboardBooksPage() {
   const [community, setCommunity] = useState<Book[]>([]);
   // Admin toggles saved this visit, until the live list includes them.
   const [readMarks, setReadMarks] = useState<Record<string, boolean>>({});
-  const [selected, setSelected] = useState<Book | null>(null);
+  const [selected, setSelected] = useState<Pulled | null>(null);
   const [confirmDelete, setConfirmDelete] = useState<Book | null>(null);
   const [apiOnline, setApiOnline] = useState(true);
   const [mutationError, setMutationError] = useState('');
@@ -200,7 +196,7 @@ export function BlackboardBooksPage() {
       const next = { ...book, read: nextRead };
       if (book.visitor) setCommunity(items => items.map(item => item.title === book.title && item.author === book.author && item.dateAdded === book.dateAdded ? next : item));
       else setReadMarks(values => ({ ...values, [keyOf(book)]: nextRead }));
-      setSelected(current => current && keyOf(current) === keyOf(book) ? next : current);
+      setSelected(current => current && keyOf(current.book) === keyOf(book) ? { ...current, book: next } : current);
     } catch { setMutationError('Could not save read status. Check your connection and admin session, then try again.'); }
     finally { mutationPending.current = false; }
   };
@@ -218,11 +214,12 @@ export function BlackboardBooksPage() {
   };
 
   const normalized = query.toLowerCase().trim();
-  const merged = [{ name: 'Community Recommendations', books: community }, ...shelves]
+  // Memoised so the shelves keep their identity across unrelated updates.
+  const merged = useMemo(() => [{ name: 'Community Recommendations', books: community }, ...shelves]
     .map(shelf => ({ ...shelf, books: shelf.books.filter(book => !normalized || `${book.title} ${book.author}`.toLowerCase().includes(normalized)) }))
-    .filter(shelf => shelf.books.length);
+    .filter(shelf => shelf.books.length), [community, shelves, normalized]);
 
-  return <LibraryChrome active="books">{mutationError && <p className="bb-mutation-error" role="alert">{mutationError}</p>}<div className="bb-library-intro"><p className="bb-kicker">Library{isAdmin && <span className="bb-admin-badge">ADMIN</span>}</p><h1>Books</h1></div><label className="bb-search"><Search aria-hidden="true" /><span className="sr-only">Search books</span><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Search title or author" /></label><BookRecommendationSearch sessionId={sessionId.current} onAdded={book => setCommunity(items => [...items, book])} />{!apiOnline && <p className="bb-api-note">Community recommendations could not load. Please refresh to reconnect.</p>}<div className="bb-shelf-grid">{merged.map(shelf => <section className={`bb-shelf${shelf.name === 'Community Recommendations' ? ' bb-shelf--community' : ''}`} key={shelf.name}><div className="bb-shelf-heading"><h2>{shelf.name}</h2><span>{String(shelf.books.length).padStart(2, '0')}</span></div><ul>{shelf.books.map(book => { const displayBook = { ...book, read: effectiveRead(book) }; const cover = book.coverUrl ?? metaMap[keyOf(book)]?.cover; return <li key={`${shelf.name}-${keyOf(book)}-${book.dateAdded ?? ''}`}><button className="bb-book-row" onClick={() => { setSelected(displayBook); trackEvent('Book Open', { title: book.title, author: book.author, visitor: Boolean(book.visitor) }); }}><span className={displayBook.read ? 'bb-read' : 'bb-unread'} aria-hidden="true" />{cover ? <img className="bb-book-thumb" src={cover} alt="" /> : <span className="bb-book-thumb bb-book-thumb--empty" aria-hidden="true">{initial(book.title)}</span>}<span><strong>{book.title}</strong><small>{book.author}{book.dateAdded && ` · ${dateLabel(book.dateAdded)}`}</small></span></button></li>; })}</ul></section>)}</div>{selected && <BookModal book={selected} onClose={() => setSelected(null)} onToggle={canToggle(selected) ? () => toggleRead(selected) : undefined} onDelete={canDelete(selected) ? () => setConfirmDelete(selected) : undefined} />}{confirmDelete && <div className="bb-modal-overlay" onClick={() => setConfirmDelete(null)}><article className="bb-admin-modal" role="alertdialog" aria-modal="true" aria-label="Delete recommendation?" onClick={event => event.stopPropagation()} onKeyDown={event => { if (event.key === 'Escape') setConfirmDelete(null); }}><button className="bb-modal-close" onClick={() => setConfirmDelete(null)} aria-label="Close">×</button><span className="bb-admin-modal-kicker">ADMIN / COMMUNITY</span><h2>Delete recommendation?</h2><p>This removes <strong>{confirmDelete.title}</strong> from the shared library.</p><div className="bb-admin-modal-actions"><button className="bb-modal-action" autoFocus onClick={() => setConfirmDelete(null)}>CANCEL</button><button className="bb-modal-action bb-modal-action--danger" onClick={() => deleteRecommendation(confirmDelete)}>DELETE</button></div></article></div>}{adminPrompt && <div className="bb-modal-overlay" onClick={() => setAdminPrompt(false)}><article className="bb-admin-modal" role="dialog" aria-label="Admin access" onClick={event => event.stopPropagation()}><button className="bb-modal-close" onClick={() => setAdminPrompt(false)} aria-label="Close">×</button><span className="bb-admin-modal-kicker">BLACKBOARD / ADMIN</span><h2>Unlock admin controls</h2><p>Use the shared admin password to manage community books and read states.</p><input className="bb-admin-input" type="password" autoFocus placeholder="Password" autoComplete="current-password" value={adminPass} onChange={event => { setAdminPass(event.target.value); setAdminError(''); }} onKeyDown={event => { if (event.key === 'Enter') void submitAdminPass(); if (event.key === 'Escape') setAdminPrompt(false); }} />{adminError && <p className="bb-admin-error">{adminError}</p>}<button className="bb-modal-action bb-admin-submit" onClick={() => void submitAdminPass()}>UNLOCK</button></article></div>}<button className="bb-library-backlink" onClick={() => setLocation('/')}>Return to Blackboard</button></LibraryChrome>;
+  return <LibraryChrome active="books">{mutationError && <p className="bb-mutation-error" role="alert">{mutationError}</p>}<div className="bb-library-intro"><p className="bb-kicker">Library{isAdmin && <span className="bb-admin-badge">ADMIN</span>}</p><h1>Books</h1></div><label className="bb-search"><Search aria-hidden="true" /><span className="sr-only">Search books</span><input value={query} onChange={event => setQuery(event.target.value)} placeholder="Search title or author" /></label><BookRecommendationSearch sessionId={sessionId.current} onAdded={book => setCommunity(items => [...items, book])} />{!apiOnline && <p className="bb-api-note">Community recommendations could not load. Please refresh to reconnect.</p>}<Bookshelf shelves={merged} bookKey={keyOf} isRead={effectiveRead} pulled={selected ? keyOf(selected.book) : null} onPull={(book, spine, look) => { setSelected({ book: { ...book, read: effectiveRead(book) }, spine, look }); trackEvent('Book Open', { title: book.title, author: book.author, visitor: Boolean(book.visitor) }); }} />{selected && <PulledBook key={keyOf(selected.book)} pull={selected} onClosed={() => setSelected(null)} onToggle={canToggle(selected.book) ? () => toggleRead(selected.book) : undefined} onDelete={canDelete(selected.book) ? () => setConfirmDelete(selected.book) : undefined} />}{confirmDelete && <div className="bb-modal-overlay" onClick={() => setConfirmDelete(null)}><article className="bb-admin-modal" role="alertdialog" aria-modal="true" aria-label="Delete recommendation?" onClick={event => event.stopPropagation()} onKeyDown={event => { if (event.key === 'Escape') setConfirmDelete(null); }}><button className="bb-modal-close" onClick={() => setConfirmDelete(null)} aria-label="Close">×</button><span className="bb-admin-modal-kicker">ADMIN / COMMUNITY</span><h2>Delete recommendation?</h2><p>This removes <strong>{confirmDelete.title}</strong> from the shared library.</p><div className="bb-admin-modal-actions"><button className="bb-modal-action" autoFocus onClick={() => setConfirmDelete(null)}>CANCEL</button><button className="bb-modal-action bb-modal-action--danger" onClick={() => deleteRecommendation(confirmDelete)}>DELETE</button></div></article></div>}{adminPrompt && <div className="bb-modal-overlay" onClick={() => setAdminPrompt(false)}><article className="bb-admin-modal" role="dialog" aria-label="Admin access" onClick={event => event.stopPropagation()}><button className="bb-modal-close" onClick={() => setAdminPrompt(false)} aria-label="Close">×</button><span className="bb-admin-modal-kicker">BLACKBOARD / ADMIN</span><h2>Unlock admin controls</h2><p>Use the shared admin password to manage community books and read states.</p><input className="bb-admin-input" type="password" autoFocus placeholder="Password" autoComplete="current-password" value={adminPass} onChange={event => { setAdminPass(event.target.value); setAdminError(''); }} onKeyDown={event => { if (event.key === 'Enter') void submitAdminPass(); if (event.key === 'Escape') setAdminPrompt(false); }} />{adminError && <p className="bb-admin-error">{adminError}</p>}<button className="bb-modal-action bb-admin-submit" onClick={() => void submitAdminPass()}>UNLOCK</button></article></div>}<button className="bb-library-backlink" onClick={() => setLocation('/')}>Return to Blackboard</button></LibraryChrome>;
 }
 
 export function BlackboardQuotesPage() {
