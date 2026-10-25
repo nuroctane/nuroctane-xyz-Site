@@ -350,10 +350,10 @@ const FEATURE_TABS: FeatureTab[] = [
           gateways and per-model native transport: GPT/Grok use Responses,
           Claude and Qwen 3.5+ use Messages, Gemini uses GenerateContent, and
           compatible models use Chat Completions. Go ids remain{" "}
-          <code>opencode-go/…</code>; <code>opencode auth login</code> /{" "}
-          <code>OPENCODE_API_KEY</code> / <code>auth.json</code>. An expired
-          Console key says so and where the new one goes, and{" "}
-          <code>/model</code> still lists every model while it is replaced.
+          <code>opencode-go/…</code>. Sign in with OpenCode Console in the
+          browser (Zen) or paste a key (Zen and Go); an expired key says so,
+          and <code>/model</code> still lists every model while it is
+          replaced.
         </li>
         <li>
           Permission modes: <strong>manual</strong> / <strong>plan</strong> /{" "}
