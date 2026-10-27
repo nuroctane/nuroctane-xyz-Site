@@ -4,7 +4,7 @@
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (60)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (81)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (55)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (104)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (105)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (32)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (108)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (66)
@@ -1328,6 +1328,9 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > — @lichthauch
 
 > How to become untouchable: Choose something that makes your hands shake then do it until they stop shaking then do it until other people's hands shake when they watch you.
+> — @lichthauch
+
+> Measure the distance between what you say and what you do. that distance is your entire problem. the closer those two points get to each other, the more powerful you become. when they become the same point, you become unstoppable
 > — @lichthauch
 
 ## Creativity, Purpose & Expression
