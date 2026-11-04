@@ -1,5 +1,5 @@
 ## Index
-- [[#Faith, God & Surrender|Faith, God & Surrender]] (52)
+- [[#Faith, God & Surrender|Faith, God & Surrender]] (53)
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (31)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (60)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (81)
@@ -192,6 +192,11 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > Not with chaos, not with revenge, and not by your hand. God exposes with light.
 > What was done in secret will lose its power. What was hidden behind smiles and excuses will be revealed for what it truly is. You don't have to defend yourself or explain your side. God sees motives, conversations, and intentions you never heard. Exposure is protection, not punishment. It clears your path, restores your peace, and removes confusion. Stay quiet. Stay obedient. Let God handle what tried to handle you. When He exposes, He also vindicates, heals, and moves you forward, clean, covered, and unbothered.
 > — @Fmthegreat60629
+
+> The Enemy will convince you to pick a fight with those you love, forever hold on to a grudge, avoid the single action you need most, and disregard precious time spent in prayer. He'll tell you it's easier this way. He'll encourage you to stay the same. But within each of us lies a gentle yet firm voice of reason, an advocate of grace, who invites us to sow peace rather than strike a blow, to forgive ourselves and others eleventy times over, to remain patient through our toils, to remember that transforming our hearts is how we begin to change the world.
+> 
+> Living out the Word shatters the Enemy's arguments and renders them null. And there's no greater persuasion of faith than to taste the silent fruits of living it out
+> — @AugustusDelano
 
 ## Reality, Consciousness & Perception
 
