@@ -1,0 +1,397 @@
+[
+  {
+    "name": "Superpowers",
+    "href": "https://github.com/obra/superpowers",
+    "why": "TDD, systematic debugging, brainstorming, subagent workflows - the default agent methodology"
+  },
+  {
+    "name": "Fable",
+    "href": "https://github.com/Sahir619/fable-method",
+    "why": "Think / act / prove: fable-method, fable-loop, fable-judge"
+  },
+  {
+    "name": "Builder.io Skills",
+    "href": "https://github.com/BuilderIO/skills",
+    "why": "Agent efficiency: efficient-fable, plan-arbiter, stay-within-limits, visual-plan"
+  },
+  {
+    "name": "Compound Engineering",
+    "href": "https://github.com/EveryInc/compound-engineering-plugin",
+    "why": "Every Inc compound-engineering plugin - multi-step agent workflows teams love"
+  },
+  {
+    "name": "gstack",
+    "href": "https://github.com/garrytan/gstack",
+    "why": "Snarktank gstack - stacked agent workflows / AI engineering task graphs"
+  },
+  {
+    "name": "wshobson Agents",
+    "href": "https://github.com/wshobson/agents",
+    "why": "Large Claude agent ecosystem - 100+ specialized skills across plugins"
+  },
+  {
+    "name": "Softaworks Agent Toolkit",
+    "href": "https://github.com/softaworks/agent-toolkit",
+    "why": "Practical agent toolkit skills for everyday coding-agent sessions"
+  },
+  {
+    "name": "Matt Pocock Skills",
+    "href": "https://github.com/mattpocock/skills",
+    "why": "Real-engineering skills: grill-me, triage, tdd, to-spec, implement, handoff"
+  },
+  {
+    "name": "Addy Osmani Agent Skills",
+    "href": "https://github.com/addyosmani/agent-skills",
+    "why": "Production engineering: context engineering, frontend UI, security, shipping, TDD"
+  },
+  {
+    "name": "Anthropic Official Skills",
+    "href": "https://github.com/anthropics/skills",
+    "why": "Official public Agent Skills examples from Anthropic (patterns + inspiration)"
+  },
+  {
+    "name": "Microsoft Skills",
+    "href": "https://github.com/microsoft/skills",
+    "why": "Azure / Foundry / Microsoft AI agent skills, custom agents, MCP configs"
+  },
+  {
+    "name": "strativd AI Skills",
+    "href": "https://github.com/strativd/ai-skills",
+    "why": "Curated SKILL.md collection following the open Agent Skills spec"
+  },
+  {
+    "name": "Vercel Agent Skills",
+    "href": "https://github.com/vercel-labs/agent-skills",
+    "why": "Vercel's official collection of agent skills for shipping web software"
+  },
+  {
+    "name": "nanocodex",
+    "href": "https://github.com/gakonst/nanocodex",
+    "why": "Minimal Rust coding agent (gakonst) - reference tools incl. a lean web_search"
+  },
+  {
+    "name": "GitHub Spec Kit",
+    "href": "https://github.com/github/spec-kit",
+    "why": "Spec-driven development kit from GitHub - specs before code"
+  },
+  {
+    "name": "Spec-Driven Development",
+    "href": "https://github.com/FredAntB/Spec-Driven-Development",
+    "why": "Claude skill that keeps coding agents on a written spec (FredAntB)"
+  },
+  {
+    "name": "AI Dev Tasks",
+    "href": "https://github.com/snarktank/ai-dev-tasks",
+    "why": "Snarktank task breakdown patterns for AI coding agents"
+  },
+  {
+    "name": "Impeccable",
+    "href": "https://github.com/pbakaus/impeccable",
+    "why": "Design language for AI harnesses: audit / polish / critique / animate (46 detectors)"
+  },
+  {
+    "name": "Meng To Skills",
+    "href": "https://github.com/MengTo/Skills",
+    "why": "Design + web craft: UI prompting, motion systems, brand worlds, capture/perf"
+  },
+  {
+    "name": "UI Craft",
+    "href": "https://github.com/educlopez/ui-craft",
+    "why": "Design engineering system for AI coding agents - large craft-oriented skill set"
+  },
+  {
+    "name": "Design Skills (ihlamury)",
+    "href": "https://github.com/ihlamury/design-skills",
+    "why": "Opinionated UI constraints extracted from the best product UIs"
+  },
+  {
+    "name": "Oh My Design",
+    "href": "https://github.com/kwakseongjae/oh-my-design",
+    "why": "Give your AI coding agent a design system - one-command design skill pack"
+  },
+  {
+    "name": "Taste Skill",
+    "href": "https://github.com/Leonxlnx/taste-skill",
+    "why": "Stops AI UI slop - taste constraints beloved by frontend engineers (Leonxlnx)"
+  },
+  {
+    "name": "Superdesign Skill",
+    "href": "https://github.com/superdesigndev/superdesign-skill",
+    "why": "Design skill for Claude Code, Cursor, and other agents (superdesigndev)"
+  },
+  {
+    "name": "Anydesign",
+    "href": "https://github.com/uxKero/anydesign",
+    "why": "Analyze images, websites, and Figma into design guidance for agents"
+  },
+  {
+    "name": "UI/UX Pro Max",
+    "href": "https://github.com/nextlevelbuilder/ui-ux-pro-max-skill",
+    "why": "High-bar UI/UX skill pack for product-quality interfaces"
+  },
+  {
+    "name": "Awesome Design Skills",
+    "href": "https://github.com/bergside/awesome-design-skills",
+    "why": "Curated index of DESIGN.md + SKILL.md design skills (bergside)"
+  },
+  {
+    "name": "Emil Kowalski Skills",
+    "href": "https://github.com/emilkowalski/skills",
+    "why": "Skills for Design Engineers - animation, craft, and UI polish (emilkowalski)"
+  },
+  {
+    "name": "UI Skills (ibelick)",
+    "href": "https://github.com/ibelick/ui-skills",
+    "why": "Design-engineer skills for building refined, motion-aware interfaces"
+  },
+  {
+    "name": "Make Interfaces Feel Better",
+    "href": "https://github.com/jakubkrehel/make-interfaces-feel-better",
+    "why": "Skill that makes your interfaces feel better - micro-interaction taste (jakubkrehel)"
+  },
+  {
+    "name": "Interior",
+    "href": "https://github.com/ddoemonn/interior",
+    "why": "Finished React micro-interactions (copy-paste hooks + components) - interior.dev / ddoemonn"
+  },
+  {
+    "name": "OKLCH Color Skill",
+    "href": "https://github.com/jakubkrehel/oklch-skill",
+    "why": "Work with OKLCH colors - perceptual palettes and accessible contrast (jakubkrehel)"
+  },
+  {
+    "name": "User Interface Wiki",
+    "href": "https://github.com/raphaelsalaja/userinterface-wiki",
+    "why": "A living manual for better interfaces - UI patterns and principles (raphaelsalaja)"
+  },
+  {
+    "name": "Dialkit",
+    "href": "https://github.com/joshpuckett/dialkit",
+    "why": "Dial in interface parameters of any kind - tune motion/layout/token knobs (joshpuckett)"
+  },
+  {
+    "name": "Extract Design System",
+    "href": "https://github.com/arvindrk/extract-design-system",
+    "why": "Pull colors, typography, spacing tokens from a live site or brand"
+  },
+  {
+    "name": "Brand to Design.md",
+    "href": "https://github.com/shaom/brand-to-design-md-skill",
+    "why": "Turn a public brand URL into a portable design.md skill"
+  },
+  {
+    "name": "Feature-Sliced Design Skills",
+    "href": "https://github.com/feature-sliced/skills",
+    "why": "Agent skills for applying Feature-Sliced Design architecture"
+  },
+  {
+    "name": "Agent Browser",
+    "href": "https://github.com/vercel-labs/agent-browser",
+    "why": "Browser automation CLI for AI agents - navigate, act, and extract (vercel-labs)"
+  },
+  {
+    "name": "Chrome DevTools",
+    "href": "https://github.com/ChromeDevTools/chrome-devtools-mcp",
+    "why": "Live Chrome control: network, console, performance traces, automation"
+  },
+  {
+    "name": "Firecrawl",
+    "href": "https://github.com/firecrawl/firecrawl-grok-plugin",
+    "why": "Scrape, crawl, and search the web into clean LLM-ready markdown"
+  },
+  {
+    "name": "Playwright Skill",
+    "href": "https://github.com/lackeyjb/playwright-skill",
+    "why": "Browser e2e automation skill for Claude/Cursor agents (lackeyjb)"
+  },
+  {
+    "name": "Figma",
+    "href": "https://github.com/figma/mcp-server-guide",
+    "why": "Design-to-code: read Figma context, Code Connect, canvas write"
+  },
+  {
+    "name": "Vercel",
+    "href": "https://github.com/vercel/vercel-plugin",
+    "why": "Deploy, env vars, Next.js, AI SDK, Marketplace - Vercel platform skills"
+  },
+  {
+    "name": "Railway",
+    "href": "https://github.com/railwayapp/railway-skills",
+    "why": "Deploy services, DBs, env vars, domains, metrics on Railway"
+  },
+  {
+    "name": "Cloudflare",
+    "href": "https://github.com/cloudflare/skills",
+    "why": "Workers, Durable Objects, Wrangler, MCP servers, web performance"
+  },
+  {
+    "name": "Google Skills",
+    "href": "https://github.com/google/skills",
+    "why": "Official Google product skills (Ads, Analytics, Cloud, Firebase, Gemini, …)"
+  },
+  {
+    "name": "NVIDIA Skills",
+    "href": "https://github.com/NVIDIA/skills",
+    "why": "CUDA, cuOpt, accelerated computing, AIQ research/deploy (300 skill packs)"
+  },
+  {
+    "name": "MongoDB",
+    "href": "https://github.com/mongodb/agent-skills",
+    "why": "Database explore, collections, queries, Atlas best practices"
+  },
+  {
+    "name": "LangExtract",
+    "href": "https://github.com/google/langextract",
+    "why": "Extract structured info from unstructured text via LLMs with source grounding (google)"
+  },
+  {
+    "name": "Axiom",
+    "href": "https://github.com/axiomhq/skills",
+    "why": "Logs/metrics with APL, SRE investigations, monitors, cost analysis"
+  },
+  {
+    "name": "Sentry",
+    "href": "https://github.com/getsentry/plugin-grok",
+    "why": "Error monitoring: issues, stack traces, production debug"
+  },
+  {
+    "name": "AI Marketing Skills",
+    "href": "https://github.com/ericosiu/ai-marketing-skills",
+    "why": "Growth, SEO ops, content ops, outbound, sales pipeline, clone-site (ericosiu)"
+  },
+  {
+    "name": "Marketing Skills (coreyhaines31)",
+    "href": "https://github.com/coreyhaines31/marketingskills",
+    "why": "Popular marketing skill pack for growth experiments and go-to-market agents"
+  },
+  {
+    "name": "OpenSEO",
+    "href": "https://github.com/every-app/open-seo",
+    "why": "Open-source Semrush/Ahrefs alternative - keyword/backlink/rank/audit MCP (every-app)"
+  },
+  {
+    "name": "Akarso",
+    "href": "https://github.com/remorses/akarso",
+    "why": "Post, schedule, and reply across 14 social platforms from the terminal (remorses)"
+  },
+  {
+    "name": "Finance Skills",
+    "href": "https://github.com/himself65/finance-skills",
+    "why": "Financial analysis: valuation, earnings, options, market data readers (himself65)"
+  },
+  {
+    "name": "Longbridge Skills",
+    "href": "https://github.com/longbridge/skills",
+    "why": "Markets: portfolio, quant, technicals, earnings, value investing, watchlist"
+  },
+  {
+    "name": "Buffett Skills",
+    "href": "https://github.com/agi-now/buffett-skills",
+    "why": "Value-investing skill pack built on Warren Buffett principles (agi-now)"
+  },
+  {
+    "name": "CRE Agent Skills",
+    "href": "https://github.com/ahacker-1/cre-agent-skills",
+    "why": "Commercial real estate: underwriting, due diligence, financing, brokerage"
+  },
+  {
+    "name": "CC Finance Skills",
+    "href": "https://github.com/JacobHsu/cc-finance-skills",
+    "why": "Claude finance helpers: yfinance data, correlations, market utilities"
+  },
+  {
+    "name": "Alpaca Skills",
+    "href": "https://github.com/alpacahq/alpaca-skills",
+    "why": "Agent skills for Alpaca Trading API + Broker API (stocks, options, crypto rails)"
+  },
+  {
+    "name": "Vibe Trade",
+    "href": "https://github.com/spyderweb47/Vibe-Trade",
+    "why": "AI trading agent skill system - drop a SKILL.md to extend strategy tooling"
+  },
+  {
+    "name": "Claude Red",
+    "href": "https://github.com/SnailSploit/Claude-Red",
+    "why": "Curated offensive-security skill library for authorized red-team agent work"
+  },
+  {
+    "name": "Scientific Agent Skills",
+    "href": "https://github.com/K-Dense-AI/scientific-agent-skills",
+    "why": "K-Dense AI scientist pack: biopython, astropy, benchling, paper search, lab tooling"
+  },
+  {
+    "name": "Awesome Journal Skills",
+    "href": "https://github.com/brycewang-stanford/Awesome-Journal-Skills",
+    "why": "Academic journal skill packs (AAAI, ACL, AEJ, …) - huge; paper workflows only"
+  },
+  {
+    "name": "Robotics Agent Skills",
+    "href": "https://github.com/arpitg1304/robotics-agent-skills",
+    "why": "Skills that make coding agents better at robot software (arpitg1304)"
+  },
+  {
+    "name": "Claude Skills Mega Pack",
+    "href": "https://github.com/alirezarezvani/claude-skills",
+    "why": "Large multi-domain pack (business, agents, growth, ops) - heavy download"
+  },
+  {
+    "name": "Awesome Claude Skills",
+    "href": "https://github.com/ComposioHQ/awesome-claude-skills",
+    "why": "ComposioHQ curated index of Claude/agent skills across the ecosystem"
+  },
+  {
+    "name": "Awesome Claude Skills (travisvn)",
+    "href": "https://github.com/travisvn/awesome-claude-skills",
+    "why": "Community-curated Claude skills list - discovery companion"
+  },
+  {
+    "name": "Antigravity Awesome Skills",
+    "href": "https://github.com/sickn33/agentic-awesome-skills",
+    "why": "Large community skill index (sickn33) - browse then install selectively"
+  },
+  {
+    "name": "Cyfrin / solskill",
+    "href": "https://github.com/Cyfrin/solskill",
+    "why": "Pinned upstream skill source by Cyfrin; mirrored with commit and file hashes"
+  },
+  {
+    "name": "DarkNavySecurity / web3-skills",
+    "href": "https://github.com/DarkNavySecurity/web3-skills",
+    "why": "Pinned upstream skill source by DarkNavySecurity; mirrored with commit and file hashes"
+  },
+  {
+    "name": "JCodesMore / ai-website-cloner-template",
+    "href": "https://github.com/JCodesMore/ai-website-cloner-template",
+    "why": "Pinned upstream skill source by JCodesMore; mirrored with commit and file hashes"
+  },
+  {
+    "name": "MikeFishbeinAtherial / infinite-headcount",
+    "href": "https://github.com/MikeFishbeinAtherial/infinite-headcount",
+    "why": "Pinned upstream skill source by MikeFishbeinAtherial; mirrored with commit and file hashes"
+  },
+  {
+    "name": "droidrun / mobile-harness",
+    "href": "https://github.com/droidrun/mobile-harness",
+    "why": "Pinned upstream skill source by droidrun; mirrored with commit and file hashes"
+  },
+  {
+    "name": "earthtojake / text-to-cad",
+    "href": "https://github.com/earthtojake/text-to-cad",
+    "why": "Pinned upstream skill source by earthtojake; mirrored with commit and file hashes"
+  },
+  {
+    "name": "ferdinandobons / startup-skill",
+    "href": "https://github.com/ferdinandobons/startup-skill",
+    "why": "Pinned upstream skill source by ferdinandobons; mirrored with commit and file hashes"
+  },
+  {
+    "name": "mukul975 / Anthropic-Cybersecurity-Skills",
+    "href": "https://github.com/mukul975/Anthropic-Cybersecurity-Skills",
+    "why": "Pinned upstream skill source by mukul975; mirrored with commit and file hashes"
+  },
+  {
+    "name": "aidentity",
+    "href": "https://github.com/AkshatNaruka/aidentity",
+    "why": "CC0 discovery metadata for the signed skills index; skill files come from author repositories"
+  }
+]

@@ -70,7 +70,7 @@ const PAGES: Record<string, PageMeta> = {
   cli: {
     title: "NurCLI",
     description:
-      "Spend context like it matters. A Rust coding agent with 71 provider routes, a 142-system Jev catalog, semantic search first, local usage aggregation, Enclave security agents, and local-first memory.",
+      "Rust coding agent with 72 provider routes, 142 Jev engines, masked secrets, automatic continuation after usage limits, verified skills, security scanning, and local memory.",
     path: "/cli",
     favicon: "/assets/nodes/nur-cli-logo.png",
   },

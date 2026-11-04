@@ -1,6 +1,8 @@
 {
-  "date": "2026-10-25",
-  "routes": 71,
-  "tools": 56,
-  "jevEngines": 142
+  "date": "2026-11-03",
+  "routes": 72,
+  "tools": 64,
+  "jevEngines": 142,
+  "version": "0.62.0",
+  "leanTools": 30
 }

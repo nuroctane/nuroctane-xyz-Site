@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "blackboard",
+      "runtimeExecutable": "pnpm",
+      "runtimeArgs": ["--filter", "@workspace/blackboard", "dev"],
+      "env": { "PORT": "5180" },
+      "port": 5180
+    }
+  ]
+}

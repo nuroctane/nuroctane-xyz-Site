@@ -62,7 +62,7 @@ const PAGES: Record<string, PageMeta> = {
   cli: {
     title: "NurCLI",
     description:
-      "Token-efficient Rust coding agent with 62 provider routes, local-first memory, inline tool compression, usage telemetry, native vision, and a dense gold TUI.",
+      "Rust coding agent with 72 provider routes, 142 Jev engines, masked secrets, automatic continuation after usage limits, verified skills, security scanning, and local memory.",
     path: "/cli",
     favicon: "/assets/nodes/nur-cli-logo.png",
   },

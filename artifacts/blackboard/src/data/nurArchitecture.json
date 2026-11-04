@@ -2,9 +2,9 @@
   "project": {
     "name": "NurCLI",
     "slug": "nur-cli",
-    "tagline": "71 provider routes, 56 tools and 142 Jev engines in one Rust agent",
+    "tagline": "72 provider routes, 64 tools and 142 Jev engines in one Rust agent",
     "iconDomain": "nuroctane.xyz",
-    "date": "2026-10-01"
+    "date": "2026-11-03"
   },
   "graph": {
     "nodes": [
@@ -13,7 +13,7 @@
         "label": "CLI / TUI / headless",
         "kind": "entry",
         "sub": "three entry surfaces",
-        "sourceRef": "src/main.rs:113",
+        "sourceRef": "src/main.rs",
         "detail": "Command parsing, session bootstrap, Gold TUI streaming, and `nur run` all converge on the same runner; UI events carry text, reasoning, tools, approvals, and usage."
       },
       {
@@ -21,7 +21,7 @@
         "label": "AgentRunner",
         "kind": "agent",
         "sub": "multi-round turn engine",
-        "sourceRef": "src/agent/loop.rs:183",
+        "sourceRef": "src/agent/loop.rs",
         "detail": "Owns user turns, model rounds, truncation continuation, compaction, tool-call cycles, delegated work, usage emission, receipts, and state checkpoints."
       },
       {
@@ -29,7 +29,7 @@
         "label": "Subagent runner",
         "kind": "agent",
         "sub": "scoped nested execution",
-        "sourceRef": "src/agent/subagent.rs:19",
+        "sourceRef": "src/agent/subagent.rs",
         "detail": "Runs focused delegated prompts with provider/model overrides, admission control, bounded recursion, shared cancellation, coordinated events, and reduced tools."
       },
       {
@@ -37,7 +37,7 @@
         "label": "Fusion panel",
         "kind": "agent",
         "sub": "parallel model review",
-        "sourceRef": "src/agent/fusion.rs:18",
+        "sourceRef": "src/agent/fusion.rs",
         "detail": "Fans one task across configured model routes in parallel, labels each panel response, and returns evidence for a synthesizing model round."
       },
       {
@@ -45,7 +45,7 @@
         "label": "PromptContext",
         "kind": "service",
         "sub": "rules · skills · memory",
-        "sourceRef": "src/agent/prompt.rs:138",
+        "sourceRef": "src/agent/prompt.rs",
         "detail": "Assembles the system prompt once per user turn, then re-renders live permission mode, todo state, workspace identity, environment, and runtime policy each round."
       },
       {
@@ -53,7 +53,7 @@
         "label": "Context controller",
         "kind": "service",
         "sub": "prune / promote / compact",
-        "sourceRef": "src/agent/loop.rs:7129",
+        "sourceRef": "src/agent/loop.rs",
         "detail": "Prunes superseded tool observations, promotes saved context variables, estimates the active window, and compacts transcripts while preserving durable state."
       },
       {
@@ -61,7 +61,7 @@
         "label": "ResponseRequest",
         "kind": "service",
         "sub": "normalized request + budget",
-        "sourceRef": "src/agent/loop.rs:1238",
+        "sourceRef": "src/agent/loop.rs",
         "detail": "Combines model id, transcript items, instructions, tools, reasoning effort, cache key, media, and output reserve into one protocol-neutral request."
       },
       {
@@ -69,7 +69,7 @@
         "label": "Failover controller",
         "kind": "service",
         "sub": "reconnect · key rotation · failover",
-        "sourceRef": "src/agent/loop.rs:448",
+        "sourceRef": "src/agent/loop.rs",
         "detail": "A dropped connection reconnects and replays on the same route with backoff, taking back any text already streamed; a rate-limited or empty API key hands over to the next one; then the configured fallback routes. Tool calls run only from a completed response, so a replay never repeats one."
       },
       {
@@ -77,7 +77,7 @@
         "label": "ApiClient",
         "kind": "service",
         "sub": "transport + stream bridge",
-        "sourceRef": "src/api/client.rs:253",
+        "sourceRef": "src/api/client.rs",
         "detail": "Applies route selection, OAuth context, retries, idempotency, media normalization, telemetry, and dispatch into one of four wire protocols."
       },
       {
@@ -85,7 +85,7 @@
         "label": "Provider catalog",
         "kind": "service",
         "sub": "71 routes + 2 sidecars",
-        "sourceRef": "src/providers.rs:965",
+        "sourceRef": "src/providers.rs",
         "detail": "Defines every route's id, display name, endpoint, default model, protocol style, credential source, OAuth capability, and model normalization behavior."
       },
       {
@@ -93,7 +93,7 @@
         "label": "Credential routing",
         "kind": "service",
         "sub": "key / OAuth / CLI auth",
-        "sourceRef": "src/api/client.rs:933",
+        "sourceRef": "src/api/client.rs",
         "detail": "Builds provider-specific authorization, supports subscription and CLI-backed sessions, and refreshes eligible OAuth credentials after unauthorized responses."
       },
       {
@@ -101,15 +101,15 @@
         "label": "Responses adapter",
         "kind": "service",
         "sub": "Responses API + SSE",
-        "sourceRef": "src/api/client.rs:1421",
+        "sourceRef": "src/api/client.rs",
         "detail": "Serializes Responses-style input and tools, records attempts, handles retryable HTTP failures, and normalizes JSON or server-sent events."
       },
       {
         "id": "tool_runtime",
         "label": "Permission + ToolHost",
         "kind": "tool",
-        "sub": "56 tools / one dispatcher",
-        "sourceRef": "src/tools/mod.rs:423",
+        "sub": "64 tools / one dispatcher",
+        "sourceRef": "src/tools/mod.rs",
         "detail": "Approval classes, read-only parallel batches and deny/ask rules; 27 schemas up front and the rest loaded on demand through tool_search, including dogwood policy checks and the diagram plane."
       },
       {
@@ -117,7 +117,7 @@
         "label": "Headroom pipeline",
         "kind": "service",
         "sub": "register / compress / spill",
-        "sourceRef": "src/headroom.rs:300",
+        "sourceRef": "src/headroom.rs",
         "detail": "Registers successful tool bodies, rejects secret-shaped preservation, compresses observations for the model window, and spills oversized results to durable blobs."
       },
       {
@@ -125,7 +125,7 @@
         "label": "Durable runtime state",
         "kind": "store",
         "sub": "sessions / context / memory",
-        "sourceRef": "src/agent/session.rs:134",
+        "sourceRef": "src/agent/session.rs",
         "detail": "Atomically stores transcript sessions, cwd links, context blobs, and vector/graph/hierarchical memory residents under ~/.nur, with backups and scoped recall."
       },
       {
@@ -133,7 +133,7 @@
         "label": "Usage + receipt ledgers",
         "kind": "store",
         "sub": "private ledger · hash chain",
-        "sourceRef": "src/usage.rs:324",
+        "sourceRef": "src/usage.rs",
         "detail": "Every primary, retry, failover and Jev call recorded with its served route; a private local usage ledger aggregates spend without uploading keys."
       },
       {
@@ -141,7 +141,7 @@
         "label": "Direct model labs / 18",
         "kind": "external",
         "sub": "first-party API routes",
-        "sourceRef": "src/providers.rs:966",
+        "sourceRef": "src/providers.rs",
         "detail": "Meta, OpenAI, OpenAI Chat, Anthropic, Google, Antigravity, xAI, DeepSeek, Mistral, Cohere, AI21, Reka, Inception, Writer, Upstage, Thinking Machines, Poolside, Paper Instruments (Ultramarine)."
       },
       {
@@ -149,7 +149,7 @@
         "label": "Cloud + SSO / 3",
         "kind": "external",
         "sub": "managed identity routes",
-        "sourceRef": "src/providers.rs:1183",
+        "sourceRef": "src/providers.rs",
         "detail": "Hugging Face, Azure OpenAI, and Amazon Bedrock."
       },
       {
@@ -157,7 +157,7 @@
         "label": "Asian model labs / 7",
         "kind": "external",
         "sub": "direct regional catalogs",
-        "sourceRef": "src/providers.rs:1432",
+        "sourceRef": "src/providers.rs",
         "detail": "Kimi Code, Moonshot, Z.AI, Alibaba Qwen, MiniMax, StepFun, and Baichuan."
       },
       {
@@ -165,7 +165,7 @@
         "label": "Local servers / 5",
         "kind": "external",
         "sub": "localhost inference",
-        "sourceRef": "src/providers.rs:1817",
+        "sourceRef": "src/providers.rs",
         "detail": "Ollama, LM Studio, llama.cpp, vLLM, and Jan."
       },
       {
@@ -173,7 +173,7 @@
         "label": "Inference clouds / 17",
         "kind": "external",
         "sub": "high-throughput hosts",
-        "sourceRef": "src/providers.rs:1225",
+        "sourceRef": "src/providers.rs",
         "detail": "Groq, Liquid Inference, Cerebras, Together AI, Fireworks AI, DeepInfra, NovitaAI, Hyperbolic, Nebius Token Factory, SambaNova, NVIDIA NIM, Perplexity, Baseten, Friendli, Chutes, Venice AI, and Morph."
       },
       {
@@ -181,7 +181,7 @@
         "label": "Routers + gateways / 14",
         "kind": "external",
         "sub": "aggregation + policy",
-        "sourceRef": "src/providers.rs:1516",
+        "sourceRef": "src/providers.rs",
         "detail": "OpenRouter, Experiential Labs, OpenDesign, Requesty, Glama, Portkey, LiteLLM Proxy, Vercel AI Gateway, Cloudflare AI Gateway, Featherless, NanoGPT, GitHub Models, Helicone AI Gateway, and AI/ML API."
       },
       {
@@ -189,7 +189,7 @@
         "label": "Vendor CLIs + plans / 7",
         "kind": "external",
         "sub": "subscription and CLI routes",
-        "sourceRef": "src/providers.rs:1748",
+        "sourceRef": "src/providers.rs",
         "detail": "Command Code, Cline, OpenCode Zen and Go, Nous Portal, GitHub Copilot, Cursor Agent, and Factory Droid."
       },
       {
@@ -487,6 +487,38 @@
         "sub": "JevBench #1 · Gemma-4-12B",
         "sourceRef": "",
         "detail": "Top-ranked open engine on JevBench v1.5.4, one of 142 entries in nur's Jev library."
+      },
+      {
+        "id": "secrets",
+        "label": "Secret store",
+        "kind": "store",
+        "sub": "masked input / redacted output",
+        "sourceRef": "src/secrets.rs",
+        "detail": "Credentials enter through a masked modal, stay in an owner-only local store, reach shell commands as environment variables, and are redacted from tool results."
+      },
+      {
+        "id": "auto_continue",
+        "label": "Continuation scheduler",
+        "kind": "service",
+        "sub": "usage reset / outage recovery",
+        "sourceRef": "src/agent/resume.rs",
+        "detail": "Usage limits and transient outages schedule a continuation with a visible countdown and user controls. Billing and sign-in failures do not automatically continue."
+      },
+      {
+        "id": "skills_market",
+        "label": "Verified skills",
+        "kind": "service",
+        "sub": "signed index / pinned authors",
+        "sourceRef": "src/skills_market.rs",
+        "detail": "The user installs from a signed index. Author files are pinned by commit and SHA-256 and scanned for hidden instructions; the model can search without installing."
+      },
+      {
+        "id": "code_security",
+        "label": "Code and security scans",
+        "kind": "tool",
+        "sub": "slop_scan / secscan",
+        "sourceRef": "src/tools/secscan.rs",
+        "detail": "Structural checks report code-shape findings. Optional Gitleaks, OSV-Scanner, Semgrep, Trivy, Checkov and TruffleHog normalize security findings; marking a finding as noise always asks the user."
       }
     ],
     "edges": [
@@ -951,6 +983,30 @@
         "from": "jev_bridge",
         "to": "cygnet",
         "kind": "calls"
+      },
+      {
+        "to": "secrets",
+        "kind": "calls",
+        "label": "inject / redact",
+        "from": "tool_runtime"
+      },
+      {
+        "to": "auto_continue",
+        "kind": "calls",
+        "label": "schedule / resume",
+        "from": "agent_loop"
+      },
+      {
+        "to": "skills_market",
+        "kind": "calls",
+        "label": "user installs",
+        "from": "runtime_entry"
+      },
+      {
+        "to": "code_security",
+        "kind": "calls",
+        "label": "inspect findings",
+        "from": "tool_runtime"
       }
     ]
   }

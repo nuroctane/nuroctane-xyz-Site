@@ -1,3 +1,4 @@
+import pluginCredits from "../../../../shared/content/nur-plugin-credits.json";
 import {
   useCallback,
   useEffect,
@@ -57,7 +58,7 @@ const BINARY = {
 const AFTER = [
   {
     cmd: "nur auth login",
-    note: "save API, OAuth, CLI, or OMP credentials locally",
+    note: "save API or OAuth credentials; import CLI sessions explicitly",
   },
   { cmd: "nur", note: "open the gold TUI" },
   { cmd: "nur doctor", note: "health check" },
@@ -100,7 +101,7 @@ const TOKEN_PATH = [
     label: "ROUTE",
     title: "Select a protocol, not just a model name",
     body: "Capabilities choose Responses, Chat Completions, Anthropic Messages, native Gemini, Cursor Agent, or a local server. OpenCode routes each model through its documented native protocol.",
-    meta: "71 routes · capability checked",
+    meta: "72 routes · capability checked",
   },
   {
     id: "05",
@@ -127,7 +128,7 @@ const TOKEN_PATH = [
 
 const EFFICIENCY_SIGNALS = [
   {
-    value: "27/56",
+    value: `${nurCounts.leanTools}/${nurCounts.tools}`,
     label: "tool schemas up front",
     body: "The default lean profile sends the editing shell and session tools; the rest load through tool_search the first time a task needs them, about 6k schema tokens per request instead of 15k.",
   },
@@ -214,7 +215,7 @@ const MEMORY_LAYERS = [
     code: "L1",
     title: "Context store",
     path: "~/.nur/context-store/",
-    body: "Large exact documents and tool results share content-addressed blobs, a persisted session index, byte quotas, retention, peek, slice, and search.",
+    body: "Large exact documents and tool results share content-addressed blobs, a persisted session index, byte quotas, retention, peek, slice, search, and budgeted packing.",
     mode: "LOCAL POINTER",
   },
   {
@@ -262,27 +263,55 @@ const FEATURE_TABS: FeatureTab[] = [
     body: (
       <ul className="cli-feat-list">
         <li>
-          <strong>One credential control plane</strong> — <code>/auth</code>
+          <strong>Secrets outside the conversation</strong> - <code>/secrets add NAME</code>
+          {' '}opens a masked form. Credentials caught in a submitted message are saved locally
+          and replaced with their environment variable name. The <code>secret</code> tool
+          asks through the same form; shell commands receive saved values and tool output is redacted.
+        </li>
+        <li>
+          <strong>Continue after limits lift</strong> - usage limits and temporary outages
+          get a countdown card with an auto-continue toggle and a continue-now action.
+          <code>/autocontinue on|off|now</code> controls the session; headless runs wait in place.
+          Billing and sign-in errors require your intervention.
+        </li>
+        <li>
+          <strong>Layered instructions</strong> - user-wide rules in
+          <code>~/.nur/NUR.md</code> or <code>~/.nur/AGENTS.md</code> combine with project instructions from the git root
+          down to the working directory. Oversized instructions remain recoverable.
+        </li>
+        <li>
+          <strong>Provider-native history and delegation</strong> - Responses, Chat Completions,
+          Anthropic and Gemini receive history in their own wire format. Subagents can hand work
+          back with context, and economical model choices apply across delegated work.
+        </li>
+
+        <li>
+          <strong>One credential control plane</strong> - <code>/auth</code>
           opens a scrollable provider vault for API keys, OAuth sessions, vendor
-          CLIs, and OMP credentials across all 71 routes. Save, replace, or
+          CLIs, and OMP credentials across all 72 routes. Save, replace, or
           delete without editing a JSON file.
         </li>
         <li>
-          <strong>Saved choice is law</strong> — the credential explicitly
-          selected in the vault wins. Only when it is absent does Nur try the
-          existing T3 chain: environment, vendor CLI, then Oh My Pi. A deletion
-          creates a tombstone so an unwanted credential is not silently
-          re-imported.
+          <strong>Saved choice is law</strong> - the credential explicitly
+          selected in the vault wins. Environment credentials remain available;
+          vendor CLI and Oh My Pi sessions import only through
+          <code>nur auth import --from &lt;source&gt;</code>. Legacy automatic imports
+          require <code>[auth] import_fallback = true</code>. A deletion stays signed out.
         </li>
         <li>
-          <strong>Auth follows the route</strong> — <code>/provider</code>,
+          <strong>Refuseless</strong> - use <code>/login refuseless</code> or{" "}
+          <code>REFUSELESS_API_KEY</code> to connect its hosted models;{" "}
+          <code>/model</code> lists the available models.
+        </li>
+        <li>
+          <strong>Auth follows the route</strong> - <code>/provider</code>,
           <code>/fusion &lt;provider&gt;</code>, failover, and cross-provider
           subagents resolve the named provider with the same policy. Missing
           auth opens the vault already focused on that provider, then retries
           the exact blocked operation after sign-in.
         </li>
         <li>
-          <strong>Perplexity on the Agent API</strong> — Sonar&apos;s Chat
+          <strong>Perplexity on the Agent API</strong> - Sonar&apos;s Chat
           Completions endpoint was retired, so the route speaks Responses at{" "}
           <code>api.perplexity.ai/v1</code> with <code>provider/model</code>{" "}
           ids (default <code>perplexity/sonar</code>). Every request is fitted
@@ -290,14 +319,14 @@ const FEATURE_TABS: FeatureTab[] = [
           other providers.
         </li>
         <li>
-          <strong>Rotating API keys</strong> — several keys per provider (
+          <strong>Rotating API keys</strong> - several keys per provider (
           <code>nur auth pool add</code>, or <code>MORPH_API_KEYS=k2,k3</code>
           ). A conversation sticks to one for the prompt cache; a rate limit,
           an empty quota or a refused key hands the request to the next key at
           once, before any backoff or failover.
         </li>
         <li>
-          <strong>Long turns survive the network</strong> — no clock cuts off
+          <strong>Long turns survive the network</strong> - no clock cuts off
           a response that is still streaming (only 300s of silence counts as
           dead). A dropped connection reconnects and replays on the same
           route, taking back any partial text first, on every provider.{" "}
@@ -305,39 +334,39 @@ const FEATURE_TABS: FeatureTab[] = [
           state without touching the conversation.
         </li>
         <li>
-          <strong>Morph and Ultramarine</strong> — Morph&apos;s GLM-5.3,
+          <strong>Morph and Ultramarine</strong> - Morph&apos;s GLM-5.3,
           Kimi K3 and DeepSeek V4.1 Flash with 1M context and per-family
           effort; Paper Instruments&apos; Ultramarine 1 Flash gets the
           concision and stopping rules its makers ask for.{" "}
           <code>ultrathink</code> in a prompt raises the effort for that turn.
         </li>
         <li>
-          <strong>An advisor model</strong> — <code>[advisor]</code> names a
+          <strong>An advisor model</strong> - <code>[advisor]</code> names a
           second model that reads the request, the turn&apos;s tool trace and
           the answer before the turn ends. When it sees the work going wrong
           it leaves one note, and the agent takes one more pass.
         </li>
         <li>
-          <strong>Stream rules</strong> — a pattern and the rule it breaks.
+          <strong>Stream rules</strong> - a pattern and the rule it breaks.
           When the answer starts writing it, the stream stops, the partial
           text is taken back and the model answers again with the rule in
           view; a tool call that matches is dropped before it runs.
         </li>
         <li>
-          <strong>Models per directory</strong> —{" "}
+          <strong>Models per directory</strong> -{" "}
           <code>[[path_models]]</code> picks the model (and provider and
           effort) for a project, at startup and on every <code>/cd</code>,
           without rewriting the configured default.
         </li>
         <li>
-          <strong>Token-saving by default</strong> — <strong>Headroom</strong>{" "}
+          <strong>Token-saving by default</strong> - <strong>Headroom</strong>{" "}
           inline tool-result compress · OptMem · OMP-style supersedeReads +
           dropUseless · contextPromotion · optional <code>/prewalk</code>{" "}
           (strong plans → smol at first edit) · optional remote compact endpoint
-          · Anthropic prompt-cache · economy <code>omp</code> onto smol roles
+          · Anthropic prompt-cache · native economy subagents
         </li>
         <li>
-          <strong>Cursor as a first-class provider</strong> —{" "}
+          <strong>Cursor as a first-class provider</strong> -{" "}
           <code>cursor-agent login</code> (no pasted API key). Chat runs through{" "}
           <code>cursor-agent -p</code>; nur keeps the tool loop, approvals, plan
           mode, and cross-provider subagents. Silent Windows pipes are drained
@@ -346,7 +375,7 @@ const FEATURE_TABS: FeatureTab[] = [
           full Cursor Agent delegate.
         </li>
         <li>
-          <strong>OpenCode Zen + Go</strong> — live model lists from both
+          <strong>OpenCode Zen + Go</strong> - live model lists from both
           gateways and per-model native transport: GPT/Grok use Responses,
           Claude and Qwen 3.5+ use Messages, Gemini uses GenerateContent, and
           compatible models use Chat Completions. Go ids remain{" "}
@@ -364,12 +393,12 @@ const FEATURE_TABS: FeatureTab[] = [
           <code>bg</code> for long jobs off the turn
         </li>
         <li>
-          <strong>Cross-provider subagents</strong> — the <code>agent</code>{" "}
+          <strong>Cross-provider subagents</strong> - the <code>agent</code>{" "}
           tool takes an optional <code>provider</code> (and optional{" "}
           <code>model</code>), so a child can run on a different provider than
           the parent. Natural-language aliases resolve: claude / sonnet / opus →
           anthropic, grok → xai, gemini / flash / pro → google, cursor → cursor,{" "}
-          <code>antigravity</code> stays its own provider.
+          <code>antigravity</code> stays its own provider. An optional <code>output_schema</code> validates the child&apos;s JSON report.
         </li>
         <li>
           A routed subagent uses <strong>that provider&apos;s</strong>{" "}
@@ -380,14 +409,14 @@ const FEATURE_TABS: FeatureTab[] = [
           deployment resumes after sign-in.
         </li>
         <li>
-          <strong>Fan-out</strong> — several <code>agent</code> calls in one
+          <strong>Fan-out</strong> - several <code>agent</code> calls in one
           response run concurrently, <strong>up to 4 at a time</strong>; the
           rest queue behind the cap
         </li>
         <li>
           <code>/swarm</code> subagent grid <strong>auto-surfaces</strong> the
           moment a subagent spawns, and every pane names the provider that child
-          ran on — <code>hide</code> dismisses it for the turn, <code>off</code>{" "}
+          ran on - <code>hide</code> dismisses it for the turn, <code>off</code>{" "}
           freezes, <code>clear</code> drops finished runs, <code>detail</code>{" "}
           adds the status row
         </li>
@@ -407,14 +436,13 @@ const FEATURE_TABS: FeatureTab[] = [
           <code>nur gateway</code> Telegram bot
         </li>
         <li>
-          Natural-language + slash skill activation — /skill-name or plain
-          phrases · <code>/factory-overnight</code> (Fractal-first, Unix
-          preferred)
+          Slash skill activation via /skill-name; wording-based activation is opt-in.
+          <code>/factory-overnight</code> uses Fractal and requires Unix or WSL.
         </li>
         <li>Take over other agents: Claude · Codex · Cursor · Grok</li>
         <li>
           <strong>takeover</strong> <code>/takeover</code> ·{" "}
-          <code>/hijack</code> — migrate a Claude/Codex/Cursor/Grok session into
+          <code>/hijack</code> - migrate a Claude/Codex/Cursor/Grok session into
           nur & resume it; press <code>c</code> to switch between the sessions
           and takeover windows
         </li>
@@ -428,7 +456,7 @@ const FEATURE_TABS: FeatureTab[] = [
     body: (
       <ul className="cli-feat-list">
         <li>
-          <strong>TypeSafe - Jev, inside the harness</strong> — not a second
+          <strong>TypeSafe - Jev, inside the harness</strong> - not a second
           opinion beside it. One batched request per turn decides which tool
           calls still earn their tokens, whether a result actually worked, what
           a fresh context can drop, which of a triggered skill&apos;s rules
@@ -439,19 +467,19 @@ const FEATURE_TABS: FeatureTab[] = [
           .
         </li>
         <li>
-          <strong>Confidence gates action</strong> — judgments land in three
+          <strong>Confidence gates action</strong> - judgments land in three
           bands (act · confirm · escalate). <code>Judgment::usable()</code> is
           the single choke point that reads an answer, so a coin flip is never
           obeyed: it is reported, and the caller falls back to its own default.
         </li>
         <li>
-          <strong>Compaction that writes no summary</strong> — stale calls are
-          dropped and survivors stay verbatim, so nothing is paraphrased away on
-          the way through. Below the minimum reduction the summarizer is skipped
-          entirely.
+          <strong>Jev-first compaction</strong> - stale calls are dropped and
+          survivors stay verbatim. When pruning does not free enough space,
+          automatic recovery falls back to a summary. Models can request it
+          with <code>typesafe</code> action <code>compact</code>.
         </li>
         <li>
-          <strong>{nurCounts.jevEngines} Jev systems in one catalog</strong> — search with{" "}
+          <strong>{nurCounts.jevEngines} Jev systems in one catalog</strong> - search with{" "}
           <code>nur jev models</code>, inspect deployment requirements with{" "}
           <code>nur jev info &lt;id&gt;</code>, then connect a hosted endpoint
           or start an installed local runtime. Keys stay in the credential vault
@@ -461,7 +489,7 @@ const FEATURE_TABS: FeatureTab[] = [
           <code>nur jev start --engine &lt;id&gt;</code>
         </li>
         <li>
-          <strong>Keyless hosted engines</strong> — AMOS 1 (Scira) speaks System
+          <strong>Keyless hosted engines</strong> - AMOS 1 (Scira) speaks System
           One natively and checks no key, so{" "}
           <code>nur jev use --engine amos-1-mini</code> works with nothing
           stored and the vault row reads &ldquo;no key needed&rdquo;. Interfaze
@@ -470,7 +498,7 @@ const FEATURE_TABS: FeatureTab[] = [
           its chat gateway.
         </li>
         <li>
-          <strong>Liquid d1-ultra, direct</strong> — Liquid AI&apos;s strongest
+          <strong>Liquid d1-ultra, direct</strong> - Liquid AI&apos;s strongest
           decision model (multimodal, 44 languages) answers on Liquid&apos;s own
           System One endpoint, no bridge.{" "}
           <code>nur jev login liquid-d1-ultra</code> once, then{" "}
@@ -478,14 +506,14 @@ const FEATURE_TABS: FeatureTab[] = [
           <code>d1:free</code> share the same key.
         </li>
         <li>
-          <strong>One credential lifts every provider</strong> — the hosted
+          <strong>One credential lifts every provider</strong> - the hosted
           route is provider-agnostic, and <code>TypeSafe · Jev</code> sits
           pinned at the top of the credential vault with its own borders. It
           stores a key; it never becomes your chat provider, and the catalog
           count does not change.
         </li>
         <li>
-          <strong>Honest telemetry</strong> — receipts record the endpoint that
+          <strong>Honest telemetry</strong> - receipts record the endpoint that
           actually answered and the model it served, whether that was{" "}
           <code>api.typesafe.ai</code> or a loopback engine.
         </li>
@@ -499,53 +527,71 @@ const FEATURE_TABS: FeatureTab[] = [
     body: (
       <ul className="cli-feat-list">
         <li>
-          <strong>read</strong> — <code>read_file</code> · <code>list_dir</code>{" "}
+          <strong>Code and security checks</strong> - <code>slop_scan</code> reports duplication,
+          oversized modules and change coupling. <code>secscan</code> normalizes gitleaks,
+          osv-scanner, Semgrep, Trivy, Checkov and TruffleHog findings without showing secret values. Suppressing a finding
+          always asks you. The advisor also reads your project's Code Review Rules.
+        </li>
+        <li>
+          <strong>Optional Rust acceleration</strong> - <code>[tools] rust_builder</code>
+          {' '}can route compatible cargo commands through Blaze on supported platforms.
+          Unsupported commands fall back to cargo; a full cargo check remains necessary.
+        </li>
+
+        <li>
+          <strong>read</strong> - <code>read_file</code> · <code>list_dir</code>{" "}
           · <code>sgrep</code> (semantic search first, every model) ·{" "}
           <code>grep</code> · <code>glob</code>
         </li>
         <li>
-          <strong>edit</strong> — <code>write_file</code> ·{" "}
+          <strong>edit</strong> - <code>write_file</code> ·{" "}
           <code>edit_file</code> · <code>multi_edit</code> ·{" "}
           <code>apply_patch</code> · <code>hashline_edit</code>
         </li>
         <li>
-          <strong>shell</strong> — <code>bash</code> (sandboxed)
+          <strong>shell</strong> - <code>bash</code> (configurable OS sandbox on Linux and macOS)
         </li>
         <li>
-          <strong>vision</strong> — <code>look</code> ·{" "}
+          <strong>vision</strong> - <code>look</code> ·{" "}
           <code>extract_frames</code> · inline images in the TUI (kitty graphics
           protocol, sixel, iTerm2)
         </li>
         <li>
-          <strong>web</strong> — <code>web_search</code> ·{" "}
+          <strong>web</strong> - <code>web_search</code> ·{" "}
           <code>web_fetch</code> · with a{" "}
           <a href="https://treg.to/web-access">treg</a> token, free routed
           search and markdown reads of blocked or JavaScript-only pages
         </li>
         <li>
-          <strong>browser</strong> — real default browser via agent-browser-cli
+          <strong>browser</strong> - real default browser via agent-browser-cli
         </li>
         <li>
-          <strong>terminal-browser</strong> —{" "}
+          <strong>terminal-browser</strong> -{" "}
           <a href="https://terminal-browser.com/">terminal-browser.com</a>{" "}
           in-terminal Chromium (<code>terminal_browser</code> · <code>/tb</code>
           ); Windows host fallback via agent-browser-cli
         </li>
         <li>
-          <strong>git</strong> — <code>git_status</code> · <code>git_diff</code>
+          <strong>desktop</strong> - native accessibility snapshots and actions through agent-desktop
         </li>
         <li>
-          <strong>knowledge</strong> — <code>graphify</code> ·{" "}
+          <strong>code intelligence</strong> - <code>lsp</code> · <code>debug</code> · <code>repo_map</code> · <code>worktree</code> for isolated writers
+        </li>
+        <li>
+          <strong>git</strong> - <code>git_status</code> · <code>git_diff</code>
+        </li>
+        <li>
+          <strong>knowledge</strong> - <code>graphify</code> ·{" "}
           <code>graphjin</code> · <code>plur</code> · <code>ruflo</code> ·{" "}
           <code>executor</code> · <code>skill</code> · <code>memory</code> ·{" "}
-          <code>headroom</code> · 56 tools in one dispatcher, the rarely used ones
+          <code>headroom</code> · {nurCounts.tools} tools in one dispatcher, the rarely used ones
           loaded on demand through <code>tool_search</code>
         </li>
         <li>
-          <strong>judgments</strong> — <code>typesafe</code> (gate a call, judge
+          <strong>judgments</strong> - <code>typesafe</code> (gate a call, judge
           a result, rank, route, classify, risk, verify). Measured on the live
           API: 24 mixed judgments in <strong>1 request, ~280 ms</strong>, 100%
-          replay agreement, zero frontier tokens — against 5 ms / coin-flip
+          replay agreement, zero frontier tokens - against 5 ms / coin-flip
           accuracy for keyword heuristics and full-transcript re-reads without
           it. Keyless local engines (openJev, Nimble, Laya, mock) speak the same
           contract.
@@ -557,60 +603,59 @@ const FEATURE_TABS: FeatureTab[] = [
           sidecar key like TypeSafe's; every call is approval-gated.
         </li>
         <li>
-          <strong>memory</strong> — <code>optmem</code> (permanent,{" "}
+          <strong>memory</strong> - <code>optmem</code> (permanent,{" "}
           <code>~/.optmem</code>) · <code>connectome</code> (hierarchical notes
           + an append-only chronicle) · <code>mem</code> (vector / graph router)
         </li>
         <li>
-          <strong>context</strong> — <code>context</code> (register, peek,
+          <strong>context</strong> - <code>context</code> (register, peek,
           slice, search) · <code>anydoc</code> (PDF / DOCX / XLSX to markdown)
         </li>
         <li>
-          <strong>async</strong> — <code>bg</code> (jobs that outlive the turn)
+          <strong>async</strong> - <code>bg</code> (jobs that outlive the turn)
           · <code>admission</code> (async subagent handles) · <code>goal</code>{" "}
           · <code>proposal</code> (staged writes) · <code>message</code> (peer
           mail between sessions) · <code>question</code> (close-ended user
           questions)
         </li>
         <li>
-          <strong>policy</strong> — <code>dogwood</code> (Cedar + temporal
+          <strong>policy</strong> - <code>dogwood</code> (Cedar + temporal
           checks over the agent event stream; an on-demand guardrail, not a
           runtime gate)
         </li>
         <li>
-          <strong>python</strong> — <code>repl</code>: a long-lived kernel whose
+          <strong>python</strong> - <code>repl</code>: a long-lived kernel whose
           variables survive turns and compaction
         </li>
         <li>
-          <strong>diagrams</strong> — <code>excalidraw</code> ·{" "}
+          <strong>diagrams</strong> - <code>excalidraw</code> ·{" "}
           <code>tldraw</code> · <code>/diagram</code> router (architecture →
           Excalidraw · offline → tldraw · ink/math → penecho)
         </li>
         <li>
-          <strong>delegation</strong> — <code>agent</code> (optional{" "}
+          <strong>delegation</strong> - <code>agent</code> (optional{" "}
           <code>provider</code> / <code>model</code>, up to 4 concurrent) ·{" "}
-          <code>omp</code> (economy/balanced · Oh My Pi + <code>omp token</code>{" "}
-          bridge) · <code>fractal</code> · <code>penecho</code> ·{" "}
+          <code>fractal</code> · <code>penecho</code> ·{" "}
           <code>t3code</code> · <code>akarso</code> · <code>bg</code>
         </li>
         <li>
-          <strong>egaki</strong> — image / video / speech CLI (
+          <strong>egaki</strong> - image / video / speech CLI (
           <code>/egaki</code>; <code>/image &lt;path&gt;</code> attaches a file
           for vision) · ChatGPT, xAI OAuth, Egaki plan, or BYOK
         </li>
         <li>
-          <strong>plan</strong> — <code>todo_write</code> ·{" "}
+          <strong>plan</strong> - <code>todo_write</code> ·{" "}
           <code>submit_plan</code>
         </li>
         <li>
-          <strong>hashline</strong> — <code>read_file</code> heads every file
+          <strong>hashline</strong> - <code>read_file</code> heads every file
           with a <code>[path#TAG]</code> snapshot and{" "}
           <code>hashline_edit</code> changes lines by number, or a whole block
           with <code>N*</code>, against it, so the model never retypes old
           text and a stale read is refused before anything is written
         </li>
         <li>
-          <strong>codemode</strong> — <code>codemode</code>: one JavaScript
+          <strong>codemode</strong> - <code>codemode</code>: one JavaScript
           script that calls several read-only tools in a loop, so the work costs
           one model round instead of one per call; only what it prints comes
           back (Boa sandbox, no filesystem / network / shell of its own)
@@ -625,20 +670,20 @@ const FEATURE_TABS: FeatureTab[] = [
     body: (
       <ul className="cli-feat-list">
         <li>
-          <strong>Ctrl+V a screenshot</strong> — it renders inline in the
+          <strong>Ctrl+V a screenshot</strong> - it renders inline in the
           transcript via the kitty graphics protocol / sixel / iTerm2 and is
           queued for model vision at once
         </li>
         <li>
-          <code>/image &lt;path&gt;</code> — show any workspace image inline +
+          <code>/image &lt;path&gt;</code> - show any workspace image inline +
           attach it for vision
         </li>
         <li>
-          <code>look</code> — attach workspace images or short video so the
+          <code>look</code> - attach workspace images or short video so the
           model sees them
         </li>
         <li>
-          <code>extract_frames</code> — sparse keyframes via ffmpeg →{" "}
+          <code>extract_frames</code> - sparse keyframes via ffmpeg →{" "}
           <code>.nur/frames/</code>
         </li>
         <li>Media paths in prompts auto-attach when the file exists</li>
@@ -656,34 +701,41 @@ const FEATURE_TABS: FeatureTab[] = [
     body: (
       <ul className="cli-feat-list">
         <li>
-          <strong>Graphify</strong> — code knowledge graph
+          <strong>Verified skill discovery</strong> - <code>nur skills search|add|remove|verify|scan</code>
+          {' '}and <code>/skills find|add</code> use a signed index, pinned author commits and
+          SHA-256 checks. Hidden Unicode and risky instructions are scanned. The model searches;
+          you choose what to install. Disabled plugin skills stop activating, and edited mirrors are preserved.
+        </li>
+
+        <li>
+          <strong>Graphify</strong> - code knowledge graph
         </li>
         <li>
-          <strong>GraphJin</strong> — governed live data via the{" "}
+          <strong>GraphJin</strong> - governed live data via the{" "}
           <code>graphjin</code> tool · <code>/graphjin</code> (<code>/gj</code>)
           catalog · schema · explain · query · security · ask ·{" "}
           <em>detect-only</em>, nur never installs it for you
         </li>
         <li>
-          <strong>PLUR</strong> — shared engram memory across tools/sessions
+          <strong>PLUR</strong> - shared engram memory across tools/sessions
         </li>
         <li>
-          <strong>Ruflo</strong> — vector memory + swarm helpers
+          <strong>Ruflo</strong> - vector memory + swarm helpers
         </li>
         <li>
-          <strong>Executor</strong> — MCP / OpenAPI gateway
+          <strong>Executor</strong> - MCP / OpenAPI gateway
         </li>
         <li>
-          <strong>omp</strong> — Oh My Pi coding-agent backend + universal{" "}
-          <code>omp token</code> auth fallback for every provider
+          <strong>Oh My Pi</strong> - credentials import
+          explicitly through <code>nur auth import --from omp:&lt;provider&gt;</code>
         </li>
         <li>
-          <strong>Headroom</strong> — inline tool-result compress{" "}
+          <strong>Headroom</strong> - inline tool-result compress{" "}
           <em>on by default</em> (<code>headroom</code> · <code>/headroom</code>
           )
         </li>
         <li>
-          <strong>OptMem</strong> — permanent memory at <code>~/.optmem</code> (
+          <strong>OptMem</strong> - permanent memory at <code>~/.optmem</code> (
           <code>optmem</code> · <code>/optmem</code> · <code>/memo</code>: wake
           · note · nap · recall · doctor)
         </li>
@@ -699,31 +751,31 @@ const FEATURE_TABS: FeatureTab[] = [
           matching workflow.
         </li>
         <li>
-          <strong>egaki</strong> — image / video / speech (<code>/egaki</code>)
+          <strong>egaki</strong> - image / video / speech (<code>/egaki</code>)
           · <code>egaki login --provider chatgpt</code> / xai-oauth / plan /
           BYOK
         </li>
         <li>
-          <strong>fractal</strong> — recursive agent trees in git worktrees via{" "}
+          <strong>fractal</strong> - recursive agent trees in git worktrees via{" "}
           <code>/fractal</code> · <em>Unix only</em> (use WSL or Linux/macOS; no
           Windows native) · Python 3.12–3.14,{" "}
           <code>pipx install plasma-fractal</code>
         </li>
         <li>
-          <strong>factory-overnight</strong> — Fractal-first overnight factory
+          <strong>factory-overnight</strong> - Fractal-first overnight factory
           from <code>HANDOFF.md</code> (<code>/factory-overnight</code>, Unix
           preferred)
         </li>
         <li>
-          <strong>penecho</strong> — infinite-canvas sidecar bridged from nur
+          <strong>penecho</strong> - infinite-canvas sidecar bridged from nur
           auth (<code>/penecho</code>)
         </li>
         <li>
-          <strong>t3code</strong> — vendor-CLI auth delegation: driver probing,
+          <strong>t3code</strong> - vendor-CLI auth delegation: driver probing,
           env isolation, pairing tokens
         </li>
         <li>
-          <strong>terminal-browser</strong> — ecosystem-wired Chromium for the
+          <strong>terminal-browser</strong> - ecosystem-wired Chromium for the
           TUI (<code>/tb</code> · <code>/terminal-browser</code>)
         </li>
         <li>
@@ -740,19 +792,19 @@ const FEATURE_TABS: FeatureTab[] = [
           operating procedures over capability-gated <code>mobilerun-core</code>
         </li>
         <li>
-          <strong>bg</strong> — long-running jobs off the agent turn (
+          <strong>bg</strong> - long-running jobs off the agent turn (
           <code>bg</code> tool · <code>/bg</code>)
         </li>
         <li>
-          <strong>Plugins</strong> — Superpowers, Firecrawl, Fable, Chrome
+          <strong>Plugins</strong> - Superpowers, Firecrawl, Fable, Chrome
           DevTools, …
         </li>
         <li>
-          <strong>AKM</strong> — skill package manager · 800+ cybersecurity /
+          <strong>AKM</strong> - skill package manager · 800+ cybersecurity /
           design packs
         </li>
         <li>
-          <strong>Cua</strong> — full-desktop computer-use driver
+          <strong>Cua</strong> - full-desktop computer-use driver
         </li>
       </ul>
     ),
@@ -781,12 +833,12 @@ const FEATURE_TABS: FeatureTab[] = [
         </li>
         <li>Peek · drag-select · scrollbar · sticky prompt</li>
         <li>
-          <strong>Scroll back and read</strong> — the view holds the same
+          <strong>Scroll back and read</strong> - the view holds the same
           line while output streams in, cards reflow or the turn ends;{" "}
           <code>↓ N · End</code> counts what arrived and End returns to it
         </li>
         <li>
-          <strong>Tables that fit the window</strong> — tables in answers,
+          <strong>Tables that fit the window</strong> - tables in answers,
           and wide tables a command prints, lay out at the transcript&apos;s
           width: an aligned grid when it fits, wrapped columns when it does
           not, stacked records on a narrow pane
@@ -797,40 +849,40 @@ const FEATURE_TABS: FeatureTab[] = [
           <code>/theme</code> live color themes
         </li>
         <li>
-          <code>/sidegraph</code> — right-panel live node-graph of the current
+          <code>/sidegraph</code> - right-panel live node-graph of the current
           query (parallel subagents fan out and rejoin; steers draw back-edges).
           Pan / zoom where supported, drag the border to resize, right-click a
           node to peek · <code>on</code> | <code>off</code> | <code>hide</code>
         </li>
         <li>
-          <code>/swarm</code> panes are <strong>click-to-peek</strong> — the
+          <code>/swarm</code> panes are <strong>click-to-peek</strong> - the
           modal lists that child&apos;s tool trace, each entry unfolds in place
           to full args + output, <code>c</code> copies one entry, Ctrl+C copies
           the lot, <code>e</code> expands the modal
         </li>
         <li>
-          <strong>Every path in the transcript is a link</strong> — a file, a
+          <strong>Every path in the transcript is a link</strong> - a file, a
           directory, or a URL opens where it belongs (editor, file manager,
           browser) straight from the transcript
         </li>
         <li>
-          <strong>Prose, not markdown source</strong> — headings, lists, quotes,
+          <strong>Prose, not markdown source</strong> - headings, lists, quotes,
           task boxes and rules render as structure through the theme&apos;s own
           colour roles; wrapped lines repeat their gutter, and LaTeX renders
           when the build carries <code>image-peek</code>
         </li>
         <li>
           <code>/receipt</code> verifies the session hash chain (and exports
-          spans) — the receipt is evidence only if each entry still links to the
+          spans) - the receipt is evidence only if each entry still links to the
           one before it
         </li>
         <li>
-          <strong>Ghost-cell recovery</strong> — full terminal clear on resize,
+          <strong>Ghost-cell recovery</strong> - full terminal clear on resize,
           focus regain, sidegraph open/close, peek close, theme change, and
           returning from foreground children (ConPTY-safe)
         </li>
         <li>
-          Command palette spans the full window width — widen the terminal, read
+          Command palette spans the full window width - widen the terminal, read
           more of every tip
         </li>
         <li>Splash: NUR logotype + active provider · lean banner</li>
@@ -848,7 +900,7 @@ const FEATURE_TABS: FeatureTab[] = [
     body: (
       <ul className="cli-feat-list">
         <li>
-          Credentials stay in the local vault or approved vendor stores — never
+          Credentials stay in the local vault or approved vendor stores - never
           in the repo; provider tombstones prevent surprise re-import after
           deletion
         </li>
@@ -858,14 +910,14 @@ const FEATURE_TABS: FeatureTab[] = [
         </li>
         <li>Sandbox · denylist · SSRF blocks · permissions / hooks TOML</li>
         <li>
-          <strong>A cloned repo cannot approve itself</strong> — a project&apos;s
+          <strong>A cloned repo cannot approve itself</strong> - a project&apos;s
           own <code>.nur/permissions.toml</code> deny and ask rules apply at
           once, but its allow rules wait for <code>/permissions trust</code>{" "}
           (or <code>nur permissions trust</code>). Trust covers that exact list
           in that directory, so a later pull that edits it is held again.
         </li>
         <li>
-          <strong>Rules see the whole chain</strong> — <code>bash</code> rules
+          <strong>Rules see the whole chain</strong> - <code>bash</code> rules
           split a command at <code>;</code> <code>&amp;&amp;</code>{" "}
           <code>|</code> and friends: deny and ask fire on any part, allow needs
           every part, and a substitution or file redirect is never
@@ -876,7 +928,7 @@ const FEATURE_TABS: FeatureTab[] = [
           the text they repeat · install SHA-256 · <code>nur doctor</code>
         </li>
         <li>
-          <strong>Auto-update</strong> — nur checks GitHub Releases on launch
+          <strong>Auto-update</strong> - nur checks GitHub Releases on launch
           (off the render thread, never blocking startup) and self-installs a
           newer build only after its minisign signature verifies against a
           public key pinned in the source, then the SHA-256 (an unsigned or
@@ -890,7 +942,7 @@ const FEATURE_TABS: FeatureTab[] = [
         </li>
         <li>
           <strong>Skills from a cloned repo are inert until you say so</strong>{" "}
-          — project-local skills wait for <code>/skills trust</code>, recorded
+          - project-local skills wait for <code>/skills trust</code>, recorded
           as a digest so an edit holds them again; SKILL.md{" "}
           <code>disable-model-invocation</code> is honoured; wording-based
           activation is opt-in. Ecosystem packs, plugins and sgrep install at
@@ -899,14 +951,14 @@ const FEATURE_TABS: FeatureTab[] = [
           it runs.
         </li>
         <li>
-          <strong>Long runs stay alive</strong> — the real context window is
+          <strong>Long runs stay alive</strong> - the real context window is
           read from the model catalog, auto-compaction runs as often as a run
           needs (and carries the in-flight work across), dropped connections
           reconnect, and a 429 rotates to another key or retries with backoff
           instead of ending the turn
         </li>
         <li>
-          <strong>Budgets cover the whole task graph</strong> — primaries,
+          <strong>Budgets cover the whole task graph</strong> - primaries,
           retries, failovers, fusion panels, subagents, compaction, memory, and
           embedding work reserve before dispatch
         </li>
@@ -919,6 +971,8 @@ const FEATURE_TABS: FeatureTab[] = [
 ];
 
 const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
+  { cmd: "/secrets", desc: "credentials: add NAME | list | remove NAME" },
+  { cmd: "/autocontinue", desc: "resume after limits: on | off | now" },
   { cmd: "/help", desc: "commands + keyboard shortcuts" },
   { cmd: "/commands", desc: "commands + keyboard shortcuts  (alias of /help)" },
   {
@@ -956,12 +1010,12 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: "/theme", desc: "choose a live color theme (/theme <name>)" },
   {
     cmd: "/sessions",
-    desc: "browse & open past sessions — press c to switch to takeover",
+    desc: "browse & open past sessions - press c to switch to takeover",
   },
   { cmd: "/resume", desc: "browse & open past sessions (alias of /sessions)" },
   {
     cmd: "/takeover",
-    desc: "import a Claude/Codex/Cursor/Grok session & resume it — all workspaces, tab to narrow, c to switch to sessions",
+    desc: "import a Claude/Codex/Cursor/Grok session & resume it - all workspaces, tab to narrow, c to switch to sessions",
   },
   {
     cmd: "/hijack",
@@ -986,7 +1040,7 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: "/memo", desc: "OptMem permanent memory  (alias of /optmem)" },
   {
     cmd: "/headroom",
-    desc: "context compression doctor — inline tool-result compress on by default",
+    desc: "context compression doctor - inline tool-result compress on by default",
   },
   {
     cmd: "/prewalk",
@@ -994,7 +1048,7 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   },
   {
     cmd: "/egaki",
-    desc: "image / video / speech via egaki — login --provider chatgpt | xai-oauth | plan | BYOK",
+    desc: "image / video / speech via egaki - login --provider chatgpt | xai-oauth | plan | BYOK",
   },
   {
     cmd: "/image",
@@ -1017,7 +1071,7 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   },
   {
     cmd: "/factory-overnight",
-    desc: "fractal-first overnight factory from HANDOFF.md (Unix preferred)",
+    desc: "Fractal-first overnight factory from HANDOFF.md (Unix or WSL required)",
   },
   {
     cmd: "/akarso",
@@ -1029,7 +1083,7 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   },
   {
     cmd: "/dialkit",
-    desc: "live-tune interface parameters — dials/sliders across React/Svelte/Vue/Solid",
+    desc: "live-tune interface parameters - dials/sliders across React/Svelte/Vue/Solid",
   },
   { cmd: "/budget", desc: "session spend ceiling" },
   { cmd: "/poor", desc: "cost-saver lean prompt" },
@@ -1064,32 +1118,32 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
     desc: "capability, context, cost, and privacy-aware failover · credentials resolve through /auth",
   },
   { cmd: "/undo", desc: "revert the last file edit this session" },
-  { cmd: "/receipt", desc: "session receipt — hash-chained verification" },
+  { cmd: "/receipt", desc: "session receipt - hash-chained verification" },
   { cmd: "/cua", desc: "computer-use desktop driver on / off / status" },
   { cmd: "/graph", desc: "inline live execution-graph card for the turn" },
   {
     cmd: "/sidegraph",
-    desc: "right-panel live node-graph — fan-out, steers, peek · on | off | hide",
+    desc: "right-panel live node-graph - fan-out, steers, peek · on | off | hide",
   },
   {
     cmd: "/swarm",
-    desc: "inline subagent grid — auto-surfaces when a subagent spawns, each pane names the provider · detail | hide | off | clear",
+    desc: "inline subagent grid - auto-surfaces when a subagent spawns, each pane names the provider · detail | hide | off | clear",
   },
   { cmd: "/subagents", desc: "inline subagent grid  (alias of /swarm)" },
   { cmd: "/agents", desc: "inline subagent grid  (alias of /swarm)" },
   {
     cmd: "/fractal",
-    desc: "recursive agent tree in git worktrees — Unix only (use WSL on Windows)",
+    desc: "recursive agent tree in git worktrees - Unix only (use WSL on Windows)",
   },
   {
     cmd: "/penecho",
-    desc: "penecho infinite canvas — ink · MathJax · plots · animations",
+    desc: "penecho infinite canvas - ink · MathJax · plots · animations",
   },
   { cmd: "/pen", desc: "penecho canvas  (alias of /penecho)" },
   { cmd: "/drawings", desc: "penecho canvas  (alias of /penecho)" },
   {
     cmd: "/t3code",
-    desc: "vendor-CLI auth delegation — driver probing · delegate · pairing tokens",
+    desc: "vendor-CLI auth delegation - driver probing · delegate · pairing tokens",
   },
   {
     cmd: "/tb",
@@ -1100,6 +1154,7 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: "/steer", desc: "inject a message into the running turn (no cancel)" },
   { cmd: "/scan", desc: "map the codebase → local architecture scan" },
   { cmd: "/goal", desc: "set a standing session goal" },
+  { cmd: "/loop", desc: "repeat a prompt on an interval; stop with /loop off" },
   { cmd: "/btw", desc: "one-off note on the next message" },
   { cmd: "/bro", desc: "chill mode: plain words, straight answers (toggle)" },
   { cmd: "/codesearch", desc: "fast ripgrep over the workspace" },
@@ -1109,7 +1164,7 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   },
   { cmd: "/mc", desc: "manage MCP servers via Executor" },
   { cmd: "/mcp", desc: "manage MCP servers via Executor  (alias of /mc)" },
-  { cmd: "/skills", desc: "list installed skills (also /name for any skill)" },
+  { cmd: "/skills", desc: "installed skills; find | add | remove | verify | trust" },
   {
     cmd: "/adhd",
     desc: "sticky ADHD-friendly output for this session (toggle)",
@@ -1128,13 +1183,13 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   { cmd: "/design-eng", desc: "skill: Emil design-eng UI/motion craft" },
   {
     cmd: "/skeuo",
-    desc: "skill: dark skeuomorphic UI — knobs, sliders, tactile depth (/skeuomorphic-ui)",
+    desc: "skill: dark skeuomorphic UI - knobs, sliders, tactile depth (/skeuomorphic-ui)",
   },
   { cmd: "/test-driven-development", desc: "skill: TDD red-green-refactor" },
   { cmd: "/systematic-debugging", desc: "skill: root-cause-first debugging" },
   {
     cmd: "/<skill>",
-    desc: "any installed skill — sticky toggle or /skill <prompt> one-shot",
+    desc: "any installed skill - sticky toggle or /skill <prompt> one-shot",
   },
   { cmd: "/memory", desc: "show ~/.nur/memory.md excerpt" },
   {
@@ -1158,7 +1213,7 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
   },
   { cmd: "/ecosystem", desc: "ecosystem readiness" },
   { cmd: "/todos", desc: "show session task list" },
-  { cmd: "/init", desc: "generate a NUR.md project guide" },
+  { cmd: "/init", desc: "create or audit the AGENTS.md project guide" },
   { cmd: "/config", desc: "show config + data paths" },
   {
     cmd: "/permissions",
@@ -1173,6 +1228,9 @@ const SLASH_COMMANDS: { cmd: string; desc: string }[] = [
 ];
 
 const CLI_SUBCOMMANDS: { cmd: string; desc: string }[] = [
+  { cmd: "nur secrets list | set NAME | remove NAME", desc: "local credentials with hidden input" },
+  { cmd: "nur skills search | add | remove | verify | scan", desc: "find and verify skills pinned to author commits" },
+  { cmd: "nur auth import --from <source>", desc: "explicitly import a vendor CLI or OMP session" },
   { cmd: "nur", desc: "open interactive gold TUI" },
   { cmd: 'nur "prompt"', desc: "start with a prompt" },
   { cmd: "nur -c", desc: "continue last session in this directory" },
@@ -1193,6 +1251,7 @@ const CLI_SUBCOMMANDS: { cmd: string; desc: string }[] = [
     desc: "dry-run: report whether a newer release is available",
   },
   { cmd: "nur doctor", desc: "health check" },
+  { cmd: "nur config --dump", desc: "show effective configuration with credentials redacted" },
   {
     cmd: "nur permissions trust | untrust",
     desc: "apply or hold this project's .nur/permissions.toml allow rules",
@@ -1242,15 +1301,16 @@ const CLI_SUBCOMMANDS: { cmd: string; desc: string }[] = [
   },
   {
     cmd: "nur gateway --chat <id>",
-    desc: "Telegram bot for one chat · without --chat it only pairs (replies with your chat id, runs nothing)",
+    desc: "Telegram bot for one chat · /inbox and /answer for questions and approvals · without --chat it only pairs",
   },
+  { cmd: "nur acp", desc: "ACP stdio server for compatible editors" },
   {
     cmd: "nur local",
     desc: "local llama.cpp server control - up | down | status | models",
   },
   {
     cmd: "nur bench",
-    desc: "benchmark harness - add | list | run | remove | optimize (GEPA)",
+    desc: "benchmark harness - add | list | run | remove | optimize | self-tune",
   },
   { cmd: "nur browser setup", desc: "stage browser extension once" },
   { cmd: "nur browser status", desc: "browser toolchain readiness" },
@@ -1267,7 +1327,7 @@ type Inspiration = {
   group: "agents" | "research" | "libs" | "stack" | "protocols" | "plugins";
 };
 
-const INSPIRATIONS: Inspiration[] = [
+const HISTORICAL_INSPIRATIONS: Inspiration[] = [
   {
     group: "protocols",
     name: "OpenAI Responses protocol",
@@ -1380,7 +1440,7 @@ const INSPIRATIONS: Inspiration[] = [
     group: "agents",
     name: "Oh My Pi",
     href: "https://omp.sh",
-    why: "omp token credential vault for all providers · economy delegate · supersedeReads / contextPromotion patterns",
+    why: "explicit OMP credential import · supersedeReads / contextPromotion patterns",
   },
   {
     group: "agents",
@@ -1398,7 +1458,7 @@ const INSPIRATIONS: Inspiration[] = [
     group: "agents",
     name: "Antigravity",
     href: "https://antigravity.google",
-    why: "agy CLI session imported by /login · its own provider id for cross-provider subagents",
+    why: "explicit agy session import via nur auth import --from antigravity · its own provider id for cross-provider subagents",
   },
   {
     group: "agents",
@@ -1476,7 +1536,7 @@ const INSPIRATIONS: Inspiration[] = [
     group: "agents",
     name: "Factory",
     href: "https://factory.ai",
-    why: "agentic software delivery product bar · the Droid provider route imports an existing `droid` sign-in from /login",
+    why: "agentic software delivery product bar · the Droid provider route supports explicit import of an existing droid sign-in",
   },
   {
     group: "agents",
@@ -1554,7 +1614,7 @@ const INSPIRATIONS: Inspiration[] = [
     group: "libs",
     name: "Ratatui",
     href: "https://ratatui.rs",
-    why: "the entire Nur-gold TUI — cards, borders, scroll, layout",
+    why: "the entire Nur-gold TUI - cards, borders, scroll, layout",
   },
   {
     group: "libs",
@@ -1602,13 +1662,13 @@ const INSPIRATIONS: Inspiration[] = [
     group: "libs",
     name: "ratatui-image",
     href: "https://crates.io/crates/ratatui-image",
-    why: "inline image peeks (sixel / kitty / iTerm2) — behind the image-peek feature",
+    why: "inline image peeks (sixel / kitty / iTerm2) - behind the image-peek feature",
   },
   {
     group: "libs",
     name: "unicode-width",
     href: "https://github.com/unicode-rs/unicode-width",
-    why: "column-exact TUI layout — wide glyphs, CJK, emoji stay inside their panes",
+    why: "column-exact TUI layout - wide glyphs, CJK, emoji stay inside their panes",
   },
   {
     group: "libs",
@@ -1650,7 +1710,7 @@ const INSPIRATIONS: Inspiration[] = [
     group: "libs",
     name: "ripgrep",
     href: "https://github.com/BurntSushi/ripgrep",
-    why: "fast workspace search under the hood — grep / glob shell out to rg when present",
+    why: "fast workspace search under the hood - grep / glob shell out to rg when present",
   },
   {
     group: "libs",
@@ -1674,13 +1734,13 @@ const INSPIRATIONS: Inspiration[] = [
     group: "stack",
     name: "Graphify",
     href: "https://github.com/Graphify-Labs/graphify",
-    why: "code knowledge graph — query / path / explain",
+    why: "code knowledge graph - query / path / explain",
   },
   {
     group: "stack",
     name: "GraphJin",
     href: "https://graphjin.com/",
-    why: "governed live data behind the graphjin tool + /graphjin — detected, never auto-installed",
+    why: "governed live data behind the graphjin tool + /graphjin - detected, never auto-installed",
   },
   {
     group: "stack",
@@ -1704,13 +1764,13 @@ const INSPIRATIONS: Inspiration[] = [
     group: "stack",
     name: "Akarso",
     href: "https://akarso.co",
-    why: "post/schedule across 14 social platforms — native akarso tool + /akarso",
+    why: "post/schedule across 14 social platforms - native akarso tool + /akarso",
   },
   {
     group: "stack",
     name: "OpenSEO",
     href: "https://openseo.so",
-    why: "open-source Semrush/Ahrefs alt — SEO research/audits via MCP + /openseo",
+    why: "open-source Semrush/Ahrefs alt - SEO research/audits via MCP + /openseo",
   },
   {
     group: "stack",
@@ -1722,19 +1782,19 @@ const INSPIRATIONS: Inspiration[] = [
     group: "stack",
     name: "fractal",
     href: "https://github.com/plasma-ai/fractal",
-    why: "hierarchical recursive agent loops in git worktrees — theirs, driven by nur via /fractal and the fractal tool (Apache-2.0)",
+    why: "hierarchical recursive agent loops in git worktrees - theirs, driven by nur via /fractal and the fractal tool (Apache-2.0)",
   },
   {
     group: "stack",
     name: "penecho",
     href: "https://github.com/penecho/penecho",
-    why: "think with AI beyond the chat box — infinite canvas run as a sidecar, nur only bridges auth + launches it (AGPL-3.0)",
+    why: "think with AI beyond the chat box - infinite canvas run as a sidecar, nur only bridges auth + launches it (AGPL-3.0)",
   },
   {
     group: "stack",
     name: "t3code",
     href: "https://github.com/pingdotgg/t3code",
-    why: "vendor-CLI auth delegation — nur mirrors its driver-probing / no-secret-storage pattern in the t3code tool (MIT)",
+    why: "vendor-CLI auth delegation - nur mirrors its driver-probing / no-secret-storage pattern in the t3code tool (MIT)",
   },
   {
     group: "stack",
@@ -1884,7 +1944,7 @@ const INSPIRATIONS: Inspiration[] = [
     group: "stack",
     name: "Telegram Bot API",
     href: "https://core.telegram.org/bots/api",
-    why: "nur gateway — each chat message is a headless agent turn",
+    why: "nur gateway - each chat message is a headless agent turn",
   },
   {
     group: "stack",
@@ -1956,7 +2016,7 @@ const INSPIRATIONS: Inspiration[] = [
     group: "stack",
     name: "Rust",
     href: "https://www.rust-lang.org",
-    why: "the harness language — speed, safety, single binary",
+    why: "the harness language - speed, safety, single binary",
   },
   {
     group: "plugins",
@@ -2004,19 +2064,19 @@ const INSPIRATIONS: Inspiration[] = [
     group: "plugins",
     name: "Builder.io Skills",
     href: "https://github.com/BuilderIO/skills",
-    why: "agent efficiency — efficient-fable · plan-arbiter · stay-within-limits · visual-plan",
+    why: "agent efficiency - efficient-fable · plan-arbiter · stay-within-limits · visual-plan",
   },
   {
     group: "plugins",
     name: "Matt Pocock Skills",
     href: "https://github.com/mattpocock/skills",
-    why: "real-engineering pack — grill-me · triage · tdd · to-spec · handoff",
+    why: "real-engineering pack - grill-me · triage · tdd · to-spec · handoff",
   },
   {
     group: "plugins",
     name: "Addy Osmani Agent Skills",
     href: "https://github.com/addyosmani/agent-skills",
-    why: "production engineering — context engineering · frontend UI · security · shipping",
+    why: "production engineering - context engineering · frontend UI · security · shipping",
   },
   {
     group: "plugins",
@@ -2082,7 +2142,7 @@ const INSPIRATIONS: Inspiration[] = [
     group: "plugins",
     name: "Dialkit",
     href: "https://github.com/joshpuckett/dialkit",
-    why: "live-tune interface parameters — dials/sliders across frameworks · /dialkit",
+    why: "live-tune interface parameters - dials/sliders across frameworks · /dialkit",
   },
   {
     group: "plugins",
@@ -2094,7 +2154,7 @@ const INSPIRATIONS: Inspiration[] = [
     group: "plugins",
     name: "nanocodex",
     href: "https://github.com/gakonst/nanocodex",
-    why: "minimal Rust coding agent — reference tools incl. web_search",
+    why: "minimal Rust coding agent - reference tools incl. web_search",
   },
   {
     group: "plugins",
@@ -2108,6 +2168,23 @@ const INSPIRATIONS: Inspiration[] = [
     href: "https://recent.design/skills",
     why: "curated design-engineer skill index (Emil, ibelick, OKLCH, …)",
   },
+];
+
+const INSPIRATIONS: Inspiration[] = [
+  ...HISTORICAL_INSPIRATIONS,
+  ...pluginCredits
+    .filter(credit => !HISTORICAL_INSPIRATIONS.some(existing =>
+      existing.href.toLowerCase().replace(/\/$/, "") === credit.href.toLowerCase().replace(/\/$/, "")))
+    .map(credit => ({ ...credit, group: "plugins" as const })),
+  {"group": "stack", "name": "Gitleaks", "href": "https://github.com/gitleaks/gitleaks", "why": "Optional secret scanner behind secscan; current files or repository history"},
+  {"group": "stack", "name": "OSV-Scanner", "href": "https://github.com/google/osv-scanner", "why": "Optional dependency vulnerability scanner behind secscan"},
+  {"group": "stack", "name": "Semgrep", "href": "https://github.com/semgrep/semgrep", "why": "Optional code-pattern security scanner behind secscan"},
+  {"group": "stack", "name": "Trivy", "href": "https://github.com/aquasecurity/trivy", "why": "Optional infrastructure security scanner behind secscan"},
+  {"group": "stack", "name": "Checkov", "href": "https://github.com/bridgecrewio/checkov", "why": "Optional infrastructure configuration scanner behind secscan"},
+  {"group": "stack", "name": "TruffleHog", "href": "https://github.com/trufflesecurity/trufflehog", "why": "Optional filesystem secret scanner behind secscan"},
+  {"group": "stack", "name": "jsonschema-rs", "href": "https://github.com/Stranger6667/jsonschema-rs", "why": "Validates structured subagent reports without remote schema fetching"},
+  {"group": "stack", "name": "Blaze", "href": "https://github.com/indexable-inc/blaze", "why": "Opt-in incremental Rust compilation with cargo fallback"},
+  {"group": "stack", "name": "minisign-verify", "href": "https://crates.io/crates/minisign-verify", "why": "Verification of signed release assets and the skills market index"},
 ];
 
 const INSP_GROUPS: { id: Inspiration["group"]; label: string }[] = [
@@ -2980,7 +3057,7 @@ export default function CliPage() {
                     ? "fetching…"
                     : verStatus === "error" && !nurVer
                       ? "offline"
-                      : `v${nurVer?.version ?? "—"}`}
+                      : `v${nurVer?.version ?? "-"}`}
                 </span>
                 {verStatus === "live" && (
                   <span className="cli-version-live">live</span>
@@ -3245,7 +3322,7 @@ export default function CliPage() {
           </h2>
           <p className="cli-lead">
             One command. Drops the prebuilt binary on your PATH, pulls runtime
-            deps it can, wires the full agent stack — then you open the TUI.
+            deps it can, wires the full agent stack - then you open the TUI.
           </p>
         </div>
 
@@ -3339,7 +3416,7 @@ export default function CliPage() {
             <p className="cli-binary-body">
               Download the prebuilt Windows binary → double-click → same full
               install (PATH, prereqs, ecosystem), then NurCLI opens. No npm
-              needed — or use <code>npx nur-cli</code> above.
+              needed - or use <code>npx nur-cli</code> above.
             </p>
             <div className="cli-binary-actions">
               <a
@@ -3402,8 +3479,8 @@ export default function CliPage() {
             ))}
           </ol>
           <p className="cli-after-note">
-            Or run <code>nur</code> and use <code>/auth</code> in the TUI —
-            inspect all 71 provider routes in one scrollable vault, then save,
+            Or run <code>nur</code> and use <code>/auth</code> in the TUI -
+            inspect all 72 provider routes in one scrollable vault, then save,
             replace, or delete an API key, OAuth session, vendor CLI login, or
             OMP credential. The pinned Jev row opens an engines panel that
             shows which judgment engine is live, where each key resides, and a
@@ -3615,8 +3692,8 @@ export default function CliPage() {
           <p className="cli-lead">
             NurCLI is an original Rust harness built in public lineage. This
             ledger names the products, papers, libraries, tools, protocols, and
-            skill authors whose work shaped a module, pattern, or bundled
-            capability. {INSPIRATIONS.length} sources, linked.
+            skill authors whose work shaped a module, pattern, bundled capability,
+            or optional catalog integration. {INSPIRATIONS.length} sources, linked.
           </p>
         </div>
 
@@ -3627,7 +3704,7 @@ export default function CliPage() {
               <h3 className="cli-h3">{g.label}</h3>
               <ul className="cli-insp-list">
                 {items.map((item) => (
-                  <li key={item.name}>
+                  <li key={item.href}>
                     <a
                       href={item.href}
                       target="_blank"
@@ -3648,7 +3725,7 @@ export default function CliPage() {
         })}
 
         <p className="cli-footer-note">
-          Built with Ratatui · crossterm · tokio · reqwest · serde · clap — and
+          Built with Ratatui · crossterm · tokio · reqwest · serde · clap - and
           a lot of late nights. Not affiliated with Meta, Anthropic, OpenAI, or
           any provider listed above.
         </p>
