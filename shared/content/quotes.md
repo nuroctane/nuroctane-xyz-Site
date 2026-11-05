@@ -8,7 +8,7 @@
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (32)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (108)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (66)
-- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (81)
+- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (82)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (52)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (66)
 
@@ -2354,6 +2354,11 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 
 > “Don't seek, don't search, don't ask, don't knock, don't demand, ... relax. If you relax, it comes. If you relax, it is there. If you relax, you start vibrating with it.”
 > — @thoughtsrseeds
+
+> one of the scary things about getting deeply into somatic work is that you begin to realize people can "infect" you with patterns of tension in their body
+> 
+> for instance, if you spend too long around an anxious person, their anxiety will creep into your muscles!
+> — @Thomasdelvasto_
 
 ## Work, Wealth & Value
 
