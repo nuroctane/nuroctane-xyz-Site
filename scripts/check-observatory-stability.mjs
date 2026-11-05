@@ -37,6 +37,9 @@ if (/map\.set\([^\n]+new THREE\.Vector3/.test(field) || /map\.set\([^\n]+new THR
 if (world.includes('wheretheiss.at') || world.includes('Math.random()')) {
   failures.push('Observatory world must use propagated TLE, not random orbits or the ISS poll');
 }
+if (!world.includes('gl={createRenderer}')) {
+  failures.push('Observatory Canvas must create its renderer through the guarded factory');
+}
 if (meteo.includes('tasks.push')) {
   failures.push('Wind grid must be one Open-Meteo request, not one request per cell');
 }

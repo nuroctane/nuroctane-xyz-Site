@@ -783,6 +783,25 @@
   width: 100% !important;
   height: 100% !important;
 }
+.obs-renderer-fallback {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.5rem;
+  text-align: center;
+  color: var(--ink-dim);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+}
+.obs-renderer-fallback p {
+  margin: 0;
+  max-width: 44ch;
+}
 .obs-world-ui {
   position: absolute;
   left: 1rem;
