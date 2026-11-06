@@ -1,15 +1,15 @@
 ## Index
-- [[#Faith, God & Surrender|Faith, God & Surrender]] (53)
+- [[#Faith, God & Surrender|Faith, God & Surrender]] (54)
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (31)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (60)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (81)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (55)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (105)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (32)
-- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (108)
+- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (109)
 - [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (66)
-- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (82)
-- [[#Work, Wealth & Value|Work, Wealth & Value]] (52)
+- [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (83)
+- [[#Work, Wealth & Value|Work, Wealth & Value]] (53)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (66)
 
 ## Faith, God & Surrender
@@ -197,6 +197,9 @@ _Prayer, grace, divine timing, sacred responsibility, surrender, and the metaphy
 > 
 > Living out the Word shatters the Enemy's arguments and renders them null. And there's no greater persuasion of faith than to taste the silent fruits of living it out
 > — @AugustusDelano
+
+> I am a comet I am a fist wrapped in blood I am the arrow I am protected I am unconquerable I answer to only God I am a child’s lightning laughter I am the adrenaline coursing through my blood I am a bullet I hurtle my entire being towards the goal I am fury I am patient I am true
+> — @200milxp
 
 ## Reality, Consciousness & Perception
 
@@ -1848,6 +1851,9 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > Whoever you "want" to be, just embody that person right now. Move like them. Think like them. Be them so the physical reality can just bend to accommodate and align with your internal reality. You have full control over the world that exists in your mind. Everyone is delusional in how they interpret what's in front of them. Every interpretation is "true." So just choose your flavor of delusion
 > — @thedulab
 
+> If you’re not competitive you will always be average. Most of you do it for money, women, respect. The real ones do it because they can’t stand knowing a man less worthy than them is sitting on the throne
+> — @chaseharris98
+
 ## Shadow, Discernment & Protection
 
 _Enemies, manipulation, resentment, power, spiritual attack, discernment, and energetic hygiene._
@@ -2360,6 +2366,9 @@ _Health, breath, body intelligence, emotion, pain, stress, sleep, and nervous-sy
 > for instance, if you spend too long around an anxious person, their anxiety will creep into your muscles!
 > — @Thomasdelvasto_
 
+> It's never been more important to be cynical. About your own perceptions, don't trust your own mind in what it "thinks" or "concludes" about things, events or people. 99% of time it's totally limited in context and kills the magic of life. Which is only found through direct experience without judgement. Harshly doubt your mental interpretations. It's never been more important to be optimistic about the uncertainty of experience and dive straight into it, that's where the magic is.
+> — @verritass
+
 ## Work, Wealth & Value
 
 _Money, career, value creation, leverage, spending, wealth, and worldly stewardship._
@@ -2614,6 +2623,17 @@ _Money, career, value creation, leverage, spending, wealth, and worldly stewards
 > You should be able to change the code.
 > Your agent should be yours.
 > — @NousResearch
+
+> The best analogy for building wealth is rock climbing. Once you reach a new ledge, you secure it. That becomes your new foundation, and protecting it becomes part of an evolving strategy.
+> 
+> Each new level of wealth should trigger a reset in your mindset and a broadening of strategy. You now have more to protect and also more to work with, and the risks you take should reflect that.
+> 
+> That doesn’t mean you can’t be ambitious. Take big bets when the opportunity deserves it. But big bets can’t be born from what everyone else is doing and every theme has a due date. So structure those bets so that if the next climb fails, you fall back to the ledge you’ve already secured.
+> 
+> The entire climb can never be on the line.
+> 
+> I’m sure today many many people fell back many ledges, and many died falling to the ground.
+> — @BobLoukas
 
 ## Life, Joy & Meaning
 
