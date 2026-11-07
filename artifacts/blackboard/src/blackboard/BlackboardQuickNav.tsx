@@ -4,6 +4,8 @@ import { Link } from 'wouter';
 import { directoryEntries } from '../data/directory';
 import { LOGO_MAP, dockIcon } from '../data/navLogos';
 import malLogo from '../assets/secondary-nodes/anilist-mal-logo-sidecard.png';
+import traktLogo from '../assets/secondary-nodes/letterboxd-trakt-logo-sidecard.png';
+import booksLogo from '../assets/secondary-nodes/goodreads-books-logo-sidecard.png';
 import './blackboard.css';
 
 export type Destination = { id: string; label: string; url: string; logo?: string; secondary?: Destination };
@@ -28,7 +30,12 @@ const groups = {
   projects: [...soonProjects, { id: 'ios-downloader', label: 'iOS Shortcut: Downloader', url: 'https://routinehub.co/shortcut/26384/', logo: dockIcon('/assets/nodes/routinehub-logo.png') }, ...orderedProjects],
   socials: ['instagram', 'atxtunerz', 'x', 'discord', 'substack', 'remilia', 'glasp', 'steam', 'anilist', 'goodreads', 'letterboxd', 'reddit', 'kick', 'twitch', 'youtube', 'soundcloud']
     .map(find)
-    .map(entry => entry.id === 'anilist' ? { ...entry, secondary: { id: 'mal', label: 'MAL', logo: malLogo, url: 'https://myanimelist.net/profile/nuroctane' } } : entry),
+    .map(entry => {
+      if (entry.id === 'anilist') return { ...entry, secondary: { id: 'mal', label: 'MAL', logo: malLogo, url: 'https://myanimelist.net/profile/nuroctane' } };
+      if (entry.id === 'letterboxd') return { ...entry, secondary: { id: 'trakt', label: 'Trakt', logo: traktLogo, url: 'https://app.trakt.tv/profile/nuroctane' } };
+      if (entry.id === 'goodreads') return { ...entry, secondary: { id: 'books', label: 'Books', logo: booksLogo, url: '/books' } };
+      return entry;
+    }),
 };
 type Group = keyof typeof groups;
 

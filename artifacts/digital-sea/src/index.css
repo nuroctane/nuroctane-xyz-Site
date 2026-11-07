@@ -1033,6 +1033,24 @@ html.standalone-active body {
 
 /* ── Individual nav item ── */
 
+/* A social entry paired with its sidecard link (AniList/MAL, Letterboxd/Trakt,
+   Goodreads/Books) sits side by side instead of stacking. */
+.qnav-item-row {
+  display: flex;
+  gap: 2px;
+}
+
+.qnav-item-row .qnav-item {
+  flex: 1;
+  min-width: 0;
+  padding-inline: 6px;
+}
+
+.qnav-item-row .qnav-item-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .qnav-item {
   width: 100%;
   display: flex;

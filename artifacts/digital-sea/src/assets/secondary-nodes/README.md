@@ -33,4 +33,7 @@ are declared in `src/data/secondaryNodes.ts`:
 3. `SecondaryNodes.tsx` renders the clickable logo tile and parents a note
    card under it (`NOTE_BELOW` local offset) so both share orbit physics.
 
-Current: `anilist-mal-logo-sidecard.png` → MyAnimeList list + legacy note.
+Current:
+- `anilist-mal-logo-sidecard.png` → MyAnimeList list + legacy note
+- `letterboxd-trakt-logo-sidecard.png` → Trakt profile + note
+- `goodreads-books-logo-sidecard.png` → on-site /books library + note

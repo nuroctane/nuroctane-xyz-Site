@@ -29,6 +29,16 @@ const SECONDARY_OVERRIDES: Record<string, Partial<SecondaryMedia>> = {
     linkLabel: 'MyAnimeList',
     note: 'legacy anime listing site, still updated',
   },
+  'letterboxd-trakt-logo-sidecard.png': {
+    link: 'https://app.trakt.tv/profile/nuroctane',
+    linkLabel: 'Trakt',
+    note: 'tv and movie tracking, kept current',
+  },
+  'goodreads-books-logo-sidecard.png': {
+    link: '/books',
+    linkLabel: 'Books',
+    note: 'the real library lives here, not goodreads',
+  },
 };
 
 const norm = (s: string) => s.toLowerCase().replace(/[^a-z0-9]/g, '');

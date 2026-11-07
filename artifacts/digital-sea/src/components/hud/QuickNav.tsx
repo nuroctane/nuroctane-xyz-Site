@@ -4,6 +4,9 @@ import { nodes, NodeData, PROJECT_THRESHOLD, nodeMid, nodeApproachT } from '../.
 import { blogPosts, BlogPost } from '../../data/blogPosts';
 import type { Mode } from '../../types';
 import { markNavigationIntent } from '../../lib/navIntent';
+import malLogo from '../../assets/secondary-nodes/anilist-mal-logo-sidecard.png';
+import traktLogo from '../../assets/secondary-nodes/letterboxd-trakt-logo-sidecard.png';
+import booksLogo from '../../assets/secondary-nodes/goodreads-books-logo-sidecard.png';
 
 const LOGO_MAP: Record<string, string> = {
   instagram:  '/assets/nodes/instagram-logo.png',
@@ -42,6 +45,14 @@ const LOGO_MAP: Record<string, string> = {
 // updates the quicknav; no hand-maintained ID list to drift.
 const SOCIAL_NODES  = nodes.filter(n => nodeMid(n) < PROJECT_THRESHOLD);
 const PROJECT_NODES = nodes.filter(n => nodeMid(n) >= PROJECT_THRESHOLD);
+
+// Paired links that sit beside a social entry, mirroring the orbiting
+// sidecards (AniList → MAL, Letterboxd → Trakt, Goodreads → /books).
+const SOCIAL_SECONDARY: Record<string, { id: string; label: string; logo: string; href: string; external: boolean }> = {
+  anilist:    { id: 'mal',   label: 'MAL',   logo: malLogo,   href: 'https://myanimelist.net/profile/nuroctane', external: true },
+  letterboxd: { id: 'trakt', label: 'Trakt', logo: traktLogo, href: 'https://app.trakt.tv/profile/nuroctane',     external: true },
+  goodreads:  { id: 'books', label: 'Books', logo: booksLogo, href: '/books',                                     external: false },
+};
 
 function scrollToNode(
   node: NodeData,
@@ -112,6 +123,32 @@ function NavItem({
       {isSoon && <span className="qnav-item-tag">SOON</span>}
     </button>
   );
+}
+
+function SecondaryLink({
+  item, onClose,
+}: {
+  item: { label: string; logo: string; href: string; external: boolean };
+  onClose: () => void;
+}) {
+  const [, setLocation] = useLocation();
+  const go = () => {
+    markNavigationIntent();
+    onClose();
+    if (!item.external) setLocation(item.href);
+  };
+  const inner = (
+    <>
+      <span className="qnav-item-badge">
+        <img src={item.logo} alt="" className="qnav-item-img" />
+      </span>
+      <span className="qnav-item-name">{item.label}</span>
+    </>
+  );
+  if (item.external) {
+    return <a className="qnav-item qnav-item--secondary" href={item.href} target="_blank" rel="noopener noreferrer" onClick={go}>{inner}</a>;
+  }
+  return <button type="button" className="qnav-item qnav-item--secondary" onClick={go}>{inner}</button>;
 }
 
 function BlogNavItem({
@@ -317,15 +354,17 @@ export function QuickNav({ mode, onNavigate, onBlogNavigate, onFinNavigate }: Qu
             />
             {expanded.has('SOCIALS') && (
               <div className="qnav-items">
-                {SOCIAL_NODES.map(n => (
-                  <NavItem
-                    key={n.id}
-                    node={n}
-                    onClose={() => setOpen(false)}
-                    onNavigate={onNavigate}
-                    setLocation={setLocation}
-                  />
-                ))}
+                {SOCIAL_NODES.map(n => {
+                  const secondary = SOCIAL_SECONDARY[n.id];
+                  return secondary ? (
+                    <div className="qnav-item-row" key={n.id}>
+                      <NavItem node={n} onClose={() => setOpen(false)} onNavigate={onNavigate} setLocation={setLocation} />
+                      <SecondaryLink item={secondary} onClose={() => setOpen(false)} />
+                    </div>
+                  ) : (
+                    <NavItem key={n.id} node={n} onClose={() => setOpen(false)} onNavigate={onNavigate} setLocation={setLocation} />
+                  );
+                })}
               </div>
             )}
           </div>
