@@ -3,7 +3,7 @@
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (31)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (60)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (81)
-- [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (55)
+- [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (56)
 - [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (105)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (32)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (109)
@@ -948,6 +948,9 @@ _Thought, belief, attention, subconscious patterns, self-talk, perspective, and 
 
 > consider the possibility that you have been written with great care, every flaw placed deliberately, the setbacks timed for maximum arc. the sensation of being watched during your worst hour carries a strange comfort once reframed as an audience. act accordingly. characters aware of their own narration gain abilities no one else in the story can access🙃
 > — @null_ropex
+
+> if you astral project and go to a prison, you'll see this for yourself. energy cannot escape cubes, everything today is built in cubes to trap energy. the ancients knew this, this is why their rooms were never square. they had pointed roofs for energy to escape. everything you see molds your mind in some form or way. cubes and squares are the most limited shapes, by seeing cubes and squares all the time, this is subconsciously limiting your mind. the ancients built with beauty and sophistication cos they understood that what they see has an effect on their mind. now you've been projected to change from that ancient pointed roofs to a flat square surface to dull you down and for your energy not to escape. to make things more simple... govern "ment" , environ "ment" it's all mental "ment" you see? and it all has an effect on your mind. think you can work this one out yourself. buena suerte 👍
+> — @eagleseyeinc
 
 ## Action, Discipline & Mastery
 
