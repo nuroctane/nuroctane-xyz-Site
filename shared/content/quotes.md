@@ -2,15 +2,15 @@
 - [[#Faith, God & Surrender|Faith, God & Surrender]] (54)
 - [[#Reality, Consciousness & Perception|Reality, Consciousness & Perception]] (31)
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (60)
-- [[#Self, Identity & Awakening|Self, Identity & Awakening]] (81)
+- [[#Self, Identity & Awakening|Self, Identity & Awakening]] (82)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (56)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (105)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (107)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (32)
 - [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (109)
-- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (66)
+- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (67)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (83)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (53)
-- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (66)
+- [[#Life, Joy & Meaning|Life, Joy & Meaning]] (67)
 
 ## Faith, God & Surrender
 
@@ -772,6 +772,9 @@ _Ego, authenticity, self-concept, inner freedom, memory, awakening, and becoming
 > Be Aggressive about your life.
 > — @drgurner
 
+> You are brainwashed. That’s the first thing you must realize. Not your ancestors. You. They lived every day in contact with the full force of human nature. Birth and death, friends and foes, toils, triumphs, and tears. You get your life lessons from a screen.
+> — @romanhelmetguy
+
 ## Mind, Belief & Inner Work
 
 _Thought, belief, attention, subconscious patterns, self-talk, perspective, and the stories that shape experience._
@@ -1343,6 +1346,14 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 
 > Measure the distance between what you say and what you do. that distance is your entire problem. the closer those two points get to each other, the more powerful you become. when they become the same point, you become unstoppable
 > — @lichthauch
+
+> It sounds trite but you have to cultivate a personality of resilience. You have to just convince yourself that no matter what happens you will be ok. Every time something terrible happens to you is another opportunity to brainwash yourself. You tell yourself “I can bear this too”
+> — @BigolWave
+
+> you can do it. there is a way. you can actually do it. there always is a way. you just need to try. you just need to think. you just need to look.
+> 
+> no matter what. there always is a way
+> — @yacinemtb
 
 ## Creativity, Purpose & Expression
 
@@ -2064,6 +2075,9 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 
 > People will constantly attack you in life. One of their main weapons will be to instill in you doubts about yourself – your worth, your abilities, your potential. They will often disguise this as their objective opinion, but invariably it has a political purpose – they want to keep you down.
 > — @RobertGreene
+
+> Overwhelming superiority arouses less resentment than a slight advantage.
+> — @robkhenderson
 
 ## Body, Emotion & Nervous System
 
@@ -2860,4 +2874,7 @@ _Presence, change, beauty, mortality, play, gratitude, paradox, and what makes a
 > 
 > Of course it did. It always does. It always has.
 > — @miluvin444
+
+> say this with me: I swear I will look forward to my life, even if it meant my death. no more sadness. no more pathos. all my misery had been up to this point self-imposed. no one was responsible but I. and now it is high time I drain it dry, weak, dead. I am the determiner of my destiny; the guardian of this terribly precious vehicle that is my body and mind. I will not allow for person, thought, memory, or stimulus to pierce through me. my shield is high and my spirit impenetrable. I am joy. I am joy. I am joy.
+> — @BlondB00
 
