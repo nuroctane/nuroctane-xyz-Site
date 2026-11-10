@@ -1,3 +1,4 @@
+import { useLocation } from 'wouter';
 import {
   createContext,
   useCallback,
@@ -66,10 +67,15 @@ interface AudioCtxValue {
 
 const Ctx = createContext<AudioCtxValue>(null!);
 
+const isHomeRoute = (path: string) => ['/', '/home', '/identity'].includes(path.toLowerCase().replace(/\/+$/, '') || '/');
+
 export function AudioProvider({ children }: { children: ReactNode }) {
+  const [location] = useLocation();
+  const quietHoldRef = useRef(!isHomeRoute(window.location.pathname));
+  const previousLocationRef = useRef(location);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  const [enabled, setEnabled] = useState(true);
+  const [enabled, setEnabled] = useState(!quietHoldRef.current);
   const [armed,   setArmed]   = useState(false);
   const [blocked, setBlocked] = useState(false);
   const [volume,  setVolume]  = useState(0.5);
@@ -355,6 +361,23 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     failuresRef.current = 0;
   }, [track]);
 
+  useEffect(() => {
+    if (previousLocationRef.current === location) return;
+    previousLocationRef.current = location;
+    if (!isHomeRoute(location)) {
+      quietHoldRef.current = true;
+      enabledRef.current = false;
+      playGenRef.current++;
+      playingRef.current = false;
+      pendingRef.current = false;
+      setEnabled(false);
+      reconcile();
+    } else if (quietHoldRef.current) {
+      quietHoldRef.current = false;
+      setEnabled(true);
+    }
+  }, [location, reconcile]);
+
   const arm = useCallback(() => setArmed(true), []);
 
   const setTrack = useCallback((t: Track | null) => setTrackState(t), []);
@@ -366,6 +389,7 @@ export function AudioProvider({ children }: { children: ReactNode }) {
       reconcile();
       return;
     }
+    quietHoldRef.current = false;
     setEnabled(prev => !prev);
   }, [reconcile]);
 

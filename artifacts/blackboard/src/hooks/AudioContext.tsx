@@ -95,14 +95,9 @@ interface AudioCtxValue {
 
 const Ctx = createContext<AudioCtxValue>(null!);
 
-// Professional-facing pages whose direct visitors (developers following a docs
-// link to /cli, recruiters opening /resume) should not be greeted by the music
-// library. Landing on one starts the score muted and unloaded, and no first
-// touch starts it; arriving from another page keeps whatever is already playing.
-const QUIET_LANDING_ROUTES = ['cli', 'resume'];
-const isQuietRoute = (path: string) =>
-  QUIET_LANDING_ROUTES.includes(path.replace(/^\/+/, '').split(/[/?#]/)[0].toLowerCase());
-const QUIET_LANDING = SITE_MODE === 'blackboard' && isQuietRoute(window.location.pathname);
+// Only the homepage may start the score without an explicit play action.
+const isHomeRoute = (path: string) => ['/', '/home', '/identity'].includes(path.toLowerCase().replace(/\/+$/, '') || '/');
+const QUIET_LANDING = !isHomeRoute(window.location.pathname);
 
 export function AudioProvider({ children }: { children: ReactNode }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -510,15 +505,29 @@ export function AudioProvider({ children }: { children: ReactNode }) {
     failuresRef.current = 0;
   }, [track]);
 
-  // Leaving a quiet landing for any other page restores the normal score, as if
-  // the visit had started there — unless the visitor already chose play/mute.
+  // Every route change away from home stops automatic playback, including a
+  // pending muted start. A visitor can still explicitly play on that page.
+  const previousLocationRef = useRef(location);
   useEffect(() => {
-    if (!quietHoldRef.current || isQuietRoute(location)) return;
-    quietHoldRef.current = false;
-    const a = audioRef.current;
-    if (a) a.preload = 'auto';
-    setEnabled(true);
-  }, [location]);
+    if (previousLocationRef.current === location) return;
+    previousLocationRef.current = location;
+    if (!isHomeRoute(location)) {
+      quietHoldRef.current = true;
+      enabledRef.current = false;
+      playGenRef.current++;
+      playingRef.current = false;
+      pendingRef.current = false;
+      mutedAutoplayRef.current = false;
+      setMutedAutoplay(false);
+      setEnabled(false);
+      reconcile();
+    } else if (quietHoldRef.current) {
+      quietHoldRef.current = false;
+      const a = audioRef.current;
+      if (a) a.preload = 'auto';
+      setEnabled(true);
+    }
+  }, [location, reconcile]);
 
   const arm = useCallback(() => setArmed(true), []);
 
