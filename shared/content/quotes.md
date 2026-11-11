@@ -4,10 +4,10 @@
 - [[#Manifestation, Desire & Abundance|Manifestation, Desire & Abundance]] (60)
 - [[#Self, Identity & Awakening|Self, Identity & Awakening]] (82)
 - [[#Mind, Belief & Inner Work|Mind, Belief & Inner Work]] (56)
-- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (107)
+- [[#Action, Discipline & Mastery|Action, Discipline & Mastery]] (108)
 - [[#Creativity, Purpose & Expression|Creativity, Purpose & Expression]] (32)
-- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (109)
-- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (67)
+- [[#Love, Relationships & Boundaries|Love, Relationships & Boundaries]] (110)
+- [[#Shadow, Discernment & Protection|Shadow, Discernment & Protection]] (68)
 - [[#Body, Emotion & Nervous System|Body, Emotion & Nervous System]] (83)
 - [[#Work, Wealth & Value|Work, Wealth & Value]] (53)
 - [[#Life, Joy & Meaning|Life, Joy & Meaning]] (67)
@@ -1355,6 +1355,9 @@ _Doing the hard thing, skill, courage, habits, decisions, focus, and embodied mo
 > no matter what. there always is a way
 > — @yacinemtb
 
+> I don't focus on my prior wins or losses, I focus on finding the win that makes them all look like losses
+> — @genic0n
+
 ## Creativity, Purpose & Expression
 
 _Calling, craft, art, play, service, voice, vision, and making what only you can make._
@@ -1868,6 +1871,9 @@ _Love, friendship, projection, intimacy, standards, rejection, and who gets acce
 > If you’re not competitive you will always be average. Most of you do it for money, women, respect. The real ones do it because they can’t stand knowing a man less worthy than them is sitting on the throne
 > — @chaseharris98
 
+> Worse men than you have solved bigger problems than yours.
+> — @dhh
+
 ## Shadow, Discernment & Protection
 
 _Enemies, manipulation, resentment, power, spiritual attack, discernment, and energetic hygiene._
@@ -2078,6 +2084,9 @@ _Enemies, manipulation, resentment, power, spiritual attack, discernment, and en
 
 > Overwhelming superiority arouses less resentment than a slight advantage.
 > — @robkhenderson
+
+> Inflammation is the root of all evil
+> — @soUltraviolet
 
 ## Body, Emotion & Nervous System
 
