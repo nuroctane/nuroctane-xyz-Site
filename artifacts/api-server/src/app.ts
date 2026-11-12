@@ -11,6 +11,9 @@ const app = new Hono();
 const ALLOWED_EXACT = new Set([
   "https://nuroctane.xyz",
   "https://www.nuroctane.xyz",
+  // miyaOS's MODKEYS window shares the community gallery (/api/modkeys/gallery).
+  "https://miyamaker.com",
+  "https://www.miyamaker.com",
 ]);
 const ALLOWED_PATTERNS = [/^https?:\/\/localhost(?::\d+)?$/];
 
