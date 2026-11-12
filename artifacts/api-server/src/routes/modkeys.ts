@@ -8,6 +8,8 @@ import { kvGet, kvSet } from "@workspace/kv";
 import { logger } from "../lib/logger";
 import { readBody } from "../lib/body";
 import { adminStatus, verifyAdmin } from "../lib/admin-session";
+/* The same allowlist MODKEYS and miyaOS's gallery proxy rebuild builds with. */
+import { validBuild, validGalleryEntry } from "../../../modkeys/src/js/core/validBuild.js";
 
 const router = new Hono();
 
@@ -31,28 +33,10 @@ interface GalleryBody {
   snap?: Record<string, unknown>;
 }
 
-function extractLayout(snap: Record<string, unknown>): string {
-  return (snap.layout as string) ?? "75";
-}
-
-function stripImageData(obj: unknown): void {
-  if (Array.isArray(obj)) {
-    for (const item of obj) stripImageData(item);
-  } else if (obj && typeof obj === "object") {
-    const o = obj as Record<string, unknown>;
-    for (const key of Object.keys(o)) {
-      if (key === "imageData") {
-        delete o[key];
-      } else {
-        stripImageData(o[key]);
-      }
-    }
-  }
-}
-
 /* Colours, ids and names in a build never hold markup characters, and the
  * configurator writes build values into HTML, so a snap carrying them is
- * refused rather than stored for every gallery visitor. Key legends may be any
+ * refused outright (a sign of tampering) before the allowlist below rebuilds
+ * what is left. Key legends may be any
  * character (`"` and `<` are real legends); the client only draws them on
  * canvas or into escaped inputs. Keep in step with modkeys core/cleanSnap.js. */
 const UNSAFE_TEXT = /[<>"`]|javascript:/i;
@@ -145,16 +129,20 @@ async function handleCreate(c: Context, body: GalleryBody) {
       return c.json({ error: "Missing snap" }, 400);
     }
 
-    // Strip imageData to keep KV small
-    const cleanSnap = JSON.parse(JSON.stringify(snap));
-    stripImageData(cleanSnap);
+    if (unsafeSnapValue(snap)) {
+      return c.json({ error: "Build contains unsupported characters" }, 400);
+    }
+    /* Rebuilt from the allowlist: known enums only, hex colours, row-col key
+     * ids, capped legends, finite clamped numbers; unknown fields (view, tool,
+     * theme, ...) and every key image are dropped, the images to keep KV small. */
+    const cleanSnap = validBuild(snap, { images: false });
+    if (!cleanSnap || !Object.keys(cleanSnap).length) {
+      return c.json({ error: "Not a MODKEYS build" }, 400);
+    }
 
     const snapJson = JSON.stringify(cleanSnap);
     if (snapJson.length > MAX_SNAP_JSON_SIZE) {
       return c.json({ error: "Snap too large" }, 413);
-    }
-    if (unsafeSnapValue(cleanSnap)) {
-      return c.json({ error: "Build contains unsupported characters" }, 400);
     }
 
     const id = crypto.randomUUID();
@@ -163,7 +151,7 @@ async function handleCreate(c: Context, body: GalleryBody) {
       id,
       name: sanitizeName(name),
       snap: cleanSnap,
-      layout: extractLayout(cleanSnap),
+      layout: typeof cleanSnap.layout === "string" ? cleanSnap.layout : "75",
       createdAt: now,
     };
 
@@ -194,9 +182,11 @@ async function handleCreate(c: Context, body: GalleryBody) {
 router.get("/modkeys/gallery", async (c) => {
   try {
     const gallery = (await kvGet<GalleryEntry[]>(GALLERY_KEY)) ?? [];
-    const templates = gallery.map(({ id, name, snap, layout, createdAt }) => ({
-      id, name, snap, layout, createdAt,
-    }));
+    /* Entries saved before the allowlist are rebuilt on the way out too. */
+    const templates = gallery.flatMap(({ id, name, snap, createdAt }) => {
+      const t = validGalleryEntry({ id, name, snap, createdAt });
+      return t ? [{ ...t, layout: t.layout ?? "75" }] : [];
+    });
     c.header("Cache-Control", "public, s-maxage=60, stale-while-revalidate=300");
     return c.json({ templates });
   } catch (err) {

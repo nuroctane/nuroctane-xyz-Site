@@ -186,7 +186,19 @@ async function smokeModkeys(app: App): Promise<void> {
   let g = await jfetch(app, "/api/modkeys/gallery");
   ok(g.status === 200 && Array.isArray(g.json?.templates), "GET /api/modkeys/gallery shape {templates[]}");
 
-  const snap = { layout: "75", perKeyOverrides: { k1: { text: "A", imageData: "SHOULD_BE_STRIPPED" } } };
+  /* A real build shape: row-col key ids, a real key image (which the gallery
+     still strips), plus outside fields the allowlist must drop. */
+  const snap = {
+    layout: "75",
+    view: "top",
+    theme: "light",
+    caseCustomColor: "url(https://example.com/x.png)",
+    plateColor: "#112233",
+    perKeyOverrides: {
+      "0-0": { customText: "A", imageData: "data:image/png;base64,iVBORw0KGgo=" },
+      "not-a-key": { bgColor: "#ffffff" },
+    },
+  };
   const post = await jfetch(app, "/api/modkeys/gallery", { name: "smoke <b>x</b>", snap });
   ok(post.status === 201 && typeof post.json?.template?.id === "string", "POST gallery → 201 with template id");
 
@@ -194,16 +206,21 @@ async function smokeModkeys(app: App): Promise<void> {
   ok(g.json.templates.length === 1, "gallery has one template");
   const t = g.json.templates[0];
   ok(t.name === "smoke x", "name sanitized (html stripped)");
-  ok(t.snap?.perKeyOverrides?.k1 && t.snap.perKeyOverrides.k1.imageData === undefined, "imageData stripped from stored snap");
+  ok(t.snap?.perKeyOverrides?.["0-0"]?.customText === "A" && t.snap.perKeyOverrides["0-0"].imageData === undefined, "imageData stripped from stored snap");
+  ok(t.snap.view === undefined && t.snap.theme === undefined, "allowlist drops viewer fields (view, theme)");
+  ok(t.snap.caseCustomColor === undefined && t.snap.plateColor === "#112233", "allowlist keeps hex colours only");
+  ok(t.snap.perKeyOverrides["not-a-key"] === undefined, "allowlist drops per-key ids that are not row-col or knob");
   ok(t.layout === "75", "layout extracted from snap");
   const evilSnap = { layout: "75", light: { color: '#fff" autofocus onfocus="alert(1)' } };
   const evil = await jfetch(app, "/api/modkeys/gallery", { name: "evil", snap: evilSnap });
   ok(evil.status === 400, "gallery refuses a build carrying markup outside key legends");
-  const legendSnap = { layout: "75", perKeyOverrides: { k2: { customText: '"<>`' } } };
+  const legendSnap = { layout: "75", perKeyOverrides: { "0-1": { customText: '"<>`' } } };
   const legend = await jfetch(app, "/api/modkeys/gallery", { name: "legends", snap: legendSnap });
   ok(legend.status === 201, "gallery keeps punctuation key legends");
   const cleanup = await jfetch(app, "/api/modkeys/gallery", { action: "delete", password: "smoke-admin", id: legend.json?.template?.id });
   ok(cleanup.status === 200, "legend build cleaned up");
+  const junk = await jfetch(app, "/api/modkeys/gallery", { name: "junk", snap: { layout: "constructor", view: "top" } });
+  ok(junk.status === 400, "gallery refuses a snap with nothing a build carries");
 
   const badAdmin = await jfetch(app, "/api/modkeys/gallery", { action: "verifyAdmin", password: "wrong" });
   ok(badAdmin.status === 403, "verifyAdmin wrong password → 403");
